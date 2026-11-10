@@ -87,7 +87,7 @@ class Filefsv1r0 extends ApiController
         $this->registerTask('files', 'list');
         $this->registerTask('update', 'save');
         $this->registerTask('insert', 'save');
-        $this->_task = Request::getWord('task', 'list');
+        $this->task = Request::getWord('task', 'list');
 
         // Load component language file
         Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
@@ -714,7 +714,7 @@ class Filefsv1r0 extends ApiController
                 $hash = $this->repo->getLastRevision($params);
                 $view->file->set('hash', $hash);
             }
-            $view->option = $this->_option;
+            $view->option = $this->option;
             $view->model  = $this->model;
 
             if (!($view->file instanceof \Components\Projects\Models\File)) {
@@ -874,8 +874,8 @@ class Filefsv1r0 extends ApiController
         $response = new stdClass();
         $response->results     = $this->model->repo()->insert([
             'dataPath'    => $dataPath,
-            'allowReplace' => $this->_task == 'insert' ? false : true,
-            'update'      => $this->_task == 'insert' ? false : true,
+            'allowReplace' => $this->task == 'insert' ? false : true,
+            'update'      => $this->task == 'insert' ? false : true,
             'subdir'      => Request::getString('subdir', ''),
         ]);
 
@@ -895,7 +895,7 @@ class Filefsv1r0 extends ApiController
 
             // Register event with the project
             if (!empty($parsedResults)) {
-                $updateType = $this->_task == 'insert' ? 'uploaded' : 'updated';
+                $updateType = $this->task == 'insert' ? 'uploaded' : 'updated';
                 // Plugin params
                 $plugin_params = [
                     $this->model,

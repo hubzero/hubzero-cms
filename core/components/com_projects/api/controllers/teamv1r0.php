@@ -33,7 +33,7 @@ class Teamv1r0 extends ApiController
     public function execute()
     {
         $this->registerTask('team', 'list');
-        $this->_task = Request::getWord('task', 'list');
+        $this->task = Request::getWord('task', 'list');
 
         // Load component language file
         Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');

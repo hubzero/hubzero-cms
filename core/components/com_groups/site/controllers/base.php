@@ -67,16 +67,16 @@ class Base extends SiteController
      */
     public function loginTask($message = '', $customReturn = null)
     {
-        $return = 'index.php?option=' . $this->_option . '&cn=' . $this->cn;
+        $return = 'index.php?option=' . $this->option . '&cn=' . $this->cn;
 
         // append controller
-        if (isset($this->_controller) && $this->_controller != 'groups' && $this->_controller != 'membership') {
-            $return .= '&controller=' . $this->_controller;
+        if (isset($this->controller) && $this->controller != 'groups' && $this->controller != 'membership') {
+            $return .= '&controller=' . $this->controller;
         }
 
         // append task, unless it was posted: the GET that follows login can't replay it
-        if (isset($this->_task) && Request::method() != 'POST') {
-            $return .= '&task=' . $this->_task;
+        if (isset($this->task) && Request::method() != 'POST') {
+            $return .= '&task=' . $this->task;
         }
 
         // do we have a custom return?
@@ -105,8 +105,8 @@ class Base extends SiteController
         //add 'groups' item to pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
@@ -117,24 +117,24 @@ class Base extends SiteController
             if ($group) {
                 Pathway::append(
                     stripslashes($group->get('description')),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn,
+                    'index.php?option=' . $this->option . '&cn=' . $this->cn,
                 );
             }
         }
 
         //add task to pathway
         $pageControllers = ['pages', 'modules', 'categories'];
-        if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, $pageControllers)) {
+        if ($this->task && $this->task != 'view' && !in_array($this->controller, $pageControllers)) {
             // if we browsing or creating a new group
-            if (in_array($this->_task, ['new', 'browse'])) {
+            if (in_array($this->task, ['new', 'browse'])) {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                    'index.php?option=' . $this->option . '&task=' . $this->task,
                 );
             } else {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task,
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                    'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=' . $this->task,
                 );
             }
         }
@@ -151,29 +151,29 @@ class Base extends SiteController
             if ($page !== null) {
                 Pathway::append(
                     Lang::txt($page->get('title')),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active,
+                    'index.php?option=' . $this->option . '&cn=' . $this->cn . '&active=' . $this->active,
                 );
             } elseif ($this->active != 'overview') {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->active)),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active,
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->active)),
+                    'index.php?option=' . $this->option . '&cn=' . $this->cn . '&active=' . $this->active,
                 );
             }
         }
 
-        if (in_array($this->_controller, ['pages', 'modules', 'categories'])) {
+        if (in_array($this->controller, ['pages', 'modules', 'categories'])) {
             Pathway::append(
                 Lang::txt('COM_GROUPS_PAGES'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller,
+                'index.php?option=' . $this->option . '&cn=' . $this->cn . '&controller=' . $this->controller,
             );
 
-            if ($this->_task && $this->_task != 'view') {
-                $taskUrl = 'index.php?option=' . $this->_option
+            if ($this->task && $this->task != 'view') {
+                $taskUrl = 'index.php?option=' . $this->option
                     . '&cn=' . $this->cn
-                    . '&controller=' . $this->_controller
-                    . '&task=' . $this->_task;
+                    . '&controller=' . $this->controller
+                    . '&task=' . $this->task;
                 Pathway::append(
-                    Lang::txt('COM_GROUPS_PAGES_' . strtoupper($this->_task)),
+                    Lang::txt('COM_GROUPS_PAGES_' . strtoupper($this->task)),
                     $taskUrl,
                 );
             }
@@ -189,10 +189,10 @@ class Base extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildTitle($pages = [])
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
-        if ($this->_task) {
-            $this->_title = Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        if ($this->task) {
+            $this->_title = Lang::txt(strtoupper($this->option . '_' . $this->task));
         }
 
         if ($this->cn) {
@@ -251,7 +251,7 @@ class Base extends SiteController
      * @return  boolean  True if authorized, false if not
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($checkOnlyMembership = true)
+    protected function authorize($checkOnlyMembership = true)
     {
         $group = Group::getInstance($this->cn);
         if (!is_object($group)) {

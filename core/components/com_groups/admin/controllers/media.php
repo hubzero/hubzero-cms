@@ -332,7 +332,7 @@ class Media extends AdminController
 
         // Create folder <select> list
         $dataPathUrl = Route::url(
-            'index.php?option=' . $this->_option
+            'index.php?option=' . $this->option
             . '&controller=media&gidNumber=' . $this->group->get('gidNumber')
             . '&task=list&tmpl=component&dir=',
         );

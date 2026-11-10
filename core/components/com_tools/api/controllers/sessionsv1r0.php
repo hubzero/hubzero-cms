@@ -251,7 +251,7 @@ class Sessionsv1r0 extends ApiController
 
         $hztt = new \Components\Tools\Tables\Tool($database);
         $status = [];
-        $hztt->getToolStatus($tool_info->toolid, $this->_option, $status, $version);
+        $hztt->getToolStatus($tool_info->toolid, $this->option, $status, $version);
         if (!isset($status['hostreq'])) {
             $hostreq = [];
         } else {

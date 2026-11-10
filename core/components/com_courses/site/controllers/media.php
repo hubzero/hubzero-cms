@@ -589,7 +589,7 @@ class Media extends SiteController
         // There is no media layout for this controller; send the user back to
         // the course page (or the course list) carrying whatever was notified.
         App::redirect(
-            \Route::url('index.php?option=' . $this->_option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false),
+            \Route::url('index.php?option=' . $this->option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false),
         );
     }
 

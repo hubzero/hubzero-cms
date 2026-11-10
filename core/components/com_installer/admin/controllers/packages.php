@@ -54,25 +54,25 @@ class Packages extends AdminController
         // Paging
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -101,8 +101,8 @@ class Packages extends AdminController
     public function editTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -139,8 +139,8 @@ class Packages extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -162,8 +162,8 @@ class Packages extends AdminController
     public function addTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -193,7 +193,7 @@ class Packages extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

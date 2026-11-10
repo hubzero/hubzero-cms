@@ -40,18 +40,18 @@ class Abusereports extends AdminController
         // Incoming
         $filters = [
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -162,7 +162,7 @@ class Abusereports extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.manage', $this->_option) && !User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option) && !User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -219,7 +219,7 @@ class Abusereports extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.manage', $this->_option) && !User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option) && !User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -294,7 +294,7 @@ class Abusereports extends AdminController
 
         // Notify item owner
         if ($email && $reported) {
-            Lang::load($this->_option . '.abuse', dirname(dirname(__DIR__)) . '/site');
+            Lang::load($this->option . '.abuse', dirname(dirname(__DIR__)) . '/site');
 
             $user = User::getInstance($reported->author);
 
@@ -314,8 +314,8 @@ class Abusereports extends AdminController
                 'name'      => 'emails',
                 'layout'    => 'abuse_plain',
             ]);
-            $eview->option     = $this->_option;
-            $eview->controller = $this->_controller;
+            $eview->option     = $this->option;
+            $eview->controller = $this->controller;
             $eview->reported   = $reported;
             $eview->report     = $report;
             $eview->author     = $user;

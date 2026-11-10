@@ -66,26 +66,26 @@ class Threads extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if (isset($section)) {
             Pathway::append(
                 Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias'),
+                'index.php?option=' . $this->option . '&section=' . $section->get('alias'),
             );
         }
         if (isset($category)) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
+                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
             );
         }
         if (isset($thread) && $thread->get('id')) {
             Pathway::append(
                 '#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id'),
+                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id'),
             );
         }
     }
@@ -100,7 +100,7 @@ class Threads extends SiteController
      */
     protected function buildTitle($section = null, $category = null, $thread = null)
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
         if (isset($section)) {
             $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]);
         }
@@ -173,7 +173,7 @@ class Threads extends SiteController
 
         // Check logged in status
         if (!in_array($thread->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'] . '&thread=' . $filters['thread'], false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $filters['section'] . '&category=' . $filters['category'] . '&thread=' . $filters['thread'], false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
@@ -182,9 +182,9 @@ class Threads extends SiteController
         $filters['state'] = [1, 3];
 
         // Get authorization
-        $this->_authorize('category', $category->get('id'));
-        $this->_authorize('thread', $thread->get('id'));
-        $this->_authorize('post');
+        $this->authorize('category', $category->get('id'));
+        $this->authorize('thread', $thread->get('id'));
+        $this->authorize('post');
 
         // Set the page title
         $this->buildTitle($section, $category, $thread);
@@ -237,9 +237,9 @@ class Threads extends SiteController
         $section  = Request::getCmd('section', '');
 
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&task=new');
+            $return = Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category . '&task=new');
             if ($id) {
-                $return = Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
+                $return = Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
             }
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
@@ -276,7 +276,7 @@ class Threads extends SiteController
             $post = Post::oneOrNew($id);
         }
 
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         // Post::oneOrNew() resolves any row of #__forum_posts, so a post reached
         // by id has to sit in the category this request resolved -- that one was
@@ -297,7 +297,7 @@ class Threads extends SiteController
             $post->get('created_by') != User::get('id')
             && !$this->_moderates('core.edit', 'thread', $id)
         ) {
-            // access-edit-thread cannot carry this check: _authorize() sets it
+            // access-edit-thread cannot carry this check: authorize() sets it
             // true for every logged-in user and only overrides it when
             // User::authorise('core.edit.thread', 'com_forum.thread.<id>') is
             // non-null. That asset name is never created -- Asset::getAssetName()
@@ -310,7 +310,7 @@ class Threads extends SiteController
             // original concatenation raised "could not be converted to string"
             // and the refusal came back as a fatal rather than a redirect.
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
@@ -342,7 +342,7 @@ class Threads extends SiteController
     public function saveTask()
     {
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->_option, false, true);
+            $return = Route::url('index.php?option=' . $this->option, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -408,7 +408,7 @@ class Threads extends SiteController
         }
 
         // Authorization check
-        $this->_authorize($assetType, intval($fields['id']));
+        $this->authorize($assetType, intval($fields['id']));
 
         // Editing an existing post requires ownership or moderator rights
         if (
@@ -417,7 +417,7 @@ class Threads extends SiteController
             && !$this->_moderates('core.edit', $assetType, intval($fields['id']))
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
             return;
         }
@@ -427,7 +427,7 @@ class Threads extends SiteController
             && !$this->config->get('access-create-' . $assetType)
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -552,7 +552,7 @@ class Threads extends SiteController
             $message = ($post->get('modified_by')) ? Lang::txt('COM_FORUM_POST_EDITED') : Lang::txt('COM_FORUM_POST_ADDED');
         }
 
-        $url = 'index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $post->get('thread') . '#c' . $post->get('id');
+        $url = 'index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $post->get('thread') . '#c' . $post->get('id');
 
         // Record the activity
         $recipients = [
@@ -639,7 +639,7 @@ class Threads extends SiteController
     public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor)
     {
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
         $from['email'] = Config::get('mailfrom');
 
         $subject = $postAuthor . " mentioned you on forum thread";
@@ -689,7 +689,7 @@ class Threads extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
@@ -712,14 +712,14 @@ class Threads extends SiteController
         // Make the sure the category exist
         if (!$post->get('id')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_MISSING_ID'),
                 'error',
             );
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         // Deleting requires ownership or moderator rights
         if (
@@ -727,7 +727,7 @@ class Threads extends SiteController
             && !$this->_moderates('core.delete', 'thread', $id)
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
@@ -736,7 +736,7 @@ class Threads extends SiteController
 
         if (!$this->config->get('access-delete-thread')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
@@ -749,7 +749,7 @@ class Threads extends SiteController
 
         if (!$post->save()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+                Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
                 $post->getError(),
                 'error',
             );
@@ -792,7 +792,7 @@ class Threads extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+            Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
             Lang::txt('COM_FORUM_THREAD_DELETED'),
             'message',
         );
@@ -832,14 +832,14 @@ class Threads extends SiteController
 
         // Check logged in status
         if (User::isGuest() && !in_array($post->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
         }
 
         // Load ACL
-        $this->_authorize('thread', $post->get('thread'));
+        $this->authorize('thread', $post->get('thread'));
 
         // Ensure the user is authorized to view this file
         if (!$this->config->get('access-view-thread')) {
@@ -984,7 +984,7 @@ class Threads extends SiteController
      * before a push; today such a hub needs core.manage on com_forum.
      *
      * The `=== true` is therefore deliberate: User::authorise() returns NULL
-     * when no rule applies, and _authorize() treats that NULL as "allowed" for
+     * when no rule applies, and authorize() treats that NULL as "allowed" for
      * its display defaults. Accepting NULL here would undo the ownership check
      * this predicate guards.
      *
@@ -996,23 +996,23 @@ class Threads extends SiteController
     protected function _moderates($action, $assetType = 'component', $assetId = null)
     {
         if (
-            User::authorise('core.admin', $this->_option)
-            || User::authorise('core.manage', $this->_option)
+            User::authorise('core.admin', $this->option)
+            || User::authorise('core.manage', $this->option)
         ) {
             return true;
         }
 
         $at    = ($assetType != 'component') ? '.' . $assetType : '';
-        $asset = $this->_option . ($assetId ? $at . '.' . $assetId : '');
+        $asset = $this->option . ($assetId ? $at . '.' . $assetId : '');
 
         return User::authorise($action . $at, $asset) === true;
     }
 
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

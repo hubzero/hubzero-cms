@@ -52,7 +52,7 @@ class Posts extends SiteController
     public function loginTask($return = null)
     {
         if (!$return) {
-            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server');
+            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server');
         }
         $return = base64_encode($return);
         App::redirect(
@@ -390,7 +390,7 @@ class Posts extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=collections'),
+            Route::url('index.php?option=' . $this->option . '&controller=collections'),
         );
     }
 
@@ -435,7 +435,7 @@ class Posts extends SiteController
         if (
             !$row->isNew()
             && $row->get('created_by') != User::get('id')
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -491,7 +491,7 @@ class Posts extends SiteController
         $title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
         $title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . $post->get('id');
 
         $item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
 
@@ -539,7 +539,7 @@ class Posts extends SiteController
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->loginTask(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . Request::getInt('post', 0), false, true));
+            return $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
         }
 
         // Require POST
@@ -561,7 +561,7 @@ class Posts extends SiteController
         // Only the author or a collections manager may delete a comment
         if (
             $comment->get('created_by') != User::get('id')
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -580,7 +580,7 @@ class Posts extends SiteController
         $title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
         $title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . $post->get('id');
         $item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
 
         Event::trigger('system.logActivity', [
@@ -615,7 +615,7 @@ class Posts extends SiteController
     public function voteTask()
     {
         if (User::isGuest()) {
-            return $this->loginTask(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . Request::getInt('post', 0), false, true));
+            return $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
         }
 
         // Require POST
@@ -651,7 +651,7 @@ class Posts extends SiteController
         $title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
         $title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . $post->get('id');
 
         Event::trigger('system.logActivity', [
             'activity' => [
@@ -681,7 +681,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=collections&task=posts'),
+            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
         );
     }
 
@@ -732,7 +732,7 @@ class Posts extends SiteController
             $this->view->groupboards   = $model->mine('groups');
 
             //$this->view->name          = $this->_name;
-            $this->view->option        = $this->_option;
+            $this->view->option        = $this->option;
             $this->view->no_html       = $no_html;
             $this->view->post_id       = $post_id;
             $this->view->collection_id = $collection_id;
@@ -833,7 +833,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=collections&task=posts'),
+            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
         );
     }
 
@@ -882,7 +882,7 @@ class Posts extends SiteController
         if (!Request::getInt('no_html', 0)) {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_COLLECTIONS_POSTS_REORDERED'),
             );
             return;
@@ -909,7 +909,7 @@ class Posts extends SiteController
         if (!Request::getInt('no_html', 0)) {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
             return;
         }

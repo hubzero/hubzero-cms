@@ -37,11 +37,11 @@ class Search extends \Hubzero\Component\SiteController
         }
 
         // Get the task
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
 
-        if (empty($this->_task)) {
-            $this->_task = 'search';
-            $this->registerTask('__default', $this->_task);
+        if (empty($this->task)) {
+            $this->task = 'search';
+            $this->registerTask('__default', $this->task);
         }
 
         parent::execute();
@@ -69,8 +69,8 @@ class Search extends \Hubzero\Component\SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 

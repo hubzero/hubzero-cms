@@ -34,24 +34,24 @@ class Sessions extends AdminController
     {
         $filters = [
             'sp' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sp',
+                $this->option . '.' . $this->controller . '.sp',
                 'sp',
                 0,
                 'int',
             ),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -94,7 +94,7 @@ class Sessions extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -137,7 +137,7 @@ class Sessions extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

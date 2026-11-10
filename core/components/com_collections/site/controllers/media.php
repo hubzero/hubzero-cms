@@ -403,8 +403,8 @@ class Media extends SiteController
             'layout' => '_asset',
         ]);
         $view->i          = Request::getInt('i', 0);
-        $view->set('option', $this->_option);
-        $view->set('controller', $this->_controller);
+        $view->set('option', $this->option);
+        $view->set('controller', $this->controller);
         $view->asset      = $asset;
         $view->no_html    = 1;
 
@@ -583,7 +583,7 @@ class Media extends SiteController
             return false;
         }
 
-        if (User::authorise('core.admin', $this->_option)) {
+        if (User::authorise('core.admin', $this->option)) {
             return true;
         }
 
@@ -604,7 +604,7 @@ class Media extends SiteController
         if (User::isGuest()) {
             return false;
         }
-        if (User::authorise('core.admin', $this->_option)) {
+        if (User::authorise('core.admin', $this->option)) {
             return true;
         }
         if ($asset->get('created_by') == User::get('id')) {

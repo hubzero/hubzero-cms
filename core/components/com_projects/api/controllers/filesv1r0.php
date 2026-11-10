@@ -43,7 +43,7 @@ class Filesv1r0 extends ApiController
         $this->registerTask('files', 'list');
         $this->registerTask('update', 'save');
         $this->registerTask('insert', 'save');
-        $this->_task = Request::getWord('task', 'list');
+        $this->task = Request::getWord('task', 'list');
 
         // Load component language file
         Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
@@ -82,13 +82,13 @@ class Filesv1r0 extends ApiController
         //connection ID
         $this->cid = Request::getString('cid', '');
 
-        if ((in_array($this->_task, $connectionTasks)) && !$this->cid) {
+        if ((in_array($this->task, $connectionTasks)) && !$this->cid) {
             throw new Exception("This action is only supported by connection adapters", 401);
         }
 
         //if task involves connections, get the ORM Project object
         //if there is a connection id, get an ORM Connection object as well
-        if ($this->cid || ($this->_task == 'connections')) {
+        if ($this->cid || ($this->task == 'connections')) {
             // $id is the raw request value, which may be an alias; the model
             // above resolved it. oneOrFail() on the raw value would let the
             // database coerce a digit-leading alias to another project's id.
@@ -977,8 +977,8 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
         $response->results     = $this->model->repo()->insert([
             'dataPath'    => $dataPath,
-            'allowReplace' => $this->_task == 'insert' ? false : true,
-            'update'      => $this->_task == 'insert' ? false : true,
+            'allowReplace' => $this->task == 'insert' ? false : true,
+            'update'      => $this->task == 'insert' ? false : true,
             'subdir'      => Request::getString('subdir', ''),
         ]);
 
@@ -998,7 +998,7 @@ class Filesv1r0 extends ApiController
 
             // Register event with the project
             if (!empty($parsedResults)) {
-                $updateType = $this->_task == 'insert' ? 'uploaded' : 'updated';
+                $updateType = $this->task == 'insert' ? 'uploaded' : 'updated';
                 // Plugin params
                 $plugin_params = [
                     $this->model,

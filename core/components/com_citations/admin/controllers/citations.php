@@ -56,23 +56,23 @@ class Citations extends AdminController
         $filters = [
             // Get filters
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'published' => [0, 1],
             'scope' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.scope',
+                $this->option . '.' . $this->controller . '.scope',
                 'scope',
                 'all',
             )),
@@ -99,8 +99,8 @@ class Citations extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -190,7 +190,7 @@ class Citations extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -237,7 +237,7 @@ class Citations extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -278,7 +278,7 @@ class Citations extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -342,8 +342,8 @@ class Citations extends AdminController
         Plugin::import('citation');
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -446,7 +446,7 @@ class Citations extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

@@ -115,7 +115,7 @@ trait AssetAware
         if ($this instanceof Plugin) {
             return 'plg_' . $this->_type . '_' . $this->_name;
         } elseif ($this instanceof ControllerInterface) {
-            $option = property_exists($this, '_option') ? $this->_option : null;
+            $option = property_exists($this, 'option') ? $this->option : null;
             return Request::getCmd('option', $option);
         } elseif ($this instanceof Module) {
             return $this->module->module;

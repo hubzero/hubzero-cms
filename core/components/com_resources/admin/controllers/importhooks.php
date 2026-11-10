@@ -47,12 +47,12 @@ class ImportHooks extends AdminController
         // Incoming
         $filters = [
             'sort' => Request::getState(
-                $this->_option . '.hooks.sort',
+                $this->option . '.hooks.sort',
                 'filter_order',
                 'type',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.hooks.sortdir',
+                $this->option . '.hooks.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -80,8 +80,8 @@ class ImportHooks extends AdminController
     public function editTask($hook = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -117,8 +117,8 @@ class ImportHooks extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -199,8 +199,8 @@ class ImportHooks extends AdminController
     public function rawTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -242,7 +242,7 @@ class ImportHooks extends AdminController
         // check token
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

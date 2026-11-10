@@ -41,7 +41,7 @@ class Pages extends AdminController
         // Ensure we have a group ID
         if (!$this->gid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
+                Route::url('index.php?option=' . $this->option . '&controller=manage', false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -306,7 +306,7 @@ class Pages extends AdminController
         ]);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_SAVED'),
             'passed',
         );
@@ -322,7 +322,7 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -337,7 +337,7 @@ class Pages extends AdminController
             // cant delete home
             if ($page->get('home') == 1) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                     Lang::txt('COM_GROUPS_PAGES_CANT_DELETE_HOME'),
                     'error',
                 );
@@ -353,7 +353,7 @@ class Pages extends AdminController
             // save module
             if (!$page->store(true)) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                     $page->getError(),
                     'error',
                 );
@@ -370,7 +370,7 @@ class Pages extends AdminController
 
         //inform user & redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_DELETED'),
             'passed',
         );
@@ -386,7 +386,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -406,7 +406,7 @@ class Pages extends AdminController
         if ($currentVersion->get('approved') == 1) {
             //inform user & redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
@@ -445,8 +445,8 @@ class Pages extends AdminController
             $this->view->setLayout('scan');
             $this->view->issues = $issues;
             $this->view->page = $page;
-            $this->view->option = $this->_option;
-            $this->view->controller = $this->_controller;
+            $this->view->option = $this->option;
+            $this->view->controller = $this->controller;
             $this->view->group = $this->group;
             $this->view->display();
             return;
@@ -465,7 +465,7 @@ class Pages extends AdminController
 
         // were all set
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_NO_XSS'),
             'passed',
         );
@@ -481,7 +481,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -501,7 +501,7 @@ class Pages extends AdminController
         if ($currentVersion->get('approved') == 1) {
             //inform user & redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
@@ -525,8 +525,8 @@ class Pages extends AdminController
             $this->view->error = (isset($output[0])) ? $output[0] : '';
             $this->view->error = str_replace($file, '"' . $page->get('title') . '"', $this->view->error);
             $this->view->page = $page;
-            $this->view->option = $this->_option;
-            $this->view->controller = $this->_controller;
+            $this->view->option = $this->option;
+            $this->view->controller = $this->controller;
             $this->view->group = $this->group;
             $this->view->display();
             return;
@@ -550,7 +550,7 @@ class Pages extends AdminController
 
         // were all set
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_NO_ERRORS'),
             'passed',
         );
@@ -569,7 +569,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -600,7 +600,7 @@ class Pages extends AdminController
 
         // inform user and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_SCANNED'),
             'passed',
         );
@@ -619,7 +619,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -643,7 +643,7 @@ class Pages extends AdminController
 
         // redirect to scan url
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id'), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id'), false),
         );
     }
 
@@ -661,7 +661,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -685,7 +685,7 @@ class Pages extends AdminController
 
         //go back to error checker
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id'), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id'), false),
         );
     }
 
@@ -702,7 +702,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -722,7 +722,7 @@ class Pages extends AdminController
         if ($currentVersion->get('approved') == 1) {
             //inform user & redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
@@ -742,7 +742,7 @@ class Pages extends AdminController
         // save version with approved status
         if (!$currentVersion->store(false, 1)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 $currentVersion->getError(),
                 'error',
             );
@@ -761,7 +761,7 @@ class Pages extends AdminController
 
         // inform user and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_APPROVED'),
             'passed',
         );
@@ -778,7 +778,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!User::authorise('core.admin') && !Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -825,7 +825,7 @@ class Pages extends AdminController
         // make sure we are approvers
         if (!Helpers\Pages::isPageApprover()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
@@ -857,7 +857,7 @@ class Pages extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . Request::getString('gid', ''), false),
         );
     }
 
@@ -869,7 +869,7 @@ class Pages extends AdminController
     public function manageTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false),
+            Route::url('index.php?option=' . $this->option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false),
         );
     }
 }

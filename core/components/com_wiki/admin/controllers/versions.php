@@ -49,23 +49,23 @@ class Versions extends AdminController
         $filters = [
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'version',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             // Filters
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'pageid' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.pageid',
+                $this->option . '.' . $this->controller . '.pageid',
                 'pageid',
                 0,
                 'int',
@@ -104,8 +104,8 @@ class Versions extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -116,7 +116,7 @@ class Versions extends AdminController
 
         if (!$pageid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
                 'error',
             );
@@ -166,8 +166,8 @@ class Versions extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -193,7 +193,7 @@ class Versions extends AdminController
         $version->set('pagehtml', $parser->parse(
             $version->get('pagetext'),
             [
-                'option'   => $this->_option,
+                'option'   => $this->option,
                 'scope'    => $page->get('scope'),
                 'scope_id' => $page->get('scope_id'),
                 'path'     => $page->get('path'),
@@ -247,7 +247,7 @@ class Versions extends AdminController
         }
 
         // Redirect to listing
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&pageid=' . $version->get('page_id');
         App::redirect(Route::url($url, false));
     }
@@ -259,7 +259,7 @@ class Versions extends AdminController
      */
     public function removeTask()
     {
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -361,7 +361,7 @@ class Versions extends AdminController
         // Check for request forgeries
         Request::checkToken('get');
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -386,7 +386,7 @@ class Versions extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&pageid=' . Request::getInt('pageid', 0);
         App::redirect(Route::url($url, false));
     }

@@ -83,8 +83,8 @@ class Tags extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -120,7 +120,7 @@ class Tags extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=items', false),
+            Route::url('index.php?option=' . $this->option . '&controller=items', false),
         );
     }
 }

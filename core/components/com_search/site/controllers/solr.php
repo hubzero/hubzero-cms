@@ -258,7 +258,7 @@ class Solr extends SiteController
         // Set breadcrumbs
         Pathway::append(
             Lang::txt('COM_SEARCH'),
-            'index.php?option=' . $this->_option,
+            'index.php?option=' . $this->option,
         );
 
         // Set the document title

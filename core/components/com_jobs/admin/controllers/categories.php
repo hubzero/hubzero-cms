@@ -33,25 +33,25 @@ class Categories extends AdminController
         $this->view->filters = [
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'ordernum',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -93,7 +93,7 @@ class Categories extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_JOBS_ORDER_SAVED'),
         );
     }
@@ -159,7 +159,7 @@ class Categories extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_JOBS_ITEM_SAVED'),
         );
     }
@@ -181,7 +181,7 @@ class Categories extends AdminController
         // Ensure we have an ID to work with
         if (empty($ids)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
                 'error',
             );
@@ -197,7 +197,7 @@ class Categories extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids)),
         );
     }

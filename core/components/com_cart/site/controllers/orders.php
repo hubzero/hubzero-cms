@@ -32,11 +32,11 @@ class Orders extends ComponentController
     public function execute()
     {
         // Get the task
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
 
-        if (empty($this->_task)) {
-            $this->_task = 'home';
-            $this->registerTask('__default', $this->_task);
+        if (empty($this->task)) {
+            $this->task = 'home';
+            $this->registerTask('__default', $this->task);
         }
 
         // Check if they're logged in
@@ -96,12 +96,12 @@ class Orders extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
             Pathway::append(
                 Lang::txt('COM_CART_ORDERS'),
-                'index.php?option=' . $this->_option,
+                'index.php?option=' . $this->option,
             );
         }
 
@@ -115,7 +115,7 @@ class Orders extends ComponentController
      */
     public function loginTask()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
+        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->controller), 'server');
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );

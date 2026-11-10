@@ -189,7 +189,7 @@ class Solr extends AdminController
         // Explicitly set the view since it may be called by another method
         $this->view->setLayout('overview');
         $this->view->setName('solr');
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
 
         $this->view->set('controller', 'solr');
         $this->view->set('task', 'display');
@@ -242,7 +242,7 @@ class Solr extends AdminController
             Notify::error(Lang::txt('COM_SEARCH_SOLR_REMOVE_DOCUMENT_ERROR', $id));
         }
         // Redirect back to the search page.
-        $url = 'index.php?option=' . $this->_option . '&controller=searchable'
+        $url = 'index.php?option=' . $this->option . '&controller=searchable'
             . '&task=documentlisting&facet=' . $facet . '&limitstart=' . $limitstart
             . '&limit=' . $limit . '&filter=' . $filter;
         App::redirect(
@@ -262,7 +262,7 @@ class Solr extends AdminController
         $entry = Blacklist::one($entryID);
         $entry->destroy();
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=manageBlacklist';
         App::redirect(
             Route::url($url, false),

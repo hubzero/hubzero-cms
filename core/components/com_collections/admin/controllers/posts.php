@@ -46,39 +46,39 @@ class Posts extends AdminController
         // Get filters
         $filters = [
             'collection_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.collection_id',
+                $this->option . '.' . $this->controller . '.collection_id',
                 'collection_id',
                 0,
                 'int',
             ),
             'item_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.item_id',
+                $this->option . '.' . $this->controller . '.item_id',
                 'item_id',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '-1',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 '-1',
             ),
@@ -144,8 +144,8 @@ class Posts extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -179,8 +179,8 @@ class Posts extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -220,7 +220,7 @@ class Posts extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -269,7 +269,7 @@ class Posts extends AdminController
         $tmpl = ($tmpl ? '&tmpl=' . $tmpl : '');
 
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . $item_id . $collection_id . $tmpl;
         App::redirect(Route::url($url, false));
     }

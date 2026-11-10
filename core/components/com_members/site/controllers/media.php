@@ -528,12 +528,12 @@ class Media extends SiteController
      */
     protected function _requireSelfOrAdmin($id)
     {
-        if (User::isGuest() || (User::get('id') != $id && $this->_authorize() != 'admin')) {
+        if (User::isGuest() || (User::get('id') != $id && $this->authorize() != 'admin')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
     }
 
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         // Check if they are logged in
         if (User::isGuest()) {
@@ -542,7 +542,7 @@ class Media extends SiteController
 
         // Check if they're a site admin or a members manager (the profile edit
         // page that hosts these picture actions allows core.manage as well)
-        $asset = $assetId ?: $this->_option;
+        $asset = $assetId ?: $this->option;
         $this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
         $this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 

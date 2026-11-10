@@ -48,7 +48,7 @@ class Application extends AdminController
     public function displayTask()
     {
         // Access check.
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -125,11 +125,11 @@ class Application extends AdminController
             }
 
             // Save the data in the session.
-            User::setState($this->_option . '.config.global.data', $data);
+            User::setState($this->option . '.config.global.data', $data);
 
             // Redirect back to the edit screen.
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&view=application', false),
+                Route::url('index.php?option=' . $this->option . '&view=application', false),
             );
             return false;
         }
@@ -152,11 +152,11 @@ class Application extends AdminController
         // Check the return value.
         if ($return === false) {
             // Save the data in the session.
-            User::setState($this->_option . '.config.global.data', $data);
+            User::setState($this->option . '.config.global.data', $data);
 
             // Save failed, go back to the screen and display a notice.
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&view=application', false),
+                Route::url('index.php?option=' . $this->option . '&view=application', false),
                 Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
                 'error',
             );
@@ -172,7 +172,7 @@ class Application extends AdminController
         // Set the redirect based on the task.
         switch (Request::getCmd('task')) {
             case 'apply':
-                App::redirect(Route::url('index.php?option=' . $this->_option, false));
+                App::redirect(Route::url('index.php?option=' . $this->option, false));
                 break;
 
             case 'save':
@@ -190,7 +190,7 @@ class Application extends AdminController
     public function cancelTask()
     {
         // Check if the user is authorized to do this.
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::redirect(
                 Route::url('index.php', false),
                 Lang::txt('JERROR_ALERTNOAUTHOR'),

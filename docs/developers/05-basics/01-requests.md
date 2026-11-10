@@ -184,7 +184,7 @@ the remembered value when it is not:
 
 ```php
 $search = Request::getState(
-    $this->_option . '.instruments.search',
+    $this->option . '.instruments.search',
     'search',
     ''
 );

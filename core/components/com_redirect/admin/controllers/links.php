@@ -57,28 +57,28 @@ class Links extends AdminController
     {
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '*',
             ),
             'type' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.type',
+                $this->option . '.' . $this->controller . '.type',
                 'type',
                 'redirect',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created_date',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'desc',
             ),
@@ -114,12 +114,12 @@ class Links extends AdminController
 
         Submenu::addEntry(
             Lang::txt('COM_REDIRECT_REDIRECTS'),
-            Route::url('index.php?option=' . $this->_option . '&type=redirect'),
+            Route::url('index.php?option=' . $this->option . '&type=redirect'),
             ($filters['type'] != '404'),
         );
         Submenu::addEntry(
             Lang::txt('COM_REDIRECT_NOTFOUND'),
-            Route::url('index.php?option=' . $this->_option . '&type=404'),
+            Route::url('index.php?option=' . $this->option . '&type=404'),
             ($filters['type'] == '404'),
         );
 
@@ -138,7 +138,7 @@ class Links extends AdminController
     public function addTask()
     {
         // Access check.
-        if (!(User::authorise('core.create', $this->_option))) {
+        if (!(User::authorise('core.create', $this->option))) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'));
             return $this->cancelTask();
         }
@@ -153,7 +153,7 @@ class Links extends AdminController
     public function editTask($row = null)
     {
         // Access check.
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
             return $this->cancelTask();
         }
@@ -187,7 +187,7 @@ class Links extends AdminController
         Request::checkToken();
 
         // Access check.
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
             return $this->cancelTask();
         }
@@ -199,7 +199,7 @@ class Links extends AdminController
         if ($this->getTask() == 'save2copy') {
             // Reset the ID and then treat the request as for Apply.
             $fields['id'] = 0;
-            $this->_task = 'apply';
+            $this->task = 'apply';
         }
 
         // The form posts hits as '' and carries no referer; both columns are
@@ -242,7 +242,7 @@ class Links extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Access check.
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
             return $this->cancelTask();
         }
@@ -292,7 +292,7 @@ class Links extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Access check.
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
             return $this->cancelTask();
         }
@@ -307,7 +307,7 @@ class Links extends AdminController
             'report'    => -3,
         ];
 
-        $value = \Hubzero\Utility\Arr::getValue($data, $this->_task, 0, 'int');
+        $value = \Hubzero\Utility\Arr::getValue($data, $this->task, 0, 'int');
 
         if (empty($ids)) {
             Notify::error(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'));
@@ -351,7 +351,7 @@ class Links extends AdminController
     public function removeTask()
     {
         // Access check.
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
             return $this->cancelTask();
         }

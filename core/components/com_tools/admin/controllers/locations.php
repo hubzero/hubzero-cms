@@ -46,24 +46,24 @@ class Locations extends AdminController
         // Get filters
         $this->view->filters = [
             'zone' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.zone',
+                $this->option . '.' . $this->controller . '.zone',
                 'zone',
                 0,
                 'int',
             )),
             'tmpl' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.tmpl',
+                $this->option . '.' . $this->controller . '.tmpl',
                 'tmpl',
                 '',
             ),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'zone',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -74,13 +74,13 @@ class Locations extends AdminController
         } else {
             // Get paging variables
             $this->view->filters['limit'] = Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             );
             $this->view->filters['start'] = Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -189,7 +189,7 @@ class Locations extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -209,7 +209,7 @@ class Locations extends AdminController
 
         if ($state != 'up' && $state != 'down') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
             return;
         }
@@ -219,7 +219,7 @@ class Locations extends AdminController
             $row->set('state', $state);
             if (!$row->store()) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
                     'error',
                 );
@@ -228,7 +228,7 @@ class Locations extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -257,7 +257,7 @@ class Locations extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_TOOLS_ITEM_DELETED'),
             'message',
         );

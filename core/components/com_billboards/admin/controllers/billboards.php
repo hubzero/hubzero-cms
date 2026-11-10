@@ -65,8 +65,8 @@ class BillBoards extends AdminController
     public function editTask($billboard = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -116,8 +116,8 @@ class BillBoards extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -131,7 +131,7 @@ class BillBoards extends AdminController
         // must not be client-chosen; published belongs to stateTask
         // (core.edit.state); the checkout columns are bookkeeping.
         unset($data['background_img'], $data['checked_out'], $data['checked_out_time']);
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             unset($data['published']);
         }
 
@@ -232,7 +232,7 @@ class BillBoards extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -277,7 +277,7 @@ class BillBoards extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -331,7 +331,7 @@ class BillBoards extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -346,7 +346,7 @@ class BillBoards extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

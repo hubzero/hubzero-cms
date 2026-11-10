@@ -50,41 +50,41 @@ class Offerings extends AdminController
         // Incoming
         $this->view->filters = [
             'course' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.course',
+                $this->option . '.' . $this->controller . '.course',
                 'course',
                 0,
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -93,7 +93,7 @@ class Offerings extends AdminController
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
         if (!$this->view->course->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
             return;
         }
@@ -194,13 +194,13 @@ class Offerings extends AdminController
             return;
         }
 
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($model);
         }
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $model->get('course_id'), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $model->get('course_id'), false),
             Lang::txt('COM_COURSES_ITEM_SAVED'),
         );
     }
@@ -222,7 +222,7 @@ class Offerings extends AdminController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . Request::getInt('course', 0), false),
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
                 'error',
             );
@@ -233,7 +233,7 @@ class Offerings extends AdminController
         if (!$offering->copy()) {
             // Redirect back to the courses page
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $offering->get('course_id'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $offering->get('course_id'), false),
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $offering->getError(),
                 'error',
             );
@@ -242,7 +242,7 @@ class Offerings extends AdminController
 
         // Redirect back to the courses page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $offering->get('course_id'), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $offering->get('course_id'), false),
             Lang::txt('COM_COURSES_ITEM_COPIED'),
         );
     }
@@ -285,7 +285,7 @@ class Offerings extends AdminController
 
         // Redirect back to the courses page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . Request::getInt('course', 0), false),
             Lang::txt('COM_COURSES_ITEMS_REMOVED', $num),
         );
     }
@@ -300,7 +300,7 @@ class Offerings extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', []);
@@ -345,14 +345,14 @@ class Offerings extends AdminController
 
         if ($this->getErrors()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . Request::getInt('course', 0), false),
                 implode('<br />', $this->getErrors()),
                 'error',
             );
         } else {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . Request::getInt('course', 0), false),
                 ($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num)),
             );
         }
@@ -375,7 +375,7 @@ class Offerings extends AdminController
 
         $id     = Request::getInt('id', 0);
         $course = Request::getInt('course', 0);
-        $dir    = ($this->_task == 'orderup') ? -1 : 1;
+        $dir    = ($this->task == 'orderup') ? -1 : 1;
 
         // Pull the course's offerings in their current effective display order
         $this->database->setQuery(
@@ -407,7 +407,7 @@ class Offerings extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $course, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $course, false),
         );
     }
 
@@ -419,7 +419,7 @@ class Offerings extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . Request::getInt('course', 0), false),
         );
     }
 }

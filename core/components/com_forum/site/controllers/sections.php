@@ -45,8 +45,8 @@ class Sections extends SiteController
     public function displayTask()
     {
         // Get authorization
-        $this->_authorize('section');
-        $this->_authorize('category');
+        $this->authorize('section');
+        $this->authorize('category');
 
         $forum = new Manager('site', 0);
 
@@ -81,12 +81,12 @@ class Sections extends SiteController
         $sections->order('title', 'asc');
 
         // Set the page title
-        App::get('document')->setTitle(Lang::txt(strtoupper($this->_option)));
+        App::get('document')->setTitle(Lang::txt(strtoupper($this->option)));
 
         // Set the pathway
         Pathway::append(
-            Lang::txt(strtoupper($this->_option)),
-            'index.php?option=' . $this->_option,
+            Lang::txt(strtoupper($this->option)),
+            'index.php?option=' . $this->option,
         );
 
         $this->view
@@ -108,18 +108,18 @@ class Sections extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option, false, true))),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
         }
 
-        $this->_authorize('section');
+        $this->authorize('section');
 
         // Permissions check
         if (!$this->config->get('access-create-section') && !$this->config->get('access-edit-section')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'error',
             );
@@ -138,7 +138,7 @@ class Sections extends SiteController
         // Check for alias duplicates
         if (!$section->isUnique()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
                 'error',
             );
@@ -155,10 +155,10 @@ class Sections extends SiteController
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url('index.php?option=' . $this->_option),
+                    'url'   => Route::url('index.php?option=' . $this->option),
                 ],
             ],
             'recipients' => [
@@ -170,7 +170,7 @@ class Sections extends SiteController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
     }
 
@@ -184,7 +184,7 @@ class Sections extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option, false, true))),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
@@ -194,7 +194,7 @@ class Sections extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $this->_authorize('section');
+        $this->authorize('section');
 
         // Load the section
         $section = Section::all()
@@ -207,7 +207,7 @@ class Sections extends SiteController
         // Make the sure the section exist
         if (!$section->get('id')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_FORUM_MISSING_ID'),
                 'error',
             );
@@ -215,11 +215,11 @@ class Sections extends SiteController
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('section', $section->get('id'));
+        $this->authorize('section', $section->get('id'));
 
         if (!$this->config->get('access-delete-section')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
@@ -241,10 +241,10 @@ class Sections extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url('index.php?option=' . $this->_option),
+                    'url'   => Route::url('index.php?option=' . $this->option),
                 ],
             ],
             'recipients' => [
@@ -256,7 +256,7 @@ class Sections extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
     }
 
@@ -267,11 +267,11 @@ class Sections extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

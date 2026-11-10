@@ -232,7 +232,7 @@ class Points extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -300,7 +300,7 @@ class Points extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&uid=' . $row->uid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&uid=' . $row->uid, false),
             Lang::txt('User info saved'),
         );
     }
@@ -354,7 +354,7 @@ class Points extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=config', false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config', false),
             Lang::txt('Config Saved'),
         );
     }
@@ -466,7 +466,7 @@ class Points extends AdminController
 
         // show output if run manually
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch', false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=batch', false),
         );
     }
 
@@ -490,12 +490,12 @@ class Points extends AdminController
         $curmonth = Date::of('now')->format("F");
         $curyear = Date::of('now')->format("Y-m");
         $ref = strtotime($curyear);
-        $this->_message = 'Royalties on Answers for ' . $curyear . ' were distributed successfully.';
+        $this->message = 'Royalties on Answers for ' . $curyear . ' were distributed successfully.';
         $rmsg = 'Royalties on Reviews for ' . $curyear . ' were distributed successfully.';
         $resmsg = 'Royalties on Resources for ' . $curyear . ' were distributed successfully.';
 
         // Make sure we distribute royalties only once/ month
-        $royaltyAnswers = MarketHistory::getRecord('', $action, 'answers', $curyear, $this->_message);
+        $royaltyAnswers = MarketHistory::getRecord('', $action, 'answers', $curyear, $this->message);
         $royaltyReviews = MarketHistory::getRecord('', $action, 'reviews', $curyear, $rmsg);
         $royaltyResources = MarketHistory::getRecord('', $action, 'resources', $curyear, $resmsg);
 
@@ -526,7 +526,7 @@ class Points extends AdminController
                     $data['market_value'] = $accumulated;
                     $data['category']     = 'answers';
                     $data['action']       = $action;
-                    $data['log']          = $this->_message;
+                    $data['log']          = $this->message;
 
                     if (!$MH->set($data)) {
                         $err = $MH->getError();
@@ -537,10 +537,10 @@ class Points extends AdminController
                     }
                 }
             } else {
-                $this->_message = 'There were no questions eligible for royalty payment. ';
+                $this->message = 'There were no questions eligible for royalty payment. ';
             }
         } else {
-            $this->_message = 'Royalties on Answers for ' . $curyear . ' were previously distributed. ';
+            $this->message = 'Royalties on Answers for ' . $curyear . ' were previously distributed. ';
         }
 
         // Get Royalties on Resource Reviews
@@ -560,9 +560,9 @@ class Points extends AdminController
                     $accumulated = $accumulated + $RE->calculate_marketvalue($r, $action);
                 }
 
-                $this->_message .= $rmsg;
+                $this->message .= $rmsg;
             } else {
-                $this->_message .= 'There were no reviews eligible for royalty payment. ';
+                $this->message .= 'There were no reviews eligible for royalty payment. ';
             }
 
             // make a record of royalty payment
@@ -584,7 +584,7 @@ class Points extends AdminController
                 }
             }
         } else {
-            $this->_message .= 'Royalties on Reviews for ' . $curyear . ' were previously distributed. ';
+            $this->message .= 'Royalties on Reviews for ' . $curyear . ' were previously distributed. ';
         }
 
         // Get Royalties on Resources
@@ -601,9 +601,9 @@ class Points extends AdminController
                     $accumulated = $accumulated + $con->ranking;
                 }
 
-                $this->_message .= $resmsg;
+                $this->message .= $resmsg;
             } else {
-                $this->_message .= 'There were no resources eligible for royalty payment.';
+                $this->message .= 'There were no resources eligible for royalty payment.';
             }
 
             // make a record of royalty payment
@@ -625,14 +625,14 @@ class Points extends AdminController
                 }
             }
         } else {
-            $this->_message .= 'Royalties on Resources for ' . $curyear . ' were previously distributed.';
+            $this->message .= 'Royalties on Resources for ' . $curyear . ' were previously distributed.';
         }
 
         if (!$auto) {
             // show output if run manually
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                Lang::txt($this->_message),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
+                Lang::txt($this->message),
             );
         }
     }

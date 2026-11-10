@@ -39,15 +39,15 @@ class Storage extends SiteController
         }
 
         // Get the task
-        $this->_task = Request::getCmd('task', '');
+        $this->task = Request::getCmd('task', '');
         $this->exceeded = false;
 
         // Check if middleware is enabled
         if (
-            $this->_task != 'image'
-            && $this->_task != 'css'
-            && $this->_task != 'diskusage'
-            && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin'))
+            $this->task != 'image'
+            && $this->task != 'css'
+            && $this->task != 'diskusage'
+            && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->authorize() != 'admin'))
         ) {
             // Redirect to home page
             App::redirect(
@@ -56,7 +56,7 @@ class Storage extends SiteController
             return;
         }
 
-        $this->_authorize('storage');
+        $this->authorize('storage');
 
         parent::execute();
     }
@@ -79,8 +79,8 @@ class Storage extends SiteController
             'index.php?option=com_members&id=' . User::get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            'index.php?option=' . $this->_option . '&task=storage',
+            Lang::txt(strtoupper($this->option . '_' . $this->task)),
+            'index.php?option=' . $this->option . '&task=storage',
         );
     }
 
@@ -93,7 +93,7 @@ class Storage extends SiteController
     {
         $this->_title  = Lang::txt('COM_MEMBERS');
         $this->_title .= ': ' . stripslashes(User::get('name'));
-        $this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->_title .= ': ' . Lang::txt(strtoupper($this->option . '_' . $this->task));
 
         Document::setTitle($this->_title);
     }
@@ -106,7 +106,7 @@ class Storage extends SiteController
     protected function _login($rtrn = null)
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
         }
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -155,10 +155,10 @@ class Storage extends SiteController
             $this->getDiskUsage();
 
             $view = new \Hubzero\Component\View([
-                'name'   => $this->_controller,
+                'name'   => $this->controller,
                 'layout' => 'diskusage',
             ]);
-            $view->set('option', $this->_option);
+            $view->set('option', $this->option);
             $view->amt       = $this->percent;
             $view->du        = '';
             $view->percent   = 0;
@@ -284,7 +284,7 @@ class Storage extends SiteController
         //if ($this->percent >= 100 && $this->remaining == 0) {
         if ($this->percent >= 100 && !$this->exceeded) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=storageexceeded'),
+                Route::url('index.php?option=' . $this->option . '&task=storageexceeded'),
             );
         }
     }
@@ -590,11 +590,11 @@ class Storage extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  string
      */
-    public function _authorize($assetType = 'component', $assetId = null)
+    public function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

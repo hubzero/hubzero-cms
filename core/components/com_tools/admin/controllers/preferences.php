@@ -34,38 +34,38 @@ class Preferences extends AdminController
         // Incoming
         $this->view->filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'search_field' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search_field',
+                $this->option . '.' . $this->controller . '.search_field',
                 'search_field',
                 'name',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'user_id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'class_alias' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.class_alias',
+                $this->option . '.' . $this->controller . '.class_alias',
                 'class_alias',
                 '',
             ),
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -217,13 +217,13 @@ class Preferences extends AdminController
         Notify::success(Lang::txt('COM_TOOLS_USER_PREFS_SAVE_SUCCESSFUL'));
 
         // Redirect
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($row);
         }
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -256,7 +256,7 @@ class Preferences extends AdminController
                 if (!$class->id) {
                     // Output message and redirect
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                         Lang::txt('COM_TOOLS_USER_PREFS_MISSING_DEFAULT_CLASS'),
                         'error',
                     );
@@ -270,7 +270,7 @@ class Preferences extends AdminController
         } else { // no rows were selected
             // Output message and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_TOOLS_USER_PREFS_DELETE_NO_ROWS'),
                 'warning',
             );
@@ -278,7 +278,7 @@ class Preferences extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_TOOLS_USER_PREFS_SET_TO_DEFAULT'),
         );
     }

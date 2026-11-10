@@ -399,7 +399,7 @@ class Images extends AdminController
         $controller = ($type == 'collection') ? 'collections' : 'products';
 
         \App::redirect(
-            \Route::url('index.php?option=' . $this->_option . '&controller=' . $controller . ($id ? '&task=edit&id=' . (int) $id : ''), false),
+            \Route::url('index.php?option=' . $this->option . '&controller=' . $controller . ($id ? '&task=edit&id=' . (int) $id : ''), false),
             $this->getError(),
             'error',
         );

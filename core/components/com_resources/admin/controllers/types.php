@@ -49,17 +49,17 @@ class Types extends AdminController
         // Incoming
         $filters = [
             'sort' => Request::getState(
-                $this->_option . '.types.sort',
+                $this->option . '.types.sort',
                 'filter_order',
                 'type',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.types.sortdir',
+                $this->option . '.types.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'category' => Request::getState(
-                $this->_option . '.types.category',
+                $this->option . '.types.category',
                 'category',
                 27,
                 'int',
@@ -95,8 +95,8 @@ class Types extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -145,8 +145,8 @@ class Types extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -250,7 +250,7 @@ class Types extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -313,7 +313,7 @@ class Types extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -325,7 +325,7 @@ class Types extends AdminController
 
         // Check for a resource
         if (count($ids) < 1) {
-            Notify::warning(Lang::txt('COM_RESOURCES_SELECT_ENTRY_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_RESOURCES_SELECT_ENTRY_TO', $this->task));
             return $this->cancelTask();
         }
 

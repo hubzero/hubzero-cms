@@ -53,14 +53,14 @@ class Feedback extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task && in_array($this->_task, ['story', 'poll', 'sendstory', 'suggestions'])) {
+        if ($this->task && in_array($this->task, ['story', 'poll', 'sendstory', 'suggestions'])) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -73,9 +73,9 @@ class Feedback extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
-        if ($this->_task && in_array($this->_task, ['story', 'poll', 'sendstory', 'suggestions'])) {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->_title = Lang::txt(strtoupper($this->option));
+        if ($this->task && in_array($this->task, ['story', 'poll', 'sendstory', 'suggestions'])) {
+            $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
 
         Document::setTitle($this->_title);
@@ -139,8 +139,8 @@ class Feedback extends SiteController
     {
         if (User::isGuest()) {
             $here = Route::url(
-                'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=' . $this->_task,
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller . '&task=' . $this->task,
             );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
@@ -216,8 +216,8 @@ class Feedback extends SiteController
     {
         if (User::isGuest()) {
             $here = Route::url(
-                'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=' . $this->_task,
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller . '&task=' . $this->task,
             );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),

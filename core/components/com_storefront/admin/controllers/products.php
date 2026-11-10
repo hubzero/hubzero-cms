@@ -38,36 +38,36 @@ class Products extends AdminController
         $this->view->filters = [
             // Get sorting variables
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'type' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.type',
+                $this->option . '.' . $this->controller . '.type',
                 'type',
                 -1,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -319,7 +319,7 @@ class Products extends AdminController
 
         if ($redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
 
@@ -377,7 +377,7 @@ class Products extends AdminController
                 // Make sure we have IDs to work with
                 if (empty($pIds)) {
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
@@ -398,8 +398,8 @@ class Products extends AdminController
                             $product = $obj->product($pId);
                             $product->delete();
                         } catch (\Exception $e) {
-                            $url = 'index.php?option=' . $this->_option . '&controller='
-                                . $this->_controller . '&task=display&id=' . $pId;
+                            $url = 'index.php?option=' . $this->option . '&controller='
+                                . $this->controller . '&task=display&id=' . $pId;
                             App::redirect(
                                 Route::url($url),
                                 $e->getMessage(),
@@ -414,8 +414,8 @@ class Products extends AdminController
                 }
 
                 // Set the redirect
-                $url = 'index.php?option=' . $this->_option . '&controller='
-                    . $this->_controller . '&task=display';
+                $url = 'index.php?option=' . $this->option . '&controller='
+                    . $this->controller . '&task=display';
                 App::redirect(
                     Route::url($url),
                     $msg,
@@ -468,7 +468,7 @@ class Products extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_STOREFRONT_NO_ID'),
                 'error',
             );
@@ -482,7 +482,7 @@ class Products extends AdminController
         // Check and store the changes
         if (!$row->store(true)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 $row->getError(),
                 'error',
             );
@@ -490,7 +490,7 @@ class Products extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
         );
     }
 
@@ -531,7 +531,7 @@ class Products extends AdminController
                 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
                 : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 $msg,
                 'error',
             );
@@ -583,7 +583,7 @@ class Products extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             $message,
             $type,
         );
@@ -598,7 +598,7 @@ class Products extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
         );
     }
 }

@@ -21,9 +21,9 @@ class AdminController extends SiteController
         // Set the redirect
         \App::redirect(
             \Route::url('index.php?option='
-                . $this->_option
-                . ($this->_controller ? '&controller='
-                . $this->_controller : ''), false),
+                . $this->option
+                . ($this->controller ? '&controller='
+                . $this->controller : ''), false),
         );
     }
 }

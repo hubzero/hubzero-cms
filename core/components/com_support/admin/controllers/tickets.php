@@ -71,20 +71,20 @@ class Tickets extends AdminController
         $filters = [
             // Paging
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Query to filter by
             'show' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.show',
+                $this->option . '.' . $this->controller . '.show',
                 'show',
                 0,
                 'int',
@@ -117,18 +117,18 @@ class Tickets extends AdminController
                 if ($query->id == $filters['show']) {
                     // Search
                     $filters['search'] = urldecode(Request::getState(
-                        $this->_option . '.' . $this->_controller . '.search',
+                        $this->option . '.' . $this->controller . '.search',
                         'search',
                         '',
                     ));
                     // Incoming sort
                     $filters['sort'] = trim(Request::getState(
-                        $this->_option . '.' . $this->_controller . '.sort',
+                        $this->option . '.' . $this->controller . '.sort',
                         'filter_order',
                         $query->get('sort'),
                     ));
                     $filters['sortdir'] = trim(Request::getState(
-                        $this->_option . '.' . $this->_controller . '.sortdir',
+                        $this->option . '.' . $this->controller . '.sortdir',
                         'filter_order_Dir',
                         $query->get('sort_dir'),
                     ));
@@ -158,7 +158,7 @@ class Tickets extends AdminController
 
             // Search
             $filters['search'] = urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ));
@@ -167,12 +167,12 @@ class Tickets extends AdminController
 
             // Incoming sort
             $filters['sort']   = trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 $query->get('sort'),
             ));
             $filters['sortdir'] = trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 $query->get('sort_dir'),
             ));
@@ -193,14 +193,14 @@ class Tickets extends AdminController
         if ($filters['show'] < 0) {
             if (!isset($filters['sort']) || !$filters['sort']) {
                 $filters['sort'] = trim(Request::getState(
-                    $this->_option . '.' . $this->_controller . '.sort',
+                    $this->option . '.' . $this->controller . '.sort',
                     'filter_order',
                     'created',
                 ));
             }
             if (!isset($filters['sortdir']) || !$filters['sortdir']) {
                 $filters['sortdir'] = trim(Request::getState(
-                    $this->_option . '.' . $this->_controller . '.sortdir',
+                    $this->option . '.' . $this->controller . '.sortdir',
                     'filter_order_Dir',
                     'DESC',
                 ));
@@ -432,7 +432,7 @@ class Tickets extends AdminController
                 $msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')));
                 $msg->addFrom(
                     Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
+                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
                 );
 
                 // Plain text email
@@ -441,8 +441,8 @@ class Tickets extends AdminController
                     'name'      => 'emails',
                     'layout'    => 'ticket_plain',
                 ]);
-                $eview->option     = $this->_option;
-                $eview->controller = $this->_controller;
+                $eview->option     = $this->option;
+                $eview->controller = $this->controller;
                 $eview->ticket     = $ticket;
                 $eview->config     = $this->config;
                 $eview->delimiter  = '';
@@ -548,8 +548,8 @@ class Tickets extends AdminController
             'email_submitter' => Request::getInt('email_submitter', 0) == 1,
             'email_owner'     => Request::getInt('email_owner', 0) == 1,
             'email_terse'     => Request::getInt('email_terse', 0) == 1,
-            'option'          => $this->_option,
-            'controller'      => $this->_controller,
+            'option'          => $this->option,
+            'controller'      => $this->controller,
             'acl'             => $this->acl,
         ]);
 
@@ -559,7 +559,7 @@ class Tickets extends AdminController
 
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . ($filters ? '&' . $filters : ''), false),
                 Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id')),
             );
             return;
@@ -847,7 +847,7 @@ class Tickets extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
             Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids)),
         );
     }

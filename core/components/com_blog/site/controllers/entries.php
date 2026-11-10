@@ -42,9 +42,9 @@ class Entries extends SiteController
     {
         $this->model = new Archive('site', 0);
 
-        $this->_authorize();
-        $this->_authorize('entry');
-        $this->_authorize('comment');
+        $this->authorize();
+        $this->authorize('entry');
+        $this->authorize('comment');
 
         $this->registerTask('comments.rss', 'comments');
         $this->registerTask('commentsrss', 'comments');
@@ -110,7 +110,7 @@ class Entries extends SiteController
 
         if (!$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
             return;
         }
@@ -175,7 +175,7 @@ class Entries extends SiteController
     public function editTask($entry = null)
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true), 'server');
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -223,7 +223,7 @@ class Entries extends SiteController
     public function saveTask()
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -345,7 +345,7 @@ class Entries extends SiteController
     public function deleteTask()
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option, false, true), 'server');
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -421,7 +421,7 @@ class Entries extends SiteController
 
         // Return the entries lsit
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
     }
 
@@ -434,7 +434,7 @@ class Entries extends SiteController
     {
         if (!$this->config->get('feeds_enabled')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
             return;
         }
@@ -444,7 +444,7 @@ class Entries extends SiteController
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url('index.php?option=' . $this->_option);
+        $doc->link = Route::url('index.php?option=' . $this->option);
 
         // Incoming
         $filters = [
@@ -477,7 +477,7 @@ class Entries extends SiteController
         }
 
         // Build some basic RSS document information
-        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->option));
         $doc->title .= ($filters['year']) ? ': ' . $filters['year'] : '';
         $doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
@@ -526,7 +526,7 @@ class Entries extends SiteController
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option), 'server');
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -657,7 +657,7 @@ class Entries extends SiteController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
+                Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
             );
             return;
         }
@@ -667,7 +667,7 @@ class Entries extends SiteController
 
         if (User::get('id') != $comment->get('created_by') && !$this->config->get('access-delete-comment')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
+                Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
             );
             return;
         }
@@ -701,7 +701,7 @@ class Entries extends SiteController
 
         // Return the topics list
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
+            Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : null),
         );
@@ -723,7 +723,7 @@ class Entries extends SiteController
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url('index.php?option=' . $this->_option);
+        $doc->link = Route::url('index.php?option=' . $this->option);
 
         // Incoming
         $alias = Request::getString('alias', '');
@@ -741,7 +741,7 @@ class Entries extends SiteController
         $month = Request::getInt('month', 0);
 
         // Build some basic RSS document information
-        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->option));
         $doc->title .= ($year) ? ': ' . $year : '';
         $doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';
         $doc->title .= stripslashes($this->entry->get('title', ''));
@@ -812,12 +812,12 @@ class Entries extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
 
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             $at = '';
 
             if ($assetId) {

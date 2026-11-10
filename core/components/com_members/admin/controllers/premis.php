@@ -52,7 +52,7 @@ class Premis extends AdminController
         Request::checkToken();
 
         // Creating accounts in bulk is an administrator action
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

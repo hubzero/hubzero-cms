@@ -119,20 +119,20 @@ class Api extends SiteController
         // create breadcrumbs
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_controller)),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+            Lang::txt(strtoupper($this->option . '_' . $this->controller)),
+            'index.php?option=' . $this->option . '&controller=' . $this->controller,
         );
 
-        if (isset($this->_task) && $this->_task != '') {
+        if (isset($this->task) && $this->task != '') {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option . '_' . $this->_controller . '_' . $this->_task)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option . '_' . $this->controller . '_' . $this->task)),
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
             );
         }
     }

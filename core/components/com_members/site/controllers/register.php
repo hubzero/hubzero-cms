@@ -65,7 +65,7 @@ class Register extends SiteController
             Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . 'task=' . $this->task, false, true)), false),
             );
             //return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
         }
@@ -84,7 +84,7 @@ class Register extends SiteController
 
         $username = Request::getString('username', $xprofile->get('username'), 'get');
 
-        $admin = User::authorise('core.manage', $this->_option);
+        $admin = User::authorise('core.manage', $this->option);
         $self  = ($xprofile->get('username') == $username);
 
         if (!$admin && !$self) {
@@ -165,8 +165,8 @@ class Register extends SiteController
                     'name'   => 'emails',
                     'layout' => 'update',
                 ]);
-                $eview->set('option', $this->_option);
-                $eview->set('controller', $this->_controller);
+                $eview->set('option', $this->option);
+                $eview->set('controller', $this->controller);
                 $eview->sitename   = Config::get('sitename');
                 $eview->xprofile   = $xprofile;
                 $eview->baseURL    = $this->baseURL;
@@ -177,7 +177,7 @@ class Register extends SiteController
                 $msg->setSubject($subject)
                     ->addTo($xprofile->get('email'))
                     ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-                    ->addHeader('X-Component', $this->_option)
+                    ->addHeader('X-Component', $this->option)
                     ->setBody($message);
 
                 if (!$msg->send()) {
@@ -193,8 +193,8 @@ class Register extends SiteController
                 'name'   => 'emails',
                 'layout' => 'adminupdate',
             ]);
-            $eaview->set('option', $this->_option);
-            $eaview->set('controller', $this->_controller);
+            $eaview->set('option', $this->option);
+            $eaview->set('controller', $this->controller);
             $eaview->sitename   = Config::get('sitename');
             $eaview->xprofile   = $xprofile;
             $eaview->baseURL    = $this->baseURL;
@@ -227,8 +227,8 @@ class Register extends SiteController
                     'name'   => 'emails',
                     'layout' => 'updateproxy',
                 ]);
-                $eview->set('option', $this->_option);
-                $eview->set('controller', $this->_controller);
+                $eview->set('option', $this->option);
+                $eview->set('controller', $this->controller);
                 $eview->sitename   = Config::get('sitename');
                 $eview->xprofile   = $xprofile;
                 $eview->baseURL    = $this->baseURL;
@@ -239,7 +239,7 @@ class Register extends SiteController
                 $msg->setSubject($subject)
                     ->addTo($xprofile->get('email'))
                     ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-                    ->addHeader('X-Component', $this->_option)
+                    ->addHeader('X-Component', $this->option)
                     ->setBody($message);
 
                 if (!$msg->send()) {
@@ -255,8 +255,8 @@ class Register extends SiteController
                 'name'   => 'emails',
                 'layout' => 'adminupdateproxy',
             ]);
-            $eaview->set('option', $this->_option);
-            $eaview->set('controller', $this->_controller);
+            $eaview->set('option', $this->option);
+            $eaview->set('controller', $this->controller);
             $eaview->sitename   = Config::get('sitename');
             $eaview->xprofile   = $xprofile;
             $eaview->baseURL    = $this->baseURL;
@@ -295,7 +295,7 @@ class Register extends SiteController
             Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . 'task=' . $this->task, false, true)), false),
             );
             //return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
         }
@@ -357,7 +357,7 @@ class Register extends SiteController
                 }
             }
 
-            $emailState = Field::state('registrationEmail', 'RRRR', $this->_task);
+            $emailState = Field::state('registrationEmail', 'RRRR', $this->task);
 
             if ($emailState == \Components\Members\Models\Profile\Field::STATE_HIDDEN) {
                 $username = User::get('username');
@@ -644,8 +644,8 @@ class Register extends SiteController
                     'name'   => 'emails',
                     'layout' => 'adminupdate',
                 ]);
-                $eaview->set('option', $this->_option);
-                $eaview->set('controller', $this->_controller);
+                $eaview->set('option', $this->option);
+                $eaview->set('controller', $this->controller);
                 $eaview->sitename   = Config::get('sitename');
                 $eaview->xprofile   = $xprofile;
                 $eaview->baseURL    = $this->baseURL;
@@ -660,7 +660,7 @@ class Register extends SiteController
                 }
 
                 if ($suri == '/register/update' || $suri == '/members/update' || $suri == '/members/register/update') {
-                    $suri = Route::url('index.php?option=' . $this->_option . '&task=myaccount');
+                    $suri = Route::url('index.php?option=' . $this->option . '&task=myaccount');
                 }
 
                 if (!$suri) {
@@ -698,14 +698,14 @@ class Register extends SiteController
     {
         if (!User::isGuest() && !User::get('tmp_user')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=myaccount'),
+                Route::url('index.php?option=' . $this->option . '&task=myaccount'),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_NONGUEST_SESSION_CREATION'),
                 'warning',
             );
         }
 
-        if (!isset($this->_taskMap[$this->_task])) {
-            $this->_task = 'create';
+        if (!isset($this->taskMap[$this->task])) {
+            $this->task = 'create';
             Request::setVar('task', 'create');
         }
 
@@ -1317,8 +1317,8 @@ class Register extends SiteController
             'name'   => 'emails',
             'layout' => 'confirm',
         ]);
-        $eview->option       = $this->_option;
-        $eview->controller   = $this->_controller;
+        $eview->option       = $this->option;
+        $eview->controller   = $this->controller;
         $eview->sitename     = Config::get('sitename');
         $eview->login        = $profile->get('username');
         $eview->name         = $profile->get('name');
@@ -1331,7 +1331,7 @@ class Register extends SiteController
         $msg->setSubject($subject)
             ->addTo($profile->get('email'))
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-            ->addHeader('X-Component', $this->_option);
+            ->addHeader('X-Component', $this->option);
 
         $message = $eview->loadTemplate(false);
         $message = str_replace("\n", "\r\n", $message);
@@ -1358,7 +1358,7 @@ class Register extends SiteController
     {
         // Check if the user is logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_UPDATE'),
@@ -1429,8 +1429,8 @@ class Register extends SiteController
                                 'name'   => 'emails',
                                 'layout' => 'confirm',
                             ]);
-                            $eview->option     = $this->_option;
-                            $eview->controller = $this->_controller;
+                            $eview->option     = $this->option;
+                            $eview->controller = $this->controller;
                             $eview->sitename   = Config::get('sitename');
                             $eview->login      = $login;
                             $eview->name       = $xprofile->get('name');
@@ -1443,7 +1443,7 @@ class Register extends SiteController
                             $msg->setSubject($subject)
                                 ->addTo($pemail)
                                 ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-                                ->addHeader('X-Component', $this->_option);
+                                ->addHeader('X-Component', $this->option);
 
                             $message = $eview->loadTemplate(false);
                             $message = str_replace("\n", "\r\n", $message);
@@ -1622,7 +1622,7 @@ class Register extends SiteController
                 $authController = new \Components\Login\Site\Controllers\Auth();
 
                 // Return back here while resetting the return to here
-                $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
+                $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&confirm=' . $code . '&return=' . $return, false, true));
 
                 // Set up a request to send to the login method
                 Request::setVar('return', $return);
@@ -1636,7 +1636,7 @@ class Register extends SiteController
             } else {
                 // Didn't provide enough information, warn about it
                 // and let them log in to confirm their email address
-                $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
+                $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&confirm=' . $code . '&return=' . $return, false, true));
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('Please login in to confirm your email address.'),
@@ -1683,7 +1683,7 @@ class Register extends SiteController
             $this->setError('login mismatch');
 
             // Build logout/login/confirm redirect flow
-            $login_return  = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+            $login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&confirm=' . $code));
             $logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
             $redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
@@ -1697,7 +1697,7 @@ class Register extends SiteController
                 $this->setError('login mismatch');
 
                 // Build logout/login/confirm redirect flow
-                $login_return  = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+                $login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&confirm=' . $code));
                 $logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
                 $redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
@@ -1801,7 +1801,7 @@ class Register extends SiteController
 
         // Check if the user is logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
@@ -1835,13 +1835,13 @@ class Register extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COM_MEMBERS_REGISTER'),
-                'index.php?option=' . $this->_option,
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
-                Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -1853,8 +1853,8 @@ class Register extends SiteController
      */
     protected function _buildTitle()
     {
-        if ($this->_task) {
-            $title = Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->_task));
+        if ($this->task) {
+            $title = Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->task));
         } else {
             $title = Lang::txt('COM_MEMBERS_REGISTER');
         }

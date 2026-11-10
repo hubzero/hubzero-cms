@@ -117,7 +117,7 @@ class Configure extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SAVED'),
         );
     }

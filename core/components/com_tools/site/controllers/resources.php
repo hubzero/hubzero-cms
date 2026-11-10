@@ -33,7 +33,7 @@ class Resources extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         // Load the com_resources component config
         $rconfig = Component::params('com_resources');
@@ -60,7 +60,7 @@ class Resources extends SiteController
 
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline'),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline'),
             );
             return;
         }
@@ -73,7 +73,7 @@ class Resources extends SiteController
         $nextstep = $step + 1;
 
         // get tool version (dev or current) information
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
+        $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
 
         // get resource information
         $row = \Components\Resources\Models\Entry::getInstance($alias);
@@ -173,7 +173,7 @@ class Resources extends SiteController
                 App::abort(500, Lang::txt('COM_TOOLS_ERROR_UPDATING_TOOL'));
             } else {
                 // get updated tool status
-                $obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
+                $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
             }
 
             if ($version == 'dev') {
@@ -284,25 +284,25 @@ class Resources extends SiteController
         $tags = implode(', ', $mytagarray);
 
         // Set the document title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
             . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
         Document::setTitle($this->view->title);
 
         // Set the document pathway (breadcrumbs)
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->name)),
+                'index.php?option=' . $this->option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias,
+                'index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias,
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&app=' . $alias . '&task=start&step=1',
             );
         }
@@ -426,7 +426,7 @@ class Resources extends SiteController
         if (!$this->_toolid) {
             // not a tool resource page
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline'),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline'),
             );
             return;
         }
@@ -437,7 +437,7 @@ class Resources extends SiteController
         }
 
         // Get tool version (dev or current) information
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
+        $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
 
         // Instantiate our tag object
         $tagcloud = new \Components\Resources\Helpers\Tags($rid);
@@ -482,25 +482,25 @@ class Resources extends SiteController
         }
 
         // Set the document title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
             . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
         Document::setTitle($this->view->title);
 
         // Set the document pathway (breadcrumbs)
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->name)),
+                'index.php?option=' . $this->option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $thistool->toolname),
-                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias,
+                'index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias,
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&app=' . $alias . '&task=start&step=1',
             );
         }
@@ -597,7 +597,7 @@ class Resources extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::isGuest()) {
@@ -622,7 +622,7 @@ class Resources extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

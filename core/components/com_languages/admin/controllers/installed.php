@@ -44,19 +44,19 @@ class Installed extends AdminController
     {
         $filters = [
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.client_id',
+                $this->option . '.' . $this->controller . '.client_id',
                 'client',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'folder',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -107,7 +107,7 @@ class Installed extends AdminController
 
         $cid = Request::getCmd('cid', '');
         $client_id = Request::getState(
-            $this->_option . '.' . $this->_controller . '.client_id',
+            $this->option . '.' . $this->controller . '.client_id',
             'client',
             0,
             'int',

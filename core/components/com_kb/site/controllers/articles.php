@@ -209,7 +209,7 @@ class Articles extends SiteController
             $type = strtolower(Request::getString('type', ''));
             $id   = Request::getInt('id', 0);
 
-            $return = 'index.php?option=' . $this->_option;
+            $return = 'index.php?option=' . $this->option;
             if ($type == 'article' && $id) {
                 $article = Article::oneOrNew($id);
                 $return  = $article->get('id') ? $article->link() : $return;
@@ -302,7 +302,7 @@ class Articles extends SiteController
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option), 'server');
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
                 Lang::txt('COM_KB_LOGIN_NOTICE'),
@@ -333,7 +333,7 @@ class Articles extends SiteController
         if (
             !$row->isNew()
             && $row->get('created_by') != User::get('id')
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -465,7 +465,7 @@ class Articles extends SiteController
         Document::setLink(Route::url($article->link()));
 
         // Build some basic RSS document information
-        $title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+        $title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->option));
         $title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
         $title .= ': ' . Lang::txt('COM_KB_COMMENTS');
 

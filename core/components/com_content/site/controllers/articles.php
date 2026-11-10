@@ -47,8 +47,8 @@ class Articles extends SiteController
 
         // Filter by published state.
         if (
-            !User::authorise('core.edit.state', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.edit.state', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             $filters['state'] = [Article::STATE_PUBLISHED, Article::STATE_ARCHIVED];
         }

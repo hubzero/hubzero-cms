@@ -37,7 +37,7 @@ class Tags extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         $this->registerTask('feed.rss', 'feed');
         $this->registerTask('feedrss', 'feed');
@@ -86,7 +86,7 @@ class Tags extends SiteController
         if (!$tagstring && !$addtag) {
             if (Request::getWord('task', '', 'get')) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option),
+                    Route::url('index.php?option=' . $this->option),
                 );
             }
 
@@ -118,7 +118,7 @@ class Tags extends SiteController
                 continue;
             }
 
-            if ($tagobj->get('admin') == 1 && !User::authorise('core.manage', $this->_option)) {
+            if ($tagobj->get('admin') == 1 && !User::authorise('core.manage', $this->option)) {
                 continue;
             }
 
@@ -514,7 +514,7 @@ class Tags extends SiteController
         }
 
         // Build some basic RSS document information
-        $title = Lang::txt(strtoupper($this->_option)) . ': ';
+        $title = Lang::txt(strtoupper($this->option)) . ': ';
         for ($i = 0, $n = count($tags); $i < $n; $i++) {
             if ($i > 0) {
                 $title .= '+ ';
@@ -529,7 +529,7 @@ class Tags extends SiteController
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link        = Route::url('index.php?option=' . $this->_option);
+        $doc->link        = Route::url('index.php?option=' . $this->option);
         $doc->title       = Config::get('sitename') . ' - ' . $title;
         $doc->description = Lang::txt('COM_TAGS_RSS_DESCRIPTION', Config::get('sitename'), $title);
         $doc->copyright   = Lang::txt('COM_TAGS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
@@ -587,31 +587,31 @@ class Tags extends SiteController
         $filters = [
             'admin' => 0,
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
                 'string',
             )),
             'sort' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'sort',
                 'raw_tag',
                 'string',
             )),
             'sort_Dir' => strtolower(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort_Dir',
+                $this->option . '.' . $this->controller . '.sort_Dir',
                 'sortdir',
                 'asc',
                 'string',
@@ -706,7 +706,7 @@ class Tags extends SiteController
 
         // Only return to a page on this hub
         if (!$return || !\Hubzero\Utility\Uri::isInternal($return)) {
-            $return = 'index.php?option=' . $this->_option . '&task=browse';
+            $return = 'index.php?option=' . $this->option . '&task=browse';
         }
 
         App::redirect(
@@ -784,7 +784,7 @@ class Tags extends SiteController
         $sortby = Request::getInt('sortby', '');
         $search = urldecode(Request::getString('search', ''));
 
-        $url = 'index.php?option=' . $this->_option . '&task=browse';
+        $url = 'index.php?option=' . $this->option . '&task=browse';
         $url .= '&search=' . urlencode($search) . '&sortby=' . $sortby;
         $url .= '&limit=' . $limit . '&limitstart=' . $start;
 
@@ -843,7 +843,7 @@ class Tags extends SiteController
         $count  = Request::getInt('count', 1);
 
         // Redirect back to browse mode
-        $url = 'index.php?option=' . $this->_option . '&task=browse';
+        $url = 'index.php?option=' . $this->option . '&task=browse';
         $url .= '&search=' . $search . '&sortby=' . $sortby;
         $url .= '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count;
 
@@ -878,14 +878,14 @@ class Tags extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task && $this->_task != 'view' && $this->_task != 'display') {
+        if ($this->task && $this->task != 'view' && $this->task != 'display') {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
         if (is_array($tags) && count($tags) > 0) {
@@ -898,7 +898,7 @@ class Tags extends SiteController
 
             Pathway::append(
                 implode(' + ', $t),
-                'index.php?option=' . $this->_option . '&tag=' . implode('+', $l),
+                'index.php?option=' . $this->option . '&tag=' . implode('+', $l),
             );
         }
     }
@@ -912,9 +912,9 @@ class Tags extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle($tags = null)
     {
-        $this->view->title = Lang::txt(strtoupper($this->_option));
-        if ($this->_task && $this->_task != 'view' && $this->_task != 'display') {
-            $this->view->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->option));
+        if ($this->task && $this->task != 'view' && $this->task != 'display') {
+            $this->view->title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         if (is_array($tags) && count($tags) > 0) {
             $t = [];
@@ -933,12 +933,12 @@ class Tags extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'tag', $assetId = null)
+    protected function authorize($assetType = 'tag', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
 
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

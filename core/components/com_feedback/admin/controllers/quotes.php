@@ -47,18 +47,18 @@ class Quotes extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.search',
+                $this->option . '.search',
                 'search',
                 '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.sortby',
+                $this->option . '.sortby',
                 'filter_order',
                 'date',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.sortdir',
+                $this->option . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -90,8 +90,8 @@ class Quotes extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -135,8 +135,8 @@ class Quotes extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -209,7 +209,7 @@ class Quotes extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

@@ -32,29 +32,29 @@ class Types extends AdminController
         // Incoming
         $this->view->filters = [
             'limit' => Request::getState(
-                $this->_option . '.types.limit',
+                $this->option . '.types.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.types.limitstart',
+                $this->option . '.types.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => Request::getState(
-                $this->_option . '.types.search',
+                $this->option . '.types.search',
                 'search',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.types.sort',
+                $this->option . '.types.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.types.sortdir',
+                $this->option . '.types.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -111,7 +111,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$this->view->row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -165,7 +165,7 @@ class Types extends AdminController
             // Load object
             if (!$id || !$this->view->row->load($id)) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                     'notice',
                 );
@@ -204,7 +204,7 @@ class Types extends AdminController
             // Load object
             if (!$id || !$this->view->row->load($id)) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                     'notice',
                 );
@@ -232,7 +232,7 @@ class Types extends AdminController
             } else {
                 // Delete and redirect to the main type page
                 $url = Route::url(
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=edit&id=' . $id,
                     false,
                 );
@@ -290,7 +290,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -303,7 +303,7 @@ class Types extends AdminController
         );
 
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=edit&id=' . $id,
             false,
         );
@@ -392,7 +392,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$this->view->row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -433,7 +433,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'error',
             );
@@ -441,7 +441,7 @@ class Types extends AdminController
         }
 
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=edit&id=' . $id,
             false,
         );
@@ -495,7 +495,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$this->view->row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -535,7 +535,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -548,7 +548,7 @@ class Types extends AdminController
         );
 
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=edit&id[]=' . $id,
             false,
         );
@@ -628,7 +628,7 @@ class Types extends AdminController
         // Load object
         if (!$id || !$this->view->row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
@@ -681,7 +681,7 @@ class Types extends AdminController
         $row = new \Components\Publications\Tables\MasterType($database);
 
         // Load object
-        $listUrl = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+        $listUrl = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
         if (!$id || !$row->load($id)) {
             App::redirect(
                 Route::url($listUrl, false),
@@ -808,7 +808,7 @@ class Types extends AdminController
         $row = new \Components\Publications\Tables\MasterType($database);
 
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=edit&id=' . $fields['id'],
             false,
         );
@@ -906,7 +906,7 @@ class Types extends AdminController
             );
         } else {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED'),
             );
         }
@@ -955,7 +955,7 @@ class Types extends AdminController
         $row->changeOrder($dir);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -977,7 +977,7 @@ class Types extends AdminController
         if (empty($ids)) {
             // Redirect with error message
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
                 'error',
             );
@@ -994,7 +994,7 @@ class Types extends AdminController
             if ($total > 0) {
                 // Redirect with error message
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
                     'error',
                 );
@@ -1007,7 +1007,7 @@ class Types extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids)),
         );
     }

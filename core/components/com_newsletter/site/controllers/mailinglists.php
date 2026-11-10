@@ -40,7 +40,7 @@ class Mailinglists extends SiteController
     public function _buildTitle($newsletter = null)
     {
         //default if no campaign
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
         //add campaign name to title
         if (is_object($newsletter) && $newsletter->id) {
@@ -48,12 +48,12 @@ class Mailinglists extends SiteController
         }
 
         //if we are unsubscribing
-        if ($this->_task == 'unsubscribe') {
+        if ($this->task == 'unsubscribe') {
             $this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_UNSUBSCRIBE');
         }
 
         //if we are subscribing
-        if ($this->_task == 'subscribe') {
+        if ($this->task == 'subscribe') {
             $this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_SUBSCRIBE');
         }
 
@@ -72,24 +72,24 @@ class Mailinglists extends SiteController
     {
         //add 'newlsetters' item to pathway
         if (Pathway::count() <= 0) {
-            Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
+            Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         }
 
         //add campaign
         if (is_object($newsletter) && $newsletter->id) {
-            $url = 'index.php?option=' . $this->_option . '&id=' . $newsletter->id;
+            $url = 'index.php?option=' . $this->option . '&id=' . $newsletter->id;
             Pathway::append(Lang::txt($newsletter->name), $url);
         }
 
         //if we are unsubscribing
-        if ($this->_task == 'unsubscribe') {
-            $url = 'index.php?option=' . $this->_option . '&task=unsubscribe';
+        if ($this->task == 'unsubscribe') {
+            $url = 'index.php?option=' . $this->option . '&task=unsubscribe';
             Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
         }
 
         //if we are subscribing
-        if ($this->_task == 'subscribe') {
-            $url = 'index.php?option=' . $this->_option . '&task=subscribe';
+        if ($this->task == 'subscribe') {
+            $url = 'index.php?option=' . $this->option . '&task=subscribe';
             Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
         }
     }

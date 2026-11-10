@@ -36,7 +36,7 @@ class Sessions extends SiteController
      */
     public function execute()
     {
-        $this->_authorize('session');
+        $this->authorize('session');
 
         $this->registerTask('__default', 'view');
 
@@ -53,8 +53,8 @@ class Sessions extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if (isset($this->app) && $this->app->name) {
@@ -67,17 +67,17 @@ class Sessions extends SiteController
             }
             Pathway::append(
                 $this->app->caption,
-                'index.php?option=' . $this->_option . '&app=' . $appname,
+                'index.php?option=' . $this->option . '&app=' . $appname,
             );
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task . '&app=' . $appname . '&version=' . $this->app->version,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task . '&app=' . $appname . '&version=' . $this->app->version,
             );
         } else {
-            if ($this->_task && $this->_task != 'tools') {
+            if ($this->task && $this->task != 'tools') {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                    Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
                 );
             }
         }
@@ -86,7 +86,7 @@ class Sessions extends SiteController
             $lnk = $this->app ? $this->app->toolname : '';
             Pathway::append(
                 $title,
-                Route::url('index.php?option=' . $this->_option . '&tag=' . $lnk),
+                Route::url('index.php?option=' . $this->option . '&tag=' . $lnk),
             );
         }
     }
@@ -99,12 +99,12 @@ class Sessions extends SiteController
      */
     protected function _buildTitle($session = null)
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->app && $this->app->name) {
             $this->_title .= ': ' . $this->app->caption;
         }
-        if ($this->_task && $this->_task != 'tools') {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        if ($this->task && $this->task != 'tools') {
+            $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         if (is_object($session)) {
             $this->_title .= ': ';
@@ -121,7 +121,7 @@ class Sessions extends SiteController
     public function loginTask($rtrn = '')
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
         }
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -304,7 +304,7 @@ class Sessions extends SiteController
         $title  = Lang::txt('COM_MEMBERS');
         $title .= ': ' . Lang::txt('COM_MEMBERS_VIEW');
         $title .= ': ' . stripslashes(User::get('name'));
-        $title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $title .= ': ' . Lang::txt(strtoupper($this->option . '_' . $this->task));
 
         // Set the page title
         Document::setTitle($title);
@@ -321,8 +321,8 @@ class Sessions extends SiteController
             'index.php?option=com_members&id=' . User::get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->option . '_' . $this->task)),
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
         );
 
         // Get the middleware database
@@ -644,7 +644,7 @@ class Sessions extends SiteController
 
         // Get their disk space usage
         $this->getDiskUsage();
-        $this->_redirect = '';
+        $this->redirect = '';
 
         $app->percent = 0;
         if ($this->config->get('show_storage', 1)) {
@@ -652,7 +652,7 @@ class Sessions extends SiteController
         }
         if ($this->percent >= 100) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=storage'),
+                Route::url('index.php?option=' . $this->option . '&controller=storage'),
             );
             return;
         }
@@ -726,7 +726,7 @@ class Sessions extends SiteController
 
         $rtrn = Request::getString('return', '');
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
 
         // Log activity
         Event::trigger('system.logActivity', [
@@ -830,7 +830,7 @@ class Sessions extends SiteController
         $rtrn = Request::getString('return', '');
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false),
         );
     }
 
@@ -1058,7 +1058,7 @@ class Sessions extends SiteController
         // Drop through and re-view the session...
         //$this->viewTask();
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app . '&task=session&sess=' . $sess),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $app . '&task=session&sess=' . $sess),
         );
     }
 
@@ -1380,14 +1380,14 @@ class Sessions extends SiteController
         );
         Pathway::append(
             $app->title,
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $toolname,
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $toolname,
         );
 
-        if ($this->_task) {
+        if ($this->task) {
             $t = ($app->caption) ? $app->sess . ' "' . $app->caption . '"' : $app->sess;
             Pathway::append(
                 Lang::txt('COM_TOOLS_SESSION_NUMBER', $t),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess,
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess,
             );
         }
 
@@ -1590,7 +1590,7 @@ class Sessions extends SiteController
         //if ($this->percent >= 100 && $this->remaining == 0) {
         if ($this->percent >= 100 && $redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=storageexceeded'),
+                Route::url('index.php?option=' . $this->option . '&task=storageexceeded'),
             );
         }
     }
@@ -1711,11 +1711,11 @@ class Sessions extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

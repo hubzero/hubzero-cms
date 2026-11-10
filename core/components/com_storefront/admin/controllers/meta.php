@@ -34,25 +34,25 @@ class Meta extends AdminController
             'access' => -1,
         ];
         $this->view->filters['sort'] = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sort',
+            $this->option . '.' . $this->controller . '.sort',
             'filter_order',
             'title',
         ));
         $this->view->filters['sort_Dir'] = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sortdir',
+            $this->option . '.' . $this->controller . '.sortdir',
             'filter_order_Dir',
             'ASC',
         ));
 
         // Get paging variables
         $this->view->filters['limit'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limit',
+            $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $this->view->filters['start'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limitstart',
+            $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
@@ -174,7 +174,7 @@ class Meta extends AdminController
         if ($redirect) {
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
+                Route::url('index.php?option=' . $this->option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
                 Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
             return;
@@ -193,7 +193,7 @@ class Meta extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
+            Route::url('index.php?option=' . $this->option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
         );
     }
 }

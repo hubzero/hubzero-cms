@@ -51,17 +51,17 @@ class Mailinglists extends AdminController
     {
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'sort' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
             'sort_Dir' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -97,8 +97,8 @@ class Mailinglists extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -132,8 +132,8 @@ class Mailinglists extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -171,7 +171,7 @@ class Mailinglists extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -215,7 +215,7 @@ class Mailinglists extends AdminController
      */
     public function manageTask()
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -231,12 +231,12 @@ class Mailinglists extends AdminController
         $filters = [
             'status' => Request::getWord('status', 'active'),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.' . $this->_task . '.sort',
+                $this->option . '.' . $this->controller . '.' . $this->task . '.sort',
                 'filter_order',
                 'email',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.' . $this->_task . '.sortdir',
+                $this->option . '.' . $this->controller . '.' . $this->task . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -283,7 +283,7 @@ class Mailinglists extends AdminController
      */
     public function addEmailTask()
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -322,7 +322,7 @@ class Mailinglists extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -472,7 +472,7 @@ class Mailinglists extends AdminController
      */
     public function editemailTask($row = null)
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -506,7 +506,7 @@ class Mailinglists extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -545,7 +545,7 @@ class Mailinglists extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -591,7 +591,7 @@ class Mailinglists extends AdminController
      */
     public function subscribeEmailTask()
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -611,7 +611,7 @@ class Mailinglists extends AdminController
 
         if ($email->save()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&id=' . $mid, false),
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS'),
             );
         } else {
@@ -628,7 +628,7 @@ class Mailinglists extends AdminController
      */
     public function sendConfirmationTask()
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -662,7 +662,7 @@ class Mailinglists extends AdminController
      */
     public function exportTask()
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -710,7 +710,7 @@ class Mailinglists extends AdminController
         $mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&id=' . $mid, false),
         );
     }
 
@@ -721,7 +721,7 @@ class Mailinglists extends AdminController
      */
     public function emailCountTask()
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

@@ -62,8 +62,8 @@ class Articles extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -91,7 +91,7 @@ class Articles extends AdminController
         if (!User::authorise('core.create', 'com_content.category.' . (int) $batchOptions['category_id'])) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
-        if (!empty($batchOptions['assetgroup_id']) && !User::authorise('core.edit.state', $this->_option)) {
+        if (!empty($batchOptions['assetgroup_id']) && !User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -147,43 +147,43 @@ class Articles extends AdminController
         }
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 '',
             ),
             'author_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.author_id',
+                $this->option . '.' . $this->controller . '.author_id',
                 'author_id',
             ),
             'published' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.published',
+                $this->option . '.' . $this->controller . '.published',
                 'filter_published',
                 '',
             ),
             'category_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.category_id',
+                $this->option . '.' . $this->controller . '.category_id',
                 'filter_category_id',
             ),
             'level' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.level',
+                $this->option . '.' . $this->controller . '.level',
                 0,
             ),
             'language' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.language',
+                $this->option . '.' . $this->controller . '.language',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -269,43 +269,43 @@ class Articles extends AdminController
         }
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.featured.search',
+                $this->option . '.featured.search',
                 'filter_search',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.featured.access',
+                $this->option . '.featured.access',
                 'filter_access',
                 0,
             ),
             'author_id' => Request::getState(
-                $this->_option . '.featured.author_id',
+                $this->option . '.featured.author_id',
                 'author_id',
             ),
             'published' => Request::getState(
-                $this->_option . '.featured.published',
+                $this->option . '.featured.published',
                 'filter_published',
                 '',
             ),
             'category_id' => Request::getState(
-                $this->_option . '.featured.category_id',
+                $this->option . '.featured.category_id',
                 'filter_category_id',
             ),
             'level' => Request::getState(
-                $this->_option . '.featured.level',
+                $this->option . '.featured.level',
                 0,
             ),
             'language' => Request::getState(
-                $this->_option . '.featured.language',
+                $this->option . '.featured.language',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.featured.sort',
+                $this->option . '.featured.sort',
                 'filter_order',
                 'ordering',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.featured.sortdir',
+                $this->option . '.featured.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -450,10 +450,10 @@ class Articles extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $newTasks = ['save2new', 'save2copy'];
-        $task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
+        $task = in_array($this->task, $newTasks) ? 'add' : $this->task;
 
         // Upon "saving to copy" or "save to new", blank out alias, update created and published up date to now
-        if (in_array($this->_task, $newTasks)) {
+        if (in_array($this->task, $newTasks)) {
             $article->set('created', Date::of('now')->toSql());
             $article->set('created_by', User::getInstance()->get('id'));
             $article->set('publish_up', Date::of('now')->toSql());
@@ -481,9 +481,9 @@ class Articles extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit.own', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit.own', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -580,7 +580,7 @@ class Articles extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -603,7 +603,7 @@ class Articles extends AdminController
         }
 
         if ($success) {
-            Cache::clean($this->_option);
+            Cache::clean($this->option);
             // Set the success message
             Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
         }
@@ -622,7 +622,7 @@ class Articles extends AdminController
         Request::checkToken();
 
         // Same right reorderTask requires
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

@@ -37,17 +37,17 @@ class Browse extends \Hubzero\Component\SiteController
         }
 
         // Get the task
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
 
-        if (empty($this->_task)) {
-            $this->_task = 'home';
-            $this->registerTask('__default', $this->_task);
+        if (empty($this->task)) {
+            $this->task = 'home';
+            $this->registerTask('__default', $this->task);
         }
 
         $executed = false;
-        if (!method_exists($this, $this->_task . 'Task')) {
+        if (!method_exists($this, $this->task . 'Task')) {
             // Try to find a corresponding collection
-            $cId = $this->warehouse->collectionExists($this->_task);
+            $cId = $this->warehouse->collectionExists($this->task);
             if ($cId) {
                 // if match is found -- browse collection
                 $executed = true;
@@ -107,8 +107,8 @@ class Browse extends \Hubzero\Component\SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 

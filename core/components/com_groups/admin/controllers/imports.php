@@ -37,7 +37,7 @@ class Imports extends AdminController
      */
     public function execute()
     {
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             Notify::warning(Lang::txt('Not authorized'));
 
             App::redirect(
@@ -45,7 +45,7 @@ class Imports extends AdminController
             );
         }
 
-        Lang::load($this->_option . '.import', dirname(__DIR__));
+        Lang::load($this->option . '.import', dirname(__DIR__));
 
         parent::execute();
     }
@@ -60,25 +60,25 @@ class Imports extends AdminController
         // Get filters
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'state'    => [1],
             'sort'       => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created_at',
             ),
             'sort_Dir'   => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),

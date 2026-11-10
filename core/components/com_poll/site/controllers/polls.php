@@ -36,7 +36,7 @@ class Polls extends SiteController
         Document::setTitle(Lang::txt('COM_POLL'));
 
         //Set pathway information
-        Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
+        Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->option));
 
         $polls = Poll::all()
             ->whereEquals('state', 1)
@@ -86,11 +86,11 @@ class Polls extends SiteController
         //Set pathway information
         Pathway::append(
             Lang::txt('COM_POLL'),
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
         Pathway::append(
             $poll->get('title'),
-            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
+            Route::url('index.php?option=' . $this->option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
         );
 
         $params->def('show_page_title', 1);
@@ -245,11 +245,11 @@ class Polls extends SiteController
         //Set pathway information
         Pathway::append(
             Lang::txt('COM_POLL'),
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
         Pathway::append(
             $poll->get('title'),
-            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
+            Route::url('index.php?option=' . $this->option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
         );
 
         $params->def('show_page_title', 1);

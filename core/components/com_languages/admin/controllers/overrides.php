@@ -59,35 +59,35 @@ class Overrides extends AdminController
 
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             ),
             'language_client' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.language_client',
+                $this->option . '.' . $this->controller . '.language_client',
                 'filter_language_client',
                 $default,
                 'cmd',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'folder',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -146,8 +146,8 @@ class Overrides extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -185,8 +185,8 @@ class Overrides extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -219,8 +219,8 @@ class Overrides extends AdminController
         }
 
         if ($this->getTask() == 'save2new') {
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=edit';
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller . '&task=edit';
             App::redirect(Route::url($url, false));
             return;
         }

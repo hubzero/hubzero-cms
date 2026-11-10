@@ -29,7 +29,7 @@ class Notes extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.notes', dirname(__DIR__));
+        Lang::load($this->option . '.notes', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -47,35 +47,35 @@ class Notes extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 0,
                 'int',
             ),
             'category_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.category_id',
+                $this->option . '.' . $this->controller . '.category_id',
                 'category_id',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'review_time',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort_Dir',
+                $this->option . '.' . $this->controller . '.sort_Dir',
                 'filter_order_Dir',
                 'DESC',
             ),

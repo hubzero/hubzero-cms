@@ -50,39 +50,39 @@ class Pages extends AdminController
         $filters = [
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Filters
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'namespace' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.namespace',
+                $this->option . '.' . $this->controller . '.namespace',
                 'namespace',
                 '',
             ),
             'scope' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.scope',
+                $this->option . '.' . $this->controller . '.scope',
                 'scope',
                 '',
             ),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 0,
                 'int',
@@ -169,8 +169,8 @@ class Pages extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -211,8 +211,8 @@ class Pages extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -283,7 +283,7 @@ class Pages extends AdminController
      */
     public function removeTask()
     {
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -293,7 +293,7 @@ class Pages extends AdminController
 
         if (count($ids) <= 0) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
                 'warning',
             );
@@ -368,7 +368,7 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken('get');
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -415,7 +415,7 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -449,7 +449,7 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken('get');
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

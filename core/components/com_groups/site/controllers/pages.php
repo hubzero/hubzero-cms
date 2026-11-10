@@ -57,7 +57,7 @@ class Pages extends Base
         }
 
         // Check authorization
-        $notAuthorized = $this->_authorize() != 'manager'
+        $notAuthorized = $this->authorize() != 'manager'
             && !$this->_authorizedForTask('group.pages');
         if ($this->group->published == 2 || $notAuthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
@@ -409,7 +409,7 @@ class Pages extends Base
         // are we applying or saving?
         if ($apply) {
             $notification = Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED_AND_LINK', $task, $this->page->url());
-            $redirect = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
+            $redirect = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
         } else {
             $notification = Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task);
             $redirect = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages');
@@ -586,7 +586,7 @@ class Pages extends Base
         }
 
         //inform user & redirect
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages');
         if (
             ($r = Request::getString('return', '', 'get'))
             && \Hubzero\Utility\Uri::isInternal(base64_decode($r))
@@ -696,7 +696,7 @@ class Pages extends Base
         if ($version === null) {
             $this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'),
+                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages'),
             );
         }
 
@@ -729,7 +729,7 @@ class Pages extends Base
         ) {
             App::redirect(base64_decode($return));
         }
-        App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+        App::redirect(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
     }
 
     /**
@@ -846,7 +846,7 @@ class Pages extends Base
         }
 
         // the activity entry links back to the page's version history
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id'));
 
         // Log activity
         $recipients = [
@@ -858,7 +858,7 @@ class Pages extends Base
         }
 
         $restoreUrl = Route::url(
-            'index.php?option=' . $this->_option
+            'index.php?option=' . $this->option
             . '&cn=' . $this->group->get('cn') . '&controller=pages',
         );
 
@@ -884,7 +884,7 @@ class Pages extends Base
 
         // redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
+            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
             Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia')),
             'passed',
         );

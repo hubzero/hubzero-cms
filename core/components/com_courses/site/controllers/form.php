@@ -76,8 +76,8 @@ class Form extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
@@ -91,10 +91,10 @@ class Form extends SiteController
             $this->base,
         );
 
-        if ($this->_task != 'index') {
+        if ($this->task != 'index') {
             Pathway::append(
-                Lang::txt(ucfirst($this->_task)),
-                'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task,
+                Lang::txt(ucfirst($this->task)),
+                'index.php?option=' . $this->option . '&controller=form&task=' . $this->task,
             );
         }
     }
@@ -566,7 +566,7 @@ class Form extends SiteController
             return;
         } else {
             $this->setView('form', 'complete');
-            $this->_task = 'complete';
+            $this->task = 'complete';
             $this->view->incomplete = array_filter(
                 $answers,
                 function ($ans) {
@@ -586,7 +586,7 @@ class Form extends SiteController
     {
         // Make sure they're logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=form'));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=form'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),

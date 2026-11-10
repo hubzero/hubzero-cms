@@ -69,12 +69,12 @@ class Tickets extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COM_SUPPORT'),
-                'index.php?option=' . $this->_option . '&controller=index',
+                'index.php?option=' . $this->option . '&controller=index',
             );
         }
-        if (Pathway::count() == 1  && $this->_task) {
-            $task = $this->_task;
-            if (in_array($this->_task, ['ticket', 'new', 'display', 'save']) || $ticket === null) {
+        if (Pathway::count() == 1  && $this->task) {
+            $task = $this->task;
+            if (in_array($this->task, ['ticket', 'new', 'display', 'save']) || $ticket === null) {
                 $task = 'tickets';
             }
             if ($task == 'update' && $ticket !== null) {
@@ -82,12 +82,12 @@ class Tickets extends SiteController
             }
             Pathway::append(
                 Lang::txt('COM_SUPPORT_' . strtoupper($task)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $task,
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task,
             );
-            if ($this->_task == 'new') {
+            if ($this->task == 'new') {
                 Pathway::append(
-                    Lang::txt('COM_SUPPORT_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task,
+                    Lang::txt('COM_SUPPORT_' . strtoupper($this->task)),
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
                 );
             }
         }
@@ -107,16 +107,16 @@ class Tickets extends SiteController
      */
     protected function _buildTitle($ticket = null)
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
-        if ($this->_task) {
-            if ($this->_task == 'new' || $this->_task == 'display' || $ticket === null) {
+        $this->_title = Lang::txt(strtoupper($this->option));
+        if ($this->task) {
+            if ($this->task == 'new' || $this->task == 'display' || $ticket === null) {
                 $this->_title .= ': ' . Lang::txt('COM_SUPPORT_TICKETS');
             }
-            if (in_array($this->_task, ['ticket', 'new', 'update', 'save']) && $ticket !== null) {
-                if ($this->_task == 'update') {
+            if (in_array($this->task, ['ticket', 'new', 'update', 'save']) && $ticket !== null) {
+                if ($this->task == 'update') {
                     $this->_title .= ': ' . Lang::txt('COM_SUPPORT_TiCKET');
                 } else {
-                    $this->_title .= ': ' . Lang::txt('COM_SUPPORT_' . strtoupper($this->_task));
+                    $this->_title .= ': ' . Lang::txt('COM_SUPPORT_' . strtoupper($this->task));
                 }
             }
         }
@@ -136,7 +136,7 @@ class Tickets extends SiteController
     {
         // Check authorization
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -144,7 +144,7 @@ class Tickets extends SiteController
         }
 
         if (!$this->acl->check('read', 'tickets')) {
-            $this->_return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets');
+            $this->_return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets');
         }
 
         // Set the page title
@@ -472,7 +472,7 @@ class Tickets extends SiteController
     public function displayTask()
     {
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -483,27 +483,27 @@ class Tickets extends SiteController
 
         // Paging
         $filters['limit'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limit',
+            $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $filters['start'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limitstart',
+            $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
         );
         // Query to filter by
         $filters['show'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.show',
+            $this->option . '.' . $this->controller . '.show',
             'show',
             0,
             'int',
         );
         // Search
         $search       = urldecode(Request::getState(
-            $this->_option . '.' . $this->_controller . '.search',
+            $this->option . '.' . $this->controller . '.search',
             'search',
             '',
         ));
@@ -566,13 +566,13 @@ class Tickets extends SiteController
 
                     // Incoming sort
                     $filters['sort']         = trim(Request::getState(
-                        $this->_option . '.' . $this->_controller . '.sort',
+                        $this->option . '.' . $this->controller . '.sort',
                         'sort',
                         $query->get('sort'),
                     ));
 
                     $filters['sortdir']     = trim(Request::getState(
-                        $this->_option . '.' . $this->_controller . '.sortdir',
+                        $this->option . '.' . $this->controller . '.sortdir',
                         'sortdir',
                         $query->get('sort_dir'),
                     ));
@@ -632,12 +632,12 @@ class Tickets extends SiteController
 
             // Incoming sort
             $filters['sort']   = trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 $query->sort,
             ));
             $filters['sortdir'] = trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 $query->sort_dir,
             ));
@@ -978,7 +978,7 @@ class Tickets extends SiteController
             $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')));
             $message->addFrom(
                 Config::get('mailfrom'),
-                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
             );
 
             // Plain text email
@@ -986,8 +986,8 @@ class Tickets extends SiteController
                 'name'   => 'emails',
                 'layout' => 'ticket_plain',
             ]);
-            $eview->option     = $this->_option;
-            $eview->controller = $this->_controller;
+            $eview->option     = $this->option;
+            $eview->controller = $this->controller;
             $eview->ticket     = $row;
             $eview->config     = $this->config;
             $eview->delimiter  = '';
@@ -1153,8 +1153,8 @@ class Tickets extends SiteController
                         'name'   => 'emails',
                         'layout' => 'comment_plain',
                     ]);
-                    $eview->option     = $this->_option;
-                    $eview->controller = $this->_controller;
+                    $eview->option     = $this->option;
+                    $eview->controller = $this->controller;
                     $eview->comment    = $rowc;
                     $eview->ticket     = $row;
                     $eview->config     = $this->config;
@@ -1180,7 +1180,7 @@ class Tickets extends SiteController
                         }
 
                         // Get the user's email address
-                        if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $this->_option])) {
+                        if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $this->option])) {
                             $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
                         }
                         $rowc->changelog()->notified(
@@ -1340,7 +1340,7 @@ class Tickets extends SiteController
         $id = Request::getInt('id', 0);
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets'),
                 Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'),
                 'error',
             );
@@ -1367,27 +1367,27 @@ class Tickets extends SiteController
         $filters = [
             // Paging
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Query to filter by
             'show' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.show',
+                $this->option . '.' . $this->controller . '.show',
                 'show',
                 0,
                 'int',
             ),
             // Search
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
@@ -1488,7 +1488,7 @@ class Tickets extends SiteController
     {
         // Make sure we are still logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -1632,8 +1632,8 @@ class Tickets extends SiteController
                 'email_submitter' => Request::getInt('email_submitter', 0) == 1,
                 'email_owner'     => Request::getInt('email_owner', 0) == 1,
                 'email_terse'     => Request::getInt('email_terse', 0) == 1,
-                'option'          => $this->_option,
-                'controller'      => $this->_controller,
+                'option'          => $this->option,
+                'controller'      => $this->controller,
                 'acl'             => $this->acl,
             ]) as $error
         ) {
@@ -1641,7 +1641,7 @@ class Tickets extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $id),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : null),
         );
@@ -1656,7 +1656,7 @@ class Tickets extends SiteController
     {
         // Must be logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets', false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets', false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -1682,7 +1682,7 @@ class Tickets extends SiteController
         // Check for an ID
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets'),
             );
             return;
         }
@@ -1725,7 +1725,7 @@ class Tickets extends SiteController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets'),
         );
     }
 
@@ -1864,7 +1864,7 @@ class Tickets extends SiteController
             $row->set('severity', ($row->get('severity') ? $row->get('severity') : 'normal'));
             $row->set('category', ($row->get('category') ? $row->get('category') : Lang::txt('COM_SUPPORT_CATEGORY_TOOLS')));
             $row->set('resolved', '');
-            $row->set('email', ($row->get('email') ? $row->get('email') : (!isset($this->_data['supportemail']) ? '' : $this->_data['supportemail'])));
+            $row->set('email', ($row->get('email') ? $row->get('email') : (!isset($this->attributes['supportemail']) ? '' : $this->attributes['supportemail'])));
             $row->set('name', ($row->get('name') ? $row->get('name') : Lang::txt('COM_SUPPORT_AUTOMATED_REPORT')));
             $row->set('cookies', ($row->get('cookies') ? $row->get('cookies') : 1));
             $row->set('instances', 1);
@@ -1898,7 +1898,7 @@ class Tickets extends SiteController
     {
         // Check logged in status
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );

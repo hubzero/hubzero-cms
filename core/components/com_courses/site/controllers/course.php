@@ -57,19 +57,19 @@ class Course extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if ($this->course->exists()) {
             Pathway::append(
                 stripslashes($this->course->get('title')),
-                'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias'),
+                'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'),
             );
         } else {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -82,13 +82,13 @@ class Course extends SiteController
     protected function _buildTitle()
     {
         //set title used in view
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
         if ($this->course->exists()) {
             $this->_title .= ': ' . stripslashes($this->course->get('title'));
         } else {
-            if ($this->_task && $this->_task != 'intro') {
-                $this->_title .= Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+            if ($this->task && $this->task != 'intro') {
+                $this->_title .= Lang::txt(strtoupper($this->option . '_' . $this->task));
             }
         }
 
@@ -105,8 +105,8 @@ class Course extends SiteController
      */
     public function loginTask($message = '', $task = null)
     {
-        $task   = $task ?: $this->_task;
-        $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $task, false, true));
+        $task   = $task ?: $this->task;
+        $return = base64_encode(Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('id') . '&task=' . $task, false, true));
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -197,7 +197,7 @@ class Course extends SiteController
             $this->course = $model;
         }
 
-        if ($this->_task != 'new') {
+        if ($this->task != 'new') {
             // Ensure we found the course info
             if (!$this->course->exists()) {
                 App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
@@ -319,7 +319,7 @@ class Course extends SiteController
 
         // Redirect back to the course page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
+            Route::url('index.php?option=' . $this->option . '&gid=' . $course->get('alias')),
             $msg,
         );
     }
@@ -364,7 +364,7 @@ class Course extends SiteController
 
         // Redirect back to the course page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
+            Route::url('index.php?option=' . $this->option . '&gid=' . $course->get('alias')),
         );
     }
 
@@ -589,7 +589,7 @@ class Course extends SiteController
 
         // Build the "from" info for e-mails
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -602,7 +602,7 @@ class Course extends SiteController
             'name'   => 'emails',
             'layout' => 'deleted',
         ]);
-        $eview->set('option', $this->_option);
+        $eview->set('option', $this->option);
         $eview->sitename = Config::get('sitename');
         $eview->user = User::getInstance();
         $eview->gcn = $this->course->get('cn');
@@ -613,7 +613,7 @@ class Course extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         // Send the message
-        if (!Event::trigger('xmessage.onSendMessage', ['courses_deleted', $subject, $message, $from, $managers, $this->_option])) {
+        if (!Event::trigger('xmessage.onSendMessage', ['courses_deleted', $subject, $message, $from, $managers, $this->option])) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
         }
 
@@ -627,7 +627,7 @@ class Course extends SiteController
 
         // Redirect back to the courses page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
             Lang::txt('COM_COURSES_COURSE_DELETED', $this->course->get('title')),
             'passed',
         );
@@ -657,7 +657,7 @@ class Course extends SiteController
         $course = Models\Course::getInstance($page['course_id']);
         if (!$course->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -743,7 +743,7 @@ class Course extends SiteController
 
         if (!$this->course->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
             return;
         }
@@ -989,14 +989,14 @@ class Course extends SiteController
             Notify::error(Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $this->course->getError());
 
             if (!$rtrn) {
-                $rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+                $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false);
             }
 
             App::redirect($rtrn);
         }
 
         if (!$rtrn) {
-            $rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
+            $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'], false);
         }
 
         // Success
@@ -1014,7 +1014,7 @@ class Course extends SiteController
     {
         // Forking makes the caller the new course's manager, so there has to be one
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=fork', false, true), 'server'));
+            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=fork', false, true), 'server'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
@@ -1088,7 +1088,7 @@ class Course extends SiteController
             Notify::error(Lang::txt('COM_COURSES_ERROR_FORK_FAILED') . ': ' . $this->course->getError());
 
             if (!$rtrn) {
-                $rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+                $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false);
             }
 
             App::redirect($rtrn);
@@ -1110,7 +1110,7 @@ class Course extends SiteController
         $this->course->store();
 
         if (!$rtrn) {
-            $rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
+            $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'], false);
         }
 
         // Success

@@ -44,7 +44,7 @@ class Ldap extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -61,7 +61,7 @@ class Ldap extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -75,7 +75,7 @@ class Ldap extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -104,7 +104,7 @@ class Ldap extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -139,7 +139,7 @@ class Ldap extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -171,7 +171,7 @@ class Ldap extends AdminController
      */
     public function exportUsersBatchTask()
     {
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

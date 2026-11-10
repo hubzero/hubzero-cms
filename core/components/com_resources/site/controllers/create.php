@@ -84,32 +84,32 @@ class Create extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if ($row->id && $row->published == 1) {
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_EDIT'),
-                'index.php?option=' . $this->_option . '&task=new',
+                'index.php?option=' . $this->option . '&task=new',
             );
         } else {
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_NEW'),
-                'index.php?option=' . $this->_option . '&task=new',
+                'index.php?option=' . $this->option . '&task=new',
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
-                Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
         if ($this->step) {
             $stepLabel = $this->steps[$this->step] ?? 'UNKNOWN';
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($stepLabel)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step,
+                'index.php?option=' . $this->option . '&task=' . $this->task . '&step=' . $this->step,
             );
         }
     }
@@ -122,14 +122,14 @@ class Create extends SiteController
      */
     public function _buildTitle($row)
     {
-        $this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+        $this->_title = Lang::txt(strtoupper($this->option)) . ': ';
         if ($row->id && $row->published == 1) {
             $this->_title .= Lang::txt('COM_CONTRIBUTE_EDIT');
         } else {
             $this->_title .= Lang::txt('COM_CONTRIBUTE_NEW');
         }
-        if ($this->_task) {
-            $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->_task));
+        if ($this->task) {
+            $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->task));
         }
         if ($this->step && isset($this->steps[$this->step])) {
             $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
@@ -144,7 +144,7 @@ class Create extends SiteController
      */
     public function loginTask()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
+        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->controller), 'server');
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
@@ -1334,7 +1334,7 @@ class Create extends SiteController
                 $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id));
                 $message->addFrom(
                     Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
+                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
                 );
 
                 // Plain text email
@@ -1342,8 +1342,8 @@ class Create extends SiteController
                     'name'   => 'emails',
                     'layout' => 'submitted_plain',
                 ]);
-                $eview->option     = $this->_option;
-                $eview->controller = $this->_controller;
+                $eview->option     = $this->option;
+                $eview->controller = $this->controller;
                 $eview->resource   = $resource;
                 $eview->delimiter  = '';
 
@@ -1451,7 +1451,7 @@ class Create extends SiteController
         }
 
         // Output HTML
-        $this->setView($this->_controller, 'thanks');
+        $this->setView($this->controller, 'thanks');
 
         $this->view
             ->set('title', $this->_title)
@@ -1474,7 +1474,7 @@ class Create extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=new'),
+                Route::url('index.php?option=' . $this->option . '&task=new'),
             );
             return;
         }
@@ -1576,7 +1576,7 @@ class Create extends SiteController
 
                 // Redirect to the start page
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&task=new'),
+                    Route::url('index.php?option=' . $this->option . '&task=new'),
                 );
                 break;
         }
@@ -1615,7 +1615,7 @@ class Create extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=new'),
+            Route::url('index.php?option=' . $this->option . '&task=new'),
         );
     }
 

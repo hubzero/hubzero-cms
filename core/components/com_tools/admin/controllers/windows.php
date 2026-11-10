@@ -55,12 +55,12 @@ class Windows extends AdminController
         $filters = [
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'start',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -167,7 +167,7 @@ class Windows extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -204,7 +204,7 @@ class Windows extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             ($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null),
         );
     }
@@ -219,30 +219,30 @@ class Windows extends AdminController
         // Get filters
         $filters = [
             'appname' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.appname',
+                $this->option . '.' . $this->controller . '.appname',
                 'appname',
                 '',
             )),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'start',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -402,8 +402,8 @@ class Windows extends AdminController
         // Redirect back to the listing
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option
-                    . '&controller=' . $this->_controller . '&task=sessions',
+                'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=sessions',
                 false,
             ),
             Lang::txt('COM_TOOLS_SESSIONS_TERMINATED'),

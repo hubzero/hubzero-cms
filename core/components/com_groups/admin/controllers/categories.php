@@ -37,7 +37,7 @@ class Categories extends AdminController
         // Ensure we have a group ID
         if (!$gid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
+                Route::url('index.php?option=' . $this->option . '&controller=manage', false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -60,18 +60,18 @@ class Categories extends AdminController
     {
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -102,8 +102,8 @@ class Categories extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -145,8 +145,8 @@ class Categories extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -202,7 +202,7 @@ class Categories extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -251,8 +251,8 @@ class Categories extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&gid=' . Request::getString('gid', '');
         App::redirect(
             Route::url($url, false),
@@ -266,7 +266,7 @@ class Categories extends AdminController
      */
     public function manageTask()
     {
-        $url = 'index.php?option=' . $this->_option
+        $url = 'index.php?option=' . $this->option
             . '&controller=manage&task=edit&id=' . Request::getString('gid', '');
         App::redirect(
             Route::url($url, false),

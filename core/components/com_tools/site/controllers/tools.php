@@ -30,7 +30,7 @@ class Tools extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         // Get the task
         $task = Request::getCmd('task', 'display');
@@ -62,9 +62,9 @@ class Tools extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle($title = null)
     {
-        $this->_title = ($title) ? $title : Lang::txt(strtoupper($this->_option));
-        if ($this->_task && $this->_task != 'display') {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->_title = ($title) ? $title : Lang::txt(strtoupper($this->option));
+        if ($this->task && $this->task != 'display') {
+            $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         Document::setTitle($this->_title);
     }
@@ -79,14 +79,14 @@ class Tools extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                (isset($this->_title) ? $this->_title : Lang::txt(strtoupper($this->_option))),
-                'index.php?option=' . $this->_option,
+                (isset($this->_title) ? $this->_title : Lang::txt(strtoupper($this->option))),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task && $this->_task != 'display') {
+        if ($this->task && $this->task != 'display') {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -109,7 +109,7 @@ class Tools extends SiteController
         $this->view->isToolAdmin = $this->isToolAdmin();
 
         // Get the forge image
-        $this->view->image = \Hubzero\Document\Assets::getComponentImage($this->_option, 'forge.png', 1);
+        $this->view->image = \Hubzero\Document\Assets::getComponentImage($this->option, 'forge.png', 1);
 
         // Get some vars to fill in text
         $this->view->title = $this->_title;
@@ -257,7 +257,7 @@ class Tools extends SiteController
             return false;
         }
 
-        return User::authorise('core.admin', $this->_option);
+        return User::authorise('core.admin', $this->option);
     }
 
     /**
@@ -268,11 +268,11 @@ class Tools extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _authorize($assetType = 'component', $assetId = null)
+    public function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

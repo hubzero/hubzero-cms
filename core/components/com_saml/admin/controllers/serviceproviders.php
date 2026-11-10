@@ -47,23 +47,23 @@ class Serviceproviders extends AdminController
     {
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -101,8 +101,8 @@ class Serviceproviders extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -140,7 +140,7 @@ class Serviceproviders extends AdminController
         // alone must not be able to repoint an SP's ACS at somewhere else
         $permission = empty($fields['id']) ? 'core.create' : 'core.edit';
 
-        if (!User::authorise($permission, $this->_option)) {
+        if (!User::authorise($permission, $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -184,7 +184,7 @@ class Serviceproviders extends AdminController
         $state = isset($state['state']) ? (int) $state['state'] : null;
 
         if ($state !== null && $state != (int) $row->get('state', ServiceProvider::STATE_ENABLED)) {
-            if (!User::authorise('core.edit.state', $this->_option)) {
+            if (!User::authorise('core.edit.state', $this->option)) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
 
@@ -321,7 +321,7 @@ class Serviceproviders extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -363,7 +363,7 @@ class Serviceproviders extends AdminController
         // Check for request forgeries — the list view links this task via GET
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -412,7 +412,7 @@ class Serviceproviders extends AdminController
      */
     public function importTask()
     {
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -433,7 +433,7 @@ class Serviceproviders extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

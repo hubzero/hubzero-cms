@@ -64,35 +64,35 @@ class Plugins extends AdminController
         $filters = [
             'folder' => 'resources',
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'filter_state',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 0,
                 'int',
             ),
             'enabled' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.enabled',
+                $this->option . '.' . $this->controller . '.enabled',
                 'filter_state',
                 '',
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'folder',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -190,8 +190,8 @@ class Plugins extends AdminController
         $out = Event::trigger(
             'resources.onManage',
             [
-                $this->_option,
-                $this->_controller,
+                $this->option,
+                $this->controller,
                 Request::getString('action', 'default'),
             ],
         );

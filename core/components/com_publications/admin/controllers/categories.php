@@ -49,29 +49,29 @@ class Categories extends AdminController
         // Incoming
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.categories.limit',
+                $this->option . '.categories.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.categories.limitstart',
+                $this->option . '.categories.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => Request::getState(
-                $this->_option . '.categories.search',
+                $this->option . '.categories.search',
                 'search',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.categories.sort',
+                $this->option . '.categories.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.categories.sortdir',
+                $this->option . '.categories.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -109,8 +109,8 @@ class Categories extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -150,8 +150,8 @@ class Categories extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -248,7 +248,7 @@ class Categories extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -319,7 +319,7 @@ class Categories extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

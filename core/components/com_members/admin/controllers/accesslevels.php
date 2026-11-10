@@ -30,7 +30,7 @@ class Accesslevels extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.access', dirname(__DIR__));
+        Lang::load($this->option . '.access', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -50,17 +50,17 @@ class Accesslevels extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -135,9 +135,9 @@ class Accesslevels extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -187,7 +187,7 @@ class Accesslevels extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             return $this->cancelTask();
         }
 

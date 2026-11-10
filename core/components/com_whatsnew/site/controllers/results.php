@@ -182,20 +182,20 @@ class Results extends SiteController
         }
 
         // Set the page title
-        $title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->text($period);
+        $title = Lang::txt(strtoupper($this->option)) . ': ' . $this->text($period);
 
         Document::setTitle($title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             $this->text($period),
-            'index.php?option=' . $this->_option . '&period=' . $period,
+            'index.php?option=' . $this->option . '&period=' . $period,
         );
 
         // Build some options for the time period <select>
@@ -245,7 +245,7 @@ class Results extends SiteController
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url('index.php?option=' . $this->_option);
+        $doc->link = Route::url('index.php?option=' . $this->option);
 
         // Incoming
         $period = Request::getString('period', 'month');

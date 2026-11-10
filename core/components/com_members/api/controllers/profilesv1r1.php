@@ -152,7 +152,7 @@ class Profilesv1r1 extends ApiController
                     $obj->hubtype = 'member';
                     $obj->id = 'member-' . $entry->get('id');
                     $obj->title = $entry->get('name');
-                    $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                    $entryUrl = Route::url('index.php?option=' . $this->option . '&id=' . $entry->get('id'));
                     $obj->url = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                     // @TODO: Add more fields to the SOLR core.
@@ -186,7 +186,7 @@ class Profilesv1r1 extends ApiController
                     $obj->middleName   = $entry->get('middleName');
                     $obj->surname      = $entry->get('surname');
                     $obj->organization = $entry->get('organization');
-                    $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                    $entryUrl = Route::url('index.php?option=' . $this->option . '&id=' . $entry->get('id'));
                     $obj->uri          = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                     $response->members[] = $obj;

@@ -747,7 +747,7 @@ class Media extends Base
 
             if (!empty($reviewers)) {
                 $from = [
-                    'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+                    'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
                     'email' => Config::get('mailfrom'),
                 ];
 
@@ -1318,7 +1318,7 @@ class Media extends Base
         }
 
         // Gather details
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn'));
 
         $details = [
             'title'     => $this->group->get('description'),

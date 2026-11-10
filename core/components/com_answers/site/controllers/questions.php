@@ -62,7 +62,7 @@ class Questions extends SiteController
     public function loginTask($rtrn = null)
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false, true), 'server');
         }
 
         App::redirect(
@@ -112,8 +112,8 @@ class Questions extends SiteController
             // someone else's entry.
             if (
                 $__row->get('created_by') != User::get('id')
-                && !User::authorise('core.edit', $this->_option)
-                && !User::authorise('core.manage', $this->_option)
+                && !User::authorise('core.edit', $this->option)
+                && !User::authorise('core.manage', $this->option)
             ) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
@@ -175,7 +175,7 @@ class Questions extends SiteController
             'name'   => 'emails',
             'layout' => 'response_plaintext',
         ]);
-        $eview->option   = $this->_option;
+        $eview->option   = $this->option;
         $eview->sitename = Config::get('sitename');
         $eview->question = $question;
         $eview->row      = $row;
@@ -209,7 +209,7 @@ class Questions extends SiteController
         // send the response, unless the author is also in the admin list.
         foreach ($notify as $authorid) {
             if (!in_array($authorid, $receivers) && $question->get('email')) {
-                if (!Event::trigger('xmessage.onSendMessage', ['answers_reply_comment', $subject, $message, $from, [$authorid], $this->_option])) {
+                if (!Event::trigger('xmessage.onSendMessage', ['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option])) {
                     $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
                 }
             }
@@ -217,7 +217,7 @@ class Questions extends SiteController
 
         // admin emails
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->_option])) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -249,7 +249,7 @@ class Questions extends SiteController
         ]);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $questionID),
+            Route::url('index.php?option=' . $this->option . '&task=question&id=' . $questionID),
         );
     }
 
@@ -288,7 +288,7 @@ class Questions extends SiteController
         if (User::isGuest()) {
             if (!$no_html) {
                 // Return to a page that can be requested with GET, not to this task
-                $rtrn = 'index.php?option=' . $this->_option;
+                $rtrn = 'index.php?option=' . $this->option;
                 if ($id && $type == 'question') {
                     $rtrn .= '&task=question&id=' . $id;
                 } elseif ($id && $type == 'response') {
@@ -316,7 +316,7 @@ class Questions extends SiteController
             // cannot proceed
             if (!$no_html) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option),
+                    Route::url('index.php?option=' . $this->option),
                     Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
                     'error',
                 );
@@ -339,7 +339,7 @@ class Questions extends SiteController
             // by anyone logged in.
             if (!$no_html) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option),
+                    Route::url('index.php?option=' . $this->option),
                     Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
                     'error',
                 );
@@ -620,8 +620,8 @@ class Questions extends SiteController
         }
 
         if (
-            !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.create', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
         }
@@ -684,9 +684,9 @@ class Questions extends SiteController
         }
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
         }
@@ -728,8 +728,8 @@ class Questions extends SiteController
             // someone else's entry.
             if (
                 $__row->get('created_by') != User::get('id')
-                && !User::authorise('core.edit', $this->_option)
-                && !User::authorise('core.manage', $this->_option)
+                && !User::authorise('core.edit', $this->option)
+                && !User::authorise('core.manage', $this->option)
             ) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
@@ -739,8 +739,8 @@ class Questions extends SiteController
         // POST. The new-question form posts a constant state of 0 and never
         // posts an author or a timestamp.
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             unset($fields['created_by'], $fields['created']);
             $fields['state'] = $__existing ? $__row->get('state') : 0;
@@ -827,7 +827,7 @@ class Questions extends SiteController
                 'name'   => 'emails',
                 'layout' => 'question_plaintext',
             ]);
-            $eview->option   = $this->_option;
+            $eview->option   = $this->option;
             $eview->sitename = Config::get('sitename');
             $eview->question = $row;
             $eview->id       = $row->get('id', 0);
@@ -842,7 +842,7 @@ class Questions extends SiteController
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $recipients, $this->_option])) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $recipients, $this->option])) {
                 Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -868,7 +868,7 @@ class Questions extends SiteController
 
         // Redirect to the question
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $row->get('id')),
+            Route::url('index.php?option=' . $this->option . '&task=question&id=' . $row->get('id')),
             Lang::txt('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS'),
         );
     }
@@ -883,7 +883,7 @@ class Questions extends SiteController
         // Login required
         if (User::isGuest()) {
             // Return to the question, which can be requested with GET, not to this task
-            $rtrn = 'index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('qid', 0);
+            $rtrn = 'index.php?option=' . $this->option . '&task=question&id=' . Request::getInt('qid', 0);
 
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
             return $this->loginTask(Route::url($rtrn, false, true));
@@ -898,8 +898,8 @@ class Questions extends SiteController
         Request::checkToken();
 
         if (
-            !User::authorise('core.delete', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.delete', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
         }
@@ -921,8 +921,8 @@ class Questions extends SiteController
         // of them delete anyone's question.
         if (
             $question->get('created_by') != User::get('id')
-            && !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1017,7 +1017,7 @@ class Questions extends SiteController
 
         // Redirect to the question
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
         );
     }
 
@@ -1072,8 +1072,8 @@ class Questions extends SiteController
             // someone else's entry.
             if (
                 $__row->get('created_by') != User::get('id')
-                && !User::authorise('core.edit', $this->_option)
-                && !User::authorise('core.manage', $this->_option)
+                && !User::authorise('core.edit', $this->option)
+                && !User::authorise('core.manage', $this->option)
             ) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
@@ -1083,8 +1083,8 @@ class Questions extends SiteController
         // accepted and skip acceptTask entirely. question_id is fixed on an
         // existing row so an answer cannot be moved to another question.
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             unset($response['created_by'], $response['created'], $response['helpful'], $response['nothelpful']);
             $response['state'] = $__existing ? $__row->get('state') : 0;
@@ -1124,7 +1124,7 @@ class Questions extends SiteController
             'name'   => 'emails',
             'layout' => 'response_plaintext',
         ]);
-        $eview->option   = $this->_option;
+        $eview->option   = $this->option;
         $eview->sitename = Config::get('sitename');
         $eview->question = $question;
         $eview->row      = $row;
@@ -1156,14 +1156,14 @@ class Questions extends SiteController
                 $messageType = 'answers_reply_submitted';
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', [$messageType , $subject, $message, $from, [$authorid], $this->_option])) {
+            if (!Event::trigger('xmessage.onSendMessage', [$messageType , $subject, $message, $from, [$authorid], $this->option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
 
         // Send the answers admins message
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->_option])) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }

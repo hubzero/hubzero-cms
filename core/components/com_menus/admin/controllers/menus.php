@@ -47,18 +47,18 @@ class Menus extends AdminController
         // Get filters
         $filters = [
             'parent_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.parent_id',
+                $this->option . '.' . $this->controller . '.parent_id',
                 'filter_parent_id',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -102,8 +102,8 @@ class Menus extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -142,8 +142,8 @@ class Menus extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -200,7 +200,7 @@ class Menus extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -230,8 +230,8 @@ class Menus extends AdminController
                     continue;
                 }
 
-                if ($menuType == User::getState($this->_option . '.items.menutype')) {
-                    User::setState($this->_option . '.items.menutype', null);
+                if ($menuType == User::getState($this->option . '.items.menutype')) {
+                    User::setState($this->option . '.items.menutype', null);
                 }
 
                 // Trigger after delete event

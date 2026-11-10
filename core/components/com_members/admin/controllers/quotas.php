@@ -34,7 +34,7 @@ class Quotas extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.quotas', dirname(__DIR__));
+        Lang::load($this->option . '.quotas', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -52,27 +52,27 @@ class Quotas extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.quotas.search',
+                $this->option . '.quotas.search',
                 'search',
                 '',
             )),
             'search_field' => urldecode(Request::getState(
-                $this->_option . '.quotas.search_field',
+                $this->option . '.quotas.search_field',
                 'search_field',
                 'name',
             )),
             'sort' => Request::getState(
-                $this->_option . '.quotas.sort',
+                $this->option . '.quotas.sort',
                 'filter_order',
                 'user_id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.quotas.sortdir',
+                $this->option . '.quotas.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'class_alias' => Request::getState(
-                $this->_option . '.quotas.class_alias',
+                $this->option . '.quotas.class_alias',
                 'class_alias',
                 '',
             ),
@@ -158,7 +158,7 @@ class Quotas extends AdminController
         }
 
         $dataHref = Route::url(
-            'index.php?option=' . $this->_option . '&controller=quotas&task=getClassValues&class_id=',
+            'index.php?option=' . $this->option . '&controller=quotas&task=getClassValues&class_id=',
             false,
         );
         $classes = Html::select(
@@ -306,12 +306,12 @@ class Quotas extends AdminController
         // Incoming
         $filters = [
             'sort' => Request::getState(
-                $this->_option . '.classes.sort',
+                $this->option . '.classes.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.classes.sortdir',
+                $this->option . '.classes.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -494,7 +494,7 @@ class Quotas extends AdminController
      */
     public function cancelClassTask()
     {
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=displayClasses';
         App::redirect(Route::url($url, false));
     }
@@ -632,7 +632,7 @@ class Quotas extends AdminController
 
         if (empty($qfile)) {
             // Output message and redirect
-            $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=import';
             App::redirect(
                 Route::url($url, false),
@@ -736,7 +736,7 @@ class Quotas extends AdminController
 
             if (!$class->get('id')) {
                 // Output message and redirect
-                $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=import';
                 App::redirect(
                     Route::url($url, false),

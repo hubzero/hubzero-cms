@@ -65,37 +65,37 @@ class Manage extends AdminController
             'authorized' => 'admin',
             // Incoming
             'type'       => [Request::getState(
-                $this->_option . '.browse.type',
+                $this->option . '.browse.type',
                 'type',
                 'all',
             )],
             'search'     => urldecode(Request::getState(
-                $this->_option . '.browse.search',
+                $this->option . '.browse.search',
                 'search',
                 '',
             )),
             'discoverability' => Request::getState(
-                $this->_option . '.browse.discoverability',
+                $this->option . '.browse.discoverability',
                 'discoverability',
                 '',
             ),
             'policy'     => Request::getState(
-                $this->_option . '.browse.policy',
+                $this->option . '.browse.policy',
                 'policy',
                 '',
             ),
             'state'     => Request::getState(
-                $this->_option . '.browse.state',
+                $this->option . '.browse.state',
                 'state',
                 -1,
             ),
             'sort'       => Request::getState(
-                $this->_option . '.browse.sort',
+                $this->option . '.browse.sort',
                 'filter_order',
                 'cn',
             ),
             'sort_Dir'   => Request::getState(
-                $this->_option . '.browse.sortdir',
+                $this->option . '.browse.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -130,13 +130,13 @@ class Manage extends AdminController
 
         // Filters for returning results
         $this->view->filters['limit']  = Request::getState(
-            $this->_option . '.browse.limit',
+            $this->option . '.browse.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $this->view->filters['start']  = Request::getState(
-            $this->_option . '.browse.limitstart',
+            $this->option . '.browse.limitstart',
             'limitstart',
             0,
             'int',
@@ -269,7 +269,7 @@ class Manage extends AdminController
             $before = clone($group);
         }
 
-        $task = ($this->_task == 'edit') ? 'edit' : 'create';
+        $task = ($this->task == 'edit') ? 'edit' : 'create';
 
         if (!$this->canPerform($task, $group)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -308,7 +308,7 @@ class Manage extends AdminController
         }
 
         //only check if cn exists if we are creating or have changed the cn
-        if ($this->_task == 'new' || $group->get('cn') != $g['cn']) {
+        if ($this->task == 'new' || $group->get('cn') != $g['cn']) {
             if (Group::exists($g['cn'], true)) {
                 $this->setError(Lang::txt('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
             }
@@ -437,7 +437,7 @@ class Manage extends AdminController
 
         if ($this->getTask() == 'apply') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $group->get('gidNumber'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $group->get('gidNumber'), false),
             );
             return;
         }
@@ -990,7 +990,7 @@ class Manage extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1082,10 +1082,10 @@ class Manage extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1171,10 +1171,10 @@ class Manage extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1236,10 +1236,10 @@ class Manage extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

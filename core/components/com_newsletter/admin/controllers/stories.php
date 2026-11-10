@@ -48,8 +48,8 @@ class Stories extends AdminController
     public function editTask($story = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -173,8 +173,8 @@ class Stories extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -201,8 +201,8 @@ class Stories extends AdminController
             Notify::warning(Lang::txt('COM_NEWSLETTER_STORY_MISSING_REQUIRED'));
 
             // Redirect if the information is lacking
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&task=add&type=autogen&id=' . $nid;
             App::redirect(
                 Route::url($url, false),
@@ -237,8 +237,8 @@ class Stories extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -397,7 +397,7 @@ class Stories extends AdminController
         $id = !empty($story) ? $story['nid'] : $nid;
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=newsletters&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&controller=newsletters&task=edit&id=' . $id, false),
         );
     }
 }

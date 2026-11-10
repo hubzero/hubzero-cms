@@ -39,13 +39,13 @@ class Setup extends Base
         $this->registerTask('start', 'display');
 
         // Incoming
-        $defaultSection = $this->_task == 'edit' ? 'info' : '';
+        $defaultSection = $this->task == 'edit' ? 'info' : '';
         $this->section  = Request::getCmd('active', $defaultSection);
         $this->group    = null;
 
         // Login required
         if (User::isGuest()) {
-            $this->_msg = $this->_task == 'edit' || !$this->_task
+            $this->_msg = $this->task == 'edit' || !$this->task
                 ? Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
                 : Lang::txt('COM_PROJECTS_LOGIN_SETUP');
             $this->_login();
@@ -53,12 +53,12 @@ class Setup extends Base
         }
 
         if (
-            !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('ALERTNOTAUTH'),
                 'warning',
             );
@@ -76,7 +76,7 @@ class Setup extends Base
      */
     public function displayTask()
     {
-        $this->_task = 'setup';
+        $this->task = 'setup';
 
         // Get project information
         if ($this->_identifier) {
@@ -173,7 +173,7 @@ class Setup extends Base
         $this->view->step     = $step;
         $this->view->section  = $this->section;
         $this->view->title    = $this->title;
-        $this->view->option   = $this->_option;
+        $this->view->option   = $this->option;
         $this->view->config   = $this->config;
         $this->view->extended = Request::getInt('extended', 0, 'post');
 
@@ -337,7 +337,7 @@ class Setup extends Base
         $task   = $setup ? 'setup' : 'edit';
         $append = $new && $this->model->exists() && $this->next == 'describe' ? '#describearea' : '';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=' . $task . '&alias=' . $this->model->get('alias') . '&active=' . $this->next) . $append,
+            Route::url('index.php?option=' . $this->option . '&task=' . $task . '&alias=' . $this->model->get('alias') . '&active=' . $this->next) . $append,
         );
         return;
     }
@@ -535,7 +535,7 @@ class Setup extends Base
             // Send out email to admins
             if (!empty($admins)) {
                 Helpers\Html::sendHUBMessage(
-                    $this->_option,
+                    $this->option,
                     $this->model,
                     $admins,
                     Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -805,7 +805,7 @@ class Setup extends Base
                                     // Send out email to admins
                                     if (!empty($admins)) {
                                         Helpers\Html::sendHUBMessage(
-                                            $this->_option,
+                                            $this->option,
                                             $this->model,
                                             $admins,
                                             Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -933,7 +933,7 @@ class Setup extends Base
                                 // Send out email to admins
                                 if (!empty($admins)) {
                                     Helpers\Html::sendHUBMessage(
-                                        $this->_option,
+                                        $this->option,
                                         $this->model,
                                         $admins,
                                         Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -964,7 +964,7 @@ class Setup extends Base
         // Get plugin output
         $content = Event::trigger('projects.onProject', [
             $this->model,
-            $this->_task,
+            $this->task,
             ['team'],
         ]);
 
@@ -1038,9 +1038,9 @@ class Setup extends Base
         $this->view->section    = $this->section;
         $this->view->sections   = $sections;
         $this->view->title      = $this->title;
-        $this->view->option     = $this->_option;
+        $this->view->option     = $this->option;
         $this->view->config     = $this->config;
-        $this->view->task       = $this->_task;
+        $this->view->task       = $this->task;
         $this->view->publishing = $this->_publishing;
         $this->view->active     = 'edit';
 

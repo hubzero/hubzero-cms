@@ -42,7 +42,7 @@ class Members extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.members', dirname(__DIR__));
+        Lang::load($this->option . '.members', dirname(__DIR__));
 
         $this->registerTask('modal', 'display');
         $this->registerTask('add', 'edit');
@@ -69,55 +69,55 @@ class Members extends AdminController
         // Get filters
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'registerDate',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             'registerDate' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.registerDate',
+                $this->option . '.' . $this->controller . '.registerDate',
                 'registerDate',
                 '',
             ),
             'activation' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.activation',
+                $this->option . '.' . $this->controller . '.activation',
                 'activation',
                 0,
                 'int',
             ),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '*',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 0,
                 'int',
             ),
             'approved' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.approved',
+                $this->option . '.' . $this->controller . '.approved',
                 'approved',
                 '*',
             ),
             'group_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.group_id',
+                $this->option . '.' . $this->controller . '.group_id',
                 'group_id',
                 0,
                 'int',
             ),
             'range' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.range',
+                $this->option . '.' . $this->controller . '.range',
                 'range',
                 '',
             ),
@@ -271,10 +271,10 @@ class Members extends AdminController
     public function editTask($user = null)
     {
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -330,10 +330,10 @@ class Members extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -526,7 +526,7 @@ class Members extends AdminController
                 // Set error
                 Notify::error(Lang::txt('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
                 $this->validated = $validated;
-                $this->_task = 'apply';
+                $this->task = 'apply';
             } else {
                 // Save password
                 \Hubzero\User\Password::changePassword($user->get('username'), $newpass);
@@ -566,14 +566,14 @@ class Members extends AdminController
             if ($expiresChanged && $shadowMaxSet) {
                 // Both say when the password expires; applying one would silently drop the other
                 Notify::error(Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_BOTH'));
-                $this->_task = 'apply';
+                $this->task = 'apply';
             } elseif ($expiresChanged) {
                 $expiryDay = self::expiryDay($expiresOn);
                 $error     = $this->passwordExpiryError($passinfo, $expiresOn, $expiryDay);
 
                 if ($error) {
                     Notify::error($error);
-                    $this->_task = 'apply';
+                    $this->task = 'apply';
                 } elseif ($expiresOn === '') {
                     $passinfo->set('shadowMax', null);
                     $changed = true;
@@ -652,10 +652,10 @@ class Members extends AdminController
 
         // Check for permission to perform this aciton
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -699,7 +699,7 @@ class Members extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -768,9 +768,9 @@ class Members extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.delete', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.delete', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -834,9 +834,9 @@ class Members extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -899,9 +899,9 @@ class Members extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1030,8 +1030,8 @@ class Members extends AdminController
             'name'      => 'emails',
             'layout'    => 'approved_plain',
         ]);
-        $eview->option     = $this->_option;
-        $eview->controller = $this->_controller;
+        $eview->option     = $this->option;
+        $eview->controller = $this->controller;
         $eview->config     = $this->config;
         $eview->baseURL    = Request::root();
         $eview->user       = $user;
@@ -1111,9 +1111,9 @@ class Members extends AdminController
         // to root, where only a core.admin holder has it -- a core.manage test
         // therefore admitted administrators the page itself refuses.
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !(User::authorise('core.delete', $this->_option)
-            && User::authorise('core.deidentify', $this->_option))
+            !User::authorise('core.admin', $this->option)
+            && !(User::authorise('core.delete', $this->option)
+            && User::authorise('core.deidentify', $this->option))
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1176,10 +1176,10 @@ class Members extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
-            && !User::authorise('core.delete', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
+            && !User::authorise('core.delete', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1246,9 +1246,9 @@ class Members extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1382,34 +1382,34 @@ class Members extends AdminController
         // Get filters
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.search',
+                $this->option . '.' . $this->controller . '.debug.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.sort',
+                $this->option . '.' . $this->controller . '.debug.sort',
                 'filter_order',
                 'lft',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.sortdir',
+                $this->option . '.' . $this->controller . '.debug.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'level_start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.filter_level_start',
+                $this->option . '.' . $this->controller . '.debug.filter_level_start',
                 'filter_level_start',
                 0,
                 'int',
             ),
             'level_end' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.filter_level_end',
+                $this->option . '.' . $this->controller . '.debug.filter_level_end',
                 'filter_level_end',
                 0,
                 'int',
             ),
             'component' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.debug.filter_component',
+                $this->option . '.' . $this->controller . '.debug.filter_component',
                 'filter_component',
                 '',
             ),
@@ -1503,8 +1503,8 @@ class Members extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -1535,8 +1535,8 @@ class Members extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -1681,7 +1681,7 @@ class Members extends AdminController
         if ($this->getTask() == 'applyprofile') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile', false),
             );
         }
 

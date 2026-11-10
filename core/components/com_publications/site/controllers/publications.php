@@ -61,7 +61,7 @@ class Publications extends SiteController
 
         $pointer = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->_alias;
 
-        $this->_route  = 'index.php?option=' . $this->_option;
+        $this->_route  = 'index.php?option=' . $this->option;
         $this->_route .= $this->_identifier ? $pointer : '';
         if ($active = Request::getWord('active')) {
             $this->_route .= '&active=' . $active;
@@ -89,18 +89,18 @@ class Publications extends SiteController
         $this->registerTask('publication', 'contribute');
         $this->registerTask('tombstone', '');
 
-        $this->_task = trim(Request::getCmd('task', ''));
+        $this->task = trim(Request::getCmd('task', ''));
 
-        if ($this->_task != 'tombstone') {
-            if (($this->_id || $this->_alias) && !$this->_task) {
-                $this->_task = 'page';
-            } elseif (!$this->_task) {
-                $this->_task = 'intro';
+        if ($this->task != 'tombstone') {
+            if (($this->_id || $this->_alias) && !$this->task) {
+                $this->task = 'page';
+            } elseif (!$this->task) {
+                $this->task = 'intro';
             }
 
-            if (!$this->_id && !$this->_alias && in_array($this->_task, ['view', 'page'])) {
+            if (!$this->_id && !$this->_alias && in_array($this->task, ['view', 'page'])) {
                 Request::setVar('task', 'intro');
-                $this->_task = 'intro';
+                $this->task = 'intro';
             }
         }
 
@@ -159,21 +159,21 @@ class Publications extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
         if (
-            !empty($this->model) && $this->_identifier && ($this->_task == 'view'
-            || $this->_task == 'serve' || $this->_task == 'wiki')
+            !empty($this->model) && $this->_identifier && ($this->task == 'view'
+            || $this->task == 'serve' || $this->task == 'wiki')
         ) {
             $url = $this->_route;
 
             // Link to category
             Pathway::append(
                 $this->model->_category->name,
-                'index.php?option=' . $this->_option . '&category=' . $this->model->_category->url_alias,
+                'index.php?option=' . $this->option . '&category=' . $this->model->_category->url_alias,
             );
 
             // Link to publication
@@ -185,20 +185,20 @@ class Publications extends SiteController
                 $url,
             );
 
-            if ($this->_task == 'serve' || $this->_task == 'wiki') {
+            if ($this->task == 'serve' || $this->task == 'wiki') {
                 Pathway::append(
                     Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT'),
-                    $this->_route . '&task=' . $this->_task,
+                    $this->_route . '&task=' . $this->task,
                 );
             }
-        } elseif (Pathway::count() <= 1 && $this->_task) {
-            switch ($this->_task) {
+        } elseif (Pathway::count() <= 1 && $this->task) {
+            switch ($this->task) {
                 case 'browse':
                 case 'submit':
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                            'index.php?option=' . $this->option . '&task=' . $this->task,
                         );
                     }
                     break;
@@ -207,7 +207,7 @@ class Publications extends SiteController
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&task=submit',
+                            'index.php?option=' . $this->option . '&task=submit',
                         );
                     }
                     break;
@@ -219,8 +219,8 @@ class Publications extends SiteController
 
                 default:
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-                        'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                        Lang::txt(strtoupper($this->option . '_' . $this->task)),
+                        'index.php?option=' . $this->option . '&task=' . $this->task,
                     );
                     break;
             }
@@ -235,9 +235,9 @@ class Publications extends SiteController
     protected function _buildTitle()
     {
         if (!$this->_title) {
-            $this->_title = Lang::txt(strtoupper($this->_option));
-            if ($this->_task) {
-                switch ($this->_task) {
+            $this->_title = Lang::txt(strtoupper($this->option));
+            if ($this->task) {
+                switch ($this->task) {
                     case 'browse':
                     case 'submit':
                     case 'start':
@@ -253,7 +253,7 @@ class Publications extends SiteController
                         break;
 
                     default:
-                        $this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+                        $this->_title .= ': ' . Lang::txt(strtoupper($this->option . '_' . $this->task));
                         break;
                 }
             }
@@ -273,7 +273,7 @@ class Publications extends SiteController
     {
         // If message is set push to notifications
         if ($message != '') {
-            Notify::message($message, $type, $this->_option);
+            Notify::message($message, $type, $this->option);
         }
     }
 
@@ -286,7 +286,7 @@ class Publications extends SiteController
     public function getNotifications($type = 'success')
     {
         // Get messages in quene
-        $messages = Notify::messages($this->_option);
+        $messages = Notify::messages($this->option);
 
         // Return first message of type
         if ($messages && count($messages) > 0) {
@@ -306,7 +306,7 @@ class Publications extends SiteController
      */
     protected function _login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
 
         Notify::warning($this->_msg);
 
@@ -364,7 +364,7 @@ class Publications extends SiteController
 
         $this->view
             ->set('title', $this->_title)
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('database', $this->database)
             ->set('config', $this->config)
             ->set('contributable', $this->_contributable)
@@ -465,7 +465,7 @@ class Publications extends SiteController
         );
 
         // Get type if not given
-        $this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+        $this->_title = Lang::txt(strtoupper($this->option)) . ': ';
 
         if ($filters['category'] != '') {
             $categoriesTable->load($filters['category']);
@@ -485,7 +485,7 @@ class Publications extends SiteController
         // Output HTML
         $this->view
             ->set('title', $this->_title)
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('config', $this->config)
             ->set('filters', $filters)
             ->set('categories', $categories)
@@ -533,7 +533,7 @@ class Publications extends SiteController
         // Ensure we have an ID or alias to work with
         if (!$this->_identifier) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -563,7 +563,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -611,7 +611,7 @@ class Publications extends SiteController
         // Get the sections
         $sections = Event::trigger('publications.onPublication', [
             $this->model,
-            $this->_option,
+            $this->option,
             [$tab],
             'all',
             $this->model->versionAlias,
@@ -640,9 +640,9 @@ class Publications extends SiteController
                 'name'   => 'about',
                 'layout' => 'default',
             ]);
-            $view->set('option', $this->_option);
-            $view->set('controller', $this->_controller);
-            $view->set('task', $this->_task);
+            $view->set('option', $this->option);
+            $view->set('controller', $this->controller);
+            $view->set('task', $this->task);
             $view->set('config', $this->config);
             $view->set('database', $this->database);
             $view->set('publication', $this->model);
@@ -654,7 +654,7 @@ class Publications extends SiteController
             $body              = $view->loadTemplate();
 
             // Log page view (public pubs only)
-            if ($this->_logging && $this->_task == 'view') {
+            if ($this->_logging && $this->task == 'view') {
                 $this->model->logAccess('view');
             }
         }
@@ -677,14 +677,14 @@ class Publications extends SiteController
         ];
 
         // Write title & build pathway
-        Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->version->title));
+        Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . stripslashes($this->model->version->title));
 
         // Set the pathway
         $this->_buildPathway();
 
         $this->view->set('version', $this->model->versionAlias);
         $this->view->set('config', $this->config);
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('publication', $this->model);
         $this->view->set('authorized', $authorized);
         $this->view->set('restricted', $restricted);
@@ -734,7 +734,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -773,7 +773,7 @@ class Publications extends SiteController
                 // page with an explanation so they can download files
                 // individually.
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->get('id')),
+                    Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')),
                     Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE'),
                     'warning',
                 );
@@ -791,7 +791,7 @@ class Publications extends SiteController
                     'layout' => '_contents',
                 ]);
                 $view->set('model', $this->model);
-                $view->set('option', $this->_option);
+                $view->set('option', $this->option);
                 $view->display();
 
                 return;
@@ -991,7 +991,7 @@ class Publications extends SiteController
             $status = \Components\Publications\Models\BundleQueue::STATUS_QUEUED;
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->get('id'));
+        $url = Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id'));
 
         if ($status == \Components\Publications\Models\BundleQueue::STATUS_FAILED) {
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE'), 'warning');
@@ -1045,7 +1045,7 @@ class Publications extends SiteController
             $out['ready']  = ($out['status'] === \Components\Publications\Models\BundleQueue::STATUS_READY);
 
             if ($out['ready']) {
-                $out['url'] = Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->get('id')
+                $out['url'] = Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')
                     . '&task=serve&v=' . $this->model->get('version_number') . '&render=archive');
             }
         }
@@ -1069,7 +1069,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -1079,7 +1079,7 @@ class Publications extends SiteController
 
         // Output HTML
         $this->view
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('config', $this->config)
             ->set('publication', $this->model)
             ->set('title', stripslashes($this->model->version->get('title')) . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSE'))
@@ -1105,7 +1105,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -1231,7 +1231,7 @@ class Publications extends SiteController
         }
 
         // Call the trigger
-        $results = Event::trigger('publications.' . $trigger, [$this->_option]);
+        $results = Event::trigger('publications.' . $trigger, [$this->option]);
         if (is_array($results)) {
             $html = $results[0]['html'];
         }
@@ -1325,14 +1325,14 @@ class Publications extends SiteController
         $pid     = Request::getInt('pid', 0);
         $action  = Request::getString('action', '');
         $active  = Request::getString('active', 'publications');
-        $action  = $this->_task == 'start' ? 'start' : $action;
+        $action  = $this->task == 'start' ? 'start' : $action;
         $ajax    = Request::getInt('ajax', 0);
         $doiErr  = Request::getInt('doierr', 0);
 
         // Redirect if publishing is turned off
         if (!$this->_contributable) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -1346,7 +1346,7 @@ class Publications extends SiteController
             'name'   => 'submit',
             'layout' => 'default',
         ]);
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('config', $this->config);
 
         // Set page title
@@ -1361,7 +1361,7 @@ class Publications extends SiteController
         $plugin  = in_array($active, $allowed) ? $active : 'publications';
 
         if (User::isGuest() && ($action == 'login' || $action == 'start' || $action == 'publication')) {
-            $this->_msg = $this->_task == 'start'
+            $this->_msg = $this->task == 'start'
                         ? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
                         : Lang::txt('COM_PUBLICATIONS_LOGIN_TO_VIEW_SUBMISSIONS');
             $this->_login();
@@ -1377,7 +1377,7 @@ class Publications extends SiteController
 
             if (!$project->exists()) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&task=submit', false),
+                    Route::url('index.php?option=' . $this->option . '&task=submit', false),
                 );
                 return;
             }
@@ -1407,7 +1407,7 @@ class Publications extends SiteController
             ]);
             $this->view->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'));
             $this->view->set('title', $this->title);
-            $this->view->set('option', $this->_option);
+            $this->view->set('option', $this->option);
             $this->view->display();
             return;
         }
@@ -1439,7 +1439,7 @@ class Publications extends SiteController
             return;
         } elseif (empty($content)) {
             // plugin disabled?
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
             return;
         }
 
@@ -1472,7 +1472,7 @@ class Publications extends SiteController
     {
         // Check if they are logged in
         if (User::isGuest()) {
-            $this->_task = 'page';
+            $this->task = 'page';
             $this->pageTask();
             return;
         }
@@ -1494,7 +1494,7 @@ class Publications extends SiteController
 
         if (!$no_html) {
             // Push through to the resource view
-            $this->_task = 'page';
+            $this->task = 'page';
             $this->pageTask();
             return;
         }
@@ -1515,13 +1515,13 @@ class Publications extends SiteController
 
         // Redirect if publishing is turned off
         if (!$this->_contributable || !$vid) {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
             return;
         }
 
         // Redirect if forks aren't allowed
         if (!$this->config->get('forks')) {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
             return;
         }
 
@@ -1558,7 +1558,7 @@ class Publications extends SiteController
             //$project->loadProvisioned($pid);
 
             if (!$project->exists()) {
-                App::redirect(Route::url('index.php?option=' . $this->_option . '&task=submit'));
+                App::redirect(Route::url('index.php?option=' . $this->option . '&task=submit'));
                 return;
             }
 
@@ -1600,7 +1600,7 @@ class Publications extends SiteController
             $this->view
                 ->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))
                 ->set('title', $this->title)
-                ->set('option', $this->_option)
+                ->set('option', $this->option)
                 ->setName('error')
                 ->setLayout('restricted')
                 ->display();
@@ -2096,7 +2096,7 @@ class Publications extends SiteController
 
         // Redirect to the publication submission page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=submit&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'), false),
+            Route::url('index.php?option=' . $this->option . '&task=submit&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'), false),
         );
     }
 
@@ -2115,7 +2115,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_MISSING_VERSION'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -2124,7 +2124,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_SAME_VERSIONS'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -2141,7 +2141,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -2158,7 +2158,7 @@ class Publications extends SiteController
             Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -2226,13 +2226,13 @@ class Publications extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task . '&lft=' . $lft . '&rgt=' . $rgt,
+            Lang::txt(strtoupper($this->option . '_' . $this->task)),
+            'index.php?option=' . $this->option . '&task=' . $this->task . '&lft=' . $lft . '&rgt=' . $rgt,
         );
 
         // Display the view
@@ -2251,7 +2251,7 @@ class Publications extends SiteController
     protected function _blockAccess()
     {
         // Set the task
-        $this->_task = 'block';
+        $this->task = 'block';
 
         // Set page title
         $this->_buildTitle();
@@ -2268,7 +2268,7 @@ class Publications extends SiteController
         Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'));
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option, false),
+            Route::url('index.php?option=' . $this->option, false),
         );
     }
 
@@ -2284,7 +2284,7 @@ class Publications extends SiteController
         $version = $this->model->version;
 
         if ($version->state != 0) {
-            App::redirect(Route::url('index.php?option=' . $this->_option, false));
+            App::redirect(Route::url('index.php?option=' . $this->option, false));
         }
 
         $this->view  = new \Hubzero\Component\View([
@@ -2292,7 +2292,7 @@ class Publications extends SiteController
             'layout' => 'default',
         ]);
 
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('record', $version);
         $this->view->display();
     }

@@ -290,7 +290,7 @@ class Orcid extends SiteController
     private function format($records, $callbackPrefix)
     {
         $view = new \Hubzero\Component\View([
-            'name'   => $this->_controller,
+            'name'   => $this->controller,
             'layout' => 'results',
         ]);
         $view->records = $records;

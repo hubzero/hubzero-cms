@@ -34,53 +34,53 @@ class Orders extends AdminController
         // Get filters
         $this->view->filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'uidNumber' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.uidNumber',
+                $this->option . '.' . $this->controller . '.uidNumber',
                 'uidNumber',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'tLastUpdated',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'report-notes' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-notes',
+                $this->option . '.' . $this->controller . '.report-notes',
                 'report-notes',
                 0,
                 'int',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-from',
+                $this->option . '.' . $this->controller . '.report-from',
                 'report-from',
                 gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-to',
+                $this->option . '.' . $this->controller . '.report-to',
                 'report-to',
                 gmdate('m/d/Y'),
             ),
@@ -342,8 +342,8 @@ class Orders extends AdminController
         if ($redirect) {
             App::redirect(
                 Route::url(
-                    'index.php?option=' . $this->_option
-                    . '&controller=' . $this->_controller . '&task=view&id=' . $id,
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=view&id=' . $id,
                     false,
                 ),
                 Lang::txt('Order info saved'),
@@ -373,58 +373,58 @@ class Orders extends AdminController
         // Get filters
         $this->view->filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.search',
+                $this->option . '.' . $this->controller . $this->task . '.search',
                 'search',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.sort',
+                $this->option . '.' . $this->controller . $this->task . '.sort',
                 'filter_order',
                 'tLastUpdated',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.sortdir',
+                $this->option . '.' . $this->controller . $this->task . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.limit',
+                $this->option . '.' . $this->controller . $this->task . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.limitstart',
+                $this->option . '.' . $this->controller . $this->task . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.report-from',
+                $this->option . '.' . $this->controller . $this->task . '.report-from',
                 'report-from',
                 gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.report-to',
+                $this->option . '.' . $this->controller . $this->task . '.report-to',
                 'report-to',
                 gmdate('m/d/Y'),
             ),
             'order' => Request::getState(
-                $this->_option . '.' . $this->_controller . $this->_task . '.order',
+                $this->option . '.' . $this->controller . $this->task . '.order',
                 'order',
                 0,
                 'int',
             ),
             'pId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.pId',
+                $this->option . '.' . $this->controller . '.pId',
                 'pId',
                 0,
                 'int',
             ),
             'sId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sId',
+                $this->option . '.' . $this->controller . '.sId',
                 'sId',
                 0,
                 'int',
@@ -463,39 +463,39 @@ class Orders extends AdminController
         // Get filters
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'report-notes' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-notes',
+                $this->option . '.' . $this->controller . '.report-notes',
                 'report-notes',
                 0,
                 'int',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-from',
+                $this->option . '.' . $this->controller . '.report-from',
                 'report-from',
                 gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-to',
+                $this->option . '.' . $this->controller . '.report-to',
                 'report-to',
                 gmdate('m/d/Y'),
             ),
             'uidNumber' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.uidNumber',
+                $this->option . '.' . $this->controller . '.uidNumber',
                 'uidNumber',
                 0,
                 'int',
@@ -592,33 +592,33 @@ class Orders extends AdminController
         // Get filters
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.search',
+                $this->option . '.' . $this->controller . 'items.search',
                 'search',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.sort',
+                $this->option . '.' . $this->controller . 'items.sort',
                 'filter_order',
                 'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.sortdir',
+                $this->option . '.' . $this->controller . 'items.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.report-from',
+                $this->option . '.' . $this->controller . 'items.report-from',
                 'report-from',
                 gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.report-to',
+                $this->option . '.' . $this->controller . 'items.report-to',
                 'report-to',
                 gmdate('m/d/Y'),
             ),
             'order' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'items.order',
+                $this->option . '.' . $this->controller . 'items.order',
                 'order',
                 0,
                 'int',
@@ -687,7 +687,7 @@ class Orders extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $attr, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . $attr, false),
         );
     }
 }

@@ -49,41 +49,41 @@ class Entries extends AdminController
     {
         $filters = [
             'scope' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.scope',
+                $this->option . '.' . $this->controller . '.scope',
                 'scope',
                 '',
             ),
             'scope_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.scope_id',
+                $this->option . '.' . $this->controller . '.scope_id',
                 'scope_id',
                 0,
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -132,8 +132,8 @@ class Entries extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -175,8 +175,8 @@ class Entries extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -241,7 +241,7 @@ class Entries extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -284,11 +284,11 @@ class Entries extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', [0]);
@@ -296,7 +296,7 @@ class Entries extends AdminController
 
         // Check for a resource
         if (count($ids) < 1) {
-            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->task));
             return $this->cancelTask();
         }
 
@@ -317,7 +317,7 @@ class Entries extends AdminController
         }
 
         if ($success) {
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'publish':
                     $message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
                     break;
@@ -346,7 +346,7 @@ class Entries extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -357,7 +357,7 @@ class Entries extends AdminController
 
         // Check for a resource
         if (count($ids) < 1) {
-            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task));
+            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->task));
             return $this->cancelTask();
         }
 

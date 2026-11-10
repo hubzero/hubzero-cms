@@ -44,24 +44,24 @@ class Restrictions extends AdminController
         $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'uId',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -88,7 +88,7 @@ class Restrictions extends AdminController
     public function cancelTask()
     {
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option
+        $url = 'index.php?option=' . $this->option
             . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0);
         App::redirect(
             Route::url($url, false),
@@ -114,7 +114,7 @@ class Restrictions extends AdminController
         $msg = "User(s) deleted";
         $type = 'message';
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=dispaly&id=' . $sId;
         App::redirect(
             Route::url($url, false),

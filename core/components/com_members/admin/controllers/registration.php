@@ -64,7 +64,7 @@ class Registration extends AdminController
             "SELECT *
 			FROM `#__extensions`
 			WHERE `type`='component'
-			AND `element`=" . $database->quote($this->_option) . "
+			AND `element`=" . $database->quote($this->option) . "
 			LIMIT 1",
         );
         $component = $database->loadObject();

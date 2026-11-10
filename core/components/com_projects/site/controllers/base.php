@@ -52,7 +52,7 @@ class Base extends SiteController
         $this->_identifier = $id ? $id : $alias;
 
         // Incoming
-        $this->_task = strtolower(Request::getCmd('task', ''));
+        $this->task = strtolower(Request::getCmd('task', ''));
         $this->_gid  = Request::getInt('gid', 0);
 
         // Model
@@ -71,7 +71,7 @@ class Base extends SiteController
     protected function _includeScripts()
     {
         // No need in some controllers
-        if ($this->_controller == 'media') {
+        if ($this->controller == 'media') {
             return;
         }
 
@@ -132,15 +132,15 @@ class Base extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()
     {
-        $task = (isset($this->_task) && !empty($this->_task))
-            ? '&task=' . $this->_task
+        $task = (isset($this->task) && !empty($this->task))
+            ? '&task=' . $this->task
             : '';
         $message = isset($this->_msg)
             ? $this->_msg
             : Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
         $defaultUrl = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task,
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . $task,
         );
         $rtrn = Request::getString('REQUEST_URI', $defaultUrl, 'server');
 
@@ -148,7 +148,7 @@ class Base extends SiteController
         // so return to the project (or the projects page) instead
         if (Request::method() == 'POST') {
             $alias = Request::getCmd('alias', '');
-            $rtrn  = Route::url('index.php?option=' . $this->_option . ($alias ? '&alias=' . $alias : ''));
+            $rtrn  = Route::url('index.php?option=' . $this->option . ($alias ? '&alias=' . $alias : ''));
         }
 
         App::redirect(
@@ -189,9 +189,9 @@ class Base extends SiteController
         $active  = isset($this->active) ? $this->active : null;
 
         // Set the title
-        $this->title  = $this->_task == 'edit'
-            ? Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task))
-            : Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
+        $this->title  = $this->task == 'edit'
+            ? Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task))
+            : Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller));
 
         // Project info
         if ($this->model->exists()) {
@@ -203,7 +203,7 @@ class Base extends SiteController
         }
 
         // Other views
-        switch ($this->_task) {
+        switch ($this->task) {
             case 'browse':
                 $reviewer = Request::getString('reviewer', '');
                 if ($reviewer == 'sponsored' || $reviewer == 'sensitive') {
@@ -211,8 +211,8 @@ class Base extends SiteController
                                  ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
                                  : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
                 } else {
-                    $this->title .= ($this->_task)
-                        ? ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task))
+                    $this->title .= ($this->task)
+                        ? ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task))
                         : '';
                 }
                 break;
@@ -227,8 +227,8 @@ class Base extends SiteController
                 break;
 
             default:
-                if ($this->_task) {
-                    $this->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+                if ($this->task) {
+                    $this->title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
                 }
                 break;
         }
@@ -251,7 +251,7 @@ class Base extends SiteController
         $active      = isset($this->active) ? $this->active : null;
 
         // Point to group if group project
-        if (is_object($group) && in_array($this->_task, $group_tasks)) {
+        if (is_object($group) && in_array($this->task, $group_tasks)) {
             Pathway::clear();
             Pathway::append(
                 Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
@@ -268,7 +268,7 @@ class Base extends SiteController
         } elseif (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COMPONENT_LONG_NAME'),
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -283,22 +283,22 @@ class Base extends SiteController
             if (!empty($provisioned)) {
                 Pathway::append(
                     stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
-                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&action=activate'),
+                    Route::url('index.php?option=' . $this->option . '&alias=' . $alias . '&action=activate'),
                 );
             } else {
                 Pathway::append(
                     stripslashes($title),
-                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias),
+                    Route::url('index.php?option=' . $this->option . '&alias=' . $alias),
                 );
             }
         }
 
         // Controllers
-        switch ($this->_controller) {
+        switch ($this->controller) {
             case 'reports':
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller)),
+                    Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 );
                 break;
 
@@ -307,12 +307,12 @@ class Base extends SiteController
         }
 
         // Task is set?
-        if (!$this->_task) {
+        if (!$this->task) {
             return;
         }
 
         // Tasks
-        switch ($this->_task) {
+        switch ($this->task) {
             case 'view':
                 if ($active && !empty($alias)) {
                     switch ($active) {
@@ -321,7 +321,7 @@ class Base extends SiteController
                             break;
 
                         default:
-                            $url = 'index.php?option=' . $this->_option
+                            $url = 'index.php?option=' . $this->option
                                 . '&alias=' . $alias . '&active=' . $active;
                             Pathway::append(
                                 ucfirst(Lang::txt('COM_PROJECTS_TAB_' . strtoupper($this->active))),
@@ -336,8 +336,8 @@ class Base extends SiteController
             case 'edit':
                 if (empty($alias)) {
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
+                        Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                        Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
                     );
                     break;
                 }
@@ -353,12 +353,12 @@ class Base extends SiteController
 
                     Pathway::append(
                         $title,
-                        Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer),
+                        Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $reviewer),
                     );
                 } else {
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
+                        Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                        Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
                     );
                 }
                 break;
@@ -370,8 +370,8 @@ class Base extends SiteController
 
             default:
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                    Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
                 );
                 break;
         }
@@ -409,7 +409,7 @@ class Base extends SiteController
         $objLog->owner       = intval($owner);
         $objLog->ip          = Request::ip();
         $objLog->section     = $section;
-        $objLog->layout      = $layout ? $layout : $this->_task;
+        $objLog->layout      = $layout ? $layout : $this->task;
         $objLog->action      = $action ? $action : 'view';
         $objLog->time        = Date::toSql();
         $objLog->request_uri = Request::getString('REQUEST_URI', Request::base(), 'server');
@@ -459,7 +459,7 @@ class Base extends SiteController
             'name'   => 'emails',
             'layout' => 'invite_plain',
         ]);
-        $eview->option    = $this->_option;
+        $eview->option    = $this->option;
         $eview->project   = $this->model;
         $eview->delimiter = '';
 
@@ -494,7 +494,7 @@ class Base extends SiteController
                         $message,
                         $from,
                         [$member->userid],
-                        $this->_option,
+                        $this->option,
                     ],
                 );
             } elseif ($member->invited_email && $member->invited_code) {

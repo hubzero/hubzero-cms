@@ -51,7 +51,7 @@ class Courses extends SiteController
 
         $this->registerTask('__default', 'intro');
 
-        $this->_authorize('course');
+        $this->authorize('course');
 
         parent::execute();
     }
@@ -67,14 +67,14 @@ class Courses extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task && $this->_task != 'intro') {
+        if ($this->task && $this->task != 'intro') {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option . '_' . $this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -88,10 +88,10 @@ class Courses extends SiteController
     public function _buildTitle()
     {
         //set title used in view
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
-        if ($this->_task && $this->_task != 'intro') {
-            $key = strtoupper($this->_option . '_' . $this->_task);
+        if ($this->task && $this->task != 'intro') {
+            $key = strtoupper($this->option . '_' . $this->task);
             $this->_title .= ': ' . Lang::txt($key);
         }
 
@@ -248,11 +248,11 @@ class Courses extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, false);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

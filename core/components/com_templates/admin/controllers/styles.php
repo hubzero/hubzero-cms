@@ -50,27 +50,27 @@ class Styles extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             )),
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.client_id',
+                $this->option . '.' . $this->controller . '.client_id',
                 'filter_client_id',
                 '*',
             ),
             'template' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.template',
+                $this->option . '.' . $this->controller . '.template',
                 'filter_template',
                 '0',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -170,8 +170,8 @@ class Styles extends AdminController
     {
         // Access checks.
         if (
-            !User::authorise('core.edit', $this->_option)
-            || !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            || !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
@@ -245,8 +245,8 @@ class Styles extends AdminController
 
         // Access checks.
         if (
-            !User::authorise('core.edit', $this->_option)
-            || !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            || !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
@@ -347,7 +347,7 @@ class Styles extends AdminController
         Request::checkToken();
 
         // Access checks.
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
         }
 
@@ -418,7 +418,7 @@ class Styles extends AdminController
         Request::checkToken();
 
         // Access checks.
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 

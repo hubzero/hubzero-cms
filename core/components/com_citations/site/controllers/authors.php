@@ -50,7 +50,7 @@ class Authors extends SiteController
         }
         if (
             !$this->citation->isNew()
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
             && !$this->citation->canEdit()
         ) {
             // The member and group citation plugins share this author manager

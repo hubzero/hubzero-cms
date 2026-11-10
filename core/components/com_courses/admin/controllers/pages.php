@@ -51,30 +51,30 @@ class Pages extends AdminController
         // Incoming
         $this->view->filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'active' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.active',
+                $this->option . '.' . $this->controller . '.active',
                 'active',
                 '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'offering' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.offering',
+                $this->option . '.' . $this->controller . '.offering',
                 'offering',
                 0,
             ),
@@ -83,14 +83,14 @@ class Pages extends AdminController
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if ($this->view->offering->exists()) {
             $this->view->filters['course']    = Request::getState(
-                $this->_option . '.' . $this->_controller . '.course',
+                $this->option . '.' . $this->controller . '.course',
                 'course',
                 $this->view->offering->get('course_id'),
             );
         } else {
             $using = 'course';
             $this->view->filters['course']    = Request::getState(
-                $this->_option . '.' . $this->_controller . '.course',
+                $this->option . '.' . $this->controller . '.course',
                 'course',
                 0,
             );
@@ -190,12 +190,12 @@ class Pages extends AdminController
             return;
         }
 
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($row);
         }
 
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&course=' . $fields['course_id']
             . '&offering=' . $fields['offering_id'];
         App::redirect(
@@ -218,8 +218,8 @@ class Pages extends AdminController
         $ids = Request::getArray('id', []);
         $ids = (!is_array($ids) ? [$ids] : $ids);
 
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&course=' . Request::getInt('course', 0)
             . '&offering=' . Request::getInt('offering', 0);
         $rtrn = Route::url($url, false);
@@ -270,8 +270,8 @@ class Pages extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&course=' . Request::getInt('course', 0)
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
@@ -776,7 +776,7 @@ class Pages extends AdminController
         \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
-        $inc = ($this->_task == 'orderup' ? -1 : 1);
+        $inc = ($this->task == 'orderup' ? -1 : 1);
 
         $row = new Tables\Page($this->database);
         $row->load($uid);
@@ -798,7 +798,7 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', []);
@@ -831,7 +831,7 @@ class Pages extends AdminController
             }
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+        $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false);
         if ($this->getErrors()) {
             App::redirect(
                 $url,

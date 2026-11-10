@@ -24,7 +24,7 @@ class Boosts extends AdminController
     protected $typeHelper;
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_taskMap = [
+    protected $taskMap = [
         '__default' => 'list',
     ];
 
@@ -42,12 +42,12 @@ class Boosts extends AdminController
     public function listTask()
     {
         $sortField = Request::getState(
-            "$this->_option.$this->_controller.sort",
+            "$this->option.$this->controller.sort",
             'filter_order',
             'id',
         );
         $sortDirection = Request::getState(
-            "$this->_option.$this->_controller.sortdir",
+            "$this->option.$this->controller.sortdir",
             'filter_order_Dir',
             'ASC',
         );

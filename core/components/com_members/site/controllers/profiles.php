@@ -94,8 +94,8 @@ class Profiles extends SiteController
         $referrer = Request::getString('HTTP_REFERER', null, 'server');
         if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer)) {
             if (
-                !User::authorise('core.admin', $this->_option)
-                && !User::authorise('core.manage', $this->_option)
+                !User::authorise('core.admin', $this->option)
+                && !User::authorise('core.manage', $this->option)
             ) {
                 switch ($this->config->get('user_messaging')) {
                     case 2:
@@ -227,8 +227,8 @@ class Profiles extends SiteController
         // Set the document pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
@@ -248,7 +248,7 @@ class Profiles extends SiteController
         // Require a logged-in user — member directory is not available to guests
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=browse', false, true)), false),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=browse', false, true)), false),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
                 'warning',
             );
@@ -535,21 +535,21 @@ class Profiles extends SiteController
 
         // Set the page title
         $title  = Lang::txt('COM_MEMBERS');
-        $title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+        $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->task)) : '';
 
         Document::setTitle($title);
 
         // Set the document pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->name)),
+                'index.php?option=' . $this->option,
             );
         }
         // Add to the pathway
         Pathway::append(
-            Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&task=' . $this->task,
         );
 
         // Get stats
@@ -677,7 +677,7 @@ class Profiles extends SiteController
     {
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount', false, true)), false),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
                 'warning',
             );
@@ -751,7 +751,7 @@ class Profiles extends SiteController
         // Check if unconfirmed
 
         $loggedInUserId = User::getInstance()->get('id');
-        if ($profile->get('activation') < 1 && $loggedInUserId != $profile->get('id') && (User::isGuest() || !User::authorise('core.manage', $this->_option))) {
+        if ($profile->get('activation') < 1 && $loggedInUserId != $profile->get('id') && (User::isGuest() || !User::authorise('core.manage', $this->option))) {
             App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 
             // Offer explanation and eternal redemption to the user, instead of leaving them high and dry
@@ -797,11 +797,11 @@ class Profiles extends SiteController
         }
 
         // Get the sections
-        $sections = Event::trigger('members.onMembers', [User::getInstance(), $profile, $this->_option, [$tab]]);
+        $sections = Event::trigger('members.onMembers', [User::getInstance(), $profile, $this->option, [$tab]]);
 
         // Build the page title
-        $title  = Lang::txt(strtoupper($this->_option));
-        $title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+        $title  = Lang::txt(strtoupper($this->option));
+        $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->task)) : '';
 
         // Set the page title
         Document::setTitle($title . ': ' . stripslashes($profile->get('name')));
@@ -809,19 +809,19 @@ class Profiles extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         foreach ($cats as $k => $c) {
             if ($tab == key($c)) {
                 Pathway::append(
                     $c[$tab],
-                    'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&active=' . $tab,
+                    'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&active=' . $tab,
                 );
                 break;
             }
@@ -858,7 +858,7 @@ class Profiles extends SiteController
             // 2026-08-01 flood. The canonical URL was already sitting here
             // as the fallback argument; this just stops preferring the
             // attacker-controlled value over it.
-            $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true);
+            $rtrn = Route::url('index.php?option=' . $this->controller . '&task=changepassword', false, true);
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
@@ -875,7 +875,7 @@ class Profiles extends SiteController
         }
 
         // Check authorization
-        if (!User::authorise('core.manage', $this->_option) && User::get('id') != $id) {
+        if (!User::authorise('core.manage', $this->option) && User::get('id') != $id) {
             App::abort(403, Lang::txt('MEMBERS_NOT_AUTH'));
         }
 
@@ -888,25 +888,25 @@ class Profiles extends SiteController
         }
 
         // Set the page title
-        $title  = Lang::txt(strtoupper($this->_option));
-        $title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)) : '';
+        $title  = Lang::txt(strtoupper($this->option));
+        $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->option . '_' . $this->task)) : '';
 
         Document::setTitle($title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt('COM_MEMBERS_' . strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
+            Lang::txt('COM_MEMBERS_' . strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
         // Load some needed libraries
@@ -1028,7 +1028,7 @@ class Profiles extends SiteController
         if ($return && !\Hubzero\Utility\Uri::isInternal($return)) {
             $return = '';
         }
-        $this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
+        $this->redirect = $return ? $return : Route::url('index.php?option=' . $this->option . '&id=' . $id);
         $session = App::get('session');
 
         // Redirect user back to main account page
@@ -1065,7 +1065,7 @@ class Profiles extends SiteController
             // 2026-08-01 flood. The canonical URL was already sitting here
             // as the fallback argument; this just stops preferring the
             // attacker-controlled value over it.
-            $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true);
+            $rtrn = Route::url('index.php?option=' . $this->controller . '&task=raiselimit', false, true);
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
@@ -1084,30 +1084,30 @@ class Profiles extends SiteController
         }
 
         // Check authorization
-        if (!User::authorise('core.manage', $this->_option) && User::get('id') != $id) {
+        if (!User::authorise('core.manage', $this->option) && User::get('id') != $id) {
             App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
         }
 
         // Set the page title
-        $title  = Lang::txt(strtoupper($this->_option));
-        $title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+        $title  = Lang::txt(strtoupper($this->option));
+        $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->task)) : '';
 
         Document::setTitle($title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
         // Incoming
@@ -1158,7 +1158,7 @@ class Profiles extends SiteController
 
                     $resourcemessage = ' storage limit has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
 
-                    if (User::authorise('core.manage', $this->_option)) {
+                    if (User::authorise('core.manage', $this->option)) {
                         $resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
                     } else {
                         $this->view
@@ -1176,7 +1176,7 @@ class Profiles extends SiteController
 
                     $resourcemessage = ' meeting limit has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
 
-                    if (User::authorise('core.manage', $this->_option)) {
+                    if (User::authorise('core.manage', $this->option)) {
                         // $profile->set('max_meetings', $newlimit);
                         // $profile->update();
 
@@ -1228,13 +1228,13 @@ class Profiles extends SiteController
             }
             $message .= "Click the following link to grant this request:\r\n";
 
-            $sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task);
+            $sef = Route::url('index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task);
             $url = Request::base() . ltrim($sef, DS);
 
             $message .= $url . "\r\n\r\n";
             $message .= "Click the following link to review this user's account:\r\n";
 
-            $sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('id'));
+            $sef = Route::url('index.php?option=' . $this->option . '&id=' . $profile->get('id'));
             $url = Request::base() . ltrim($sef, DS);
 
             $message .= $url . "\r\n";
@@ -1243,7 +1243,7 @@ class Profiles extends SiteController
             $msg->setSubject($subject)
                 ->addTo(Config::get('mailfrom'))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-                ->addHeader('X-Component', $this->_option)
+                ->addHeader('X-Component', $this->option)
                 ->setBody($message);
 
             // Send an e-mail to admin
@@ -1258,7 +1258,7 @@ class Profiles extends SiteController
                 ->setLayout('success')
                 ->display();
             return;
-        } elseif (User::authorise('core.manage', $this->_option) && !empty($resourcemessage)) {
+        } elseif (User::authorise('core.manage', $this->option) && !empty($resourcemessage)) {
             // Output the view
             $this->view
                 ->set('resourcemessage', $resourcemessage)
@@ -1294,7 +1294,7 @@ class Profiles extends SiteController
             // 2026-08-01 flood. The canonical URL was already sitting here
             // as the fallback argument; this just stops preferring the
             // attacker-controlled value over it.
-            $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
+            $rtrn = Route::url('index.php?option=' . $this->controller . '&task=activity', false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
@@ -1306,7 +1306,7 @@ class Profiles extends SiteController
         }
 
         // Check authorization
-        if (!User::authorise('core.manage', $this->_option) && $id != User::get('id')) {
+        if (!User::authorise('core.manage', $this->option) && $id != User::get('id')) {
             App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
         }
 
@@ -1326,25 +1326,25 @@ class Profiles extends SiteController
         $this->view->tags = $mt->render('string');
 
         // Set the page title
-        $title  = Lang::txt(strtoupper($this->_option));
-        $title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+        $title  = Lang::txt(strtoupper($this->option));
+        $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->task)) : '';
 
         Document::setTitle($title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
         foreach ($this->getErrors() as $error) {
@@ -1397,7 +1397,7 @@ class Profiles extends SiteController
 
         // A user may only save their own profile unless they can manage the
         // component. editTask already enforces this; the save handler must too.
-        if (!User::authorise('core.manage', $this->_option) && $id != User::get('id')) {
+        if (!User::authorise('core.manage', $this->option) && $id != User::get('id')) {
             App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
         }
 
@@ -1647,7 +1647,7 @@ class Profiles extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : '')),
+            Route::url('index.php?option=' . $this->option . ($id ? '&id=' . $id . '&active=profile' : '')),
         );
     }
 
@@ -1670,7 +1670,7 @@ class Profiles extends SiteController
             'layout' => 'confirm',
         ]);
 
-        $eview->set('option', $this->_option)
+        $eview->set('option', $this->option)
             ->set('sitename', Config::get('sitename'))
             ->set('login', $login)
             ->set('email', $email)
@@ -1686,7 +1686,7 @@ class Profiles extends SiteController
         $msg->setSubject($subject)
             ->addTo($email)
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-            ->addHeader('X-Component', $this->_option)
+            ->addHeader('X-Component', $this->option)
             ->setBody($message);
 
         $result = false;
@@ -1710,18 +1710,18 @@ class Profiles extends SiteController
     public function activityTask()
     {
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_task)));
+        Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->task)));
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
-            Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&task=' . $this->task,
         );
 
         // Check if they're logged in
@@ -1734,16 +1734,16 @@ class Profiles extends SiteController
             // 2026-08-01 flood. The canonical URL was already sitting here
             // as the fallback argument; this just stops preferring the
             // attacker-controlled value over it.
-            $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
+            $rtrn = Route::url('index.php?option=' . $this->controller . '&task=activity', false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
         }
 
         // Check authorization
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -1824,7 +1824,7 @@ class Profiles extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile'),
+            Route::url('index.php?option=' . $this->option . '&id=' . $id . '&active=profile'),
         );
     }
 

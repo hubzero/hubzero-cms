@@ -71,62 +71,62 @@ class Modules extends AdminController
     {
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'position' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.position',
+                $this->option . '.' . $this->controller . '.position',
                 'filter_position',
                 '',
             ),
             'module' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.module',
+                $this->option . '.' . $this->controller . '.module',
                 'filter_module',
                 '',
             ),
             'language' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.language',
+                $this->option . '.' . $this->controller . '.language',
                 'filter_language',
                 '',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'filter_state',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 0,
                 'int',
             ),
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.client_id',
+                $this->option . '.' . $this->controller . '.client_id',
                 'filter_client_id',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'position',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -292,8 +292,8 @@ class Modules extends AdminController
     public function editTask($model = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -365,8 +365,8 @@ class Modules extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -404,7 +404,7 @@ class Modules extends AdminController
         }
 
         // Trigger before save event
-        $eventArgs = [$this->_option . '.module', &$model, $model->isNew()];
+        $eventArgs = [$this->option . '.module', &$model, $model->isNew()];
         $result = Event::trigger('extension.onExtensionBeforeSave', $eventArgs);
 
         if (in_array(false, $result, true)) {
@@ -429,7 +429,7 @@ class Modules extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('extension.onExtensionAfterSave', [$this->_option . '.module', &$model, $model->isNew()]);
+        Event::trigger('extension.onExtensionAfterSave', [$this->option . '.module', &$model, $model->isNew()]);
 
         // Clean the cache.
         $this->cleanCache();
@@ -464,7 +464,7 @@ class Modules extends AdminController
         // Filter by client.
         $filters = [
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.client_id',
+                $this->option . '.' . $this->controller . '.client_id',
                 'filter_client_id',
                 0,
                 'int',
@@ -536,51 +536,51 @@ class Modules extends AdminController
     {
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.limit',
+                $this->option . '.' . $this->controller . '.positions.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.limitstart',
+                $this->option . '.' . $this->controller . '.positions.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'type' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.type',
+                $this->option . '.' . $this->controller . '.positions.type',
                 'filter_type',
                 '',
             ),
             'template' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.template',
+                $this->option . '.' . $this->controller . '.positions.template',
                 'filter_template',
                 '',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.search',
+                $this->option . '.' . $this->controller . '.positions.search',
                 'filter_search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.state',
+                $this->option . '.' . $this->controller . '.positions.state',
                 'filter_state',
                 '',
             ),
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.client_id',
+                $this->option . '.' . $this->controller . '.positions.client_id',
                 'filter_client_id',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.sort',
+                $this->option . '.' . $this->controller . '.positions.sort',
                 'filter_order',
                 'position',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.positions.sortdir',
+                $this->option . '.' . $this->controller . '.positions.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -693,7 +693,7 @@ class Modules extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -738,7 +738,7 @@ class Modules extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -789,7 +789,7 @@ class Modules extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -835,8 +835,8 @@ class Modules extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -902,7 +902,7 @@ class Modules extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -946,7 +946,7 @@ class Modules extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -986,7 +986,7 @@ class Modules extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1030,7 +1030,7 @@ class Modules extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+            Route::url('index.php?option=' . $this->option . $this->getRedirectToListAppend(), false),
         );
     }
 
@@ -1086,7 +1086,7 @@ class Modules extends AdminController
      */
     public function cleanCache()
     {
-        Cache::clean($this->_option);
+        Cache::clean($this->option);
     }
 
     /**
@@ -1100,8 +1100,8 @@ class Modules extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1126,11 +1126,11 @@ class Modules extends AdminController
         // Build an array of item contexts to check
         $contexts = [];
         foreach ($pks as $id) {
-            $contexts[$id] = $this->_option . '.module.' . $id;
+            $contexts[$id] = $this->option . '.module.' . $id;
         }
 
         $done = false;
-        $contexts = [$this->_option . '.' . $this->_controller];
+        $contexts = [$this->option . '.' . $this->controller];
 
         if (!empty($commands['position_id'])) {
             $cmd = \Hubzero\Utility\Arr::getValue($commands, 'move_copy', 'c');

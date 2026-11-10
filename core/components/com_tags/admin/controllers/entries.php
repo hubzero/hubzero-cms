@@ -49,22 +49,22 @@ class Entries extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'by' => strtolower(Request::getState(
-                $this->_option . '.' . $this->_controller . '.by',
+                $this->option . '.' . $this->controller . '.by',
                 'filterby',
                 'all',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'raw_tag',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -138,8 +138,8 @@ class Entries extends AdminController
     public function editTask($tag = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -176,8 +176,8 @@ class Entries extends AdminController
 
         // Permissions check
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -244,7 +244,7 @@ class Entries extends AdminController
         Request::checkToken();
 
         // Permissions check
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -302,8 +302,8 @@ class Entries extends AdminController
     {
         // Permissions check
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -420,8 +420,8 @@ class Entries extends AdminController
     {
         // Permissions check
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

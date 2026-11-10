@@ -96,17 +96,17 @@ class Resources extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if (Pathway::count() <= 1 && $this->_task) {
-            switch ($this->_task) {
+        if (Pathway::count() <= 1 && $this->task) {
+            switch ($this->task) {
                 case 'browse':
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                            'index.php?option=' . $this->option . '&task=' . $this->task,
                         );
                     }
                     break;
@@ -114,14 +114,14 @@ class Resources extends SiteController
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&type=' . $this->type,
+                            'index.php?option=' . $this->option . '&type=' . $this->type,
                         );
                     }
                     break;
                 default:
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                        Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                        'index.php?option=' . $this->option . '&task=' . $this->task,
                     );
                     break;
             }
@@ -136,9 +136,9 @@ class Resources extends SiteController
     protected function _buildTitle()
     {
         if (!$this->_title) {
-            $this->_title = Lang::txt(strtoupper($this->_option));
-            if ($this->_task) {
-                switch ($this->_task) {
+            $this->_title = Lang::txt(strtoupper($this->option));
+            if ($this->task) {
+                switch ($this->task) {
                     case 'browse':
                     case 'browsetags':
                         if ($this->_task_title) {
@@ -146,7 +146,7 @@ class Resources extends SiteController
                         }
                         break;
                     default:
-                        $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+                        $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
                         break;
                 }
             }
@@ -232,13 +232,13 @@ class Resources extends SiteController
         }
 
         // Determine if user can edit
-        $authorized = $this->_authorize();
+        $authorized = $this->authorize();
 
         // Get major types
         $types = Type::getMajorTypes();
 
         // Get type if not given
-        $this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+        $this->_title = Lang::txt(strtoupper($this->option)) . ': ';
 
         if (!is_numeric($filters['type'])) {
             // Normalize the title
@@ -414,11 +414,11 @@ class Resources extends SiteController
 
         // Ensure we have a type to display
         if (!$activetype) {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
         }
 
         // Determine if user can edit
-        $authorized = $this->_authorize();
+        $authorized = $this->authorize();
 
         // Set the default sort
         $default_sort = 'rating';
@@ -616,11 +616,11 @@ class Resources extends SiteController
                 // Get the first child
                 if ($firstChild || $model->isTool()) {
                     $xact = 'data-pop-out="true"';
-                    $bits['primary_child'] = Html::primary_child($this->_option, $model, $firstChild, $xact);
+                    $bits['primary_child'] = Html::primary_child($this->option, $model, $firstChild, $xact);
                 }
 
                 // Get the sections
-                $bits['sections'] = Event::trigger('resources.onResources', [$model, $this->_option, ['about'], 'metadata']);
+                $bits['sections'] = Event::trigger('resources.onResources', [$model, $this->option, ['about'], 'metadata']);
 
                 // Fill our container
                 $bits['resource'] = $model;
@@ -703,7 +703,7 @@ class Resources extends SiteController
 
             // Output HTML
             $this->view
-                ->set('option', $this->_option)
+                ->set('option', $this->option)
                 ->set('config', $this->config)
                 ->set('resource', $resource)
                 ->set('activechild', $activechild)
@@ -966,7 +966,7 @@ class Resources extends SiteController
                     'name'   => 'view',
                     'layout' => 'watch',
                 ]);
-                $this->view->set('option', $this->_option);
+                $this->view->set('option', $this->option);
                 $this->view->config         = $this->config;
                 $this->view->database       = $this->database;
                 $this->view->doc            = Document::getRoot();
@@ -1075,7 +1075,7 @@ class Resources extends SiteController
             // Set breadcrumbs
             Pathway::append(
                 stripslashes($model->type->type),
-                Route::url('index.php?option=' . $this->_option . '&type=' . $model->type->alias),
+                Route::url('index.php?option=' . $this->option . '&type=' . $model->type->alias),
             );
 
             Pathway::append(
@@ -1089,7 +1089,7 @@ class Resources extends SiteController
             );
 
             // Write title
-            Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($model->title));
+            Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . stripslashes($model->title));
         }
 
         // Instantiate a new view
@@ -1097,7 +1097,7 @@ class Resources extends SiteController
             'name'   => 'view',
             'layout' => 'video',
         ]);
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->config   = $this->config;
         $this->view->database = $this->database;
         $this->view->resource = $activechild;
@@ -1260,7 +1260,7 @@ class Resources extends SiteController
         // Ensure we have an ID or alias to work with
         if (!$id && !$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
             return;
         }
@@ -1338,13 +1338,13 @@ class Resources extends SiteController
             } else {
                 Pathway::append(
                     stripslashes($this->model->type->get('type')),
-                    Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias')),
+                    Route::url('index.php?option=' . $this->option . '&type=' . $this->model->type->get('alias')),
                 );
             }
         } else {
             Pathway::append(
                 stripslashes($this->model->type->get('type')),
-                Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias')),
+                Route::url('index.php?option=' . $this->option . '&type=' . $this->model->type->get('alias')),
             );
         }
 
@@ -1406,7 +1406,7 @@ class Resources extends SiteController
         // Get the sections
         $sections = Event::trigger('resources.onResources', [
             $this->model,
-            $this->_option,
+            $this->option,
             [$tab],
             'all',
         ]);
@@ -1436,7 +1436,7 @@ class Resources extends SiteController
                 'name'      => 'view',
                 'layout'    => 'play',
             ]);
-            $view->set('option', $this->_option);
+            $view->set('option', $this->option);
             $view->config      = $this->config;
             $view->tconfig     = $tconfig;
             $view->resource    = $this->model;
@@ -1457,7 +1457,7 @@ class Resources extends SiteController
                 'area'     => 'play',
             ];
             $tab = 'play';
-        } elseif ($this->_task == 'watch') {
+        } elseif ($this->task == 'watch') {
             //test to make sure HUBpresenter is ready to go
             $pre = $this->preWatch();
 
@@ -1478,8 +1478,8 @@ class Resources extends SiteController
                     'name'   => 'view',
                     'layout' => 'watch_error',
                 ]);
-                $this->view->set('controller', $this->_controller);
-                $this->view->set('task', $this->_task);
+                $this->view->set('controller', $this->controller);
+                $this->view->set('task', $this->task);
                 $this->view->setErrors($errors);
                 $body = $this->view->loadTemplate();
             } else {
@@ -1520,7 +1520,7 @@ class Resources extends SiteController
         }
 
         // Write title
-        Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->title));
+        Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . stripslashes($this->model->title));
 
         if ($canonical = $this->model->attribs->get('canonical', '')) {
             if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical)) {
@@ -1541,7 +1541,7 @@ class Resources extends SiteController
 
         if (
             $type_alias
-            && (is_file(App::get('template')->path . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
+            && (is_file(App::get('template')->path . DS . 'html' . DS . $this->option . DS . 'view' . DS . $type_alias . '.php')
             || is_file(dirname(__DIR__) . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))
         ) {
             $layout = $type_alias;
@@ -1557,7 +1557,7 @@ class Resources extends SiteController
         }
         $this->view->set('model', $this->model);
         $this->view->set('tconfig', $tconfig);
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('cats', $cats);
         $this->view->set('tab', $tab);
         $this->view->set('sections', $sections);
@@ -1592,7 +1592,7 @@ class Resources extends SiteController
         // Ensure we have an ID or alias to work with
         if (!$id && !$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -1661,7 +1661,7 @@ class Resources extends SiteController
         $doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
         $doc->copyright = Lang::txt('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category = Lang::txt('COM_RESOURCES_RSS_CATEGORY');
-        $doc->link = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id);
+        $doc->link = Route::url('index.php?option=' . $this->option . '&id=' . $resource->id);
 
         $rt = new Tags($resource->id);
         $rtags = $rt->tags();
@@ -1734,7 +1734,7 @@ class Resources extends SiteController
                 $title = html_entity_decode($title);
 
                 // URL link to resource
-                $link = '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $row->id), '/');
+                $link = '/' . ltrim(Route::url('index.php?option=' . $this->option . '&id=' . $row->id), '/');
 
                 // Strip html from feed item description text
                 $description = trim($row->introtext);
@@ -2040,7 +2040,7 @@ class Resources extends SiteController
         // Call the trigger
         $html = '';
 
-        $results = Event::trigger('resources.' . $trigger, [$this->_option]);
+        $results = Event::trigger('resources.' . $trigger, [$this->option]);
         if (is_array($results) && !empty($results)) {
             foreach ($results as $result) {
                 $html .= (is_array($result) ? $result['html'] : (string) $result);
@@ -2150,7 +2150,7 @@ class Resources extends SiteController
         $accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
 
         if ($accessLevel == 1 && $user->isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -2166,7 +2166,7 @@ class Resources extends SiteController
             || ($accessLevel == 3 && !$resource->get('standalone'))
         ) {  // protected -- We need to allow images from 'protected' resource abstracts to come through
             if ($user->isGuest()) {
-                $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+                $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -2621,7 +2621,7 @@ class Resources extends SiteController
      * @param   object   $resource
      * @return  boolean  True if user has access
      */
-    protected function _authorize($contributorIDs = [], $resource = null)
+    protected function authorize($contributorIDs = [], $resource = null)
     {
         // Check if they are logged in
         if (User::isGuest()) {

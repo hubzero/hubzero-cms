@@ -160,8 +160,8 @@ class Media extends AdminController
             'name'   => 'media',
             'layout' => '_asset',
         ]);
-        $view->set('option', $this->_option);
-        $view->set('controller', $this->_controller);
+        $view->set('option', $this->option);
+        $view->set('controller', $this->controller);
         $view->asset      = $asset;
         $view->no_html    = 1;
 

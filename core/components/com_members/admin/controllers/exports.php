@@ -41,7 +41,7 @@ class Exports extends AdminController
             );
         }
 
-        Lang::load($this->_option . '.export', dirname(__DIR__));
+        Lang::load($this->option . '.export', dirname(__DIR__));
 
         parent::execute();
     }

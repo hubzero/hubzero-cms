@@ -52,25 +52,25 @@ class Polls extends AdminController
     {
         $filters = [
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_state',
+                $this->option . '.' . $this->controller . '.filter_state',
                 'filter_state',
                 '',
                 'word',
             ),
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
                 'string',
             ),
             'order'  => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_order',
+                $this->option . '.' . $this->controller . '.filter_order',
                 'filter_order',
                 'id',
                 'cmd',
             ),
             'order_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_order_Dir',
+                $this->option . '.' . $this->controller . '.filter_order_Dir',
                 'filter_order_Dir',
                 '',
                 'word',
@@ -155,8 +155,8 @@ class Polls extends AdminController
     public function editTask($poll = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -209,8 +209,8 @@ class Polls extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -264,7 +264,7 @@ class Polls extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -292,7 +292,7 @@ class Polls extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -336,7 +336,7 @@ class Polls extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -383,7 +383,7 @@ class Polls extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option, false),
+            Route::url('index.php?option=' . $this->option, false),
         );
     }
 }

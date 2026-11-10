@@ -30,9 +30,9 @@ class Team extends AdminController
      */
     public function execute()
     {
-        if (!User::authorize('core.manage', $this->_option)) {
+        if (!User::authorize('core.manage', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
         }
 
@@ -49,7 +49,7 @@ class Team extends AdminController
         // Incoming
         $filters = [
             'project' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.project',
+                $this->option . '.' . $this->controller . '.project',
                 'project',
                 '',
             ),
@@ -58,7 +58,7 @@ class Team extends AdminController
         // Ensure we have a group ID
         if (!$filters['project']) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
                 'error',
             );
@@ -69,7 +69,7 @@ class Team extends AdminController
 
         if (!$model->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
                 'error',
             );
@@ -77,24 +77,24 @@ class Team extends AdminController
 
         // Sorting options
         $filters['sortby']         = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sort',
+            $this->option . '.' . $this->controller . '.sort',
             'filter_order',
             'name',
         ));
         $filters['sortdir']     = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sortdir',
+            $this->option . '.' . $this->controller . '.sortdir',
             'filter_order_Dir',
             'ASC',
         ));
         // Filters for returning results
         $filters['limit']  = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limit',
+            $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $filters['start']  = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limitstart',
+            $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
@@ -145,7 +145,7 @@ class Team extends AdminController
      */
     public function newTask()
     {
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -170,7 +170,7 @@ class Team extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -269,7 +269,7 @@ class Team extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -332,7 +332,7 @@ class Team extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -384,8 +384,8 @@ class Team extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&project=' . Request::getInt('project', 0);
         App::redirect(Route::url($url, false));
     }

@@ -38,7 +38,7 @@ class Respondents extends AdminController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -46,18 +46,18 @@ class Respondents extends AdminController
         // Get filters
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'registered',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -105,23 +105,23 @@ class Respondents extends AdminController
     {
         $filters = [
             'event_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.event_id',
+                $this->option . '.' . $this->controller . '.event_id',
                 'id',
                 [],
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'registered',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -149,7 +149,7 @@ class Respondents extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        Csv::downloadlist($rows, $this->_option);
+        Csv::downloadlist($rows, $this->option);
     }
 
     /**
@@ -162,7 +162,7 @@ class Respondents extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -193,7 +193,7 @@ class Respondents extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id[]=' . Request::getInt('event', 0), false),
         );
     }
 }

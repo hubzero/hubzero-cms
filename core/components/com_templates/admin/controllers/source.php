@@ -43,7 +43,7 @@ class Source extends AdminController
     public function displayTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=templates', false),
+            Route::url('index.php?option=' . $this->option . '&controller=templates', false),
         );
     }
 
@@ -55,7 +55,7 @@ class Source extends AdminController
     public function editTask($file = null)
     {
         // Access checks.
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 
@@ -93,7 +93,7 @@ class Source extends AdminController
         Request::checkToken();
 
         // Access checks.
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 
@@ -115,7 +115,7 @@ class Source extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=templates', false),
+            Route::url('index.php?option=' . $this->option . '&controller=templates', false),
         );
     }
 }

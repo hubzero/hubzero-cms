@@ -64,7 +64,7 @@ class Credentials extends SiteController
         User::setState('com_members.reset.user', null);
 
         $this->finish(
-            Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+            Route::url('index.php?option=' . $this->option . '&task=verify', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
             'passed',
         );
@@ -78,7 +78,7 @@ class Credentials extends SiteController
     public function displayTask()
     {
         if (!User::isGuest()) {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
         }
 
         $this->remindTask();
@@ -108,7 +108,7 @@ class Credentials extends SiteController
         // Get the email address
         if (!$email = trim(Request::getString('email', false))) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=remind', false),
+                Route::url('index.php?option=' . $this->option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_EMAIL'),
                 'warning',
             );
@@ -118,7 +118,7 @@ class Credentials extends SiteController
         // Make sure it looks like a valid email address
         if (!\Hubzero\Utility\Validate::email($email)) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=remind', false),
+                Route::url('index.php?option=' . $this->option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_EMAIL'),
                 'warning',
             );
@@ -163,7 +163,7 @@ class Credentials extends SiteController
         $message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_REMIND_SUBJECT', Config::get('sitename')))
                 ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
                 ->addTo($email, $users->first()->name)
-                ->addHeader('X-Component', $this->_option)
+                ->addHeader('X-Component', $this->option)
                 ->addHeader('X-Component-Object', 'username_reminder')
                 ->addPart($plain, 'text/plain')
                 ->addPart($html, 'text/html');
@@ -173,7 +173,7 @@ class Credentials extends SiteController
             Log::error('Members username reminder email failed[1]: ' . Lang::txt('Failed to mail %s', $email));
 
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=remind', false),
+                Route::url('index.php?option=' . $this->option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
                 'warning',
             );
@@ -212,7 +212,7 @@ class Credentials extends SiteController
         // Grab the incoming username
         if (!$username = trim(Request::getString('username', false))) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=reset', false),
+                Route::url('index.php?option=' . $this->option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_USERNAME'),
                 'warning',
             );
@@ -232,7 +232,7 @@ class Credentials extends SiteController
 
         if (!\Components\Members\Helpers\Utility::$validator($username)) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=reset', false),
+                Route::url('index.php?option=' . $this->option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_USERNAME'),
                 'warning',
             );
@@ -287,14 +287,14 @@ class Credentials extends SiteController
         // Send an email
         $sent = $this->sendResetMail($user, 'reset', 'password_reset', [
             'token'  => $token,
-            'return' => Route::url('index.php?option=' . $this->_option . '&task=verify'),
+            'return' => Route::url('index.php?option=' . $this->option . '&task=verify'),
         ]);
 
         if (!$sent) {
             Log::error('Members password reset email failed[2]: ' . Lang::txt('Failed to mail %s', $user->get('email')));
 
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=remind', false),
+                Route::url('index.php?option=' . $this->option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
                 'warning',
             );
@@ -306,7 +306,7 @@ class Credentials extends SiteController
 
         // Everything went well...go to the token verification page
         $this->finish(
-            Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+            Route::url('index.php?option=' . $this->option . '&task=verify', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
             'passed',
         );
@@ -336,7 +336,7 @@ class Credentials extends SiteController
         // Grab the token (not to be confused with the CSRF token above!)
         if (!$token = trim(Request::getString('token', false))) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+                Route::url('index.php?option=' . $this->option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_TOKEN'),
                 'warning',
             );
@@ -351,7 +351,7 @@ class Credentials extends SiteController
             $user = \Hubzero\User\User::oneOrFail($id);
         } catch (Exception $e) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=reset', false),
+                Route::url('index.php?option=' . $this->option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
                 'warning',
             );
@@ -366,7 +366,7 @@ class Credentials extends SiteController
 
         if (!isset($parts[1])) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+                Route::url('index.php?option=' . $this->option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
                 'warning',
             );
@@ -379,7 +379,7 @@ class Credentials extends SiteController
         // Verify the token
         if (!($crypt == $testcrypt)) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+                Route::url('index.php?option=' . $this->option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
@@ -389,7 +389,7 @@ class Credentials extends SiteController
         // Make sure the user isn't blocked or expired for inactivity
         if ($user->get('block') || \Hubzero\User\Password::isInactive($user->get('id'))) {
             $this->finish(
-                Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+                Route::url('index.php?option=' . $this->option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
@@ -401,7 +401,7 @@ class Credentials extends SiteController
 
         // Everything went well...go to the actual change password page
         $this->finish(
-            Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
+            Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_TOKEN_CONFIRMED'),
             'passed',
         );
@@ -459,7 +459,7 @@ class Credentials extends SiteController
         // Check for a user and that the tokens match
         if ($user->tokens()->latest('id')->token !== $token) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
+                Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
@@ -469,7 +469,7 @@ class Credentials extends SiteController
         // Make sure the user isn't blocked or expired for inactivity
         if ($user->get('block') || \Hubzero\User\Password::isInactive($user->get('id'))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
+                Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
@@ -527,7 +527,7 @@ class Credentials extends SiteController
                 die();
             } else {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
+                    Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                     $error,
                     'warning',
                 );
@@ -552,7 +552,7 @@ class Credentials extends SiteController
                 die();
             } else {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
+                    Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                     Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC'),
                     'warning',
                 );
@@ -590,12 +590,12 @@ class Credentials extends SiteController
     private function setTitle()
     {
         Document::setTitle(
-            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
+            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->task)),
         );
 
         Pathway::append(
-            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task,
+            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->task)),
+            'index.php?option=' . $this->option . '&task=' . $this->task,
         );
     }
 
@@ -635,7 +635,7 @@ class Credentials extends SiteController
         $message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
                 ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
                 ->addTo($user->get('email'), $user->get('name'))
-                ->addHeader('X-Component', $this->_option)
+                ->addHeader('X-Component', $this->option)
                 ->addHeader('X-Component-Object', $object)
                 ->addPart($plain, 'text/plain')
                 ->addPart($html, 'text/html');

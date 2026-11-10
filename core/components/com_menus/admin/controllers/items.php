@@ -59,45 +59,45 @@ class Items extends AdminController
         // Get filters
         $filters = [
             'parent_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.parent_id',
+                $this->option . '.' . $this->controller . '.parent_id',
                 'filter_parent_id',
                 0,
                 'int',
             ),
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             ),
             'published' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.published',
+                $this->option . '.' . $this->controller . '.published',
                 'filter_published',
                 '',
             ),
             'language' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.language',
+                $this->option . '.' . $this->controller . '.language',
                 'filter_language',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 0,
                 'int',
             ),
             'level' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.level',
+                $this->option . '.' . $this->controller . '.level',
                 'filter_level',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'lft',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'asc',
             ),
@@ -106,12 +106,12 @@ class Items extends AdminController
         $menuType = Request::getString('menutype', null);
 
         if ($menuType) {
-            if ($menuType != User::getState($this->_option . '.' . $this->_controller . '.menutype')) {
-                User::setState($this->_option . '.' . $this->_controller . '.menutype', $menuType);
+            if ($menuType != User::getState($this->option . '.' . $this->controller . '.menutype')) {
+                User::setState($this->option . '.' . $this->controller . '.menutype', $menuType);
                 Request::setVar('limitstart', 0);
             }
         } else {
-            $menuType = User::getState($this->_option . '.' . $this->_controller . '.menutype');
+            $menuType = User::getState($this->option . '.' . $this->controller . '.menutype');
 
             if (!$menuType) {
                 $menuType = Menu::all()
@@ -121,7 +121,7 @@ class Items extends AdminController
                     ->row()
                     ->get('menutype');
 
-                User::setState($this->_option . '.' . $this->_controller . '.menutype', $menuType);
+                User::setState($this->option . '.' . $this->controller . '.menutype', $menuType);
             }
         }
 
@@ -410,8 +410,8 @@ class Items extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -575,8 +575,8 @@ class Items extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -687,7 +687,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -755,7 +755,7 @@ class Items extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -781,7 +781,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -825,7 +825,7 @@ class Items extends AdminController
         Request::checkToken();
 
         // The toolbar only offers this to super users
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -853,7 +853,7 @@ class Items extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -893,7 +893,7 @@ class Items extends AdminController
         // Check for request forgeries (the list's unset-default link carries the token in the URL)
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -973,9 +973,9 @@ class Items extends AdminController
         //Save the data in the session.
         User::setState('com_menus.edit.item.data', $data);
 
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&controller=' . $this->controller
             . '&task=edit&cid[]=' . $recordId;
         App::redirect(Route::url($url, false));
     }
@@ -990,7 +990,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1060,8 +1060,8 @@ class Items extends AdminController
         $append = implode('', $append);
 
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option
-            . ($this->_controller ? '&controller=' . $this->_controller : '')
+        $url = 'index.php?option=' . $this->option
+            . ($this->controller ? '&controller=' . $this->controller : '')
             . $append;
         App::redirect(Route::url($url, false));
     }
@@ -1077,8 +1077,8 @@ class Items extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -1089,7 +1089,7 @@ class Items extends AdminController
         // Build an array of item contexts to check
         $contexts = [];
         foreach ($pks as $id) {
-            $contexts[$id] = $this->_option . '.item.' . $id;
+            $contexts[$id] = $this->option . '.item.' . $id;
         }
 
         // Sanitize user ids.
@@ -1127,6 +1127,6 @@ class Items extends AdminController
      */
     public function cleanCache()
     {
-        Cache::clean($this->_option);
+        Cache::clean($this->option);
     }
 }

@@ -90,7 +90,7 @@ class Login extends AdminController
     public function loginTask()
     {
         $model = new Model();
-        $model->setState('task', $this->_task);
+        $model->setState('task', $this->task);
 
         $credentials = $model->getState('credentials');
         $return      = $model->getState('return');
@@ -229,7 +229,7 @@ class Login extends AdminController
 
         if (!($result instanceof Exception)) {
             $model = new Model();
-            $model->setState('task', $this->_task);
+            $model->setState('task', $this->task);
 
             $return = $model->getState('return');
 

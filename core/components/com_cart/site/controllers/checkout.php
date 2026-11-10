@@ -33,11 +33,11 @@ class Checkout extends ComponentController
     public function execute()
     {
         // Get the task
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
 
-        if (empty($this->_task)) {
-            $this->_task = 'checkout';
-            $this->registerTask('__default', $this->_task);
+        if (empty($this->task)) {
+            $this->task = 'checkout';
+            $this->registerTask('__default', $this->task);
         }
 
         $this->user = User::getInstance();
@@ -84,7 +84,7 @@ class Checkout extends ComponentController
             // redirect back to cart to display all messages
             //$redirect_url = Route::url('index.php?option=' . 'com_cart');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -202,11 +202,11 @@ class Checkout extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
                 Lang::txt('EULA'),
             );
@@ -299,11 +299,11 @@ class Checkout extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
                 Lang::txt('Notes'),
             );
@@ -387,11 +387,11 @@ class Checkout extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
                 Lang::txt('Shipping'),
             );
@@ -444,11 +444,11 @@ class Checkout extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
                 Lang::txt('Review your order'),
             );

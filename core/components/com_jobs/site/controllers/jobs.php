@@ -93,7 +93,7 @@ class Jobs extends SiteController
         $this->_masterAdmin = $this->_admin && !$this->_emp ? 1 : 0;
 
         // Incoming
-        $this->_task    = Request::getCmd('task', '');
+        $this->task    = Request::getCmd('task', '');
         $this->_jobCode = Request::getString('code', '');
 
         $this->registerTask('addjob', 'editjob');
@@ -114,12 +114,12 @@ class Jobs extends SiteController
      */
     protected function _buildTitle()
     {
-        $this->_title  = Lang::txt(strtoupper($this->_option));
+        $this->_title  = Lang::txt(strtoupper($this->option));
         $this->_title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
         if ($this->_subtitle) {
             $this->_title .= ': ' . $this->_subtitle;
-        } elseif ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        } elseif ($this->task && $this->task != 'all' && $this->task != 'view') {
+            $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         Document::setTitle($this->_title);
     }
@@ -131,28 +131,28 @@ class Jobs extends SiteController
      */
     protected function _buildPathway()
     {
-        $title  = Lang::txt(strtoupper($this->_option));
+        $title  = Lang::txt(strtoupper($this->option));
         $title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
 
         if (Pathway::count() <= 0) {
             Pathway::append(
                 $title,
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
-        if ($this->_task) {
-            switch ($this->_task) {
+        if ($this->task) {
+            switch ($this->task) {
                 case 'browse':
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-                        Route::url('index.php?option=' . $this->_option . '&task=browse'),
+                        Lang::txt(strtoupper($this->option) . '_BROWSE'),
+                        Route::url('index.php?option=' . $this->option . '&task=browse'),
                     );
                     break;
                 case 'all':
                     if (!$this->_allowSubscriptions) {
                         Pathway::append(
-                            Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-                            Route::url('index.php?option=' . $this->_option . '&task=browse'),
+                            Lang::txt(strtoupper($this->option) . '_BROWSE'),
+                            Route::url('index.php?option=' . $this->option . '&task=browse'),
                         );
                     }
                     break;
@@ -170,43 +170,43 @@ class Jobs extends SiteController
                 case 'apply':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
+                        Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_APPLY'),
-                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode),
+                        Lang::txt(strtoupper($this->option) . '_APPLY'),
+                        Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $this->_jobCode),
                     );
                     break;
                 case 'editapp':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
+                        Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_EDITAPP'),
-                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode),
+                        Lang::txt(strtoupper($this->option) . '_EDITAPP'),
+                        Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $this->_jobCode),
                     );
                     break;
                 case 'job':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
+                        Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->_jobCode),
                     );
                     break;
                 case 'editjob':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
+                        Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_EDITJOB'),
-                        Route::url('index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobCode),
+                        Lang::txt(strtoupper($this->option) . '_EDITJOB'),
+                        Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $this->_jobCode),
                     );
                     break;
                 default:
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
+                        Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                        Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
                     );
                     break;
             }
@@ -220,12 +220,12 @@ class Jobs extends SiteController
      */
     public function login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true), 'server');
 
         // A posted action can't be replayed by the GET that follows logging
         // in; come back to the job it was about instead
         if (Request::method() == 'POST') {
-            $rtrn = 'index.php?option=' . $this->_option . ($this->_jobCode ? '&task=job&code=' . $this->_jobCode : '');
+            $rtrn = 'index.php?option=' . $this->option . ($this->_jobCode ? '&task=job&code=' . $this->_jobCode : '');
             $rtrn = Route::url($rtrn, false, true);
         }
 
@@ -323,7 +323,7 @@ class Jobs extends SiteController
             return;
         }
 
-        if (!User::isGuest() && ($this->_task == 'browse' or !$this->_allowSubscriptions)) {
+        if (!User::isGuest() && ($this->task == 'browse' or !$this->_allowSubscriptions)) {
             // save incoming prefs
             $this->_updatePrefs('job');
 
@@ -339,13 +339,13 @@ class Jobs extends SiteController
         $obj = new Job($this->database);
 
         // Get jobs
-        $adminoptions = ($this->_task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
+        $adminoptions = ($this->task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
         $jobs = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode);
 
         $total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);
 
         // Initiate paging
-        $jtotal = ($this->_task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : $total;
+        $jtotal = ($this->task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : $total;
         $pageNav = new \Hubzero\Pagination\Paginator(
             $jtotal,
             $filters['start'],
@@ -353,12 +353,12 @@ class Jobs extends SiteController
         );
 
         // Output HTML
-        if ($this->_task != 'browse' && $this->_allowSubscriptions) {
+        if ($this->task != 'browse' && $this->_allowSubscriptions) {
             // Component introduction
             $view = new View(['name' => 'intro']);
             $view->title       = $this->_title;
             $view->config      = $this->config;
-            $view->set('option', $this->_option);
+            $view->set('option', $this->option);
             $view->emp         = $this->_emp;
             $view->admin       = $this->_admin;
             $view->pageNav     = $pageNav;
@@ -367,10 +367,10 @@ class Jobs extends SiteController
 
             // Show latest jobs
             $view = new View(['name' => 'jobs', 'layout' => 'latest']);
-            $view->set('option', $this->_option)
+            $view->set('option', $this->option)
              ->set('filters', $filters)
              ->set('config', $this->config)
-             ->set('task', $this->_task)
+             ->set('task', $this->task)
              ->set('emp', $this->_emp)
              ->set('jobs', $jobs)
              ->set('admin', $this->_admin)
@@ -384,7 +384,7 @@ class Jobs extends SiteController
             ]);
             $view->title            = $this->_title;
             $view->config           = $this->config;
-            $view->set('option', $this->_option);
+            $view->set('option', $this->option);
             $view->emp              = $this->_emp;
             $view->admin            = $this->_admin;
             $view->total            = $jtotal;
@@ -394,7 +394,7 @@ class Jobs extends SiteController
             $view->filters          = $filters;
             $view->subscriptionCode = $subscriptionCode;
             $view->employer         = $employer;
-            $view->set('task', $this->_task);
+            $view->set('task', $this->task);
 
             $view->display();
         }
@@ -471,7 +471,7 @@ class Jobs extends SiteController
             $this->view->types       = $types;
             $this->view->filters     = $filters;
             $this->view->emp         = $this->_emp;
-            $this->view->option      = $this->_option;
+            $this->view->option      = $this->option;
             $this->view->setName('resumes')
                         ->setLayout('default')
                         ->display();
@@ -600,8 +600,8 @@ class Jobs extends SiteController
         $this->view->uid          = $uid;
         $this->view->emp          = $this->_emp;
         $this->view->admin        = $this->_admin;
-        $this->view->task         = $this->_task;
-        $this->view->option       = $this->_option;
+        $this->view->task         = $this->task;
+        $this->view->option       = $this->option;
 
         // Set any errors
         if ($this->getError()) {
@@ -952,8 +952,8 @@ class Jobs extends SiteController
         $this->view->admin          = $this->_admin;
         $this->view->masterAdmin    = $this->_masterAdmin;
         $this->view->emp            = 1;
-        $this->view->task           = $this->_task;
-        $this->view->option         = $this->_option;
+        $this->view->task           = $this->task;
+        $this->view->option         = $this->option;
         $this->view->updated        = 0;
         $this->view->myjobs         = $myjobs;
         $this->view->activejobs     = $activejobs;
@@ -1010,15 +1010,15 @@ class Jobs extends SiteController
             // Set the pathway
             if (Pathway::count() <= 0) {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_name)),
-                    'index.php?option=' . $this->_option,
+                    Lang::txt(strtoupper($this->name)),
+                    'index.php?option=' . $this->option,
                 );
             }
 
             // Error view
             $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_INACTIVE'));
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->_name));
+            $view->title = Lang::txt(strtoupper($this->name));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1045,10 +1045,10 @@ class Jobs extends SiteController
 
         // if application already exists, load it to edit
         if ($ja->loadApplication(User::get('id'), 0, $code) && $ja->status != 2) {
-            $this->_task = 'editapp';
+            $this->task = 'editapp';
         }
 
-        if ($this->_task != 'editapp') {
+        if ($this->task != 'editapp') {
             $ja->cover = '';
         }
 
@@ -1065,8 +1065,8 @@ class Jobs extends SiteController
         $view->seeker      = $seeker;
         $view->admin       = $this->_admin;
         $view->application = $ja;
-        $view->set('task', $this->_task);
-        $view->set('option', $this->_option);
+        $view->set('task', $this->task);
+        $view->set('option', $this->option);
 
         // Set any errors
         if ($this->getError()) {
@@ -1125,13 +1125,13 @@ class Jobs extends SiteController
             $ja = new Application($this->database);
         }
 
-        if ($this->_task == 'withdraw' && !$ja->id) {
+        if ($this->task == 'withdraw' && !$ja->id) {
             $this->setError(Lang::txt('COM_JOBS_ERROR_WITHDRAW_ERROR'));
         }
 
         // Save
         if (!$this->getError()) {
-            if ($this->_task == 'withdraw') {
+            if ($this->task == 'withdraw') {
                 $ja->withdrawn = $now;
                 $ja->status    = 2;
                 $ja->reason    = Request::getString('reason', '');
@@ -1156,7 +1156,7 @@ class Jobs extends SiteController
                 throw new \Exception($ja->getError(), 500);
                 return;
             } else {
-                if ($this->_task == 'withdraw') {
+                if ($this->task == 'withdraw') {
                     $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_WITHDRAWN');
                 } else {
                     $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_ACCEPTED');
@@ -1206,14 +1206,14 @@ class Jobs extends SiteController
             // Set the pathway
             if (Pathway::count() <= 0) {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_name)),
-                    'index.php?option=' . $this->_option,
+                    Lang::txt(strtoupper($this->name)),
+                    'index.php?option=' . $this->option,
                 );
             }
 
             // Output HTML
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->_name));
+            $view->title = Lang::txt(strtoupper($this->name));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1244,7 +1244,7 @@ class Jobs extends SiteController
 
             // Output HTML
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->_name));
+            $view->title = Lang::txt(strtoupper($this->name));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1294,8 +1294,8 @@ class Jobs extends SiteController
         $this->view->emp            = $this->_emp;
         $this->view->job            = $job;
         $this->view->admin          = $this->_admin;
-        $this->view->task           = $this->_task;
-        $this->view->option         = $this->_option;
+        $this->view->task           = $this->task;
+        $this->view->option         = $this->option;
 
         // Set any errors
         if ($this->getError()) {
@@ -1316,10 +1316,10 @@ class Jobs extends SiteController
     {
         // Incoming
         $employerid = Request::getInt('employerid', 0);
-        $min = ($this->_task == 'confirmjob'
-                or $this->_task == 'unpublish'
-                or $this->_task == 'reopen'
-                or $this->_task == 'remove') ? 1 : 0;
+        $min = ($this->task == 'confirmjob'
+                or $this->task == 'unpublish'
+                or $this->task == 'reopen'
+                or $this->task == 'remove') ? 1 : 0;
         $code = $this->_jobCode ? $this->_jobCode : Request::getString('code', '');
 
         // Login required
@@ -1424,7 +1424,7 @@ class Jobs extends SiteController
             $job->companyLocation  = rtrim(stripslashes($_POST['companyLocation']));
             $job->applyInternal    = Request::getInt('applyInternal', 0);
             $job->applyExternalUrl = Request::getString('applyExternalUrl', '');
-        } elseif ($job->status == 4 && $this->_task == 'confirmjob') {
+        } elseif ($job->status == 4 && $this->task == 'confirmjob') {
             // make sure we aren't over quota
             $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
 
@@ -1443,10 +1443,10 @@ class Jobs extends SiteController
                 }
                 Notify::success($this->_msg);
             }
-        } elseif ($job->status == 1 && $this->_task == 'unpublish') {
+        } elseif ($job->status == 1 && $this->task == 'unpublish') {
             $job->status = 3;
             Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
-        } elseif ($job->status == 3 && $this->_task == 'reopen') {
+        } elseif ($job->status == 3 && $this->task == 'reopen') {
             // make sure we aren't over quota
             $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
 
@@ -1456,7 +1456,7 @@ class Jobs extends SiteController
                 $job->status = 1;
                 Notify::success(Lang::txt('COM_JOBS_MSG_JOB_REOPENED'));
             }
-        } elseif ($this->_task == 'remove') {
+        } elseif ($this->task == 'remove') {
             $job->status = 2;
         }
 
@@ -1490,7 +1490,7 @@ class Jobs extends SiteController
         if (!$job->id) {
             $job->checkin();
         }
-        if ($this->_task == 'remove') {
+        if ($this->task == 'remove') {
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=dashboard'),
                 Lang::txt('COM_JOBS_MSG_JOB_REMOVED'),
@@ -1639,8 +1639,8 @@ class Jobs extends SiteController
         $this->view->cats     = $cats;
         $this->view->employer = $employer;
         $this->view->admin    = $this->_admin;
-        $this->view->task     = $this->_task;
-        $this->view->option   = $this->_option;
+        $this->view->task     = $this->task;
+        $this->view->option   = $this->option;
 
         // Set any errors
         if ($this->getError()) {

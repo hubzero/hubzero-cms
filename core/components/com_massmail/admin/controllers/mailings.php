@@ -56,10 +56,10 @@ class Mailings extends AdminController
     public function displayTask()
     {
         $filters = [
-            'search' => urldecode(Request::getState($this->_option . '.' . $this->_controller . '.search', 'search', '')),
-            'status' => Request::getState($this->_option . '.' . $this->_controller . '.status', 'status', ''),
-            'sort'   => Request::getState($this->_option . '.' . $this->_controller . '.sort', 'filter_order', 'created'),
-            'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC'),
+            'search' => urldecode(Request::getState($this->option . '.' . $this->controller . '.search', 'search', '')),
+            'status' => Request::getState($this->option . '.' . $this->controller . '.status', 'status', ''),
+            'sort'   => Request::getState($this->option . '.' . $this->controller . '.sort', 'filter_order', 'created'),
+            'sort_Dir' => Request::getState($this->option . '.' . $this->controller . '.sortdir', 'filter_order_Dir', 'DESC'),
         ];
 
         $rows = Mailing::all();
@@ -90,7 +90,7 @@ class Mailings extends AdminController
      */
     public function editTask($row = null, $invalid = [])
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -162,7 +162,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -195,7 +195,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -242,7 +242,7 @@ class Mailings extends AdminController
         // Only honor the opt-out override for users allowed to request it; it
         // still needs separate approval before it can send.
         $override = Request::getInt('ignore_optout', 0)
-            && User::authorise('core.override', $this->_option);
+            && User::authorise('core.override', $this->option);
         $row->set('ignore_optout', $override ? 1 : 0);
 
         // Optional scheduled delivery time: entered in the site's timezone,
@@ -372,7 +372,7 @@ class Mailings extends AdminController
      */
     public function verifyTask($row = null)
     {
-        if (!User::authorise('core.send', $this->_option)) {
+        if (!User::authorise('core.send', $this->option)) {
             App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
         }
 
@@ -737,7 +737,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -763,7 +763,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.send', $this->_option)) {
+        if (!User::authorise('core.send', $this->option)) {
             App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
         }
 
@@ -826,7 +826,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.approve', $this->_option)) {
+        if (!User::authorise('core.approve', $this->option)) {
             App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_APPROVE'));
         }
 
@@ -867,7 +867,7 @@ class Mailings extends AdminController
 
         // Releasing a held backlog is its own permission (defaults to nobody but
         // Super Administrators until explicitly granted).
-        if (!User::authorise('core.release', $this->_option)) {
+        if (!User::authorise('core.release', $this->option)) {
             App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_RELEASE'));
         }
 
@@ -954,7 +954,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -981,7 +981,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.send', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.send', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1027,7 +1027,7 @@ class Mailings extends AdminController
         // so a crawler following a link cannot delete.
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1099,7 +1099,7 @@ class Mailings extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option) && !User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

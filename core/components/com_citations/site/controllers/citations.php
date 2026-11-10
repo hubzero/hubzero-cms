@@ -67,7 +67,7 @@ class Citations extends SiteController
         $this->_buildPathway();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->_option));
+        $this->view->title = Lang::txt(strtoupper($this->option));
 
         $this->view->database = $this->database;
 
@@ -80,7 +80,7 @@ class Citations extends SiteController
         $this->view->allow_import = $this->config->get('citation_import', 1);
         $this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
         $this->view->isAdmin = false;
-        if (User::authorise('core.manage', $this->_option)) {
+        if (User::authorise('core.manage', $this->option)) {
             $this->view->isAdmin = true;
         }
 
@@ -98,7 +98,7 @@ class Citations extends SiteController
     public function browseTask()
     {
         // Instantiate a new view
-        $this->view->title    = Lang::txt(strtoupper($this->_option));
+        $this->view->title    = Lang::txt(strtoupper($this->option));
         $this->view->database = $this->database;
         $this->view->config   = $this->config;
         $this->view->isAdmin  = false;
@@ -137,7 +137,7 @@ class Citations extends SiteController
             'scope'           => 'hub',
         ];
 
-        if (User::authorise('core.manage', $this->_option)) {
+        if (User::authorise('core.manage', $this->option)) {
             $this->view->isAdmin = true;
             $this->view->filters['published'] = [0, 1];
         }
@@ -375,10 +375,10 @@ class Citations extends SiteController
 
         // Set the pathway
         if (Pathway::count() <= 0) {
-            Pathway::append(Lang::txt(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+            Pathway::append(Lang::txt(strtoupper($this->name)), 'index.php?option=' . $this->option);
         }
-        Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->_option . '&task=browse');
-        Pathway::append($this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
+        Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->option . '&task=browse');
+        Pathway::append($this->view->shortenedTitle, 'index.php?option=' . $this->option . '&task=view&id=' . $this->view->citation->id);
 
         $this->view->citationType = $this->view->citation->relatedType;
         $typeAlias = $this->view->citationType->type;
@@ -484,7 +484,7 @@ class Citations extends SiteController
     public function loginTask()
     {
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true))),
             Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
@@ -504,7 +504,7 @@ class Citations extends SiteController
 
         // Check if admin
         $isAdmin = false;
-        if (User::authorise('core.manage', $this->_option)) {
+        if (User::authorise('core.manage', $this->option)) {
             $isAdmin = true;
         }
 
@@ -512,11 +512,11 @@ class Citations extends SiteController
         $allowImport = $this->config->get('citation_import', 1);
         if (
             $allowImport == 0
-            || ($allowImport == 2 && !User::authorise('core.manage', $this->_option))
+            || ($allowImport == 2 && !User::authorise('core.manage', $this->option))
         ) {
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
                 'warning',
             );
@@ -582,11 +582,11 @@ class Citations extends SiteController
                         : $this->view->row->title;
 
         // Set the pathway
-        Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
+        Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         if ($id && $id != 0) {
-            Pathway::append($shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
+            Pathway::append($shortenedTitle, 'index.php?option=' . $this->option . '&task=view&id=' . $this->view->row->id);
         }
-        Pathway::append(Lang::txt('JACTION_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
+        Pathway::append(Lang::txt('JACTION_EDIT'), 'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->row->id);
 
         // Set the page title
         Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
@@ -595,7 +595,7 @@ class Citations extends SiteController
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         $this->view->config = $this->config;
 
         // No ID, so we're creating a new entry
@@ -654,7 +654,7 @@ class Citations extends SiteController
         // new citation has no owner yet.
         if (
             !$row->isNew()
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
             && !$row->canEdit()
         ) {
             App::abort(403, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
@@ -663,7 +663,7 @@ class Citations extends SiteController
         // Ownership and placement are not the form's to choose: the hidden
         // uid/scope/scope_id/published inputs would otherwise file the row
         // under another member's or group's citation list.
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             if ($row->isNew()) {
                 $c['uid']      = User::get('id');
                 $c['scope']    = 'hub';
@@ -761,7 +761,7 @@ class Citations extends SiteController
 
         Notify::success(Lang::txt('COM_CITATIONS_CITATION_SAVED'), 'com.citations');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=browse'),
+            Route::url('index.php?option=' . $this->option . '&task=browse'),
         );
     }
 
@@ -778,9 +778,9 @@ class Citations extends SiteController
             return;
         }
 
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=browse'),
+                Route::url('index.php?option=' . $this->option . '&task=browse'),
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
                 "error",
             );
@@ -1100,14 +1100,14 @@ class Citations extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
     }
@@ -1119,9 +1119,9 @@ class Citations extends SiteController
      */
     protected function _buildTitle()
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
-        if ($this->_task) {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->_title = Lang::txt(strtoupper($this->option));
+        if ($this->task) {
+            $this->_title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         Document::setTitle($this->_title);
     }

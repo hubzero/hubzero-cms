@@ -35,7 +35,7 @@ class Help extends AdminController
         $component = Request::getWord('component', 'com_help');
         $extension = Request::getWord('extension', '');
 
-        if ($component == $this->_option && !Request::getString('tmpl', '') && !$page) {
+        if ($component == $this->option && !Request::getString('tmpl', '') && !$page) {
             $this->view
                 ->set('components', self::getComponents())
                 ->setLayout('overview')

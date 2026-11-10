@@ -34,7 +34,7 @@ class Screenshots extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         // Load the com_resources component config
         $rconfig = Component::params('com_resources');
@@ -177,7 +177,7 @@ class Screenshots extends SiteController
         $shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
+        $this->view->title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
         Document::setTitle($this->view->title);
 
         // Output HTML
@@ -578,7 +578,7 @@ class Screenshots extends SiteController
         $from    = $version == 'dev' ? 'current' : 'dev';
 
         // get admin priviliges
-        $this->_authorize();
+        $this->authorize();
 
         // Get version id
         $objV = new \Components\Tools\Tables\Version($this->database);
@@ -617,27 +617,27 @@ class Screenshots extends SiteController
         $version = Request::getString('version', 'dev');
 
         // get admin priviliges
-        $this->_authorize();
+        $this->authorize();
 
-        if ($this->config->get('access-admin-component') or $this->_task == 'copy') {
+        if ($this->config->get('access-admin-component') or $this->task == 'copy') {
             if ($from == 0 or $to == 0 or $rid == 0) {
                 App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
             }
 
             if ($this->transfer($from, $to, $rid)) {
-                if ($this->_task == 'copy') {
+                if ($this->task == 'copy') {
                     $this->_rid = $rid;
                     // Push through to the screenshot view
                     $this->displayTask($rid, $version);
                 } else {
                     echo Lang::txt('COM_TOOLS_SUCCESS');
                 }
-            } elseif ($this->_task != 'copy') {
+            } elseif ($this->task != 'copy') {
                 $this->setError(Lang::txt('COM_TOOLS_ERROR_COPYING_FILES'));
             }
         } else {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
     }
@@ -860,7 +860,7 @@ class Screenshots extends SiteController
      * @return     void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::isGuest()) {
@@ -885,7 +885,7 @@ class Screenshots extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

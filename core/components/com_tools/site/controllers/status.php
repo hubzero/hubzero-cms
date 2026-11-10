@@ -32,7 +32,7 @@ class Status extends SiteController
         // Check logged in status
         if (User::isGuest()) {
             $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option='
-                . $this->_option . '&controller=' . $this->_controller . '&task='
+                . $this->option . '&controller=' . $this->controller . '&task='
                 . Request::getWord('task', ''), false, true), 'server'));
 
             App::redirect(
@@ -41,7 +41,7 @@ class Status extends SiteController
             return;
         }
 
-        $this->_authorize();
+        $this->authorize();
 
         // Set the default task
         $this->registerTask('__default', 'status');
@@ -57,8 +57,8 @@ class Status extends SiteController
     public function statusTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
-            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task));
         Document::setTitle($this->view->title);
 
         // Create a Table object
@@ -88,7 +88,7 @@ class Status extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::isGuest()) {
@@ -113,7 +113,7 @@ class Status extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

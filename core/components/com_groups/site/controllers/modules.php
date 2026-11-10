@@ -58,7 +58,7 @@ class Modules extends Base
 
         // Check authorization
         $isUnauthorized = $this->group->published == 2
-            || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'));
+            || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.pages'));
         if ($isUnauthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
@@ -281,7 +281,7 @@ class Modules extends Base
         }
 
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
             . '&controller=pages#modules',
         );
 
@@ -389,7 +389,7 @@ class Modules extends Base
 
         //inform user & redirect
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
             . '&controller=modules',
         );
 

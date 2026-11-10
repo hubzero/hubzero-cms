@@ -98,7 +98,7 @@ class Bookings extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option),
+            Route::url('index.php?option=' . $this->option),
             Lang::txt('COM_BOOKINGS_BOOKING_SAVED')
         );
     }

@@ -76,44 +76,44 @@ class Items extends AdminController
         // Incoming
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.resources.limit',
+                $this->option . '.resources.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.resources.limitstart',
+                $this->option . '.resources.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.resources.search',
+                $this->option . '.resources.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.resources.sort',
+                $this->option . '.resources.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.resources.sortdir',
+                $this->option . '.resources.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
             'status' => Request::getState(
-                $this->_option . '.resources.status',
+                $this->option . '.resources.status',
                 'status',
                 'all',
             ),
             'type' => Request::getState(
-                $this->_option . '.resources.type',
+                $this->option . '.resources.type',
                 'type',
                 '',
             ),
             'license' => Request::getState(
-                $this->_option . '.resources.license',
+                $this->option . '.resources.license',
                 'license',
                 'all',
             ),
@@ -176,7 +176,7 @@ class Items extends AdminController
     {
         // Resource's parent ID
         $pid = Request::getState(
-            $this->_option . '.children.pid',
+            $this->option . '.children.pid',
             'pid',
             0,
             'int',
@@ -186,34 +186,34 @@ class Items extends AdminController
         $filters = [
             'parent_id' => $pid,
             'limit' => Request::getState(
-                $this->_option . '.children.limit',
+                $this->option . '.children.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.children.limitstart',
+                $this->option . '.children.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.children.search',
+                $this->option . '.children.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.children.sort',
+                $this->option . '.children.sort',
                 'filter_order',
                 'ordering',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.children.sortdir',
+                $this->option . '.children.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'status' => Request::getState(
-                $this->_option . '.children.status',
+                $this->option . '.children.status',
                 'status',
                 'all',
             ),
@@ -265,22 +265,22 @@ class Items extends AdminController
         $filters = [
             'parent_id' => -1,
             'search' => urldecode(Request::getState(
-                $this->_option . '.orphans.search',
+                $this->option . '.orphans.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.orphans.sort',
+                $this->option . '.orphans.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.orphans.sortdir',
+                $this->option . '.orphans.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'status' => Request::getState(
-                $this->_option . '.orphans.status',
+                $this->option . '.orphans.status',
                 'status',
                 'all',
             ),
@@ -466,7 +466,7 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, false),
             );
         }
 
@@ -490,7 +490,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, false),
         );
     }
 
@@ -509,7 +509,7 @@ class Items extends AdminController
         // Make sure we have a parent ID
         if (!$pid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, true),
                 Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
                 'error',
             );
@@ -521,7 +521,7 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, true),
             );
         }
 
@@ -547,7 +547,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, true),
         );
     }
 
@@ -600,7 +600,7 @@ class Items extends AdminController
                 $task = '&task=children&pid=' . $pid;
             }
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . $task, false),
             );
             return;
         }
@@ -695,32 +695,32 @@ class Items extends AdminController
 
             // Build <select> of contributors
             $authorslist = new \Hubzero\Component\View([
-                'name'   => $this->_controller,
+                'name'   => $this->controller,
                 'layout' => 'authors',
             ]);
             $authorslist->authnames = $authnames;
             $authorslist->attribs   = $row->attribs;
-            $authorslist->set('option', $this->_option);
+            $authorslist->set('option', $this->option);
             $authorslist->roles     = $row->type->roles()->rows();
 
             $lists['authors'] = $authorslist->loadTemplate();
         }
 
         $aclusers = new \Hubzero\Component\View([
-            'name'   => $this->_controller,
+            'name'   => $this->controller,
             'layout' => 'aclusers',
         ]);
         $aclusers->aclusernames = $row->aclusers();
-        $aclusers->option    = $this->_option;
+        $aclusers->option    = $this->option;
 
         $lists['aclusers'] = $aclusers->loadTemplate();
 
         $aclgroups = new \Hubzero\Component\View([
-            'name'   => $this->_controller,
+            'name'   => $this->controller,
             'layout' => 'aclgroups',
         ]);
         $aclgroups->aclgroupnames = $row->aclgroups();
-        $aclgroups->option    = $this->_option;
+        $aclgroups->option    = $this->option;
 
         $lists['aclgroups'] = $aclgroups->loadTemplate();
 
@@ -1107,7 +1107,7 @@ class Items extends AdminController
             $message .= $base . '/resources/' . $row->id;
 
             // Send message
-            if (!Event::trigger('xmessage.onSendMessage', ['resources_submission_approved', $subject, $message, $from, $contributors, $this->_option])) {
+            if (!Event::trigger('xmessage.onSendMessage', ['resources_submission_approved', $subject, $message, $from, $contributors, $this->option])) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_FAILED_TO_MESSAGE_USERS'));
                 return false;
             }
@@ -1127,7 +1127,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1174,7 +1174,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1236,7 +1236,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1247,7 +1247,7 @@ class Items extends AdminController
 
         // Check for a resource
         if (count($ids) < 1) {
-            Notify::warning(Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $this->task));
             return $this->cancelTask();
         }
 
@@ -1378,7 +1378,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1399,7 +1399,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1414,7 +1414,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1436,7 +1436,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1451,7 +1451,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1472,7 +1472,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1556,7 +1556,7 @@ class Items extends AdminController
      */
     private function buildRedirectURL($pid = 0)
     {
-        $url  = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+        $url  = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
         if ($pid) {
             if ($pid > 0) {
                 $url .= '&task=children';

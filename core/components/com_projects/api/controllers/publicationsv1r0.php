@@ -33,7 +33,7 @@ class Publicationsv1r0 extends ApiController
     public function execute()
     {
         $this->registerTask('publications', 'list');
-        $this->_task = Request::getCmd('task', 'list');
+        $this->task = Request::getCmd('task', 'list');
 
         // Load language files
         Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');

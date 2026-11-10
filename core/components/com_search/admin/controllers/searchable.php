@@ -99,10 +99,10 @@ class Searchable extends AdminController
             if (!$recordsIndexed) {
                 $recordsIndexed = [];
                 $component->set('state', SearchComponent::STATE_INDEXED);
-                $componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
+                $componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
                 $recordsIndexed['state'] = SearchComponent::STATE_INDEXED; //1;
                 $recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
-                $recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
+                $recordsIndexed['link'] = Route::url('index.php?option=' . $this->option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
             } elseif (isset($recordsIndexed['error'])) {
                 $error = $recordsIndexed['error'];
                 Notify::error($error);
@@ -120,7 +120,7 @@ class Searchable extends AdminController
             exit();
         }
 
-        App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+        App::redirect(Route::url('index.php?option=' . $this->option . '&controller=searchable', false));
     }
 
     public function addTask()
@@ -282,7 +282,7 @@ class Searchable extends AdminController
             }
         }
 
-        App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+        App::redirect(Route::url('index.php?option=' . $this->option . '&controller=searchable', false));
     }
 
     /**
@@ -302,7 +302,7 @@ class Searchable extends AdminController
                 Notify::success(Lang::txt('COM_SEARCH_TRASH_COMPONENT_SUCCESS', ucfirst($component->name)));
             }
         }
-        App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+        App::redirect(Route::url('index.php?option=' . $this->option . '&controller=searchable', false));
     }
 
     /**

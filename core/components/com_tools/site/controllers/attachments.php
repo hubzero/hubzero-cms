@@ -32,7 +32,7 @@ class Attachments extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         // Load the com_resources component config
         $rconfig = Component::params('com_resources');
@@ -490,7 +490,7 @@ class Attachments extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::get('guest')) {
@@ -515,7 +515,7 @@ class Attachments extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

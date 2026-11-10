@@ -51,8 +51,8 @@ class CustomFields extends AdminController
     {
         //Request::setVar('hidemainmenu', 1);
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -83,8 +83,8 @@ class CustomFields extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

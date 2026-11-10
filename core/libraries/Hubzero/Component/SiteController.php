@@ -50,28 +50,28 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @var  string
      */
-    protected $_name = null;
+    protected $name = null;
 
     /**
      * Container for storing overloaded data
      *
      * @var  array
      */
-    protected $_data = [];
+    protected $attributes = [];
 
     /**
      * The task the component is to perform
      *
      * @var  string
      */
-    protected $_task = null;
+    protected $task = null;
 
     /**
      * A list of executable tasks
      *
      * @var  array
      */
-    protected $_taskMap = [
+    protected $taskMap = [
         '__default' => 'display',
     ];
 
@@ -80,28 +80,28 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @var  string
      */
-    protected $_doTask = null;
+    protected $doTask = null;
 
     /**
      * The name of this controller
      *
      * @var  string
      */
-    protected $_controller = null;
+    protected $controller = null;
 
     /**
      * The name of this component
      *
      * @var  string
      */
-    protected $_option = null;
+    protected $option = null;
 
     /**
      * The base path to this component
      *
      * @var  string
      */
-    protected $_basePath = null;
+    protected $basePath = null;
 
     /**
      * Redirection URL
@@ -109,7 +109,7 @@ class SiteController extends Obj implements ControllerInterface
      * @var  string
      * @deprecated
      */
-    protected $_redirect = null;
+    protected $redirect = null;
 
     /**
      * The message to display
@@ -117,7 +117,7 @@ class SiteController extends Obj implements ControllerInterface
      * @var  string
      * @deprecated
      */
-    protected $_message = null;
+    protected $message = null;
 
     /**
      * Message type
@@ -125,7 +125,7 @@ class SiteController extends Obj implements ControllerInterface
      * @var  string
      * @deprecated
      */
-    protected $_messageType = 'message';
+    protected $messageType = 'message';
 
     /**
      * Constructor
@@ -135,9 +135,9 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function __construct($config = [])
     {
-        $this->_redirect    = null;
-        $this->_message     = null;
-        $this->_messageType = 'message';
+        $this->redirect    = null;
+        $this->message     = null;
+        $this->messageType = 'message';
 
         // Get the reflection info
         $r = new ReflectionClass($this);
@@ -145,13 +145,13 @@ class SiteController extends Obj implements ControllerInterface
         // Is it namespaced?
         if ($r->inNamespace()) {
             // It is! This makes things easy.
-            $this->_controller = strtolower($r->getShortName());
+            $this->controller = strtolower($r->getShortName());
         }
 
         // Set the name
-        if (empty($this->_name)) {
+        if (empty($this->name)) {
             if (isset($config['name'])) {
-                $this->_name = $config['name'];
+                $this->name = $config['name'];
             } else {
                 $segments = null;
                 $cls = $r->getName();
@@ -161,7 +161,7 @@ class SiteController extends Obj implements ControllerInterface
                     $segments = explode('\\', $cls);
                 } elseif (preg_match('/(.*)Controller(.*)/i', $cls, $segments)) {
                     // If matching the pattern of ComponentControllerName
-                    $this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
+                    $this->controller = isset($segments[2]) ? strtolower($segments[2]) : null;
                 } else {
                     // Uh-oh!
                     throw new InvalidControllerException(
@@ -170,21 +170,21 @@ class SiteController extends Obj implements ControllerInterface
                     );
                 }
 
-                $this->_name = strtolower($segments[1]);
+                $this->name = strtolower($segments[1]);
             }
         }
 
         // Set the base path
         if (array_key_exists('base_path', $config)) {
-            $this->_basePath = $config['base_path'];
+            $this->basePath = $config['base_path'];
         } else {
             // Set base path relative to the controller file rather than
             // an absolute path. This gives us a little more flexibility.
-            $this->_basePath = dirname(dirname($r->getFileName()));
+            $this->basePath = dirname(dirname($r->getFileName()));
         }
 
         // Set the component name
-        $this->_option = 'com_' . $this->_name;
+        $this->option = 'com_' . $this->name;
 
         // Determine the methods to exclude from the base class.
         $xMethods = get_class_methods('\\Hubzero\\Component\\SiteController');
@@ -201,17 +201,17 @@ class SiteController extends Obj implements ControllerInterface
                 // Remove the 'Task' suffix
                 $name = substr($name, 0, -4);
                 // Auto register the methods as tasks.
-                $this->_taskMap[strtolower($name)] = $name;
+                $this->taskMap[strtolower($name)] = $name;
             }
         }
 
         // get language object & get any loaded lang for option
         $lang   = \Lang::getRoot();
-        $loaded = $lang->getPaths($this->_option);
+        $loaded = $lang->getPaths($this->option);
 
         // Load language file if we dont have one yet
         if (!isset($loaded) || empty($loaded)) {
-            $lang->load($this->_option, $this->_basePath);
+            $lang->load($this->option, $this->basePath);
         }
 
         // Set some commonly used vars
@@ -220,7 +220,7 @@ class SiteController extends Obj implements ControllerInterface
         //     These will be going away in a future version. Do not use.
         $this->juser    = \User::getInstance();
         $this->database = \App::get('db');
-        $this->config   = \Component::params($this->_option);
+        $this->config   = \Component::params($this->option);
     }
 
     /**
@@ -232,7 +232,7 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function __set($property, $value)
     {
-        $this->_data[$property] = $value;
+        $this->attributes[$property] = $value;
     }
 
     /**
@@ -243,8 +243,8 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->attributes[$property])) {
+            return $this->attributes[$property];
         }
     }
 
@@ -256,7 +256,7 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function __isset($property)
     {
-        return isset($this->_data[$property]);
+        return isset($this->attributes[$property]);
     }
 
     /**
@@ -267,35 +267,35 @@ class SiteController extends Obj implements ControllerInterface
     public function execute()
     {
         // Incoming task
-        $this->_task = strtolower(\Request::getCmd('task', \Request::getWord('layout', '')));
+        $this->task = strtolower(\Request::getCmd('task', \Request::getWord('layout', '')));
 
         // Check if the task is in the taskMap
-        if (isset($this->_taskMap[$this->_task])) {
-            $doTask = $this->_taskMap[$this->_task];
-        } elseif (isset($this->_taskMap['__default'])) {
+        if (isset($this->taskMap[$this->task])) {
+            $doTask = $this->taskMap[$this->task];
+        } elseif (isset($this->taskMap['__default'])) {
             // Check if the default task is set
-            $doTask = $this->_taskMap['__default'];
+            $doTask = $this->taskMap['__default'];
         } else {
             // Raise an error (hopefully, this shouldn't happen)
-            throw new InvalidTaskException(Lang::txt('The requested task "%s" was not found.', $this->_task), 404);
+            throw new InvalidTaskException(Lang::txt('The requested task "%s" was not found.', $this->task), 404);
         }
 
-        $name = $this->_controller;
+        $name = $this->controller;
         $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
-        if (!$this->_controller) {
+        if (!$this->controller) {
             $cls = get_class($this);
             // Attempt to parse the controller name from the class name
             if (
-                (ucfirst($this->_name) . 'Controller') != $cls
+                (ucfirst($this->name) . 'Controller') != $cls
                 && preg_match('/(\w)Controller(.*)/i', $cls, $r)
             ) {
-                $this->_controller = strtolower($r[2]);
-                $name   = $this->_controller;
+                $this->controller = strtolower($r[2]);
+                $name   = $this->controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
             } elseif (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r)) {
                 // Namepsaced component
-                $this->_controller = strtolower($r[2]);
-                $name   = $this->_controller;
+                $this->controller = strtolower($r[2]);
+                $name   = $this->controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
             } else {
                 // No controller name found - single controller component
@@ -305,21 +305,21 @@ class SiteController extends Obj implements ControllerInterface
 
         // Instantiate a view with layout the same name as the task
         $this->view = new View([
-            'base_path' => $this->_basePath,
+            'base_path' => $this->basePath,
             'name'      => $name,
             'layout'    => $layout,
         ]);
 
         // Set some commonly used vars
-        $this->view->set('option', $this->_option)
+        $this->view->set('option', $this->option)
                     ->set('task', $doTask)
-                    ->set('controller', $this->_controller);
+                    ->set('controller', $this->controller);
 
         // Record the actual task being fired
         $doTask .= 'Task';
 
         // On before do task hook
-        $this->_onBeforeDoTask();
+        $this->onBeforeDoTask();
 
         // Call the task
         $this->$doTask();
@@ -343,9 +343,9 @@ class SiteController extends Obj implements ControllerInterface
         $this->view = new View($config);
 
         // Set some commonly used vars
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('task', $name);
-        $this->view->set('controller', $this->_controller);
+        $this->view->set('controller', $this->controller);
     }
 
     /**
@@ -355,7 +355,7 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function getTask()
     {
-        return $this->_task;
+        return $this->task;
     }
 
     /**
@@ -367,8 +367,8 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function registerTask($task, $method)
     {
-        if (in_array(strtolower($method), $this->_taskMap)) {
-            $this->_taskMap[strtolower($task)] = $method;
+        if (in_array(strtolower($method), $this->taskMap)) {
+            $this->taskMap[strtolower($task)] = $method;
         }
 
         return $this;
@@ -382,7 +382,7 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function unregisterTask($task)
     {
-        unset($this->_taskMap[strtolower($task)]);
+        unset($this->taskMap[strtolower($task)]);
 
         return $this;
     }
@@ -425,8 +425,8 @@ class SiteController extends Obj implements ControllerInterface
             $this->setRedirect($url, $msg, $type);
         }
 
-        if ($this->_redirect != null) {
-            \App::redirect($this->_redirect, $this->_message, $this->_messageType);
+        if ($this->redirect != null) {
+            \App::redirect($this->redirect, $this->message, $this->messageType);
         }
     }
 
@@ -442,20 +442,20 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function setRedirect($url, $msg = null, $type = null)
     {
-        $this->_redirect = $url;
+        $this->redirect = $url;
         if ($msg !== null) {
             // controller may have set this directly
-            $this->_message = $msg;
+            $this->message = $msg;
         }
 
         // Ensure the type is not overwritten by a previous call to setMessage.
         if (empty($type)) {
-            if (empty($this->_messageType)) {
-                $this->_messageType = 'message';
+            if (empty($this->messageType)) {
+                $this->messageType = 'message';
             }
         } else {
             // If the type is explicitly set, set it.
-            $this->_messageType = $type;
+            $this->messageType = $type;
         }
 
         return $this;
@@ -473,8 +473,8 @@ class SiteController extends Obj implements ControllerInterface
     public function setMessage($msg, $type = 'message')
     {
         // controller may have set this directly
-        $this->_message     = $msg;
-        $this->_messageType = $type;
+        $this->message     = $msg;
+        $this->messageType = $type;
 
         return $this;
     }
@@ -485,14 +485,14 @@ class SiteController extends Obj implements ControllerInterface
      * @return  boolean  True on success
      * @deprecated
      */
-    protected function _authorize()
+    protected function authorize()
     {
         // Check if they are logged in
         if ($this->juser->isGuest()) {
             return false;
         }
 
-        if ($this->juser->authorise('core.admin', $this->_option)) {
+        if ($this->juser->authorise('core.admin', $this->option)) {
             return true;
         }
 
@@ -547,7 +547,7 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @return  void
      */
-    protected function _onBeforeDoTask()
+    protected function onBeforeDoTask()
     {
         // Do nothing - override in subclass
     }

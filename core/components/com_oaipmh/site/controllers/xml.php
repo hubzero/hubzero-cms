@@ -68,7 +68,7 @@ class Xml extends SiteController
         Document::setType('xml');
 
         // Initiate the service
-        $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
+        $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->option . '&task=stylesheet&metadataPrefix=' . $metadata));
 
         $service->set('metadataPrefix', $metadata)
                 ->set('repositoryName', $this->config->get('repository_name', Config::get('sitename')))

@@ -39,13 +39,13 @@ class Curation extends SiteController
      */
     public function execute()
     {
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
         $this->_id    = Request::getInt('id', 0);
         $this->_pub   = null;
 
         // View individual curation
-        if ($this->_id && !$this->_task) {
-            $this->_task = 'view';
+        if ($this->_id && !$this->task) {
+            $this->task = 'view';
         }
 
         // Get language
@@ -76,7 +76,7 @@ class Curation extends SiteController
 
         // Check authorization
         $mt  = new Tables\MasterType($this->database);
-        $authorized = $this->_authorize($mt->getCuratorGroups());
+        $authorized = $this->authorize($mt->getCuratorGroups());
 
         // Incoming
         $assigned = Request::getInt('assigned', 0);
@@ -125,7 +125,7 @@ class Curation extends SiteController
         $this->view->css('curation.css', 'plg_projects_publications');
 
         $this->view
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('database', $this->database)
             ->set('config', $this->config)
             ->set('title', $this->_title)
@@ -142,7 +142,7 @@ class Curation extends SiteController
     protected function _buildTitle()
     {
         if (!$this->_title) {
-            $this->_title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_controller));
+            $this->_title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->option . '_' . $this->controller));
         }
         Document::setTitle($this->_title);
     }
@@ -156,19 +156,19 @@ class Curation extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             Lang::txt('COM_PUBLICATIONS_CURATION'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display',
         );
 
         if ($this->_pub) {
             Pathway::append(
                 $this->_pub->title,
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $this->_pub->id,
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $this->_pub->id,
             );
         }
     }
@@ -202,7 +202,7 @@ class Curation extends SiteController
             Notify::warning(Lang::txt('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=curation', false),
+                Route::url('index.php?option=' . $this->option . '&controller=curation', false),
             );
             return;
         }
@@ -237,7 +237,7 @@ class Curation extends SiteController
             ->set('history', $history)
             ->set('pub', $this->_pub)
             ->set('title', $this->_title)
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->setErrors($this->getErrors())
             ->display();
     }
@@ -308,7 +308,7 @@ class Curation extends SiteController
         $this->view
             ->set('pub', $this->_pub)
             ->set('title', $this->_title)
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('ajax', $ajax)
             ->display();
     }
@@ -431,7 +431,7 @@ class Curation extends SiteController
             $this->view
                 ->set('pub', $this->_pub)
                 ->set('title', $this->_title)
-                ->set('option', $this->_option)
+                ->set('option', $this->option)
                 ->set('ajax', $ajax)
                 ->display();
             return;
@@ -445,7 +445,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -652,7 +652,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -704,7 +704,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -895,7 +895,7 @@ class Curation extends SiteController
      * @param   integer  $curator
      * @return  mixed    False if no access, string if has access
      */
-    protected function _authorize($curatorgroups = [], $curator = 0)
+    protected function authorize($curatorgroups = [], $curator = 0)
     {
         // Check if they are logged in
         if (User::isGuest()) {
@@ -905,7 +905,7 @@ class Curation extends SiteController
         $authorized = false;
 
         // Check if they're a site admin
-        if (User::authorize($this->_option, 'manage')) {
+        if (User::authorize($this->option, 'manage')) {
             $authorized = 'admin';
         }
         if ($curator && $curator == User::get('id')) {
@@ -944,7 +944,7 @@ class Curation extends SiteController
      */
     protected function _login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
 
         Notify::warning($this->_msg);
 

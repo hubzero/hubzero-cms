@@ -102,7 +102,7 @@ class Comments extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
+                Route::url('index.php?option=' . $this->option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
             );
         }
 
@@ -160,22 +160,22 @@ class Comments extends SiteController
 
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->_option)) . ': '
+            Lang::txt(strtoupper($this->option)) . ': '
             . $this->page->title . ': '
-            . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            . Lang::txt(strtoupper($this->option . '_' . $this->task)),
         );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
         $parents = $this->appendPagePathway();
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            Lang::txt(strtoupper($this->option . '_' . $this->task)),
             $this->page->link('comments'),
         );
 

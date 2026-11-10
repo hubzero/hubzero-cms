@@ -246,7 +246,7 @@ class Stats extends AdminController
         // Output view
         $this->view
             ->set('filters', $filters)
-            ->set('title', Lang::txt(strtoupper($this->_option)))
+            ->set('title', Lang::txt(strtoupper($this->option)))
             ->set('config', $this->config)
             ->set('users', $u)
             ->set('first', $first)

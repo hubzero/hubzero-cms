@@ -32,21 +32,21 @@ class ApiController implements ControllerInterface
      *
      * @var  string
      */
-    protected $_name = null;
+    protected $name = null;
 
     /**
      * The task the component is to perform
      *
      * @var  string
      */
-    protected $_task = null;
+    protected $task = null;
 
     /**
      * A list of executable tasks
      *
      * @var  array
      */
-    protected $_taskMap = [
+    protected $taskMap = [
         '__default' => 'index',
     ];
 
@@ -55,21 +55,21 @@ class ApiController implements ControllerInterface
      *
      * @var  string
      */
-    protected $_doTask = null;
+    protected $doTask = null;
 
     /**
      * The name of this controller
      *
      * @var  string
      */
-    protected $_controller = null;
+    protected $controller = null;
 
     /**
      * The name of this component
      *
      * @var  string
      */
-    protected $_option = null;
+    protected $option = null;
 
     /**
      * The name of the model
@@ -78,7 +78,7 @@ class ApiController implements ControllerInterface
      *
      * @var  string
      */
-    protected $_model = null;
+    protected $modelClass = null;
 
     /**
      * Is this a dynamically generated endpoint?
@@ -103,7 +103,7 @@ class ApiController implements ControllerInterface
 
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
     }
@@ -165,17 +165,17 @@ class ApiController implements ControllerInterface
             $segments = explode('\\', $r->getName());
             $config['name'] = strtolower($segments[1]);
         }
-        $this->_name = $config['name'];
+        $this->name = $config['name'];
 
         // Set the controller name
         if (!isset($config['controller']) || !$config['controller']) {
             // Components\Component\Api\Controllers\Controller
             $config['controller'] = strtolower($r->getShortName());
         }
-        $this->_controller = $config['controller'];
+        $this->controller = $config['controller'];
 
         // Set the component name
-        $this->_option = 'com_' . $this->_name;
+        $this->option = 'com_' . $this->name;
 
         // Is this a dynamically created endpoint?
         // If so, we'll need to do some route parsing on the fly
@@ -211,7 +211,7 @@ class ApiController implements ControllerInterface
                 // Remove the 'Task' suffix
                 $name = substr($name, 0, -4);
                 // Auto register the methods as tasks.
-                $this->_taskMap[strtolower($name)] = $name;
+                $this->taskMap[strtolower($name)] = $name;
             }
         }
     }
@@ -225,8 +225,8 @@ class ApiController implements ControllerInterface
      */
     public function registerTask($task, $method)
     {
-        if (in_array(strtolower($method), $this->_taskMap)) {
-            $this->_taskMap[strtolower($task)] = $method;
+        if (in_array(strtolower($method), $this->taskMap)) {
+            $this->taskMap[strtolower($task)] = $method;
         }
 
         return $this;
@@ -240,7 +240,7 @@ class ApiController implements ControllerInterface
      */
     public function unregisterTask($task)
     {
-        unset($this->_taskMap[strtolower($task)]);
+        unset($this->taskMap[strtolower($task)]);
 
         return $this;
     }
@@ -253,23 +253,23 @@ class ApiController implements ControllerInterface
     public function execute()
     {
         // Incoming task
-        $this->_task = strtolower(Request::getCmd('task', ''));
+        $this->task = strtolower(Request::getCmd('task', ''));
 
         $doTask = null;
 
         // Check if the default task is set
-        if (!$this->_task) {
-            if (isset($this->_taskMap['__default'])) {
-                $doTask = $this->_taskMap['__default'];
+        if (!$this->task) {
+            if (isset($this->taskMap['__default'])) {
+                $doTask = $this->taskMap['__default'];
             }
-        } elseif (isset($this->_taskMap[$this->_task])) {
+        } elseif (isset($this->taskMap[$this->task])) {
             // Check if the task is in the taskMap
-            $doTask = $this->_taskMap[$this->_task];
+            $doTask = $this->taskMap[$this->task];
         }
 
         // Raise an error (hopefully, this shouldn't happen)
         if (!$doTask) {
-            throw new InvalidTaskException(Lang::txt('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task), 404);
+            throw new InvalidTaskException(Lang::txt('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->task), 404);
         }
 
         // Record the actual task being fired
@@ -321,7 +321,7 @@ class ApiController implements ControllerInterface
 
         // var to hold output
         $output = new stdClass();
-        $output->component = substr($this->_option, 4);
+        $output->component = substr($this->option, 4);
         $bits = explode('v', get_class($this));
         $versionPart = end($bits);
         $output->version = (strpos($versionPart, 'r') !== false)
@@ -413,7 +413,7 @@ class ApiController implements ControllerInterface
                     $content .= $output->component;
 
                     if ($this->isDynamic) {
-                        $content .= '/' . $this->_controller;
+                        $content .= '/' . $this->controller;
                     }
                 }
 
@@ -423,7 +423,7 @@ class ApiController implements ControllerInterface
 
             if ($this->isDynamic && $endpoint['name'] != 'index') {
                 $endpoint['uri'] = str_replace('{component}', $output->component, $endpoint['uri']);
-                $endpoint['uri'] = str_replace('{controller}', $this->_controller, $endpoint['uri']);
+                $endpoint['uri'] = str_replace('{controller}', $this->controller, $endpoint['uri']);
                 $endpoint['uri'] = str_replace('{primary key}', '{' . $model->getPrimaryKey() . '}', $endpoint['uri']);
 
                 foreach ($properties as $prop => $type) {
@@ -498,7 +498,7 @@ class ApiController implements ControllerInterface
                 // it to default to published entries
                 if ($property == 'state') {
                     $dflt = $query::STATE_PUBLISHED;
-                    if (User::authorise('core.manage', $this->_option)) {
+                    if (User::authorise('core.manage', $this->option)) {
                         $dflt = null;
                     }
                 }
@@ -619,8 +619,8 @@ class ApiController implements ControllerInterface
         // management action, not something any authenticated caller may do.
         if (
             $this->isDynamic
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -676,7 +676,7 @@ class ApiController implements ControllerInterface
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => 'created',
-                'scope'       => $this->_name . '.' . $model->getModelName(),
+                'scope'       => $this->name . '.' . $model->getModelName(),
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_CREATED',
@@ -794,7 +794,7 @@ class ApiController implements ControllerInterface
         }
         if (
             ($ownerId === null || $ownerId !== (int) User::get('id'))
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
@@ -848,7 +848,7 @@ class ApiController implements ControllerInterface
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => 'updated',
-                'scope'       => $this->_name . '.' . $model->getModelName(),
+                'scope'       => $this->name . '.' . $model->getModelName(),
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_UPDATED',
@@ -920,7 +920,7 @@ class ApiController implements ControllerInterface
         }
         if (
             ($ownerId === null || $ownerId !== (int) User::get('id'))
-            && !User::authorise('core.manage', $this->_option)
+            && !User::authorise('core.manage', $this->option)
         ) {
             App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
@@ -942,7 +942,7 @@ class ApiController implements ControllerInterface
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => 'deleted',
-                'scope'       => $this->_name . '.' . $model->getModelName(),
+                'scope'       => $this->name . '.' . $model->getModelName(),
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_DELETED',
@@ -1017,21 +1017,21 @@ class ApiController implements ControllerInterface
      */
     protected function resolveModel()
     {
-        if (!$this->_model) {
+        if (!$this->modelClass) {
             // If no model name is explicitely set then derive the
             // name (singular) from the controller name (plural)
-            if (!$this->_model) {
-                $this->_model = \Hubzero\Utility\Inflector::singularize($this->_controller);
+            if (!$this->modelClass) {
+                $this->modelClass = \Hubzero\Utility\Inflector::singularize($this->controller);
             }
 
             // Does the model name include the namespace?
             // We need a fully qualified name
-            if ($this->_model && !strstr($this->_model, '\\')) {
-                $this->_model = 'Components\\' . ucfirst($this->_name) . '\\Models\\' . ucfirst(strtolower($this->_model));
+            if ($this->modelClass && !strstr($this->modelClass, '\\')) {
+                $this->modelClass = 'Components\\' . ucfirst($this->name) . '\\Models\\' . ucfirst(strtolower($this->modelClass));
             }
         }
 
-        $model = $this->_model;
+        $model = $this->modelClass;
 
         // Make sure the class exists
         if (!class_exists($model)) {

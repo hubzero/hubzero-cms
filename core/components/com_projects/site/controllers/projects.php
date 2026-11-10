@@ -108,7 +108,7 @@ class Projects extends Base
         }
 
         $project = Request::getString('alias');
-        $task = $this->_task;
+        $task = $this->task;
         $return = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $project . '&' . Session::getFormToken() . '=1', false);
         if (User::isGuest()) {
             $redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
@@ -137,7 +137,7 @@ class Projects extends Base
                     $subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_SUBJECT');
                     $message = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_MESSAGE', $member->user->name, $member->user->email);
                     \Components\Projects\Helpers\Html::sendHUBMessage(
-                        $this->_option,
+                        $this->option,
                         $this->model,
                         $emails,
                         $subject,
@@ -160,7 +160,7 @@ class Projects extends Base
     public function introTask()
     {
         // Set task
-        $this->_task = 'intro';
+        $this->task = 'intro';
 
         // Incoming
         $action  = Request::getCmd('action', '');
@@ -190,7 +190,7 @@ class Projects extends Base
         $this->_logActivity();
 
         // Output HTML
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('model', $this->model);
         $this->view->set('publishing', $this->_publishing);
         $this->view->set('msg', isset($this->_msg) && $this->_msg
@@ -223,7 +223,7 @@ class Projects extends Base
         $this->_logActivity();
 
         // Output HTML
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('config', $this->config);
         $this->view->set('publishing', $this->_publishing);
 
@@ -245,7 +245,7 @@ class Projects extends Base
         $action   = Request::getCmd('action', '');
 
         // Set the pathway
-        $this->_task = 'browse';
+        $this->task = 'browse';
         $this->_buildPathway();
 
         // Set the page title
@@ -281,7 +281,7 @@ class Projects extends Base
         $filters['reviewer'] = $reviewer;
         $filters['filterby'] = Request::getWord('filterby', 'all');
 
-        if (User::isGuest() || (!User::authorise('core.manage', $this->_option) && !$this->model->reviewerAccess($reviewer))) {
+        if (User::isGuest() || (!User::authorise('core.manage', $this->option) && !$this->model->reviewerAccess($reviewer))) {
             $filters['active'] = true;
         }
 
@@ -323,7 +323,7 @@ class Projects extends Base
 
         // Output HTML
         $this->view->set('model', $this->model);
-        $this->view->set('option', $this->_option);
+        $this->view->set('option', $this->option);
         $this->view->set('config', $this->config);
         $this->view->set('title', $this->title);
         $this->view->set('reviewer', $reviewer);
@@ -369,8 +369,8 @@ class Projects extends Base
                     ['name' => 'changeowner', 'layout' => 'default'],
                 );
                 $view->project = $this->model;
-                $view->set('task', $this->_task);
-                $view->set('option', $this->_option);
+                $view->set('task', $this->task);
+                $view->set('option', $this->option);
                 $view->display();
                 return;
             } else {
@@ -407,7 +407,7 @@ class Projects extends Base
 
         // Check if project is in setup
         if ($this->model->inSetup() && !$ajax) {
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&task=setup&alias=' . $this->model->get('alias')));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&task=setup&alias=' . $this->model->get('alias')));
             return;
         }
 
@@ -622,8 +622,8 @@ class Projects extends Base
         $this->view->set('reviewer', $reviewer);
         $this->view->set('title', $this->title);
         $this->view->set('active', $this->active);
-        $this->view->set('task', $this->_task);
-        $this->view->set('option', $this->_option);
+        $this->view->set('task', $this->task);
+        $this->view->set('option', $this->option);
         $this->view->set('config', $this->config);
         $this->view->set('msg', $this->_getNotifications('success'));
 
@@ -726,9 +726,9 @@ class Projects extends Base
             $this->view->set('suggested', $verified ? $this->view->suggested : '');
             $this->view->set('title', $this->title);
             $this->view->set('active', $this->active);
-            $this->view->set('task', $this->_task);
+            $this->view->set('task', $this->task);
             $this->view->set('authorized', 1);
-            $this->view->set('option', $this->_option);
+            $this->view->set('option', $this->option);
             $this->view->set('msg', $this->_getNotifications('success'));
 
             if ($this->getError()) {
@@ -795,13 +795,13 @@ class Projects extends Base
         }
 
         // Already suspended
-        if ($this->_task == 'suspend' && $this->model->isInactive()) {
+        if ($this->task == 'suspend' && $this->model->isInactive()) {
             App::redirect(Route::url($this->model->link()));
             return;
         }
 
         // Suspended by admin: manager cannot activate
-        if ($this->_task == 'reinstate') {
+        if ($this->task == 'reinstate') {
             $suspended = $this->model->checkActivity(Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
             if ($suspended == 1) {
                 throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -826,7 +826,7 @@ class Projects extends Base
         }
 
         // Fix ownership?
-        if ($this->_task == 'fixownership') {
+        if ($this->task == 'fixownership') {
             $keep = Request::getInt('keep', 0);
 
             if (!$this->model->access('owner')) {
@@ -857,9 +857,9 @@ class Projects extends Base
         $this->model->set('modified', Date::toSql());
         $this->model->set('modified_by', User::get('id'));
 
-        if ($this->_task != 'fixownership') {
-            $state = $this->_task == 'suspend' ? 0 : 1;
-            $state = $this->_task == 'delete' ? 2 : $this->model->get('state');
+        if ($this->task != 'fixownership') {
+            $state = $this->task == 'suspend' ? 0 : 1;
+            $state = $this->task == 'delete' ? 2 : $this->model->get('state');
             $this->model->set('state', $state);
         }
 
@@ -872,7 +872,7 @@ class Projects extends Base
         // delete, repopulated on reinstate. sysGroup() stores the group, which fires
         // user.onAfterStoreGroup -> the ldap plugin -> the LDAP posixGroup, so SFTP
         // (projfs) access is revoked on delete and restored on reinstate (ticket 2802).
-        if (in_array($this->_task, ['delete', 'reinstate'], true)) {
+        if (in_array($this->task, ['delete', 'reinstate'], true)) {
             $this->model->_tblOwner->sysGroup(
                 $this->model->get('alias'),
                 $this->config->get('group_prefix', 'pr-'),
@@ -880,32 +880,32 @@ class Projects extends Base
         }
 
         // Log activity
-        $this->_logActivity($this->model->get('id'), 'project', 'status', $this->_task, 1);
+        $this->_logActivity($this->model->get('id'), 'project', 'status', $this->task, 1);
 
-        if ($this->_task != 'fixownership') {
+        if ($this->task != 'fixownership') {
             // Add activity
-            $activity = ($this->_task == 'suspend')
+            $activity = ($this->task == 'suspend')
                 ? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
                 : Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED');
 
-            if ($this->_task == 'delete') {
+            if ($this->task == 'delete') {
                 $activity = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
             }
             $this->model->recordActivity($activity);
 
             // Send to project page
-            $this->_msg = $this->_task == 'suspend'
+            $this->_msg = $this->task == 'suspend'
                 ? Lang::txt('COM_PROJECTS_PROJECT_SUSPENDED')
                 : Lang::txt('COM_PROJECTS_PROJECT_REINSTATED');
 
-            if ($this->_task == 'delete') {
+            if ($this->task == 'delete') {
                 $this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
                 $this->introTask();
                 return;
             }
         }
 
-        $this->_task = 'view';
+        $this->task = 'view';
         $this->viewTask();
     }
 
@@ -942,7 +942,7 @@ class Projects extends Base
             if (!$this->model->exists()) {
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
-            $return  = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect');
+            $return  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect');
             $return .= '?service=' . $service;
             $return .= '&code=' . $code;
         } elseif (isset($json->return)) {
@@ -1117,7 +1117,7 @@ class Projects extends Base
                     // Send out email to admins
                     if (!empty($admins)) {
                         Helpers\Html::sendHUBMessage(
-                            $this->_option,
+                            $this->option,
                             $this->model,
                             $admins,
                             Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
@@ -1198,7 +1198,7 @@ class Projects extends Base
             }
 
             // Go back to project listing
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
             return;
         } else {
             // Instantiate a new view
@@ -1208,7 +1208,7 @@ class Projects extends Base
             $this->view->set('reviewer', $reviewer);
             $this->view->set('ajax', Request::getInt('ajax', 0));
             $this->view->set('title', $this->title);
-            $this->view->set('option', $this->_option);
+            $this->view->set('option', $this->option);
             $this->view->set('model', $this->model);
             $this->view->set('params', $params);
             $this->view->set('config', $this->config);

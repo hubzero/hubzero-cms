@@ -51,41 +51,41 @@ class Sections extends AdminController
         // Incoming
         $this->view->filters = [
             'offering' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.offering',
+                $this->option . '.' . $this->controller . '.offering',
                 'offering',
                 0,
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -94,7 +94,7 @@ class Sections extends AdminController
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
             return;
         }
@@ -517,13 +517,13 @@ class Sections extends AdminController
             return;
         }
 
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($model);
         }
 
         // Output messsage and redirect
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . $model->get('offering_id');
         App::redirect(
             Route::url($url, false),
@@ -595,8 +595,8 @@ class Sections extends AdminController
         }
 
         // Redirect back to the courses page
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . $offering_id;
         App::redirect(
             Route::url($url, false),
@@ -623,8 +623,8 @@ class Sections extends AdminController
         $row->makeDefault();
 
         // Redirect back to the courses page
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
@@ -641,7 +641,7 @@ class Sections extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', []);
@@ -671,7 +671,7 @@ class Sections extends AdminController
             }
         }
 
-        $baseUrl = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+        $baseUrl = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
         if ($this->getErrors()) {
             App::redirect(
                 Route::url($baseUrl, false),
@@ -698,8 +698,8 @@ class Sections extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),

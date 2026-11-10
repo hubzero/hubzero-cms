@@ -52,29 +52,29 @@ class Units extends AdminController
         // Incoming
         $this->view->filters = [
             'offering' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.offering',
+                $this->option . '.' . $this->controller . '.offering',
                 'offering',
                 0,
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -84,7 +84,7 @@ class Units extends AdminController
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
             return;
         }
@@ -197,13 +197,13 @@ class Units extends AdminController
             }
         }
 
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($model);
         }
 
         // Output messsage and redirect
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
@@ -227,8 +227,8 @@ class Units extends AdminController
         }
 
         if (!$id) {
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&offering=' . Request::getInt('offering', 0);
             App::redirect(
                 Route::url($url, false),
@@ -239,8 +239,8 @@ class Units extends AdminController
         }
 
         $unit = \Components\Courses\Models\Unit::getInstance($id);
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . $unit->get('offering_id');
         if (!$unit->copy()) {
             // Redirect back to the courses page
@@ -308,8 +308,8 @@ class Units extends AdminController
         }
 
         // Redirect back to the courses page
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
@@ -324,15 +324,15 @@ class Units extends AdminController
      */
     public function stateTask()
     {
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', []);
         $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         if (count($ids) < 1) {
             $msg = $state == 1
@@ -388,7 +388,7 @@ class Units extends AdminController
         \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
-        $inc = ($this->_task == 'orderup' ? -1 : 1);
+        $inc = ($this->task == 'orderup' ? -1 : 1);
 
         $row = new Tables\Unit($this->database);
         $row->load($uid);
@@ -399,8 +399,8 @@ class Units extends AdminController
             $unit->store();
         }
 
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
@@ -414,8 +414,8 @@ class Units extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),

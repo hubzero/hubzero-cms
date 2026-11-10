@@ -31,9 +31,9 @@ class Roles extends AdminController
      */
     public function execute()
     {
-        if (!User::authorize('core.manage', $this->_option)) {
+        if (!User::authorize('core.manage', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
         }
 
@@ -53,35 +53,35 @@ class Roles extends AdminController
         // Incoming
         $filters = [
             'gid' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.gid',
+                $this->option . '.' . $this->controller . '.gid',
                 'gid',
                 '',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             // Sorting options
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -91,7 +91,7 @@ class Roles extends AdminController
         // Ensure we have a group ID
         if (!$filters['gid']) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -245,7 +245,7 @@ class Roles extends AdminController
 
         if (!$gid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -262,7 +262,7 @@ class Roles extends AdminController
 
         if ($rtrn = Request::getString('return')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $rtrn . '&gid=' . $gid, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $rtrn . '&gid=' . $gid, false),
             );
         }
 
@@ -285,7 +285,7 @@ class Roles extends AdminController
 
         if (!$gid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -323,7 +323,7 @@ class Roles extends AdminController
 
         if (!$gid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -351,8 +351,8 @@ class Roles extends AdminController
     {
         $gid  = Request::getString('gid', '');
         $tmpl = Request::getString('tmpl', '');
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&gid=' . $gid
             . ($tmpl ? '&tmpl=' . $tmpl : '');
         App::redirect(

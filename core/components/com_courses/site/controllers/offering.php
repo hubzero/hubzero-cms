@@ -41,7 +41,7 @@ class Offering extends SiteController
         $this->gid = Request::getString('gid', '');
         if (!$this->gid) {
             App::redirect(
-                'index.php?option=' . $this->_option,
+                'index.php?option=' . $this->option,
             );
             return;
         }
@@ -60,7 +60,7 @@ class Offering extends SiteController
 
         // No offering provided
         if (!($offering = Request::getString('offering', ''))) {
-            $url = 'index.php?option=' . $this->_option
+            $url = 'index.php?option=' . $this->option
                 . '&controller=course&gid=' . $this->course->get('alias');
             App::redirect(
                 Route::url($url),
@@ -101,13 +101,13 @@ class Offering extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
         if ($this->course->exists()) {
-            $courseUrl = 'index.php?option=' . $this->_option
+            $courseUrl = 'index.php?option=' . $this->option
                 . '&gid=' . $this->course->get('alias');
             Pathway::append(
                 stripslashes($this->course->get('title')),
@@ -115,7 +115,7 @@ class Offering extends SiteController
             );
 
             if ($this->course->offering()->exists()) {
-                $offeringUrl = 'index.php?option=' . $this->_option
+                $offeringUrl = 'index.php?option=' . $this->option
                     . '&gid=' . $this->course->get('alias')
                     . '&offering=' . $this->course->offering()->get('alias');
                 Pathway::append(
@@ -135,7 +135,7 @@ class Offering extends SiteController
     public function _buildTitle()
     {
         //set title used in view
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
         if ($this->course->exists()) {
             $this->_title .= ': ' . stripslashes($this->course->get('title'));
@@ -157,7 +157,7 @@ class Offering extends SiteController
      */
     public function loginTask($message = '')
     {
-        $offeringLink = $this->course->offering()->link() . '&task=' . $this->_task;
+        $offeringLink = $this->course->offering()->link() . '&task=' . $this->task;
         $rtrn = base64_encode(Route::url($offeringLink, false, true));
         $loginUrl = 'index.php?option=com_users&view=login&return=' . $rtrn;
         $link = str_replace('&amp;', '&', Route::url($loginUrl));
@@ -194,7 +194,7 @@ class Offering extends SiteController
         $this->view->nonadmin = 0;
         if ($this->course->offering()->access('manage', 'section')) {
             $offeringId = $this->course->offering()->get('id');
-            $stateKey = $this->_option . '.offering' . $offeringId . '.nonadmin';
+            $stateKey = $this->option . '.offering' . $offeringId . '.nonadmin';
             $this->view->nonadmin = Request::getInt('nonadmin', User::getState(
                 $stateKey,
                 0,
@@ -570,8 +570,8 @@ class Offering extends SiteController
         }
 
         // Redirect back to the course page
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&gid=' . $this->course->get('alias')
             . '&task=offerings';
         App::redirect(
@@ -588,8 +588,8 @@ class Offering extends SiteController
      */
     public function deleteTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&gid=' . $this->course->get('alias')
             . '&task=offerings';
         App::redirect(

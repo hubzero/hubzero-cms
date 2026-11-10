@@ -32,9 +32,9 @@ class Membership extends AdminController
      */
     public function execute()
     {
-        if (!User::authorize('core.manage', $this->_option)) {
+        if (!User::authorize('core.manage', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
             return;
         }
@@ -52,7 +52,7 @@ class Membership extends AdminController
         // Incoming
         $this->view->filters = [
             'gid' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.gid',
+                $this->option . '.' . $this->controller . '.gid',
                 'gid',
                 '',
             ),
@@ -61,7 +61,7 @@ class Membership extends AdminController
         // Ensure we have a group ID
         if (!$this->view->filters['gid']) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
@@ -75,35 +75,35 @@ class Membership extends AdminController
         $this->view->filters['gidNumber'] = $group->get('gidNumber');
 
         $this->view->filters['search']  = urldecode(trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.search',
+            $this->option . '.' . $this->controller . '.search',
             'search',
             '',
         )));
         $this->view->filters['status'] = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.status',
+            $this->option . '.' . $this->controller . '.status',
             'status',
             '',
         ));
         // Sorting options
         $this->view->filters['sort']         = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sort',
+            $this->option . '.' . $this->controller . '.sort',
             'filter_order',
             'name',
         ));
         $this->view->filters['sort_Dir']     = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.sortdir',
+            $this->option . '.' . $this->controller . '.sortdir',
             'filter_order_Dir',
             'ASC',
         ));
         // Filters for returning results
         $this->view->filters['limit']  = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limit',
+            $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $this->view->filters['start']  = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limitstart',
+            $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
@@ -151,7 +151,7 @@ class Membership extends AdminController
             : [];
 
         $this->view->filters['term'] = trim(Request::getState(
-            $this->_option . '.' . $this->_controller . '.term',
+            $this->option . '.' . $this->controller . '.term',
             'term',
             '',
         ));
@@ -301,7 +301,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_ADDED', $tbl),
             );
         }
@@ -361,7 +361,7 @@ class Membership extends AdminController
         $this->group = new Group();
         $this->group->read($gid);
 
-        $return = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn');
+        $return = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn');
 
         if (!\Hubzero\User\Group\Membership::supported()) {
             App::redirect(Route::url($return, false), Lang::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_UNAVAILABLE'), 'error');
@@ -483,7 +483,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_APPROVED'),
             );
         }
@@ -549,7 +549,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_PROMOTED'),
             );
         }
@@ -629,7 +629,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_DEMOTED'),
             );
         }
@@ -712,7 +712,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 ($this->getError() ? $this->getError() : Lang::txt('COM_GROUPS_MEMBER_REMOVED')),
                 ($this->getError() ? 'error' : null),
             );
@@ -788,7 +788,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_UNINVITED'),
             );
         }
@@ -849,7 +849,7 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
                 Lang::txt('COM_GROUPS_MEMBER_DENIED'),
             );
         }

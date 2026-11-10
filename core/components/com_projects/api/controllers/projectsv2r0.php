@@ -432,7 +432,7 @@ class Projectsv2r0 extends ApiController
             // (as the site setup does); with sync_group the whole group
             // becomes managers, so this cannot be an arbitrary gid.
             if (
-                !User::authorise('core.manage', $this->_option)
+                !User::authorise('core.manage', $this->option)
                 && !$group->is_member_of('members', User::get('id'))
                 && !$group->is_member_of('managers', User::get('id'))
             ) {
@@ -925,7 +925,7 @@ class Projectsv2r0 extends ApiController
             // group (as the site setup does); an existing group owner is kept
             if (
                 (int) $row->get('owned_by_group') != $oldGroup
-                && !User::authorise('core.manage', $this->_option)
+                && !User::authorise('core.manage', $this->option)
                 && !$group->is_member_of('members', User::get('id'))
                 && !$group->is_member_of('managers', User::get('id'))
             ) {

@@ -32,9 +32,9 @@ class Activity extends AdminController
      */
     public function execute()
     {
-        if (!User::authorize('core.manage', $this->_option)) {
+        if (!User::authorize('core.manage', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
         }
 
@@ -57,39 +57,39 @@ class Activity extends AdminController
     {
         $filters = [
             'state' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.state',
+                $this->option . '.projects.' . $this->controller . '.state',
                 'state',
                 '-1',
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.search',
+                $this->option . '.projects.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'action' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.action',
+                $this->option . '.projects.' . $this->controller . '.action',
                 'action',
                 '',
             ),
             'filter' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.filter',
+                $this->option . '.projects.' . $this->controller . '.filter',
                 'filter',
                 '',
             ),
             'project' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.project',
+                $this->option . '.projects.' . $this->controller . '.project',
                 'project',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.sort',
+                $this->option . '.projects.' . $this->controller . '.sort',
                 'filter_order',
                 'id',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.projects.' . $this->_controller . '.sortdir',
+                $this->option . '.projects.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -144,7 +144,7 @@ class Activity extends AdminController
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
             );
         }
 
@@ -164,8 +164,8 @@ class Activity extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -206,8 +206,8 @@ class Activity extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -269,7 +269,7 @@ class Activity extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -312,7 +312,7 @@ class Activity extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -363,7 +363,7 @@ class Activity extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -411,8 +411,8 @@ class Activity extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&project=' . Request::getInt('project', 0);
         App::redirect(Route::url($url, false));
     }

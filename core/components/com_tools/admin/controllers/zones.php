@@ -33,7 +33,7 @@ class Zones extends AdminController
     public function execute()
     {
         if (!$this->config->get('zones')) {
-            App::redirect(Route::url('index.php?option=' . $this->_option, false));
+            App::redirect(Route::url('index.php?option=' . $this->option, false));
             return;
         }
 
@@ -53,35 +53,35 @@ class Zones extends AdminController
         // Get filters
         $this->view->filters = [
             'zone' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.zone',
+                $this->option . '.' . $this->controller . '.zone',
                 'zone',
                 '',
             )),
             'master' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.master',
+                $this->option . '.' . $this->controller . '.master',
                 'master',
                 '',
             )),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'zone',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -206,7 +206,7 @@ class Zones extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -226,7 +226,7 @@ class Zones extends AdminController
 
         if ($state != 'up' && $state != 'down') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
             return;
         }
@@ -243,7 +243,7 @@ class Zones extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -274,7 +274,7 @@ class Zones extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_TOOLS_ITEM_DELETED'),
             'message',
         );
@@ -317,7 +317,7 @@ class Zones extends AdminController
             }
         }
 
-        App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
+        App::redirect(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false));
     }
 
     /**

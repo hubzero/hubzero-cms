@@ -49,24 +49,24 @@ class Messages extends AdminController
     {
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 0,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'date_time',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'desc',
             ),
@@ -145,8 +145,8 @@ class Messages extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -187,8 +187,8 @@ class Messages extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -209,7 +209,7 @@ class Messages extends AdminController
 
         Notify::success(Lang::txt('JLIB_APPLICATION_SAVE_SUCCESS'));
 
-        if ($this->_task == 'apply') {
+        if ($this->task == 'apply') {
             return $this->editTask($row);
         }
 
@@ -227,11 +227,11 @@ class Messages extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $state = $this->_task == 'publish' ? Message::STATE_PUBLISHED : Message::STATE_UNPUBLISHED;
+        $state = $this->task == 'publish' ? Message::STATE_PUBLISHED : Message::STATE_UNPUBLISHED;
 
         // Incoming
         $ids = Request::getArray('id', [0]);
@@ -259,7 +259,7 @@ class Messages extends AdminController
         }
 
         if ($success) {
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'publish':
                     $message = Lang::txt('COM_MESSAGES_N_ITEMS_PUBLISHED', $success);
                     break;
@@ -285,7 +285,7 @@ class Messages extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -332,7 +332,7 @@ class Messages extends AdminController
     public function replyTask()
     {
         if ($replyId = Request::getInt('reply_id')) {
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&task=edit&reply_id=' . $replyId));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&task=edit&reply_id=' . $replyId));
         } else {
             Notify::warning(Lang::txt('COM_MESSAGES_INVALID_REPLY_ID'));
             $this->cancelTask();

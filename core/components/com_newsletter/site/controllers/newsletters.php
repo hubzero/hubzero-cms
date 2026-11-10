@@ -46,7 +46,7 @@ class Newsletters extends SiteController
     public function _buildTitle($newsletter = null)
     {
         //default if no campaign
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
 
         //add campaign name to title
         if (is_object($newsletter) && $newsletter->id) {
@@ -68,12 +68,12 @@ class Newsletters extends SiteController
     {
         //add 'newlsetters' item to pathway
         if (Pathway::count() <= 0) {
-            Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
+            Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         }
 
         //add campaign
         if (is_object($newsletter) && $newsletter->id) {
-            Pathway::append($newsletter->name, 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
+            Pathway::append($newsletter->name, 'index.php?option=' . $this->option . '&id=' . $newsletter->id);
         }
     }
 
@@ -180,7 +180,7 @@ class Newsletters extends SiteController
             // Build the path if it doesn't exist
             if (!Filesystem::makeDirectory($newsletterPdfFolder)) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&id=' . $id),
+                    Route::url('index.php?option=' . $this->option . '&id=' . $id),
                     Lang::txt('Unable to create the filepath.'),
                     'error',
                 );
@@ -227,7 +227,7 @@ class Newsletters extends SiteController
         //make sure we have a file to output
         if (!file_exists($newsletterPdf)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&id=' . $id),
+                Route::url('index.php?option=' . $this->option . '&id=' . $id),
                 Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
                 'error',
             );

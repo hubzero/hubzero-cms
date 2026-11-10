@@ -49,29 +49,29 @@ class Versions extends AdminController
         // Get Filters
         $filters       = [];
         $filters['id'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.versions.id',
+            $this->option . '.' . $this->controller . '.versions.id',
             'id',
             0,
             'int',
         );
         $filters['sort']     = Request::getState(
-            $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sort',
+            $this->option . '.' . $this->controller . '.versions.' . $filters['id'] . 'sort',
             'filter_order',
             'toolname',
         );
         $filters['sort_Dir'] = Request::getState(
-            $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sortdir',
+            $this->option . '.' . $this->controller . '.versions.' . $filters['id'] . 'sortdir',
             'filter_order_Dir',
             'ASC',
         );
         $filters['limit']    = Request::getState(
-            $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limit',
+            $this->option . '.' . $this->controller . '.versions.' . $filters['id'] . 'limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $filters['start']    = Request::getState(
-            $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limitstart',
+            $this->option . '.' . $this->controller . '.versions.' . $filters['id'] . 'limitstart',
             'limitstart',
             0,
             'int',
@@ -278,7 +278,7 @@ class Versions extends AdminController
         if ($this->getTask() == 'apply') {
             App::redirect(
                 Route::url(
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                         . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'],
                     false,
                 ),
@@ -406,7 +406,7 @@ class Versions extends AdminController
 
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0),
                 false,
             ),

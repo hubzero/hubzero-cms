@@ -61,7 +61,7 @@ run it.
 back to `layout`:
 
 ```php
-$this->_task = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
+$this->task = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
 ```
 
 If the task is not in the map, the controller runs `__default`, which is
@@ -111,15 +111,15 @@ Each controller has:
 
 | Property | What it holds |
 |---|---|
-| `$this->_name` | the component name without the prefix, e.g. `bookings` |
-| `$this->_option` | the full component name, e.g. `com_bookings` |
-| `$this->_controller` | the lowercased short class name, e.g. `instruments` |
-| `$this->_task` | the task as it arrived in the request |
-| `$this->_basePath` | the client directory, e.g. `.../com_bookings/site` |
+| `$this->name` | the component name without the prefix, e.g. `bookings` |
+| `$this->option` | the full component name, e.g. `com_bookings` |
+| `$this->controller` | the lowercased short class name, e.g. `instruments` |
+| `$this->task` | the task as it arrived in the request |
+| `$this->basePath` | the client directory, e.g. `.../com_bookings/site` |
 | `$this->view` | the `Hubzero\Component\View` built for this task |
 | `$this->config` | the component's parameters, a `Hubzero\Config\Registry` |
 
-`$this->_name` and `$this->_option` come from the class namespace, not from
+`$this->name` and `$this->option` come from the class namespace, not from
 the request — see [Structure](02-structure.md#the-name-is-load-bearing).
 
 `SiteController` extends `Hubzero\Base\Obj`, so `get()`, `set()`,
@@ -157,7 +157,7 @@ well, call `$this->setView($name, $layout)`, which replaces `$this->view`
 entirely — assign your data after that call, not before. Assigning before is a
 silent loss: the new view has none of it, and the layout renders blanks.
 
-Override `_onBeforeDoTask()` to run something between building the view and
+Override `onBeforeDoTask()` to run something between building the view and
 calling the task.
 
 ## Redirecting after a write
@@ -167,7 +167,7 @@ reload does not repeat the write:
 
 ```php
 App::redirect(
-	Route::url('index.php?option=' . $this->_option . '&controller=reservations', false),
+	Route::url('index.php?option=' . $this->option . '&controller=reservations', false),
 	Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
 );
 ```
@@ -195,7 +195,7 @@ and `unregisterTask($task)` removes a mapping.
 > `Task` suffix removed and their original case kept, so
 > `registerTask('add', 'edit')` works for `editTask()` but
 > `registerTask('add', 'editEntry')` does nothing at all for `editEntryTask()`:
-> the check is `in_array(strtolower($method), $this->_taskMap)`, which
+> the check is `in_array(strtolower($method), $this->taskMap)`, which
 > lowercases the argument but not the stored value. The call fails silently,
 > and `task=add` falls through to the default view.
 

@@ -88,7 +88,7 @@ class Batchcreate extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
             'error',
         );
@@ -448,7 +448,7 @@ class Batchcreate extends AdminController
                     'name'   => 'batchcreate',
                     'layout' => 'dryrun',
                 ]);
-                $eview->set('option', $this->_option);
+                $eview->set('option', $this->option);
                 $eview->items  = $items;
                 $output       .= $eview->loadTemplate();
             }

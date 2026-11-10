@@ -52,13 +52,13 @@ class Customexts extends AdminController
         Html::addIncludePath(dirname(__DIR__) . '/helpers/html');
 
         $limit = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limit',
+            $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
         $start = Request::getState(
-            $this->_option . '.' . $this->_controller . '.limitstart',
+            $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
@@ -66,41 +66,41 @@ class Customexts extends AdminController
 
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             )),
             'client_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.client_id',
+                $this->option . '.' . $this->controller . '.client_id',
                 'filter_location',
                 '',
             ),
             'status' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.status',
+                $this->option . '.' . $this->controller . '.status',
                 'filter_status',
                 '',
                 '',
             ),
             'type' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.type',
+                $this->option . '.' . $this->controller . '.type',
                 'filter_type',
                 '',
                 '',
             ),
             'group' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.group',
+                $this->option . '.' . $this->controller . '.group',
                 'filter_group',
                 '',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -202,8 +202,8 @@ class Customexts extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -248,7 +248,7 @@ class Customexts extends AdminController
         $form->loadFile(dirname(__DIR__) . '/models/forms/customexts.xml', false, '//form');
 
         // Check the session for previously entered form data.
-        $data = User::getState($this->_option . '.data', []);
+        $data = User::getState($this->option . '.data', []);
 
         // Bind the form data if present.
         if (!empty($data)) {
@@ -274,8 +274,8 @@ class Customexts extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -362,7 +362,7 @@ class Customexts extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit.state', $this->option)
             // core.edit.state, not core.edit: the button is rendered on
             // core.edit.state (views/*/tmpl/default.php) and the shipped #__assets
             // row denies core.edit.state to group 7 while leaving core.edit to be
@@ -455,9 +455,9 @@ class Customexts extends AdminController
         // Updating publishes the extension (publishTask() below), so it needs
         // what publishing needs; the toolbar button is shown on the same test.
         if (
-            (!User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option))
-            || !User::authorise('core.edit.state', $this->_option)
+            (!User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option))
+            || !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -626,8 +626,8 @@ class Customexts extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -709,7 +709,7 @@ class Customexts extends AdminController
     {
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

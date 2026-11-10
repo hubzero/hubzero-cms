@@ -64,7 +64,7 @@ class Format extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

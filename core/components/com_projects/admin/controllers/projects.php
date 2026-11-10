@@ -85,29 +85,29 @@ class Projects extends AdminController
         // Get filters
         $this->view->filters = [
             'limit' => Request::getState(
-                $this->_option . '.projects.limit',
+                $this->option . '.projects.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.projects.limitstart',
+                $this->option . '.projects.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.projects.search',
+                $this->option . '.projects.search',
                 'search',
                 '',
             )),
             'filterby' => Request::getState(
-                $this->_option . '.projects.filterby',
+                $this->option . '.projects.filterby',
                 'filterby',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.projects.access',
+                $this->option . '.projects.access',
                 'access',
                 0,
                 'int',
@@ -119,12 +119,12 @@ class Projects extends AdminController
                 'int'
             ),*/
             'sortby' => Request::getState(
-                $this->_option . '.projects.sort',
+                $this->option . '.projects.sort',
                 'filter_order',
                 'id',
             ),
             'sortdir' => Request::getState(
-                $this->_option . '.projects.sortdir',
+                $this->option . '.projects.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -213,8 +213,8 @@ class Projects extends AdminController
     public function editTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -348,8 +348,8 @@ class Projects extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -381,7 +381,7 @@ class Projects extends AdminController
         $model->set('private', Request::getInt('private', $this->config->get('private', 1)));
         $model->set('access', Request::getInt('access', $this->config->get('access', 5)));
 
-        $this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
+        $this->message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
         // Was project suspended?
         $suspended = false;
@@ -418,14 +418,14 @@ class Projects extends AdminController
                     $model->set('state', 2);
                     $what           = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
                     $subject       .= Lang::txt('COM_PROJECTS_MSG_ADMIN_DELETED');
-                    $this->_message = Lang::txt('COM_PROJECTS_SUCCESS_DELETED');
+                    $this->message = Lang::txt('COM_PROJECTS_SUCCESS_DELETED');
                     break;
 
                 case 'suspend':
                     $model->set('state', 0);
                     $what           = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
                     $subject       .= Lang::txt('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
-                    $this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SUSPENDED');
+                    $this->message = Lang::txt('COM_PROJECTS_SUCCESS_SUSPENDED');
                     break;
 
                 case 'reinstate':
@@ -437,7 +437,7 @@ class Projects extends AdminController
                         ? Lang::txt('COM_PROJECTS_MSG_ADMIN_REINSTATED')
                         : Lang::txt('COM_PROJECTS_MSG_ADMIN_ACTIVATED');
 
-                    $this->_message = $suspended
+                    $this->message = $suspended
                         ? Lang::txt('COM_PROJECTS_SUCCESS_REINSTATED')
                         : Lang::txt('COM_PROJECTS_SUCCESS_ACTIVATED');
                     break;
@@ -449,7 +449,7 @@ class Projects extends AdminController
         } elseif ($message) {
             $subject .= ' - ' . Lang::txt('COM_PROJECTS_MSG_ADMIN_NEW_MESSAGE');
             $sendmail = 1;
-            $this->_message = Lang::txt('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
+            $this->message = Lang::txt('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
         }
 
         if (!$action && !$message) {
@@ -525,7 +525,7 @@ class Projects extends AdminController
                 'name'   => 'emails',
                 'layout' => 'admin_plain',
             ]);
-            $eview->option  = $this->_option;
+            $eview->option  = $this->option;
             $eview->subject = $subject;
             $eview->action  = $action;
             $eview->project = $model;
@@ -541,16 +541,16 @@ class Projects extends AdminController
             $body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
             // Send HUB message
-            Event::trigger('xmessage.onSendMessage', ['projects_admin_notice', $subject, $body, $from, $managers, $this->_option]);
+            Event::trigger('xmessage.onSendMessage', ['projects_admin_notice', $subject, $body, $from, $managers, $this->option]);
         }
 
-        Notify::message($this->_message, 'success');
+        Notify::message($this->message, 'success');
 
         // Redirect to edit view?
         if ($redirect) {
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false));
         } else {
-            App::redirect(Route::url('index.php?option=' . $this->_option, false));
+            App::redirect(Route::url('index.php?option=' . $this->option, false));
         }
     }
 
@@ -639,7 +639,7 @@ class Projects extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -696,7 +696,7 @@ class Projects extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -750,7 +750,7 @@ class Projects extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -804,7 +804,7 @@ class Projects extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -852,7 +852,7 @@ class Projects extends AdminController
      */
     public function eraseTask()
     {
-        if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -948,7 +948,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option, false),
+            Route::url('index.php?option=' . $this->option, false),
             Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' (' . $alias . ') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED'),
         );
     }
@@ -962,7 +962,7 @@ class Projects extends AdminController
      */
     public function gitaddTask()
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -976,7 +976,7 @@ class Projects extends AdminController
             return $this->cancelTask();
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false);
+        $url = Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false);
 
         if (!$file) {
             App::redirect(
@@ -1011,7 +1011,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1022,7 +1022,7 @@ class Projects extends AdminController
      */
     public function gitgcTask()
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1047,7 +1047,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1058,7 +1058,7 @@ class Projects extends AdminController
      */
     public function fixsyncTask()
     {
-        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1092,7 +1092,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
+            Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false),
             Lang::txt('Sync log unavailable'),
         );
     }
@@ -1108,8 +1108,8 @@ class Projects extends AdminController
 
         // Authorization check
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -1151,8 +1151,8 @@ class Projects extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
         ) {
             return $this->cancelTask();
         }
@@ -1289,7 +1289,7 @@ class Projects extends AdminController
         if ($this->getTask() == 'applydescription') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=customizeDescription', false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=customizeDescription', false),
             );
         }
 

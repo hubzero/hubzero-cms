@@ -53,30 +53,30 @@ class Answers extends AdminController
         // Filters
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filterby',
+                $this->option . '.' . $this->controller . '.filterby',
                 'state',
                 -1,
                 'int',
             ),
             'question_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.qid',
+                $this->option . '.' . $this->controller . '.qid',
                 'qid',
                 0,
                 'int',
             ),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',
             ),
@@ -127,8 +127,8 @@ class Answers extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -166,8 +166,8 @@ class Answers extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -221,7 +221,7 @@ class Answers extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -253,7 +253,7 @@ class Answers extends AdminController
         }
 
         // Redirect
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&qid=' . Request::getInt('qid', 0);
         App::redirect(Route::url($url, false));
     }
@@ -268,7 +268,7 @@ class Answers extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -277,7 +277,7 @@ class Answers extends AdminController
         $id  = Request::getArray('id', []);
         $id  = !is_array($id) ? [$id] : $id;
 
-        $publish = ($this->_task == 'accept') ? 1 : 0;
+        $publish = ($this->task == 'accept') ? 1 : 0;
 
         // Check for an ID
         if (count($id) < 1) {
@@ -327,8 +327,8 @@ class Answers extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

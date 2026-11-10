@@ -34,24 +34,24 @@ class Optiongroups extends AdminController
         $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -188,7 +188,7 @@ class Optiongroups extends AdminController
         if ($redirect) {
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED'),
             );
             return;
@@ -240,8 +240,8 @@ class Optiongroups extends AdminController
 
                 // Make sure we have ID(s) to work with
                 if (empty($ogIds)) {
-                    $url = 'index.php?option=' . $this->_option . '&controller='
-                        . $this->_controller . '&task=dispaly';
+                    $url = 'index.php?option=' . $this->option . '&controller='
+                        . $this->controller . '&task=dispaly';
                     App::redirect(
                         Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
@@ -274,8 +274,8 @@ class Optiongroups extends AdminController
                                 }
                             }
                         } catch (\Exception $e) {
-                            $url = 'index.php?option=' . $this->_option . '&controller='
-                                . $this->_controller . '&task=dispaly';
+                            $url = 'index.php?option=' . $this->option . '&controller='
+                                . $this->controller . '&task=dispaly';
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -290,8 +290,8 @@ class Optiongroups extends AdminController
                 }
 
                 // Set the redirect
-                $url = 'index.php?option=' . $this->_option . '&controller='
-                    . $this->_controller . '&task=dispaly';
+                $url = 'index.php?option=' . $this->option . '&controller='
+                    . $this->controller . '&task=dispaly';
                 App::redirect(
                     Route::url($url, false),
                     $msg,
@@ -343,7 +343,7 @@ class Optiongroups extends AdminController
                 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
                 : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 $msg,
                 'error',
             );
@@ -378,7 +378,7 @@ class Optiongroups extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             $message,
         );
     }
@@ -392,7 +392,7 @@ class Optiongroups extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 }

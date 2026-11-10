@@ -133,10 +133,10 @@ class Component extends AdminController
             }
 
             // Save the data in the session.
-            User::setState($this->_option . '.config.global.data', $data);
+            User::setState($this->option . '.config.global.data', $data);
 
             // Redirect back to the edit screen.
-            $url = 'index.php?option=' . $this->_option . '&view=component&component='
+            $url = 'index.php?option=' . $this->option . '&view=component&component='
                 . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
             return false;
@@ -157,10 +157,10 @@ class Component extends AdminController
                     if (\Hubzero\Access\Access::checkGroup((int) $gid, 'core.admin')) {
                         Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
 
-                        User::setState($this->_option . '.config.global.data', $data);
+                        User::setState($this->option . '.config.global.data', $data);
 
                         App::redirect(
-                            Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false),
+                            Route::url('index.php?option=' . $this->option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false),
                         );
                         return false;
                     }
@@ -179,32 +179,32 @@ class Component extends AdminController
         // Check the return value.
         if ($return === false) {
             // Save the data in the session.
-            User::setState($this->_option . '.config.global.data', $data);
+            User::setState($this->option . '.config.global.data', $data);
 
             // Save failed, go back to the screen and display a notice.
             Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
 
-            $url = 'index.php?option=' . $this->_option . '&view=component&component='
+            $url = 'index.php?option=' . $this->option . '&view=component&component='
                 . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
             return false;
         }
 
-        User::setState($this->_option . '.config.global.data', null);
+        User::setState($this->option . '.config.global.data', null);
 
         // Set the redirect based on the task.
         switch (Request::getCmd('task')) {
             case 'apply':
                 Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 
-                $url = 'index.php?option=' . $this->_option . '&view=component&component='
+                $url = 'index.php?option=' . $this->option . '&view=component&component='
                     . $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1';
                 App::redirect(Route::url($url, false));
                 break;
 
             case 'save':
             default:
-                $url = 'index.php?option=' . $this->_option . '&view=close&tmpl=component&path='
+                $url = 'index.php?option=' . $this->option . '&view=close&tmpl=component&path='
                     . $model->get('component.path');
                 App::redirect(Route::url($url, false));
                 break;

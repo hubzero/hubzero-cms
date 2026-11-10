@@ -49,24 +49,24 @@ class Skus extends AdminController
         $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -226,7 +226,7 @@ class Skus extends AdminController
 
         if ($redirect) {
             // Redirect
-            $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=display&id=' . Request::getInt('pId', 0);
             App::redirect(
                 Route::url($url, false),
@@ -285,7 +285,7 @@ class Skus extends AdminController
                 // Make sure we have an ID to work with
                 if (empty($sIds)) {
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
@@ -306,8 +306,8 @@ class Skus extends AdminController
                             $sku = Sku::getInstance($sId);
                             $sku->delete();
                         } catch (\Exception $e) {
-                            $url = 'index.php?option=' . $this->_option . '&controller='
-                                . $this->_controller . '&task=dispaly&id=' . $pId;
+                            $url = 'index.php?option=' . $this->option . '&controller='
+                                . $this->controller . '&task=dispaly&id=' . $pId;
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -322,7 +322,7 @@ class Skus extends AdminController
                 }
 
                 // Set the redirect
-                $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=dispaly&id=' . $pId;
                 App::redirect(
                     Route::url($url, false),
@@ -372,7 +372,7 @@ class Skus extends AdminController
                 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
                 : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 $msg,
                 'error',
             );
@@ -425,7 +425,7 @@ class Skus extends AdminController
         }
 
         // Redirect
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=display&id=' . $pId;
         App::redirect(
             Route::url($url, false),
@@ -442,7 +442,7 @@ class Skus extends AdminController
     public function cancelTask()
     {
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=display&id=' . Request::getInt('pId', 0);
         App::redirect(
             Route::url($url, false),

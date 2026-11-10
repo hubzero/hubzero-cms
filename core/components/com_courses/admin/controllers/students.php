@@ -34,29 +34,29 @@ class Students extends AdminController
         // Incoming
         $this->view->filters = [
             'offering' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.offering',
+                $this->option . '.' . $this->controller . '.offering',
                 'offering',
                 0,
             ),
             'section_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.section',
+                $this->option . '.' . $this->controller . '.section',
                 'section',
                 0,
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -289,8 +289,8 @@ class Students extends AdminController
         // Are we redirecting?
         if ($redirect) {
             // Output messsage and redirect
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&offering=' . $fields['offering_id']
                 . '&section=' . $fields['section_id'];
             App::redirect(
@@ -350,7 +350,7 @@ class Students extends AdminController
         }
 
         // Redirect back to the courses page
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . ($offering_id ? '&offering=' . $offering_id : '')
             . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
@@ -369,7 +369,7 @@ class Students extends AdminController
         $offering_id = Request::getInt('offering', 0);
         $section_id  = Request::getInt('section', 0);
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . ($offering_id ? '&offering=' . $offering_id : '')
             . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
@@ -386,12 +386,12 @@ class Students extends AdminController
     {
         $this->view->filters = [
             'offering' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.offering',
+                $this->option . '.' . $this->controller . '.offering',
                 'offering',
                 0,
             ),
             'section_id' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.section',
+                $this->option . '.' . $this->controller . '.section',
                 'section',
                 0,
             ),

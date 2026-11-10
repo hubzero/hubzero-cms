@@ -40,7 +40,7 @@ class Pipeline extends SiteController
         // Check logged in status
         if (User::isGuest()) {
             $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option='
-                . $this->_option . '&controller=' . $this->_controller . '&task='
+                . $this->option . '&controller=' . $this->controller . '&task='
                 . Request::getWord('task', ''), false, true), 'server'));
 
             App::redirect(
@@ -49,7 +49,7 @@ class Pipeline extends SiteController
             return;
         }
 
-        $this->_authorize();
+        $this->authorize();
 
         // Load the com_resources component config
         $rconfig = Component::params('com_resources');
@@ -70,8 +70,8 @@ class Pipeline extends SiteController
     public function pipelineTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
-            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task));
         Document::setTitle($this->view->title);
 
         // Filters
@@ -106,13 +106,13 @@ class Pipeline extends SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline',
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
         );
 
         $this->view->config = $this->config;
@@ -151,7 +151,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
             return;
         }
@@ -170,7 +170,7 @@ class Pipeline extends SiteController
         }
 
         // get tool status
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
@@ -183,8 +183,8 @@ class Pipeline extends SiteController
         $this->view->admin  = $this->config->get('access-admin-component');
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': '
-            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task));
         $this->view->title .= $status['toolname']
             ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname']
             : '';
@@ -192,18 +192,18 @@ class Pipeline extends SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=pipeline',
         );
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=status&app=' . $status['toolname'],
         );
 
@@ -240,7 +240,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
             return;
         }
@@ -264,7 +264,7 @@ class Pipeline extends SiteController
         $objV->getToolVersions($this->_toolid, $versions, '');
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
+        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ';
         $this->view->title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_VERSIONS');
@@ -289,20 +289,20 @@ class Pipeline extends SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
             . $this->view->status['toolname'],
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . 'task=status&app=' . $this->view->status['toolname'],
         );
         if ($this->_action != 'confirm') {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_VERSIONS'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=versions&app=' . $this->view->status['toolname'],
             );
         }
@@ -345,7 +345,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
             return;
         }
@@ -361,7 +361,7 @@ class Pipeline extends SiteController
         }
 
         // get tool status
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
@@ -369,19 +369,19 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
             . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=status&app=' . $this->_toolid,
         );
 
@@ -433,7 +433,7 @@ class Pipeline extends SiteController
         }
 
         // Create a Tool object
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
@@ -459,7 +459,7 @@ class Pipeline extends SiteController
         $this->view->licenses = $this->database->loadObjectList();
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
+        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ';
         $this->view->title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_LICENSE');
@@ -468,20 +468,20 @@ class Pipeline extends SiteController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=status&app=' . $this->_toolid,
             );
             if ($this->_action != 'confirm') {
                 Pathway::append(
                     Lang::txt('COM_TOOLS_TASK_LICENSE'),
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=license&app=' . $this->_toolid,
                 );
             }
@@ -511,7 +511,7 @@ class Pipeline extends SiteController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
         }
 
@@ -666,19 +666,19 @@ class Pipeline extends SiteController
         ];
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=create',
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',
             );
         }
 
@@ -730,7 +730,7 @@ class Pipeline extends SiteController
         }
 
         // get tool status
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, $this->view->editversion);
+        $obj->getToolStatus($this->_toolid, $this->option, $status, $this->view->editversion);
 
         if ($this->_toolid && !$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
@@ -738,25 +738,25 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL');
+        $this->view->title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL');
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
                 . $status['toolname'],
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=status&app=' . $status['toolname'],
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=edit&app=' . $status['toolname'],
             );
         }
@@ -896,7 +896,7 @@ class Pipeline extends SiteController
 
             if ($id) {
                 // get tool status
-                $obj->getToolStatus($id, $this->_option, $fstatus, $editversion);
+                $obj->getToolStatus($id, $this->option, $fstatus, $editversion);
 
                 $tool['developers']   = $fstatus['developers'];
                 $tool['membergroups'] = $fstatus['membergroups'];
@@ -1170,7 +1170,7 @@ class Pipeline extends SiteController
 
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=status&app=' . $hzt->toolname,
             ),
             ($id
@@ -1196,7 +1196,7 @@ class Pipeline extends SiteController
         // Create a Tool object
         if (empty($toolinfo)) {
             $obj = new \Components\Tools\Tables\Tool($this->database);
-            $obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev');
+            $obj->getToolStatus($this->_toolid, $this->option, $toolinfo, 'dev');
         }
 
         if (!empty($toolinfo)) {
@@ -1298,7 +1298,7 @@ class Pipeline extends SiteController
                 // Go to license page
                 App::redirect(
                     Route::url(
-                        'index.php?option=' . $this->_option
+                        'index.php?option=' . $this->option
                         . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname,
                     ),
                 );
@@ -1485,14 +1485,14 @@ class Pipeline extends SiteController
                 $this->_error = $error;
                 Log::debug(__FUNCTION__ . "() state changing to approved, action confirm");
                 $this->_action = 'confirm';
-                $this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
+                $this->task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
                 $this->versionsTask();
                 return;
             } elseif ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved')) {
                 $this->_error = $error;
                 Log::debug(__FUNCTION__ . "() state changing to approved, action new");
                 $this->_action = 'new';
-                $this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
+                $this->task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
                 $this->versionsTask();
                 return;
             } elseif ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published')) {
@@ -1631,7 +1631,7 @@ class Pipeline extends SiteController
 
         // Get tool information
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        $obj->getToolStatus($toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($toolid, $this->option, $status, 'dev');
 
         if (empty($status) && !empty($toolinfo)) {
             $status = $toolinfo;
@@ -1710,7 +1710,7 @@ class Pipeline extends SiteController
         $users = array_unique($users);
 
         // Build e-mail components
-        $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_TOOLS_TOOL')
+        $subject = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_TOOLS_TOOL')
             . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
         $from    = Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_CONTRIBTOOL');
         $hub     = [
@@ -1735,7 +1735,7 @@ class Pipeline extends SiteController
         }
         $message .= Lang::txt('COM_TOOLS_TIP_URL_TO_STATUS') . "\r\n";
         $message .= $live_site . Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=status&app=' . $status['toolname'],
         ) . "\r\n";
 
@@ -1743,7 +1743,7 @@ class Pipeline extends SiteController
         if ($summary or $comment) {
             $triggered = Event::trigger(
                 'xmessage.onSendMessage',
-                [$action, $subject, $message, $hub, $users, $this->_option],
+                [$action, $subject, $message, $hub, $users, $this->option],
             );
             if (!$triggered) {
                 Notify::error(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'));
@@ -1965,7 +1965,7 @@ class Pipeline extends SiteController
 
         $hzt->load($toolid);
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=status&app=' . $hzt->toolname,
         );
 
@@ -2169,7 +2169,7 @@ class Pipeline extends SiteController
 
         $hzt->load($toolid);
         $url = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=status&app=' . $hzt->toolname,
         );
 
@@ -2268,7 +2268,7 @@ class Pipeline extends SiteController
         }
 
         // get tool status
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
@@ -2297,7 +2297,7 @@ class Pipeline extends SiteController
         // continue output
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->option . '&controller=' . $this->controller
                 . '&task=pipeline',
             ),
             Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'),
@@ -2384,7 +2384,7 @@ class Pipeline extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::isGuest()) {
@@ -2409,7 +2409,7 @@ class Pipeline extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

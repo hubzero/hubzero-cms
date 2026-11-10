@@ -35,12 +35,12 @@ class Handlers extends AdminController
         $this->view->filters = [
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'tool.title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -168,7 +168,7 @@ class Handlers extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_TOOLS_HANDLER_SUCCESSFULLY_SAVED'),
         );
     }
@@ -198,7 +198,7 @@ class Handlers extends AdminController
                 // Delete the rules first, then the handler itself
                 if (!$handler->rules->destroyAll() || !$handler->destroy()) {
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                         Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED'),
                     );
                     return;
@@ -208,7 +208,7 @@ class Handlers extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             Lang::txt('COM_TOOLS_HANDLERS_SUCCESSFULLY_DELETED', count($ids)),
         );
     }

@@ -114,7 +114,7 @@ class Media extends AdminController
         $no_html = Request::getInt('no_html');
 
         if (strlen($folder) > 0) {
-            if (!User::authorise('core.create', $this->_option)) {
+            if (!User::authorise('core.create', $this->option)) {
                 // User is not authorised to delete
                 Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
                 App::redirect($rtrn);
@@ -156,7 +156,7 @@ class Media extends AdminController
             Request::setVar('folder', ($parent) ? $parent . DS . $folder : $folder);
         }
 
-        $url = 'index.php?option=' . $this->_option
+        $url = 'index.php?option=' . $this->option
             . '&controller=medialist&tmpl=component&folder=' . $parent;
         App::redirect(Route::url($url, false));
     }
@@ -173,7 +173,7 @@ class Media extends AdminController
         $no_html = Request::getInt('no_html');
 
         if (strlen($folder) > 0) {
-            if (!User::authorise('core.create', $this->_option)) {
+            if (!User::authorise('core.create', $this->option)) {
                 // User is not authorised to delete
                 echo json_encode([
                     'success' => false,
@@ -254,11 +254,11 @@ class Media extends AdminController
         if ($return) {
             $return = base64_decode($return) . '&folder=' . $this->folder;
         } else {
-            $return = 'index.php?option=' . $this->_option . '&controller=medialist&tmpl=component&folder=' . $parent;
+            $return = 'index.php?option=' . $this->option . '&controller=medialist&tmpl=component&folder=' . $parent;
         }
 
         // Authorize the user
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::redirect(Route::url($return, false));
         }
 
@@ -355,7 +355,7 @@ class Media extends AdminController
         // Check for request forgeries
         Session::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -519,8 +519,8 @@ class Media extends AdminController
         }
         $this->setRedirect($redirect);
 
-        $listUrl = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller . '&folder=' . $folder;
+        $listUrl = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller . '&folder=' . $folder;
 
         // Nothing to delete
         if (empty($rm)) {
@@ -528,7 +528,7 @@ class Media extends AdminController
         }
 
         // Authorize the user
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::redirect(Route::url($listUrl, false));
         }
 
@@ -646,7 +646,7 @@ class Media extends AdminController
         }
 
         // Authorize the user
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             echo json_encode([
                 'success' => false,
                 'error' => Lang::txt('Not authorized'),

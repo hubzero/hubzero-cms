@@ -32,8 +32,8 @@ class Hosts extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             return $this->displayTask();
         }
@@ -79,8 +79,8 @@ class Hosts extends AdminController
         Request::checkToken('get');
 
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             return $this->displayTask();
         }

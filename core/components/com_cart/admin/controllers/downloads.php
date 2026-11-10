@@ -43,63 +43,63 @@ class Downloads extends AdminController
         // Get filters
         $this->view->filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'skuRequested' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.skuRequested',
+                $this->option . '.' . $this->controller . '.skuRequested',
                 'skuRequested',
                 0,
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-from',
+                $this->option . '.' . $this->controller . '.report-from',
                 'report-from',
                 date('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-to',
+                $this->option . '.' . $this->controller . '.report-to',
                 'report-to',
                 date('m/d/Y'),
             ),
             'uidNumber' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.uidNumber',
+                $this->option . '.' . $this->controller . '.uidNumber',
                 'uidNumber',
                 0,
                 'int',
             ),
             'pId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.pId',
+                $this->option . '.' . $this->controller . '.pId',
                 'pId',
                 0,
                 'int',
             ),
             'sId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sId',
+                $this->option . '.' . $this->controller . '.sId',
                 'sId',
                 0,
                 'int',
@@ -150,41 +150,41 @@ class Downloads extends AdminController
         // Get filters
         $this->view->filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.search',
+                $this->option . '.' . $this->controller . 'sku.search',
                 'search',
                 '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.sort',
+                $this->option . '.' . $this->controller . 'sku.sort',
                 'filter_order',
                 'pName',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.sortdir',
+                $this->option . '.' . $this->controller . 'sku.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.limit',
+                $this->option . '.' . $this->controller . 'sku.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.limitstart',
+                $this->option . '.' . $this->controller . 'sku.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.report-from',
+                $this->option . '.' . $this->controller . 'sku.report-from',
                 'report-from',
                 date('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.report-to',
+                $this->option . '.' . $this->controller . 'sku.report-to',
                 'report-to',
                 date('m/d/Y'),
             ),
@@ -235,7 +235,7 @@ class Downloads extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 ($state == 1 ? Lang::txt('COM_CART_SELECT_ACTIVE') : Lang::txt('COM_CART_SELECT_INACTIVE')),
                 'error',
             );
@@ -262,7 +262,7 @@ class Downloads extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             $message,
         );
     }
@@ -278,50 +278,50 @@ class Downloads extends AdminController
         $filters = [
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'skuRequested' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.skuRequested',
+                $this->option . '.' . $this->controller . '.skuRequested',
                 'skuRequested',
                 0,
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-from',
+                $this->option . '.' . $this->controller . '.report-from',
                 'report-from',
                 date('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.report-to',
+                $this->option . '.' . $this->controller . '.report-to',
                 'report-to',
                 date('m/d/Y'),
             ),
             // The same narrowing the list shows, so the CSV matches the screen
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'uidNumber' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.uidNumber',
+                $this->option . '.' . $this->controller . '.uidNumber',
                 'uidNumber',
                 0,
                 'int',
             ),
             'pId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.pId',
+                $this->option . '.' . $this->controller . '.pId',
                 'pId',
                 0,
                 'int',
             ),
             'sId' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sId',
+                $this->option . '.' . $this->controller . '.sId',
                 'sId',
                 0,
                 'int',
@@ -429,27 +429,27 @@ class Downloads extends AdminController
         $filters = [
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.sort',
+                $this->option . '.' . $this->controller . 'sku.sort',
                 'filter_order',
                 'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.sortdir',
+                $this->option . '.' . $this->controller . 'sku.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'report-from' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.report-from',
+                $this->option . '.' . $this->controller . 'sku.report-from',
                 'report-from',
                 date('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.report-to',
+                $this->option . '.' . $this->controller . 'sku.report-to',
                 'report-to',
                 date('m/d/Y'),
             ),
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'sku.search',
+                $this->option . '.' . $this->controller . 'sku.search',
                 'search',
                 '',
             ),

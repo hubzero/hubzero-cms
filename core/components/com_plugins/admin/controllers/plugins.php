@@ -55,7 +55,7 @@ class Plugins extends AdminController
 
         // Guess the message prefix. Defaults to the option.
         if (empty($this->text_prefix)) {
-            $this->text_prefix = strtoupper($this->_option);
+            $this->text_prefix = strtoupper($this->option);
         }
 
         parent::execute();
@@ -70,40 +70,40 @@ class Plugins extends AdminController
     {
         $filters = [
             'folder' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.folder',
+                $this->option . '.' . $this->controller . '.folder',
                 'filter_folder',
                 '',
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'filter_state',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 0,
                 'int',
             ),
             'enabled' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.enabled',
+                $this->option . '.' . $this->controller . '.enabled',
                 'filter_state',
                 '',
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'folder',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -192,8 +192,8 @@ class Plugins extends AdminController
     public function editTask($model = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -247,8 +247,8 @@ class Plugins extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -272,7 +272,7 @@ class Plugins extends AdminController
         }
 
         // Trigger before save event
-        $result = Event::trigger('onExtensionBeforeSave', [$this->_option . '.plugin', &$model, $model->isNew()]);
+        $result = Event::trigger('onExtensionBeforeSave', [$this->option . '.plugin', &$model, $model->isNew()]);
 
         if (in_array(false, $result, true)) {
             Notify::error($model->getError());
@@ -286,7 +286,7 @@ class Plugins extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onExtensionAfterSave', [$this->_option . '.plugin', &$model, $model->isNew()]);
+        Event::trigger('onExtensionAfterSave', [$this->option . '.plugin', &$model, $model->isNew()]);
 
         // Clean the cache.
         $this->cleanCache();
@@ -321,7 +321,7 @@ class Plugins extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -374,8 +374,8 @@ class Plugins extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -445,7 +445,7 @@ class Plugins extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -489,7 +489,7 @@ class Plugins extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -529,7 +529,7 @@ class Plugins extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -580,7 +580,7 @@ class Plugins extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+            Route::url('index.php?option=' . $this->option . $this->getRedirectToListAppend(), false),
         );
     }
 
@@ -636,6 +636,6 @@ class Plugins extends AdminController
      */
     public function cleanCache()
     {
-        Cache::clean($this->_option);
+        Cache::clean($this->option);
     }
 }

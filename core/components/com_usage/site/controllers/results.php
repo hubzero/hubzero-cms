@@ -74,32 +74,32 @@ class Results extends SiteController
         $this->view->cats = Event::trigger('usage.onUsageAreas');
 
         if (is_array($this->view->cats)) {
-            if (!$this->_task || $this->_task == 'default') {
+            if (!$this->task || $this->task == 'default') {
                 $hasCats = isset($this->view->cats[0]) && is_array($this->view->cats[0]);
-                $this->_task = $hasCats ? key($this->view->cats[0]) : 'overview';
+                $this->task = $hasCats ? key($this->view->cats[0]) : 'overview';
             }
         }
-        $this->_task = ($this->_task) ? $this->_task : 'overview';
-        $this->view->task = $this->_task;
+        $this->task = ($this->task) ? $this->task : 'overview';
+        $this->view->task = $this->task;
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
-        if ($this->_task) {
+        if ($this->task) {
             Pathway::append(
-                Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task,
+                Lang::txt('PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task)),
+                'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
 
         // Get the sections
         $this->view->sections = Event::trigger('usage.onUsageDisplay', [
-            $this->_option,
-            $this->_task,
+            $this->option,
+            $this->task,
             $udb,
             $months,
             $monthsReverse,
@@ -107,9 +107,9 @@ class Results extends SiteController
         ]);
 
         // Build the page title
-        $this->view->title  = Lang::txt(strtoupper($this->_option));
-        if ($this->_task) {
-            $langKey = 'PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task);
+        $this->view->title  = Lang::txt(strtoupper($this->option));
+        if ($this->task) {
+            $langKey = 'PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task);
             $this->view->title .= ': ' . Lang::txt($langKey);
         }
 

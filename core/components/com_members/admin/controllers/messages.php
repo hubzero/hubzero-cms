@@ -35,29 +35,29 @@ class Messages extends AdminController
         // Get filters
         $filters = [
             'component' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.component',
+                $this->option . '.' . $this->controller . '.component',
                 'component',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'c.name',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -291,8 +291,8 @@ class Messages extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             return $this->settingsTask();
         }
@@ -379,7 +379,7 @@ class Messages extends AdminController
 
         $tmpl = Request::getWord('tmpl');
 
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=settings&id=' . $id . ($tmpl ? '&tmpl=' . $tmpl : '');
         App::redirect(Route::url($url, false));
     }

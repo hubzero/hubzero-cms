@@ -32,10 +32,10 @@ class ImportHooks extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.import', dirname(__DIR__));
+        Lang::load($this->option . '.import', dirname(__DIR__));
 
         // Import hooks are executable files; restrict management to full admins
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -55,13 +55,13 @@ class ImportHooks extends AdminController
         // Get filters
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',

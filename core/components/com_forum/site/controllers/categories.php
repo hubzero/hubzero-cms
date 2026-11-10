@@ -51,20 +51,20 @@ class Categories extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
         if ($section) {
             Pathway::append(
                 Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias'),
+                'index.php?option=' . $this->option . '&section=' . $section->get('alias'),
             );
         }
         if ($category) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
+                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
             );
         }
     }
@@ -78,7 +78,7 @@ class Categories extends SiteController
      */
     protected function buildTitle($section = null, $category = null)
     {
-        $this->_title = Lang::txt(strtoupper($this->_option));
+        $this->_title = Lang::txt(strtoupper($this->option));
         if ($section) {
             $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]);
         }
@@ -160,12 +160,12 @@ class Categories extends SiteController
         }
 
         // Get authorization
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         // Check logged in status
         if (!in_array($category->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
+            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
@@ -242,12 +242,12 @@ class Categories extends SiteController
         $filters['search'] = Request::getString('q', '');
 
         if (!$filters['search']) {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
         }
 
         // Get authorization
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         // Set the page title
         $this->buildTitle($section, $category);
@@ -282,7 +282,7 @@ class Categories extends SiteController
     public function editTask($category = null)
     {
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->_option, false, true);
+            $return = Route::url('index.php?option=' . $this->option, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -310,14 +310,14 @@ class Categories extends SiteController
                 ->row();
         }
 
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if ($category->isNew()) {
             $category->set('created_by', User::get('id'));
             $category->set('section_id', $section->get('id'));
         } elseif ($category->get('created_by') != User::get('id') && !$this->config->get('access-create-category')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -339,7 +339,7 @@ class Categories extends SiteController
     public function saveTask()
     {
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->_option, false, true);
+            $return = Route::url('index.php?option=' . $this->option, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -348,7 +348,7 @@ class Categories extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $url = 'index.php?option=' . $this->_option;
+        $url = 'index.php?option=' . $this->option;
 
         // Incoming
         $fields = Request::getArray('fields', [], 'post');
@@ -358,7 +358,7 @@ class Categories extends SiteController
         $category = Category::oneOrNew($fields['id'])->set($fields);
 
         // Double-check that the user is authorized
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->config->get('access-edit-category')) {
             App::redirect(
@@ -412,7 +412,7 @@ class Categories extends SiteController
      */
     public function deleteTask()
     {
-        $url = 'index.php?option=' . $this->_option;
+        $url = 'index.php?option=' . $this->option;
 
         // Is the user logged in?
         if (User::isGuest()) {
@@ -444,7 +444,7 @@ class Categories extends SiteController
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->config->get('access-delete-category')) {
             App::redirect(
@@ -499,11 +499,11 @@ class Categories extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (!User::isGuest()) {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

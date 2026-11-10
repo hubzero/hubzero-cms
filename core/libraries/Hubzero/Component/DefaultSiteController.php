@@ -14,9 +14,9 @@ class DefaultSiteController extends SiteController
 {
     public function execute()
     {
-        $this->_task = strtolower(Request::getCmd('task', ''));
+        $this->task = strtolower(Request::getCmd('task', ''));
 
-        $this->_taskMap[$this->_task] = $this->_task;
+        $this->taskMap[$this->task] = $this->task;
 
         parent::execute();
     }

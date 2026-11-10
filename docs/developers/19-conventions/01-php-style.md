@@ -230,8 +230,8 @@ Break a long condition before the operator, and indent the continuation so the
 operator hangs one column left of the first clause:
 
 ```php
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
+		if (!User::authorise('core.edit', $this->option)
+		 && !User::authorise('core.create', $this->option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}

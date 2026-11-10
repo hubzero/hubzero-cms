@@ -43,7 +43,7 @@ class Jobs extends SiteController
         // If the current user doesn't have access to manage the component,
         // try to see if their IP address is in the whitelist.
         // Otherwise, we stop any further code execution.
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             if (!$this->isTickCallerAllowed(Request::ip())) {
                 header("HTTP/1.1 404 Not Found");
                 exit();

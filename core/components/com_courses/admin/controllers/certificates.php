@@ -101,7 +101,7 @@ class Certificates extends AdminController
             // '&course=' . $model->get('course_id')
             // '&certificate=' . $model->get('id')
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false),
+                Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_COURSES_SETTINGS_SAVED'),
             );
             return;
@@ -121,7 +121,7 @@ class Certificates extends AdminController
         $certificate = Certificate::getInstance(Request::getInt('certificate', 0));
         if (!$certificate->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Route::url('index.php?option=' . $this->option . '&controller=courses', false),
                 Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
                 'error',
             );
@@ -282,7 +282,7 @@ class Certificates extends AdminController
 
         // Redirect back to the courses page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+            Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             Lang::txt('COM_COURSES_ITEM_REMOVED'),
         );
     }
@@ -295,7 +295,7 @@ class Certificates extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+            Route::url('index.php?option=' . $this->option . '&controller=courses', false),
         );
     }
 }

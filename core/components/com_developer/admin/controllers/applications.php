@@ -47,12 +47,12 @@ class Applications extends AdminController
     {
         $filters = [
             'sort'     => trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             )),
             'sort_Dir' => trim(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             )),
@@ -81,8 +81,8 @@ class Applications extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -130,8 +130,8 @@ class Applications extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -224,7 +224,7 @@ class Applications extends AdminController
         // [SECURITY] Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -270,7 +270,7 @@ class Applications extends AdminController
         // [SECURITY] Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -284,7 +284,7 @@ class Applications extends AdminController
         if (count($ids) < 1) {
             // No entries found, so go back to the entries list with
             // a message scolding the user for not selecting anything. Tsk, tsk.
-            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
             return $this->cancelTask();
         }
@@ -312,7 +312,7 @@ class Applications extends AdminController
             // Get the appropriate message for the task called. We're
             // passing in the number of successful state changes so it
             // can be displayed in the message.
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'publish':
                     $message = Lang::txt('COM_DEVELOPER_APPLICATION_PUBLISHED', $success);
                     break;
@@ -341,7 +341,7 @@ class Applications extends AdminController
         // [SECURITY] Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -353,7 +353,7 @@ class Applications extends AdminController
         if (count($ids) < 1) {
             // No entries found, so go back to the entries list with
             // a message scolding the user for not selecting anything. Tsk, tsk.
-            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
             return $this->cancelTask();
         }
@@ -394,7 +394,7 @@ class Applications extends AdminController
         // [SECURITY] Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -406,7 +406,7 @@ class Applications extends AdminController
         if (count($ids) < 1) {
             // No entries found, so go back to the entries list with
             // a message scolding the user for not selecting anything. Tsk, tsk.
-            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->_task));
+            Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
             return $this->cancelTask();
         }

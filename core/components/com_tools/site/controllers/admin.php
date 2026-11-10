@@ -78,7 +78,7 @@ class Admin extends SiteController
      */
     public function execute()
     {
-        $this->_authorize();
+        $this->authorize();
 
         // needs to be admin
         if (!$this->config->get('access-manage-component')) {
@@ -121,7 +121,7 @@ class Admin extends SiteController
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
-            $this->_option,
+            $this->option,
             $status,
             'dev',
         );
@@ -170,7 +170,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -204,7 +204,7 @@ class Admin extends SiteController
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
-            $this->_option,
+            $this->option,
             $status,
             'dev',
         );
@@ -313,7 +313,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -347,7 +347,7 @@ class Admin extends SiteController
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
-            $this->_option,
+            $this->option,
             $status,
             'dev',
         );
@@ -379,7 +379,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -413,7 +413,7 @@ class Admin extends SiteController
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
-            $this->_option,
+            $this->option,
             $status,
             'dev',
         );
@@ -681,7 +681,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
+                Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -713,7 +713,7 @@ class Admin extends SiteController
 
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        $obj->getToolStatus($this->toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->toolid, $this->option, $status, 'dev');
 
         if (count($status) > 0) {
             // Make sure the path exist
@@ -913,7 +913,7 @@ class Admin extends SiteController
      * @param      string $assetId   Asset id to check against
      * @return     void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
         if (User::get('guest')) {
@@ -938,7 +938,7 @@ class Admin extends SiteController
                 }
             }
         } else {
-            $asset  = $this->_option;
+            $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
                 $asset .= ($assetId) ? '.' . $assetId : '';

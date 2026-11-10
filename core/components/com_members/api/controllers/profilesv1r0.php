@@ -143,7 +143,7 @@ class Profilesv1r0 extends ApiController
                 $obj->middleName   = $entry->get('middleName');
                 $obj->surname      = $entry->get('surname');
                 $obj->organization = $entry->get('organization');
-                $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                $entryUrl = Route::url('index.php?option=' . $this->option . '&id=' . $entry->get('id'));
                 $obj->uri          = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                 $response->members[] = $obj;

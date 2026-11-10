@@ -27,7 +27,7 @@ class Admin extends AdminController
     {
         // Redirect to Publication Manager for now
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=items', false),
+            Route::url('index.php?option=' . $this->option . '&controller=items', false),
         );
         return;
     }

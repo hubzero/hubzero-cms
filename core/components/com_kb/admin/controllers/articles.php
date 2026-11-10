@@ -50,28 +50,28 @@ class Articles extends AdminController
         // Get filters
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'category' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.category',
+                $this->option . '.' . $this->controller . '.category',
                 'category',
                 0,
                 'int',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'access',
                 0,
                 'int',
@@ -83,12 +83,12 @@ class Articles extends AdminController
         // columns the grid offers and re-store anything else as the default
         if (!in_array($filters['sort'], ['title', 'state', 'access', 'id'], true)) {
             $filters['sort'] = 'title';
-            User::setState($this->_option . '.' . $this->_controller . '.sort', $filters['sort']);
+            User::setState($this->option . '.' . $this->controller . '.sort', $filters['sort']);
         }
         $filters['sort_Dir'] = strtoupper((string) $filters['sort_Dir']);
         if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'], true)) {
             $filters['sort_Dir'] = 'ASC';
-            User::setState($this->_option . '.' . $this->_controller . '.sortdir', $filters['sort_Dir']);
+            User::setState($this->option . '.' . $this->controller . '.sortdir', $filters['sort_Dir']);
         }
 
         $articles = Article::all();
@@ -132,8 +132,8 @@ class Articles extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -194,8 +194,8 @@ class Articles extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -251,7 +251,7 @@ class Articles extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -293,11 +293,11 @@ class Articles extends AdminController
         // The list's state links carry the token in the query string
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $cid = Request::getInt('cid', 0);
@@ -332,7 +332,7 @@ class Articles extends AdminController
         }
 
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . ($cid ? '&section=' . $cid : '');
         App::redirect(
             Route::url($url, false),
@@ -354,7 +354,7 @@ class Articles extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
     }
 
@@ -368,8 +368,8 @@ class Articles extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -406,8 +406,8 @@ class Articles extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.edit.state', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.edit.state', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

@@ -57,29 +57,29 @@ class Assetgroups extends AdminController
         // Incoming
         $this->view->filters = [
             'unit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.unit',
+                $this->option . '.' . $this->controller . '.unit',
                 'unit',
                 0,
             ),
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -89,7 +89,7 @@ class Assetgroups extends AdminController
         $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']);
         if (!$this->view->unit->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
             return;
         }
@@ -263,8 +263,8 @@ class Assetgroups extends AdminController
         }
 
         // Output messsage and redirect
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&unit=' . $model->get('unit_id');
         App::redirect(
             Route::url($url, false),
@@ -287,7 +287,7 @@ class Assetgroups extends AdminController
             $id = (!empty($id)) ? $id[0] : 0;
         }
 
-        $baseUrl = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+        $baseUrl = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 
         if (!$id) {
             $url = $baseUrl . '&unit=' . Request::getInt('unit', 0);
@@ -355,8 +355,8 @@ class Assetgroups extends AdminController
         }
 
         // Redirect back to the courses page
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
@@ -371,7 +371,7 @@ class Assetgroups extends AdminController
      */
     public function stateTask()
     {
-        $state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming
         $ids = Request::getArray('id', [0]);
@@ -379,8 +379,8 @@ class Assetgroups extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&unit=' . Request::getInt('unit', 0);
             $msg = ($state == 1 ? Lang::txt('COM_COURSES_SELECT_PUBLISH') : Lang::txt('COM_COURSES_SELECT_UNPUBLISH'));
             App::redirect(
@@ -413,8 +413,8 @@ class Assetgroups extends AdminController
         }
 
         // Set the redirect
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
@@ -437,7 +437,7 @@ class Assetgroups extends AdminController
         \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
-        $inc = ($this->_task == 'orderup' ? -1 : 1);
+        $inc = ($this->task == 'orderup' ? -1 : 1);
 
         $row = new Tables\AssetGroup($this->database);
         $row->load($uid);
@@ -456,8 +456,8 @@ class Assetgroups extends AdminController
             }
         }
 
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
@@ -471,8 +471,8 @@ class Assetgroups extends AdminController
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option
-            . '&controller=' . $this->_controller
+        $url = 'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
@@ -500,8 +500,8 @@ class Assetgroups extends AdminController
         }
 
         if (!$id) {
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&unit=' . Request::getInt('unit', 0);
             App::redirect(
                 Route::url($url, false),
@@ -603,8 +603,8 @@ class Assetgroups extends AdminController
         $assetgroup = new \Components\Courses\Models\Assetgroup($assetGroupIdStart);
         if (!$assetgroup->copyToSelectedAssetGroup($courseId, $offeringId, $unitId, $assetGroupParent)) {
             // Redirect back to the courses page
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
                 . '&unit=' . $assetgroup->get('unit_id');
             App::redirect(
                 Route::url($url, false),
@@ -619,7 +619,7 @@ class Assetgroups extends AdminController
 
         // Redirect to the asset groups
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             $message,
         );
     }

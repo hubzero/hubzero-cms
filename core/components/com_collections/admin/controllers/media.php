@@ -80,8 +80,8 @@ class Media extends AdminController
     public function createTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -326,8 +326,8 @@ class Media extends AdminController
             'layout' => '_asset',
         ]);
         $view->i          = Request::getInt('i', 0);
-        $view->set('option', $this->_option);
-        $view->set('controller', $this->_controller);
+        $view->set('option', $this->option);
+        $view->set('controller', $this->controller);
         $view->set('asset', $asset);
         $view->set('no_html', 1);
 
@@ -351,8 +351,8 @@ class Media extends AdminController
     public function uploadTask()
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -448,7 +448,7 @@ class Media extends AdminController
      */
     public function deleteTask()
     {
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

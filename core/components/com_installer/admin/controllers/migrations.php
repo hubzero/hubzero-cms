@@ -33,18 +33,18 @@ class Migrations extends AdminController
         // Paging
         $filters = [
             'folder' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.folder',
+                $this->option . '.' . $this->controller . '.folder',
                 'folder',
                 '',
             )),
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',

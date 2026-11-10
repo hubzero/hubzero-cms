@@ -48,35 +48,35 @@ class Hosts extends AdminController
         // Get filters
         $filters = [
             'hostname' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.hostname',
+                $this->option . '.' . $this->controller . '.hostname',
                 'hostname',
                 '',
             )),
             'hosttype' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.hosttype',
+                $this->option . '.' . $this->controller . '.hosttype',
                 'hosttype',
                 '',
             )),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'hostname',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',

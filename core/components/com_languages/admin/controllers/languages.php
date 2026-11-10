@@ -49,30 +49,30 @@ class Languages extends AdminController
     {
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'filter_search',
                 '',
             ),
             'published' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.published',
+                $this->option . '.' . $this->controller . '.published',
                 'filter_published',
                 -1,
                 'int',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.access',
+                $this->option . '.' . $this->controller . '.access',
                 'filter_access',
                 -1,
                 'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'folder',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -129,8 +129,8 @@ class Languages extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -163,8 +163,8 @@ class Languages extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -189,8 +189,8 @@ class Languages extends AdminController
         }
 
         if ($this->getTask() == 'save2new') {
-            $url = 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=edit';
+            $url = 'index.php?option=' . $this->option
+                . '&controller=' . $this->controller . '&task=edit';
             App::redirect(Route::url($url, false));
             return;
         }
@@ -209,7 +209,7 @@ class Languages extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -234,7 +234,7 @@ class Languages extends AdminController
 
         if ($i) {
             Cache::clean('_system');
-            Cache::clean($this->_option);
+            Cache::clean($this->option);
 
             Notify::success(Lang::txt('COM_LANGUAGES_N_ITEMS_DELETED', $i));
         }
@@ -253,7 +253,7 @@ class Languages extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

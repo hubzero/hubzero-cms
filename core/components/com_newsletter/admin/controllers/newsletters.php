@@ -98,29 +98,29 @@ class Newsletters extends AdminController
         // Filters
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             ),
             'published' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.published',
+                $this->option . '.' . $this->controller . '.published',
                 'published',
                 -1,
                 'int',
             ),
             'type' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.type',
+                $this->option . '.' . $this->controller . '.type',
                 'type',
                 '',
             ),
             // Sorting
             'sort' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
             'sort_Dir' => Request::getstate(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -167,8 +167,8 @@ class Newsletters extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -217,8 +217,8 @@ class Newsletters extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -288,7 +288,7 @@ class Newsletters extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -331,7 +331,7 @@ class Newsletters extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -377,7 +377,7 @@ class Newsletters extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -436,7 +436,7 @@ class Newsletters extends AdminController
         // Generate output
         if (!$no_html) {
             $content  = '<h2 class="modal-title">' . Lang::txt('COM_NEWSLETTER_PREVIEW') . '</h2><br /><br />';
-            $content .= '<iframe width="100%" height="100%" src="' . Route::url('index.php?option=' . $this->_option . '&task=preview&id=' . $id . '&no_html=1') . '"></iframe>';
+            $content .= '<iframe width="100%" height="100%" src="' . Route::url('index.php?option=' . $this->option . '&task=preview&id=' . $id . '&no_html=1') . '"></iframe>';
         } else {
             $content = $newsletter->buildNewsletter($newsletter);
         }
@@ -483,8 +483,8 @@ class Newsletters extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -599,8 +599,8 @@ class Newsletters extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -824,7 +824,7 @@ class Newsletters extends AdminController
 
         //set extra headers
         $mailHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $mailHeaders .= "X-Component: " . $this->_option . "\r\n";
+        $mailHeaders .= "X-Component: " . $this->option . "\r\n";
         $mailHeaders .= "X-Component-Object: Campaign Mailing" . "\r\n";
         $mailHeaders .= "X-Component-ObjectId: {{CAMPAIGN_MAILING_ID}}" . "\r\n";
         //$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";

@@ -46,9 +46,9 @@ class Reports extends Base
         // Output HTML
         $this->view
             ->set('title', $this->title)
-            ->set('task', $this->_task)
+            ->set('task', $this->task)
             ->set('admin', $this->model->reviewerAccess('admin'))
-            ->set('option', $this->_option)
+            ->set('option', $this->option)
             ->set('config', $this->config)
             ->set('publishing', $this->_publishing)
             ->set('monthly', $monthly)
@@ -143,7 +143,7 @@ class Reports extends Base
         if ($this->getError()) {
             Notify::error($this->getError());
 
-            $url = 'index.php?option=' . $this->_option
+            $url = 'index.php?option=' . $this->option
                 . '&controller=reports&task=custom&searchterm=' . $filter;
             App::redirect(
                 Route::url($url, false),
@@ -180,8 +180,8 @@ class Reports extends Base
         // Output HTML
         $this->view
             ->set('title', $this->title)
-            ->set('task', $this->_task)
-            ->set('option', $this->_option)
+            ->set('task', $this->task)
+            ->set('option', $this->option)
             ->set('config', $this->config)
             ->set('msg', (isset($this->_msg) ? $this->_msg : ''))
             ->setLayout('custom')

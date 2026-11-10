@@ -54,7 +54,7 @@ class Categories extends Base
         }
 
         // Check authorization
-        if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))) {
+        if ($this->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -160,7 +160,7 @@ class Categories extends Base
             return $this->editTask();
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
 
         // Log activity
         $recipients = [
@@ -177,7 +177,7 @@ class Categories extends Base
                 'scope'       => 'group.category',
                 'scope_id'    => $this->category->get('id'),
                 'description' => Lang::txt(
-                    'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'),
+                    'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->task == 'new' ? 'CREATED' : 'UPDATED'),
                     $this->category->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                 ),
@@ -211,7 +211,7 @@ class Categories extends Base
         // load category object
         $category = new Page\Category($categoryid);
 
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
 
         // make sure this is our groups cat
         if ($category->get('gidNumber') != $this->group->get('gidNumber')) {

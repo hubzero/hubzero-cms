@@ -94,7 +94,7 @@ class Pages extends SiteController
     public function execute()
     {
         if (!$this->book->pages()->total()) {
-            if ($result = $this->book->scribe($this->_option)) {
+            if ($result = $this->book->scribe($this->option)) {
                 $this->setError($result);
             }
 
@@ -105,7 +105,7 @@ class Pages extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
+                Route::url('index.php?option=' . $this->option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
             );
         }
 
@@ -133,8 +133,8 @@ class Pages extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+                Lang::txt(strtoupper($this->name)),
+                'index.php?option=' . $this->option . '&controller=' . $this->controller,
             );
         }
 
@@ -360,7 +360,7 @@ class Pages extends SiteController
 
         // Load the page
         $ischild = false;
-        if ($this->page->get('id') && $this->_task == 'new') {
+        if ($this->page->get('id') && $this->task == 'new') {
             $this->page->set('parent', $this->page->get('id'));
             $this->page->set('id', 0);
             $ischild = true;
@@ -404,20 +404,20 @@ class Pages extends SiteController
         Document::setTitle(
             Document::getTitle() . ': '
             . $this->page->title . ': '
-            . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            . Lang::txt(strtoupper($this->option . '_' . $this->task)),
         );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option . '&controller=' . $this->controller,
             );
         }
         $parents = $this->appendPagePathway();
         Pathway::append(
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            $this->page->link() . '&task=' . $this->_task,
+            Lang::txt(strtoupper($this->option . '_' . $this->task)),
+            $this->page->link() . '&task=' . $this->task,
         );
 
         // Are we previewing?
@@ -621,10 +621,10 @@ class Pages extends SiteController
             // Set the component task
             if (!$page['id']) {
                 Request::setVar('task', 'new');
-                $this->_task = 'new';
+                $this->task = 'new';
             } else {
                 Request::setVar('task', 'edit');
-                $this->_task = 'edit';
+                $this->task = 'edit';
             }
 
             // Push on through to the edit form
@@ -857,22 +857,22 @@ class Pages extends SiteController
             default:
                 // Set the page's <title> tag
                 Document::setTitle(
-                    Lang::txt(strtoupper($this->_option)) . ': '
+                    Lang::txt(strtoupper($this->option)) . ': '
                     . $this->page->title . ': '
-                    . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+                    . Lang::txt(strtoupper($this->option . '_' . $this->task)),
                 );
 
                 // Set the pathway
                 if (Pathway::count() <= 0) {
                     Pathway::append(
-                        Lang::txt(strtoupper($this->_option)),
-                        'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+                        Lang::txt(strtoupper($this->option)),
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller,
                     );
                 }
 
                 $parents = $this->appendPagePathway();
                 Pathway::append(
-                    Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+                    Lang::txt(strtoupper($this->option . '_' . $this->task)),
                     $this->page->link('delete'),
                 );
 
@@ -929,7 +929,7 @@ class Pages extends SiteController
 
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->_name)) . ': '
+            Lang::txt(strtoupper($this->name)) . ': '
             . $this->page->title . ': '
             . Lang::txt('RENAME'),
         );
@@ -937,8 +937,8 @@ class Pages extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->name)),
+                'index.php?option=' . $this->option,
             );
         }
 

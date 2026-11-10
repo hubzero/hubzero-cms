@@ -28,7 +28,7 @@ class Get extends SiteController
     public function displayTask()
     {
 
-        $route = Route::url('index.php?option=' . $this->_option, false);
+        $route = Route::url('index.php?option=' . $this->option, false);
 
         // Incoming
         $stamp = Request::getString('s', '');

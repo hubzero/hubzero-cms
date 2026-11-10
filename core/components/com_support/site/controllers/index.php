@@ -26,15 +26,15 @@ class Index extends SiteController
     public function displayTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option));
+        $this->view->title = Lang::txt(strtoupper($this->option));
 
         Document::setTitle($this->view->title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 

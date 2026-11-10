@@ -34,7 +34,7 @@ class ImportHooks extends AdminController
     {
         // A hook is a PHP file the importer include()s, so this is the same
         // bar as the imports controller and com_members' hooks.
-        if (!User::authorise('core.admin', $this->_option)) {
+        if (!User::authorise('core.admin', $this->option)) {
             Notify::warning(Lang::txt('Not authorized'));
 
             App::redirect(
@@ -42,7 +42,7 @@ class ImportHooks extends AdminController
             );
         }
 
-        Lang::load($this->_option . '.import', dirname(__DIR__));
+        Lang::load($this->option . '.import', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -60,13 +60,13 @@ class ImportHooks extends AdminController
         // Get filters
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',

@@ -29,7 +29,7 @@ class PasswordBlacklist extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.passwords', dirname(__DIR__));
+        Lang::load($this->option . '.passwords', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -47,12 +47,12 @@ class PasswordBlacklist extends AdminController
         // Incoming
         $filters = [
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'word',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort_Dir',
+                $this->option . '.' . $this->controller . '.sort_Dir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -78,10 +78,10 @@ class PasswordBlacklist extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -119,10 +119,10 @@ class PasswordBlacklist extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.create', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.create', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -161,9 +161,9 @@ class PasswordBlacklist extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.delete', $this->_option)
+            !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.delete', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

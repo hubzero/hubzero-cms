@@ -128,7 +128,7 @@ class Categoriesv2r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
@@ -281,7 +281,7 @@ class Categoriesv2r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
@@ -327,7 +327,7 @@ class Categoriesv2r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.manage', $this->_option)) {
+        if (!User::authorise('core.manage', $this->option)) {
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
@@ -396,7 +396,7 @@ class Categoriesv2r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
@@ -453,7 +453,7 @@ class Categoriesv2r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 

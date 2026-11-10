@@ -36,11 +36,11 @@ class Order extends ComponentController
     public function execute()
     {
         // Get the task
-        $this->_task  = Request::getCmd('task', '');
+        $this->task  = Request::getCmd('task', '');
 
-        if (empty($this->_task)) {
-            $this->_task = 'home';
-            $this->registerTask('__default', $this->_task);
+        if (empty($this->task)) {
+            $this->task = 'home';
+            $this->registerTask('__default', $this->task);
         }
 
         parent::execute();
@@ -111,7 +111,7 @@ class Order extends ComponentController
             Notify::error('Error processing your order...');
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
             );
         }
 
@@ -119,12 +119,12 @@ class Order extends ComponentController
 
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
             Pathway::append(
                 Lang::txt('Order complete'),
-                'index.php?option=' . $this->_option,
+                'index.php?option=' . $this->option,
             );
         }
 

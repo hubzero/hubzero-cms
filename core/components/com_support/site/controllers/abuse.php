@@ -38,13 +38,13 @@ class Abuse extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option . '&controller=index',
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option . '&controller=index',
             );
         }
         Pathway::append(
             Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE')),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse',
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse',
         );
     }
 
@@ -56,7 +56,7 @@ class Abuse extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
-        $this->_title  = Lang::txt(strtoupper($this->_option));
+        $this->_title  = Lang::txt(strtoupper($this->option));
         $this->_title .= ': ' . Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE'));
 
         Document::setTitle($this->_title);
@@ -71,7 +71,7 @@ class Abuse extends SiteController
         // Login required
         if (User::isGuest()) {
             $defaultUrl = Route::url(
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+                'index.php?option=' . $this->option . '&controller=' . $this->controller,
                 false,
                 true,
             );
@@ -201,7 +201,7 @@ class Abuse extends SiteController
 
         // Send notification email
         if ($this->config->get('abuse_notify', 1)) {
-            Lang::load($this->_option . '.abuse', dirname(__DIR__));
+            Lang::load($this->option . '.abuse', dirname(__DIR__));
 
             $reported = new \stdClass();
             $reported->author = 0;
@@ -233,7 +233,7 @@ class Abuse extends SiteController
             $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
                     ->addFrom(
                         Config::get('mailfrom'),
-                        Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
+                        Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
                     )
                     ->addHeader('X-Component', 'com_support')
                     ->addHeader('X-Component-Object', 'abuse_item_report');
@@ -243,8 +243,8 @@ class Abuse extends SiteController
                 'name'   => 'emails',
                 'layout' => 'abuse_plain',
             ]);
-            $eview->option     = $this->_option;
-            $eview->controller = $this->_controller;
+            $eview->option     = $this->option;
+            $eview->controller = $this->controller;
             $eview->report     = $row;
             $eview->reported   = $reported;
             $eview->author     = null;
@@ -263,7 +263,7 @@ class Abuse extends SiteController
             $message->addPart($html, 'text/html');
             $message->setTo(
                 Config::get('mailfrom'),
-                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
             );
 
             // Loop through the addresses

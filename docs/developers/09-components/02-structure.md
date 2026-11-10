@@ -149,7 +149,7 @@ of new code.
 `SiteController`'s constructor derives the component from the **class
 namespace**, not from the directory or the request: it explodes the class name
 and takes the second segment. `Components\Bookings\Site\Controllers\Instruments`
-gives `$this->_name = 'bookings'` and `$this->_option = 'com_bookings'`.
+gives `$this->name = 'bookings'` and `$this->option = 'com_bookings'`.
 
 Get the namespace segment and the directory out of step — a class declared
 `namespace Components\Booking\...` inside `com_bookings/` — and nothing throws.

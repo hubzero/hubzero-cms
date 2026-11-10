@@ -33,7 +33,7 @@ class Queries extends SiteController
     public function displayTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false),
+            Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display', false),
         );
     }
 
@@ -152,7 +152,7 @@ class Queries extends SiteController
 
         if (!$no_html && $tmpl != 'component') {
             // Output messsage and redirect
-            $redirectUrl = 'index.php?option=' . $this->_option
+            $redirectUrl = 'index.php?option=' . $this->option
                 . '&controller=tickets&task=display&show=' . $row->get('id');
             App::redirect(
                 Route::url($redirectUrl, false),
@@ -188,7 +188,7 @@ class Queries extends SiteController
         if (!$id) {
             if (!$no_html && $tmpl != 'component') {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false),
+                    Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display', false),
                     Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
                     'error',
                 );
@@ -210,7 +210,7 @@ class Queries extends SiteController
         if (!$no_html && $tmpl != 'component') {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false),
+                Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display', false),
             );
         } else {
             $this->listTask();
@@ -246,7 +246,7 @@ class Queries extends SiteController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false),
+            Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display', false),
         );
     }
 
@@ -354,8 +354,8 @@ class Queries extends SiteController
         if ($redirect) {
             if (!$no_html && $tmpl != 'component') {
                 // Output messsage and redirect
-                $redirectUrl = 'index.php?option=' . $this->_option
-                    . '&controller=' . $this->_controller . '&task=tickets';
+                $redirectUrl = 'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=tickets';
                 App::redirect(
                     Route::url($redirectUrl, false),
                     Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED'),
@@ -407,7 +407,7 @@ class Queries extends SiteController
         if (!$no_html) {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'),
             );
             return;
@@ -492,7 +492,7 @@ class Queries extends SiteController
         if (!Request::getInt('no_html')) {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'),
             );
         }

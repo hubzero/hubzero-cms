@@ -46,29 +46,29 @@ class Licenses extends AdminController
         // Incoming
         $filters = [
             'limit' => Request::getState(
-                $this->_option . '.licenses.limit',
+                $this->option . '.licenses.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.licenses.limitstart',
+                $this->option . '.licenses.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'search' => Request::getState(
-                $this->_option . '.licenses.search',
+                $this->option . '.licenses.search',
                 'search',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.licenses.sort',
+                $this->option . '.licenses.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.licenses.sortdir',
+                $this->option . '.licenses.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -102,8 +102,8 @@ class Licenses extends AdminController
     public function editTask($row = null)
     {
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -137,8 +137,8 @@ class Licenses extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.edit', $this->_option)
-            && !User::authorise('core.create', $this->_option)
+            !User::authorise('core.edit', $this->option)
+            && !User::authorise('core.create', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -222,7 +222,7 @@ class Licenses extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -260,7 +260,7 @@ class Licenses extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -301,7 +301,7 @@ class Licenses extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        if (!User::authorise('core.delete', $this->_option)) {
+        if (!User::authorise('core.delete', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

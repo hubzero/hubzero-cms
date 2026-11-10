@@ -31,7 +31,7 @@ class Accessgroups extends AdminController
      */
     public function execute()
     {
-        Lang::load($this->_option . '.access', dirname(__DIR__));
+        Lang::load($this->option . '.access', dirname(__DIR__));
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -51,7 +51,7 @@ class Accessgroups extends AdminController
         // Incoming
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
@@ -150,9 +150,9 @@ class Accessgroups extends AdminController
         Request::checkToken();
 
         if (
-            !User::authorise('core.admin', $this->_option)
-            && !User::authorise('core.manage', $this->_option)
-            && !User::authorise('core.edit', $this->_option)
+            !User::authorise('core.admin', $this->option)
+            && !User::authorise('core.manage', $this->option)
+            && !User::authorise('core.edit', $this->option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -329,34 +329,34 @@ class Accessgroups extends AdminController
         // Get filters
         $filters = [
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'lft',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'level_start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_level_start',
+                $this->option . '.' . $this->controller . '.filter_level_start',
                 'filter_level_start',
                 0,
                 'int',
             ),
             'level_end' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_level_end',
+                $this->option . '.' . $this->controller . '.filter_level_end',
                 'filter_level_end',
                 0,
                 'int',
             ),
             'component' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.filter_component',
+                $this->option . '.' . $this->controller . '.filter_component',
                 'filter_component',
                 '',
             ),

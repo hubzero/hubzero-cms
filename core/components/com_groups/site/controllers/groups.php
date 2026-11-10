@@ -50,7 +50,7 @@ class Groups extends Base
 
         // Handles misrouted request
         if ($this->task == 'pages') {
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=pages'));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&cn=' . $this->cn . '&controller=pages'));
         }
 
         // Are we serving up a file
@@ -195,7 +195,7 @@ class Groups extends Base
             ->set('groups', $groups)
             ->set('filters', $filters)
             ->set('title', $this->_title)
-            ->set('authorized', $this->_authorize())
+            ->set('authorized', $this->authorize())
             ->set('notifications', $notifications)
             ->setLayout('browse')
             ->display();
@@ -387,9 +387,9 @@ class Groups extends Base
      */
     public function newTask()
     {
-        if (!User::authorise('core.create', $this->_option)) {
+        if (!User::authorise('core.create', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
                 'warning',
             );
@@ -411,16 +411,16 @@ class Groups extends Base
             return $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
         }
 
-        if (!User::authorise('core.edit', $this->_option)) {
+        if (!User::authorise('core.edit', $this->option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
                 'warning',
             );
         }
 
         // Are we creating a new group?
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             // Instantiate an Group object
             $this->view->group = new Group();
 
@@ -450,7 +450,7 @@ class Groups extends Base
 
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
-            if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit'))) {
+            if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.edit'))) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
 
@@ -505,7 +505,7 @@ class Groups extends Base
         // Build pathway
         $this->_buildPathway();
 
-        $this->view->task = $this->_task;
+        $this->view->task = $this->task;
         $this->view->config = $this->config;
 
         // Get view notifications
@@ -543,11 +543,11 @@ class Groups extends Base
         }
 
         if (
-            (!$g_gidNumber && !User::authorise('core.create', $this->_option))
-            || ($g_gidNumber && !User::authorise('core.edit', $this->_option))
+            (!$g_gidNumber && !User::authorise('core.create', $this->option))
+            || ($g_gidNumber && !User::authorise('core.edit', $this->option))
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
                 'warning',
             );
@@ -571,9 +571,9 @@ class Groups extends Base
         // Are we editing or creating?
         if ($g_gidNumber) {
             $group = Group::getInstance($g_gidNumber);
-            $this->_task = 'edit';
+            $this->task = 'edit';
 
-            // _authorize() and _authorizedForTask() read $this->cn, which is
+            // authorize() and _authorizedForTask() read $this->cn, which is
             // whatever cn the request carried; the group being written is the
             // posted gidNumber. Authorise against that group.
             if (!$group || !$group->get('gidNumber')) {
@@ -586,14 +586,14 @@ class Groups extends Base
             // values; clone it instead, matching the admin controllers.
             $before = clone($group);
         } else {
-            $this->_task = 'new';
+            $this->task = 'new';
             $group  = new Group();
             $before = new Group();
         }
 
         // Check authorization
         // Published = 2 = archived. Archived is a read-only mode.
-        if ($group->published == 2 || ($this->_authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit'))) {
+        if ($group->published == 2 || ($this->authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -612,7 +612,7 @@ class Groups extends Base
         if (!$this->validCn($g_cn)) {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
         }
-        if ($this->_task == 'new' && Group::exists($g_cn, true)) {
+        if ($this->task == 'new' && Group::exists($g_cn, true)) {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_ID_TAKEN'), 'error');
         }
 
@@ -635,7 +635,7 @@ class Groups extends Base
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_groups.group.public_desc',
                 &$g_public_desc,
-                ($this->_task == 'new'),
+                ($this->task == 'new'),
             ]);
             foreach ($results as $result) {
                 if ($result === false) {
@@ -673,7 +673,7 @@ class Groups extends Base
         }
 
         // Build the e-mail message
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             $subject = Lang::txt('COM_GROUPS_SAVE_EMAIL_REQUESTED_SUBJECT', $g_cn);
             $type = 'groups_created';
         } else {
@@ -681,7 +681,7 @@ class Groups extends Base
             $type = 'groups_changed';
         }
 
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             $group->set('cn', $g_cn);
             $group->set('type', 1);
             $group->set('published', 1);
@@ -705,7 +705,7 @@ class Groups extends Base
         // the old values.) Only meaningful for an edit; a new group has no
         // "before", so the email shows no change markers.
         $before_vals = [];
-        if ($this->_task != 'new') {
+        if ($this->task != 'new') {
             $beforeTags   = new Tags($group->get('gidNumber'));
             $beforeParams = new Registry($group->get('params'));
             $before_vals  = [
@@ -751,7 +751,7 @@ class Groups extends Base
 
         Event::trigger('groups.onGroupAfterSave', [$before, $group]);
 
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             if ($lid != $group->get('gidNumber')) {
                 $config = $this->config;
                 $bp = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS);
@@ -786,7 +786,7 @@ class Groups extends Base
             'layout' => 'saved_plain',
         ]);
 
-        $eview->option = $this->_option;
+        $eview->option = $this->option;
         $eview->user   = User::getInstance();
         $eview->group  = $group;
         $eview->before = $before_vals;
@@ -802,7 +802,7 @@ class Groups extends Base
 
         // Get the "from" info
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -814,7 +814,7 @@ class Groups extends Base
             // create new message
             Plugin::import('xmessage');
 
-            if (!Event::trigger('onSendMessage', [$type, $subject, $message, $from, $managers, $this->_option])) {
+            if (!Event::trigger('onSendMessage', [$type, $subject, $message, $from, $managers, $this->option])) {
                 $this->setNotification(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
             }
         }
@@ -831,7 +831,7 @@ class Groups extends Base
 
                 // build approval message
                 $link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
-                $link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator/index.php?option=' . $this->_option;
+                $link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator/index.php?option=' . $this->option;
                 // Escape the user-supplied description for the HTML part
                 $descHtml = htmlspecialchars($group->get('description'), ENT_QUOTES, 'UTF-8');
                 $html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC', $link, $group->get('cn'), $descHtml, $link2);
@@ -857,7 +857,7 @@ class Groups extends Base
         }
 
         // Create home page
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             // Create page
             $page = new Page([
                 'gidNumber' => $group->get('gidNumber'),
@@ -885,7 +885,7 @@ class Groups extends Base
             $version->store(false);
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn'));
 
         // Log activity
         $recipients = [
@@ -898,10 +898,10 @@ class Groups extends Base
 
         Event::trigger('system.logActivity', [
             'activity' => [
-                'action'      => ($this->_task == 'new' ? 'created' : 'updated'),
+                'action'      => ($this->task == 'new' ? 'created' : 'updated'),
                 'scope'       => 'group',
                 'scope_id'    => $group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_' . ($this->task == 'new' ? 'CREATED' : 'UPDATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title'     => $group->get('description'),
                     'url'       => $url,
@@ -913,7 +913,7 @@ class Groups extends Base
         ]);
 
         // Show success message to user
-        if ($this->_task == 'new') {
+        if ($this->task == 'new') {
             $this->setNotification(Lang::txt('COM_GROUPS_CREATED_SUCCESS', $group->get('description')), 'passed');
             // If the new group is published, set the session flag indicating the new submission
             Session::set('newsubmission.group', true);
@@ -952,7 +952,7 @@ class Groups extends Base
         }
 
         // Check authorization
-        if ($this->_authorize() != 'manager') {
+        if ($this->authorize() != 'manager') {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -1004,7 +1004,7 @@ class Groups extends Base
             // Return to the confirmation form rather than to this POST-only task
             return $this->loginTask(
                 Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=delete',
+                'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=delete',
             );
         }
 
@@ -1030,7 +1030,7 @@ class Groups extends Base
         }
 
         // Check authorization
-        if ($this->_authorize() != 'manager') {
+        if ($this->authorize() != 'manager') {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -1091,7 +1091,7 @@ class Groups extends Base
 
         // Build the "from" info for e-mails
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
         $from['email'] = Config::get('mailfrom');
 
         // E-mail subject
@@ -1099,7 +1099,7 @@ class Groups extends Base
 
         // Build the e-mail message
         $eview = new \Hubzero\Component\View(['name' => 'emails','layout' => 'deleted']);
-        $eview->set('option', $this->_option);
+        $eview->set('option', $this->option);
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
         $eview->gcn      = $deletedgroup->get('cn');
@@ -1153,10 +1153,10 @@ class Groups extends Base
                 'action'      => 'deleted',
                 'scope'       => 'group',
                 'scope_id'    => $deletedgroup->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')) . '">' . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_DELETED', '<a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn')) . '">' . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title'     => $deletedgroup->get('description'),
-                    'url'       => Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')),
+                    'url'       => Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn')),
                     'cn'        => $deletedgroup->get('cn'),
                     'gidNumber' => $deletedgroup->get('gidNumber'),
                 ],
@@ -1166,7 +1166,7 @@ class Groups extends Base
 
         // Redirect back to the groups page
         $this->setNotification(Lang::txt('COM_GROUPS_DELETE_SUCCESS', $deletedgroup->get('description')), 'passed');
-        App::redirect(Route::url('index.php?option=' . $this->_option));
+        App::redirect(Route::url('index.php?option=' . $this->option));
     }
 
     /**
@@ -1181,7 +1181,7 @@ class Groups extends Base
 
         // Set notification
         $this->setNotification(
-            Lang::txt('COM_GROUPS_CREATE_SUGGEST', Route::url('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
+            Lang::txt('COM_GROUPS_CREATE_SUGGEST', Route::url('index.php?option=' . $this->option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
             'warning',
         );
 
@@ -1273,7 +1273,7 @@ class Groups extends Base
             !$group || !$group->get('gidNumber')
             || ($group->get('discoverability') == 1
             && !$group->isMember(User::get('id'))
-            && !User::authorise('core.admin', $this->_option))
+            && !User::authorise('core.admin', $this->option))
         ) {
             echo '{"members":[]}';
             exit();
@@ -1356,7 +1356,7 @@ class Groups extends Base
         }
 
         // Authorize
-        $authorized = $this->_authorize();
+        $authorized = $this->authorize();
 
         // Get the file name
         if (substr(strtolower($filename), 0, 5) == 'image') {

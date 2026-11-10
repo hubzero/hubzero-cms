@@ -96,7 +96,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
+        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -166,7 +166,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
+        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -310,7 +310,7 @@ class Membership extends Base
 
         // Build the "from" info for e-mails
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -322,7 +322,7 @@ class Membership extends Base
             'name'   => 'emails',
             'layout' => 'invite_plain',
         ]);
-        $eview->option   = $this->_option;
+        $eview->option   = $this->option;
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
         $eview->group    = $this->view->group;
@@ -371,7 +371,7 @@ class Membership extends Base
         }
 
         // Log activity
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn'));
 
         foreach ($invitees as $invitee) {
             Event::trigger('system.logActivity', [
@@ -425,7 +425,7 @@ class Membership extends Base
                 'layout' => 'inviteemail_plain',
             ]);
 
-            $eview2->option   = $this->_option;
+            $eview2->option   = $this->option;
             $eview2->sitename = Config::get('sitename');
             $eview2->user     = User::getInstance();
             $eview2->group    = $this->view->group;
@@ -634,7 +634,7 @@ class Membership extends Base
         ]);
 
         // Log activity
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn'));
 
         $recipients = [
             ['group', $this->view->group->get('gidNumber')],
@@ -665,7 +665,7 @@ class Membership extends Base
 
         // Build the e-mail message
         $eview = new \Hubzero\Component\View(['name' => 'emails', 'layout' => 'accepted']);
-        $eview->set('option', $this->_option);
+        $eview->set('option', $this->option);
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
         $eview->group    = $this->view->group;
@@ -674,7 +674,7 @@ class Membership extends Base
 
         // Build the "from" portion of the e-mail
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
         $from['email'] = Config::get('mailfrom');
 
         // Get the system administrator e-mail
@@ -708,9 +708,9 @@ class Membership extends Base
 
         // Action Complete. Redirect to appropriate page
         if ($return == 'browse') {
-            App::redirect(Route::url('index.php?option=' . $this->_option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
         } else {
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
+            App::redirect(Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn')));
         }
     }
 
@@ -726,7 +726,7 @@ class Membership extends Base
             // Return to the group rather than to this POST-only task
             $this->loginTask(
                 Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_CANCEL'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn,
+                'index.php?option=' . $this->option . '&cn=' . $this->cn,
             );
             return;
         }
@@ -794,7 +794,7 @@ class Membership extends Base
 
         // Build the e-mail message
         $eview = new \Hubzero\Component\View(['name' => 'emails', 'layout' => 'cancelled']);
-        $eview->set('option', $this->_option);
+        $eview->set('option', $this->option);
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
         $eview->group    = $this->view->group;
@@ -806,16 +806,16 @@ class Membership extends Base
 
         // Build the "from" portion of the e-mail
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
         $from['email'] = Config::get('mailfrom');
 
         // E-mail the administrator
-        if (!Event::trigger('xmessage.onSendMessage', ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option])) {
+        if (!Event::trigger('xmessage.onSendMessage', ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option])) {
             $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
         }
 
         // Log activity
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn'));
 
         $recipients = [
             ['group', $this->view->group->get('gidNumber')],
@@ -861,7 +861,7 @@ class Membership extends Base
         if (User::isGuest()) {
             return $this->loginTask(
                 Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=join',
+                'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=join',
             );
         }
 
@@ -950,7 +950,7 @@ class Membership extends Base
             ]);
 
             // Log activity
-            $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+            $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn'));
 
             $recipients = [
                 ['group', $this->view->group->get('gidNumber')],
@@ -1080,7 +1080,7 @@ class Membership extends Base
         ]);
 
         // Log activity
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn'));
 
         $recipients = [
             ['group', $this->view->group->get('gidNumber')],
@@ -1114,7 +1114,7 @@ class Membership extends Base
             'name'   => 'emails',
             'layout' => 'request',
         ]);
-        $eview->set('option', $this->_option);
+        $eview->set('option', $this->option);
         $eview->sitename = Config::get('sitename');
         $eview->user = User::getInstance();
         $eview->group = $this->view->group;
@@ -1127,7 +1127,7 @@ class Membership extends Base
 
         // Build the "from" portion of the e-mail
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
         $from['email'] = Config::get('mailfrom');
 
         // build array of managers

@@ -27,12 +27,12 @@ class Developer extends SiteController
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option,
+                Lang::txt(strtoupper($this->option)),
+                'index.php?option=' . $this->option,
             );
         }
 
-        Document::setTitle(Lang::txt(strtoupper($this->_option)));
+        Document::setTitle(Lang::txt(strtoupper($this->option)));
 
         $this->view->display();
     }

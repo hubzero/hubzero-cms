@@ -48,41 +48,41 @@ class Pipeline extends AdminController
         $filters = [
             // Get filters
             'search' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search',
+                $this->option . '.' . $this->controller . '.search',
                 'search',
                 '',
             )),
             'search_field' => urldecode(Request::getState(
-                $this->_option . '.' . $this->_controller . '.search_field',
+                $this->option . '.' . $this->controller . '.search_field',
                 'search_field',
                 'all',
             )),
             'state' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.state',
+                $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             // Sorting
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'toolname',
             ),
             'sort_Dir' => strtoupper(Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             )),
             // Get paging variables
             'limit' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limit',
+                $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.limitstart',
+                $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
                 'int',
@@ -235,7 +235,7 @@ class Pipeline extends AdminController
         $sitename = Config::get('sitename');
 
         // Get config
-        $config = Component::params($this->_option);
+        $config = Component::params($this->option);
 
         // Get all tool publications without new DOI
         $database->setQuery("SELECT * FROM `#__doi_mapping` WHERE `doi`='' OR `doi` IS NULL");

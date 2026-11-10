@@ -64,7 +64,7 @@ class Categories extends AdminController
         // The category belongs to an extension (com_content, com_kb, ...) and
         // the edit form and entry point authorise against it; com_categories
         // has no rules of its own.
-        $__ext = Request::getCmd('extension', $this->_option) ?: $this->_option;
+        $__ext = Request::getCmd('extension', $this->option) ?: $this->option;
         if (
             !User::authorise('core.edit', $__ext)
             && !User::authorise('core.create', $__ext)
@@ -107,40 +107,40 @@ class Categories extends AdminController
     {
         $filters = [
             'search' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'search',
+                $this->option . '.' . $this->controller . 'search',
                 'filter_search',
                 '',
             ),
             'access' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'access',
+                $this->option . '.' . $this->controller . 'access',
                 'filter_access',
                 null,
             ),
             'published' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'published',
+                $this->option . '.' . $this->controller . 'published',
                 'filter_published',
                 '',
             ),
             'level' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'level',
+                $this->option . '.' . $this->controller . 'level',
                 'filter_level',
             ),
             'language' => Request::getState(
-                $this->_option . '.' . $this->_controller . 'language',
+                $this->option . '.' . $this->controller . 'language',
                 '',
             ),
             'sort' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sort',
+                $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'lft',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.sortdir',
+                $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
             'extension' => Request::getState(
-                $this->_option . '.' . $this->_controller . '.extension',
+                $this->option . '.' . $this->controller . '.extension',
                 'extension',
             ),
         ];
@@ -293,7 +293,7 @@ class Categories extends AdminController
         // The category belongs to an extension (com_content, com_kb, ...) and
         // the edit form and entry point authorise against it; com_categories
         // has no rules of its own.
-        $__ext = Request::getCmd('extension', $this->_option) ?: $this->_option;
+        $__ext = Request::getCmd('extension', $this->option) ?: $this->option;
         if (
             !User::authorise('core.edit', $__ext)
             && !User::authorise('core.create', $__ext)
@@ -371,7 +371,7 @@ class Categories extends AdminController
 
         $category->set($items);
 
-        if ($this->_task == 'save2copy') {
+        if ($this->task == 'save2copy') {
             $category->set('id', 0);
         }
 
@@ -387,9 +387,9 @@ class Categories extends AdminController
 
         Notify::success(Lang::txt('COM_CATEGORIES_SAVE_SUCCESS'));
 
-        if ($this->_task == 'apply' || $this->_task == 'save2copy') {
+        if ($this->task == 'apply' || $this->task == 'save2copy') {
             return $this->editTask($category);
-        } elseif ($this->_task == 'save2new') {
+        } elseif ($this->task == 'save2new') {
             Request::setVar('id', 0);
             return $this->editTask();
         }
@@ -424,10 +424,10 @@ class Categories extends AdminController
                 'lang' => 'COM_CATEGORIES_N_ITEMS_TRASHED',
             ],
         ];
-        if (!isset($states[$this->_task])) {
+        if (!isset($states[$this->task])) {
             return $this->cancelTask();
         }
-        $state = $states[$this->_task];
+        $state = $states[$this->task];
 
         $ids = Request::getArray('cid');
 
@@ -474,7 +474,7 @@ class Categories extends AdminController
         Request::checkToken();
 
         // The Check-in button is offered on core.edit.state for the extension
-        $extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension') ?: $this->_option;
+        $extension = Request::getState($this->option . '.' . $this->controller . '.extension', 'extension') ?: $this->option;
         if (!User::authorise('core.edit.state', $extension)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -517,7 +517,7 @@ class Categories extends AdminController
         // Check for request forgeries.
         Request::checkToken(['get', 'post']);
 
-        if (!User::authorise('core.edit.state', $this->_option)) {
+        if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -526,7 +526,7 @@ class Categories extends AdminController
         $inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
         $success = 0;
-        $extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension');
+        $extension = Request::getState($this->option . '.' . $this->controller . '.extension', 'extension');
 
         foreach ($ids as $id) {
             // Load the record and reorder it
@@ -541,7 +541,7 @@ class Categories extends AdminController
         }
 
         if ($success) {
-            Cache::clean($this->_option);
+            Cache::clean($this->option);
             // Set the success message
             Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
         }
@@ -555,7 +555,7 @@ class Categories extends AdminController
      */
     public function cancelTask()
     {
-        if ($this->_task == 'cancel') {
+        if ($this->task == 'cancel') {
             $id = Request::getInt('id', 0);
             $category = Category::one($id);
             $categoryCheckedOut = $category instanceof Category ? $category->get('checked_out') : 0;
@@ -570,7 +570,7 @@ class Categories extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '') . '&extension=' . $extension, false),
+            Route::url('index.php?option=' . $this->option . ($this->controller ? '&controller=' . $this->controller : '') . '&extension=' . $extension, false),
         );
     }
 
@@ -584,10 +584,10 @@ class Categories extends AdminController
         Request::checkToken();
 
         $ordering  = Request::getArray('order', []);
-        $extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension');
+        $extension = Request::getState($this->option . '.' . $this->controller . '.extension', 'extension');
 
         // The ordering inputs are offered on core.edit.state for the extension
-        if (!User::authorise('core.edit.state', $extension ?: $this->_option)) {
+        if (!User::authorise('core.edit.state', $extension ?: $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
