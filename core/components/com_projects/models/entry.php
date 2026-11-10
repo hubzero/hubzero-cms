@@ -226,15 +226,15 @@ class Entry extends Model
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             default:
                 return $this->get($key);
-            break;
+                break;
         }
     }
 
@@ -339,7 +339,7 @@ class Entry extends Model
                     }
                 }
                 return $this->commentsCount;
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -359,7 +359,7 @@ class Entry extends Model
                     $this->comments = new \Hubzero\Base\ItemList($results);
                 }
                 return $this->comments;
-            break;
+                break;
         }
     }
 }

@@ -1458,8 +1458,8 @@ class Item extends Nested
                 ->update($this->getTableName());
 
             $query->set([
-                    'parent_id' => (int) $repositionData->new_parent_id,
-                ])
+                'parent_id' => (int) $repositionData->new_parent_id,
+            ])
                 ->whereEquals('id', (int) $node->id);
 
             if (!$query->execute()) {

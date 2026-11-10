@@ -101,7 +101,7 @@ class Category extends Select
                         }
                     }
                 } else {
-                // If you have an existing category id things are more complex.
+                    // If you have an existing category id things are more complex.
 
                     $categoryOld = $this->form->getValue($name);
 

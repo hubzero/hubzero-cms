@@ -226,7 +226,7 @@ class Calendar extends Plugin
                     $arr['html'] = $this->import();
                     break;
 
-                //event registration
+                    //event registration
                 case 'register':
                     $arr['html'] = $this->register();
                     break;
@@ -240,7 +240,7 @@ class Calendar extends Plugin
                     $arr['html'] = $this->download();
                     break;
 
-                //event calendars
+                    //event calendars
                 case 'calendars':
                     $arr['html'] = $this->calendars();
                     break;

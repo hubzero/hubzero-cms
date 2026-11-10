@@ -101,22 +101,22 @@ class Iterator implements \Countable, \Iterator
                     $this->first();
                     $res = $this->current();
                     break;
-                // Previous record from the cursor point
+                    // Previous record from the cursor point
                 case 'prev':
                     $this->prev();
                     $res = $this->current();
                     break;
-                // Next record from the cursor point
+                    // Next record from the cursor point
                 case 'next':
                     $this->next();
                     $res = $this->current();
                     break;
-                // Last record
+                    // Last record
                 case 'last':
                     $this->last();
                     $res = $this->current();
                     break;
-                // FAIL!
+                    // FAIL!
                 default:
                     $res = null;
                     break;

@@ -93,8 +93,8 @@ class DoiService extends Obj
             $this->_configs->serviceSwitch
             && $this->_configs->shoulder
             && (
-            ($this->_configs->serviceSwitch == 2 && $this->_configs->serviceURL && $this->_configs->userPW)
-            || ($this->_configs->serviceSwitch == 1 && $this->_configs->serviceURL && $this->_configs->userPW && $this->_configs->prefix)
+                ($this->_configs->serviceSwitch == 2 && $this->_configs->serviceURL && $this->_configs->userPW)
+                || ($this->_configs->serviceSwitch == 1 && $this->_configs->serviceURL && $this->_configs->userPW && $this->_configs->prefix)
             )
         ) {
             return true;

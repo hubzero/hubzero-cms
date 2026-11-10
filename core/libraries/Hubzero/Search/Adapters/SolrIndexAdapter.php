@@ -178,15 +178,15 @@ class SolrIndexAdapter implements IndexInterface
             $this->bufferAdd = $this->connection->getPlugin('bufferedadd');
 
             if ($commitWithin !== null) {
-                    $this->bufferAdd->setCommitWithin($commitWithin);
-                    $this->commitWithin = $commitWithin;
+                $this->bufferAdd->setCommitWithin($commitWithin);
+                $this->commitWithin = $commitWithin;
             }
             if ($overwrite !== null) {
-                    $this->bufferAdd->setOverwrite($overwrite);
-                    $this->overwrite = $overwrite;
+                $this->bufferAdd->setOverwrite($overwrite);
+                $this->overwrite = $overwrite;
             }
             if ($buffer !== null) {
-                    $this->bufferAdd->setBufferSize($buffer);
+                $this->bufferAdd->setBufferSize($buffer);
             }
         }
         return $this->bufferAdd;

@@ -7,7 +7,7 @@
 
 if (!defined('_HZEXEC_'))
 {
-	define('_HZEXEC_', true);
+    define('_HZEXEC_', true);
 }
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';

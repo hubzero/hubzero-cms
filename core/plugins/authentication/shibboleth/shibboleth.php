@@ -297,11 +297,11 @@ class Shibboleth extends Plugin
         // Attach style and scripts
         foreach (
             [
-            'bootstrap-select.min.js',
-            'shibboleth.js',
-            'bootstrap-select.min.css',
-            'bootstrap-theme.min.css',
-            'shibboleth.css',
+                'bootstrap-select.min.js',
+                'shibboleth.js',
+                'bootstrap-select.min.css',
+                'bootstrap-theme.min.css',
+                'shibboleth.css',
             ] as $asset
         ) {
             $mtd = 'addPlugin' . (preg_match('/[.]js$/', $asset) ? 'script' : 'stylesheet');
@@ -418,8 +418,8 @@ class Shibboleth extends Plugin
             ];
             foreach (
                 [
-                'email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName',
-                'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId',
+                    'email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName',
+                    'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId',
                 ] as $key
             ) {
                 if (isset($_SERVER[$key])) {

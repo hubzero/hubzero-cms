@@ -57,7 +57,7 @@ class Site extends Base
             case 'base':
                 unset($segments['pagename']);
                 return $this->_base . '?' . (string) $this->_build($segments);
-            break;
+                break;
 
             case 'pdf':
             case 'new':

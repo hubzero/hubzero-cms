@@ -759,8 +759,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['or', 'users.email', '=', 'posts.title'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['or', 'users.email', '=', 'posts.title'],
                       ])
                       ->fetch();
 
@@ -822,8 +822,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->joinBuilder('posts')
                           ->on('users.id', '=', 'posts.user_id')
                           ->group(function ($join) {
-                            $join->on('users.email', '=', 'posts.title')
-                                 ->orWhere('posts.title', '=', 'active');
+                              $join->on('users.email', '=', 'posts.title')
+                                   ->orWhere('posts.title', '=', 'active');
                           })
                           ->end()
                       ->fetch();
@@ -853,8 +853,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.title')
                       ->from('users')
                       ->leftJoin('posts', function ($join) {
-                        $join->on('users.id', '=', 'posts.user_id')
-                             ->andWhere('posts.title', '=', 'active');
+                          $join->on('users.id', '=', 'posts.user_id')
+                               ->andWhere('posts.title', '=', 'active');
                       })
                       ->fetch();
 
@@ -882,8 +882,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.name', 'operator' => '=', 'value' => 'Sam Wilson'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.name', 'operator' => '=', 'value' => 'Sam Wilson'],
                       ])
                       ->fetch();
 
@@ -906,8 +906,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.email', 'operator' => 'is', 'value' => null],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.email', 'operator' => 'is', 'value' => null],
                       ])
                       ->fetch();
 
@@ -930,8 +930,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left_value' => 1, 'operator' => '=', 'right' => 'posts.user_id'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left_value' => 1, 'operator' => '=', 'right' => 'posts.user_id'],
                       ])
                       ->fetch();
 
@@ -955,8 +955,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'in', 'value' => [1, 2]],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'in', 'value' => [1, 2]],
                       ])
                       ->fetch();
 
@@ -981,8 +981,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'between', 'value' => [1, 3]],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'between', 'value' => [1, 3]],
                       ])
                       ->fetch();
 
@@ -1005,8 +1005,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.name', 'operator' => 'like', 'value' => 'Sam%'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.name', 'operator' => 'like', 'value' => 'Sam%'],
                       ])
                       ->fetch();
 
@@ -1030,8 +1030,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.email', 'operator' => 'is distinct from', 'right' => 'posts.title'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.email', 'operator' => 'is distinct from', 'right' => 'posts.title'],
                       ])
                       ->fetch();
 
@@ -1058,8 +1058,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['operator' => 'exists', 'value' => 'SELECT 1'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['operator' => 'exists', 'value' => 'SELECT 1'],
                       ])
                       ->fetch();
 
@@ -1081,8 +1081,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['operator' => 'not exists', 'value' => 'SELECT 1'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['operator' => 'not exists', 'value' => 'SELECT 1'],
                       ])
                       ->fetch();
 
@@ -1105,8 +1105,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.email', 'operator' => 'is not distinct from', 'right' => 'posts.title'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.email', 'operator' => 'is not distinct from', 'right' => 'posts.title'],
                       ])
                       ->fetch();
 
@@ -1131,8 +1131,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.name', 'operator' => 'not like', 'value' => 'Sam%'],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.name', 'operator' => 'not like', 'value' => 'Sam%'],
                       ])
                       ->fetch();
 
@@ -1156,8 +1156,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'not in', 'value' => [1, 2]],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'not in', 'value' => [1, 2]],
                       ])
                       ->fetch();
 
@@ -1181,8 +1181,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'not between', 'value' => [1, 3]],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'not between', 'value' => [1, 3]],
                       ])
                       ->fetch();
 
@@ -1206,8 +1206,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.email', 'operator' => 'is not', 'value' => null],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.email', 'operator' => 'is not', 'value' => null],
                       ])
                       ->fetch();
 
@@ -1229,8 +1229,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'in', 'value' => []],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'in', 'value' => []],
                       ])
                       ->fetch();
 
@@ -1253,8 +1253,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['left' => 'users.id', 'operator' => 'not in', 'value' => []],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['left' => 'users.id', 'operator' => 'not in', 'value' => []],
                       ])
                       ->fetch();
 
@@ -1285,8 +1285,8 @@ class QueryTest extends AbstractDriverTestCase
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
-                        ['users.id', '=', 'posts.user_id'],
-                        ['operator' => 'exists', 'value' => $subquery->toSql()],
+                          ['users.id', '=', 'posts.user_id'],
+                          ['operator' => 'exists', 'value' => $subquery->toSql()],
                       ])
                       ->fetch();
 
@@ -1306,8 +1306,8 @@ class QueryTest extends AbstractDriverTestCase
         $query->select('*')
               ->from('users')
               ->joinOn('posts', [
-                ['users.id', '=', 'posts.user_id'],
-                ['too', 'many', 'parts', 'in', 'condition'],
+                  ['users.id', '=', 'posts.user_id'],
+                  ['too', 'many', 'parts', 'in', 'condition'],
               ]);
     }
 
@@ -1323,8 +1323,8 @@ class QueryTest extends AbstractDriverTestCase
         $query->select('*')
               ->from('users')
               ->joinOn('posts', [
-                ['users.id', '=', 'posts.user_id'],
-                ['left' => 'users.id', 'operator' => 'between', 'value' => [1]],
+                  ['users.id', '=', 'posts.user_id'],
+                  ['left' => 'users.id', 'operator' => 'between', 'value' => [1]],
               ]);
 
         $query->fetch();
@@ -1342,8 +1342,8 @@ class QueryTest extends AbstractDriverTestCase
         $query->select('*')
               ->from('users')
               ->joinOn('posts', [
-                ['users.id', '=', 'posts.user_id'],
-                ['operator' => 'exists'],
+                  ['users.id', '=', 'posts.user_id'],
+                  ['operator' => 'exists'],
               ]);
     }
 
@@ -1359,8 +1359,8 @@ class QueryTest extends AbstractDriverTestCase
         $query->select('*')
               ->from('users')
               ->joinOn('posts', [
-                ['users.id', '=', 'posts.user_id'],
-                ['left_value' => [1, 2], 'operator' => '=', 'right' => 'posts.user_id'],
+                  ['users.id', '=', 'posts.user_id'],
+                  ['left_value' => [1, 2], 'operator' => '=', 'right' => 'posts.user_id'],
               ]);
     }
 
@@ -1376,8 +1376,8 @@ class QueryTest extends AbstractDriverTestCase
         $query->select('*')
               ->from('users')
               ->fullJoinOn('posts', [
-                ['users.id', '=', 'posts.user_id'],
-                ['users.email', '=', 'posts.title'],
+                  ['users.id', '=', 'posts.user_id'],
+                  ['users.email', '=', 'posts.title'],
               ]);
 
         $query->fetch();

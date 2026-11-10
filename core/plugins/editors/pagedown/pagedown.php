@@ -24,7 +24,7 @@ class Pagedown extends Plugin
     public const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
     public const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_editorCount = 1;
 
     /*
@@ -43,7 +43,7 @@ class Pagedown extends Plugin
      *
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addScripts()
     {
         $scriptPaths = $this->_getScriptPaths();
@@ -58,7 +58,7 @@ class Pagedown extends Plugin
      *
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addStylesheets()
     {
         $stylesheetPaths = $this->_getStylesheetPaths();
@@ -73,7 +73,7 @@ class Pagedown extends Plugin
      *
      * @return  array
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getScriptPaths()
     {
         $scriptNames = [
@@ -95,7 +95,7 @@ class Pagedown extends Plugin
      *
      * @return  array
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getStylesheetPaths()
     {
         $stylesheetNames = [
@@ -114,7 +114,7 @@ class Pagedown extends Plugin
      * @param   string   $assetDirectory    Subdirectory within /assets
      * @return  array
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildAssetPaths($assetFileNames, $assetDirectory)
     {
         $assetPaths = array_map(function ($fileName) use ($assetDirectory) {
@@ -172,7 +172,7 @@ class Pagedown extends Plugin
      * @param   array   $params   Editor configuration data
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseClasses(&$params)
     {
         if (!isset($params['class'])) {
@@ -194,7 +194,7 @@ class Pagedown extends Plugin
      * @param   int     $rows     Number of rows for the textarea
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setDefaultHeight(&$params, $rows)
     {
         if (!isset($params['height'])) {
@@ -212,7 +212,7 @@ class Pagedown extends Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildEditorDomElements($content, $name, $columns, $rows)
     {
         $editorDomElements = '<div>';
@@ -234,7 +234,7 @@ class Pagedown extends Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTextarea($content, $name, $columns, $rows, $idPostfix)
     {
         $textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\""

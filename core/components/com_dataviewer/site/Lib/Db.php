@@ -340,9 +340,9 @@ class Db
         if (count($where_filter) > 0) {
             $where_filter_arr = [];
             foreach ($where_filter as $key => $val) {
-            // number/datetime/numrange values are placed into the SQL by this builder
-            // (it adds the quotes itself), so allow at most one leading operator and
-            // then a plain number, date or "a to b" range - nothing else
+                // number/datetime/numrange values are placed into the SQL by this builder
+                // (it adds the quotes itself), so allow at most one leading operator and
+                // then a plain number, date or "a to b" range - nothing else
                 if (
                     in_array($val['fieldtype'], ['number', 'datetime', 'numrange'], true)
                     && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])
@@ -453,9 +453,9 @@ class Db
         if (count($having_filter) > 0) {
             $having_filter_arr = [];
             foreach ($having_filter as $key => $val) {
-            // number/datetime/numrange values are placed into the SQL by this builder
-            // (it adds the quotes itself), so allow at most one leading operator and
-            // then a plain number, date or "a to b" range - nothing else
+                // number/datetime/numrange values are placed into the SQL by this builder
+                // (it adds the quotes itself), so allow at most one leading operator and
+                // then a plain number, date or "a to b" range - nothing else
                 if (
                     in_array($val['fieldtype'], ['number', 'datetime', 'numrange'], true)
                     && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])

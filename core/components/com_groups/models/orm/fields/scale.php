@@ -95,18 +95,18 @@ class Scale extends Radio
             $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
             $html[] = '<li class="li-' . $this->id . '">';
-                $html[] = '<div class="input-wrap">';
-                    $inputId = $this->id . $i;
-                    $escapedValue = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-                    $html[] = '<input type="radio" id="' . $inputId . '" name="' . $this->name
-                        . '" value="' . $escapedValue . '"'
-                        . $checked . $class . $onclick . $disabled . '/>';
-                    $labelText = Lang::alt(
-                        $option->text,
-                        preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname),
-                    );
-                    $html[] = '<label for="' . $inputId . '"' . $class . '>' . $labelText . '</label>';
-                $html[] = '</div>';
+            $html[] = '<div class="input-wrap">';
+            $inputId = $this->id . $i;
+            $escapedValue = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
+            $html[] = '<input type="radio" id="' . $inputId . '" name="' . $this->name
+                . '" value="' . $escapedValue . '"'
+                . $checked . $class . $onclick . $disabled . '/>';
+            $labelText = Lang::alt(
+                $option->text,
+                preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname),
+            );
+            $html[] = '<label for="' . $inputId . '"' . $class . '>' . $labelText . '</label>';
+            $html[] = '</div>';
             $html[] = '</li>';
         }
 

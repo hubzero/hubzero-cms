@@ -531,17 +531,17 @@ class Db2Grammar extends BaseSchemaGrammar
 
         // 9. Add Foreign Keys
         foreach ($builder->getAddForeignKeys() as $fk) {
-             $fkName = !empty($fk['name'])
-                ? $fk['name']
-                : "FK_" . strtoupper($table) . "_" . strtoupper($fk['column']);
-             $refTable = $this->wrap(
-                 $this->driver->replacePrefix($fk['referencedTable']),
-             );
-             $sql = "ALTER TABLE " . $quotedTable
-                 . " ADD CONSTRAINT " . $this->wrap($fkName)
-                 . " FOREIGN KEY (" . $this->wrap($fk['column']) . ")"
-                 . " REFERENCES " . $refTable
-                 . " (" . $this->wrap($fk['referencedColumn']) . ")";
+            $fkName = !empty($fk['name'])
+               ? $fk['name']
+               : "FK_" . strtoupper($table) . "_" . strtoupper($fk['column']);
+            $refTable = $this->wrap(
+                $this->driver->replacePrefix($fk['referencedTable']),
+            );
+            $sql = "ALTER TABLE " . $quotedTable
+                . " ADD CONSTRAINT " . $this->wrap($fkName)
+                . " FOREIGN KEY (" . $this->wrap($fk['column']) . ")"
+                . " REFERENCES " . $refTable
+                . " (" . $this->wrap($fk['referencedColumn']) . ")";
             if ($fk['onDelete']) {
                 $sql .= " ON DELETE " . $fk['onDelete'];
             }
@@ -550,28 +550,28 @@ class Db2Grammar extends BaseSchemaGrammar
                 $onUpdate = strtoupper($fk['onUpdate']) === 'CASCADE' ? 'NO ACTION' : $fk['onUpdate'];
                 $sql .= " ON UPDATE " . $onUpdate;
             }
-             $statements[] = $sql;
+            $statements[] = $sql;
         }
 
         // 10. Add Indexes
         foreach ($builder->getAddIndexes() as $name => $index) {
-             $type = (!empty($index['unique'])) ? 'UNIQUE' : '';
-             $columns = array_map(function ($c) {
+            $type = (!empty($index['unique'])) ? 'UNIQUE' : '';
+            $columns = array_map(function ($c) {
                 return $this->wrap($c);
-             }, $index['columns'] ?? []);
-             $statements[] = "CREATE $type INDEX "
-                 . $this->wrap($name) . " ON " . $quotedTable
-                 . " (" . implode(', ', $columns) . ")";
+            }, $index['columns'] ?? []);
+            $statements[] = "CREATE $type INDEX "
+                . $this->wrap($name) . " ON " . $quotedTable
+                . " (" . implode(', ', $columns) . ")";
         }
 
         // 11. Add Fulltext Indexes (DB2 doesn't support fulltext - create as regular indexes)
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
-             $columnList = array_map(function ($c) {
+            $columnList = array_map(function ($c) {
                 return $this->wrap($c);
-             }, is_array($columns) ? $columns : [$columns]);
-             $statements[] = "CREATE INDEX "
-                 . $this->wrap($name) . " ON " . $quotedTable
-                 . " (" . implode(', ', $columnList) . ")";
+            }, is_array($columns) ? $columns : [$columns]);
+            $statements[] = "CREATE INDEX "
+                . $this->wrap($name) . " ON " . $quotedTable
+                . " (" . implode(', ', $columnList) . ")";
         }
 
         // 12. Rename Table

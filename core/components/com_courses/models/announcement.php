@@ -81,15 +81,15 @@ class Announcement extends Base
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             default:
                 return $dt;
-            break;
+                break;
         }
     }
 

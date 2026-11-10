@@ -65,7 +65,7 @@ class Category extends Table
     public function getCat($id = null, $default = 'Unspecified')
     {
         if ($id === null) {
-             return false;
+            return false;
         }
         if ($id == 0) {
             return $default;
@@ -86,7 +86,7 @@ class Category extends Table
     public function updateOrder($id = null, $ordernum = 1)
     {
         if ($id == null or !intval($ordernum)) {
-             return false;
+            return false;
         }
 
         $query  = "UPDATE `$this->_tbl` SET ordernum=" . $this->_db->quote($ordernum);

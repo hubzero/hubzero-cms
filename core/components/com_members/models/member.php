@@ -165,14 +165,14 @@ class Member extends User implements \Hubzero\Search\Searchable
             switch (strtolower($what)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 

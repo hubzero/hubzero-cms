@@ -236,9 +236,9 @@ class AppDirectory
         // Write cache.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'cache.php', [
-            'caching'       => '0',
-            'cache_handler' => 'file',
-            'cachetime'     => '15',
+                'caching'       => '0',
+                'cache_handler' => 'file',
+                'cachetime'     => '15',
             ])
         ) {
             $allWritten = false;
@@ -247,11 +247,11 @@ class AppDirectory
         // Write session.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'session.php', [
-            'session_handler'  => 'database',
-            'lifetime'         => '45',
-            'cookie_path'      => '',
-            'cookie_domain'    => '',
-            'cookiesubdomains' => '0',
+                'session_handler'  => 'database',
+                'lifetime'         => '45',
+                'cookie_path'      => '',
+                'cookie_domain'    => '',
+                'cookiesubdomains' => '0',
             ])
         ) {
             $allWritten = false;
@@ -260,16 +260,16 @@ class AppDirectory
         // Write mail.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'mail.php', [
-            'mailer'     => 'sendmail',
-            'mailfrom'   => $config['mailfrom'] ?? 'noreply@example.com',
-            'fromname'   => $config['sitename'] ?? 'Hubzero',
-            'smtpauth'   => '0',
-            'smtphost'   => 'localhost',
-            'smtpport'   => '25',
-            'smtpuser'   => '',
-            'smtppass'   => '',
-            'smtpsecure' => 'none',
-            'sendmail'   => '/usr/sbin/sendmail',
+                'mailer'     => 'sendmail',
+                'mailfrom'   => $config['mailfrom'] ?? 'noreply@example.com',
+                'fromname'   => $config['sitename'] ?? 'Hubzero',
+                'smtpauth'   => '0',
+                'smtphost'   => 'localhost',
+                'smtpport'   => '25',
+                'smtpuser'   => '',
+                'smtppass'   => '',
+                'smtpsecure' => 'none',
+                'sendmail'   => '/usr/sbin/sendmail',
             ])
         ) {
             $allWritten = false;
@@ -278,12 +278,12 @@ class AppDirectory
         // Write seo.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'seo.php', [
-            'sef'                 => '1',
-            'sef_groups'          => '0',
-            'sef_rewrite'         => '1',
-            'sef_suffix'          => '0',
-            'unicodeslugs'        => '0',
-            'sitename_pagetitles' => '0',
+                'sef'                 => '1',
+                'sef_groups'          => '0',
+                'sef_rewrite'         => '1',
+                'sef_suffix'          => '0',
+                'unicodeslugs'        => '0',
+                'sitename_pagetitles' => '0',
             ])
         ) {
             $allWritten = false;
@@ -292,10 +292,10 @@ class AppDirectory
         // Write offline.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'offline.php', [
-            'offline'                 => '0',
-            'display_offline_message' => '1',
-            'offline_message'         => 'This site is down for maintenance. Please check back again soon.',
-            'offline_image'           => '',
+                'offline'                 => '0',
+                'display_offline_message' => '1',
+                'offline_message'         => 'This site is down for maintenance. Please check back again soon.',
+                'offline_image'           => '',
             ])
         ) {
             $allWritten = false;
@@ -304,13 +304,13 @@ class AppDirectory
         // Write meta.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'meta.php', [
-            'MetaAuthor'  => '1',
-            'MetaTitle'   => '0',
-            'MetaDesc'    => $config['MetaDesc'] ?? 'Hubzero - The platform for scientific research and collaboration.',
-            'MetaKeys'    => $config['MetaKeys'] ?? 'hub, hubzero, research, collaboration',
-            'MetaVersion' => '0',
-            'MetaRights'  => '',
-            'robots'      => '',
+                'MetaAuthor'  => '1',
+                'MetaTitle'   => '0',
+                'MetaDesc'    => $config['MetaDesc'] ?? 'Hubzero - The platform for scientific research and collaboration.',
+                'MetaKeys'    => $config['MetaKeys'] ?? 'hub, hubzero, research, collaboration',
+                'MetaVersion' => '0',
+                'MetaRights'  => '',
+                'robots'      => '',
             ])
         ) {
             $allWritten = false;
@@ -319,12 +319,12 @@ class AppDirectory
         // Write ftp.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'ftp.php', [
-            'ftp_enable' => '0',
-            'ftp_host'   => '127.0.0.1',
-            'ftp_port'   => '21',
-            'ftp_user'   => '',
-            'ftp_pass'   => '',
-            'ftp_root'   => '',
+                'ftp_enable' => '0',
+                'ftp_host'   => '127.0.0.1',
+                'ftp_port'   => '21',
+                'ftp_user'   => '',
+                'ftp_pass'   => '',
+                'ftp_root'   => '',
             ])
         ) {
             $allWritten = false;
@@ -333,14 +333,14 @@ class AppDirectory
         // Write rate_limit.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'rate_limit.php', [
-            'short' => [
-                'period' => '5',
-                'limit'  => '500',
-            ],
-            'long' => [
-                'period' => '1440',
-                'limit'  => '10000',
-            ],
+                'short' => [
+                    'period' => '5',
+                    'limit'  => '500',
+                ],
+                'long' => [
+                    'period' => '1440',
+                    'limit'  => '10000',
+                ],
             ])
         ) {
             $allWritten = false;

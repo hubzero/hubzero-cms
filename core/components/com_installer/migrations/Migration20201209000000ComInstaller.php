@@ -24,16 +24,16 @@ class Migration20201209000000ComInstaller extends Base
     public function up()
     {
         if (!$this->db->tableExists('#__extension_types')) {
-                $query = "CREATE TABLE `#__extension_types` (
+            $query = "CREATE TABLE `#__extension_types` (
 					`id` int(11) NOT NULL AUTO_INCREMENT,
 					`type` varchar(150) NOT NULL DEFAULT '',
 					PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-                $this->db->setQuery($query);
-                $this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-                $query = "INSERT INTO `#__extension_types` (`id`, `type`)
+            $query = "INSERT INTO `#__extension_types` (`id`, `type`)
 				VALUES
 					(1,'component'),
 					(2,'language'),
@@ -43,8 +43,8 @@ class Migration20201209000000ComInstaller extends Base
 					(6,'template'),
 					(7,'non-standard');";
 
-                $this->db->setQuery($query);
-                $this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
         }
     }
 

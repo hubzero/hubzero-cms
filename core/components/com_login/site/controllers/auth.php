@@ -807,7 +807,7 @@ class Auth extends SiteController
         // Set clientid in the options array if it hasn't been set already.
         //if (!isset($options['clientid']))
         //{
-            //$options['clientid'] = 0; //$this->getClientId();
+        //$options['clientid'] = 0; //$this->getClientId();
         //}
         $error = false;
 

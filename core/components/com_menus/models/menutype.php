@@ -77,7 +77,7 @@ class Menutype extends Obj
                         if (isset($option->request['option'])) {
                             $optComponent = $option->request['option'];
                             $compPath = Component::path($optComponent) . '/admin';
-                                $lang->load($optComponent . '.sys', PATH_APP, null, false, true)
+                            $lang->load($optComponent . '.sys', PATH_APP, null, false, true)
                             ||  $lang->load($optComponent . '.sys', $compPath, null, false, true);
                         }
                     }
@@ -323,7 +323,7 @@ class Menutype extends Obj
                 $template = basename($folder);
 
                 $tplLangPath = PATH_CORE . '/templates/' . $template;
-                    $lang->load('tpl_' . $template . '.sys', PATH_CORE, null, false, true)
+                $lang->load('tpl_' . $template . '.sys', PATH_CORE, null, false, true)
                 ||  $lang->load('tpl_' . $template . '.sys', $tplLangPath, null, false, true);
 
                 $tplLayoutPath = $folder . '/html/' . $component->option . '/' . $view;

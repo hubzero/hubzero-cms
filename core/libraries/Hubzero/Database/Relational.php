@@ -2875,13 +2875,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 }
 
                 return $this->$property;
-            break;
+                break;
 
             case 'raw':
             default:
                 $content = stripslashes($this->get($field, '') ?? '');
                 return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-            break;
+                break;
         }
     }
 
@@ -3691,7 +3691,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                       ->unordered()
                       ->rows(false)
                       ->first();
-                      //->count;
+        //->count;
 
         $total = $first ? (int)$first->count : 0;
 

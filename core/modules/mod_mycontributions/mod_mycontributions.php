@@ -84,10 +84,10 @@ class Mycontributions extends Module
 
                         $results = \Components\Answers\Models\Question::all()
                             ->including(['responses', function ($response) {
-                                    $response
-                                        ->select('id')
-                                        ->select('question_id')
-                                        ->where('state', '!=', 2);
+                                $response
+                                    ->select('id')
+                                    ->select('question_id')
+                                    ->where('state', '!=', 2);
                             }])
                             ->whereEquals('state', 0)
                             ->select('#__answers_questions.*')

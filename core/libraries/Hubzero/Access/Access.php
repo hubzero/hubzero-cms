@@ -251,7 +251,7 @@ class Access
             if (empty($userId) && !$recursive) {
                 $result = [Component::params('com_members')->get('guest_usergroup', 1)];
             } else {
-            // Registered user and guest if all groups are requested
+                // Registered user and guest if all groups are requested
                 $db = App::get('db');
 
                 // Build the database query to get the rules for the asset.
@@ -364,7 +364,7 @@ class Access
                     $authorised[] = $level;
                     break;
                 } elseif (($id >= 0) && in_array($id, $groups)) {
-                // Check to see if the group is mapped to the level.
+                    // Check to see if the group is mapped to the level.
                     $authorised[] = $level;
                     break;
                 }

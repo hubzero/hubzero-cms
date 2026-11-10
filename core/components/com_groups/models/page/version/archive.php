@@ -66,7 +66,7 @@ class Archive extends Model
                     $this->_versions_count = $tbl->count($filters);
                 }
                 return (int) $this->_versions_count;
-            break;
+                break;
             case 'list':
             default:
                 if (!($this->_versions instanceof ItemList) || $clear) {
@@ -83,7 +83,7 @@ class Archive extends Model
                     $this->_versions = new ItemList($results);
                 }
                 return $this->_versions;
-            break;
+                break;
         }
     }
 }

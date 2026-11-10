@@ -194,7 +194,7 @@ class Event extends Table
 					OR (publish_down >= " . $this->_db->quote($enddate . '%') . " AND publish_up <= " . $this->_db->quote($startdate . '%') . "))
 					AND state = '1'";
 
-                    //did we pass in a scope filter
+                //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
                         $sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
@@ -203,12 +203,12 @@ class Event extends Table
                     }
                 }
 
-                    //did we pass in a scope id filter
+                //did we pass in a scope id filter
                 if (isset($filters['scope_id']) && $filters['scope_id'] != '') {
                     $sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
                 }
 
-                    $sql .= "ORDER BY publish_up ASC";
+                $sql .= "ORDER BY publish_up ASC";
                 break;
 
             case 'day':

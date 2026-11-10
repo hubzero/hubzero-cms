@@ -550,22 +550,22 @@ class Message extends \Symfony\Component\Mime\Email
         return parent::addBcc($address);
     }
 
-     /**
-     * Add a MimePart to this Message. (compatability function)
-     *
-     * Symfony's Email uses addPart() as its attachment-collection primitive:
-     * attach(), embed(), embedFromPath() and attachPart() all funnel into it
-     * with a DataPart. This override keeps the legacy Swiftmailer-style
-     * addPart($body, $contentType) signature working, so a DataPart must be
-     * handed straight to the parent — otherwise it falls through to attach(),
-     * which wraps it in a second DataPart and throws.
-     *
-     * @param mixed  $body
-     * @param string $contentType
-     * @param string $charset
-     *
-     * @return $this
-     */
+    /**
+    * Add a MimePart to this Message. (compatability function)
+    *
+    * Symfony's Email uses addPart() as its attachment-collection primitive:
+    * attach(), embed(), embedFromPath() and attachPart() all funnel into it
+    * with a DataPart. This override keeps the legacy Swiftmailer-style
+    * addPart($body, $contentType) signature working, so a DataPart must be
+    * handed straight to the parent — otherwise it falls through to attach(),
+    * which wraps it in a second DataPart and throws.
+    *
+    * @param mixed  $body
+    * @param string $contentType
+    * @param string $charset
+    *
+    * @return $this
+    */
     public function addPart($body, $contentType = null, $charset = ''): static
     {
         if ($body instanceof \Symfony\Component\Mime\Part\DataPart) {

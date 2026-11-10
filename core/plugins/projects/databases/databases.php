@@ -45,7 +45,7 @@ class Databases extends Plugin
      *
      * @var  boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -60,7 +60,7 @@ class Databases extends Plugin
      *
      * @var  string
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_option = 'com_projects';
 
     /**
@@ -68,7 +68,7 @@ class Databases extends Plugin
      *
      * @var  array
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_msg = null;
 
     /**
@@ -151,7 +151,7 @@ class Databases extends Plugin
      *
      * @return  boolean
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _checkConfig()
     {
         if (isset($this->_configured)) {
@@ -476,7 +476,7 @@ class Databases extends Plugin
      *
      * @return  array
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_list()
     {
         // Get project path
@@ -531,7 +531,7 @@ class Databases extends Plugin
      *
      * @return  array
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create()
     {
         // Check permission
@@ -620,7 +620,7 @@ class Databases extends Plugin
      *
      * @return  void
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_preview_data()
     {
         // Incoming
@@ -821,7 +821,7 @@ class Databases extends Plugin
      * @param   integer  $max_len
      * @return  string
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     protected function _guess_data_type($data, $type, $max_len)
     {
         $data = trim($data);
@@ -876,7 +876,7 @@ class Databases extends Plugin
      *
      * @return  void
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create_database()
     {
         // Check permission
@@ -1126,7 +1126,7 @@ class Databases extends Plugin
      * @param   integer  $id  Database ID
      * @return  void
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     public function _save_csv($id)
     {
         $db = $this->get_ds_db($this->model->get('id'));
@@ -1232,7 +1232,7 @@ class Databases extends Plugin
      *
      * @return  array
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_delete()
     {
         // Require POST to prevent accidental deletion by crawlers
@@ -1307,7 +1307,7 @@ class Databases extends Plugin
      *
      * @return  array
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_update()
     {
         // Check permission
@@ -1365,7 +1365,7 @@ class Databases extends Plugin
      * @param   string   $base_path   File-repository base path
      * @return  integer
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function clone_database($identifier = 0, $project = null, $base_path = null)
     {
         if (!$identifier || $project == null) {
@@ -1438,7 +1438,7 @@ class Databases extends Plugin
      * @param   integer  $version     Database version
      * @return  bool
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function remove_database($identifier = 0, $project = null, $version = null)
     {
         if (!$identifier || $project == null) {
@@ -1482,7 +1482,7 @@ class Databases extends Plugin
      * @param   string  $id
      * @return  object
      */
-// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function get_ds_db($id)
     {
         $opt = [];

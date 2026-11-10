@@ -46,8 +46,8 @@ class Hubzero extends Plugin
                 $tracker = @unserialize($sstr);
 
                 if ($tracker === false) {
-                // old tracking cookies encrypted with UA which is too short term for a tracking cookie
-                //Create the encryption key, apply extra hardening using the user agent string
+                    // old tracking cookies encrypted with UA which is too short term for a tracking cookie
+                    //Create the encryption key, apply extra hardening using the user agent string
                     $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
                     $crypt = new \Hubzero\Encryption\Encrypter(
                         new \Hubzero\Encryption\Cipher\Simple(),

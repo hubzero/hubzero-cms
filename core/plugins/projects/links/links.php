@@ -1078,7 +1078,7 @@ class Links extends Plugin
                 $ch,
                 CURLOPT_HTTPHEADER,
                 [
-                "Accept: text/x-bibliography; style=" . $format,
+                    "Accept: text/x-bibliography; style=" . $format,
                 ],
             );
         } else {
@@ -1086,7 +1086,7 @@ class Links extends Plugin
                 $ch,
                 CURLOPT_HTTPHEADER,
                 [
-                "Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0",
+                    "Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0",
                 ],
             );
         }

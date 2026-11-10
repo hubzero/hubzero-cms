@@ -296,7 +296,7 @@ class Tools extends Plugin
         $months = [
             "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
             "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
-            ];
+        ];
         $monthsReverse = array_reverse($months, true);
         $cur_year = floor(date("Y"));
         $cur_month = floor(date("n"));
@@ -495,23 +495,23 @@ class Tools extends Plugin
      */
     private function check_for_data($yearmonth, $period)
     {
-                $database = App::get('db');
+        $database = App::get('db');
         if (!isset($this->totals)) {
-                $sql = "SELECT COUNT(datetime) AS total, DATE_FORMAT(datetime,'%Y-%m') as date FROM `#__stats_topvals` WHERE `period`=" . $database->quote($period) . " GROUP BY datetime";
+            $sql = "SELECT COUNT(datetime) AS total, DATE_FORMAT(datetime,'%Y-%m') as date FROM `#__stats_topvals` WHERE `period`=" . $database->quote($period) . " GROUP BY datetime";
 
-                $database->setQuery($sql);
-                $results = $database->loadObjectList();
+            $database->setQuery($sql);
+            $results = $database->loadObjectList();
             if ($results) {
-                        $this->totals = [];
+                $this->totals = [];
                 foreach ($results as $row) {
                     $this->totals[$row->date] = $row->total;
                 }
             }
         }
         if (isset($this->totals) && isset($this->totals[$yearmonth]) && $this->totals[$yearmonth] > 0) {
-                return true;
+            return true;
         }
-                return false;
+        return false;
     }
 
     /**

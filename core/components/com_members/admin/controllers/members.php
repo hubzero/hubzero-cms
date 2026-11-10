@@ -145,18 +145,18 @@ class Members extends AdminController
             $entries
                 ->join($b, $b . '.user_id', $a . '.id', 'left')
                 ->whereEquals($b . '.group_id', (int)$filters['group_id']);
-                /*->group($a . '.id')
-                ->group($a . '.name')
-                ->group($a . '.username')
-                ->group($a . '.password')
-                ->group($a . '.usertype')
-                ->group($a . '.block')
-                ->group($a . '.sendEmail')
-                ->group($a . '.registerDate')
-                ->group($a . '.lastvisitDate')
-                ->group($a . '.activation')
-                ->group($a . '.params')
-                ->group($a . '.email');*/
+            /*->group($a . '.id')
+            ->group($a . '.name')
+            ->group($a . '.username')
+            ->group($a . '.password')
+            ->group($a . '.usertype')
+            ->group($a . '.block')
+            ->group($a . '.sendEmail')
+            ->group($a . '.registerDate')
+            ->group($a . '.lastvisitDate')
+            ->group($a . '.activation')
+            ->group($a . '.params')
+            ->group($a . '.email');*/
         }
 
         if ($filters['search']) {

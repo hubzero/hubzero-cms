@@ -34,7 +34,7 @@ class Filters
 
         // If we have a search and it's not an array (i.e. it's coming in fresh with this request)
         if ($search) { // && !is_array($search))
-        // Explode multiple words into array
+            // Explode multiple words into array
             //$search = explode(' ', $search);
 
             // Only allow alphabetical characters for search

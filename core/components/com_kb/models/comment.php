@@ -183,7 +183,7 @@ class Comment extends Relational
             case 'component':
             case 'base':
                 return $this->base;
-            break;
+                break;
 
             case 'article':
                 // Return as is

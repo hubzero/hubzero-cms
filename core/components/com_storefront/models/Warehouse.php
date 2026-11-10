@@ -1380,7 +1380,7 @@ class Warehouse extends \Hubzero\Base\Obj
             $sql = "INSERT INTO `#__storefront_coupons` SET ";
         }
 
-            $sql .= "
+        $sql .= "
 				`cnDescription` = " . $this->_db->quote($coupon->getDescription()) . ",
 				`cnUseLimit` = " . $coupon->getUseLimit() . ",
 				`cnExpires` = FROM_UNIXTIME(" . $this->_db->quote($coupon->getExpiration()) . "),

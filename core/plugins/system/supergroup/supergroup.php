@@ -148,10 +148,10 @@ class Supergroup extends Plugin
             $cn     = Request::getVar('cn', '');
             $active = Request::getVar('active', '');
             $active = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
-        // '-' and '.' stay: a super-group component directory may contain them,
-        // which is why the function name built further down strips them again.
-        // Every separator is already gone, so refusing '..' is what stops this
-        // climbing out of the components directory.
+            // '-' and '.' stay: a super-group component directory may contain them,
+            // which is why the function name built further down strips them again.
+            // Every separator is already gone, so refusing '..' is what stops this
+            // climbing out of the components directory.
             if (strpos($active, '..') !== false) {
                 $active = '';
             }

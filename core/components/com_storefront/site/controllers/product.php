@@ -221,16 +221,16 @@ class Product extends \Hubzero\Component\SiteController
     {
         $js = "\tSF.OPTIONS = {\n";
 
-            // generate skus
-            $js .= "\t\tskus: [\n";
+        // generate skus
+        $js .= "\t\tskus: [\n";
 
-            // generate pricing
-            $skuPrices = "\t\tskuPrices: [";
+        // generate pricing
+        $skuPrices = "\t\tskuPrices: [";
 
-            // generate inventory level for each SKU (for the number of products drop-down)
-            $inventory = "\t\tskuInventory: [";
+        // generate inventory level for each SKU (for the number of products drop-down)
+        $inventory = "\t\tskuInventory: [";
 
-            $i = 0;
+        $i = 0;
         foreach ($skus as $sId => $data) {
             $options = $data['options'];
             $info = $data['info'];
@@ -273,38 +273,38 @@ class Product extends \Hubzero\Component\SiteController
             $js .= "\n";
         }
 
-            $js .= "\t\t],\n";
+        $js .= "\t\t],\n";
 
-            $js .= "\n";
+        $js .= "\n";
 
-            /*
-                skus: [
-                    ["1", "4", "6"],
-                    ["2", "4", "7"],
-                    ["3", "5", "6"],
-                    ["2", "5", "8"],
-                    ["2", "5", "7"]
-                ],
-            */
+        /*
+            skus: [
+                ["1", "4", "6"],
+                ["2", "4", "7"],
+                ["3", "5", "6"],
+                ["2", "5", "8"],
+                ["2", "5", "7"]
+            ],
+        */
 
-            $skuPrices .= "],\n";
-            $js .= $skuPrices;
+        $skuPrices .= "],\n";
+        $js .= $skuPrices;
 
-            $js .= "\n";
+        $js .= "\n";
 
-            $inventory .= "],\n";
-            $js .= $inventory;
+        $inventory .= "],\n";
+        $js .= $inventory;
 
-            $js .= "\n";
+        $js .= "\n";
 
-            /*
-                skuPrices: ["10", "5", "7"],
-            */
+        /*
+            skuPrices: ["10", "5", "7"],
+        */
 
-            // Generate ops
-            $js .= "\t\tops: [\n";
+        // Generate ops
+        $js .= "\t\tops: [\n";
 
-            $i = 0;
+        $i = 0;
         foreach ($ops as $oId => $data) {
             $options = $data['options'];
             $js .=  "\t\t\t[";
@@ -326,19 +326,19 @@ class Product extends \Hubzero\Component\SiteController
             $js .= "\n";
         }
 
-            $js .= "\t\t],\n";
-            $js .= "\n";
+        $js .= "\t\t],\n";
+        $js .= "\n";
 
-            /*
-            ops: [
-                ["1", "2", "3"],
-                ["4", "5"],
-                ["6", "7", "8"]
-            ]
-            */
+        /*
+        ops: [
+            ["1", "2", "3"],
+            ["4", "5"],
+            ["6", "7", "8"]
+        ]
+        */
 
-            // Product id reference
-            $js .= "\t\tpId: " . '"' . $productIdentifier . '"' . "\n";
+        // Product id reference
+        $js .= "\t\tpId: " . '"' . $productIdentifier . '"' . "\n";
 
         $js .= "\t}";
         return $js;

@@ -129,8 +129,8 @@ class Scaffolding extends Base implements CommandInterface
                  ->addLine(
                      'muse configuration set --user_name="John Doe"',
                      [
-                        'indentation' => '2',
-                        'color'       => 'blue',
+                         'indentation' => '2',
+                         'color'       => 'blue',
                      ],
                  )
                 ->addLine(
@@ -305,15 +305,15 @@ class Scaffolding extends Base implements CommandInterface
                                 case 'uc':
                                     $value = strtoupper($v);
                                     break;
-                                // Upper case first character
+                                    // Upper case first character
                                 case 'ucf':
                                     $value = ucfirst($v);
                                     break;
-                                // Upper case first character and plural
+                                    // Upper case first character and plural
                                 case 'ucfp':
                                     $value = ucfirst(Inflector::pluralize($v));
                                     break;
-                                // Plural form
+                                    // Plural form
                                 case 'p':
                                     $value = Inflector::pluralize($v);
                                     break;
@@ -406,15 +406,15 @@ class Scaffolding extends Base implements CommandInterface
                     case 'uc':
                         $newfile = strtoupper($newfile);
                         break;
-                    // Upper case first character
+                        // Upper case first character
                     case 'ucf':
                         $newfile = ucfirst($newfile);
                         break;
-                    // Upper case first character and plural
+                        // Upper case first character and plural
                     case 'ucfp':
                         $newfile = ucfirst(Inflector::pluralize($newfile));
                         break;
-                    // Plural form
+                        // Plural form
                     case 'p':
                         $newfile = Inflector::pluralize($newfile);
                         break;
@@ -462,15 +462,15 @@ class Scaffolding extends Base implements CommandInterface
                                 case 'uc':
                                     $newfile = strtoupper($newfile);
                                     break;
-                                // Upper case first character
+                                    // Upper case first character
                                 case 'ucf':
                                     $newfile = ucfirst($newfile);
                                     break;
-                                // Upper case first character and plural
+                                    // Upper case first character and plural
                                 case 'ucfp':
                                     $newfile = ucfirst(Inflector::pluralize($newfile));
                                     break;
-                                // Plural form
+                                    // Plural form
                                 case 'p':
                                     $newfile = Inflector::pluralize($newfile);
                                     break;

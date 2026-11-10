@@ -39,7 +39,7 @@ class Projects extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -197,7 +197,7 @@ class Projects extends Plugin
      * @param  string  $which  The type of entries to display
      * @return string
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'all')
     {
         // Build the final HTML
@@ -243,7 +243,7 @@ class Projects extends Plugin
      *
      * @return string
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         // Build the final HTML
@@ -260,11 +260,11 @@ class Projects extends Plugin
         $results = Event::trigger(
             'projects.onShared',
             [
-            'feed',
-            $this->model,
-            $projects,
-            $this->_user->get('id'),
-            $view->filters,
+                'feed',
+                $this->model,
+                $projects,
+                $this->_user->get('id'),
+                $view->filters,
             ],
         );
 

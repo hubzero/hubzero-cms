@@ -617,7 +617,7 @@ class Query extends Relational
 
             default:
                 return false;
-            break;
+                break;
         }
 
         foreach ($data as $datum) {

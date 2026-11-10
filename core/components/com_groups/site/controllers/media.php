@@ -155,7 +155,7 @@ class Media extends Base
         // regular groups can only access inside /uploads
         //if (!$this->group->isSuperGroup())
         //{
-            $pathInfo = pathinfo($this->view->activeFolder);
+        $pathInfo = pathinfo($this->view->activeFolder);
         if ($pathInfo['dirname'] != '/uploads') {
             $this->view->activeFolder = '/uploads';
         }

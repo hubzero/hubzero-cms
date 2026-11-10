@@ -88,7 +88,7 @@ class Archive extends Model
                     $this->_calendars = new ItemList($results);
                 }
                 return $this->_calendars;
-            break;
+                break;
         }
     }
 

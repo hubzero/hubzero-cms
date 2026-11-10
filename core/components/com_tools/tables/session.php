@@ -294,9 +294,9 @@ class Session extends Table
         }
 
         if ($filters['sort'] == "viewuser") {
-                $query .= " ORDER BY v." . preg_replace('/[^a-zA-Z0-9_.]/', '', (string) $filters['sort']) . " " . $filters['sort_Dir'];
+            $query .= " ORDER BY v." . preg_replace('/[^a-zA-Z0-9_.]/', '', (string) $filters['sort']) . " " . $filters['sort_Dir'];
         } else {
-                $query .= " ORDER BY s." . preg_replace('/[^a-zA-Z0-9_.]/', '', (string) $filters['sort']) . " " . $filters['sort_Dir'];
+            $query .= " ORDER BY s." . preg_replace('/[^a-zA-Z0-9_.]/', '', (string) $filters['sort']) . " " . $filters['sort_Dir'];
         }
 
         if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {

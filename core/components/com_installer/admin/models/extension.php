@@ -109,7 +109,7 @@ class Extension extends Relational
             case 'module':
                 $extension = $this->get('element');
                 $source = $path . '/modules/' . $extension;
-                    $lang->load("$extension.sys", $path, null, false, true)
+                $lang->load("$extension.sys", $path, null, false, true)
                 ||  $lang->load("$extension.sys", $source, null, false, true);
                 break;
             case 'package':

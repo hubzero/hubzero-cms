@@ -832,7 +832,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             ->select('a.featured')
             ->select('a.xreference')
             ->select('a.fulltext', 'readmore');
-            //->from(self::blank()->getTableName(), 'a');
+        //->from(self::blank()->getTableName(), 'a');
 
         if (isset($filters['published']) && !is_array($filters['published'])) {
             $filters['published'] = [$filters['published']];
@@ -1241,7 +1241,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             ->select('a.featured')
             ->select('a.language')
             ->select('a.xreference');
-            //->from($query->getTableName(), 'a');
+        //->from($query->getTableName(), 'a');
 
         // Join on category table.
         $query->select('c.title', 'category_title')

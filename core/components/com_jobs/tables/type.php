@@ -59,7 +59,7 @@ class Type extends Table
     public function getType($id = null, $default = 'Unspecified')
     {
         if ($id === null) {
-             return false;
+            return false;
         }
         if ($id == 0) {
             return $default;

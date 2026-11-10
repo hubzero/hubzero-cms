@@ -135,15 +135,15 @@ class Migration20130924000002Core extends Base
                 $defaulRules = [
                     "core.admin"      => [
                         "7" => 1,
-                        ],
+                    ],
                     "core.manage"     => [
                         "6" => 1,
-                        ],
+                    ],
                     "core.create"     => [],
                     "core.delete"     => [],
                     "core.edit"       => [],
                     "core.edit.state" => [],
-                    ];
+                ];
 
                 foreach ($components as $com) {
                     // Make sure it isn't already in there
@@ -295,8 +295,8 @@ class Migration20130924000002Core extends Base
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                         ->values([$result, '', '', $level, 'com_content.article.' . $art
-                            ->id, $art
-                            ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
+                        ->id, $art
+                        ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
                         ->execute();
 
                     // Now, update the content table with the asset id
@@ -313,23 +313,23 @@ class Migration20130924000002Core extends Base
             $rules = [
                 "core.admin"      => [
                     "7" => 1,
-                    ],
+                ],
                 "core.manage"     => [
                     "7" => 1,
-                    ],
+                ],
                 "core.create"     => [
                     "7" => 1,
-                    ],
+                ],
                 "core.delete"     => [
                     "7" => 1,
-                    ],
+                ],
                 "core.edit"       => [
                     "7" => 1,
-                    ],
+                ],
                 "core.edit.state" => [
                     "7" => 1,
-                    ],
-                ];
+                ],
+            ];
             $this->db->getQuery(true)
                 ->update('#__assets')
                 ->set(['rules' => json_encode($rules)])

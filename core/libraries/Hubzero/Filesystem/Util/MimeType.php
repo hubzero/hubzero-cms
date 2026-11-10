@@ -200,7 +200,7 @@ class MimeType
             'wma'   => 'audio/x-ms-wma',
             'jar'   => 'application/java-archive',
             'mbz'   => 'application/x-zip',
-                        'imscc' => 'application/x-zip',
+            'imscc' => 'application/x-zip',
             'prm'   => 'application/octet-stream',
         ];
     }

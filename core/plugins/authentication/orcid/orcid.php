@@ -120,14 +120,14 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
-                    $oauth->useSandboxEnvironment();
+            $oauth->useSandboxEnvironment();
         }
 
         if ($this->params->get('use_member_api', false)) {
-                    $oauth->useMembersApi()
+            $oauth->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-                    $oauth->usePublicApi()
+            $oauth->usePublicApi()
                   ->setScope('/authenticate');
         }
 
@@ -162,13 +162,13 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
-                    $oauth->useSandboxEnvironment();
+            $oauth->useSandboxEnvironment();
         }
         if ($this->params->get('use_member_api', false)) {
-                    $oauth->useMembersApi()
+            $oauth->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-                    $oauth->usePublicApi()
+            $oauth->usePublicApi()
                   ->setScope('/authenticate');
         }
 
@@ -310,14 +310,14 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
-                    $oauth->useSandboxEnvironment();
+            $oauth->useSandboxEnvironment();
         }
 
         if ($this->params->get('use_member_api', false)) {
-                    $oauth->useMembersApi()
+            $oauth->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-                    $oauth->usePublicApi()
+            $oauth->usePublicApi()
                   ->setScope('/authenticate');
         }
 

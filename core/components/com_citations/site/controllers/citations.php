@@ -293,23 +293,23 @@ class Citations extends SiteController
             'text' => '',
             'icon' => '',
         ];
-/*
-        // Parse the return from resolver lookup
-        $resolver = null;
-        $xml = simplexml_load_string($r);
-        if (isset($xml->resolverRegistryEntry))
-        {
-            $resolver = $xml->resolverRegistryEntry->resolver;
-        }
+        /*
+                // Parse the return from resolver lookup
+                $resolver = null;
+                $xml = simplexml_load_string($r);
+                if (isset($xml->resolverRegistryEntry))
+                {
+                    $resolver = $xml->resolverRegistryEntry->resolver;
+                }
 
-        // If we have resolver set vars for creating open urls
-        if ($resolver != null)
-        {
-            $this->view->openurl['link'] = $resolver->baseURL;
-            $this->view->openurl['text'] = $resolver->linkText;
-            $this->view->openurl['icon'] = $resolver->linkIcon;
-        }
-        */
+                // If we have resolver set vars for creating open urls
+                if ($resolver != null)
+                {
+                    $this->view->openurl['link'] = $resolver->baseURL;
+                    $this->view->openurl['text'] = $resolver->linkText;
+                    $this->view->openurl['icon'] = $resolver->linkIcon;
+                }
+                */
         // Set the page title
         $this->_buildTitle();
 

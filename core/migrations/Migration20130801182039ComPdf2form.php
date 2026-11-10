@@ -93,7 +93,7 @@ class Migration20130801182039ComPdf2form extends Base
 
             foreach ($indices as $index => $table) {
                 if ($schema->tableExists($table) && $schema->hasKey($table, $index)) {
-                     $schema->dropIndex($table, $index);
+                    $schema->dropIndex($table, $index);
                 }
             }
         }

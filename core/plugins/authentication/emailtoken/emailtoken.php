@@ -29,7 +29,7 @@ class Emailtoken extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -158,8 +158,8 @@ class Emailtoken extends Plugin
             // Log attempt to the database
             \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
                 [
-                'username' => $user->username,
-                'status'   => 'blocked',
+                    'username' => $user->username,
+                    'status'   => 'blocked',
                 ],
             );
         }

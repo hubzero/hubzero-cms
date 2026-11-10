@@ -61,7 +61,7 @@ class Utilities
             exec($cmd, $output, $exitCode);
 
             if ($exitCode == 0) {
-                 return true;
+                return true;
             }
         }
         return false;

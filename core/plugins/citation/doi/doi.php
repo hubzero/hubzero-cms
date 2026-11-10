@@ -25,7 +25,7 @@ class Doi extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -33,7 +33,7 @@ class Doi extends Plugin
      *
      * @var object
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_configs = null;
 
     /**
@@ -214,7 +214,7 @@ class Doi extends Plugin
      * @param   array   $doi
      * @return  mixed   XML or false
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getDoiXml($doi)
     {
         if (
@@ -484,7 +484,7 @@ class Doi extends Plugin
      * @param   string  $xml  the DOI metadata xml file
      * @return  bool    curl command response code
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _regMetadata($xml)
     {
         $url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';

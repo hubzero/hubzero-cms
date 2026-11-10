@@ -30,7 +30,7 @@ class Profile extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -130,12 +130,12 @@ class Profile extends Plugin
         $fields = \Components\Members\Models\Profile\Field::all()
             ->including(
                 [
-                'options',
-                function ($option) {
-                    $option
-                        ->select('*')
-                        ->ordered();
-                },
+                    'options',
+                    function ($option) {
+                        $option
+                            ->select('*')
+                            ->ordered();
+                    },
                 ],
             )
 

@@ -117,7 +117,7 @@ class Query
                 $queryDate = 'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END';
                 break;
 
-            // use created if publish_up is not set
+                // use created if publish_up is not set
             case 'published':
                 $queryDate = 'CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END';
                 break;

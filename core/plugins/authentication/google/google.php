@@ -26,7 +26,7 @@ class Google extends \Hubzero\Plugin\OauthClient
      *
      * @var boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -377,9 +377,9 @@ class Google extends \Hubzero\Plugin\OauthClient
 
         $html = '<a class="google account" href="'
             . Route::url('index.php?option=com_users&view=login&authenticator=google' . $return) . '">';
-            $html .= '<div class="signin">';
-                $html .= Lang::txt('PLG_AUTHENTICATION_GOOGLE_SIGN_IN');
-            $html .= '</div>';
+        $html .= '<div class="signin">';
+        $html .= Lang::txt('PLG_AUTHENTICATION_GOOGLE_SIGN_IN');
+        $html .= '</div>';
         $html .= '</a>';
 
         return $html;

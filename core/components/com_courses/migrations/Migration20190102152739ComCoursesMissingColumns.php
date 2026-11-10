@@ -20,22 +20,22 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
     public static $assetsTable = '#__courses_assets';
 
     public static $assetsColumns = [
-         ['name' => 'grade_weight', 'type' => 'varchar(255)'],
-         ['name' => 'graded', 'type' => 'tinyint(2)'],
-         ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
+        ['name' => 'grade_weight', 'type' => 'varchar(255)'],
+        ['name' => 'graded', 'type' => 'tinyint(2)'],
+        ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
     ];
 
     public static $offeringSectionsTable = '#__courses_offering_sections';
 
     public static $offeringSectionsColumns = [
-         ['name' => 'enrollment', 'type' => 'tinyint(2)'],
-         ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
+        ['name' => 'enrollment', 'type' => 'tinyint(2)'],
+        ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
     ];
 
     public static $pagesTable = '#__courses_pages';
 
     public static $pagesColumns = [
-         ['name' => 'section_id', 'type' => 'int(11)'],
+        ['name' => 'section_id', 'type' => 'int(11)'],
     ];
 
     public function up()

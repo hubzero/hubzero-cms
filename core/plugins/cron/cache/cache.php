@@ -22,7 +22,7 @@ class Cache extends Plugin
      *
      * @var  string
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = null;
 
     /**

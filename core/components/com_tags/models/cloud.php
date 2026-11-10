@@ -255,7 +255,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $this->_cache['tags.count'] = (int) $results->total();
                 }
                 return $this->_cache['tags.count'];
-            break;
+                break;
 
             case 'top':
                 break;
@@ -287,7 +287,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $this->_cache['tags.list'] = $results->rows();
                 }
                 return $this->_cache['tags.list'];
-            break;
+                break;
         }
     }
 
@@ -455,7 +455,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $this->_cache['tags.string'] = implode(', ', $tags);
                 }
                 return $this->_cache['tags.string'];
-            break;
+                break;
 
             case 'array':
                 $tags = [];
@@ -463,7 +463,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $tags[] = $tag->get('tag');
                 }
                 return $tags;
-            break;
+                break;
 
             case 'cloud':
             case 'html':
@@ -480,7 +480,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $this->_cache['tags.cloud'] = $view->loadTemplate();
                 }
                 return $this->_cache['tags.cloud'];
-            break;
+                break;
         }
     }
 

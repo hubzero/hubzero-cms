@@ -268,7 +268,7 @@ class GradeBook extends Table
                         }
                         break;
 
-                    // Form availability has expired - students either get a 0, or their score (no nulls)
+                        // Form availability has expired - students either get a 0, or their score (no nulls)
                     case 'expired':
                         foreach ($member_id as $u) {
                             $score    = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
@@ -287,7 +287,7 @@ class GradeBook extends Table
                         }
                         break;
 
-                    // Form is still active - students either get their score, or a null
+                        // Form is still active - students either get their score, or a null
                     case 'active':
                         foreach ($member_id as $u) {
                             $resp = $dep->getRespondent($u);

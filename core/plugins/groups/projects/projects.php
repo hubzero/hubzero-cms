@@ -315,7 +315,7 @@ class Projects extends Plugin
      * @param   string  $which  The type of entries to display
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'owned')
     {
         $which = strtolower($which);
@@ -359,7 +359,7 @@ class Projects extends Plugin
      *
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         $filters = [
@@ -405,7 +405,7 @@ class Projects extends Plugin
     /**
      * Update one or all projects
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _update()
     {
         // Check for request forgeries

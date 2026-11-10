@@ -101,7 +101,7 @@ class Archive extends Obj
                     }
                 }
                 return $aliases;
-            break;
+                break;
             case 'unapproved':
                 $unapproved = [];
                 if ($results = $this->pages('list', $filters, true)) {
@@ -120,7 +120,7 @@ class Archive extends Obj
                     }
                 }
                 return new ItemList($unapproved);
-            break;
+                break;
             case 'tree':
                 $tree = [];
                 if ($results = $this->pages('list', $filters, $clear)) {
@@ -139,7 +139,7 @@ class Archive extends Obj
                     $this->_pages = new ItemList($results);
                 }
                 return $this->_pages;
-            break;
+                break;
         }
     }
 

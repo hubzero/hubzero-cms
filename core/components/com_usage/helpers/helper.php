@@ -375,7 +375,7 @@ class Helper
                 break;
             case 'calyear':
                 return $year;
-            break;
+                break;
             case 'quarter':
                 if ($month <= 3) {
                     $qtr = '1st';
@@ -387,7 +387,7 @@ class Helper
                     $qtr = '4th';
                 }
                 return $qtr . ' Quarter ' . $year;
-            break;
+                break;
             default:
                 if ($day > 0) {
                     return sprintf("%d/%d/%d", $month, $day, $year);

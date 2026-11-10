@@ -21,7 +21,7 @@ class Migration20200731000000ComInstaller extends Base
     public function up()
     {
         if (!$this->db->tableExists('#__custom_extensions')) {
-                $query = "CREATE TABLE `#__custom_extensions` (
+            $query = "CREATE TABLE `#__custom_extensions` (
 					`extension_id` int(11) NOT NULL AUTO_INCREMENT,
 					`name` varchar(100) NOT NULL,
 					`alias` varchar(100) NOT NULL DEFAULT '',
@@ -41,8 +41,8 @@ class Migration20200731000000ComInstaller extends Base
 					PRIMARY KEY (`extension_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-                $this->db->setQuery($query);
-                $this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
         }
     }
 

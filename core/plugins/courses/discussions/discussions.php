@@ -64,7 +64,7 @@ class Discussions extends Plugin
     /**
      * @var string
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_active = null;
 
     /**
@@ -80,7 +80,7 @@ class Discussions extends Plugin
     /**
      * @var array
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_instructors = null;
 
     /**

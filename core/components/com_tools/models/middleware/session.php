@@ -143,7 +143,7 @@ class Session extends Base
                     $this->_cache['shared.count'] = count($this->shared('list', $filters));
                 }
                 return $this->_cache['shared.count'];
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -159,7 +159,7 @@ class Session extends Base
                     $this->_cache['shared.list'] = new ItemList($results);
                 }
                 return $this->_cache['shared.list'];
-            break;
+                break;
         }
     }
 
@@ -296,7 +296,7 @@ class Session extends Base
             case 'tool':
             case 'name':
                 return strstr($app, '_', true);
-            break;
+                break;
 
             case 'version':
                 $r = substr(strrchr($app, '_'), 1);
@@ -311,7 +311,7 @@ class Session extends Base
 
             default:
                 return $app;
-            break;
+                break;
         }
     }
 

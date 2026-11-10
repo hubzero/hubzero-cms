@@ -92,22 +92,22 @@ class Quote extends Relational
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get('date'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'relative':
                 return Date::of($this->get('date'))->relative();
-            break;
+                break;
 
             default:
                 if ($as) {
                     return Date::of($this->get('date'))->toLocal($as);
                 }
                 return $this->get('date');
-            break;
+                break;
         }
     }
 

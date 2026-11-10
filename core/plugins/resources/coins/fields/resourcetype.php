@@ -110,19 +110,19 @@ class Resourcetype extends Select
                     . ($value['resource'] == $option->value ? ' selected="selected"' : '')
                     . '>' . $option->text . '</option>';
             }
-                        $html[] = '
+            $html[] = '
                     </select>
                 <div class="input-wrap">
                 </div>
                     <label id="fields_params_genre_0-lbl" for="fields_params_genre_0">'
-                        . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
+            . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
                     <select id="fields_params_genre_0" name="fields[params][type][0][genre]">
                         <option value="article"'
-                            . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
+                . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
                         <option value="book"'
-                            . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
+                . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
                         <option value="bookitem"'
-                            . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
+                . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
                     </select>
                 </div>
                 </fieldset>';
@@ -139,12 +139,12 @@ class Resourcetype extends Select
         foreach ($options as $option) {
             $html[] = '<option value="' . $option->value . '">' . $option->text . '</option>';
         }
-                        $html[] = '
+        $html[] = '
                     </select>
                 <div class="input-wrap">
                 </div>
                     <label id="fields_params_genre_{{index}}-lbl" for="fields_params_genre_{{index}}">'
-                        . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
+        . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
                     <select id="fields_params_genre_{{index}}" name="fields[params][type][{{index}}][genre]">
                         <option value="article">article</option>
                         <option value="book">book</option>

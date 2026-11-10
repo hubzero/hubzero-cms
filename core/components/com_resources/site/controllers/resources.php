@@ -1377,8 +1377,8 @@ class Resources extends SiteController
 
         // Trigger the functions that return the areas we'll be using
         $cats = Event::trigger('resources.onResourcesAreas', [
-                $this->model,
-            ]);
+            $this->model,
+        ]);
 
         // We need to do this here because we need some stats info to pass to the body
         /*if (isset($this->model->revision) && $this->model->revision)
@@ -1405,11 +1405,11 @@ class Resources extends SiteController
 
         // Get the sections
         $sections = Event::trigger('resources.onResources', [
-                $this->model,
-                $this->_option,
-                [$tab],
-                'all',
-            ]);
+            $this->model,
+            $this->_option,
+            [$tab],
+            'all',
+        ]);
 
         $available = ['play'];
 

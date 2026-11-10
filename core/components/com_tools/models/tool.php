@@ -1078,8 +1078,8 @@ class Tool
 
         if (
             in_array($filters['sortby'], ['id ASC', 'id DESC', 'toolname ASC',
-            'toolname DESC', 'title ASC', 'title DESC', 'versions ASC', 'versions DESC',
-            'state_changed ASC', 'state_changed DESC', 'registered ASC', 'registered DESC'])
+                'toolname DESC', 'title ASC', 'title DESC', 'versions ASC', 'versions DESC',
+                'state_changed ASC', 'state_changed DESC', 'registered ASC', 'registered DESC'])
         ) {
             return " ORDER BY " . $filters['sortby'] . " ";
         }
@@ -1663,7 +1663,7 @@ class Tool
         $query  = "SELECT m.uidNumber, u.username FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
         $query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
-                $query .= "JOIN `#__users` AS u ON u.id=m.uidNumber ";
+        $query .= "JOIN `#__users` AS u ON u.id=m.uidNumber ";
         $query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1";
 
         $db->setQuery($query);

@@ -1462,14 +1462,14 @@ class Google extends Obj
                 $ext = 'application/vnd.google-apps.document';
                 break;
 
-            // Slides
+                // Slides
             case 'application/vnd.ms-powerpoint':
             case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
             case 'application/vnd.oasis.opendocument.presentation':
                 $ext = 'application/vnd.google-apps.presentation';
                 break;
 
-            // Spreadsheets
+                // Spreadsheets
             case 'text/x-comma-separated-values':
             case 'application/vnd.ms-excel':
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':

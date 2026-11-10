@@ -40,7 +40,7 @@ class Autolink extends AbstractHelper
 ([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+
 (\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»""'']))
 REGEX
-                ,
+            ,
 
             // Email pattern
             'email' => "([\s]*)" .  // whitespace

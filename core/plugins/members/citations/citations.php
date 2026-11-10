@@ -185,7 +185,7 @@ class Citations extends Plugin
      */
     private function browseAction()
     {
-         // Instantiate a new citations object
+        // Instantiate a new citations object
         $obj = $this->_filterHandler(Request::getArray('filters', []), $this->member->get('id'));
 
         $count = clone $obj['citations'];
@@ -389,13 +389,13 @@ class Citations extends Plugin
             }
         }
 
-    // Make sure title isnt too long
+        // Make sure title isnt too long
         $maxTitleLength = 30;
         $shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
         ? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
         : $view->row->title;
 
-    // Set the pathway
+        // Set the pathway
         if ($id && $id != 0) {
             Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
             Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
@@ -403,17 +403,17 @@ class Citations extends Plugin
             Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
         }
 
-    // Set the page title
+        // Set the page title
         Document::setTitle(Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle);
 
-    // Push jquery to doc
+        // Push jquery to doc
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
-    // Instantiate a new view
+        // Instantiate a new view
         $view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
 
-    // No ID, so we're creating a new entry
-    // Set the ID of the creator
+        // No ID, so we're creating a new entry
+        // Set the ID of the creator
         if (!$id) {
             $view->row->uid = User::get('id');
 
@@ -512,49 +512,49 @@ class Citations extends Plugin
             throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
         $citation->set([
-                'type' => Request::getInt('type'),
-                'cite' => Request::getString('cite'),
-                'ref_type' => Request::getString('ref_type'),
-                'date_submit' => Request::getString('date_submit'),
-                'date_accept' => Request::getString('date_accept'),
-                'date_publish' => Request::getString('date_publish'),
-                'year' => Request::getString('year'),
-                'month' => Request::getString('month'),
-                'author_address' => Request::getString('author_address'),
-                'editor' => Request::getString('editor'),
-                'title' => Request::getString('title'),
-                'booktitle' => Request::getString('booktitle'),
-                'short_title' => Request::getString('short_title'),
-                'journal' => Request::getString('journal'),
-                'volume' => Request::getString('volume'),
-                'number' => Request::getString('number'),
-                'pages' => Request::getString('pages'),
-                'isbn' => Request::getString('isbn'),
-                'doi' => Request::getString('doi'),
-                'call_number' => Request::getString('call_number'),
-                'accession_number' => Request::getString('accession_number'),
-                'series' => Request::getString('series'),
-                'edition' => Request::getString('edition'),
-                'school' => Request::getString('school'),
-                'publisher' => Request::getString('publisher'),
-                'institution' => Request::getString('institution'),
-                'address' => Request::getString('address'),
-                'location' => Request::getString('location'),
-                'howpublished' => Request::getString('howpublished'),
-                'url' => Request::getString('uri'),
-                'eprint' => Request::getString('eprint'),
-                'abstract' => Request::getString('abstract'),
-                'keywords' => Request::getString('keywords'),
-                'research_notes' => Request::getString('research_notes'),
-                'language' => Request::getString('language'),
-                'label' => Request::getString('label'),
-                'uid' => User::get('id'),
-                'created' => Date::toSql(),
-                'affiliated' => Request::getInt('affiliated', 0),
-                'fundedby' => Request::getInt('fundedby', 0),
-                'scope' => $scope,
-                'scope_id' => $scopeID,
-            ]);
+            'type' => Request::getInt('type'),
+            'cite' => Request::getString('cite'),
+            'ref_type' => Request::getString('ref_type'),
+            'date_submit' => Request::getString('date_submit'),
+            'date_accept' => Request::getString('date_accept'),
+            'date_publish' => Request::getString('date_publish'),
+            'year' => Request::getString('year'),
+            'month' => Request::getString('month'),
+            'author_address' => Request::getString('author_address'),
+            'editor' => Request::getString('editor'),
+            'title' => Request::getString('title'),
+            'booktitle' => Request::getString('booktitle'),
+            'short_title' => Request::getString('short_title'),
+            'journal' => Request::getString('journal'),
+            'volume' => Request::getString('volume'),
+            'number' => Request::getString('number'),
+            'pages' => Request::getString('pages'),
+            'isbn' => Request::getString('isbn'),
+            'doi' => Request::getString('doi'),
+            'call_number' => Request::getString('call_number'),
+            'accession_number' => Request::getString('accession_number'),
+            'series' => Request::getString('series'),
+            'edition' => Request::getString('edition'),
+            'school' => Request::getString('school'),
+            'publisher' => Request::getString('publisher'),
+            'institution' => Request::getString('institution'),
+            'address' => Request::getString('address'),
+            'location' => Request::getString('location'),
+            'howpublished' => Request::getString('howpublished'),
+            'url' => Request::getString('uri'),
+            'eprint' => Request::getString('eprint'),
+            'abstract' => Request::getString('abstract'),
+            'keywords' => Request::getString('keywords'),
+            'research_notes' => Request::getString('research_notes'),
+            'language' => Request::getString('language'),
+            'label' => Request::getString('label'),
+            'uid' => User::get('id'),
+            'created' => Date::toSql(),
+            'affiliated' => Request::getInt('affiliated', 0),
+            'fundedby' => Request::getInt('fundedby', 0),
+            'scope' => $scope,
+            'scope_id' => $scopeID,
+        ]);
 
         // Datetime fields need to be set to null instead of empty strings
         foreach (['date_submit', 'date_accept', 'date_publish'] as $key) {

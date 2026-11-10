@@ -489,10 +489,10 @@ class PgsqlGrammar extends BaseSchemaGrammar
 
         // ADD INDEX
         foreach ($builder->getAddIndexes() as $name => $info) {
-             $columns = array_map([$this, 'wrap'], $info['columns']);
-             $columnList = implode(', ', $columns);
-             $unique = $info['unique'] ? 'UNIQUE ' : '';
-             $statements[] = "CREATE {$unique}INDEX " . $this->wrap($name) . " ON $quotedTable ($columnList)";
+            $columns = array_map([$this, 'wrap'], $info['columns']);
+            $columnList = implode(', ', $columns);
+            $unique = $info['unique'] ? 'UNIQUE ' : '';
+            $statements[] = "CREATE {$unique}INDEX " . $this->wrap($name) . " ON $quotedTable ($columnList)";
         }
 
         // ADD FULLTEXT INDEX (GIN on to_tsvector)
@@ -505,20 +505,20 @@ class PgsqlGrammar extends BaseSchemaGrammar
 
         // DROP PRIMARY KEY
         if ($builder->getDropPrimaryKeyFlag()) {
-             // In PostgreSQL, dropping PK requires dropping the constraint.
-             // Usually named table_pkey.
-             $constraintName = $table . '_pkey';
-             $statements[] = "ALTER TABLE $quotedTable DROP CONSTRAINT IF EXISTS " . $this->wrap($constraintName);
+            // In PostgreSQL, dropping PK requires dropping the constraint.
+            // Usually named table_pkey.
+            $constraintName = $table . '_pkey';
+            $statements[] = "ALTER TABLE $quotedTable DROP CONSTRAINT IF EXISTS " . $this->wrap($constraintName);
         }
 
         // ADD PRIMARY KEY
         if ($builder->getAddPrimaryKey()) {
-             $columns = array_map([$this, 'wrap'], $builder->getAddPrimaryKey());
-             $columnList = implode(', ', $columns);
-             // We can optionally name it, or let PG name it.
-             // To match drop behavior, maybe we should name it?
-             // "ADD PRIMARY KEY (cols)" uses default name.
-             $statements[] = "ALTER TABLE $quotedTable ADD PRIMARY KEY ($columnList)";
+            $columns = array_map([$this, 'wrap'], $builder->getAddPrimaryKey());
+            $columnList = implode(', ', $columns);
+            // We can optionally name it, or let PG name it.
+            // To match drop behavior, maybe we should name it?
+            // "ADD PRIMARY KEY (cols)" uses default name.
+            $statements[] = "ALTER TABLE $quotedTable ADD PRIMARY KEY ($columnList)";
         }
 
         return $statements;

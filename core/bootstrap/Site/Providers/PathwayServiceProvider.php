@@ -66,7 +66,7 @@ class PathwayServiceProvider extends ServiceProvider
                                     /*$router = App::get('router');
                                     if ($router->getMode() == $router::MODE_SEF)
                                     {*/
-                                        $url = 'index.php?Itemid=' . $link->id;
+                                    $url = 'index.php?Itemid=' . $link->id;
                                     /*}
                                     else {
                                         $url .= $link->link . '&Itemid=' . $link->id;

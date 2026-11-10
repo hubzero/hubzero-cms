@@ -27,7 +27,7 @@ class Content extends Renderer
         switch ($scope) {
             case 'before':
                 return View::displayBeforeSectionsContent($this->group);
-            break;
+                break;
             default:
                 return $this->content;
         }

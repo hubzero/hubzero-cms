@@ -151,15 +151,15 @@ class View
 
             // Get the sections
             $sectionsContent = Event::trigger('groups.onGroup', [
-                    $group,
-                    'com_groups',
-                    $authorized,
-                    $limit,
-                    $start,
-                    $action,
-                    $pluginAccess,
-                    [$tab],
-                ]);
+                $group,
+                'com_groups',
+                $authorized,
+                $limit,
+                $start,
+                $action,
+                $pluginAccess,
+                [$tab],
+            ]);
 
             // Push the overview content to the array of sections we're going to output
             // Empty now, gets set later so we can have some needed vars for super groups

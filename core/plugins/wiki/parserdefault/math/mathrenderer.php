@@ -284,7 +284,7 @@ class MathRenderer
             }
 
             if (!$errmsg) {
-                 $this->hash = substr($contents, 1, 32);
+                $this->hash = substr($contents, 1, 32);
             }
 
             if ($errmsg) {

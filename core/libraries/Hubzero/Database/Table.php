@@ -1291,7 +1291,7 @@ abstract class Table extends \stdClass
             $query->where('ordering', '<', (int) $this->ordering);
             $query->order('ordering', 'DESC');
         } elseif ($delta > 0) {
-        // If the movement delta is positive move the row down.
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->ordering);
             $query->order('ordering', 'ASC');
         }
@@ -1391,7 +1391,7 @@ abstract class Table extends \stdClass
             if ($this->$k) {
                 $pks = [$this->$k];
             } else {
-            // Nothing to set publishing state on, return false.
+                // Nothing to set publishing state on, return false.
                 $e = new Exception('No rows selected');
                 $this->setError($e);
 

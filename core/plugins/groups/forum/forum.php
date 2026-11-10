@@ -1717,14 +1717,14 @@ class Forum extends Plugin
                 $post->set('section', $section->get('alias'));
                 $post->set('category', $category->get('alias'));
 
-            // Figure out who should be notified about this comment. Only members
-            // authorised to view the content (section/category/thread/post
-            // access levels) are emailed (ticket 307).
+                // Figure out who should be notified about this comment. Only members
+                // authorised to view the content (section/category/thread/post
+                // access levels) are emailed (ticket 307).
                 $userIDsToEmail = $this->_getEmailRecipientIds($category, [
-                $section->get('access'),
-                $category->get('access'),
-                $thread->get('access'),
-                $post->get('access'),
+                    $section->get('access'),
+                    $category->get('access'),
+                    $thread->get('access'),
+                    $post->get('access'),
                 ]);
 
                 $allowEmailResponses = true;
@@ -1736,13 +1736,13 @@ class Forum extends Plugin
                 }
 
                 $from = [
-                'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
-                'email' => Config::get('mailfrom'),
-                'replytoname'  => Config::get('sitename'),
-                'replytoemail' => Config::get('mailfrom'),
+                    'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
+                    'email' => Config::get('mailfrom'),
+                    'replytoname'  => Config::get('sitename'),
+                    'replytoemail' => Config::get('mailfrom'),
                 ];
 
-            // Email each group member separately, each needs a user specific token
+                // Email each group member separately, each needs a user specific token
                 foreach ($userIDsToEmail as $userID) {
                     $unsubscribeLink = '';
                     $delimiter = '';
@@ -1772,9 +1772,9 @@ class Forum extends Plugin
 
                     // create view object
                     $eview = new \Hubzero\Mail\View([
-                    'base_path' => __DIR__,
-                    'name'      => 'email',
-                    'layout'    => 'comment_plain',
+                        'base_path' => __DIR__,
+                        'name'      => 'email',
+                        'layout'    => 'comment_plain',
                     ]);
 
                     // plain text

@@ -232,20 +232,20 @@ class Publication extends Table
             $query .= "AND V.published_up < " . $this->_db->quote($filters['enddate']) . " ";
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-                $componentParams = Component::params('com_publications');
-                $words = [];
-                $ws = explode(' ', $filters['search']);
+            $componentParams = Component::params('com_publications');
+            $words = [];
+            $ws = explode(' ', $filters['search']);
             foreach ($ws as $w) {
                 $w = trim($w);
                 if (strlen($w) > 2) {
                     $words[] = $w . '*';
                 }
             }
-                $text = implode(' ', $words);
-                $escapedtext = $this->_db->escape($text);
+            $text = implode(' ', $words);
+            $escapedtext = $this->_db->escape($text);
 
-                $query .= " AND ((MATCH(V.title) AGAINST ('$escapedtext' IN BOOLEAN MODE)) OR"
-                . " (MATCH(V.abstract,V.description) AGAINST ('$escapedtext' IN BOOLEAN MODE))) ";
+            $query .= " AND ((MATCH(V.title) AGAINST ('$escapedtext' IN BOOLEAN MODE)) OR"
+            . " (MATCH(V.abstract,V.description) AGAINST ('$escapedtext' IN BOOLEAN MODE))) ";
 
             if ($componentParams->get('include_author_name_in_search')) {
                 $query .= " OR (V.id in (SELECT publication_version_id"

@@ -388,41 +388,41 @@ class Pucas extends Plugin
         Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
 
         $html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
-            $html .= '<div class="signin">';
-                $html .= Lang::txt('PLG_AUTHENTICATION_PUCAS_SIGN_IN');
-            $html .= '</div>';
+        $html .= '<div class="signin">';
+        $html .= Lang::txt('PLG_AUTHENTICATION_PUCAS_SIGN_IN');
+        $html .= '</div>';
         $html .= '</a>';
 
         return $html;
     }
 
-        /**
-         * Builds the redirect URI based on the current URI and a few other assumptions
-         *
-         * @param   string  $name  The plugin name
-         * @return  string
-         **/
+    /**
+     * Builds the redirect URI based on the current URI and a few other assumptions
+     *
+     * @param   string  $name  The plugin name
+     * @return  string
+     **/
     protected static function getRedirectUri($name)
     {
-            // Get the hub url
-            $service = trim(Request::base(), '/');
+        // Get the hub url
+        $service = trim(Request::base(), '/');
 
-            $task = 'login';
-            $option = 'login';
+        $task = 'login';
+        $option = 'login';
 
         if (App::isSite()) {
-                // Legacy support
+            // Legacy support
             if (App::has('component') && App::get('component')->isEnabled('com_users')) {
                 // If someone is logged in already, then we're linking an account
                 $task   = (User::isGuest()) ? 'user.login' : 'user.link';
                 $option = 'users';
             } else {
-                        $task   = (User::isGuest()) ? 'login' : 'link';
+                $task   = (User::isGuest()) ? 'login' : 'link';
             }
         }
 
-            $scope = '/index.php?option=com_' . $option . '&task=' . $task . '&authenticator=' . $name;
+        $scope = '/index.php?option=com_' . $option . '&task=' . $task . '&authenticator=' . $name;
 
-            return $service . $scope;
+        return $service . $scope;
     }
 }

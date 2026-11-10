@@ -510,7 +510,7 @@ class FirebirdGrammar extends BaseSchemaGrammar
 
         // Drop primary key
         if ($builder->getDropPrimaryKeyFlag()) {
-             $pkName = $this->driver->getPrimaryKeyConstraintName($table);
+            $pkName = $this->driver->getPrimaryKeyConstraintName($table);
             if ($pkName) {
                 $statements[] = "ALTER TABLE " . $this->wrap($table) . " DROP CONSTRAINT " . $this->wrap($pkName);
             }
@@ -559,7 +559,7 @@ class FirebirdGrammar extends BaseSchemaGrammar
 
             $constraint = "ALTER TABLE " . $this->wrap($table) . " ADD ";
             if (!empty($fk['name'])) {
-                 $constraint .= "CONSTRAINT " . $this->wrap($fk['name']) . " ";
+                $constraint .= "CONSTRAINT " . $this->wrap($fk['name']) . " ";
             }
             $constraint .= "FOREIGN KEY (" . $this->wrap($fk['column']) . ") ";
             $constraint .= "REFERENCES " . $this->wrap($refTable) . " (" . $this->wrap($fk['referencedColumn']) . ") ";

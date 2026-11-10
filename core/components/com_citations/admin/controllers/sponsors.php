@@ -44,7 +44,7 @@ class Sponsors extends AdminController
         $sponsors = Sponsor::all();
 
         if (!is_array($sponsors)) {
-             $sponsors = [$sponsors];
+            $sponsors = [$sponsors];
         }
 
         // Output the HTML

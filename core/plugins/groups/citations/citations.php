@@ -536,7 +536,7 @@ class Citations extends Plugin
 
                     $x = $x + 1;
                 }
-                    $view->authorString = $authorString;
+                $view->authorString = $authorString;
             }
             // tags & badges
             $view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
@@ -595,48 +595,48 @@ class Citations extends Plugin
         }
 
         $citation->set([
-                'type' => Request::getInt('type'),
-                'cite' => Request::getString('cite'),
-                'ref_type' => Request::getString('ref_type'),
-                'date_submit' => Request::getString('date_submit'),
-                'date_accept' => Request::getString('date_accept'),
-                'date_publish' => Request::getString('date_publish'),
-                'year' => Request::getString('year'),
-                'month' => Request::getString('month'),
-                'author_address' => Request::getString('author_address'),
-                'editor' => Request::getString('editor'),
-                'title' => Request::getString('title'),
-                'booktitle' => Request::getString('booktitle'),
-                'short_title' => Request::getString('short_title'),
-                'journal' => Request::getString('journal'),
-                'volume' => Request::getString('volume'),
-                'number' => Request::getString('number'),
-                'pages' => Request::getString('pages'),
-                'isbn' => Request::getString('isbn'),
-                'doi' => Request::getString('doi'),
-                'call_number' => Request::getString('call_number'),
-                'accession_number' => Request::getString('accession_number'),
-                'series' => Request::getString('series'),
-                'edition' => Request::getString('edition'),
-                'school' => Request::getString('school'),
-                'publisher' => Request::getString('publisher'),
-                'institution' => Request::getString('institution'),
-                'address' => Request::getString('address'),
-                'location' => Request::getString('location'),
-                'howpublished' => Request::getString('howpublished'),
-                'url' => Request::getString('uri'),
-                'eprint' => Request::getString('eprint'),
-                'abstract' => Request::getString('abstract'),
-                'note' => Request::getString('note'),
-                'keywords' => Request::getString('keywords'),
-                'research_notes' => Request::getString('research_notes'),
-                'language' => Request::getString('language'),
-                'label' => Request::getString('label'),
-                'uid' => User::get('id'),
-                'created' => Date::toSql(),
-                'scope' => self::PLUGIN_SCOPE,
-                'scope_id' => $scope_id,
-            ]);
+            'type' => Request::getInt('type'),
+            'cite' => Request::getString('cite'),
+            'ref_type' => Request::getString('ref_type'),
+            'date_submit' => Request::getString('date_submit'),
+            'date_accept' => Request::getString('date_accept'),
+            'date_publish' => Request::getString('date_publish'),
+            'year' => Request::getString('year'),
+            'month' => Request::getString('month'),
+            'author_address' => Request::getString('author_address'),
+            'editor' => Request::getString('editor'),
+            'title' => Request::getString('title'),
+            'booktitle' => Request::getString('booktitle'),
+            'short_title' => Request::getString('short_title'),
+            'journal' => Request::getString('journal'),
+            'volume' => Request::getString('volume'),
+            'number' => Request::getString('number'),
+            'pages' => Request::getString('pages'),
+            'isbn' => Request::getString('isbn'),
+            'doi' => Request::getString('doi'),
+            'call_number' => Request::getString('call_number'),
+            'accession_number' => Request::getString('accession_number'),
+            'series' => Request::getString('series'),
+            'edition' => Request::getString('edition'),
+            'school' => Request::getString('school'),
+            'publisher' => Request::getString('publisher'),
+            'institution' => Request::getString('institution'),
+            'address' => Request::getString('address'),
+            'location' => Request::getString('location'),
+            'howpublished' => Request::getString('howpublished'),
+            'url' => Request::getString('uri'),
+            'eprint' => Request::getString('eprint'),
+            'abstract' => Request::getString('abstract'),
+            'note' => Request::getString('note'),
+            'keywords' => Request::getString('keywords'),
+            'research_notes' => Request::getString('research_notes'),
+            'language' => Request::getString('language'),
+            'label' => Request::getString('label'),
+            'uid' => User::get('id'),
+            'created' => Date::toSql(),
+            'scope' => self::PLUGIN_SCOPE,
+            'scope_id' => $scope_id,
+        ]);
         if ($isNew) {
             $citation->tempId = $cid;
         }
@@ -943,7 +943,7 @@ class Citations extends Plugin
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
-                    return;
+                return;
             }
 
             $deleted = [];

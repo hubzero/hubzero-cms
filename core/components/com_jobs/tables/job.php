@@ -154,7 +154,7 @@ class Job extends Table
             case 'type':
                 $sort .= 'typenull ' . $sortdir . ', j.type ' . $sortdir . ', j.opendate DESC ';
                 break;
-            // admin sorting
+                // admin sorting
             case 'added':
                 $sort .= 'j.added ' . $sortdir . ' ';
                 break;

@@ -146,7 +146,7 @@ class Processor extends Obj
 
             $allowedTypes = ['image/jpeg', 'image/png', 'image/x-png', 'image/gif'];
             if (!in_array($mimeType, $allowedTypes, true)) {
-                    return false;
+                return false;
             }
 
             $image_atts = getimagesize($this->source);
@@ -170,7 +170,7 @@ class Processor extends Obj
                     break;
                 default:
                     return false;
-                break;
+                    break;
             }
 
             if ($this->image_type == IMAGETYPE_PNG) {
@@ -526,7 +526,7 @@ class Processor extends Obj
     public function display()
     {
         if (!is_file($this->source) || !is_readable($this->source)) {
-                return;
+            return;
         }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -535,11 +535,11 @@ class Processor extends Obj
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/x-png', 'image/gif'];
         if (!in_array($mimeType, $allowedTypes, true)) {
-                return;
+            return;
         }
 
         if (exif_imagetype($this->source) == false) {
-                return;
+            return;
         }
         $image_atts = getimagesize($this->source);
 

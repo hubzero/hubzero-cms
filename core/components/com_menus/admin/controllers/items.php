@@ -292,7 +292,7 @@ class Items extends AdminController
                     // load language
                     $compName = $item->get('componentname');
                     $compPath = Component::path($compName) . '/admin';
-                        $lang->load($compName . '.sys', PATH_APP, null, false, true)
+                    $lang->load($compName . '.sys', PATH_APP, null, false, true)
                     ||  $lang->load($compName . '.sys', $compPath, null, false, true);
 
                     if (!empty($compName)) {
@@ -323,7 +323,7 @@ class Items extends AdminController
                                             // Load template language file
                                             $tplPath1 = PATH_APP . '/templates/' . $temp[0];
                                             $tplPath2 = PATH_CORE . '/templates/' . $temp[0];
-                                                $lang->load('tpl_' . $temp[0] . '.sys', PATH_CORE, null, false, true)
+                                            $lang->load('tpl_' . $temp[0] . '.sys', PATH_CORE, null, false, true)
                                             ||  $lang->load('tpl_' . $temp[0] . '.sys', $tplPath1, null, false, true)
                                             ||  $lang->load('tpl_' . $temp[0] . '.sys', $tplPath2, null, false, true);
                                         } else {
@@ -503,7 +503,7 @@ class Items extends AdminController
                 if (isset($args['option'])) {
                     // Load the language file for the component.
                     $lang = Lang::getRoot();
-                        $lang->load($args['option'], PATH_APP, null, false, true)
+                    $lang->load($args['option'], PATH_APP, null, false, true)
                     ||  $lang->load($args['option'], Component::path($args['option']) . '/admin', null, false, true);
 
                     // Determine the component id.

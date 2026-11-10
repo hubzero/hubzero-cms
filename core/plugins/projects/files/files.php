@@ -294,7 +294,7 @@ class Files extends Plugin
                     $arr['html'] = $this->_share();
                     break;
 
-                // History
+                    // History
                 case 'history':
                     $arr['html'] = $this->_history();
                     break;
@@ -302,7 +302,7 @@ class Files extends Plugin
                     $arr['html'] = $this->_diff();
                     break;
 
-                // Serve/preview
+                    // Serve/preview
                 case 'compile':
                     $arr['html'] = $this->_compile();
                     break;
@@ -314,7 +314,7 @@ class Files extends Plugin
                     $arr['html'] = $this->_download();
                     break;
 
-                // Manage directory
+                    // Manage directory
                 case 'newdir':
                     $arr['html'] = $this->_newDir();
                     break;
@@ -325,7 +325,7 @@ class Files extends Plugin
                     $arr['html'] = $this->_saveDir();
                     break;
 
-                // Manage deleted
+                    // Manage deleted
                 case 'trash':
                     $arr['html'] = $this->_showTrash();
                     break;
@@ -333,7 +333,7 @@ class Files extends Plugin
                     $arr['html'] = $this->_restore();
                     break;
 
-                // Disk space management
+                    // Disk space management
                 case 'diskspace':
                     $arr['html'] = $this->diskspace(
                         $this->model,
@@ -349,19 +349,19 @@ class Files extends Plugin
                     );
                     break;
 
-                // Publishing selectors
+                    // Publishing selectors
                 case 'select':
                 case 'filter':
                     $arr['html'] = $this->_select();
                     break;
 
-                // Connections
+                    // Connections
                 case 'connect':
                 case 'disconnect':
                     $arr['html'] = $this->_connect();
                     break;
 
-                // Sync with remote
+                    // Sync with remote
                 case 'sync':
                     $arr['html'] = $this->_iniSync();
                     break;
@@ -372,12 +372,12 @@ class Files extends Plugin
                     $arr['html'] = $this->syncError();
                     break;
 
-                // New connected methods
+                    // New connected methods
                 case 'connections':
                     $controller = new Connections($this, $this->_option, $connection);
                     $arr['html'] = $controller->execute($ctask);
                     break;
-                // File browser
+                    // File browser
                 case 'browse':
                 default:
                     $arr['html'] = $this->_browse();
@@ -906,7 +906,7 @@ class Files extends Plugin
                                 'success' => 1,
                                 'file'    => $file,
                                 'isNew'   => $updateType == 'uploaded' ? true : false,
-                                ]);
+                            ]);
                         }
                     }
                 }
@@ -1670,10 +1670,10 @@ class Files extends Plugin
 
             // Get file content
             $repo->call('content', $params = [
-                    'fileName' => $file,
-                    'hash'     => $hash,
-                    'target'   => $serve,
-                ]);
+                'fileName' => $file,
+                'hash'     => $hash,
+                'target'   => $serve,
+            ]);
 
             $deleteTemp = true;
         } else {

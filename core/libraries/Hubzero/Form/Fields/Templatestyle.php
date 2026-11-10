@@ -74,7 +74,7 @@ class Templatestyle extends Groupedlist
         if ($styles) {
             foreach ($styles as $style) {
                 $template = $style->template;
-                    $lang->load('tpl_' . $template . '.sys', PATH_APP . '/templates/' . $template, null, false, true)
+                $lang->load('tpl_' . $template . '.sys', PATH_APP . '/templates/' . $template, null, false, true)
                 ||  $lang->load('tpl_' . $template . '.sys', PATH_CORE . '/templates/' . $template, null, false, true);
                 $name = $lang->txt($style->name);
 

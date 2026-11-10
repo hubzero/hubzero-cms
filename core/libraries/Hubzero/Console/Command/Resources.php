@@ -289,22 +289,22 @@ class Resources extends Base implements CommandInterface
             $citations_node = $pub_node->addChild('citations');
             $citations_node->addChild('citation');
 
-                // }
-                // else if ($key == 'children')
-                // {
-                //  $children = Entry::oneOrFail($row->get('id'))->children()->rows();
-                //  $children_array = array();
-                //  foreach ($children as $child)
-                //  {
-                //      array_push($children_array,$child->id);
-                //  }
-                //  $val = implode(",", $children_array);
-                // }
-                // else
-                // {
-                //  $val = $row->get($key);
-                //  $pub_node->addChild($key, $val);
-                // }
+            // }
+            // else if ($key == 'children')
+            // {
+            //  $children = Entry::oneOrFail($row->get('id'))->children()->rows();
+            //  $children_array = array();
+            //  foreach ($children as $child)
+            //  {
+            //      array_push($children_array,$child->id);
+            //  }
+            //  $val = implode(",", $children_array);
+            // }
+            // else
+            // {
+            //  $val = $row->get($key);
+            //  $pub_node->addChild($key, $val);
+            // }
             // }
 
             if ($i >= 1) {

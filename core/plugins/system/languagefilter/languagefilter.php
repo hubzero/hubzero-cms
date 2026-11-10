@@ -588,7 +588,7 @@ class Languagefilter extends Plugin
                                         'alternate',
                                         'rel',
                                         [
-                                        'hreflang' => $language->lang_code,
+                                            'hreflang' => $language->lang_code,
                                         ],
                                     );
                                 } else {
@@ -597,7 +597,7 @@ class Languagefilter extends Plugin
                                         'alternate',
                                         'rel',
                                         [
-                                        'hreflang' => $language->lang_code,
+                                            'hreflang' => $language->lang_code,
                                         ],
                                     );
                                 }
@@ -605,7 +605,7 @@ class Languagefilter extends Plugin
                         }
                     }
                 } elseif ($active->home) {
-                // Homepages in other languages
+                    // Homepages in other languages
                     $menu   = App::get('menu');
                     $server = \Hubzero\Utility\Uri::getInstance()->toString(['scheme', 'host', 'port']);
 

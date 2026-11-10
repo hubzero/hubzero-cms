@@ -364,23 +364,23 @@ class Tool extends Model
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'datetime':
                 return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
-            break;
+                break;
 
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
-            break;
+                break;
 
             default:
                 return $this->get($key);
-            break;
+                break;
         }
     }
 
@@ -403,11 +403,11 @@ class Tool extends Model
             case 'count':
                 $filters['count'] = 1;
                 return (int) $this->_tbl->getRecordCount($filters, $admin);
-            break;
+                break;
 
             case 'results':
                 return $this->_tbl->getRecords($filters, $admin);
-            break;
+                break;
 
             case 'list':
             default:
@@ -420,7 +420,7 @@ class Tool extends Model
                 }
 
                 return new ItemList($results);
-            break;
+                break;
         }
         return null;
     }
@@ -640,19 +640,19 @@ class Tool extends Model
         switch ($status) {
             case 'created':
                 return $this->status('status') == 'created' ? true : false;
-            break;
+                break;
 
             case 'uploaded':
                 return $this->status('status') == 'uploaded' ? true : false;
-            break;
+                break;
 
             case 'installed':
                 return $this->status('status') == 'installed' ? true : false;
-            break;
+                break;
 
             case 'draft':
                 return $this->get('status') < 5 ? true : false;
-            break;
+                break;
         }
         return false;
     }

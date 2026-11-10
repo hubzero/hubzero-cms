@@ -332,7 +332,7 @@ class Assetgroup extends Base
             case 'prev':
             case 'next':
                 return $this->_siblings->fetch($dir);
-            break;
+                break;
 
             default:
                 break;
@@ -446,9 +446,9 @@ class Assetgroup extends Base
                         $tbl = new Tables\AssetAssociation($this->_db);
                         foreach (
                             $tbl->find([
-                            'scope_id' => $oldAssetGroupId,
-                            'scope' => 'asset_group',
-                            'asset_id' => $oldAssetId]) as $aa
+                                'scope_id' => $oldAssetGroupId,
+                                'scope' => 'asset_group',
+                                'asset_id' => $oldAssetId]) as $aa
                         ) {
                             $tbl->bind($aa);
                             $tbl->id = 0;
@@ -532,11 +532,11 @@ class Assetgroup extends Base
                         foreach (
                             $tbl->find($findParams) as $aa
                         ) {
-                                // Take the selected row, adjust scope_id and asset_id
-                                $tbl->bind($aa);
-                                $tbl->id = 0;
-                                $tbl->scope_id = $this->get('id');
-                                $tbl->asset_id = $asset->get('id');
+                            // Take the selected row, adjust scope_id and asset_id
+                            $tbl->bind($aa);
+                            $tbl->id = 0;
+                            $tbl->scope_id = $this->get('id');
+                            $tbl->asset_id = $asset->get('id');
                             if (!$tbl->store()) {
                                 $this->setError($tbl->getError());
                             }

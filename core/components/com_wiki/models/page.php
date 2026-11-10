@@ -575,14 +575,14 @@ class Page extends Relational
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 
@@ -854,7 +854,7 @@ class Page extends Relational
                             }
                             break;
 
-                        // Standard wiki
+                            // Standard wiki
                         default:
                             if (!$this->isLocked()) {
                                 // A page's creator can edit their own page,

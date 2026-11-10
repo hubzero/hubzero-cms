@@ -272,44 +272,44 @@ class ResourceMapGenerator
 
         // Start main description
         $writer->startElement('rdf:Description');
-            $writer->writeAttribute('rdf:about', $this->resourceURL);
-            $writer->writeElement('dc:identifier', $this->id);
-            $writer->writeElement('dcterms:title', $this->title);
+        $writer->writeAttribute('rdf:about', $this->resourceURL);
+        $writer->writeElement('dc:identifier', $this->id);
+        $writer->writeElement('dcterms:title', $this->title);
 
-            // Check if the author is an actual human
+        // Check if the author is an actual human
         if ($this->author_id >= 1000) {
             $writer->startElement('dcterms:creator');
-                $writer->startElement('foaf:person');
-                    $writer->writeElement('foaf:name', $this->created_by);
-                $writer->endElement();
+            $writer->startElement('foaf:person');
+            $writer->writeElement('foaf:name', $this->created_by);
+            $writer->endElement();
             $writer->endElement();
         }
 
-            $writer->writeElement('dcterms:created', $this->date_created);
-            $writer->writeElement('dcterms:modified', $this->date_modified);
-            $writer->writeElement('dc:type', $this->type);
-            $writer->writeElement('dc:description', $this->intro);
+        $writer->writeElement('dcterms:created', $this->date_created);
+        $writer->writeElement('dcterms:modified', $this->date_modified);
+        $writer->writeElement('dc:type', $this->type);
+        $writer->writeElement('dc:description', $this->intro);
 
-            // Writes aggregation
+        // Writes aggregation
         foreach ($this->aggregates as $child_id => $aggregation) {
             $writer->startElement('ore:aggregates');
-                $writer->writeAttribute('rdf:resource', $aggregation['url']);
+            $writer->writeAttribute('rdf:resource', $aggregation['url']);
             $writer->endElement();
         }
 
-            // Writes describer (should be RDF in this case)
-            $writer->startElement('ore:isDescribedBy');
-                $writer->writeAttribute('rdf:resource', $this->resourceURL . '.rdf');
-            $writer->endElement();
+        // Writes describer (should be RDF in this case)
+        $writer->startElement('ore:isDescribedBy');
+        $writer->writeAttribute('rdf:resource', $this->resourceURL . '.rdf');
+        $writer->endElement();
 
-            // Writes parents
+        // Writes parents
         foreach ($this->aggregatedBy as $parent_id => $aggregation) {
             $writer->startElement('ore:isAggregatedBy');
-                $writer->writeAttribute('rdf:resource', $this->componentURL . $parent_id);
+            $writer->writeAttribute('rdf:resource', $this->componentURL . $parent_id);
             $writer->endElement();
         }
 
-            $writer->writeElement('dcterms:issued', $this->date_published);
+        $writer->writeElement('dcterms:issued', $this->date_published);
         // End rdf:description of main object
         $writer->endElement();
 
@@ -321,27 +321,27 @@ class ResourceMapGenerator
             }
 
             $writer->startElement('rdf:Description');
-                $writer->writeAttribute('rdf:about', $aggregation['url']);
-                // Detects and describe the data accordingly
-                $this->dataTypeDescriptor($aggregation, $writer);
+            $writer->writeAttribute('rdf:about', $aggregation['url']);
+            // Detects and describe the data accordingly
+            $this->dataTypeDescriptor($aggregation, $writer);
             $writer->endElement();
         }
 
         // Describe this rdf briefly
         $writer->startElement('rdf:Description');
-            $writer->writeAttribute('rdf:about', $this->resourceURL . '.rdf');
-            $curtime = date("Y-m-d\TH:i:sP", $_SERVER['REQUEST_TIME']);
-            $writer->startElement('dcterms:creator');
-                $writer->writeAttribute('rdf:resource', Request::base());
-            $writer->endElement();
-            $writer->writeElement('dcterms:created', $curtime);
-            $writer->writeElement('dcterms:modified', $curtime);
-            $writer->startElement('ore:describes');
-                $writer->writeAttribute('rdf:resource', $this->resourceURL);
-            $writer->endElement();
-            $writer->startElement('rdf:type');
-                $writer->writeAttribute('rdf:resource', 'http://www.openarchives.org/ore/terms/ResourceMap/');
-            $writer->endElement();
+        $writer->writeAttribute('rdf:about', $this->resourceURL . '.rdf');
+        $curtime = date("Y-m-d\TH:i:sP", $_SERVER['REQUEST_TIME']);
+        $writer->startElement('dcterms:creator');
+        $writer->writeAttribute('rdf:resource', Request::base());
+        $writer->endElement();
+        $writer->writeElement('dcterms:created', $curtime);
+        $writer->writeElement('dcterms:modified', $curtime);
+        $writer->startElement('ore:describes');
+        $writer->writeAttribute('rdf:resource', $this->resourceURL);
+        $writer->endElement();
+        $writer->startElement('rdf:type');
+        $writer->writeAttribute('rdf:resource', 'http://www.openarchives.org/ore/terms/ResourceMap/');
+        $writer->endElement();
         $writer->endElement();
 
         $writer->endDocument();

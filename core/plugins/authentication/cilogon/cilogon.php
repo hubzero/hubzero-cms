@@ -298,7 +298,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     public function link($options = [])
     {
         try {
-                $storedState = Session::get('state', null, 'cilogon');
+            $storedState = Session::get('state', null, 'cilogon');
             $state = Request::getVar('state');
             if (empty($state) || $storedState !== $state) {
                 throw new \Exception('Mismatched state');

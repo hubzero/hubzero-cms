@@ -1629,12 +1629,12 @@ class Tickets extends SiteController
         // Listeners, e-mail, the record of who was told, and the activity log
         foreach (
             Notifier::ticketUpdated($row, $rowc, $old, [
-            'email_submitter' => Request::getInt('email_submitter', 0) == 1,
-            'email_owner'     => Request::getInt('email_owner', 0) == 1,
-            'email_terse'     => Request::getInt('email_terse', 0) == 1,
-            'option'          => $this->_option,
-            'controller'      => $this->_controller,
-            'acl'             => $this->acl,
+                'email_submitter' => Request::getInt('email_submitter', 0) == 1,
+                'email_owner'     => Request::getInt('email_owner', 0) == 1,
+                'email_terse'     => Request::getInt('email_terse', 0) == 1,
+                'option'          => $this->_option,
+                'controller'      => $this->_controller,
+                'acl'             => $this->acl,
             ]) as $error
         ) {
             $this->setError($error);

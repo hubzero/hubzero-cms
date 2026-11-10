@@ -20,7 +20,7 @@ class Video extends Plugin
      *
      * @var  boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

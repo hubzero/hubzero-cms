@@ -1083,14 +1083,14 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
                 return "SUBSTR({$col}, {$start})";
 
-            // Conditional functions
+                // Conditional functions
             case 'IFNULL':
                 // Oracle uses NVL()
                 return 'NVL('
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
                 // Oracle uses SYSDATE or SYSTIMESTAMP
                 return 'SYSTIMESTAMP';
@@ -1132,7 +1132,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $format = $this->convertDateFormat($args[1]);
                 return "TO_CHAR(" . $this->buildExpressionArgument($args[0]) . ", '{$format}')";
 
-            // Sequence functions (native Oracle syntax)
+                // Sequence functions (native Oracle syntax)
             case 'NEXTVAL':
                 return $this->connection->quoteName($args[0]) . '.NEXTVAL';
 

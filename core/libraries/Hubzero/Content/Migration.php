@@ -438,7 +438,7 @@ class Migration
 
         // Loop through files and run their '$direction' method
         foreach ($ordered as $fullpath) { //$file)
-        // Get just the file
+            // Get just the file
             $file = basename($fullpath);
 
             // Create a hash of the file (not using this at the moment)
@@ -510,7 +510,7 @@ class Migration
                         $this->log("Ignoring {$direction}() - you should run up first ({$scope}/{$file})");
                         continue;
                     } elseif ($row && $row->direction == $direction) {
-                    // If the last run was the same direction as is currently being run, we shouldn't run it again
+                        // If the last run was the same direction as is currently being run, we shouldn't run it again
                         // Lastly, check status as well
                         if (!$hasStatus || in_array($row->status, ['success', 'warning'])) {
                             if ($dryrun) {

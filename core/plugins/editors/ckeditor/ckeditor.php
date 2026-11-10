@@ -544,7 +544,7 @@ class Ckeditor extends Plugin
         // Let the global filters handle what HTML tags are or aren't allowed
         //if (User::authorise('core.manage'))
         //{
-            $config->allowedContent = true;
+        $config->allowedContent = true;
         //}
 
         return $config;

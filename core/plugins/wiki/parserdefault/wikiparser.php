@@ -1080,7 +1080,7 @@ class WikiParser
                     $txt = str_replace('#!wiki ' . $cls, '', $txt);
 
                     return '<div class="admon-' . $cls . '">' . $this->cleanXss($txt) . '</div>';
-                break;
+                    break;
 
                 case 'html':
                     if ($this->get('fullparse')) {
@@ -1094,7 +1094,7 @@ class WikiParser
                 case 'htmlcomment':
                     $txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     return '<!-- ' . $this->encodeHtml($txt) . ' -->';
-                break;
+                    break;
 
                 case 'c':
                 case 'cpp':
@@ -1127,14 +1127,14 @@ class WikiParser
                     }
 
                     return '<div class="pre ' . $t . '">' . $txt . '</div>';
-                break;
+                    break;
 
                 case 'default':
                 default:
                     //$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     //$txt = trim($txt, "\n\r\t");
                     return '<pre><code>' . $this->encodeHtml($txt) . '</code></pre>';
-                break;
+                    break;
             }
         }
 
@@ -2902,7 +2902,7 @@ class WikiParser
             }
             else
             {*/
-                $editlink = '';
+            $editlink = '';
             //}
             $head[$headlineCount] = $this->_makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
 

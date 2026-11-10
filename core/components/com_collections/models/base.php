@@ -39,15 +39,15 @@ class Base extends Model
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             default:
                 return $this->get('created');
-            break;
+                break;
         }
     }
 

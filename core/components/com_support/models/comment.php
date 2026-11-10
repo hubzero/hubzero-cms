@@ -265,7 +265,7 @@ class Comment extends Relational
             case 'component':
             case 'base':
                 return $this->base;
-            break;
+                break;
 
             case 'permalink':
             default:
@@ -380,7 +380,7 @@ class Comment extends Relational
                     }
                 }
                 return $tos;
-            break;
+                break;
 
             case 'email':
             case 'emails':
@@ -391,7 +391,7 @@ class Comment extends Relational
                     }
                 }
                 return $tos;
-            break;
+                break;
         }
 
         return $this->cache['recipients.added'];

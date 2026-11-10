@@ -24,9 +24,9 @@ class Url extends Content
      * @var array
      **/
     protected static $info = [
-            'action_message' => 'As a standard link',
-            'responds_to'    => ['url'],
-        ];
+        'action_message' => 'As a standard link',
+        'responds_to'    => ['url'],
+    ];
 
     /**
      * Create method for this handler

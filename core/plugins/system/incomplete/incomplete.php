@@ -109,7 +109,7 @@ class Incomplete extends Plugin
 
                     $this->event->stop();
                 } elseif (substr(User::get('email'), -8) == '@invalid') { // force auth_link users to registration update page
-                // Send third-party-auth users straight to the registration
+                    // Send third-party-auth users straight to the registration
                     // form to finish creating their hub account. We used to route
                     // them to the "have you logged in before?" account-link page
                     // first, but that step confused users, and it can't auto-match

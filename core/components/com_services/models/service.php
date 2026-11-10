@@ -124,7 +124,7 @@ class Service extends Relational
                 . $grm . '.uidNumber=' . User::get('id');
             $query->joinRaw($grp, $grp . '.cn = ' . App::get('db')->quote($specialgroup), 'inner')
                 ->joinRaw($grm, $joinCondition, 'left');
-                //->whereEquals($grm . '.uidNumber', \User::get('id'));
+            //->whereEquals($grm . '.uidNumber', \User::get('id'));
 
             $query->whereEquals($ser . '.restricted', 0, 1)
                 ->orWhereEquals($ser . '.restricted', 1, 2)

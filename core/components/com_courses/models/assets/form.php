@@ -25,9 +25,9 @@ class Form extends Content
      * @var array
      **/
     protected static $info = [
-            'action_message' => 'Create a quiz/exam',
-            'responds_to'    => ['pdf'],
-        ];
+        'action_message' => 'Create a quiz/exam',
+        'responds_to'    => ['pdf'],
+    ];
 
     /**
      * Create method for this handler

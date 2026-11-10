@@ -110,7 +110,7 @@ class Router extends Base
                     $vars['type'] = $segments[1];
                     $vars['file'] = $segments[2];
                     return $vars;
-                break;
+                    break;
 
                 case 'images':
                     $vars['task'] = $segments[0];
@@ -163,7 +163,7 @@ class Router extends Base
                     $vars['task'] = $segments[1];
                     break;
 
-                // Pipeline controller
+                    // Pipeline controller
                 case 'register':
                 case 'edit':
                 case 'save':
@@ -188,7 +188,7 @@ class Router extends Base
                     $vars['task'] = $segments[1];
                     break;
 
-                // Resource controller
+                    // Resource controller
                 case 'preview':
                 case 'resource':
                 case 'resources':
@@ -200,7 +200,7 @@ class Router extends Base
                     }
                     break;
 
-                // Sessions controller
+                    // Sessions controller
                 case 'launch':
                 case 'reinvoke':
                 case 'invoke':
@@ -230,13 +230,13 @@ class Router extends Base
                     }
                     break;
 
-                // Tools controller
+                    // Tools controller
                 case 'report':
                     $url = 'index.php?option=com_support&task=tickets&find=group:app-'
                         . $segments[0];
                     App::redirect(Route::url($url));
                     exit();
-                break;
+                    break;
 
                 case 'forge.png':
                     $vars['task'] = 'image';

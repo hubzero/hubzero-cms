@@ -557,7 +557,7 @@ class Spreadsheet
                 $dv_show_filters = 'true';
             }
 
-        //Legacy support
+            //Legacy support
             if (Request::getString('show_filters', 'false') === 'true') {
                 $dv_show_filters = 'true';
             }

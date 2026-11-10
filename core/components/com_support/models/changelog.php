@@ -369,15 +369,15 @@ class Changelog extends Obj
         switch ($to) {
             case 'changes':
                 return $this->changed($field, $before, $after);
-            break;
+                break;
 
             case 'notifications':
                 return $this->notified($field, $before, $after);
-            break;
+                break;
 
             case 'cc':
                 return $this->cced($field);
-            break;
+                break;
         }
 
         return $this;

@@ -46,7 +46,7 @@ class Emailcloak extends Plugin
      * @param   string  $text  The text enclosed by the link.
      * @return  string  A regular expression that matches a link containing the parameters.
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getPattern($link, $text)
     {
         $pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
@@ -61,7 +61,7 @@ class Emailcloak extends Plugin
      * @param   string  $after    Attributes after email.
      * @return  string  Js cloaked email with attributes.
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addAttributesToEmail($email, $before, $after)
     {
         if ($before !== '') {
@@ -84,7 +84,7 @@ class Emailcloak extends Plugin
      *                            replaces addresses with "mailto:" links if nonzero.
      * @return  boolean  True on success.
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _cloak(&$text, &$params)
     {
         /*

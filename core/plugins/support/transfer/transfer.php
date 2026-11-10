@@ -27,7 +27,7 @@ class Transfer extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -94,7 +94,7 @@ class Transfer extends Plugin
                 }
                 break;
 
-            // Transfer from a Question
+                // Transfer from a Question
             case 'question':
                 $row = \Components\Answers\Models\Question::oneOrNew($from_id);
 
@@ -117,7 +117,7 @@ class Transfer extends Plugin
                 }
                 break;
 
-            // Transfer from a Wish
+                // Transfer from a Wish
             case 'wish':
                 $row = \Components\Wishlist\Models\Wish::oneOrFail($from_id);
 

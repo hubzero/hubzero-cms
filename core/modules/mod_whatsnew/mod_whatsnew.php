@@ -175,12 +175,12 @@ class Whatsnew extends Module
 
         // Get the search results
         $results = Event::trigger('whatsnew.onWhatsnew', [
-                $p,
-                $count,
-                0,
-                $activeareas,
-                [],
-            ]);
+            $p,
+            $count,
+            0,
+            $activeareas,
+            [],
+        ]);
 
         $rows = [];
 
@@ -213,12 +213,12 @@ class Whatsnew extends Module
 
                 // Get the search results
                 $results2 = Event::trigger('onWhatsnew', [
-                        $p,
-                        $count,
-                        0,
-                        $activeareas,
-                        $tagids,
-                    ]);
+                    $p,
+                    $count,
+                    0,
+                    $activeareas,
+                    $tagids,
+                ]);
 
                 $rows2 = [];
 

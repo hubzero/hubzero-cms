@@ -25,7 +25,7 @@ class Publications extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -359,9 +359,9 @@ class Publications extends Plugin
 
         $view = new \Hubzero\Component\View(
             [
-            'base_path' => Component::path('com_publications') . '/site',
-            'name'      => 'browse',
-            'layout'    => 'item',
+                'base_path' => Component::path('com_publications') . '/site',
+                'name'      => 'browse',
+                'layout'    => 'item',
             ],
         );
         $view->set('line', $row)

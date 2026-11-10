@@ -249,7 +249,7 @@ class Publications extends Plugin
                 $arr['html'] = $this->saveParam();
                 break;
 
-            // Change publication state
+                // Change publication state
             case 'publish':
             case 'republish':
             case 'archive':
@@ -278,7 +278,7 @@ class Publications extends Plugin
                 $arr['html'] = $this->reorder('down');
                 break;
 
-            // Individual items editing
+                // Individual items editing
             case 'edititem':
             case 'editauthor':
                 $arr['html'] = $this->editItem();
@@ -289,22 +289,22 @@ class Publications extends Plugin
                 $arr['html'] = $this->_suggestLicense();
                 break;
 
-            // Show all publication versions
+                // Show all publication versions
             case 'versions':
                 $arr['html'] = $this->versions();
                 break;
 
-            // Unpublish/delete
+                // Unpublish/delete
             case 'cancel':
                 $arr['html'] = $this->cancelDraft();
                 break;
 
-            // Contribute process outside of projects
+                // Contribute process outside of projects
             case 'contribute':
                 $arr['html'] = $this->contribute();
                 break;
 
-            // Show stats
+                // Show stats
             case 'stats':
                 $arr['html'] = $this->_stats();
                 break;
@@ -313,7 +313,7 @@ class Publications extends Plugin
                 $arr['html'] = $this->pubDiskSpace($this->model);
                 break;
 
-            // Handlers
+                // Handlers
             case 'handler':
                 $arr['html'] = $this->handler();
                 break;
@@ -1641,13 +1641,13 @@ class Publications extends Plugin
                 }
             }
         } else {
-             $view = new \Hubzero\Plugin\View(
-                 [
+            $view = new \Hubzero\Plugin\View(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'suggestlicense',
-                 ],
-             );
+                ],
+            );
 
             // Output HTML
             $view->option    = $this->_option;
@@ -2768,7 +2768,7 @@ class Publications extends Plugin
                     // Checkin into repo
                     $this->model->repo()->call('checkin', [
                         'file' => $this->model->repo()->getMetadata($file, 'file', []),
-                        ]);
+                    ]);
                     $checkedin++;
                 }
             }

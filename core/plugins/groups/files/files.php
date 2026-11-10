@@ -204,7 +204,7 @@ class Files extends Plugin
         // regular groups can only access inside /uploads
         //if (!$this->group->isSuperGroup())
         //{
-            $pathInfo = pathinfo($view->activeFolder);
+        $pathInfo = pathinfo($view->activeFolder);
         if ($pathInfo['dirname'] != '/uploads') {
             $view->activeFolder = '/uploads';
         }

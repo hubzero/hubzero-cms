@@ -35,7 +35,7 @@ class Myactivity extends Module
 
         $this->rows = Recipient::all()
             ->including(['log', function ($log) {
-                    $log->select('*');
+                $log->select('*');
             }])
             ->whereEquals('scope', 'user')
             ->whereEquals('scope_id', User::get('id'))

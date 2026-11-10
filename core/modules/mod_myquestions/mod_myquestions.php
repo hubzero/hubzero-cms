@@ -113,10 +113,10 @@ class Myquestions extends Module
         }
 
         if (is_string($interests)) {
-                $interests = explode(',', $interests);
+            $interests = explode(',', $interests);
         }
         if (!is_array($interests)) {
-                $interests = [];
+            $interests = [];
         }
         $records = \Components\Answers\Models\Question::all()
             ->including(['responses', function ($response) {

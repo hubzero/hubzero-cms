@@ -998,7 +998,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $len = (int) $args[1];
                 return "SUBSTRING({$col} FROM CHAR_LENGTH({$col}) - {$len} + 1)";
 
-            // Conditional functions
+                // Conditional functions
             case 'COALESCE':
                 $parts = array_map([$this, 'buildExpressionArgument'], $args);
                 return 'COALESCE(' . implode(', ', $parts) . ')';
@@ -1024,7 +1024,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             case 'CASE':
                 return $this->buildCaseExpression($args[0], $args[1], $args[2] ?? null);
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
                 return 'CURRENT_TIMESTAMP';
 
@@ -1078,7 +1078,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     500,
                 );
 
-            // Math functions
+                // Math functions
             case 'ROUND':
                 $col = $this->buildExpressionArgument($args[0]);
                 $decimals = isset($args[1]) ? (int) $args[1] : 0;
@@ -1121,7 +1121,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $decimals = isset($args[1]) ? (int) $args[1] : 0;
                 return "TRUNC({$col}, {$decimals})";
 
-            // Bit functions
+                // Bit functions
             case 'BIT_AND':
                 return 'BIN_AND('
                     . $this->buildExpressionArgument($args[0]) . ', '
@@ -1137,7 +1137,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Sequence functions (Firebird generators)
+                // Sequence functions (Firebird generators)
             case 'NEXTVAL':
                 return 'NEXT VALUE FOR ' . $this->connection->quoteName($args[0]);
 

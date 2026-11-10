@@ -620,7 +620,7 @@ class Register extends SiteController
             // carry the user's real chosen values rather than the placeholder.
             if (
                 $wasPlaceholder && !\Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder([
-                'username' => (string) $xprofile->get('username'),
+                    'username' => (string) $xprofile->get('username'),
                 ])
             ) {
                 \Plugins\User\Hubzero\Hubzero::sendAdminNewUserNotification([

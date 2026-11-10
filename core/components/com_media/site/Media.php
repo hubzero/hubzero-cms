@@ -47,7 +47,7 @@ class Media extends AbstractComponent
         define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get('image_path', 'images'));
         define('COM_MEDIA_BASEURL', Request::root() . '/' . $params->get('image_path', 'images'));
 
-            Lang::load('com_media', dirname(__DIR__) . '/admin', null, false, true)
+        Lang::load('com_media', dirname(__DIR__) . '/admin', null, false, true)
         ||  Lang::load('com_media', __DIR__, null, false, true);
 
         // Load the admin HTML view

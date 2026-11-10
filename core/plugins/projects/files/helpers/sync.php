@@ -659,7 +659,7 @@ class Sync extends \Hubzero\Base\Obj
                                         'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                         'author' => $author,
                                         'date'   => $cDate,
-                                        ]);
+                                    ]);
 
                                     $output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
                                     $output .= '++ sent update from remote to local: ' . $filename . "\n";
@@ -717,7 +717,7 @@ class Sync extends \Hubzero\Base\Obj
                                     'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                     'author' => $author,
                                     'date'   => $cDate,
-                                    ]);
+                                ]);
 
                                 $output .= '++ added new file to local: ' . $filename . "\n";
                                 $updated = 1;

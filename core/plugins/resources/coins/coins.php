@@ -45,7 +45,7 @@ class Coins extends Plugin
         }
 
         if (!$model->type->params->get('plg_coins')) {
-                return;
+            return;
         }
 
         $arr = [

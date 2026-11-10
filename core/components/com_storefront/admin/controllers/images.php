@@ -157,7 +157,7 @@ class Images extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
-            break;
+                break;
         }
 
         if (!$object->save()) {
@@ -325,7 +325,7 @@ class Images extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
-            break;
+                break;
         }
 
         if (!$object->save()) {
@@ -411,7 +411,7 @@ class Images extends AdminController
 
         switch ($type) {
             case 'product':
-                    $imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+                $imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
                 $path = PATH_APP . DS . $imgWebPath . DS;
                 $path .= $id;
                 break;
@@ -425,7 +425,7 @@ class Images extends AdminController
             default:
                 $this->setError(Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE'));
                 return '';
-            break;
+                break;
         }
 
         return $path;

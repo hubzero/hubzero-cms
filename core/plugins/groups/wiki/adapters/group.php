@@ -72,7 +72,7 @@ class Group extends Base
             case 'base':
                 unset($segments['pagename']);
                 return $this->_base . '?' . (string) $this->_build($segments);
-            break;
+                break;
 
             case 'pdf':
             case 'new':
@@ -187,7 +187,7 @@ class Group extends Base
                         }
                         break;
 
-                    // Standard wiki
+                        // Standard wiki
                     default:
                         if ($group->is_member_of('members', User::get('id'))) {
                             $page->config()->set('access-page-create', true);

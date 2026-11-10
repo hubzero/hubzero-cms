@@ -3596,7 +3596,7 @@ abstract class BaseSqlSyntax
             case 'COUNT_DISTINCT':
                 return 'COUNT(DISTINCT ' . $this->buildExpressionArgument($args[0]) . ')';
 
-            // String functions
+                // String functions
             case 'CONCAT':
                 $parts = array_map([$this, 'buildExpressionArgument'], $args);
                 return 'CONCAT(' . implode(', ', $parts) . ')';
@@ -3638,7 +3638,7 @@ abstract class BaseSqlSyntax
 
                 return "REPLACE({$col}, {$search}, {$replace})";
 
-            // Conditional functions (standard SQL)
+                // Conditional functions (standard SQL)
             case 'COALESCE':
                 $parts = array_map([$this, 'buildExpressionArgument'], $args);
                 return 'COALESCE(' . implode(', ', $parts) . ')';
@@ -3657,7 +3657,7 @@ abstract class BaseSqlSyntax
             case 'CASE':
                 return $this->buildCaseExpression($args[0], $args[1], $args[2] ?? null);
 
-            // Math functions (standard SQL)
+                // Math functions (standard SQL)
             case 'ROUND':
                 return 'ROUND(' . $this->buildExpressionArgument($args[0]) . ', ' . (int) $args[1] . ')';
 
@@ -3669,7 +3669,7 @@ abstract class BaseSqlSyntax
             case 'RANDOM_ORDER':
                 return $this->connection->sqlRand();
 
-            // Date/time functions (standard SQL)
+                // Date/time functions (standard SQL)
             case 'NOW':
                 return 'CURRENT_TIMESTAMP';
 
@@ -3700,11 +3700,11 @@ abstract class BaseSqlSyntax
                     'DATE_FORMAT is not standard SQL. Use a database-specific syntax class.',
                 );
 
-            // Sequence functions
-            // Base implementation resolves via driver API. This works for
-            // all backends: emulated (MySQL/SQLite) use their table-based
-            // implementation; native backends get a literal value. Per-driver
-            // Syntax overrides emit native inline SQL for better performance.
+                // Sequence functions
+                // Base implementation resolves via driver API. This works for
+                // all backends: emulated (MySQL/SQLite) use their table-based
+                // implementation; native backends get a literal value. Per-driver
+                // Syntax overrides emit native inline SQL for better performance.
             case 'NEXTVAL':
                 return (string) $this->connection->nextSequenceValue($args[0]);
 

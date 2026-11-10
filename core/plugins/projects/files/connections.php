@@ -872,7 +872,7 @@ class Connections
                                 'success'   => 1,
                                 'file'      => $file,
                                 'isNew'     => $updateType == 'uploaded' ? true : false,
-                                ]);
+                            ]);
                         }
                     }
                 }

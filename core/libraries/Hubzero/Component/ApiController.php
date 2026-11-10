@@ -352,7 +352,7 @@ class ApiController implements ControllerInterface
                 continue;
             }
 
-                        $phpdoc = $factory->create($docblock);
+            $phpdoc = $factory->create($docblock);
 
             // skip constructor
             if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), ['registerTask', 'unregisterTask'])) {

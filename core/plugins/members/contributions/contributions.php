@@ -106,13 +106,13 @@ class Contributions extends Plugin
 
         // Get the search result totals
         $totals = Event::trigger('members.onMembersContributions', [
-                $member,
-                $option,
-                0,
-                $limitstart,
-                $sort,
-                $activeareas,
-            ]);
+            $member,
+            $option,
+            0,
+            $limitstart,
+            $sort,
+            $activeareas,
+        ]);
 
         // Get the total results found (sum of all categories)
         $i = 0;

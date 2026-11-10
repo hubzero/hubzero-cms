@@ -171,10 +171,10 @@ class Feed extends Plugin
                 case 'save':
                     $arr['html'] = $this->_save();
                     break;
-                // comments are activity entries: _save()/_delete() handle them
-                // (_saveComment()/_deleteComment() were never defined). The
-                // comment form and delete link name the comment 'cid'; the
-                // handlers read the entry as 'activity'.
+                    // comments are activity entries: _save()/_delete() handle them
+                    // (_saveComment()/_deleteComment() were never defined). The
+                    // comment form and delete link name the comment 'cid'; the
+                    // handlers read the entry as 'activity'.
                 case 'savecomment':
                     Request::setVar('activity', Request::getInt('cid', 0));
                     $arr['html'] = $this->_save();

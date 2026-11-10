@@ -22,7 +22,7 @@ class Endnote extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -362,18 +362,18 @@ class Endnote extends Plugin
                 if ($cScope == $scope && $cScope_id == $scope_id) {
                     // Direct matches on doi
                     if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '') {
-                         $match = $id;
-                         break;
+                        $match = $id;
+                        break;
                     }
 
-                     // Direct matches on isbn
+                    // Direct matches on isbn
                     if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '') {
                         $match = $id;
                         break;
                     }
 
-                     // Match titles based on percect param
-                     similar_text($title, $citation['title'], $similar);
+                    // Match titles based on percect param
+                    similar_text($title, $citation['title'], $similar);
                     if ($similar >= $title_match) {
                         $match = $id;
                         break;
@@ -390,7 +390,7 @@ class Endnote extends Plugin
      * @param   string  $string
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);

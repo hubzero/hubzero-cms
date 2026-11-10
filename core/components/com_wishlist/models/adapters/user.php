@@ -115,7 +115,7 @@ class User extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->_base . '?' . (string) $this->_build($this->_segments);
-            break;
+                break;
 
             case 'edit':
                 if ($this->get('wishid')) {

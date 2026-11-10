@@ -194,7 +194,7 @@ class Messages extends Plugin
      *
      * @return     string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _sent()
     {
         // Set the page title
@@ -244,7 +244,7 @@ class Messages extends Plugin
      * @param   string  $name    View name (unused, for parent compatibility)
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _view($layout = 'default', $name = '')
     {
         //get the message id
@@ -312,7 +312,7 @@ class Messages extends Plugin
      *
      * @return     string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _create()
     {
         // Ensure only admins and group managers can create messages
@@ -358,7 +358,7 @@ class Messages extends Plugin
      *
      * @return     mixed
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _send()
     {
         // Only group managers/admins may send group messages

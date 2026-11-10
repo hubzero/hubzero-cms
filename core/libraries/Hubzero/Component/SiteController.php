@@ -160,10 +160,10 @@ class SiteController extends Obj implements ControllerInterface
                 if (strstr($cls, '\\')) {
                     $segments = explode('\\', $cls);
                 } elseif (preg_match('/(.*)Controller(.*)/i', $cls, $segments)) {
-                // If matching the pattern of ComponentControllerName
+                    // If matching the pattern of ComponentControllerName
                     $this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
                 } else {
-                // Uh-oh!
+                    // Uh-oh!
                     throw new InvalidControllerException(
                         Lang::txt('Controller::__construct() : Can\'t get or parse class name.'),
                         500,

@@ -52,9 +52,9 @@ class Help extends SiteController
 
             //display page
             $view = with(new View([
-                    'name'   => $this->_controller,
-                    'layout' => 'index',
-                ]))
+                'name'   => $this->_controller,
+                'layout' => 'index',
+            ]))
                 ->set('option', $this->_option)
                 ->set('controller', $this->_controller)
                 ->set('layoutExt', $this->layoutExt)

@@ -175,7 +175,7 @@ class Migration20120101000006Core extends Base
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
                     . "publicity or privacy rights.",
             ],
-             [
+            [
                 'name' => 'cc',
                 'title' => 'Creative Commons',
                 'url' => 'http://creativecommons.org/licenses/by-nc-sa/2.5/',
@@ -206,7 +206,7 @@ class Migration20120101000006Core extends Base
                         . "license terms of this "
                     . "work. The best way to do this is with a link to this web page.",
             ],
-             [
+            [
                 'name' => 'cc30-by-nc-nd',
                 'title' => 'Creative Commons BY-NC-ND 3.0',
                 'url' => 'http://creativecommons.org/licenses/by-nc-nd/3.0/',
@@ -231,7 +231,7 @@ class Migration20120101000006Core extends Base
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
                     . "publicity or privacy rights.",
             ],
-             [
+            [
                 'name' => 'cc30-by',
                 'title' => 'Creative Commons BY 3.0',
                 'url' => 'http://creativecommons.org/licenses/by/3.0/',
@@ -256,7 +256,7 @@ class Migration20120101000006Core extends Base
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
                     . "publicity or privacy rights.",
             ],
-             [
+            [
                 'name' => 'cc30-by-sa',
                 'title' => 'Creative Commons BY-SA 3.0',
                 'url' => 'http://creativecommons.org/licenses/by-sa/3.0/',
@@ -284,7 +284,7 @@ class Migration20120101000006Core extends Base
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
                     . "publicity or privacy rights.",
             ],
-             [
+            [
                 'name' => 'cc30-by-nc',
                 'title' => 'Creative Commons BY-NC 3.0',
                 'url' => 'http://creativecommons.org/licenses/by-nc/3.0/',

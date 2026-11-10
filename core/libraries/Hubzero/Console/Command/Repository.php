@@ -428,8 +428,8 @@ class Repository extends Base implements CommandInterface
                      ->addLine(
                          'muse configuration set --repository_standards_dir=/path/to/standards',
                          [
-                            'indentation' => '2',
-                            'color'       => 'blue',
+                             'indentation' => '2',
+                             'color'       => 'blue',
                          ],
                      )
                     ->addSpacer()
@@ -562,7 +562,7 @@ class Repository extends Base implements CommandInterface
         $repoPath = $this->arguments->getOpt('repoPath');
 
         if ($this->arguments->getOpt('git_branch')) {
-        // "remote/branch", or just a branch name
+            // "remote/branch", or just a branch name
             $git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'), 2);
             $git_branch = isset($git_branch_arr[1]) ? $git_branch_arr[1] : $git_branch_arr[0];
         } else {

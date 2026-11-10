@@ -730,14 +730,14 @@ class Profiles extends SiteController
         if (User::get('id') != $profile->get('id') && !in_array($profile->get('access'), User::getAuthorisedViewLevels())) {
             // Check if they're logged in
             if (User::isGuest()) {
-            // geodynamics 2026-08-02: use the canonical target, not
-            // REQUEST_URI. REQUEST_URI carries the client-supplied query
-            // string, so reflecting it minted a distinct /login?return=<b64>
-            // for every distinct query a crawler invented -- an
-            // unbounded-cardinality crawl trap of the same shape as the
-            // 2026-08-01 flood. The canonical URL was already sitting here
-            // as the fallback argument; this just stops preferring the
-            // attacker-controlled value over it.
+                // geodynamics 2026-08-02: use the canonical target, not
+                // REQUEST_URI. REQUEST_URI carries the client-supplied query
+                // string, so reflecting it minted a distinct /login?return=<b64>
+                // for every distinct query a crawler invented -- an
+                // unbounded-cardinality crawl trap of the same shape as the
+                // 2026-08-01 flood. The canonical URL was already sitting here
+                // as the fallback argument; this just stops preferring the
+                // attacker-controlled value over it.
                 $rtrn = Route::url($profile->link());
 
                 App::redirect(
@@ -1197,7 +1197,7 @@ class Profiles extends SiteController
                         ->set('title', $title)
                         ->display();
                     return;
-                break;
+                    break;
             }
         }
 

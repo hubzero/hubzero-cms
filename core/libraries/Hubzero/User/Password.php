@@ -973,7 +973,7 @@ class Password
                     $salt = $seed;
                 }
                 return $salt;
-            break;
+                break;
         }
     }
 

@@ -1391,12 +1391,12 @@ class Items extends AdminController
             // Send message
             if (
                 !Event::trigger('xmessage.onSendMessage', [
-                'publication_status_changed',
-                $subject,
-                $body,
-                $from,
-                $authors,
-                $this->_option])
+                    'publication_status_changed',
+                    $subject,
+                    $body,
+                    $from,
+                    $authors,
+                    $this->_option])
             ) {
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
             }

@@ -476,23 +476,23 @@ class Publication extends Obj
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'datetime':
                 return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
-            break;
+                break;
 
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
-            break;
+                break;
 
             default:
                 return $this->get($key);
-            break;
+                break;
         }
     }
 
@@ -621,7 +621,7 @@ class Publication extends Obj
         switch ($property) {
             case 'progress':
                 return $this->_curationModel->_progress;
-            break;
+                break;
 
             case 'blocks':
                 if ($blockId && isset($this->_curationModel->_progress->blocks->$blockId)) {
@@ -676,27 +676,27 @@ class Publication extends Obj
                     return false;
                 }
                 return $this->_curationModel->_progress->blocks;
-            break;
+                break;
 
             case 'complete':
                 return $this->_curationModel->_progress->complete;
-            break;
+                break;
 
             case 'lastBlock':
                 return $this->_curationModel->_progress->lastBlock;
-            break;
+                break;
 
             case 'firstBlock':
                 return $this->_curationModel->_progress->firstBlock;
-            break;
+                break;
 
             case 'params':
                 return $this->_curationModel->_manifest->params;
-            break;
+                break;
 
             default:
                 return $this->_curationModel;
-            break;
+                break;
         }
     }
 
@@ -2324,9 +2324,9 @@ class Publication extends Obj
 
             if (!empty($author->orcid)) {
                 $contributor['contributor-orcid'] = [
-                'uri' => "https://orcid.org" . DS . $author->orcid,
-                'path' => $author->orcid,
-                "host" => "orcid.org",
+                    'uri' => "https://orcid.org" . DS . $author->orcid,
+                    'path' => $author->orcid,
+                    "host" => "orcid.org",
                 ];
             }
 
@@ -2377,29 +2377,29 @@ class Publication extends Obj
 
         // published Date
         $publishedDate = [
-        'year' => ['value' => date('Y', strtotime($this->version->accepted))],
-        'month' => ['value' => date('m', strtotime($this->version->accepted))],
-        'day' => ['value' => date(('d'), strtotime($this->version->accepted))],
+            'year' => ['value' => date('Y', strtotime($this->version->accepted))],
+            'month' => ['value' => date('m', strtotime($this->version->accepted))],
+            'day' => ['value' => date(('d'), strtotime($this->version->accepted))],
         ];
 
         // external IDs
         $externalIDs['external-id'] = [
-        'external-id-type' => 'doi',
-        'external-id-value' => $this->version->doi,
-        'external-id-url' => ['value' => "https://doi.org" . DS . $this->version->doi],
-        'external-id-relationship' => 'self',
+            'external-id-type' => 'doi',
+            'external-id-value' => $this->version->doi,
+            'external-id-url' => ['value' => "https://doi.org" . DS . $this->version->doi],
+            'external-id-relationship' => 'self',
         ];
 
         $data = ['title' => $title,
-        'short-description' => $description,
-        'citation' => $citation,
-        'type' => $type,
-        'publication-date' => $publishedDate,
-        'external-ids' => $externalIDs,
-        'url' => $url,
-        'contributors' => $contributors,
-        'language-code' => 'en',
-        'country' => ['value' => 'US'],
+            'short-description' => $description,
+            'citation' => $citation,
+            'type' => $type,
+            'publication-date' => $publishedDate,
+            'external-ids' => $externalIDs,
+            'url' => $url,
+            'contributors' => $contributors,
+            'language-code' => 'en',
+            'country' => ['value' => 'US'],
         ];
 
         if (!empty($putCode)) {
@@ -2453,15 +2453,15 @@ class Publication extends Obj
         return false;
     }
 
-     /**
-     * Update work in author's ORCID record
-     *
-     * @param   string  $orcidID
-     * @param   string  $accessToken
-     * @param   string  $putCode
-     *
-     * @return  boolean
-     */
+    /**
+    * Update work in author's ORCID record
+    *
+    * @param   string  $orcidID
+    * @param   string  $accessToken
+    * @param   string  $putCode
+    *
+    * @return  boolean
+    */
     public function updateWorkInORCID($orcidID, $accessToken, $putCode)
     {
         $memberConfig = Component::params('com_members');
@@ -2483,15 +2483,15 @@ class Publication extends Obj
         return $httpCode == 200 || $httpCode == 201;
     }
 
-     /**
-     * Delete work in author's ORCID record
-     *
-     * @param   string  $orcidID
-     * @param   string  $accessToken
-     * @param   string  $putCode
-     *
-     * @return  boolean
-     */
+    /**
+    * Delete work in author's ORCID record
+    *
+    * @param   string  $orcidID
+    * @param   string  $accessToken
+    * @param   string  $putCode
+    *
+    * @return  boolean
+    */
     public function deleteWorkInORCID($orcidID, $accessToken, $putCode)
     {
         $memberConfig = Component::params('com_members');

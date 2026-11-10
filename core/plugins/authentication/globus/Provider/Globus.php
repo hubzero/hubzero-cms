@@ -74,12 +74,12 @@ class Globus extends AbstractProvider
         ];
     }
 
-     /**
-     * Returns the string that should be used to separate scopes when building
-     * the URL for requesting an access token.
-     *
-     * @return string Scope separator, defaults to space
-     */
+    /**
+    * Returns the string that should be used to separate scopes when building
+    * the URL for requesting an access token.
+    *
+    * @return string Scope separator, defaults to space
+    */
     protected function getScopeSeparator()
     {
         return ' ';

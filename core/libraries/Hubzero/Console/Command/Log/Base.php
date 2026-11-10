@@ -118,14 +118,14 @@ class Base
                 $i++;
             }
         } elseif ($field == 'all') {
-        // All fields either on or off
+            // All fields either on or off
             foreach (static::$fields as $f => $s) {
                 static::$fields[$f] = $status;
             }
 
             return (($status) ? 'Showing ' : 'Hiding ') . 'all fields';
         } elseif (strpos($field, ',')) {
-        // Toggling comma-separated list of fields
+            // Toggling comma-separated list of fields
             $fields = explode(',', $field);
             $valid  = [];
 
@@ -146,12 +146,12 @@ class Base
 
             return $return;
         } elseif (isset(static::$fields[$field])) {
-        // Toggling single field
+            // Toggling single field
             static::$fields[$field] = $status;
 
             return (($status) ? 'Showing ' : 'Hiding ') . $field;
         } else {
-        // Who knows what's going on here!
+            // Who knows what's going on here!
             return false;
         }
 

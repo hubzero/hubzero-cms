@@ -112,7 +112,7 @@ class Rule extends Relational
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
         } elseif ($delta > 0) {
-        // If the movement delta is positive move the row down.
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }

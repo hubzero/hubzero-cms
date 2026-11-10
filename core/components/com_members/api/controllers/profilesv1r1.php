@@ -347,7 +347,7 @@ class Profilesv1r1 extends ApiController
             $user = User::getInstance();
 
             if ($user->isGuest()) {
-                            throw new Exception(Lang::txt('Not authorized'), 403);
+                throw new Exception(Lang::txt('Not authorized'), 403);
             }
 
             $userid = $user->get('id');
@@ -485,33 +485,33 @@ class Profilesv1r1 extends ApiController
 
     public function accessgroupsTask()
     {
-         $this->requiresAuthentication();
+        $this->requiresAuthentication();
 
-         $user = User::getInstance();
+        $user = User::getInstance();
 
-         $userid = Request::getInt('id', 0);
+        $userid = Request::getInt('id', 0);
 
         if ($user->get('id') != $userid && !User::authorise('core.admin')) {
             throw new Exception(Lang::txt('Access denied'), 400);
         }
 
-         $titles = Request::getBool('titles', false);
-         $inherited = Request::getBool('inherited', false);
-         $all = Request::getBool('all', false);
+        $titles = Request::getBool('titles', false);
+        $inherited = Request::getBool('inherited', false);
+        $all = Request::getBool('all', false);
 
-         $result = User::getInstance($userid);
+        $result = User::getInstance($userid);
 
         if (!$result || !$result->get('id')) {
             throw new Exception(Lang::txt('No such user'), 404);
         }
 
-         $groups = \Hubzero\Access\Access::getGroupsByUser($userid, $inherited, $titles, $all);
+        $groups = \Hubzero\Access\Access::getGroupsByUser($userid, $inherited, $titles, $all);
 
-         // Encode and return result
-         $obj = new stdClass();
-         $obj->accessgroups = $groups;
+        // Encode and return result
+        $obj = new stdClass();
+        $obj->accessgroups = $groups;
 
-         $this->send($obj);
+        $this->send($obj);
     }
 
     /**

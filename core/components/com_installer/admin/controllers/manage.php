@@ -352,33 +352,33 @@ class Manage extends AdminController
         $this->cancelTask();
     }
 
-//  /**
-//   * Creates the content for the tooltip which shows compatibility information
-//   *
-//   * @param   string  $system_data  System_data information
-//   * @return  string  Content for tooltip
-//   */
-//  protected function createCompatibilityInfo($system_data)
-//  {
-//      $system_data = json_decode($system_data);
-//
-//      if (empty($system_data->compatibility))
-//      {
-//          return '';
-//      }
-//
-//      $compatibility = $system_data->compatibility;
-//
-//      $info = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
-//                  $compatibility->installed->version,
-//                  implode(', ', $compatibility->installed->value)
-//              )
-//              . '<br />'
-//              . Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
-//                  $compatibility->available->version,
-//                  implode(', ', $compatibility->available->value)
-//              );
-//
-//      return $info;
-//  }
+    //  /**
+    //   * Creates the content for the tooltip which shows compatibility information
+    //   *
+    //   * @param   string  $system_data  System_data information
+    //   * @return  string  Content for tooltip
+    //   */
+    //  protected function createCompatibilityInfo($system_data)
+    //  {
+    //      $system_data = json_decode($system_data);
+    //
+    //      if (empty($system_data->compatibility))
+    //      {
+    //          return '';
+    //      }
+    //
+    //      $compatibility = $system_data->compatibility;
+    //
+    //      $info = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
+    //                  $compatibility->installed->version,
+    //                  implode(', ', $compatibility->installed->value)
+    //              )
+    //              . '<br />'
+    //              . Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
+    //                  $compatibility->available->version,
+    //                  implode(', ', $compatibility->available->value)
+    //              );
+    //
+    //      return $info;
+    //  }
 }

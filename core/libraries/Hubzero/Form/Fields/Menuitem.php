@@ -58,7 +58,7 @@ class Menuitem extends Groupedlist
                     type, $disable));
             }
         } else {
-        // Build groups for all menu types.
+            // Build groups for all menu types.
             // Build the groups arrays.
             foreach ($items as $menu) {
                 // Initialize the group.

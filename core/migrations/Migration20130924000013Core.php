@@ -241,7 +241,7 @@ class Migration20130924000013Core extends Base
                         ->select('id')
                         ->from('#__template_styles')
                         ->where('template', '=', $r->element)
-                        ;
+                    ;
 
                     if ($query->exists()) {
                         continue;
@@ -279,7 +279,7 @@ class Migration20130924000013Core extends Base
                     ->from('#__template_styles')
                     ->where('client_id', '=', 1)
                     ->where('home', '=', '1')
-                    ;
+                ;
 
                 if ($query->doesntExist()) {
                     $this->db->getQuery(true)

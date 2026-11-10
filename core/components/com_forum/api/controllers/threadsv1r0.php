@@ -73,9 +73,9 @@ class Threadsv1r0 extends ApiController
         $response->sections = [];
 
         $sections = $model->sections([
-                'state'  => $filters['state'],
-                'access' => User::getAuthorisedViewLevels(),
-            ])
+            'state'  => $filters['state'],
+            'access' => User::getAuthorisedViewLevels(),
+        ])
             ->ordered()
             ->rows();
 

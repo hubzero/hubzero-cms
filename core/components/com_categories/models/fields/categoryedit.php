@@ -78,8 +78,8 @@ class CategoryEdit extends Select
 
         // If parent isn't explicitly stated but we are in com_categories assume we want parents
         if ($oldCat != 0 && ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories')) {
-        // Prevent parenting to children of this item.
-        // To rearrange parents and children move the children up, not the parents down.
+            // Prevent parenting to children of this item.
+            // To rearrange parents and children move the children up, not the parents down.
             $query->joinRaw('#__categories AS p', 'p.id = ' . (int) $oldCat, 'left');
             $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 

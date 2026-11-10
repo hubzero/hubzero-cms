@@ -112,8 +112,8 @@ class Xusers extends Plugin
         // Log attempt to the database
         \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
             [
-            'username' => $xuser->get('username'),
-            'status'   => 'success',
+                'username' => $xuser->get('username'),
+                'status'   => 'success',
             ],
         );
 
@@ -623,9 +623,9 @@ class Xusers extends Plugin
         // Log attempt to the database
         \Hubzero\User\User::blank()->logger()->auth()->set(
             [
-            'user_id'  => 0,
-            'username' => isset($response['username']) ? $response['username'] : '[unknown]',
-            'status'   => 'failure',
+                'user_id'  => 0,
+                'username' => isset($response['username']) ? $response['username'] : '[unknown]',
+                'status'   => 'failure',
             ],
         )->save();
 

@@ -66,7 +66,7 @@ class Tools extends Obj
             return [];
         }
 
-                $database = App::get('db');
+        $database = App::get('db');
 
         $names = array_map([$database, 'quote'], $dirs);
 

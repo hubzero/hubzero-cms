@@ -177,9 +177,9 @@ class Collections extends Plugin
                 case 'savecomment':
                     $arr['html'] = $this->_savecomment();
                     break;
-                // 'newcomment' and 'editcomment' used to dispatch to methods that
-                // have never existed in this plugin -- reaching either was a fatal.
-                // Commenting is savecomment/deletecomment.
+                    // 'newcomment' and 'editcomment' used to dispatch to methods that
+                    // have never existed in this plugin -- reaching either was a fatal.
+                    // Commenting is savecomment/deletecomment.
                 case 'deletecomment':
                     $arr['html'] = $this->_deletecomment();
                     break;
@@ -197,7 +197,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->_unfollow('member');
                     break;
 
-                // Entries
+                    // Entries
                 case 'savepost':
                     $arr['html'] = $this->_save();
                     break;
@@ -1024,18 +1024,18 @@ class Collections extends Plugin
                 $tmp = $item->get('title');
             }
 
-        // Bind content
+            // Bind content
             if (!$item->bind($fields)) {
                 $this->setError($item->getError());
                 return $this->_edit($item);
             }
 
-        // Update for PHP 8.2: id cannot by an emptry string. It has to be null.
+            // Update for PHP 8.2: id cannot by an emptry string. It has to be null.
             if ($item->get("id") === "") {
                 $item->set("id", null);
             }
 
-        // Add some data
+            // Add some data
             if ($files  = Request::getArray('fls', '', 'files')) {
                 $item->set('_files', $files);
             }
@@ -1046,7 +1046,7 @@ class Collections extends Plugin
                 $item->set('access', 0);
             }
 
-        // Store new content
+            // Store new content
             if (!$item->store()) {
                 $this->setError($item->getError());
                 return $this->_edit($item);

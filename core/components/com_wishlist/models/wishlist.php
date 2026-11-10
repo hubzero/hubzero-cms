@@ -447,7 +447,7 @@ class Wishlist extends Relational
 
             default:
                 throw new \InvalidArgumentException(Lang::txt('Owner type "%s" not supported.', $what));
-            break;
+                break;
         }
 
         return $this;

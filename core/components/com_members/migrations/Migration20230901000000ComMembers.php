@@ -25,10 +25,10 @@ class Migration20230901000000ComMembers extends Base
 
     // specify column to create
     public static $columnData = [['name' => 'secret',
-                'type' => 'char(32)',
-                'restriction' => 'UNIQUE',
-                'default' => 'NULL'],
-                ];
+        'type' => 'char(32)',
+        'restriction' => 'UNIQUE',
+        'default' => 'NULL'],
+    ];
 
     /**
      * Up
@@ -98,8 +98,8 @@ class Migration20230901000000ComMembers extends Base
 			SET $column = MD5(CONCAT(NOW(), RAND(), UUID()))
 			WHERE $column IS NULL
 			AND lastVisitDate > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
-                $this->db->setQuery($targetUsers);
-                $this->db->query();
+        $this->db->setQuery($targetUsers);
+        $this->db->query();
 
         $this->log('Saved new secrets for target users', 'info');
     }

@@ -144,7 +144,7 @@ class MembershipTest extends Basic
         // the history column is varchar(32)
         foreach (
             [Membership::REASON_EXPIRED, Membership::REASON_MANUAL,
-            Membership::REASON_GROUP, Membership::REASON_USER] as $reason
+                Membership::REASON_GROUP, Membership::REASON_USER] as $reason
         ) {
             $this->assertLessThanOrEqual(32, strlen($reason));
         }

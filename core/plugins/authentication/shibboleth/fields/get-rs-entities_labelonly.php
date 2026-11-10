@@ -60,14 +60,14 @@ foreach (
     preg_match('/([^.:]+[.][^.]+?)(?:[\/]|$)/', $id, $ma);
     $host = $ma[1];
     // logos no longer fetched b/c the result was ugly. if you want to experiment, go for it
-//          $logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
-//          $logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';
-        echo $title . "\n";
+    //          $logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
+    //          $logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';
+    echo $title . "\n";
     $rv[] = [
         'entity_id' => $id,
         'label'     => $title,
         'host'      => $host,
-//              'logo'      => $logo
+        //              'logo'      => $logo
     ];
 }
 #  $rv = json_encode($rv);

@@ -244,15 +244,15 @@ class Passport implements ProviderInterface
         switch ($type) {
             case 'Denied':
                 return self::PASSPORT_DENIED_URL;
-            break;
+                break;
 
             case 'Badges':
                 return self::PASSPORT_BADGES_URL;
-            break;
+                break;
 
             default:
                 return self::PASSPORT_CLAIM_URL;
-            break;
+                break;
         }
     }
 

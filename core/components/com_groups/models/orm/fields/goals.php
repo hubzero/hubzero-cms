@@ -196,16 +196,16 @@ class Goals extends Radio
             }
 
             $html[] = '<div class="goals-field-wrap">';
-                $html[] = '<div class="input-wrap">';
-                    $html[] = '<label for="' . $this->id . $i . '-goal">' . Lang::txt('Goal') . '</label>';
-                    $goalVal = htmlspecialchars($value['goal'], ENT_COMPAT, 'UTF-8');
-                    $html[] = '<input type="text" id="' . $this->id . $i . '-goal"'
-                        . ' name="' . $this->name . '[' . $i . '][goal]"'
-                        . ' placeholder="Goal" value="' . $goalVal . '" />';
-                    $html[] = '<input type="hidden" id="' . $this->id . $i . '-id"'
-                        . ' name="' . $this->name . '[' . $i . '][id]"'
-                        . ' value="' . $value['id'] . '" />';
-                $html[] = '</div>';
+            $html[] = '<div class="input-wrap">';
+            $html[] = '<label for="' . $this->id . $i . '-goal">' . Lang::txt('Goal') . '</label>';
+            $goalVal = htmlspecialchars($value['goal'], ENT_COMPAT, 'UTF-8');
+            $html[] = '<input type="text" id="' . $this->id . $i . '-goal"'
+                . ' name="' . $this->name . '[' . $i . '][goal]"'
+                . ' placeholder="Goal" value="' . $goalVal . '" />';
+            $html[] = '<input type="hidden" id="' . $this->id . $i . '-id"'
+                . ' name="' . $this->name . '[' . $i . '][id]"'
+                . ' value="' . $value['id'] . '" />';
+            $html[] = '</div>';
             if ($skills) {
                 if (isset($value['skills_level']) && $value['skills_level']) {
                     $value['skills_level'] = json_decode($value['skills_level'], true);
@@ -222,14 +222,14 @@ class Goals extends Radio
                         $checked = 'checked="checked"';
                     }
                     $html[] = '<div class="input-wrap">';
-                        $skillId = $skill->get('id');
+                    $skillId = $skill->get('id');
                     $skillLabel = $skill->get('label');
                     $html[] = '<input class="option" type="checkbox"'
                         . ' id="' . $this->id . $i . '-skill-' . $j . '"'
                         . ' name="' . $this->name . '[' . $i . '][skill][' . $j . ']"'
                         . ' ' . $checked . ' value="' . $skillId . '" />';
-                        $html[] = '<label class="option" for="' . $this->id . $i . '-skill-' . $j . '">'
-                            . $skillLabel . '</label>';
+                    $html[] = '<label class="option" for="' . $this->id . $i . '-skill-' . $j . '">'
+                        . $skillLabel . '</label>';
                     $html[] = '</div>';
                     $j++;
                 }
@@ -257,54 +257,54 @@ class Goals extends Radio
                     'id'        => 0,
                 ];
             }
-                $html[] = '<fieldset class="goals-strategies" data-index="' . count($value['strategy']) . '">';
-                    $html[] = '<legend>Strategies</legend>';
+            $html[] = '<fieldset class="goals-strategies" data-index="' . count($value['strategy']) . '">';
+            $html[] = '<legend>Strategies</legend>';
             foreach ($value['strategy'] as $z => $strategy) {
                 $html[] = '<div class="grid goal-strategy-row">';
-                    $html[] = '<div class="col span7">';
+                $html[] = '<div class="col span7">';
                 if ($z <= 0) {
                     $html[] = '<label for="' . $this->id . $i . '-strategy-' . $z . '-content">'
                         . Lang::txt('Strategy') . '</label>';
                 }
-                        $strategyVal = htmlspecialchars($strategy['content'], ENT_COMPAT, 'UTF-8');
-                        $html[] = '<input type="text" id="' . $this->id . $i . '-strategy-' . $z . '-content"'
-                            . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][content]"'
-                            . ' placeholder="Short, one line sentence" value="' . $strategyVal . '" />';
-                    $html[] = '</div>';
-                    $html[] = '<div class="col span3">';
+                $strategyVal = htmlspecialchars($strategy['content'], ENT_COMPAT, 'UTF-8');
+                $html[] = '<input type="text" id="' . $this->id . $i . '-strategy-' . $z . '-content"'
+                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][content]"'
+                    . ' placeholder="Short, one line sentence" value="' . $strategyVal . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="col span3">';
                 if ($z <= 0) {
                     $html[] = '<label for="' . $this->id . $i . '-strategy-' . $z . '-completed">'
                         . Lang::txt('Date Completed') . '</label>';
                 }
-                                $completedVal = htmlspecialchars($strategy['completed'], ENT_COMPAT, 'UTF-8');
-                                $html[] = '<input type="text" id="' . $this->id . $i . '-strategy-' . $z . '-completed"'
-                                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][completed]"'
-                                    . ' class="datepicker" placeholder="YYYY-MM-DD" value="' . $completedVal . '" />';
-                                $html[] = '</div>';
-                                $html[] = '<div class="col span1">';
+                $completedVal = htmlspecialchars($strategy['completed'], ENT_COMPAT, 'UTF-8');
+                $html[] = '<input type="text" id="' . $this->id . $i . '-strategy-' . $z . '-completed"'
+                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][completed]"'
+                    . ' class="datepicker" placeholder="YYYY-MM-DD" value="' . $completedVal . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="col span1">';
                 if ($z <= 0) {
                     $html[] = '<label for="' . $this->id . $i . '-strategy-' . $z . '-badge">'
                         . Lang::txt('Badge') . '</label>';
                 }
-                                $badgeChecked = ($strategy['badge'] ? ' checked="checked"' : '');
-                                $html[] = '<input type="checkbox" id="' . $this->id . $i . '-strategy-' . $z . '-badge"'
-                                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][badge]"'
-                                    . ' value="1" ' . $badgeChecked . ' />';
-                                $html[] = '<input type="hidden" id="' . $this->id . $i . '-strategy-' . $z . '-id"'
-                                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][id]"'
-                                    . ' value="' . $strategy['id'] . '" />';
-                                $html[] = '</div>';
-                                $html[] = '<div class="col span1 omega">';
+                $badgeChecked = ($strategy['badge'] ? ' checked="checked"' : '');
+                $html[] = '<input type="checkbox" id="' . $this->id . $i . '-strategy-' . $z . '-badge"'
+                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][badge]"'
+                    . ' value="1" ' . $badgeChecked . ' />';
+                $html[] = '<input type="hidden" id="' . $this->id . $i . '-strategy-' . $z . '-id"'
+                    . ' name="' . $this->name . '[' . $i . '][strategy][' . $z . '][id]"'
+                    . ' value="' . $strategy['id'] . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="col span1 omega">';
                 if ($z > 0) {
                     $removeStratTitle = Lang::txt('Remove strategy');
                     $html[] = '<a class="goals-strategy-remove delete icon-trash tooltips"'
                         . ' href="#" title="' . $removeStratTitle . '">'
                         . $removeStratTitle . '</a>';
                 }
-                                $html[] = '</div>';
-                                $html[] = '</div>';
+                $html[] = '</div>';
+                $html[] = '</div>';
             }
-                $html[] = '</fieldset>';
+            $html[] = '</fieldset>';
             if ($i > 0) {
                 $removeTitle = Lang::txt('Remove goal');
                 $html[] = '<p class="btn-wrap"><a class="goals-remove icon-trash delete tooltips"'

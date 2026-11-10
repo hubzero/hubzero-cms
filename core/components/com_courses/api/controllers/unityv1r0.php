@@ -95,7 +95,7 @@ class Unityv1r0 extends base
             App::abort(500, 'Unity key is not configured');
         }
 
-            $data = base64_decode($data);
+        $data = base64_decode($data);
         $iv_size = openssl_cipher_iv_length('AES-256-CBC');
         $iv = substr($data, 0, $iv_size);
         $data = substr($data, $iv_size);

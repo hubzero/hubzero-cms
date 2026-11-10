@@ -768,14 +768,14 @@ class Html
                     $html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
                 } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
                     //if (User::isGuest()) {
-                        // Not logged-in = show message
-                        //$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-                        //$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
+                    // Not logged-in = show message
+                    //$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+                    //$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
                     //} else {
-                        $pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
-                        $pop = ($resource->revision == 'dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
+                    $pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
+                    $pop = ($resource->revision == 'dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
 
-                        $existingSession = self::findExistingToolSession($resource);
+                    $existingSession = self::findExistingToolSession($resource);
                     if ($existingSession) {
                         $resumeUrl = Route::url(
                             'index.php?option=com_tools&task=session'
@@ -999,7 +999,7 @@ class Html
 
                     //$xtra = '';
                     //if ($firstChild->type == 13 || $firstChild->type == 15 || $firstChild->type == 33) {
-                        //$xtra = ' '. self::getFileAttribs($firstChild->path);
+                    //$xtra = ' '. self::getFileAttribs($firstChild->path);
                     //}
 
                     //load a resouce type object on child resource type

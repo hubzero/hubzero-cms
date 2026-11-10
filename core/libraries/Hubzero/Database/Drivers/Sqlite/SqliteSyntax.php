@@ -1100,14 +1100,14 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
                 return "substr({$col}, {$start})";
 
-            // Conditional functions
+                // Conditional functions
             case 'IFNULL':
                 // SQLite doesn't have IFNULL but COALESCE works the same
                 return 'COALESCE('
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Math functions
+                // Math functions
             case 'CEIL':
                 // SQLite 3.35.0+ has ceil(), for older versions we'd need a workaround
                 // Using ceil() for modern SQLite
@@ -1119,7 +1119,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->buildExpressionArgument($args[0]) . ' % '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
                 return "datetime('now')";
 

@@ -68,7 +68,7 @@ class Modulelayout extends Field
         if ($module && $client) {
             // Load language file
             $lang = App::get('language');
-                $lang->load($module . '.sys', PATH_APP . '/modules/' . $module, null, false, true)
+            $lang->load($module . '.sys', PATH_APP . '/modules/' . $module, null, false, true)
             ||  $lang->load($module . '.sys', PATH_CORE . '/modules/' . $module, null, false, true);
 
             // Get the database object and a new query object.

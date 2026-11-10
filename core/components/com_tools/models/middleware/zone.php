@@ -80,7 +80,7 @@ class Zone extends Base
                     $this->_cache['locations.count'] = $tbl->find('count', $filters);
                 }
                 return $this->_cache['locations.count'];
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -96,7 +96,7 @@ class Zone extends Base
                     $this->_cache['locations.list'] = new ItemList($results);
                 }
                 return $this->_cache['locations.list'];
-            break;
+                break;
         }
     }
 

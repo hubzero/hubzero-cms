@@ -44,14 +44,14 @@ if (!function_exists('paginator_item_active')) {
             <?php
             $fromResult = $this->start + 1;
 
-            // If the limit is reached before the end of the list.
+// If the limit is reached before the end of the list.
             if ($this->start + $this->limit < $this->total) {
                 $toResult = $this->start + $this->limit;
             } else {
                 $toResult = $this->total;
             }
 
-            // If there are results found.
+// If there are results found.
             if ($this->total > 0) {
                 echo Lang::txt('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
             } else {
@@ -62,7 +62,7 @@ if (!function_exists('paginator_item_active')) {
         <li class="limit">
             <label for="<?php echo htmlspecialchars((string) $this->prefix, ENT_QUOTES, 'UTF-8'); ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label>
             <?php
-            // Build the select list.
+// Build the select list.
             $selected = $this->viewall ? 0 : $this->limit;
 
             if (App::isAdmin()) {
@@ -102,7 +102,7 @@ if (!function_exists('paginator_item_active')) {
         <?php } ?>
         <?php if ($this->pages->ellipsis && $this->pages->i > 1) { ?>
             <?php
-            // Show page 1 link and ellipsis
+// Show page 1 link and ellipsis
             $firstPage = isset($this->pages->pages[1]) ? $this->pages->pages[1] : null;
             if ($firstPage && $firstPage->base !== null) { ?>
                 <li class="page"><?php echo paginator_item_active($firstPage, $this->prefix); ?></li>
@@ -128,7 +128,7 @@ if (!function_exists('paginator_item_active')) {
         <?php if ($this->pages->ellipsis && ($this->pages->i - 1) < $this->pages->total) { ?>
             <li class="page ellipsis" aria-hidden="true"><span>&hellip;</span></li>
             <?php
-            // Show last page link
+    // Show last page link
             $lastPage = isset($this->pages->pages[$this->pages->total]) ? $this->pages->pages[$this->pages->total] : null;
             if ($lastPage && $lastPage->base !== null) { ?>
                 <li class="page"><?php echo paginator_item_active($lastPage, $this->prefix); ?></li>

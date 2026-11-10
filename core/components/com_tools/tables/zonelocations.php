@@ -120,12 +120,12 @@ class ZoneLocations extends Table
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadResult();
-            break;
+                break;
 
             case 'all':
                 $filters['limit'] = 0;
                 return $this->find('list', $filters);
-            break;
+                break;
 
             case 'list':
             default:
@@ -145,7 +145,7 @@ class ZoneLocations extends Table
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadObjectList();
-            break;
+                break;
         }
     }
 }

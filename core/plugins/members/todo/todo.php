@@ -36,7 +36,7 @@ class Todo extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -181,7 +181,7 @@ class Todo extends Plugin
      *
      * @return string
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _new()
     {
         $view = $this->view('default', 'new');
@@ -208,7 +208,7 @@ class Todo extends Plugin
     /**
      * Save item
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save()
     {
         if (User::isGuest()) {

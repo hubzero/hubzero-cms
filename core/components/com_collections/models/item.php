@@ -177,15 +177,15 @@ class Item extends Base
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-            break;
+                break;
 
             case 'time':
                 return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-            break;
+                break;
 
             default:
                 return $this->get('modified');
-            break;
+                break;
         }
     }
 
@@ -245,7 +245,7 @@ class Item extends Base
                     $this->_cache['comments.count'] = $total;
                 }
                 return $this->_cache['comments.count'];
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -261,7 +261,7 @@ class Item extends Base
                     $this->_cache['comments.list'] = $results;
                 }
                 return $this->_cache['comments.list'];
-            break;
+                break;
         }
     }
 
@@ -366,14 +366,14 @@ class Item extends Base
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 
@@ -455,7 +455,7 @@ class Item extends Base
             // Increase like count
             $this->set('positive', ($this->get('positive') + 1));
         } elseif ($this->get('positive') > 0) { // Make sure we don't go below 0
-        // Decrease like count
+            // Decrease like count
             $this->set('positive', ($this->get('positive') - 1));
         }
         $this->_tbl->store();
@@ -472,7 +472,7 @@ class Item extends Base
      */
     public function store($check = true)
     {
-            // id cannot be an empty string due to database constrain
+        // id cannot be an empty string due to database constrain
         if ($this->get('id') === "") {
             $this->set('id', null);
         }
@@ -716,7 +716,7 @@ class Item extends Base
                     $this->_cache['collections.count'] = $tbl->getCount($filters);
                 }
                 return $this->_cache['collections.count'];
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -734,7 +734,7 @@ class Item extends Base
                     $this->_cache['collections.list'] = new ItemList($results);
                 }
                 return $this->_cache['collections.list'];
-            break;
+                break;
         }
     }
 

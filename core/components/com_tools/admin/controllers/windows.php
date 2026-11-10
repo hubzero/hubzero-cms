@@ -284,8 +284,8 @@ class Windows extends AdminController
                 }
                 //else
                 //{
-                    //$sessions[] = array("sessionid" => $sessionsArray[0],
-                    //    "status" => "cannot parse", "opaquedata" => "cannot parse");
+                //$sessions[] = array("sessionid" => $sessionsArray[0],
+                //    "status" => "cannot parse", "opaquedata" => "cannot parse");
                 //}
             }
 

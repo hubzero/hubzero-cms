@@ -148,7 +148,7 @@ class ModeDs
                 $vis_col_count = 0;
                 if (isset($dd['cols'])) {
                     $vis_col_count = count(array_filter($dd['cols'], function ($col) {
-                            return !isset($col['hide']);
+                        return !isset($col['hide']);
                     }));
                 }
 
@@ -280,7 +280,7 @@ class ModeDs
                 $group_cols = [];
                 foreach (explode(',', $group_by) as $gb_col) {
                     $gb_col = trim($gb_col);
-                // accept a bare column or its "WITH ROLLUP" suffix, nothing else
+                    // accept a bare column or its "WITH ROLLUP" suffix, nothing else
                     $rollup = '';
                     if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m)) {
                         $gb_col = trim($m[1]);
@@ -299,10 +299,10 @@ class ModeDs
             $order_cols = $dd['cols'];
             $dd['cols'] = [];
             foreach ($custom_view as $cv_col) {
-            // Only real columns of this dataview. An unknown key yields a null
-            // conf, and lib/db.php then uses the key itself both as the column
-            // expression and as its backtick-quoted alias -- so anything else was
-            // an injection straight into the SELECT list.
+                // Only real columns of this dataview. An unknown key yields a null
+                // conf, and lib/db.php then uses the key itself both as the column
+                // expression and as its backtick-quoted alias -- so anything else was
+                // an injection straight into the SELECT list.
                 if (!array_key_exists($cv_col, $order_cols)) {
                     continue;
                 }

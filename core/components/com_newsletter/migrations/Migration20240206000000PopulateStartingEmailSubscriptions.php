@@ -25,7 +25,7 @@ class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
 				('updates_news', 2, '_updates_and_news', 0, '$now');";
 
             if ($this->db->tableHasField($tableName, 'profile_field_name')) {
-            // if new table schema
+                // if new table schema
                 $this->log('Column `profile_field_name` found in table...');
 
                 $insertRecords = "INSERT INTO $tableName

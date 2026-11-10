@@ -175,17 +175,17 @@ class Router extends Base
                         $vars['controller'] = $segments[3];
                     }
                     return $vars;
-                break;
+                    break;
 
                 case 'editoutline':
                 case 'offerings':
-                //case 'managemodules':
+                    //case 'managemodules':
                 case 'ajaxupload':
                     $vars['task'] = $segments[1];
                     $vars['controller'] = 'media';
                     break;
 
-                // Defaults
+                    // Defaults
                 default:
                     $pagefound = false;
 

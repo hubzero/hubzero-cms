@@ -30,7 +30,7 @@ class Activity extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -517,15 +517,15 @@ class Activity extends Plugin
         Event::trigger(
             'system.logActivity',
             [
-            'activity' => [
-                'action'      => 'updated',
-                'scope'       => 'activity.settings',
-                'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_UPDATED'),
-            ],
-            'recipients' => [
-                $this->member->get('id'),
-            ],
+                'activity' => [
+                    'action'      => 'updated',
+                    'scope'       => 'activity.settings',
+                    'scope_id'    => $row->get('id'),
+                    'description' => Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_UPDATED'),
+                ],
+                'recipients' => [
+                    $this->member->get('id'),
+                ],
             ],
         );
 

@@ -93,8 +93,8 @@ class Languages extends AdminController
         // Select the language home pages
         $query->select($m . '.home');
         $query->join($m, $m . '.language', $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'', 'left');
-            //->whereEquals($m . '.home', 1)
-            //->where($m . '.language', '<>', '*');
+        //->whereEquals($m . '.home', 1)
+        //->where($m . '.language', '<>', '*');
 
         if ($filters['published'] >= 0) {
             $query->whereEquals($l . '.published', (int) $filters['published']);

@@ -62,7 +62,7 @@ class Access
         if (is_array($params)) {
             $options = array_merge($params, $options);
         } elseif ($params) {
-        // If all levels is allowed, push it into the array.
+            // If all levels is allowed, push it into the array.
             array_unshift($options, Select::option('', Lang::txt('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
         }
 

@@ -338,9 +338,9 @@ class Collections extends Plugin
                 case 'savecomment':
                     $arr['html'] = $this->savecomment();
                     break;
-                // 'newcomment' and 'editcomment' used to dispatch to methods that
-                // have never existed in this plugin -- reaching either was a fatal.
-                // Commenting is savecomment/deletecomment.
+                    // 'newcomment' and 'editcomment' used to dispatch to methods that
+                    // have never existed in this plugin -- reaching either was a fatal.
+                    // Commenting is savecomment/deletecomment.
                 case 'deletecomment':
                     $arr['html'] = $this->deletecomment();
                     break;
@@ -358,7 +358,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->unfollow('group');
                     break;
 
-                // Entries
+                    // Entries
                 case 'savepost':
                     $arr['html'] = $this->save();
                     break;

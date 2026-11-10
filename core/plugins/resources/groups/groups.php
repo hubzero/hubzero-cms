@@ -21,7 +21,7 @@ class Groups extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -55,22 +55,22 @@ class Groups extends Plugin
         ];
 
         if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-') {
-                $group = false;
+            $group = false;
         } else {
-                $group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
+            $group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
         }
 
-                $aclgroups = [];
+        $aclgroups = [];
 
         foreach ($resource->groups as $g) {
-                $aclgroup = \Hubzero\User\Group::getInstance($g);
+            $aclgroup = \Hubzero\User\Group::getInstance($g);
 
             if ($aclgroup && $group && $group->get('cn') == $aclgroup->get('cn')) {
-                    continue;
+                continue;
             }
 
             if ($aclgroup && $aclgroup->get('gidNumber')) {
-                    $aclgroups[] = $aclgroup;
+                $aclgroups[] = $aclgroup;
             }
         }
 

@@ -92,13 +92,13 @@ class Collection extends Base
                     switch ($property) {
                         case 'name':
                             return $this->_creator->get('description');
-                        break;
+                            break;
                         case 'alias':
                             return $this->_creator->get('cn');
-                        break;
+                            break;
                         case 'id':
                             return $this->_creator->get('gidNumber');
-                        break;
+                            break;
                     }
                 }
                 break;
@@ -112,13 +112,13 @@ class Collection extends Base
                     switch ($property) {
                         case 'name':
                             return $this->_creator->get('name');
-                        break;
+                            break;
                         case 'alias':
                             return $this->_creator->get('username');
-                        break;
+                            break;
                         case 'id':
                             return $this->_creator->get('id');
-                        break;
+                            break;
                     }
                 }
                 break;
@@ -167,16 +167,16 @@ class Collection extends Base
         switch (strtolower(trim($what))) {
             case 'follow':
                 return $this->baselink . '/follow';
-            break;
+                break;
 
             case 'unfollow':
                 return $this->baselink . '/unfollow';
-            break;
+                break;
 
             case 'base':
             default:
                 return $this->baselink;
-            break;
+                break;
         }
     }
 }

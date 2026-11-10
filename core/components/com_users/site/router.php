@@ -150,42 +150,42 @@ class Router extends Base
                     }
                     break;
 
-                //case 'registration':
-                //  if ($query['Itemid'] = $registration)
-                //  {
-                //      unset ($query['view']);
-                //  }
-                //  else
-                //  {
-                //      $query['Itemid'] = $default;
-                //  }
-                //  break;
+                    //case 'registration':
+                    //  if ($query['Itemid'] = $registration)
+                    //  {
+                    //      unset ($query['view']);
+                    //  }
+                    //  else
+                    //  {
+                    //      $query['Itemid'] = $default;
+                    //  }
+                    //  break;
 
-                //default:
-                //case 'profile':
-                //  if (!empty($query['view']))
-                //  {
-                //      $segments[] = $query['view'];
-                //  }
-                //  unset ($query['view']);
-                //  if ($query['Itemid'] = $profile)
-                //  {
-                //      unset ($query['view']);
-                //  }
-                //  else
-                //  {
-                //      $query['Itemid'] = $default;
-                //  }
+                    //default:
+                    //case 'profile':
+                    //  if (!empty($query['view']))
+                    //  {
+                    //      $segments[] = $query['view'];
+                    //  }
+                    //  unset ($query['view']);
+                    //  if ($query['Itemid'] = $profile)
+                    //  {
+                    //      unset ($query['view']);
+                    //  }
+                    //  else
+                    //  {
+                    //      $query['Itemid'] = $default;
+                    //  }
 
                     // Only append the user id if not "me".
-                //  $user = User::getInstance();
-                //  if (!empty($query['user_id']) && ($query['user_id'] != $user->id))
-                //  {
-                //      $segments[] = $query['user_id'];
-                //  }
-                //  unset ($query['user_id']);
+                    //  $user = User::getInstance();
+                    //  if (!empty($query['user_id']) && ($query['user_id'] != $user->id))
+                    //  {
+                    //      $segments[] = $query['user_id'];
+                    //  }
+                    //  unset ($query['user_id']);
 
-                //  break;
+                    //  break;
             }
         }
 

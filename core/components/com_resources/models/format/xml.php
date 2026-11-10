@@ -86,18 +86,18 @@ class XML extends Base
             case 'integer':
                 $value = (string) $node;
                 return (int) $value;
-            break;
+                break;
             case 'string':
                 return (string) $node;
-            break;
+                break;
             case 'boolean':
                 $value = (string) $node;
                 return (bool) $value;
-            break;
+                break;
             case 'double':
                 $value = (string) $node;
                 return (float) $value;
-            break;
+                break;
             case 'array':
                 $value = [];
                 foreach ($node->children() as $child) {

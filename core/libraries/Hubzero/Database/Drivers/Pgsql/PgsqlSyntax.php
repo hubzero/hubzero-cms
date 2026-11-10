@@ -751,19 +751,19 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
                 return "SUBSTRING({$col} FROM {$start})";
 
-            // Conditional functions
+                // Conditional functions
             case 'IFNULL':
                 // PostgreSQL uses COALESCE (standard SQL)
                 return 'COALESCE('
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Math functions
+                // Math functions
             case 'CEIL':
                 // PostgreSQL uses ceil() same as MySQL
                 return 'ceil(' . $this->buildExpressionArgument($args[0]) . ')';
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
                 // PostgreSQL uses NOW() or CURRENT_TIMESTAMP
                 return 'NOW()';
@@ -802,7 +802,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $format = $this->convertDateFormat($args[1]);
                 return "TO_CHAR(" . $this->buildExpressionArgument($args[0]) . ", '{$format}')";
 
-            // Sequence functions (native PostgreSQL syntax)
+                // Sequence functions (native PostgreSQL syntax)
             case 'NEXTVAL':
                 return "nextval('" . $args[0] . "')";
 

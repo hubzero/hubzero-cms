@@ -339,8 +339,8 @@ class ColumnInfo
 
         if (
             in_array($type, [
-            'tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint',
-            'serial', 'serial8', 'bigserial', 'int8',
+                'tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint',
+                'serial', 'serial8', 'bigserial', 'int8',
             ])
         ) {
             return true;

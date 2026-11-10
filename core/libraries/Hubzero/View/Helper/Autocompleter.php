@@ -64,7 +64,7 @@ class Autocompleter extends AbstractHelper
                 throw new \InvalidArgumentException(__METHOD__ .
                     '(); ' .
                     Lang::txt('Autocompleter type "%s" not supported.', $type));
-            break;
+                break;
         }
 
         $results = Event::trigger(

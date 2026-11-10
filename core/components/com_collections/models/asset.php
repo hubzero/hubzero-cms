@@ -266,7 +266,7 @@ class Asset extends Base
                 }
 
                 return $thumb;
-            break;
+                break;
 
             case 'm':
             case 'med':
@@ -281,14 +281,14 @@ class Asset extends Base
                 }
 
                 return $thumb;
-            break;
+                break;
 
             case 'o':
             case 'orig':
             case 'original':
             default:
                 return $file;
-            break;
+                break;
         }
     }
 

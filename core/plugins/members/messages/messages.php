@@ -29,7 +29,7 @@ class Messages extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -1067,12 +1067,12 @@ class Messages extends Plugin
             !Event::trigger(
                 'xmessage.onSendMessage',
                 [
-                'member_message',
-                $subject,
-                $message,
-                $from,
-                $email_users,
-                $option,
+                    'member_message',
+                    $subject,
+                    $message,
+                    $from,
+                    $email_users,
+                    $option,
                 ],
             )
         ) {

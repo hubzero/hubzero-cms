@@ -22,7 +22,7 @@ class Overview extends Plugin
      *
      * @var    boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -226,7 +226,7 @@ class Overview extends Plugin
                         'key'    => 'users-visits-org-other',
                     ];
                     break;
-                break;
+                    break;
 
                 default:
                     break;
@@ -335,7 +335,7 @@ class Overview extends Plugin
                         'key'    => 'users-downloads-org-other',
                     ];
                     break;
-                break;
+                    break;
 
                 default:
                     break;

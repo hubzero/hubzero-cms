@@ -66,7 +66,7 @@ class Verb
             "content-encoding" => "utf-8",
         ];
 
-    // new Predis\Client
+        // new Predis\Client
 
         try {
             $redis = new \Predis\Client([
@@ -79,8 +79,8 @@ class Verb
             die($e->getMessage());
         }
 
-// debugging...
-//       echo "celery-task-meta-".$task["id"]."\n";
+        // debugging...
+        //       echo "celery-task-meta-".$task["id"]."\n";
 
         $redis->lPush('celery', json_encode($bodyTask));
     }

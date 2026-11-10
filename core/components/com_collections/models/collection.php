@@ -417,7 +417,7 @@ class Collection extends Base
                     ]);
                 }
                 return $this->_counts[$what];
-            break;
+                break;
 
             case 'likes':
             case 'like':
@@ -431,7 +431,7 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('likes', 0);
-            break;
+                break;
 
             case 'reposts':
             case 'repost':
@@ -443,7 +443,7 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('reposts', 0);
-            break;
+                break;
 
             case 'posts':
             case 'post':
@@ -453,11 +453,11 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('posts', 0);
-            break;
+                break;
 
             default:
                 return 0;
-            break;
+                break;
         }
     }
 

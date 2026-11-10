@@ -462,14 +462,14 @@ class Post extends Relational
             switch (strtolower($what)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 

@@ -2804,7 +2804,7 @@ class Migration20130924000005Core extends Base
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $c)
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;
@@ -2844,7 +2844,7 @@ class Migration20130924000005Core extends Base
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $c)
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;
@@ -2930,7 +2930,7 @@ class Migration20130924000005Core extends Base
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $m)
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;
@@ -2971,7 +2971,7 @@ class Migration20130924000005Core extends Base
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $m)
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;
@@ -3015,7 +3015,7 @@ class Migration20130924000005Core extends Base
                     ->from('#__extensions')
                     ->where('element', '=', $t)
                     ->where('type', '=', 'template')
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;
@@ -3060,7 +3060,7 @@ class Migration20130924000005Core extends Base
                     ->from('#__extensions')
                     ->where('element', '=', $t)
                     ->where('type', '=', 'template')
-                    ;
+                ;
 
                 if ($query->exists()) {
                     continue;

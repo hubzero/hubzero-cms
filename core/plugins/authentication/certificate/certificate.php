@@ -29,7 +29,7 @@ class Certificate extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -288,9 +288,9 @@ class Certificate extends Plugin
 
         $html = '<a class="certificate account" href="'
             . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
-            $html .= '<div class="signin">';
-                $html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
-            $html .= '</div>';
+        $html .= '<div class="signin">';
+        $html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
+        $html .= '</div>';
         $html .= '</a>';
 
         return $html;

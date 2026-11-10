@@ -589,13 +589,13 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . ' WHERE name = '
                     . $this->connection->quote($args[0]) . ')';
 
-            // NULL handling
+                // NULL handling
             case 'IFNULL':
             case 'COALESCE':
                 return 'ISNULL(' . $this->buildExpressionArgument($args[0])
                     . ', ' . $this->buildExpressionArgument($args[1]) . ')';
 
-            // String functions
+                // String functions
             case 'LENGTH':
             case 'CHAR_LENGTH':
                 return 'LEN(' . $this->buildExpressionArgument($args[0]) . ')';
@@ -613,7 +613,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 );
                 return 'CONCAT(' . implode(', ', $parts) . ')';
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
             case 'CURRENT_TIMESTAMP':
                 return 'GETDATE()';
@@ -637,7 +637,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 return 'DATEPART(' . $function . ', '
                     . $this->buildExpressionArgument($args[0]) . ')';
 
-            // Math functions
+                // Math functions
             case 'CEIL':
                 return 'CEILING('
                     . $this->buildExpressionArgument($args[0]) . ')';

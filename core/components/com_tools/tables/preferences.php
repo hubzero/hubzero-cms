@@ -161,7 +161,7 @@ class Preferences extends Table
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadResult();
-            break;
+                break;
 
             case 'one':
                 $filters['limit'] = 1;
@@ -172,20 +172,20 @@ class Preferences extends Table
                 }
 
                 return $result;
-            break;
+                break;
 
             case 'first':
                 $filters['start'] = 0;
 
                 return $this->find('one', $filters);
-            break;
+                break;
 
             case 'all':
                 if (isset($filters['limit'])) {
                     unset($filters['limit']);
                 }
                 return $this->find('list', $filters);
-            break;
+                break;
 
             case 'list':
             default:
@@ -217,7 +217,7 @@ class Preferences extends Table
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadObjectList();
-            break;
+                break;
         }
     }
 

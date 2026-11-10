@@ -32,7 +32,7 @@ class Impact extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -47,7 +47,7 @@ class Impact extends Plugin
      *
      * @var boolean
      */
-// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_stats = null;
 
     /**
@@ -166,7 +166,7 @@ class Impact extends Plugin
      * @param  integer  $uid
      * @return string
      */
-// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($uid = 0)
     {
         // Build the final HTML

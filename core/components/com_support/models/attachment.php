@@ -253,11 +253,11 @@ class Attachment extends Relational
             case 'base':
             case 'component':
                 return $this->_base;
-            break;
+                break;
 
             case 'filepath':
                 return $this->path();
-            break;
+                break;
 
             case 'permalink':
             default:

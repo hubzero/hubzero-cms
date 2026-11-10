@@ -452,7 +452,7 @@ class Domainrestriction extends Plugin
     private function getAssignmentsKey($assignments)
     {
         return array_key_exists($this->_email, $assignments) ? $this->_email : (
-                array_key_exists($this->_domain, $assignments) ? $this->_domain : (
+            array_key_exists($this->_domain, $assignments) ? $this->_domain : (
                 array_key_exists($this->_tld, $assignments) ? $this->_tld : false
             )
         );

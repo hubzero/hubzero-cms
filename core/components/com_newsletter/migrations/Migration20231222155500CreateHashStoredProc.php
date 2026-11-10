@@ -17,10 +17,10 @@ class Migration20231222155500CreateHashStoredProc extends Base
         $config = self::$config;
         $users = self::$users;
 
-                $found = false;
+        $found = false;
 
-                $this->db->setQuery("SHOW FUNCTION STATUS");
-                $results = $this->db->loadObjectList();
+        $this->db->setQuery("SHOW FUNCTION STATUS");
+        $results = $this->db->loadObjectList();
         if ($results) {
             foreach ($results as $result) {
                 if ($result->Db == App::get('config')->get('db') && $result->Name == 'hash_access_code') {

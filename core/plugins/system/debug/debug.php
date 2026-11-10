@@ -164,8 +164,8 @@ class Debug extends Plugin
                 return;
             }
         } else {
-                // [!] HUBZERO - Add ability to show deubg output to specified users
-                // zooley (2012-08-29)
+            // [!] HUBZERO - Add ability to show deubg output to specified users
+            // zooley (2012-08-29)
             $filterUsers = $this->params->get('filter_users', null);
 
             if (!empty($filterUsers)) {
@@ -444,7 +444,7 @@ class Debug extends Plugin
      * @param   array  $arr
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _arr($arr)
     {
         $html = 'Array( ' . "\n";

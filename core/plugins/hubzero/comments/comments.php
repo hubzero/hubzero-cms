@@ -92,7 +92,7 @@ class Comments extends Plugin
                 $this->_feed();
                 break;
 
-            // Entries
+                // Entries
             case 'commentsave':
             case 'save':
                 $this->_save();

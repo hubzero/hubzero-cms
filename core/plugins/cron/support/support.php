@@ -475,13 +475,13 @@ class Support extends Plugin
                     continue;
                 }
 
-                    $this_status_sql = "SELECT title FROM `#__support_statuses` WHERE `id`=" . $result->status ;
-                    $database->setQuery($this_status_sql);
+                $this_status_sql = "SELECT title FROM `#__support_statuses` WHERE `id`=" . $result->status ;
+                $database->setQuery($this_status_sql);
                 if (!($this_result = $database->loadResult())) {
                     Log::error('CRON query failed: ' . $database->getErrorMsg());
                     return true;
                 }
-                    $result->status = $this_result;
+                $result->status = $this_result;
             }
         }
 
@@ -726,7 +726,7 @@ class Support extends Plugin
                         $timestamp = Date::modify('-1 year');
                         break;
 
-                    // Created since (newer than)
+                        // Created since (newer than)
                     case '+day':
                         $op = '>=';
                         $timestamp = Date::modify('-1 day');

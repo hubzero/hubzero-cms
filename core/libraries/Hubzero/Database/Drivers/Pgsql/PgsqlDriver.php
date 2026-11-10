@@ -1379,7 +1379,7 @@ class PgsqlDriver extends BaseSqlDriver
             } else {
                 $type = 'SERIAL';
             }
-             // SERIAL implies NOT NULL and sequences
+            // SERIAL implies NOT NULL and sequences
         }
 
         $parts = [$this->quoteName($name), $type];

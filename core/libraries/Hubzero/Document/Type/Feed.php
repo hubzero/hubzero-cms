@@ -31,7 +31,7 @@ class Feed extends Base
      */
     public $syndicationURL = '';
 
-     /**
+    /**
    * Image feed element
    *
    * optional
@@ -49,7 +49,7 @@ class Feed extends Base
      */
     public $copyright = '';
 
-     /**
+    /**
    * Published date feed element
    *
    *  optional
@@ -58,7 +58,7 @@ class Feed extends Base
    */
     public $pubDate = '';
 
-     /**
+    /**
    * Lastbuild date feed element
    *
    * optional
@@ -67,7 +67,7 @@ class Feed extends Base
    */
     public $lastBuildDate = '';
 
-     /**
+    /**
    * Editor feed element
    *
    * optional
@@ -83,7 +83,7 @@ class Feed extends Base
      */
     public $docs = '';
 
-     /**
+    /**
    * Editor email feed element
    *
    * optional

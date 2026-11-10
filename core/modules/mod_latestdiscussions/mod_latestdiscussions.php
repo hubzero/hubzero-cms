@@ -45,11 +45,11 @@ class Latestdiscussions extends Module
         switch ($this->params->get('forum', 'both')) {
             case 'site':
                 $posts = $forum->posts([
-                        'scope'    => 'site',
-                        'scope_id' => 0,
-                        'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels(),
-                    ])
+                    'scope'    => 'site',
+                    'scope_id' => 0,
+                    'state'    => Post::STATE_PUBLISHED,
+                    'access'   => User::getAuthorisedViewLevels(),
+                ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
@@ -57,11 +57,11 @@ class Latestdiscussions extends Module
 
             case 'group':
                 $posts = $forum->posts([
-                        'scope'    => 'group',
-                        'scope_id' => -1,
-                        'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels(),
-                    ])
+                    'scope'    => 'group',
+                    'scope_id' => -1,
+                    'state'    => Post::STATE_PUBLISHED,
+                    'access'   => User::getAuthorisedViewLevels(),
+                ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
@@ -70,11 +70,11 @@ class Latestdiscussions extends Module
             case 'both':
             default:
                 $posts = $forum->posts([
-                        'scope'    => ['site', 'group'],
-                        'scope_id' => -1,
-                        'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels(),
-                    ])
+                    'scope'    => ['site', 'group'],
+                    'scope_id' => -1,
+                    'state'    => Post::STATE_PUBLISHED,
+                    'access'   => User::getAuthorisedViewLevels(),
+                ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
@@ -131,11 +131,11 @@ class Latestdiscussions extends Module
         // Get any threads not found above
         if (count($t) > 0) {
             $thrds = $forum->posts([
-                    'scope'    => ['site', 'group'],
-                    'scope_id' => -1,
-                    'state'    => Post::STATE_PUBLISHED,
-                    'access'   => User::getAuthorisedViewLevels(),
-                ])
+                'scope'    => ['site', 'group'],
+                'scope_id' => -1,
+                'state'    => Post::STATE_PUBLISHED,
+                'access'   => User::getAuthorisedViewLevels(),
+            ])
                 ->whereIn('id', $t)
                 ->order('created', 'desc')
                 ->limit(100)

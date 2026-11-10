@@ -121,7 +121,7 @@ class Calendar extends Model
                     $this->_events_count = $tbl->count($filters);
                 }
                 return $this->_events_count;
-            break;
+                break;
 
             case 'repeating':
                 if (!($this->_events_repeating instanceof ItemList) || $clear) {
@@ -183,7 +183,7 @@ class Calendar extends Model
                     $this->_events_repeating = new ItemList($repeats);
                 }
                 return $this->_events_repeating;
-            break;
+                break;
 
             case 'list':
             default:
@@ -197,7 +197,7 @@ class Calendar extends Model
                     $this->_events = new ItemList($results);
                 }
                 return $this->_events;
-            break;
+                break;
         }
     }
 

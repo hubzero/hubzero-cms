@@ -114,7 +114,7 @@ class Account extends Plugin
                     $arr['html'] = $this->_view();
                     break;
 
-                // Actions
+                    // Actions
                 case 'unlink':
                     $this->_unlink();
                     break;
@@ -122,7 +122,7 @@ class Account extends Plugin
                     $this->_uploadKey();
                     break;
 
-                // Set local password
+                    // Set local password
                 case 'sendtoken':
                     $this->sendtoken();
                     break;
@@ -136,7 +136,7 @@ class Account extends Plugin
                     $this->checkPass();
                     break;
 
-                // Default
+                    // Default
                 default:
                     $arr['html'] = $this->_view();
                     break;

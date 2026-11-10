@@ -383,7 +383,7 @@ class IcalParser
     {
         if ($events = $this->getEvents()) {
             usort($events, function ($a, $b) {
-                    return $a['DTSTART'] > $b['DTSTART'];
+                return $a['DTSTART'] > $b['DTSTART'];
             });
             return $events;
         }
@@ -399,7 +399,7 @@ class IcalParser
     {
         if ($events = $this->getEvents()) {
             usort($events, function ($a, $b) {
-                    return $a['DTSTART'] < $b['DTSTART'];
+                return $a['DTSTART'] < $b['DTSTART'];
             });
             return $events;
         }

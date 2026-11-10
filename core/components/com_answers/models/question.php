@@ -217,14 +217,14 @@ class Question extends Relational
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 

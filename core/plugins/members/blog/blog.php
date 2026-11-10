@@ -146,7 +146,7 @@ class Blog extends Plugin
                     $this->_feed();
                     break;
 
-                // Settings
+                    // Settings
                 case 'savesettings':
                     $arr['html'] = $this->_savesettings();
                     break;
@@ -154,7 +154,7 @@ class Blog extends Plugin
                     $arr['html'] = $this->_settings();
                     break;
 
-                // Comments
+                    // Comments
                 case 'savecomment':
                     $arr['html'] = $this->_savecomment();
                     break;
@@ -169,7 +169,7 @@ class Blog extends Plugin
                     $arr['html'] = $this->_deletecomment();
                     break;
 
-                // Entries
+                    // Entries
                 case 'save':
                     $arr['html'] = $this->_save();
                     break;

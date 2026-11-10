@@ -65,7 +65,7 @@ class CategoryParent extends Select
         }
 
         if ($this->element['parent']) {
-        // Prevent parenting to children of this item.
+            // Prevent parenting to children of this item.
             if ($id = $this->form->getValue('id')) {
                 $query->joinRaw('#__categories AS p', 'p.id = ' . (int) $id, 'left');
                 $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');

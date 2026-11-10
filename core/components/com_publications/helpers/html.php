@@ -748,7 +748,7 @@ class Html
                 <a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) {
                     echo '<a href="' . $pubUrl . '" >';
                          } ?><?php echo htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8'); ?>"<?php if ($append) {
-                         echo '</a>';
+           echo '</a>';
                          } ?></span>
                 <?php if ($append) {
                     echo $append;
@@ -1292,7 +1292,7 @@ class Html
             if (file_exists($file)) {
                 if ($fast) {
                     $mimer = new  \Hubzero\Content\Mimetypes();
-                                        $mimeType = $mimer->getMimeType($file, true);
+                    $mimeType = $mimer->getMimeType($file, true);
                 } else {
                     $mimeType = mime_content_type($file);
                 }
@@ -1340,7 +1340,7 @@ class Html
 
             if ($fast) {
                 $mimer = new  \Hubzero\Content\Mimetypes();
-                                $mimeType = $mimer->getMimeType($file, true);
+                $mimeType = $mimer->getMimeType($file, true);
             } else {
                 $mimeType = mime_content_type($file);
             }

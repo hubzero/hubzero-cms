@@ -146,7 +146,7 @@ class Log extends Base implements CommandInterface
                             // Do nothing
                             break;
 
-                        // Numbers 0-9 -> toggle individual fields
+                            // Numbers 0-9 -> toggle individual fields
                         case 48:
                         case 49:
                         case 50:
@@ -167,20 +167,20 @@ class Log extends Base implements CommandInterface
                             }
                             break;
 
-                        // b - toggle beep
+                            // b - toggle beep
                         case 98:
                             $this->output->backspace();
                             $noBeep = ($noBeep) ? false : true;
                             $this->output->addLine('(b)eep ' . (($noBeep) ? 'off' : 'on'));
                             break;
 
-                        // f - show fields
+                            // f - show fields
                         case 102:
                             $this->output->backspace();
                             $class::format($this->output);
                             break;
 
-                        // h - help info
+                            // h - help info
                         case 104:
                             $this->output->backspace();
                             $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, 
@@ -188,7 +188,7 @@ class Log extends Base implements CommandInterface
                             $this->output->addLine($help);
                             break;
 
-                        // i - input mode
+                            // i - input mode
                         case 105:
                             $this->output->backspace((2 + strlen($prompt)));
                             $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or 
@@ -201,14 +201,14 @@ class Log extends Base implements CommandInterface
                             $newPrompt = false;
                             break;
 
-                        // p - toggle play/pause
+                            // p - toggle play/pause
                         case 112:
                             $this->output->backspace();
                             $pause = ($pause) ? false : true;
                             $this->output->addLine((($pause) ? '(p)ause' : '(p)lay'));
                             break;
 
-                        // q - quit
+                            // q - quit
                         case 113:
                             $this->output->backspace();
                             $this->output->addLine('(q)uit');
@@ -217,7 +217,7 @@ class Log extends Base implements CommandInterface
                             proc_terminate($proc);
                             break 2;
 
-                        // r - rerender last 100 lines
+                            // r - rerender last 100 lines
                         case 114:
                             $this->output->backspace();
                             $this->output->addLine('(r)erender last 100 lines');
@@ -237,7 +237,7 @@ class Log extends Base implements CommandInterface
                             }
                             break;
 
-                        // Default
+                            // Default
                         default:
                             // Just delete the typed character
                             $this->output->backspace(1, true);
@@ -251,7 +251,7 @@ class Log extends Base implements CommandInterface
                     }
                 }
             } else {
-            // Input mode
+                // Input mode
                 $string = fgets(STDIN);
 
                 if ($string !== false) {
@@ -273,7 +273,7 @@ class Log extends Base implements CommandInterface
                             proc_terminate($proc);
                             break 2;
 
-                        // Set date format
+                            // Set date format
                         case 'date':
                             // Make sure arg is set
                             if (isset($arg)) {
@@ -287,7 +287,7 @@ class Log extends Base implements CommandInterface
                             $this->output->addString('input mode >>> ');
                             break;
 
-                        // Close input mode
+                            // Close input mode
                         case 'done':
                         case 'i':
                             $input = false;
@@ -295,14 +295,14 @@ class Log extends Base implements CommandInterface
                             $this->printPrompt();
                             break;
 
-                        // Show fields
+                            // Show fields
                         case 'fields':
                             $this->output->addSpacer();
                             $class::format($this->output);
                             $this->output->addString('input mode >>> ');
                             break;
 
-                        // Show or set threshold value(s)
+                            // Show or set threshold value(s)
                         case 'threshold':
                             // If arg is set, we're setting threshold
                             if (isset($arg)) {
@@ -330,7 +330,7 @@ class Log extends Base implements CommandInterface
                             $this->output->addString('input mode >>> ');
                             break;
 
-                        // Hide/show fields
+                            // Hide/show fields
                         case 'show':
                         case 'hide':
                             // Toggle will return false or string indicating fields changed
@@ -340,7 +340,7 @@ class Log extends Base implements CommandInterface
                                 $this->output->addLine("{$arg} is not an available field", 'warning');
                             }
 
-                        // Default - just show new prompt
+                            // Default - just show new prompt
                         default:
                             $this->output->addString('input mode >>> ');
                             break;

@@ -109,12 +109,12 @@ class Slider extends Macro
 
         $html  = '';
         $html .= '<div class="wiki_slider">';
-            $html .= '<div id="slider_' . $id . '" class="slider_macro">';
+        $html .= '<div id="slider_' . $id . '" class="slider_macro">';
         foreach ($final_slides as $fs) {
             $html .= '<img src="' . $fs . '" alt="" />';
         }
-            $html .= '</div>';
-            $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
+        $html .= '</div>';
+        $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
         $html .= '</div>';
 
         $cssPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css';

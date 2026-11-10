@@ -22,9 +22,9 @@ class Migration20190305000000ComActivity extends Base
      * @var array
      **/
     public static $tables = [
-    '#__activity_recipients' => [
-    'viewed',
-    ],
+        '#__activity_recipients' => [
+            'viewed',
+        ],
     ];
 
     /**

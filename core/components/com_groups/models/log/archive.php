@@ -80,7 +80,7 @@ class Archive extends Model
                     $this->_logs = new ItemList($results);
                 }
                 return $this->_logs;
-            break;
+                break;
         }
     }
 }

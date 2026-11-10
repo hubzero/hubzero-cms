@@ -92,14 +92,14 @@ class Router extends Base
                 $vars['id'] = $segments[1];
                 break;
 
-            /*case 'tags':
-                $vars['task'] = 'tags';
-                $vars['tag'] = $segments[1];
-            break;
+                /*case 'tags':
+                    $vars['task'] = 'tags';
+                    $vars['tag'] = $segments[1];
+                break;
 
-            case 'myquestions':
-                $vars['task'] = 'myquestions';
-            break;*/
+                case 'myquestions':
+                    $vars['task'] = 'myquestions';
+                break;*/
 
             case 'search':
                 $vars['task'] = 'search';

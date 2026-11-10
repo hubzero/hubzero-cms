@@ -28,7 +28,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -418,9 +418,9 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             . $return)
             . '">';
 
-            $html .= '<div class="signin">';
-                $html .= Lang::txt('PLG_AUTHENTICATION_TWITTER_SIGN_IN');
-            $html .= '</div>';
+        $html .= '<div class="signin">';
+        $html .= Lang::txt('PLG_AUTHENTICATION_TWITTER_SIGN_IN');
+        $html .= '</div>';
         $html .= '</a>';
 
         return $html;

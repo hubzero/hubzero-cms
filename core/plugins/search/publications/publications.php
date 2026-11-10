@@ -51,7 +51,7 @@ class Publications extends Plugin
         }
         else
         {*/
-            $access = '(p.access IN (0, ' . $viewlevels . '))';
+        $access = '(p.access IN (0, ' . $viewlevels . '))';
         //}
 
         $term_parser = $request->get_terms();

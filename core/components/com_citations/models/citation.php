@@ -87,7 +87,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 ->join('#__users AS u', $records->getQualifiedFieldName('uid'), 'u.id', 'left')
                 ->join('#__citations_secondary AS CS', $recordIdField, 'CS.cid', 'left')
                 ->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left');
-                //->group($recordIdField);
+        //->group($recordIdField);
 
         // scope & scope Id
         if (!empty($filters['scope']) && $filters['scope'] != 'all') {
@@ -786,7 +786,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'doi'          => 'rft_id=info:doi/',
         ];
 
-            // form the formatted citation
+        // form the formatted citation
         foreach ($template_keys as $k => $v) {
             if (!$this->keyExistsOrIsNotEmpty($k, $this) && $k != 'author') {
                 $replace_values[$v] = '';

@@ -94,7 +94,7 @@ class Module extends Model
                     $this->_menu_items = new ItemList($results);
                 }
                 return $this->_menu_items;
-            break;
+                break;
         }
     }
 

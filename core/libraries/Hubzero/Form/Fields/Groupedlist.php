@@ -65,7 +65,7 @@ class Groupedlist extends Field
                     $groups[$label][] = $tmp;
                     break;
 
-                // The element is a <group />
+                    // The element is a <group />
                 case 'group':
                     // Get the group label.
                     if ($groupLabel = (string) $element['label']) {
@@ -109,7 +109,7 @@ class Groupedlist extends Field
                     }
                     break;
 
-                // Unknown element type.
+                    // Unknown element type.
                 default:
                     App::abort(
                         500,
@@ -169,7 +169,7 @@ class Groupedlist extends Field
                 htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
                 '"/>';
         } else {
-        // Create a regular list.
+            // Create a regular list.
             $html[] = Dropdown::groupedlist(
                 $groups,
                 $this->name,

@@ -425,7 +425,7 @@ class Parser
                         if (is_file($path . $altfile)) {
                             $found = true;
 
-                                $macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
+                            $macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
                             include_once $path . $altfile;
                             break;
                         }

@@ -937,14 +937,14 @@ class Detector
                             stristr($this->lowerAgent, 'nt 5.1') ||
                             stristr($this->lowerAgent, 'xp')
                         ) { // windows xp
-                        //$this->platformVersion = 5.1;
+                            //$this->platformVersion = 5.1;
                             $this->platformVersion = 'XP';
                             $this->platform = 'Windows';
                         } elseif (
                             stristr($this->lowerAgent, 'nt 5') ||
                             stristr($this->lowerAgent, '2000')
                         ) { // windows 2000
-                        //$this->platformVersion = 5.0;
+                            //$this->platformVersion = 5.0;
                             $this->platformVersion = '2000';
                             $this->platform = 'Windows';
                         } elseif (stristr($this->lowerAgent, 'nt 4')) { // nt 4
@@ -976,8 +976,8 @@ class Detector
                 }
                 break;
             } elseif (is_array($s_os) && ($i == (count($a_os) - 2))) {
-            // check that it's an array, check it's the second to last item
-            // in the main os array, the unix one that is
+                // check that it's an array, check it's the second to last item
+                // in the main os array, the unix one that is
                 for ($j = 0; $j < count($s_os); $j++) {
                     if (stristr($this->lowerAgent, $s_os[$j])) {
                         $this->platform = 'Unix'; // if the os is in the unix array, it's unix, obviously...
@@ -987,8 +987,8 @@ class Detector
                     }
                 }
             } elseif (is_array($s_os) && ($i == (count($a_os) - 1))) {
-            // check that it's an array, check it's the last item
-            // in the main os array, the linux one that is
+                // check that it's an array, check it's the last item
+                // in the main os array, the linux one that is
                 for ($j = 0; $j < count($s_os); $j++) {
                     if (stristr($this->lowerAgent, $s_os[$j])) {
                         $this->platform = 'Linux';
@@ -1096,19 +1096,19 @@ class Detector
         switch (strtolower($for)) {
             case 'major':
                 return $this->major();
-            break;
+                break;
 
             case 'minor':
                 return $this->minor();
-            break;
+                break;
 
             case 'platform':
                 return $this->platformVersion();
-            break;
+                break;
 
             default:
                 return $this->majorVersion . '.' . $this->minorVersion;
-            break;
+                break;
         }
     }
 

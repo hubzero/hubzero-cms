@@ -246,18 +246,18 @@ class Certificate extends Base
             case 'system':
             case 'upload':
                 return PATH_APP . $this->_base;
-            break;
+                break;
 
             case 'web':
                 $reqBase = trim(Request::base(true), '/');
                 $base = str_replace('administrator', '', $reqBase);
                 $appPath = substr(PATH_APP, strlen(PATH_ROOT));
                 return rtrim($base, '/') . $appPath . $this->_base;
-            break;
+                break;
 
             default:
                 return $this->_base;
-            break;
+                break;
         }
     }
 

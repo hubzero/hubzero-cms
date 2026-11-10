@@ -139,9 +139,9 @@ class Htmx extends Base implements CommandInterface
 
         if (
             $this->looksLikeFragmentFile($file) && (
-            strpos($lower, '<!doctype html') !== false
-            || strpos($lower, '<html') !== false
-            || strpos($lower, '<body') !== false
+                strpos($lower, '<!doctype html') !== false
+                || strpos($lower, '<html') !== false
+                || strpos($lower, '<body') !== false
             )
         ) {
             $warnings[] = [

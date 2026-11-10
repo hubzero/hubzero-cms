@@ -263,14 +263,14 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                break;
+                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                break;
+                    break;
             }
         }
 
@@ -316,7 +316,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             case 'component':
             case 'base':
                 return $this->_base;
-            break;
+                break;
 
             case 'vote':
                 $link  = $this->_base . '&task=vote&category=article&id=' . $this->get('id');

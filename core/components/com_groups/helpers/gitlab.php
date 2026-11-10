@@ -105,7 +105,7 @@ class Gitlab
                 case '401 Unauthorized':
                     Notify::warning(Lang::txt('COM_GROUPS_GITLAB_TOKEN_PROBLEM'));
                     return false;
-                break;
+                    break;
             }
         }
 

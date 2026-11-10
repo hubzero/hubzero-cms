@@ -609,11 +609,11 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // MySQL-specific: CHAR_LENGTH for character count
+                // MySQL-specific: CHAR_LENGTH for character count
             case 'LENGTH':
                 return 'CHAR_LENGTH(' . $this->buildExpressionArgument($args[0]) . ')';
 
-            // MySQL-specific: SUBSTRING syntax
+                // MySQL-specific: SUBSTRING syntax
             case 'SUBSTRING':
                 $col = $this->buildExpressionArgument($args[0]);
                 $start = (int) $args[1];
@@ -622,7 +622,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
                 return "SUBSTRING({$col}, {$start})";
 
-            // MySQL-specific: Date functions
+                // MySQL-specific: Date functions
             case 'NOW':
                 return 'NOW()';
 

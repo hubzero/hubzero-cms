@@ -343,7 +343,7 @@ class Unit extends Base
             case 'prev':
             case 'next':
                 return $this->_siblings->fetch($dir);
-            break;
+                break;
 
             default:
                 break;

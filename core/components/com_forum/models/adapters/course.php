@@ -76,7 +76,7 @@ class Course extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->_base . '?' . (string) $this->_build($segments);
-            break;
+                break;
 
             case 'edit':
                 if ($this->_segments['active'] == 'outline') {
@@ -132,7 +132,7 @@ class Course extends Base
             case 'abuse':
                 return 'index.php?option=com_support&task=reportabuse&category=forum&id='
                     . $this->get('post') . '&parent=' . $this->get('parent');
-            break;
+                break;
 
             case 'permalink':
             default:

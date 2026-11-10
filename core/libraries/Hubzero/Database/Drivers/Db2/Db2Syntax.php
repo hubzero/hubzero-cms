@@ -717,14 +717,14 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
                 return "SUBSTR({$col}, {$start})";
 
-            // Conditional functions
+                // Conditional functions
             case 'IFNULL':
                 // DB2 uses COALESCE() or VALUE()
                 return 'COALESCE('
                     . $this->buildExpressionArgument($args[0]) . ', '
                     . $this->buildExpressionArgument($args[1]) . ')';
 
-            // Date/time functions
+                // Date/time functions
             case 'NOW':
                 // DB2 uses CURRENT TIMESTAMP
                 return 'CURRENT TIMESTAMP';
@@ -766,7 +766,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $format = $this->convertDateFormat($args[1]);
                 return "VARCHAR_FORMAT(" . $this->buildExpressionArgument($args[0]) . ", '{$format}')";
 
-            // Sequence functions (native DB2 syntax)
+                // Sequence functions (native DB2 syntax)
             case 'NEXTVAL':
                 return 'NEXT VALUE FOR ' . $this->connection->quoteName($args[0]);
 

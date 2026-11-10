@@ -38,7 +38,7 @@ class Gallery
             return;
         }
 
-    //  $file_list = scandir(PATH_ROOT . $real_path);
+        //  $file_list = scandir(PATH_ROOT . $real_path);
         $cmd = 'find ' . PATH_ROOT . $real_path . ' -type f|grep -v small|grep -v medium';
         $file_list = explode("\n", (`$cmd`));
         array_pop($file_list);

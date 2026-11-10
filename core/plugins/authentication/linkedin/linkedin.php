@@ -28,7 +28,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -478,9 +478,9 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         $html = '<a class=\"linkedin account\" href=\"'
             . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '\">';
-            $html .= '<div class="signin">';
-                $html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
-            $html .= '</div>';
+        $html .= '<div class="signin">';
+        $html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
+        $html .= '</div>';
         $html .= '</a>';
 
         return $html;

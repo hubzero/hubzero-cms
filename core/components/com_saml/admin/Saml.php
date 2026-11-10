@@ -29,13 +29,13 @@ class Saml extends AbstractComponent
     protected function execute(): void
     {
         if (!User::authorise('core.manage', 'com_saml')) {
-                App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $controllerName = Request::getCmd('controller', 'saml');
 
         if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
-                $controllerName = 'saml';
+            $controllerName = 'saml';
         }
 
         Submenu::addEntry(

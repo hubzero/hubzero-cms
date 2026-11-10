@@ -1680,7 +1680,7 @@ class Pipeline extends SiteController
                 //$users = $this->config->get('access-admin-component') ? $team : $admins;
                 //if (!$inteam)
                 //{
-                    //$users[] = User::get('id'); // cc person who made the change if not in team
+                //$users[] = User::get('id'); // cc person who made the change if not in team
                 //}
                 break;
 

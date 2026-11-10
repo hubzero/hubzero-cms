@@ -24,7 +24,7 @@ class Guide extends Plugin
      *
      * @var  boolean
      */
-// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -144,7 +144,7 @@ class Guide extends Plugin
      *
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _default()
     {
         $this->view->setLayout('overlay');
@@ -155,7 +155,7 @@ class Guide extends Plugin
      *
      * @return  void
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _mark()
     {
         $this->view->setLayout('mark');

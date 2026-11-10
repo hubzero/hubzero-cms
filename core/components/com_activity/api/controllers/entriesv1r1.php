@@ -149,7 +149,7 @@ class Entriesv1r1 extends ApiController
             'recipients' => Request::getString('recipients', ''),
             'sort'       => Request::getString('sort', 'created'),
             'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
-        'limit'      => Request::getInt('limit', Config::get('list_limit')),
+            'limit'      => Request::getInt('limit', Config::get('list_limit')),
             'start'      => Request::getInt('start', 0),
         ];
 

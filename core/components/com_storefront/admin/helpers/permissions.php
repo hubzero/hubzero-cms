@@ -39,12 +39,12 @@ class Permissions
         $result = new Obj();
 
         $actions = [
-                'admin',
-                'manage',
-                'create',
-                'edit',
-                'edit.state',
-                'delete',
+            'admin',
+            'manage',
+            'create',
+            'edit',
+            'edit.state',
+            'delete',
         ];
 
         foreach ($actions as $action) {

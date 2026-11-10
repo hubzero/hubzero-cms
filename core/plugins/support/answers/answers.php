@@ -170,15 +170,15 @@ class Answers extends Plugin
         switch ($category) {
             case 'answer':
                 return Lang::txt('PLG_SUPPORT_ANSWERS_ANSWER_TO', $parentid);
-            break;
+                break;
 
             case 'question':
                 return Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $parentid);
-            break;
+                break;
 
             case 'answercomment':
                 return Lang::txt('PLG_SUPPORT_ANSWERS_COMMENT_TO', $parentid);
-            break;
+                break;
         }
 
         return '';

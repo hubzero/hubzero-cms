@@ -107,7 +107,7 @@ class Asset
                                             "/$extension/$element/$folder/$file");
                                         break;
                                     } elseif (file_exists(PATH_CORE . "/$extension/$folder/$element/$file")) {
-                                    // Try to deal with classical file in a a media subfolder called element
+                                        // Try to deal with classical file in a a media subfolder called element
                                         $includes[] = $root .
                                             $coredir .
                                             "/$extension/$folder/$element/$file" .
@@ -128,7 +128,7 @@ class Asset
                                             "/templates/$template/$folder/system/$element/$file");
                                         break;
                                     } elseif (file_exists(PATH_CORE . "/assets/$folder/$element/$file")) {
-                                    // Try to deal with system files in the media folder
+                                        // Try to deal with system files in the media folder
                                         $includes[] = $root .
                                             $coredir .
                                             "/assets/$folder/$element/$file" .
@@ -138,7 +138,7 @@ class Asset
                                         break;
                                     }
                                 } elseif (file_exists(PATH_CORE . "/$extension/$folder/$file")) {
-                                // Try to deals in the extension media folder
+                                    // Try to deals in the extension media folder
                                     $includes[] = $root .
                                         $coredir .
                                         "/$extension/$folder/$file" .
@@ -147,7 +147,7 @@ class Asset
                                         "/$extension/$folder/$file");
                                     break;
                                 } elseif (file_exists(PATH_APP . "/templates/$template/$folder/system/$file")) {
-                                // Try to deal with system files in the template folder
+                                    // Try to deal with system files in the template folder
                                     $includes[] = $root .
                                         $appdir .
                                         "/templates/$template/$folder/system/$file" .
@@ -156,7 +156,7 @@ class Asset
                                         "/templates/$template/$folder/system/$file");
                                     break;
                                 } elseif (file_exists(PATH_CORE . "/assets/$folder/$file")) {
-                                // Try to deal with system files in the media folder
+                                    // Try to deal with system files in the media folder
                                     $includes[] = $root .
                                         $coredir .
                                         "/assets/$folder/$file" .
@@ -166,7 +166,7 @@ class Asset
                                     break;
                                 }
                             } elseif (file_exists(PATH_CORE . "/assets/$folder/$file")) {
-                            // Try to deal with system files in the media folder
+                                // Try to deal with system files in the media folder
                                 $includes[] = $root .
                                     $coredir .
                                     "/assets/$folder/$file" .
@@ -179,7 +179,7 @@ class Asset
                     }
                 }
             } else {
-            // If not relative and http is not present in filename
+                // If not relative and http is not present in filename
                 $includes = [];
 
                 foreach ($potential as $strip) {
@@ -284,7 +284,7 @@ class Asset
                 return $includes;
             }
         } else {
-        // If inclusion is required
+            // If inclusion is required
             $document = App::get('document');
             foreach ($includes as $include) {
                 $document->addStylesheet($include, 'text/css', null, $attribs);
@@ -330,7 +330,7 @@ class Asset
                 return $includes;
             }
         } else {
-        // If inclusion is required
+            // If inclusion is required
             $document = App::get('document');
 
             foreach ($includes as $include) {

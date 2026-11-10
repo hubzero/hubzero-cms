@@ -72,7 +72,7 @@ class Timezones extends Element
                 5.75,
                 $lang->txt('UTC__05_45__KATHMANDU'),
             ),
-                Select::option(6, $lang->txt('UTC__06_00__ALMATY__DHAKA')),
+            Select::option(6, $lang->txt('UTC__06_00__ALMATY__DHAKA')),
             Select::option(6.5, $lang->txt('UTC__06_30__YAGOON')),
             Select::option(7, $lang->txt('UTC__07_00__BANGKOK__HANOI__JAKARTA__PHNOM_PENH')),
             Select::option(8, $lang->txt('UTC__08_00__BEIJING__PERTH__SINGAPORE__HONG_KONG')),

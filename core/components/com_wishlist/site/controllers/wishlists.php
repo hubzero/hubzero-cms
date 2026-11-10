@@ -494,7 +494,7 @@ class Wishlists extends SiteController
         $this->_wishtitle = Str::truncate($wish->get('subject'), 80);
         $this->_buildPathway($wishlist);
 
-            // Go through some access checks
+        // Go through some access checks
         if (User::isGuest()) {
             if ($action) {
                 $this->_msg = ($action == 'addbonus') ? Lang::txt('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
@@ -1054,7 +1054,7 @@ class Wishlists extends SiteController
         if (!$canManage) {
             foreach (
                 ['status', 'assigned', 'ranking', 'private', 'proposed_by',
-                'granted', 'granted_by', 'granted_vid', 'accepted'] as $k
+                    'granted', 'granted_by', 'granted_vid', 'accepted'] as $k
             ) {
                 unset($fields[$k]);
             }
@@ -1464,11 +1464,11 @@ class Wishlists extends SiteController
         if ($category == 'question' or $category == 'ticket') {
             // move to a question or a ticket
             Event::trigger('support.transferItem', [
-                    'wish',
-                    $wishid,
-                    $category,
-                    $options,
-                ]);
+                'wish',
+                $wishid,
+                $category,
+                $options,
+            ]);
         } else {
             // moving to another list
             $oldlist = Wishlist::oneOrFail($listid);

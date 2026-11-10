@@ -96,7 +96,7 @@ class Category extends Model
                     $this->_pages_count = $tbl->count($filters);
                 }
                 return (int) $this->_pages_count;
-            break;
+                break;
             case 'list':
             default:
                 if (!($this->_pages instanceof ItemList) || $clear) {
@@ -108,7 +108,7 @@ class Category extends Model
                     $this->_pages = new ItemList($results);
                 }
                 return $this->_pages;
-            break;
+                break;
         }
     }
 }

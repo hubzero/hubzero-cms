@@ -708,7 +708,7 @@ class Batchcreate extends AdminController
                 $configs->handler->getName() == 'imageviewer' &&
                 !$attachment->getDefault($pub->version_id)
             ) {
-                    $configs->handler->makeDefault($attachment, $pub, $configs);
+                $configs->handler->makeDefault($attachment, $pub, $configs);
             }
         }
     }

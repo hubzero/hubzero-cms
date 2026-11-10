@@ -92,7 +92,7 @@ class Router extends Base
                     $vars['controller'] = 'register';
                     $vars['task'] = $segments[0];
                     return $vars;
-                break;
+                    break;
 
                 case 'contributors':
                     $vars['controller'] = 'profiles';
@@ -106,7 +106,7 @@ class Router extends Base
                         $vars['task'] = $segments[1];
                     }
                     return $vars;
-                break;
+                    break;
 
                 case 'login':
                 case 'logout':
@@ -121,7 +121,7 @@ class Router extends Base
                     $vars['controller'] = 'credentials';
                     $vars['task'] = $segments[0];
                     return $vars;
-                break;
+                    break;
 
                 case 'myaccount':
                     if (!User::isGuest()) {

@@ -90,16 +90,16 @@ class Member extends Base
         switch (strtolower(trim($what))) {
             case 'follow':
                 return $this->baselink . '&task=follow';
-            break;
+                break;
 
             case 'unfollow':
                 return $this->baselink . '&task=unfollow';
-            break;
+                break;
 
             case 'base':
             default:
                 return $this->baselink;
-            break;
+                break;
         }
     }
 }

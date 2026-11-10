@@ -182,7 +182,7 @@ abstract class Modules
             $extension = $module->value;
             $path = $module->protected ? PATH_CORE : PATH_APP;
             $source = $path . "/modules/$extension";
-                $lang->load("$extension.sys", $path, null, false, true)
+            $lang->load("$extension.sys", $path, null, false, true)
             ||  $lang->load("$extension.sys", $source, null, false, true);
             $modules[$i]->text = Lang::txt($module->text);
         }
@@ -324,16 +324,16 @@ abstract class Modules
         // Create the batch selector to change select the category by which to move or copy.
         $lines = [
             '<label id="batch-choose-action-lbl" for="batch-choose-action">',
-                Lang::txt('COM_MODULES_BATCH_POSITION_LABEL'),
+            Lang::txt('COM_MODULES_BATCH_POSITION_LABEL'),
             '</label>',
             '<fieldset id="batch-choose-action" class="combo">',
-                '<select name="batch[position_id]" class="inputbox" id="batch-position-id">',
-                    '<option value="">' . Lang::txt('JSELECT') . '</option>',
-                    '<option value="nochange">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOCHANGE') . '</option>',
-                    '<option value="noposition">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOPOSITION') . '</option>',
-                    Html::select('options', self::positionList($clientId)),
-                '</select>',
-                Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
+            '<select name="batch[position_id]" class="inputbox" id="batch-position-id">',
+            '<option value="">' . Lang::txt('JSELECT') . '</option>',
+            '<option value="nochange">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOCHANGE') . '</option>',
+            '<option value="noposition">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOPOSITION') . '</option>',
+            Html::select('options', self::positionList($clientId)),
+            '</select>',
+            Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
             '</fieldset>',
         ];
 

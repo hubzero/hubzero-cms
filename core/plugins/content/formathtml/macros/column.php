@@ -85,7 +85,7 @@ class Column extends Macro
                 case 6:
                     $cls[] = 'span2';
                     break;
-                //case 5:
+                    //case 5:
                     //$cls[] = 'five';
                     //break;
                 case 4:

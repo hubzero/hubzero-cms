@@ -58,7 +58,7 @@ class Skus extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        // Get paging variables
+            // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',

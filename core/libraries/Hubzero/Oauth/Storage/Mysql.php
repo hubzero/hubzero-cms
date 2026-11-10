@@ -479,7 +479,7 @@ class Mysql implements
 				  FROM `#__session`
 				  WHERE `session_id`=" . $database->quote($sessionId) . "
 				  AND time + " . (int) $timeout . " >= UNIX_TIMESTAMP();";
-                //  AND client_id = 0;";
+        //  AND client_id = 0;";
         $database->setQuery($sql);
         return $database->loadResult();
     }

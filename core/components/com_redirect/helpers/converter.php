@@ -53,7 +53,7 @@ class Converter
                         $matches[0],
                     );
                 }
-                    return $newTag;
+                return $newTag;
             },
             $html,
         );

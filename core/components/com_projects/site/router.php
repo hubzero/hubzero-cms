@@ -294,7 +294,7 @@ class Router extends Base
                 } elseif (!empty($segments[2]) && $vars['active'] == 'notes') {
                     // Notes
                     //!is_numeric($segments[2]) &&
-                // Wiki actions
+                    // Wiki actions
                     $wiki_actions = ['media', 'list', 'upload',
                         'deletefolder', 'deletefile', 'view',
                         'new', 'edit', 'save', 'cancel',

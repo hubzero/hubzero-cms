@@ -190,7 +190,7 @@ class Middleware extends Obj
                     $this->_cache['zones.count'] = $tbl->find('count', $filters);
                 }
                 return $this->_cache['zones.count'];
-            break;
+                break;
 
             case 'list':
             case 'results':
@@ -206,7 +206,7 @@ class Middleware extends Obj
                     $this->_cache['zones.list'] = new ItemList($results);
                 }
                 return $this->_cache['zones.list'];
-            break;
+                break;
         }
     }
 

@@ -56,15 +56,15 @@ class Site extends Base
         switch (strtolower($key)) {
             case 'title':
                 return Lang::txt('COM_BLOG');
-            break;
+                break;
 
             case 'alias':
                 return 'site';
-            break;
+                break;
 
             case 'id':
                 return $this->get('scope_id');
-            break;
+                break;
 
             default:
                 break;
@@ -91,7 +91,7 @@ class Site extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->_base . '?' . (string) $this->_build($this->_segments);
-            break;
+                break;
 
             case 'edit':
                 $segments['task']  = 'edit';
