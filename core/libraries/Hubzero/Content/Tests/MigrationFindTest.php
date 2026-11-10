@@ -45,7 +45,7 @@ class MigrationFindTest extends TestCase
             $this->db = $app->raw('db');
             $app->forget('db');
         }
-        $app['db'] = fn () => new class {
+        $app['db'] = fn() => new class {
             public function connected()
             {
                 return true;

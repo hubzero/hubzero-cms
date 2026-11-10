@@ -37,13 +37,13 @@ class RenderedMarkerTest extends TestCase
         parent::setUp();
 
         $app = Facade::getApplication();
-        $app['router'] = fn () => new class {
+        $app['router'] = fn() => new class {
             public function url($url, $xhtml = true, $ssl = null)
             {
                 return '/' . ltrim($url, '/');
             }
         };
-        $app['request'] = fn () => new class {
+        $app['request'] = fn() => new class {
             public function root()
             {
                 return 'https://hub.example.org/';
@@ -54,7 +54,7 @@ class RenderedMarkerTest extends TestCase
                 return $args[1] ?? null;
             }
         };
-        $app['html.builder'] = fn () => new class {
+        $app['html.builder'] = fn() => new class {
             public function __call($method, $args)
             {
                 return '';
@@ -62,8 +62,8 @@ class RenderedMarkerTest extends TestCase
         };
         // The purifier caches its definitions per client; with no directory
         // to put them in it falls back to the system temporary directory
-        $app['client'] = fn () => (object) ['name' => 'site', 'alias' => 'site'];
-        $app['filesystem'] = fn () => new class {
+        $app['client'] = fn() => (object) ['name' => 'site', 'alias' => 'site'];
+        $app['filesystem'] = fn() => new class {
             public function makeDirectory($path)
             {
                 return false;

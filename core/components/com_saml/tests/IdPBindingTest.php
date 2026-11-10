@@ -97,7 +97,7 @@ class IdPBindingTest extends Basic
             $this->config = $app->raw('config');
             $app->forget('config');
         }
-        $app['config'] = fn () => new Registry(['live_site' => 'https://idp.example.org']);
+        $app['config'] = fn() => new Registry(['live_site' => 'https://idp.example.org']);
     }
 
     /**

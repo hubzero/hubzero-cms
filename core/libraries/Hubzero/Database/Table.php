@@ -182,7 +182,7 @@ abstract class Table extends \stdClass
      */
     private static function publicVars($object)
     {
-        return \Closure::bind(static fn ($o) => get_object_vars($o), null, null)($object);
+        return \Closure::bind(static fn($o) => get_object_vars($o), null, null)($object);
     }
 
     /**

@@ -85,7 +85,7 @@ class Obj
         // Only what code outside the object can reach is data; what the class
         // declares protected or private is the object's own
         $vars = $public
-            ? \Closure::bind(static fn ($o) => get_object_vars($o), null, null)($this)
+            ? \Closure::bind(static fn($o) => get_object_vars($o), null, null)($this)
             : get_object_vars($this);
 
         if ($public) {
