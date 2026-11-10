@@ -26,7 +26,7 @@ $handlerBase = str_replace(
 );
 
 $me = ($this->item->get('email') == User::get('email')
-    || $this->item->get('author') == User::get('name'))  ? 1 : 0;
+    || $this->item->get('author') == User::get('name')) ? 1 : 0;
 $when = $this->item->get('date') ? \Components\Projects\Helpers\Html::formatTime($this->item->get('date')) : 'N/A';
 $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 

@@ -134,7 +134,7 @@ $noEntries = !$rows->count();
                         if ($this->config->get('feeds_enabled', 1)) {
                             $live_site = rtrim(Request::base(), '/');
                             $path  = $base . '&task=feed.rss';
-                            $path .= ($this->filters['year'])  ? '&year=' . $this->filters['year']   : '';
+                            $path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
                             $path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
                             $feed = Route::url($path);
                             if (substr($feed, 0, 4) != 'http') {

@@ -68,7 +68,7 @@ if ($this->config->get('launcher_layout', 0)) {
                             stripslashes(strip_tags($this->publication->abstract)),
                             250,
                         );
-                        echo $this->publication->abstract ?  $abstractSnippet : '';
+                        echo $this->publication->abstract ? $abstractSnippet : '';
                     ?>
                 </p>
 

@@ -51,6 +51,6 @@ class Key
 
         // Set the optional public/private key strings.
         $this->private = isset($private) ? (string) $private : null;
-        $this->public  = isset($public)  ? (string) $public  : null;
+        $this->public  = isset($public) ? (string) $public : null;
     }
 }

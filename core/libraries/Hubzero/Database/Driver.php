@@ -338,7 +338,7 @@ abstract class Driver implements LoggerAwareInterface
     protected function __construct($options)
     {
         $this->connectionOptions = (array) $options;
-        $this->tablePrefix = (isset($options['prefix']))   ? $options['prefix']   : $this->tablePrefix;
+        $this->tablePrefix = (isset($options['prefix'])) ? $options['prefix'] : $this->tablePrefix;
         $this->database    = (isset($options['database'])) ? $options['database'] : $this->database;
         $this->logger      = new NullLogger();
 
@@ -401,14 +401,14 @@ abstract class Driver implements LoggerAwareInterface
         static::incrementTelemetry('get_instance_calls');
 
         // Sanitize the database connector options
-        $options['driver']   = (isset($options['driver']))   ? preg_replace(
+        $options['driver']   = (isset($options['driver'])) ? preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
             $options['driver'],
         ) : 'mysql';
         $options['database'] = (isset($options['database'])) ? $options['database']
             : null;
-        $options['select']   = (isset($options['select']))   ? $options['select']
+        $options['select']   = (isset($options['select'])) ? $options['select']
             : true;
         $options['persistent'] = isset($options['persistent']) ? (bool) $options['persistent'] : true;
         // Legacy alias retained for configuration compatibility.

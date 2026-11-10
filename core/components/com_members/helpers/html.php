@@ -39,7 +39,7 @@ class Html
         }
 
         $html  = '<select name="' . $name . '"';
-        $html .= ($id)    ? ' id="' . $id . '"'       : '';
+        $html .= ($id) ? ' id="' . $id . '"' : '';
         $html .= ($class) ? ' class="' . $class . '"' : '';
         $html .= ' aria-label="' . Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVACY') . ': ' . $fieldName . '"';
         $html .= '>' . "\n";

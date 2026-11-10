@@ -43,7 +43,7 @@ class Tool extends Content
     {
         $title = Request::getString('title', '');
         $toolAlias = Request::getString('tool-alias', '');
-        $title = empty($title) ?  $toolAlias : $title;
+        $title = empty($title) ? $toolAlias : $title;
         $this->asset['tool-alias'] = $toolAlias;
         $this->asset['title']   = $title;
         $this->asset['type']    = 'tool';

@@ -19,7 +19,7 @@ $status      = $row->get('status');
 $creatorName = $row->creator ? $row->creator->get('name') : '';
 $fmt         = 'M j, Y g:i a';
 
-$fromName  = trim((string) $row->get('from_name'))  ?: Config::get('fromname');
+$fromName  = trim((string) $row->get('from_name')) ?: Config::get('fromname');
 $fromEmail = trim((string) $row->get('from_email')) ?: Config::get('mailfrom');
 $replyTo   = trim((string) $row->get('reply_to'));
 $fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;

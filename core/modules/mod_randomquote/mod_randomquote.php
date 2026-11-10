@@ -41,8 +41,8 @@ class Randomquote extends Module
 
         // Get quotes
         $quote = Quote::all()
-            ->whereEquals('notable_quote', ($this->params->get('quotepool') == 'notable_quotes' ?  1 : 0))
-            ->whereEquals('miniquote', ($quotesrc == 'miniquote' ?  1 : 0))
+            ->whereEquals('notable_quote', ($this->params->get('quotepool') == 'notable_quotes' ? 1 : 0))
+            ->whereEquals('miniquote', ($quotesrc == 'miniquote' ? 1 : 0))
             ->limit(1)
             ->rows()
             ->first();

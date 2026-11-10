@@ -74,7 +74,7 @@ $this->css()
                         } else {
                             $err = '';
                         }
-                        $mclass = ($err)  ? ' class="error"' : ' class="empty"';
+                        $mclass = ($err) ? ' class="error"' : ' class="empty"';
                         echo "<li $mclass>" . $rule . "</li>";
                     }
                 }

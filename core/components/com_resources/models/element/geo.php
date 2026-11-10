@@ -83,7 +83,7 @@ class Geo extends Base
             $this->_script = true;
         }
 
-        $size  = (isset($element->size)  ? 'size="' . $element->size . '"' : '');
+        $size  = (isset($element->size) ? 'size="' . $element->size . '"' : '');
         $class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 
         $address = $this->getValue('value', $value);

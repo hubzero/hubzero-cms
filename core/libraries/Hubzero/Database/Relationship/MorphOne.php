@@ -88,8 +88,8 @@ class MorphOne extends Relationship
         $this->related   = $related;
         $this->morphName = $morphName;
         $this->morphType = $morphType ?: $morphName . '_type';
-        $this->morphId   = $morphId   ?: $morphName . '_id';
-        $this->localKey  = $localKey  ?: $model->getPrimaryKey();
+        $this->morphId   = $morphId ?: $morphName . '_id';
+        $this->localKey  = $localKey ?: $model->getPrimaryKey();
 
         // Related key is the morph id column
         $this->relatedKey = $this->morphId;

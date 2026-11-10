@@ -169,7 +169,7 @@ class Html
     public static function formSelect($name, $idname, $array, $value, $class = '', $jscall = '')
     {
         $out  = '<select name="' . $name . '" id="' . $idname . '"';
-        $out .= ($class)  ? ' class="form-control ' . $class . '"' : ' class="form-control"';
+        $out .= ($class) ? ' class="form-control ' . $class . '"' : ' class="form-control"';
         $out .= ($jscall) ? ' onChange="' . $jscall . '">' . "\n" : '>' . "\n";
         foreach ($array as $avalue => $alabel) {
             $selected = ($avalue == $value || $alabel == $value)

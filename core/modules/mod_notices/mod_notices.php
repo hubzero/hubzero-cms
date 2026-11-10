@@ -102,9 +102,9 @@ class Notices extends Module
             $o  = Lang::txt('MOD_NOTICES_IMMEDIATELY');
         } else {
             $o  = Lang::txt('MOD_NOTICES_IN') . ' ';
-            $o .= ($stime[0] > 0) ? $stime[0] . ' ' . Lang::txt('MOD_NOTICES_DAYS') . ', '  : '';
+            $o .= ($stime[0] > 0) ? $stime[0] . ' ' . Lang::txt('MOD_NOTICES_DAYS') . ', ' : '';
             $o .= ($stime[1] > 0) ? $stime[1] . ' ' . Lang::txt('MOD_NOTICES_HOURS') . ', ' : '';
-            $o .= ($stime[2] > 0) ? $stime[2] . ' ' . Lang::txt('MOD_NOTICES_MINUTES')      : '';
+            $o .= ($stime[2] > 0) ? $stime[2] . ' ' . Lang::txt('MOD_NOTICES_MINUTES') : '';
         }
         return $o;
     }
@@ -143,7 +143,7 @@ class Notices extends Module
 
         $database->setQuery("SELECT publish_up, publish_down FROM `#__modules` WHERE id=" . $this->module->id);
         $item = $database->loadObject();
-        $this->module->publish_up   = (isset($item->publish_up))   ? $item->publish_up   : null;
+        $this->module->publish_up   = (isset($item->publish_up)) ? $item->publish_up : null;
         $this->module->publish_down = (isset($item->publish_down)) ? $item->publish_down : null;
 
         // Get some initial parameters

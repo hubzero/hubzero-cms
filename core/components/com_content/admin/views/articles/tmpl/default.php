@@ -384,7 +384,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                 <span><?php echo $downIcon; ?></span>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
+                        <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
                         <?php
                         $catid = $item->get('catid', 0);
                         $itemId = $item->get('id', 0);

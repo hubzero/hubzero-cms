@@ -1319,7 +1319,7 @@ class Citations extends Plugin
 
             // view variables
             $view->citations_require_attention = (isset($citations_action_attention) ? $citations_action_attention : null);
-            $view->citation_require_no_attention = (isset($citation_action_no_attention) ?  $citations_action_no_attention : null);
+            $view->citation_require_no_attention = (isset($citation_action_no_attention) ? $citations_action_no_attention : null);
 
             // if we have citations not getting saved
             if (count($results['not_saved']) > 0) {

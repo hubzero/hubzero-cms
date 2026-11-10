@@ -55,9 +55,9 @@ class Html
                 }
                 $yes  = strtoupper(Lang::txt('YES'));
                 $yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_CANCEL_IT') : '';
-                $yes .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_WITHDRAW')  : '';
+                $yes .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_WITHDRAW') : '';
                 $no  = strtoupper(Lang::txt('NO'));
-                $no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL')   : '';
+                $no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL') : '';
                 $no .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_WITHDRAW') : ''; ?>
                 </p>
                 <p><span class="yes"><button type="submit" form="hz-post-action" formaction="<?php echo htmlspecialchars($actionurl); ?>"><?php echo $yes ?></button></span> <span class="no"><a href="<?php echo htmlspecialchars($returnurl); ?>"><?php echo $no ?></a></span></p>

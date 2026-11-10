@@ -112,7 +112,7 @@ class Video extends WikiMacro
         // EX: [[Image(myimage.png, width=100)]]
         $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
 
-        $width  = (isset($this->attr['width']) && $this->attr['width'] != '')   ? $this->attr['width']  : $default_width;
+        $width  = (isset($this->attr['width']) && $this->attr['width'] != '') ? $this->attr['width'] : $default_width;
         $height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
 
         //check is user entered full youtube url or just Video Id

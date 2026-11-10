@@ -181,7 +181,7 @@ $this->css('pipeline.css')
 
                     <div class="form-group form-check">
                         <label for="tool_repohost_svnlocal" class="form-check-label">
-                            <input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo ($this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
+                            <input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo ($this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
                         </label>
                     </div>

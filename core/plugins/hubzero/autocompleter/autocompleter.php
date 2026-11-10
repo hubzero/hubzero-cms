@@ -88,9 +88,9 @@ class Autocompleter extends Plugin
 
         // Build the input tag
         $html  = '<input type="text" name="' . $name . '" data-options="' . $opt . ',' . $type . ',' . $wsel . '"';
-        $html .= ($id)    ? ' id="' . $id . '"'             : '';
+        $html .= ($id) ? ' id="' . $id . '"' : '';
         $html .= ($class) ? ' class="' . trim($class) . '"' : '';
-        $html .= ($size)  ? ' size="' . $size . '"'         : '';
+        $html .= ($size) ? ' size="' . $size . '"' : '';
         $placeholder = Lang::txt('PLG_HUBZERO_AUTOCOMPLETER_' . strtoupper($opt) . '_PLACEHOLDER');
         $html .= ' placeholder="' . $placeholder . '"';
         $html .= ' aria-label="' . $placeholder . '"';

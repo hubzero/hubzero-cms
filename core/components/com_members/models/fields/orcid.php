@@ -42,13 +42,13 @@ class Orcid extends Text
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size']      ? (int) $this->element['size']      : ''),
+            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
             'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => 'orcid' . ($this->element['class']     ? (string) $this->element['class']  : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
-            'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
+            'class'        => 'orcid' . ($this->element['class'] ? (string) $this->element['class'] : ''),
+            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
+            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : ''),
+            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

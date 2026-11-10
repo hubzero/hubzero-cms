@@ -184,7 +184,7 @@ class Plugin
         $view = new View([
             'folder'  => $this->_type,
             'element' => $this->_name,
-            'name'    => ($name   ?: $this->_name),
+            'name'    => ($name ?: $this->_name),
             'layout'  => ($layout ?: 'default'),
         ]);
         return $view;

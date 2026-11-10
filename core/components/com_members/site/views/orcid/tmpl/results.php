@@ -21,8 +21,8 @@ defined('_HZEXEC_') or die();
                 }
                 $fname     = array_key_exists('given-names', $record) ? $record['given-names'] : '';
                 $lname     = array_key_exists('family-name', $record) ? $record['family-name'] : '';
-                $orcid_uri = array_key_exists('uri', $record)         ? $record['uri'] : '';
-                $orcid     = array_key_exists('path', $record)        ? $record['path'] : '';
+                $orcid_uri = array_key_exists('uri', $record) ? $record['uri'] : '';
+                $orcid     = array_key_exists('path', $record) ? $record['path'] : '';
 
                 /*$scheme = Request::scheme();
                 if ($orcid_uri && substr($orcid_uri, 0, strlen($scheme)) != $scheme)

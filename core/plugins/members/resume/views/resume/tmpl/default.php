@@ -51,7 +51,7 @@ $this->css('jobs', 'com_jobs');
             <form id="prefsForm" method="post" action="<?php echo Route::url($this->member->link() . '&active=resume'); ?>">
                 <fieldset>
                     <legend>
-                        <?php echo $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') :  Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS'); ?>
+                        <?php echo $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS'); ?>
                     </legend>
 
                     <label class="spacious">
@@ -173,7 +173,7 @@ $this->css('jobs', 'com_jobs');
                     <tr>
                         <td>
                         <?php
-                        $title = $this->resume->title ?  stripslashes($this->resume->title) : $this->resume->filename;
+                        $title = $this->resume->title ? stripslashes($this->resume->title) : $this->resume->filename;
                         $default_title = $this->member->get('firstname')
                                     ? $this->member->get('firstname') . ' ' . $this->member->get('lastname') . ' ' . Lang::txt('PLG_MEMBERS_RESUME')
                                     : $this->member->get('name') . ' ' . Lang::txt('PLG_MEMBERS_RESUME');
@@ -216,7 +216,7 @@ $this->css('jobs', 'com_jobs');
                     <legend>
                         <?php echo ($this->resume->id && $this->file)
                                     ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . Lang::txt('PLG_MEMBERS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n"
-                                    :  Lang::txt('PLG_MEMBERS_RESUME_ACTION_UPLOAD_A_RESUME') . "\n"; ?>
+                                    : Lang::txt('PLG_MEMBERS_RESUME_ACTION_UPLOAD_A_RESUME') . "\n"; ?>
                     </legend>
                     <div>
                         <label>

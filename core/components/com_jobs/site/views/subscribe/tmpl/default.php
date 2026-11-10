@@ -89,7 +89,7 @@ defined('_HZEXEC_') or die();
                 // Determine expiration date
                 if ($thissub) {
                     $length = $this->subscription->status == 0 ? $this->subscription->pendingunits : $this->subscription->units;
-                    $expires  = $this->subscription->expires > $now && $this->subscription->status == 1 ?  '<p class="yes">' : '<p class="no">';
+                    $expires  = $this->subscription->expires > $now && $this->subscription->status == 1 ? '<p class="yes">' : '<p class="no">';
                     $expires .= Lang::txt('COM_JOBS_YOUR') . ' ' . $length . '-' . $currentService->unitmeasure . ' ' . Lang::txt('COM_JOBS_SUBSCRIPTION') . ' ';
                     if ($this->subscription->status == 1) {
                         $expires .= $this->subscription->expires > $now ? strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES')) : strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED'));
@@ -100,7 +100,7 @@ defined('_HZEXEC_') or die();
 
                     $expires .= '</p>' . "\n";
                     $expires .= $this->subscription->expires > $now ? ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid) . '" class="cancelit" id="showconfirm">[ ' . Lang::txt('COM_JOBS_SUBSCRIPTION_CANCEL_THIS') . ' ]</button>' : '';
-                    $expires .= $this->subscription->pendingunits > 0 && $this->subscription->status == 1  ? '<p class="no">' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING') . '</p>' : '';
+                    $expires .= $this->subscription->pendingunits > 0 && $this->subscription->status == 1 ? '<p class="no">' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING') . '</p>' : '';
                 }
 
                 $units_select = [];

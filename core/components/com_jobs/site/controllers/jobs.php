@@ -339,7 +339,7 @@ class Jobs extends SiteController
         $obj = new Job($this->database);
 
         // Get jobs
-        $adminoptions = ($this->_task != 'browse' && $this->_allowSubscriptions)  ? 0 : $this->_admin;
+        $adminoptions = ($this->_task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
         $jobs = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode);
 
         $total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);

@@ -18,9 +18,9 @@ if ($this->disabled) : ?>
 <?php else : ?>
     <?php if (isset($this->options) && !empty($this->options)) : ?>
         <div class="btn-group btn-primary" id="primary-document">
-            <a class="btn <?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php
-                    echo ($this->href)   ? ' href="' . $this->href . '"' : '';
-                    echo ($this->title)  ? ' title="' . $this->escape($this->title) . '"' : '';
+            <a class="btn <?php echo ($this->class) ? ' ' . $this->class : ''; ?>" <?php
+                    echo ($this->href) ? ' href="' . $this->href . '"' : '';
+                    echo ($this->title) ? ' title="' . $this->escape($this->title) . '"' : '';
                     echo ($this->action) ? ' ' . $this->action : '';
             ?>><?php echo $this->msg; ?></a>
             <span class="btn dropdown-toggle"></span>
@@ -38,9 +38,9 @@ if ($this->disabled) : ?>
         <?php endif; ?>
     <?php else : ?>
         <p id="primary-document">
-            <a class="btn btn-primary<?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php
-                    echo ($this->href)   ? ' href="' . $this->href . '"' : '';
-                    echo ($this->title)  ? ' title="' . $this->escape($this->title) . '"' : '';
+            <a class="btn btn-primary<?php echo ($this->class) ? ' ' . $this->class : ''; ?>" <?php
+                    echo ($this->href) ? ' href="' . $this->href . '"' : '';
+                    echo ($this->title) ? ' title="' . $this->escape($this->title) . '"' : '';
                     echo ($this->action) ? ' ' . $this->action : '';
             ?>><?php echo $this->msg; ?></a>
         </p>

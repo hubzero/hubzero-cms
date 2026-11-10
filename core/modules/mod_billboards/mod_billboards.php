@@ -80,7 +80,7 @@ class Billboards extends Module
         // Add the CSS to the template for each billboard
         foreach ($this->slides as $slide) {
             $background = $slide->background_img ? "background-image: url('{$slide->background_img}');" : '';
-            $padding    = $slide->padding        ? "padding: {$slide->padding};"                        : '';
+            $padding    = $slide->padding ? "padding: {$slide->padding};" : '';
 
             $css
                 = "#{$slide->alias} {

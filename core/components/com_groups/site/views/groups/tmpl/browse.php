@@ -58,7 +58,7 @@ foreach ($this->notifications as $notification) {
                 <div class="container">
                     <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                         <?php
-                            $fltrs  = ($this->filters['index'])  ? '&index=' . $this->escape($this->filters['index'])   : '';
+                            $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
                             $fltrs .= ($this->filters['policy']) ? '&policy=' . $this->escape($this->filters['policy']) : '';
                             $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
                         ?>
@@ -67,7 +67,7 @@ foreach ($this->notifications as $notification) {
                             <li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=alias' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS'); ?>" rel="nofollow"><?php echo Lang::txt('COM_GROUPS_GROUP_ALIAS'); ?></a></li>
                         </ul>
                         <?php
-                        $fltrs  = ($this->filters['index'])  ? '&index=' . $this->escape($this->filters['index'])   : '';
+                        $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
                         $fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->escape($this->filters['sortby']) : '';
                         $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
                         ?>

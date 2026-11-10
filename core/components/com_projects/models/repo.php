@@ -768,7 +768,7 @@ class Repo extends Obj
             $fromExt = Helpers\Html::getFileExtension($fromLocalPath);
 
             // Do not remove extension
-            $toLocalPath = $newExt && $newExt == $fromExt  ? $toLocalPath : $toLocalPath . '.' . $fromExt;
+            $toLocalPath = $newExt && $newExt == $fromExt ? $toLocalPath : $toLocalPath . '.' . $fromExt;
         }
 
         // File object - From

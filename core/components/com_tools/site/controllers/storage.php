@@ -277,7 +277,7 @@ class Storage extends SiteController
         $this->total     = $total;
 
         // Raw byte figures for the usage gauge / stat tiles
-        $this->used = isset($du['space'])     ? (float) $du['space']     : 0;
+        $this->used = isset($du['space']) ? (float) $du['space'] : 0;
         $this->soft = isset($du['softspace']) ? (float) $du['softspace'] : 0;
         $this->hard = isset($du['hardspace']) ? (float) $du['hardspace'] : 0;
 

@@ -1588,7 +1588,7 @@ class Members extends AdminController
                 'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
                 'action_create' => (isset($element->create) ? (int) $element->create : 1),
                 'action_update' => (isset($element->update) ? (int) $element->update : 1),
-                'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
+                'action_edit'   => (isset($element->edit) ? (int) $element->edit : 1),
                 'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
                 'min'           => (isset($element->field_options->min) ? (int) $element->field_options->min : 0),
                 'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
@@ -1644,7 +1644,7 @@ class Members extends AdminController
                     $option->set([
                         'field_id'   => $field->get('id'),
                         'label'      => (string) $opt->label,
-                        'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
+                        'value'      => (isset($opt->value) ? (string) $opt->value : ''),
                         'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
                         'ordering'   => ($k + 1),
                         'dependents' => json_encode($dependents),
@@ -1736,7 +1736,7 @@ class Members extends AdminController
                     } else {
                         $err = '';
                     }
-                    $mclass = ($err)  ? ' class="error"' : 'class="passed"';
+                    $mclass = ($err) ? ' class="error"' : 'class="passed"';
                     $html .= "<li $mclass>" . $rule . '</li>';
                 }
             }

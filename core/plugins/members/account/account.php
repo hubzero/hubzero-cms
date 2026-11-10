@@ -1035,7 +1035,7 @@ class Account extends Plugin
                     } else {
                         $err = '';
                     }
-                    $mclass = ($err)  ? ' class="error"' : 'class="passed"';
+                    $mclass = ($err) ? ' class="error"' : 'class="passed"';
                     echo "<li $mclass>" . $rule . "</li>";
                 }
             }

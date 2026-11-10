@@ -340,11 +340,11 @@ $area = urlencode($this->filters['area']);
                                     . '">' . $name . '</a>';
                             }
                         }
-                        $cls = ($row->isclosed())   ? 'answered' : '';
+                        $cls = ($row->isclosed()) ? 'answered' : '';
                         $cls = ($row->isReported()) ? 'flagged' : $cls;
                         $cls .= ($row->get('created_by') == User::get('id') ? ' mine' : '');
 
-                        $icn = ($row->isclosed())   ? 'icon-comments' : 'icon-comment-alt';
+                        $icn = ($row->isclosed()) ? 'icon-comments' : 'icon-comment-alt';
                         $icn = ($row->isReported()) ? 'icon-flag' : $icn;
                         ?>
                             <tr<?php if ($cls) {

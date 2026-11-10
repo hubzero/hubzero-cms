@@ -104,7 +104,7 @@ class Help extends Base implements CommandInterface
     private function getCommands($root = null, $dir = null)
     {
         $root = $root ?: __DIR__;
-        $dir  = $dir  ?: '';
+        $dir  = $dir ?: '';
         $cur  = $root . ((!empty($dir)) ? DS . $dir : '');
 
         // Get files from command directory to use in list

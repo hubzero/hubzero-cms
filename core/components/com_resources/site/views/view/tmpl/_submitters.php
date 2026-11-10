@@ -120,7 +120,7 @@ if ($this->contributors) {
 
     if (count($names) > 0) {
         $html  = '<p>';
-        $html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
+        $html .= count($orgs) > 1 ? implode(', ', $names) : implode(', ', $names_s);
         $html .= '</p>';
     }
     if ($this->showorgs && count($orgs) > 0) {

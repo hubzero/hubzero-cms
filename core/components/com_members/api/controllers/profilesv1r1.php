@@ -619,7 +619,7 @@ class Profilesv1r1 extends ApiController
                     } else {
                         $err = '';
                     }
-                    $mclass = ($err)  ? ' class="error"' : 'class="passed"';
+                    $mclass = ($err) ? ' class="error"' : 'class="passed"';
                     $html .= "<li $mclass>" . $rule . '</li>';
                 }
             }

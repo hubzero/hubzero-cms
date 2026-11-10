@@ -395,9 +395,9 @@ class Grid
     {
         if (is_array($prefix)) {
             $options  = $prefix;
-            $enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+            $enabled  = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
-            $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+            $prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
 
         $text = addslashes(htmlspecialchars($editorName ? $editorName : "", ENT_COMPAT, 'UTF-8'));
@@ -530,9 +530,9 @@ class Grid
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
-            $enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+            $enabled  = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
-            $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+            $prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
 
         $states = [
@@ -552,10 +552,10 @@ class Grid
             $nowDate = with(new Date())->toUnix();
 
             $tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));
-            $publish_up   = ($publish_up != $nullDate)   ? with(new Date(
+            $publish_up   = ($publish_up != $nullDate) ? with(new Date(
                 $publish_up,
                 'UTC',
-            ))->setTimeZone($tz)   : false;
+            ))->setTimeZone($tz) : false;
             $publish_down = ($publish_down != $nullDate) ? with(new Date(
                 $publish_down,
                 'UTC',
@@ -622,10 +622,10 @@ class Grid
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
-            $text     = array_key_exists('text', $options)     ? $options['text']     : $text;
-            $enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+            $text     = array_key_exists('text', $options) ? $options['text'] : $text;
+            $enabled  = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
-            $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+            $prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
         return self::action(
             $i,
@@ -664,10 +664,10 @@ class Grid
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
-            $text     = array_key_exists('text', $options)     ? $options['text']     : $text;
-            $enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+            $text     = array_key_exists('text', $options) ? $options['text'] : $text;
+            $enabled  = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
-            $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+            $prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
         return self::action(
             $i,
@@ -699,9 +699,9 @@ class Grid
     {
         if (is_array($prefix)) {
             $options  = $prefix;
-            $enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+            $enabled  = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
-            $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+            $prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
 
         $states = [

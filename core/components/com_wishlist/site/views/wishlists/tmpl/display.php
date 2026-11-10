@@ -102,8 +102,8 @@ if ($this->wishlist->get('id')) {
                                     <ol class="tags">
                                     <?php
                                     $url  = $base;
-                                    $url .= ($this->filters['search']   ? '&search=' . $this->escape($this->filters['search'])     : '');
-                                    $url .= ($this->filters['sortby']   ? '&sortby=' . $this->escape($this->filters['sortby'])     : '');
+                                    $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+                                    $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
                                     $url .= ($this->filters['filterby'] ? '&filterby=' . $this->escape($this->filters['filterby']) : '');
 
                                     $tags = $cloud->parseTags($this->filters['tag']);

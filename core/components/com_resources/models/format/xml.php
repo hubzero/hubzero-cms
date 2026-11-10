@@ -28,7 +28,7 @@ class XML extends Base
     public function objectToString($object, $options = [])
     {
         // Initialise variables.
-        $rootName = (isset($options['name']))     ? $options['name']     : 'registry';
+        $rootName = (isset($options['name'])) ? $options['name'] : 'registry';
         $nodeName = (isset($options['nodeName'])) ? $options['nodeName'] : 'node';
 
         // Create the root node.

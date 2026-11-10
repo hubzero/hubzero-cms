@@ -105,7 +105,7 @@ class Error extends Base
 
         // Check template
         $directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
-        $template  = isset($params['template'])  ? ltrim(preg_replace(
+        $template  = isset($params['template']) ? ltrim(preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
             (string) $params['template'],

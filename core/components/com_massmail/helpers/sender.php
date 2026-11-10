@@ -286,7 +286,7 @@ class Sender
         $subject   = $mailing->get('subject');
         $bodyText  = (string) $mailing->get('body_text');
         $bodyHtml  = (string) $mailing->get('body_html');
-        $fromName  = $mailing->get('from_name')  ?: ($params->get('from_name')  ?: \Config::get('fromname'));
+        $fromName  = $mailing->get('from_name') ?: ($params->get('from_name') ?: \Config::get('fromname'));
         $fromEmail = $mailing->get('from_email') ?: ($params->get('from_email') ?: \Config::get('mailfrom'));
         $replyTo   = $mailing->get('reply_to');
 

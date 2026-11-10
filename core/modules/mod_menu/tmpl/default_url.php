@@ -17,7 +17,7 @@ if ($rootLink) {
 }
 
 // Note. It is important to remove spaces between elements.
-$class = $item->anchor_css   ? 'class="' . $item->anchor_css . '" '   : '';
+$class = $item->anchor_css ? 'class="' . $item->anchor_css . '" ' : '';
 $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
 if ($item->menu_image) {
     $imgTag = '<img src="' . $item->menu_image

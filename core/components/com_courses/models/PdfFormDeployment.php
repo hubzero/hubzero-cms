@@ -608,7 +608,7 @@ class PdfFormDeployment
                 'INSERT INTO `#__courses_form_deployments`(' . $columns . ') VALUES ('
                     . (int) $this->formId . ', '
                     . ($this->startTime ? $dbh->quote($this->startTime) : 'NULL') . ', '
-                    . ($this->endTime   ? $dbh->quote($this->endTime) : 'NULL') . ', '
+                    . ($this->endTime ? $dbh->quote($this->endTime) : 'NULL') . ', '
                     . $dbh->quote($this->resultsOpen) . ', '
                     . $dbh->quote($this->resultsClosed) . ', '
                     . (int) $this->timeLimit . ', '
@@ -630,7 +630,7 @@ class PdfFormDeployment
         $dbh->setQuery(
             'UPDATE #__courses_form_deployments SET '
                 . 'start_time = ' . ($this->startTime ? $dbh->quote($this->startTime) : 'NULL') . ', '
-                . 'end_time = ' . ($this->endTime     ? $dbh->quote($this->endTime) : 'NULL') . ', '
+                . 'end_time = ' . ($this->endTime ? $dbh->quote($this->endTime) : 'NULL') . ', '
                 . 'results_open = ' . $dbh->quote($this->resultsOpen) . ', '
                 . 'results_closed = ' . $dbh->quote($this->resultsClosed) . ', '
                 . 'time_limit = ' . (int) $this->timeLimit . ', '

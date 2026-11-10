@@ -48,7 +48,7 @@ $this->css();
             }
 
             $cls  = ($row->get('state') == 1) ? 'answered' : '';
-            $cls  = ($row->isReported())      ? 'flagged'  : $cls;
+            $cls  = ($row->isReported()) ? 'flagged' : $cls;
             $cls .= ($row->get('created_by') == User::get('username')) ? ' mine' : '';
             ?>
             <tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>

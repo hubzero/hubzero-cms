@@ -96,7 +96,7 @@ class Hubzero extends Plugin
 
             // Log tracking cookie detection to auth log
             $username = (empty($tracker['username'])) ? '-' : $tracker['username'];
-            $user_id  = (empty($tracker['user_id']))  ? 0   : $tracker['user_id'];
+            $user_id  = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
 
             App::get('log')
                 ->logger('auth')

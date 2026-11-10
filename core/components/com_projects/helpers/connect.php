@@ -2171,7 +2171,7 @@ class Connect extends Obj
         $remoteid = $pparams->get($service . '_dir_id');
 
         // Project creator?
-        $creator = $this->_uid == $this->model->get('owned_by_user')  ? 1 : 0;
+        $creator = $this->_uid == $this->model->get('owned_by_user') ? 1 : 0;
 
         // Clean up stored values for the disconnecting member
         $this->disconnectMember($service, $this->_uid, $remoteid);

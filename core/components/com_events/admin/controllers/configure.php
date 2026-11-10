@@ -92,9 +92,9 @@ class Configure extends AdminController
                     $k = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($val['title']));
 
                     $t = str_replace('=', '-', $val['title']);
-                    $j = (isset($val['type']))     ? $val['type']     : 'text';
+                    $j = (isset($val['type'])) ? $val['type'] : 'text';
                     $x = (isset($val['required'])) ? $val['required'] : '0';
-                    $z = (isset($val['show']))     ? $val['show']     : '0';
+                    $z = (isset($val['show'])) ? $val['show'] : '0';
                     $txta[] = $k . '=' . $t . '=' . $j . '=' . $x . '=' . $z;
                 }
             }

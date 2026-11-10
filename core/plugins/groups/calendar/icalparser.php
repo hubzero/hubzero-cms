@@ -293,7 +293,7 @@ class IcalParser
             // Checks if time contains the value Z, which indicates it is
             // not necessary to convert a timezone since it is already in UTC
             if (substr($value, -1) != 'Z') {
-                $value = Date::of($value, ($timezone ? : $this->timezone));
+                $value = Date::of($value, ($timezone ?: $this->timezone));
             } else {
                 $value = Date::of($value);
             }

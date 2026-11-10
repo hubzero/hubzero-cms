@@ -282,7 +282,7 @@ class Recipients
             return [
                 'all'    => ($t === 'all'),
                 'groups' => ($t === 'group') ? (array) (isset($spec['groups']) ? $spec['groups'] : []) : [],
-                'users'  => ($t === 'user')  ? (array) (isset($spec['users'])  ? $spec['users']  : []) : [],
+                'users'  => ($t === 'user') ? (array) (isset($spec['users']) ? $spec['users'] : []) : [],
                 'emails' => ($t === 'email') ? (array) (isset($spec['emails']) ? $spec['emails'] : []) : [],
             ];
         }
@@ -290,7 +290,7 @@ class Recipients
         return [
             'all'    => !empty($spec['all']),
             'groups' => isset($spec['groups']) ? (array) $spec['groups'] : [],
-            'users'  => isset($spec['users'])  ? (array) $spec['users']  : [],
+            'users'  => isset($spec['users']) ? (array) $spec['users'] : [],
             'emails' => isset($spec['emails']) ? (array) $spec['emails'] : [],
         ];
     }

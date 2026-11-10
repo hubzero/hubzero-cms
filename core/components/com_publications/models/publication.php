@@ -654,11 +654,11 @@ class Publication extends Obj
                                 break;
 
                             case 'required':
-                                return isset($this->_curationModel->_progress->blocks->$blockId->manifest->params->required) ?  $this->_curationModel->_progress->blocks->$blockId->manifest->params->required : 0;
+                                return isset($this->_curationModel->_progress->blocks->$blockId->manifest->params->required) ? $this->_curationModel->_progress->blocks->$blockId->manifest->params->required : 0;
                                 break;
 
                             case 'hasElements':
-                                return empty($this->_curationModel->_progress->blocks->$blockId->manifest->elements) ?  false : true;
+                                return empty($this->_curationModel->_progress->blocks->$blockId->manifest->elements) ? false : true;
                                 break;
 
                             default:

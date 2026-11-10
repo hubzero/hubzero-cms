@@ -411,14 +411,14 @@ class Owner extends Table
         if ($projectid === null) {
             return false;
         }
-        $online     = isset($filters['online'])    ? $filters['online'] : 0;
-        $status     = isset($filters['status'])    ? $filters['status'] : 'active';
-        $sortby     = isset($filters['sortby'])    ? $filters['sortby'] : 'name';
-        $sortdir    = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
-        $limit      = isset($filters['limit'])     ? $filters['limit'] : 0;
-        $limitstart = isset($filters['start'])     ? $filters['start'] : 0;
-        $select     = isset($filters['select'])    ? $filters['select'] : '';
-        $native     = isset($filters['native'])    ? $filters['native'] : '-';
+        $online     = isset($filters['online']) ? $filters['online'] : 0;
+        $status     = isset($filters['status']) ? $filters['status'] : 'active';
+        $sortby     = isset($filters['sortby']) ? $filters['sortby'] : 'name';
+        $sortdir    = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
+        $limit      = isset($filters['limit']) ? $filters['limit'] : 0;
+        $limitstart = isset($filters['start']) ? $filters['start'] : 0;
+        $select     = isset($filters['select']) ? $filters['select'] : '';
+        $native     = isset($filters['native']) ? $filters['native'] : '-';
         $pub        = isset($filters['pub_versionid']) && intval($filters['pub_versionid']) ? $filters['pub_versionid'] : '';
         $connected  = isset($filters['connected']) ? $filters['connected'] : 0;
 

@@ -73,7 +73,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     <div id="td-item" class="<?php echo $class; ?>">
                         <span class="pin">&nbsp;</span>
                         <div class="todo-content">
-                            <?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?>
+                            <?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) : stripslashes($this->row->get('content')); ?>
                         </div>
                     </div>
                 </div>

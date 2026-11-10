@@ -120,7 +120,7 @@ $this->css('admin.subscriptions.css');
                     </a>
                 </td>
                 <td>
-                    <?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
+                    <?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0) ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
                 </td>
                 <td>
                     <?php echo $this->escape($name) . ' (' . $this->escape($login) . ')'; ?>

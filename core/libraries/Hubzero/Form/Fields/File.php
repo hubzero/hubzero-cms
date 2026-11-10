@@ -36,11 +36,11 @@ class File extends Field
             'type'         => 'file',
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size']      ? (int) $this->element['size']      : ''),
-            'accept'       => ($this->element['accept']    ? (string) $this->element['accept'] : ''),
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
+            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
+            'accept'       => ($this->element['accept'] ? (string) $this->element['accept'] : ''),
+            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
+            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

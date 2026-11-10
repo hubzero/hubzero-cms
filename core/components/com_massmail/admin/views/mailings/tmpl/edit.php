@@ -48,7 +48,7 @@ $badRcpt    = in_array('recipients', $invalid);
 $isSuper = User::authorise('core.admin');
 
 $mmParams  = \Component::params('com_massmail');
-$fromName  = trim((string) $mmParams->get('from_name'))  ?: Config::get('fromname');
+$fromName  = trim((string) $mmParams->get('from_name')) ?: Config::get('fromname');
 $fromEmail = trim((string) $mmParams->get('from_email')) ?: Config::get('mailfrom');
 $fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
 $replyTo   = trim((string) $this->row->get('reply_to'));

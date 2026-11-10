@@ -161,7 +161,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
             $adminclass = $admin ? 'class="adminpost"' : '';
 
             $curtype = $row->type > 0 ? $jt->getType($row->type) : '';
-            $curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
+            $curcat  = $row->cid > 0 ? $jc->getCat($row->cid) : '';
 
             // Build some publishing info
             $addedDate = Date::of($row->added)->toLocal(

@@ -320,7 +320,7 @@ $option = 'com_groups';
                                                 $surname = $u->get('surname');
                                                 $givenName = $u->get('givenName');
                                                 $displayName = !empty($surname) ? $surname : '';
-                                                $displayName .= !empty($givenName) ? !empty($displayName) ? ', ' . $givenName : $givenName :  '';
+                                                $displayName .= !empty($givenName) ? !empty($displayName) ? ', ' . $givenName : $givenName : '';
                                             ?>
                                         <?php if (in_array($u->get('access'), User::getAuthorisedviewLevels()) && ($u->get('activation') > 0)) { ?>
                                             <a href="<?php echo Route::url($url); ?>"><?php echo $this->escape($displayName); ?></a>

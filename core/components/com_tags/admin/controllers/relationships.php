@@ -402,7 +402,7 @@ class Relationships extends AdminController
             $new_tag = $this->get_tag($_POST['name-' . $id], false);
             $this->database->setQuery('UPDATE `#__focus_areas` SET
 				mandatory_depth = ' . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-' . $id] : 'NULL')) . ',
-				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-' . $id]  : 'NULL')) . ',
+				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple' ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-' . $id] : 'NULL')) . ',
 				tag_id = ' . $new_tag['id'] . '
 				WHERE id = ' . $id);
             $this->database->execute();
@@ -422,7 +422,7 @@ class Relationships extends AdminController
 
             $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES ('
                 . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
-                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', '
+                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple' ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-new-' . $idx] : 'NULL')) . ', '
                 . $tag['id'] . ')');
             $this->database->execute();
             $id = $this->database->insertid();

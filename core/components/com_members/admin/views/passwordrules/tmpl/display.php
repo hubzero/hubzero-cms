@@ -201,7 +201,7 @@ if ($canDo->get('core.delete')) {
                         // echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN',
                         // $row->ordering);
                         ?></span>
-                        <?php $disabled = $row->get('ordering') ?  '' : 'disabled="disabled"'; ?>
+                        <?php $disabled = $row->get('ordering') ? '' : 'disabled="disabled"'; ?>
                         <input
                             type="text"
                             name="order[]"

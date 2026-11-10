@@ -76,7 +76,7 @@ class Select extends Field
                 $html[] = Dropdown::genericlist($options, $this->name, trim($attr), 'value', 'text', $selectValue, $this->id);
 
                 $showOther = (!$found && $this->value) ? '' : ' style="display:none;"';
-                $html[] = '<input type="text" class="option-other-input" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . '" placeholder="' . (empty($this->placeholder) ?  App::get('language')->txt('Other...') : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8')) . '" aria-label="' . App::get('language')->txt('Other') . '"' . $showOther . ' />';
+                $html[] = '<input type="text" class="option-other-input" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . '" placeholder="' . (empty($this->placeholder) ? App::get('language')->txt('Other...') : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8')) . '" aria-label="' . App::get('language')->txt('Other') . '"' . $showOther . ' />';
             } else {
                 $html[] = Dropdown::genericlist($options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
             }

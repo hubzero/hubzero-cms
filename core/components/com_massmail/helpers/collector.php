@@ -127,7 +127,7 @@ class PostfixCollector
             $hk = gmdate('Y-m-d H:00:00', $ts);
             $dk = gmdate('Y-m-d', $ts);
             $hours[$hk] = isset($hours[$hk]) ? $hours[$hk] + 1 : 1;
-            $days[$dk]  = isset($days[$dk])  ? $days[$dk] + 1  : 1;
+            $days[$dk]  = isset($days[$dk]) ? $days[$dk] + 1 : 1;
             if ($ts > self::$maxTs) {
                 self::$maxTs = $ts;
             }

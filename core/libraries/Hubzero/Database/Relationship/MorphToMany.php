@@ -125,7 +125,7 @@ class MorphToMany extends OneToManyThrough
     ) {
         $this->morphName = $morphName;
         $this->morphType = $morphType ?: $morphName . '_type';
-        $this->morphId   = $morphId   ?: $morphName . '_id';
+        $this->morphId   = $morphId ?: $morphName . '_id';
         $this->inverse   = $inverse;
 
         // Default pivot table name: {morphName}s (e.g., 'taggables')

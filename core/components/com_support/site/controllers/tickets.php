@@ -397,7 +397,7 @@ class Tickets extends SiteController
                     break;
                 } else {
                     $this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
-                    $this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0;
+                    $this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
                 }
 
                 foreach ($users as $j => $user) {
@@ -1642,8 +1642,8 @@ class Tickets extends SiteController
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
-            ($this->getError() ? $this->getError() :  null),
-            ($this->getError() ? 'error' :  null),
+            ($this->getError() ? $this->getError() : null),
+            ($this->getError() ? 'error' : null),
         );
     }
 

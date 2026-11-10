@@ -258,7 +258,7 @@ class Feed extends Plugin
         }
 
         // Show welcome screen?
-        $showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0  ? 1 : 0;
+        $showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0 ? 1 : 0;
 
         // Show welcome banner with suggestions
         if ($showWelcome) {

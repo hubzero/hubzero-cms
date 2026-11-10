@@ -549,11 +549,11 @@ class Html extends Base
         $directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
 
         $template = isset($params['template']) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']) : 'system';
-        $file     = isset($params['file'])     ? preg_replace(
+        $file     = isset($params['file']) ? preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
             $params['file'],
-        )     : 'index.php';
+        ) : 'index.php';
         // The page shell is the active template's, or the system template's
         // where the active one does not provide that name.
         //
@@ -589,7 +589,7 @@ class Html extends Base
         // '/templates/'. $template;
         //$this->baseurl  = rtrim(\Request::root(true), '/');
         $this->baseurl  = isset($params['baseurl']) ? $params['baseurl'] : rtrim(Request::root(true), '/');
-        $this->params   = isset($params['params'])  ? $params['params']  : new Registry();
+        $this->params   = isset($params['params']) ? $params['params'] : new Registry();
 
         // Load
         $this->_template = $this->_loadTemplate($directory . DS . $template, $file);

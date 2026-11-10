@@ -128,20 +128,20 @@ class Citations extends Plugin
      */
     public static function out($row)
     {
-        $row->author    = isset($row->alias)  ? $row->alias  : '';
-        $row->booktitle = isset($row->itext)  ? $row->itext  : '';
-        $row->doi       = isset($row->ftext)  ? $row->ftext  : '';
-        $row->published = isset($row->state)  ? $row->state  : '';
-        $row->year      = isset($row->created_by)   ? $row->created_by   : '';
-        $row->month     = isset($row->modified)     ? $row->modified     : '';
-        $row->isbn      = isset($row->publish_up)   ? $row->publish_up   : '';
+        $row->author    = isset($row->alias) ? $row->alias : '';
+        $row->booktitle = isset($row->itext) ? $row->itext : '';
+        $row->doi       = isset($row->ftext) ? $row->ftext : '';
+        $row->published = isset($row->state) ? $row->state : '';
+        $row->year      = isset($row->created_by) ? $row->created_by : '';
+        $row->month     = isset($row->modified) ? $row->modified : '';
+        $row->isbn      = isset($row->publish_up) ? $row->publish_up : '';
         $row->journal   = isset($row->publish_down) ? $row->publish_down : '';
-        $row->url       = isset($row->href)   ? $row->href   : '';
+        $row->url       = isset($row->href) ? $row->href : '';
         $row->volume    = isset($row->params) ? $row->params : '';
         $row->number    = isset($row->rcount) ? $row->rcount : '';
-        $row->type      = isset($row->data1)  ? $row->data1  : '';
-        $row->pages     = isset($row->data2)  ? $row->data2  : '';
-        $row->publisher = isset($row->data3)  ? $row->data3  : '';
+        $row->type      = isset($row->data1) ? $row->data1 : '';
+        $row->pages     = isset($row->data2) ? $row->data2 : '';
+        $row->publisher = isset($row->data3) ? $row->data3 : '';
 
         $config = Component::params('com_citations');
 

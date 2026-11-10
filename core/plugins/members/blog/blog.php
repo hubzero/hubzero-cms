@@ -582,7 +582,7 @@ class Blog extends Plugin
         }
 
         // make sure we dont want to turn off comments
-        $entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
+        $entry['allow_comments'] = (isset($entry['allow_comments'])) ?: 0;
 
         // Instantiate model. entry[id] names any row on the hub; an existing
         // one has to be this member's own, and scope/owner are this blog's.

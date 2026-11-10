@@ -63,8 +63,8 @@ class Project extends Table
         // Process filters
         $mine     = isset($filters['mine']) && $filters['mine'] == 1 ? 1 : 0;
         $sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
-        $search   = isset($filters['search']) && $filters['search'] != ''  ? $filters['search'] : '';
-        $filterby = isset($filters['filterby']) && $filters['filterby'] != ''  ? $filters['filterby'] : '';
+        $search   = isset($filters['search']) && $filters['search'] != '' ? $filters['search'] : '';
+        $filterby = isset($filters['filterby']) && $filters['filterby'] != '' ? $filters['filterby'] : '';
         $getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1 : 0;
         $type     = isset($filters['type']) ? intval($filters['type']) : null;
         $group    = isset($filters['group']) && intval($filters['group']) > 0 ? $filters['group'] : '';
@@ -302,7 +302,7 @@ class Project extends Table
 
         if (!$filters['count']) {
             $sort    = '';
-            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
+            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
 
             switch ($sortby) {
                 case 'title':
@@ -520,7 +520,7 @@ class Project extends Table
         if (!isset($filters['count']) or $filters['count'] == 0) {
             $sort = '';
             $sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
-            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
+            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
 
             switch ($sortby) {
                 case 'role':

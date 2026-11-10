@@ -478,7 +478,7 @@ class Entries extends SiteController
 
         // Build some basic RSS document information
         $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
-        $doc->title .= ($filters['year'])  ? ': ' . $filters['year'] : '';
+        $doc->title .= ($filters['year']) ? ': ' . $filters['year'] : '';
         $doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
         $doc->description = Lang::txt('COM_BLOG_RSS_DESCRIPTION', Config::get('sitename'));

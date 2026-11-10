@@ -39,7 +39,7 @@ class CurationHistory extends Table
         }
 
         $sortby  = isset($filters['sortby']) && $filters['sortby'] ? $filters['sortby'] : 'created';
-        $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
+        $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
 
         $query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 

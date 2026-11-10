@@ -234,7 +234,7 @@ class Geocode
             return '';
         }
 
-        $latitude =  isset($coordinates['latitude'])  ? $coordinates['latitude']  : $coordinates[0];
+        $latitude =  isset($coordinates['latitude']) ? $coordinates['latitude'] : $coordinates[0];
         $longitude = isset($coordinates['longitude']) ? $coordinates['longitude'] : $coordinates[1];
 
         // Instantiate the Geocoder service and pass it the list of providers

@@ -53,8 +53,8 @@ $this->css('browse.css');
                         $url  = 'index.php?option=' . $this->option . '&task=browse';
                         $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                        $url .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
-                        $url .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
+                        $url .= ($this->filters['index'] ? '&index=' . $this->escape($this->filters['index']) : '');
+                        $url .= ($this->filters['group'] ? '&group=' . $this->escape($this->filters['group']) : '');
 
                         $tags = $this->model->parseTags($this->filters['tag']);
                         foreach ($tags as $tag) {
@@ -107,9 +107,9 @@ $this->css('browse.css');
                 <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                     <?php
                     $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                    $qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
-                    $qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
-                    $qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
+                    $qs .= ($this->filters['index'] ? '&index=' . $this->escape($this->filters['index']) : '');
+                    $qs .= ($this->filters['tag'] ? '&tag=' . $this->escape($this->filters['tag']) : '');
+                    $qs .= ($this->filters['group'] ? '&group=' . $this->escape($this->filters['group']) : '');
                     ?>
                     <ul class="entries-menu order-options">
                         <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_TITLE'); ?>" rel="nofollow"><?php echo Lang::txt('COM_COURSES_SORT_TITLE'); ?></a></li>

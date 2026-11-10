@@ -524,9 +524,9 @@ class Job extends Relational
         $startedSql = ($started === false) ? 'NULL' : $db->quote($started);
 
         // Observed (dead) ownership for the reclaim arm.
-        $obsPid     = ($this->get('pid') === null)         ? 'NULL' : $db->quote($this->get('pid'));
+        $obsPid     = ($this->get('pid') === null) ? 'NULL' : $db->quote($this->get('pid'));
         $obsStarted = ($this->get('pid_started') === null) ? 'NULL' : $db->quote($this->get('pid_started'));
-        $obsHost    = ($this->get('pid_host') === null)    ? 'NULL' : $db->quote($this->get('pid_host'));
+        $obsHost    = ($this->get('pid_host') === null) ? 'NULL' : $db->quote($this->get('pid_host'));
 
         $query = "UPDATE `#__cron_jobs`
 			SET `active` = 1, `pid` = " . $db->quote($pid) . ",

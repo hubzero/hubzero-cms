@@ -705,7 +705,7 @@ class Blog extends Plugin
         }
 
         // make sure we dont want to turn off comments
-        $entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
+        $entry['allow_comments'] = (isset($entry['allow_comments'])) ?: 0;
 
         // Instantiate model
         $row = \Components\Blog\Models\Entry::oneOrNew(isset($entry['id']) ? (int) $entry['id'] : 0);

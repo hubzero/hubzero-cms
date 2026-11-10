@@ -309,7 +309,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             $this->set('calias', $category->get('path'));
         }
         $link .= '&section=' . $this->get('calias');
-        $link .= ($this->get('alias'))   ? '&alias=' . $this->get('alias')      : '&alias=' . $this->get('id');
+        $link .= ($this->get('alias')) ? '&alias=' . $this->get('alias') : '&alias=' . $this->get('id');
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {

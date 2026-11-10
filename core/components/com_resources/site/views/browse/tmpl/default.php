@@ -57,7 +57,7 @@ $this->css()
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
                             $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                             $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                            $url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+                            $url .= ($this->filters['type'] ? '&type=' . $this->escape($this->filters['type']) : '');
 
                             $rt = new \Components\Resources\Helpers\Tags(0);
                             $tags = $rt->parseTopTags($this->filters['tag']);
@@ -85,7 +85,7 @@ $this->css()
                         $url  = 'index.php?option=' . $this->option . '&task=browse';
                         $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                        $url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+                        $url .= ($this->filters['type'] ? '&type=' . $this->escape($this->filters['type']) : '');
 
                         foreach ($this->filters['tag_ignored'] as $tag) {
                             ?>
@@ -105,8 +105,8 @@ $this->css()
                     <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                         <?php
                         $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                        $qs .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
-                        $qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+                        $qs .= ($this->filters['type'] ? '&type=' . $this->escape($this->filters['type']) : '');
+                        $qs .= ($this->filters['tag'] ? '&tag=' . $this->escape($this->filters['tag']) : '');
                         ?>
                         <ul class="entries-menu order-options">
                             <li>

@@ -5306,7 +5306,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function oneToOne($model, $childKey = null, $thisKey = null)
     {
         // Default the keys if not set
-        $thisKey  = $thisKey  ?: $this->getPrimaryKey();
+        $thisKey  = $thisKey ?: $this->getPrimaryKey();
         $childKey = $childKey ?: strtolower($this->getModelName()) . '_id';
 
         return new OneToOne($this, $this->resolve($model), $thisKey, $childKey);
@@ -5323,7 +5323,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function oneToMany($model, $relatedKey = null, $thisKey = null)
     {
         // Default the keys if not set
-        $thisKey    = $thisKey    ?: $this->getPrimaryKey();
+        $thisKey    = $thisKey ?: $this->getPrimaryKey();
         $relatedKey = $relatedKey ?: strtolower($this->getModelName()) . '_id';
 
         return new OneToMany($this, $this->resolve($model), $thisKey, $relatedKey);
@@ -5370,8 +5370,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Default the keys and table if not set
         $associativeTable = $associativeTable ?: '#__' . $namespace . implode('_', $names);
-        $thisKey          = $thisKey          ?: strtolower($this->getModelName()) . '_id';
-        $relatedKey       = $relatedKey       ?: strtolower($related->getModelName()) . '_id';
+        $thisKey          = $thisKey ?: strtolower($this->getModelName()) . '_id';
+        $relatedKey       = $relatedKey ?: strtolower($related->getModelName()) . '_id';
 
         return new ManyToMany($this, $related, $associativeTable, $thisKey, $relatedKey);
     }
@@ -5397,7 +5397,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Default the keys and table if not set
         $associativeTable = $associativeTable ?: '#__' . strtolower($related->getModelName()) . '_object';
-        $relatedKey       = $relatedKey       ?: strtolower($related->getModelName()) . '_id';
+        $relatedKey       = $relatedKey ?: strtolower($related->getModelName()) . '_id';
 
         return new ManyShiftsToMany($this, $related, $associativeTable, $thisKey, $relatedKey, $shifter);
     }
@@ -5415,7 +5415,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $parent = $this->resolve($model);
 
         // Default the keys if not set
-        $thisKey   = $thisKey   ?: strtolower($parent->getModelName()) . '_id';
+        $thisKey   = $thisKey ?: strtolower($parent->getModelName()) . '_id';
         $parentKey = $parentKey ?: $this->getPrimaryKey();
 
         return new BelongsToOne($this, $parent, $thisKey, $parentKey);
@@ -5440,7 +5440,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $through = $this->resolve($through);
 
         // Keys
-        $localKey   = $localKey   ?: strtolower($this->getModelName()) . '_id';
+        $localKey   = $localKey ?: strtolower($this->getModelName()) . '_id';
         $relatedKey = $relatedKey ?: strtolower($through->getModelName()) . '_id';
 
         return new OneToManyThrough($this, $related, $through->getTableName(), $localKey, $relatedKey);
@@ -5487,7 +5487,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $through = $this->resolve($through);
 
         // Keys - defaults follow naming convention
-        $localKey   = $localKey   ?: strtolower($this->getModelName()) . '_id';
+        $localKey   = $localKey ?: strtolower($this->getModelName()) . '_id';
         $relatedKey = $relatedKey ?: strtolower($related->getModelName()) . '_id';
 
         return new OneToOneThrough($this, $related, $through->getTableName(), $localKey, $relatedKey);

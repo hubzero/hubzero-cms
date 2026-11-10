@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 
 $open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
-$newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
+$newstate         = ($this->action == 'confirm') ? 'Approved' : $this->status['state'];
 //$this->statuspath = Route::url('index.php?option=' . $this->option
 //  . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
 

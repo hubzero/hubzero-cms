@@ -304,7 +304,7 @@ class Todo extends Plugin
             'todolist'   => Request::getWord('list', ''),
             'state'      => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
             'mine'       => $mine,
-            'assignedto' => $mine == 1  ? $this->_uid : 0,
+            'assignedto' => $mine == 1 ? $this->_uid : 0,
             'sortby'     => Request::getString('sortby', 'priority'),
             'sortdir'    => Request::getString('sortdir', 'ASC'),
             'layout'     => $layout,

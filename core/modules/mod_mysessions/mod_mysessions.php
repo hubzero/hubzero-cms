@@ -61,8 +61,8 @@ class Mysessions extends Module
             $left = [$days_left, $hours_left, $minutes_left];
 
             $tl  = '';
-            $tl .= ($days_left > 0)    ? $days_left . ' days, '    : '';
-            $tl .= ($hours_left > 0)   ? $hours_left . ' hours, '  : '';
+            $tl .= ($days_left > 0) ? $days_left . ' days, ' : '';
+            $tl .= ($hours_left > 0) ? $hours_left . ' hours, ' : '';
             $tl .= ($minutes_left > 0) ? $minutes_left . ' minute' : '';
             $tl .= ($minutes_left > 1) ? 's' : '';
         }

@@ -575,7 +575,7 @@ class Publication extends Base
         $params   = $element->typeParams;
         $required = $element->required;
         $counter  = is_array($attachments) ? count($attachments) : 0;
-        $allowed  = isset($params->accept) ? $params->accept :  null;
+        $allowed  = isset($params->accept) ? $params->accept : null;
 
         if (!$required) {
             $status->status = $counter ? 1 : 2;

@@ -273,7 +273,7 @@ class Publication extends Table
         $query .= $groupby;
         if (!isset($filters['count']) or $filters['count'] == 0) {
             $query  .= " ORDER BY ";
-            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
+            $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
 
             switch ($sortby) {
                 case 'date':

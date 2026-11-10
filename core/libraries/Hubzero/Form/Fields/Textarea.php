@@ -35,11 +35,11 @@ class Textarea extends Field
             'type'         => 'text',
             'name'         => $this->name,
             'id'           => $this->id,
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
             'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
             'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
+            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

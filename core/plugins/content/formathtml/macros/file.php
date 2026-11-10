@@ -439,7 +439,7 @@ class File extends Macro
 
         switch ($ext) {
             case 'unity3d':
-                $attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+                $attr['width']  = (isset($attr['width']) && $attr['width']) ? $attr['width'] : 400;
                 $attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
                 if (isset($attr['style']['width'])) {
                     $attr['width'] = intval($attr['style']['width']);
@@ -447,7 +447,7 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none') ? $attr['href'] : $this->link($file);
 
                 /*if (!array_key_exists('alt', $attr)
                  && array_key_exists('altimage', $attr)
@@ -482,7 +482,7 @@ class File extends Macro
                 break;
 
             case 'cdf':
-                $attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+                $attr['width']  = (isset($attr['width']) && $attr['width']) ? $attr['width'] : 400;
                 $attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
                 if (isset($attr['style']['width'])) {
                     $attr['width'] = intval($attr['style']['width']);
@@ -490,7 +490,7 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none') ? $attr['href'] : $this->link($file);
 
                 $rand = rand(0, 100000);
 
@@ -562,7 +562,7 @@ class File extends Macro
                 } else {
                     $attr['details'] = isset($attr['details']) ? $attr['details'] : true;
                     $attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->link($file);
-                    $attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
+                    $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'internal';
 
                     $size = null;
                     if (file_exists($this->path($file))) {

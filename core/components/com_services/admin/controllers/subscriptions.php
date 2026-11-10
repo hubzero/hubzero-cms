@@ -222,7 +222,7 @@ class Subscriptions extends AdminController
                 $subscription->set('status', 1);
                 $subscription->set('units', ($subscription->get('units') + $newunits));
 
-                $email = ($received_payment > 0 or $newunits > 0)  ? 1 : 0;
+                $email = ($received_payment > 0 or $newunits > 0) ? 1 : 0;
                 $statusmsg .= Lang::txt('COM_SERVICES_SUBSCRIPTION_ACTIVATED');
                 if ($newunits > 0) {
                     $statusmsg .=  ' ' . Lang::txt('for') . ' ' . $newunits . ' ';
@@ -256,7 +256,7 @@ class Subscriptions extends AdminController
             $notes  = '------------------------------' . "\r\n";
             $notes .= Lang::txt('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', ' . Date::toSql() . "\r\n";
             $notes .= $statusmsg ? $statusmsg . "\r\n" : '';
-            $notes .= $message   ? $message . "\r\n"   : '';
+            $notes .= $message ? $message . "\r\n" : '';
             $notes .= '------------------------------' . "\r\n";
 
             $subscription->set('notes', $subscription->get('notes') . $notes);

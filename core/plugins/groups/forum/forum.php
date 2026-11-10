@@ -1458,8 +1458,8 @@ class Forum extends Plugin
         $fields  = Request::getArray('fields', [], 'post');
         $fields  = array_map('trim', $fields);
 
-        $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
-        $fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
+        $fields['sticky']    = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
+        $fields['closed']    = (isset($fields['closed'])) ? $fields['closed'] : 0;
         $fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
         // Instantiate a Post record

@@ -20,7 +20,7 @@ if ($feed != false) {
     }
 
     //image handling
-    $iUrl   = isset($feed->image->url)   ? $feed->image->url   : null;
+    $iUrl   = isset($feed->image->url) ? $feed->image->url : null;
     $iTitle = isset($feed->image->title) ? $feed->image->title : null;
     ?>
     <div class="feed<?php echo $moduleclass_sfx; ?> feed-<?php echo $rssrtl ? 'rtl' : 'ltr'; ?>">

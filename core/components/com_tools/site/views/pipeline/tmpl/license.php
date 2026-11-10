@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 
 $open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
-$newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
+$newstate         = ($this->action == 'confirm') ? 'Approved' : $this->status['state'];
 
 $codeChoices = [
     '@OPEN' => Lang::txt('COM_TOOLS_OPEN_SOURCE'),

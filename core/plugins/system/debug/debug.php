@@ -980,10 +980,10 @@ class Debug extends Plugin
         ]);
         $logger = App::get('log')->logger('profile');
 
-        $hubname    = isset($_SERVER['SERVER_NAME'])  ? $_SERVER['SERVER_NAME']  : 'unknown';
+        $hubname    = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
         $uri        = Request::path();
         $uri        = strtr($uri, [" " => "%20"]);
-        $ip         = isset($_SERVER['REMOTE_ADDR'])  ? $_SERVER['REMOTE_ADDR']  : 'unknown';
+        $ip         = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
         $query      = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown';
         $memory     = memory_get_usage(true);
         $querycount = App::get('db')->getCount();

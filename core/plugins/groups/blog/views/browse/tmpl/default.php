@@ -129,7 +129,7 @@ $isEmpty = $noFilters && !$rows->count();
                         <?php
                         if ($this->config->get('feeds_enabled', 1)) :
                             $path  = $base . '&scope=feed.rss';
-                            $path .= ($this->filters['year'])  ? '&year=' . $this->filters['year']   : '';
+                            $path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
                             $path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
                             $feed = Route::url($path);
                             $live_site = 'https://' . $_SERVER['HTTP_HOST'];

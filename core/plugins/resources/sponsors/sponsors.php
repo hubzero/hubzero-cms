@@ -135,7 +135,7 @@ class Sponsors extends Plugin
             return;
         }
 
-        $task = ($task) ?  $task : 'default';
+        $task = ($task) ? $task : 'default';
 
         $this->_option     = $option;
         $this->_controller = $controller;

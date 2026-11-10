@@ -519,7 +519,7 @@ class Log extends Table
             . "AND V.published_up < '" . Date::toSql() . "'";
         $query .= " GROUP BY V.publication_id ";
 
-        $query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " :  "ORDER BY V.title ASC ";
+        $query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " : "ORDER BY V.title ASC ";
         $query .= $limit ? "LIMIT " . $limit : '';
 
         $this->_db->setQuery($query);

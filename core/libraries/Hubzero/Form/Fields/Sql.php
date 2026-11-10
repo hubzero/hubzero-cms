@@ -35,12 +35,12 @@ class Sql extends Select
         $options = [];
 
         // Initialize some field attributes.
-        $key       = $this->element['key_field']   ? (string) $this->element['key_field']   : 'value';
+        $key       = $this->element['key_field'] ? (string) $this->element['key_field'] : 'value';
         $value     = $this
             ->element['value_field'] ? (string) $this
             ->element['value_field'] : (string) $this
             ->element['name'];
-        $translate = $this->element['translate']   ? (string) $this->element['translate']   : false;
+        $translate = $this->element['translate'] ? (string) $this->element['translate'] : false;
         $query     = (string) $this->element['query'];
 
         // Get the database object.

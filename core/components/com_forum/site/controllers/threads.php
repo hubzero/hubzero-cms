@@ -365,8 +365,8 @@ class Threads extends SiteController
             'scope', 'scope_id', 'scope_sub_id', 'object_id',
         ]));
 
-        $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
-        $fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
+        $fields['sticky']    = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
+        $fields['closed']    = (isset($fields['closed'])) ? $fields['closed'] : 0;
         $fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
         // Instantiate a Post record

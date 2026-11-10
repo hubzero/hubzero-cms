@@ -467,7 +467,7 @@ class File extends WikiMacro
 
         switch ($ext) {
             case 'unity3d':
-                $attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+                $attr['width']  = (isset($attr['width']) && $attr['width']) ? $attr['width'] : 400;
                 $attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
                 if (isset($attr['style']['width'])) {
                     $attr['width'] = intval($attr['style']['width']);
@@ -547,7 +547,7 @@ class File extends WikiMacro
                 break;
 
             case 'cdf':
-                $attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+                $attr['width']  = (isset($attr['width']) && $attr['width']) ? $attr['width'] : 400;
                 $attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
                 if (isset($attr['style']['width'])) {
                     $attr['width'] = intval($attr['style']['width']);
@@ -653,7 +653,7 @@ class File extends WikiMacro
                 } else {
                     $attr['details'] = isset($attr['details']) ? $attr['details'] : true;
                     $attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->link($file);
-                    $attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
+                    $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'internal';
 
                     $size = null;
                     if (file_exists($this->path($file))) {

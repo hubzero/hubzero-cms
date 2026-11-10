@@ -1732,9 +1732,9 @@ class WikiParser
             }
 
             return join('', [
-                ($style)   ? ' style="'   . join("", $style) . '"' : '',
-                ($class)   ? ' class="'   . $class           . '"' : '',
-                ($lang)    ? ' lang="'    . $lang            . '"' : '',
+                ($style) ? ' style="'   . join("", $style) . '"' : '',
+                ($class) ? ' class="'   . $class           . '"' : '',
+                ($lang) ? ' lang="'    . $lang            . '"' : '',
                 ($id and $include_id) ? ' id="' . $id        . '"' : '',
                 ($colspan) ? ' colspan="' . $colspan         . '"' : '',
                 ($rowspan) ? ' rowspan="' . $rowspan         . '"' : '',

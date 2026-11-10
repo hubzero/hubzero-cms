@@ -656,11 +656,11 @@ class Utils
                 . ' shell_exit_code=' . $status
                 . ' json_exit_code=' . $output->exit_code
                 . ' command=' . $comm
-                . (isset($output->user_message)      ? ' user_message='      . $output->user_message      : '')
+                . (isset($output->user_message) ? ' user_message='      . $output->user_message : '')
                 . (isset($output->technical_message) ? ' technical_message=' . $output->technical_message : '')
-                . (isset($output->username)          ? ' username='          . $output->username          : '')
-                . (isset($output->session)           ? ' session='           . $output->session           : '')
-                . (isset($output->stack_dump)        ? ' stack_dump='        . $output->stack_dump        : ''));
+                . (isset($output->username) ? ' username='          . $output->username : '')
+                . (isset($output->session) ? ' session='           . $output->session : '')
+                . (isset($output->stack_dump) ? ' stack_dump='        . $output->stack_dump : ''));
         }
 
         if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0)) {

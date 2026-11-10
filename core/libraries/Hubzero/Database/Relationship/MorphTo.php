@@ -97,7 +97,7 @@ class MorphTo extends Relationship
         $this->model     = $model;
         $this->morphName = $morphName;
         $this->morphType = $morphType ?: $morphName . '_type';
-        $this->morphId   = $morphId   ?: $morphName . '_id';
+        $this->morphId   = $morphId ?: $morphName . '_id';
 
         // Related is resolved dynamically based on type column
         $this->related    = null;

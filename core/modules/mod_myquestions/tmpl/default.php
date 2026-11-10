@@ -47,7 +47,7 @@ $this->css();
     for ($i = 0; $i < count($this->openquestions); $i++) {
         if ($i < $this->limit_mine) {
             $rcount = $this->openquestions[$i]->get('rcount', 0);
-            $rclass = ($rcount > 0) ?  'yes' : 'no';
+            $rclass = ($rcount > 0) ? 'yes' : 'no';
             ?>
             <li class="question">
                 <a href="<?php echo Route::url($this->openquestions[$i]->link()); ?>">

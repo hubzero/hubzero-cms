@@ -35,10 +35,10 @@ class Hidden extends Field
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
+            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
+            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
+            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

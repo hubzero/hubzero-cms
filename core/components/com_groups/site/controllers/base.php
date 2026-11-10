@@ -202,7 +202,7 @@ class Base extends SiteController
             }
         }
 
-        $this->active = strtolower($this->active ? $this->active  : '');
+        $this->active = strtolower($this->active ? $this->active : '');
         if ($this->active) {
             // fetch the active page
             $page = null;

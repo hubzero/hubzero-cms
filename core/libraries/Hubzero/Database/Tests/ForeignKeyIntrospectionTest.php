@@ -38,7 +38,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         // Use NO ACTION fallback for drivers that don't support referential actions
         $supportsActions = $driver->supportsReferentialActions();
         $setNull   = $supportsActions ? 'SET NULL' : 'NO ACTION';
-        $cascade   = $supportsActions ? 'CASCADE'  : 'NO ACTION';
+        $cascade   = $supportsActions ? 'CASCADE' : 'NO ACTION';
         $noAction  = 'NO ACTION';
 
         // Grandparent table (no foreign keys)

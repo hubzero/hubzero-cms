@@ -516,7 +516,7 @@ abstract class Model extends Obj
                             continue;
                         }
                         $str .= str_repeat(" ", $depth * 4) . '[';
-                        $str .= $keyParts[2] . (($keyParts[1] == '*')  ? ':protected' : ':private');
+                        $str .= $keyParts[2] . (($keyParts[1] == '*') ? ':protected' : ':private');
                     } else {
                         $str .= str_repeat(" ", $depth * 4) . '[';
                         $str .= $key;

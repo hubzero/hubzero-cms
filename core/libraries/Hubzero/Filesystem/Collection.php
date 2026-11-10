@@ -46,11 +46,11 @@ class Collection extends ItemList
         return $this->sortByCallback(function ($a, $b) use ($key, $asc) {
             if (!isset($a->$key) || !isset($b->$key)) {
                 if (!isset($a->$key)) {
-                    return ($asc) ? -1 :  1;
+                    return ($asc) ? -1 : 1;
                 }
 
                 if (!isset($b->$key)) {
-                    return ($asc) ?  1 : -1;
+                    return ($asc) ? 1 : -1;
                 }
 
                 return 0;

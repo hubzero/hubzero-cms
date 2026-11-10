@@ -3168,10 +3168,10 @@ class Files extends Plugin
             $session->set('projects.' . $model->get('alias') . '.restored', '');
             $session->set('projects.' . $model->get('alias') . '.expanded', '');
         } else {
-            $updated  = !empty($changes['updated'])  ? $changes['updated']  : null;
+            $updated  = !empty($changes['updated']) ? $changes['updated'] : null;
             $uploaded = !empty($changes['uploaded']) ? $changes['uploaded'] : null;
-            $failed   = !empty($changes['failed'])   ? $changes['failed']   : null;
-            $deleted  = !empty($changes['deleted'])  ? $changes['deleted']  : null;
+            $failed   = !empty($changes['failed']) ? $changes['failed'] : null;
+            $deleted  = !empty($changes['deleted']) ? $changes['deleted'] : null;
             $restored = !empty($changes['restored']) ? $changes['restored'] : null;
             $expanded = !empty($changes['expanded']) ? $changes['expanded'] : null;
         }

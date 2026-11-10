@@ -70,7 +70,7 @@ class Database extends Table
         $query .= $skipPublished ? " AND revision IS null" : "";
 
         $this->_db->setQuery($query);
-        return $count ? $this->_db->loadResult() :  $this->_db->loadObjectList();
+        return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
     }
 
     /**

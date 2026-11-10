@@ -1063,7 +1063,7 @@ class Setup extends Base
     {
         // Incoming
         $name = isset($this->_text) ? $this->_text : trim(Request::getString('text', ''));
-        $id   = $this->_identifier  ? $this->_identifier : trim(Request::getInt('pid', 0));
+        $id   = $this->_identifier ? $this->_identifier : trim(Request::getInt('pid', 0));
         $ajax = isset($this->_ajax) ? $this->_ajax : trim(Request::getInt('ajax', 0));
 
         $this->model->check($name, $id, $ajax);
