@@ -377,20 +377,20 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
         $generator = new MigrationGenerator($driver);
 
         $customTemplate = <<<'PHP'
-<?php
-// Custom migration template
-namespace <namespace>;
+            <?php
+            // Custom migration template
+            namespace <namespace>;
 
-class <className> {
-    // <description>
-    public function up() {
-<upCode>
-    }
-    public function down() {
-<downCode>
-    }
-}
-PHP;
+            class <className> {
+                // <description>
+                public function up() {
+            <upCode>
+                }
+                public function down() {
+            <downCode>
+                }
+            }
+            PHP;
 
         $generator->setTemplate($customTemplate);
         $content = $generator->generateBlank('Core', 'Custom test');

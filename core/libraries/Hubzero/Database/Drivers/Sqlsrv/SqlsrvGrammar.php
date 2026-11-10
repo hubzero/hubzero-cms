@@ -511,14 +511,14 @@ class SqlsrvGrammar extends BaseSchemaGrammar
         if ($builder->getDropPrimaryKeyFlag()) {
             $quotedTable = addslashes($table);
             $script = <<<SQL
-DECLARE @pkConstraint NVARCHAR(128), @sql NVARCHAR(MAX);
-SELECT @pkConstraint = name FROM sys.key_constraints
-WHERE type = 'PK' AND parent_object_id = OBJECT_ID('$quotedTable');
-IF @pkConstraint IS NOT NULL BEGIN
-    SET @sql = 'ALTER TABLE $qt DROP CONSTRAINT ' + QUOTENAME(@pkConstraint);
-    EXEC(@sql);
-END
-SQL;
+                DECLARE @pkConstraint NVARCHAR(128), @sql NVARCHAR(MAX);
+                SELECT @pkConstraint = name FROM sys.key_constraints
+                WHERE type = 'PK' AND parent_object_id = OBJECT_ID('$quotedTable');
+                IF @pkConstraint IS NOT NULL BEGIN
+                    SET @sql = 'ALTER TABLE $qt DROP CONSTRAINT ' + QUOTENAME(@pkConstraint);
+                    EXEC(@sql);
+                END
+                SQL;
             $statements[] = $script;
         }
 

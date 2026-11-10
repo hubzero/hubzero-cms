@@ -415,41 +415,41 @@ class MigrationGenerator
         $className = "Migration{$timestamp}{$component}";
 
         return <<<PHP
-<?php
+            <?php
 
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-{$this->copyrightYear} The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
+            /**
+             * @package    hubzero-cms
+             * @copyright  Copyright (c) 2005-{$this->copyrightYear} The Regents of the University of California.
+             * @license    http://opensource.org/licenses/MIT MIT
+             */
 
-namespace Migrations;
+            namespace Migrations;
 
-use Hubzero\Content\Migration\Base;
+            use Hubzero\Content\Migration\Base;
 
-/**
- * {$description}
- */
-class {$className} extends Base
-{
-    /**
-     * Up
-     */
-    public function up()
-    {
-{$upCode}
-    }
+            /**
+             * {$description}
+             */
+            class {$className} extends Base
+            {
+                /**
+                 * Up
+                 */
+                public function up()
+                {
+            {$upCode}
+                }
 
-    /**
-     * Down
-     */
-    public function down()
-    {
-{$downCode}
-    }
-}
+                /**
+                 * Down
+                 */
+                public function down()
+                {
+            {$downCode}
+                }
+            }
 
-PHP;
+            PHP;
     }
 
     /**
