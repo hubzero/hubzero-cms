@@ -127,9 +127,9 @@ class Publications extends Plugin
 				ON c.id = p.category
 			WHERE
 				$whereClause
-				AND ($weight > 0)" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            "UNION
+				AND ($weight > 0)"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . "UNION
 			SELECT
 				p.id,
 				v.publication_id,

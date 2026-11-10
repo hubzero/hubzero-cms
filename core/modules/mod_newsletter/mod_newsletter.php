@@ -33,8 +33,8 @@ class Newsletter extends Module
 
         // Get mailing list details that we are wanting users to sign up for
         $mailinglistId = $this->database->quote($this->params->get('mailinglist', 0));
-        $sql = "SELECT * FROM `#__newsletter_mailinglists` " .
-            "WHERE deleted=0 AND private=0 AND id=" . $mailinglistId;
+        $sql = "SELECT * FROM `#__newsletter_mailinglists` "
+            . "WHERE deleted=0 AND private=0 AND id=" . $mailinglistId;
         $this->database->setQuery($sql);
         $this->mailinglist = $this->database->loadObject();
 
@@ -42,8 +42,8 @@ class Newsletter extends Module
         $this->subscription   = null;
         $this->subscriptionId = null;
         if (!User::isGuest()) {
-            $sql = "SELECT * FROM `#__newsletter_mailinglist_emails` WHERE mid=" .
-                $mailinglistId . " AND email=" . $this->database->quote(User::get('email'));
+            $sql = "SELECT * FROM `#__newsletter_mailinglist_emails` WHERE mid="
+                . $mailinglistId . " AND email=" . $this->database->quote(User::get('email'));
             $this->database->setQuery($sql);
             $this->subscription = $this->database->loadObject();
         }

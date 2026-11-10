@@ -248,9 +248,9 @@ class Pages extends AdminController
 
         // if we have php or script tags we must get page approved by admin
         if (
-            strpos($this->version->get('content'), '<?') !== false ||
-            strpos($this->version->get('content'), '<?php') !== false ||
-            strpos($this->version->get('content'), '<script') !== false
+            strpos($this->version->get('content'), '<?') !== false
+            || strpos($this->version->get('content'), '<?php') !== false
+            || strpos($this->version->get('content'), '<script') !== false
         ) {
             $this->version->set('approved', 0);
             $this->version->set('approved_on', null);

@@ -52,10 +52,10 @@ class Menuitem extends Groupedlist
 
             // Build the options array.
             foreach ($items as $link) {
-                $groups[$menuType][] = Dropdown::option($link->
-                    value, $link->
-                    text, 'value', 'text', in_array($link->
-                    type, $disable));
+                $groups[$menuType][] = Dropdown::option($link
+                    ->value, $link
+                    ->text, 'value', 'text', in_array($link
+                    ->type, $disable));
             }
         } else {
             // Build groups for all menu types.

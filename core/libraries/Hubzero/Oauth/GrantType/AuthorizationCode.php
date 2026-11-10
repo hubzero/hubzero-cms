@@ -87,8 +87,8 @@ class AuthorizationCode implements GrantTypeInterface
         // authorizationrequest
         if (isset($authCode['redirect_uri']) && $authCode['redirect_uri']) {
             if (
-                !$request->request('redirect_uri') ||
-                urldecode($request->request('redirect_uri')) != $authCode['redirect_uri']
+                !$request->request('redirect_uri')
+                || urldecode($request->request('redirect_uri')) != $authCode['redirect_uri']
             ) {
                 $response->setError(
                     400,

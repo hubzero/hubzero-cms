@@ -86,9 +86,9 @@ class Configs extends AdminController
             $model = Cfg::blank();
 
             $db->setQuery(
-                'INSERT INTO ' . $model->getTableName() .
-                ' (user_id, cfg_name, cfg_value)' .
-                ' VALUES ' . implode(',', $tuples),
+                'INSERT INTO ' . $model->getTableName()
+                . ' (user_id, cfg_name, cfg_value)'
+                . ' VALUES ' . implode(',', $tuples),
             );
             $db->query();
 

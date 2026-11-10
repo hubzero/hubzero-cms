@@ -140,8 +140,8 @@ $this->view('_submenu')
                     foreach ($this->history as $item) {
                         ?>
                     <tr>
-                        <td><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' ' .
-                            Lang::txt('TIME_FORMAT_HZ1')); ?></td>
+                        <td><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' '
+                            . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
                         <td><?php echo $this->escape($item->description); ?></td>
                         <td><?php echo $this->escape($item->category); ?></td>
                         <td><?php echo $this->escape($item->type); ?></td>

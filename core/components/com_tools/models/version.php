@@ -470,9 +470,9 @@ class Version
         if (empty($db)) {
             return false;
         } else if (is_numeric($this->id)) {
-            $query = "INSERT INTO #__tool_version (id,toolname,instance) VALUES ( " .
-                $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," .
-                $db->Quote($this->instance) . ");";
+            $query = "INSERT INTO #__tool_version (id,toolname,instance) VALUES ( "
+                . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . ","
+                . $db->Quote($this->instance) . ");";
 
             $db->setQuery($query);
 
@@ -482,16 +482,16 @@ class Version
                 return true;
             }
         } else {
-            $query = "INSERT INTO #__tool_version (toolname,instance) VALUES ( " .
-                $db->Quote($this->toolname) . "," . $db->Quote($this->instance) . ");";
+            $query = "INSERT INTO #__tool_version (toolname,instance) VALUES ( "
+                . $db->Quote($this->toolname) . "," . $db->Quote($this->instance) . ");";
 
             $db->setQuery($query);
 
             $result = $db->query();
 
             if ($result === false && $db->getErrorNum() == 1062) {
-                $query = "SELECT id FROM #__tool_version where instance=" .
-                    $db->Quote($this->instance) . ";";
+                $query = "SELECT id FROM #__tool_version where instance="
+                    . $db->Quote($this->instance) . ";";
 
                 $db->setQuery($query);
 
@@ -551,8 +551,8 @@ class Version
         if (is_numeric($this->instance)) {
             $query = "SELECT * FROM #__tool_version WHERE id=" . $db->Quote($this->instance) . ";";
         } else {
-            $query = "SELECT * FROM #__tool_version WHERE instance=" .
-                $db->Quote($this->instance) . ";";
+            $query = "SELECT * FROM #__tool_version WHERE instance="
+                . $db->Quote($this->instance) . ";";
         }
 
         $db->setQuery($query);
@@ -734,19 +734,19 @@ class Version
                     $first = false;
 
                     if ($property == 'author') {
-                        $query .= '(' . $db->Quote($this->toolname) . ',' .
-                            $db->Quote($this->revision) . ',' . $db->Quote($value) . ',' .
-                            $db->Quote($order) . ',' . $db->Quote($this->id) . ')';
+                        $query .= '(' . $db->Quote($this->toolname) . ','
+                            . $db->Quote($this->revision) . ',' . $db->Quote($value) . ','
+                            . $db->Quote($order) . ',' . $db->Quote($this->id) . ')';
                     } else if ($property == 'member') {
-                        $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) . ',' .
-                            $db->Quote('0') . ')';
+                        $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) . ','
+                            . $db->Quote('0') . ')';
                     } else if ($property == 'owner') {
                         if ($value == 'apps' || $value == 'contribtooladmin') {
-                            $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) .
-                                ',' . $db->Quote('2') . ')';
+                            $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid)
+                                . ',' . $db->Quote('2') . ')';
                         } else {
-                            $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) .
-                                ',' . $db->Quote('1') . ')';
+                            $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid)
+                                . ',' . $db->Quote('1') . ')';
                         }
                     } else {
                         $query .= '(' . $db->Quote($this->id) . ',' . $db->Quote($value) . ')';
@@ -784,17 +784,17 @@ class Version
                 }
 
                 if ($property == 'author') {
-                    $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id) .
-                        " AND uid NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id)
+                        . " AND uid NOT IN ($valuelist);";
                 } else if ($property == 'member') {
-                    $query = "DELETE FROM $aux_table WHERE role='0' AND toolid=" .
-                        $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE role='0' AND toolid="
+                        . $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
                 } else if ($property == 'owner') {
-                    $query = "DELETE FROM $aux_table WHERE (role='1' OR role='2') AND toolid=" .
-                        $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE (role='1' OR role='2') AND toolid="
+                        . $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
                 } else {
-                    $query = "DELETE FROM $aux_table WHERE tool_version_id=" .
-                        $db->Quote($this->id) . " AND $property NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE tool_version_id="
+                        . $db->Quote($this->id) . " AND $property NOT IN ($valuelist);";
                 }
             }
 
@@ -953,18 +953,18 @@ class Version
                     if (in_array($property, ['alias', 'middleware', 'hostreq'])) {
                         $aux_table = "#__tool_version_" . $property;
 
-                        $query = "SELECT $property FROM $aux_table AS aux WHERE " .
-                            " aux.tool_version_id=" . $db->Quote($this->id) .
-                            " ORDER BY $property" . " ASC;";
+                        $query = "SELECT $property FROM $aux_table AS aux WHERE "
+                            . " aux.tool_version_id=" . $db->Quote($this->id)
+                            . " ORDER BY $property" . " ASC;";
                     } else if ($property == 'author') {
-                        $query = "SELECT uid FROM #__tool_authors WHERE version_id=" .
-                            $db->Quote($this->id) . " ORDER BY ordering ASC;";
+                        $query = "SELECT uid FROM #__tool_authors WHERE version_id="
+                            . $db->Quote($this->id) . " ORDER BY ordering ASC;";
                     } else if ($property == 'member') {
-                        $query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid=" .
-                            $db->Quote($this->toolid) . " ORDER BY cn ASC;";
+                        $query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid="
+                            . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
                     } else if ($property == 'owner') {
-                        $query = "SELECT cn FROM #__tool_groups WHERE (role='1' OR role='2') AND " .
-                            " toolid=" . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
+                        $query = "SELECT cn FROM #__tool_groups WHERE (role='1' OR role='2') AND "
+                            . " toolid=" . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
                     } else {
                         $query = null;
                     }

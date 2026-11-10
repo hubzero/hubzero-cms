@@ -35,8 +35,8 @@ class Redirect extends GroupMacro
             <p>Examples:</p>
             <ul>
                 <li><code>[[Group.Redirect(http://google.com)]]</code></li>
-                <li><code>[[Group.Redirect(http://google.com, 5)]]</code> - ' .
-                'Wait 5 seconds before redirecting.</li>
+                <li><code>[[Group.Redirect(http://google.com, 5)]]</code> - '
+                . 'Wait 5 seconds before redirecting.</li>
             </ul>';
     }
 
@@ -74,8 +74,8 @@ class Redirect extends GroupMacro
 
         // Delayed redirect
         $safeUrl = str_replace(["'", '"'], ['%27', '%22'], $url);
-        $script = '<script type="text/javascript">setTimeout(function () { window.location.href = "' .
-            $safeUrl . '"; }, ' . ($delay * 1000) . ');</script>';
+        $script = '<script type="text/javascript">setTimeout(function () { window.location.href = "'
+            . $safeUrl . '"; }, ' . ($delay * 1000) . ');</script>';
         $message = '<p class="warning">' . Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
         return $script . $message;
     }

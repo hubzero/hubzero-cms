@@ -67,11 +67,11 @@ $msgLinkUp = Lang::txt(
                 <?php echo $msgLinkUp; ?>
             </div>
             <div class="responses">
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=logout&return=' .
-                    base64_encode(
+                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=logout&return='
+                    . base64_encode(
                         Route::url(
-                            'index.php?option=' . $this->option . '&reset=1&return=' .
-                            base64_encode(
+                            'index.php?option=' . $this->option . '&reset=1&return='
+                            . base64_encode(
                                 Route::url(
                                     'index.php?option=' . $this->option
                                     . '&authenticator=' . $this->hzad->authenticator,

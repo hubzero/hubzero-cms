@@ -17,8 +17,8 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 // set title
-$title = ($this->hook->get('id')) ? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT') :
-Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_ADD');
+$title = ($this->hook->get('id')) ? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT')
+: Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_ADD');
 
 Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
@@ -89,9 +89,9 @@ Toolbar::cancel();
                     <?php
                     if ($this->hook->get('file')) {
                         echo Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
-                        echo ' &mdash; <a rel="noopener" target="_blank" href="' .
-                        Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id=' .
-                        $this->hook->get('id')) . '">' . Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW')
+                        echo ' &mdash; <a rel="noopener" target="_blank" href="'
+                        . Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id='
+                        . $this->hook->get('id')) . '">' . Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW')
                         . '</a><br />';
                     }
                     ?>

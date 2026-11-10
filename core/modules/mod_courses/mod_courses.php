@@ -70,8 +70,8 @@ class Courses extends Module
                 $n = ($m < 12 ? $y . '-' . $this->pad($m + 1) . '-00 00:00:00' : ($y + 1) . '-01-00 00:00:00');
                 $startDate = $y . '-' . $this->pad($m) . '-00 00:00:00';
                 $database->setQuery(
-                    "SELECT COUNT(*) FROM `#__courses_members` WHERE enrolled > " .
-                    $database->quote($startDate) . " AND enrolled < " . $database->quote($n),
+                    "SELECT COUNT(*) FROM `#__courses_members` WHERE enrolled > "
+                    . $database->quote($startDate) . " AND enrolled < " . $database->quote($n),
                 );
                 $totals[$y][$m] = $database->loadResult();
             }

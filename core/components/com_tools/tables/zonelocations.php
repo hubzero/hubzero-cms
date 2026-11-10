@@ -65,8 +65,8 @@ class ZoneLocations extends Table
             $zone_id = $this->zone_id;
         }
 
-        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) .
-                ' WHERE zone_id = ' . $this->_db->quote($zone_id);
+        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl)
+                . ' WHERE zone_id = ' . $this->_db->quote($zone_id);
         $this->_db->setQuery($query);
 
         if ($this->_db->query()) {

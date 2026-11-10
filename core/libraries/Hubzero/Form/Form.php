@@ -204,11 +204,11 @@ class Form
             if ($group) {
                 // Filter the value if it exists.
                 if ($input->has($group . '.' . $name)) {
-                    $output->set($group .
-                        '.' .
-                        $name, $this->filterField($field, $input->get($group .
-                        '.' .
-                        $name, (string) $field['default'])));
+                    $output->set($group
+                        . '.'
+                        . $name, $this->filterField($field, $input->get($group
+                        . '.'
+                        . $name, (string) $field['default'])));
                 }
             } else {
                 // Filter the value if it exists.
@@ -1303,9 +1303,9 @@ class Form
             }
         } elseif ($group === false) {
             // Get only field elements not in a group.
-            $fields = $this->
-                xml->
-                xpath('descendant::fields[not(@name)]/field | descendant::fields[not(@name)]/fieldset/field ');
+            $fields = $this
+                ->xml
+                ->xpath('descendant::fields[not(@name)]/field | descendant::fields[not(@name)]/fieldset/field ');
         } else {
             // Get an array of all the <field /> elements.
             $fields = $this->xml->xpath('//field');
@@ -1423,8 +1423,8 @@ class Form
         if ($value === null) {
             $default = (string) $element['default'];
             if (
-                ($translate = $element['translate_default']) &&
-                ((string) $translate == 'true' || (string) $translate == '1')
+                ($translate = $element['translate_default'])
+                && ((string) $translate == 'true' || (string) $translate == '1')
             ) {
                 $lang = App::get('language');
                 if ($lang->hasKey($default)) {

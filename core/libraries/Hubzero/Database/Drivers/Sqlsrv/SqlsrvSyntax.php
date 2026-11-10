@@ -211,8 +211,8 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableExistsQuery($table)
     {
-        return "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = " .
-               $this->connection->quote($table);
+        return "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = "
+               . $this->connection->quote($table);
     }
 
     /**
@@ -480,9 +480,9 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         ));
 
         return sprintf(
-            'MERGE INTO %s AS target USING (SELECT %s) AS source ON (%s) ' .
-            'WHEN MATCHED THEN UPDATE SET %s ' .
-            'WHEN NOT MATCHED THEN INSERT (%s) VALUES (%s);',
+            'MERGE INTO %s AS target USING (SELECT %s) AS source ON (%s) '
+            . 'WHEN MATCHED THEN UPDATE SET %s '
+            . 'WHEN NOT MATCHED THEN INSERT (%s) VALUES (%s);',
             $this->connection->quoteName($this->upsertTable),
             implode(', ', $sourceValues),
             implode(' AND ', $matchConditions),

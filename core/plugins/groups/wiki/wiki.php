@@ -264,8 +264,8 @@ class Wiki extends Plugin
 
             Request::setVar('task', $action);
 
-            Lang::load('com_wiki') ||
-            Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
+            Lang::load('com_wiki')
+            || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
             if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php')) {
                 $controllerName = 'pages';

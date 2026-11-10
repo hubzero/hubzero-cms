@@ -77,27 +77,27 @@ class Database implements StorageInterface
     ) {
         $sql = "INSERT INTO `#__developer_rate_limit` (`application_id`, `uidNumber`, `ip`, `limit_short`, 
             `limit_long`, `count_short`, `count_long`, `expires_short`, `expires_long`, `created`)
-				VALUES (" .
-                    $this->db->quote($applicationId) .
-                    ", " .
-                    $this->db->quote($userId) .
-                    ", " .
-                    $this->db->quote($ip) .
-                    ", " .
-                    $this->db->quote($limitShort) .
-                    ", " .
-                    $this->db->quote($limitLong) .
-                    ", " .
-                    $this->db->quote($countShort) .
-                    ", " .
-                    $this->db->quote($countLong) .
-                    ", " .
-                    $this->db->quote($expiresShort) .
-                    ", " .
-                    $this->db->quote($expiresLong) .
-                    ", " .
-                    $this->db->quote($created) .
-                    ")";
+				VALUES ("
+                    . $this->db->quote($applicationId)
+                    . ", "
+                    . $this->db->quote($userId)
+                    . ", "
+                    . $this->db->quote($ip)
+                    . ", "
+                    . $this->db->quote($limitShort)
+                    . ", "
+                    . $this->db->quote($limitLong)
+                    . ", "
+                    . $this->db->quote($countShort)
+                    . ", "
+                    . $this->db->quote($countLong)
+                    . ", "
+                    . $this->db->quote($expiresShort)
+                    . ", "
+                    . $this->db->quote($expiresLong)
+                    . ", "
+                    . $this->db->quote($created)
+                    . ")";
         $this->db->setQuery($sql);
         $this->db->query();
 

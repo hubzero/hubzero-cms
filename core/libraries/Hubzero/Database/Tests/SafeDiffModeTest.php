@@ -245,8 +245,8 @@ class SafeDiffModeTest extends AbstractDriverTestCase
         $safeSqlString = implode(' ', $safeSql);
 
         // The safe SQL should not remove the legacy_field
-        $hasDropForLegacy = stripos($safeSqlString, 'DROP') !== false &&
-                            stripos($safeSqlString, 'legacy_field') !== false;
+        $hasDropForLegacy = stripos($safeSqlString, 'DROP') !== false
+                            && stripos($safeSqlString, 'legacy_field') !== false;
         $this->assertFalse($hasDropForLegacy, "[$dbName] Safe mode should not drop legacy_field");
     }
 
@@ -330,8 +330,8 @@ class SafeDiffModeTest extends AbstractDriverTestCase
 
         // Safe SQL should not remove the FK
         $safeSqlString = implode(' ', $safeSql);
-        $hasDropFk = stripos($safeSqlString, 'DROP') !== false &&
-                     (stripos($safeSqlString, 'FOREIGN') !== false || stripos($safeSqlString, 'fk_user') !== false);
+        $hasDropFk = stripos($safeSqlString, 'DROP') !== false
+                     && (stripos($safeSqlString, 'FOREIGN') !== false || stripos($safeSqlString, 'fk_user') !== false);
         $this->assertFalse($hasDropFk, "[$dbName] Safe mode should not drop foreign key");
     }
 

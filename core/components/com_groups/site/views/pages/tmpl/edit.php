@@ -122,8 +122,8 @@ if ($this->page->get('id')) {
 
                             // open in source mode if contains php or scripts
                         if (
-                            strstr(stripslashes($content), '<script>') ||
-                                strstr(stripslashes($content), '<?php')
+                            strstr(stripslashes($content), '<script>')
+                                || strstr(stripslashes($content), '<?php')
                         ) {
                             $startupMode  = 'source';
                             //$showSourceBtn = false;

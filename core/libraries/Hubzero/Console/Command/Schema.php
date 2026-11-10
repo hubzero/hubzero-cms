@@ -469,10 +469,10 @@ class Schema extends Base implements CommandInterface
 
         // No valid source specified
         $this->output->error(
-            "Please specify what to generate migration from:\n" .
-            "  --from=table1 --to=table2    Compare two tables\n" .
-            "  --input=schema.json          Compare current DB to schema file\n\n" .
-            "Or use 'muse schema blank' to create an empty migration stub.",
+            "Please specify what to generate migration from:\n"
+            . "  --from=table1 --to=table2    Compare two tables\n"
+            . "  --input=schema.json          Compare current DB to schema file\n\n"
+            . "Or use 'muse schema blank' to create an empty migration stub.",
         );
     }
 
@@ -931,9 +931,9 @@ class Schema extends Base implements CommandInterface
 
         if (!$name1) {
             $this->output->error(
-                "Please provide snapshot name(s):\n" .
-                "  muse schema snapshot compare <name>           Compare current DB to snapshot\n" .
-                "  muse schema snapshot compare <from> --to=<to> Compare two snapshots",
+                "Please provide snapshot name(s):\n"
+                . "  muse schema snapshot compare <name>           Compare current DB to snapshot\n"
+                . "  muse schema snapshot compare <from> --to=<to> Compare two snapshots",
             );
             return;
         }
@@ -1171,9 +1171,9 @@ class Schema extends Base implements CommandInterface
 
         if (!$name || !$file) {
             $this->output->error(
-                "Please provide both name and file:\n" .
-                "  muse schema snapshot import <name> --file=<path>\n" .
-                "  muse schema snapshot import <name> <path>",
+                "Please provide both name and file:\n"
+                . "  muse schema snapshot import <name> --file=<path>\n"
+                . "  muse schema snapshot import <name> <path>",
             );
             return;
         }

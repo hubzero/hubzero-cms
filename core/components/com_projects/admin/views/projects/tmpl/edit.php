@@ -143,8 +143,8 @@ if ($this->model->groupOwner()) {
                         <select name="type">
                             <?php foreach ($this->types as $type) {
                                 if (
-                                    ($type->id == 3 && !$this->publishing) ||
-                                    ($type->id == 2 && !Plugin::isEnabled('projects', 'tools'))
+                                    ($type->id == 3 && !$this->publishing)
+                                    || ($type->id == 2 && !Plugin::isEnabled('projects', 'tools'))
                                 ) {
                                     continue;
                                 }

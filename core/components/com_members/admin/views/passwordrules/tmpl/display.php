@@ -173,8 +173,8 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
-                            $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->description); ?>
                         </a>
                     <?php else : ?>

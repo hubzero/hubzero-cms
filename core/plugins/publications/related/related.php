@@ -105,15 +105,15 @@ class Related extends Plugin
                 $c = implode(',', $cns);
 
                 if (!empty($groups)) {
-                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" .
-                    $database->quote('group') .
-                    " AND w.scope_id IN ($g)) OR w.created_by=" .
-                    $database->quote(User::get('id')) .
-                    "))) ";
+                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope="
+                    . $database->quote('group')
+                    . " AND w.scope_id IN ($g)) OR w.created_by="
+                    . $database->quote(User::get('id'))
+                    . "))) ";
                 } else {
-                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND w.created_by=" .
-                    $database->quote(User::get('id')) .
-                    ")) ";
+                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND w.created_by="
+                    . $database->quote(User::get('id'))
+                    . ")) ";
                 }
             }
         } else {

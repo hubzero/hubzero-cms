@@ -145,9 +145,9 @@ class Forks extends Plugin
 
         $forks = 0;
         if (count($sources)) {
-            $db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" .
-                    implode(',', $sources) .
-                    ")");
+            $db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN ("
+                    . implode(',', $sources)
+                    . ")");
 
             $forks = $db->loadResult();
         }
@@ -195,9 +195,9 @@ class Forks extends Plugin
         $forks = [];
         foreach ($versions as $version) {
             // Now find all the forks for each version
-            $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" .
-                    $db->quote($version->id) .
-                    " ORDER BY `created` DESC");
+            $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`="
+                    . $db->quote($version->id)
+                    . " ORDER BY `created` DESC");
 
             $forked = $db->loadObjectList();
 

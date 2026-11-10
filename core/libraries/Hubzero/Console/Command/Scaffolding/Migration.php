@@ -68,13 +68,13 @@ class Migration extends Scaffolding
         // Extension
         $extension = null;
         if ($this->arguments->getOpt('e') || $this->arguments->getOpt('extension')) {
-            $extension = ($this->
-                arguments->
-                getOpt('e')) ? $this->
-                arguments->
-                getOpt('e') : $this->
-                arguments->
-                getOpt('extension');
+            $extension = ($this
+                ->arguments
+                ->getOpt('e')) ? $this
+                ->arguments
+                ->getOpt('e') : $this
+                ->arguments
+                ->getOpt('extension');
             if ($extension != 'core' && !$this->isValidExtension($extension, $base) && !$this->arguments->getOpt('i')) {
                 $this->output->error("Error: the extension provided ({$extension}) does not appear to be valid.");
             }

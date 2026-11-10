@@ -104,8 +104,8 @@ class IncrementalRegistration extends Module
 
             if ($row) {
                 $dbh->setQuery(
-                    'SELECT popover_text, award_per FROM `#__incremental_registration_options` ' .
-                    'ORDER BY added DESC LIMIT 1',
+                    'SELECT popover_text, award_per FROM `#__incremental_registration_options` '
+                    . 'ORDER BY added DESC LIMIT 1',
                 );
                 list($introText, $awardPer) = $dbh->loadRow();
 
@@ -254,8 +254,8 @@ class IncrementalRegistration extends Module
                         require $this->getLayoutPath('popover');
                     } else {
                         $dbh->setQuery(
-                            'SELECT ' . implode(', ', array_keys($row)) .
-                            ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
+                            'SELECT ' . implode(', ', array_keys($row))
+                            . ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
                         );
                         $award = 0;
                         $awarded = $dbh->loadAssoc();
@@ -286,8 +286,8 @@ class IncrementalRegistration extends Module
                             );
                         }
 
-                        $aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, ' .
-                            'last_bothered = CURRENT_TIMESTAMP, bothered_times = bothered_times + 1,  ';
+                        $aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, '
+                            . 'last_bothered = CURRENT_TIMESTAMP, bothered_times = bothered_times + 1,  ';
                         $first = true;
                         foreach (array_keys($row) as $k) {
                             if ($k == 'race') {
@@ -377,17 +377,17 @@ class IncrementalRegistration extends Module
                             }
                             if ($k == 'name') {
                                 $dbh->setQuery(
-                                    'UPDATE `#__users` SET givenName = ' .
-                                    $dbh->quote($_POST['name']['first']) . ', middleName = ' .
-                                    $dbh->quote($_POST['name']['middle']) . ', surname = ' .
-                                    $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid,
+                                    'UPDATE `#__users` SET givenName = '
+                                    . $dbh->quote($_POST['name']['first']) . ', middleName = '
+                                    . $dbh->quote($_POST['name']['middle']) . ', surname = '
+                                    . $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid,
                                 );
                                 $dbh->execute();
                             }
                             if ($k == 'mailPreferenceOption') {
                                 $dbh->setQuery(
-                                    'UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k) .
-                                    ' WHERE id = ' . $uid,
+                                    'UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k)
+                                    . ' WHERE id = ' . $uid,
                                 );
                                 $dbh->execute();
                             }
@@ -419,8 +419,8 @@ class IncrementalRegistration extends Module
                 // a curl tempting the user to be proactive and fill in more of their profile
                 list($allGroups) = $groups->getAllGroups();
                 $dbh->setQuery(
-                    'SELECT ' . implode(', ', $allGroups['cols']) .
-                    ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
+                    'SELECT ' . implode(', ', $allGroups['cols'])
+                    . ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
                 );
                 $row = $dbh->loadRow();
                 // never entered anything so far, or entered partial information w/r/t requested profile groups

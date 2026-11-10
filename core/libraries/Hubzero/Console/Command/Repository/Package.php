@@ -63,16 +63,16 @@ class Package extends Base implements CommandInterface
             $this->output->addString('Installing any missing libraries from composer...', 'info');
         }
 
-        $cmd = 'php ' .
-            PATH_CORE .
-            DS .
-            'bin' .
-            DS .
-            'composer --working-dir=' .
-            PATH_CORE .
-            ' install ' .
-            implode(' ', $args) .
-            ' 2>&1';
+        $cmd = 'php '
+            . PATH_CORE
+            . DS
+            . 'bin'
+            . DS
+            . 'composer --working-dir='
+            . PATH_CORE
+            . ' install '
+            . implode(' ', $args)
+            . ' 2>&1';
         exec($cmd, $output, $status);
 
         // Composer install

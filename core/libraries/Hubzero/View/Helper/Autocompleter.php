@@ -43,9 +43,9 @@ class Autocompleter extends AbstractHelper
         $dsabl = false,
     ) {
         if (!in_array($what, ['tags', 'members', 'groups'])) {
-            throw new \InvalidArgumentException(__METHOD__ .
-                '(); ' .
-                Lang::txt('Autocompleter for "%s" not supported.', $what));
+            throw new \InvalidArgumentException(__METHOD__
+                . '(); '
+                . Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
         $id = ($id ?: str_replace(['[', ']'], '', $name));
@@ -61,9 +61,9 @@ class Autocompleter extends AbstractHelper
                 }
                 break;
             default:
-                throw new \InvalidArgumentException(__METHOD__ .
-                    '(); ' .
-                    Lang::txt('Autocompleter type "%s" not supported.', $type));
+                throw new \InvalidArgumentException(__METHOD__
+                    . '(); '
+                    . Lang::txt('Autocompleter type "%s" not supported.', $type));
                 break;
         }
 

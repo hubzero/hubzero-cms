@@ -160,9 +160,9 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         }
 
         if (!strpos($path, $this->separator)) {
-            return (isset($this->data->$path) &&
-                $this->data->$path !== null &&
-                $this->data->$path !== '') ? $this->data->$path : $default;
+            return (isset($this->data->$path)
+                && $this->data->$path !== null
+                && $this->data->$path !== '') ? $this->data->$path : $default;
         }
 
         // Explode the registry path into an array

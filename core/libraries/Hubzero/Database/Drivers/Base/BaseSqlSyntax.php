@@ -541,8 +541,8 @@ abstract class BaseSqlSyntax
 
             if (isset($join['raw']) || isset($join['subquery']) || empty($join['left']) || empty($join['right'])) {
                 throw new UnsupportedSyntaxException(
-                    'FULL OUTER JOIN emulation requires simple column-to-column joins. ' .
-                    'Use explicit UNIONs for raw or subquery joins.',
+                    'FULL OUTER JOIN emulation requires simple column-to-column joins. '
+                    . 'Use explicit UNIONs for raw or subquery joins.',
                 );
             }
 
@@ -2103,8 +2103,8 @@ abstract class BaseSqlSyntax
     public function setJsonPathWhere($column, $path, $operator, $value, $logical = 'and', $depth = 0)
     {
         throw new UnsupportedSyntaxException(
-            'JSON path queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.',
+            'JSON path queries are not supported by the base SQL syntax. '
+            . 'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2125,8 +2125,8 @@ abstract class BaseSqlSyntax
     public function setJsonContainsWhere($column, $value, $path = null, $logical = 'and', $depth = 0)
     {
         throw new UnsupportedSyntaxException(
-            'JSON contains queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.',
+            'JSON contains queries are not supported by the base SQL syntax. '
+            . 'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2148,8 +2148,8 @@ abstract class BaseSqlSyntax
     public function setJsonLengthWhere($column, $operator, $value, $path = null, $logical = 'and', $depth = 0)
     {
         throw new UnsupportedSyntaxException(
-            'JSON length queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.',
+            'JSON length queries are not supported by the base SQL syntax. '
+            . 'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2643,13 +2643,13 @@ abstract class BaseSqlSyntax
                     $this->bind($binding);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->connection->quoteName($join['left']) .
-                    ' = ' .
-                    $this->connection->quoteName($join['right']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->connection->quoteName($join['left'])
+                    . ' = '
+                    . $this->connection->quoteName($join['right']);
             } elseif (isset($join['raw'])) {
                 // Raw joins are user-provided SQL, don't quote
                 $joins[] = strtoupper($join['type']) . ' JOIN ' . $join['table'] . ' ON ' . $join['raw'];
@@ -2660,11 +2660,11 @@ abstract class BaseSqlSyntax
                     $tableExpr .= ' ' . $this->connection->quoteName($join['alias']);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->buildJoinConditions($join['conditions']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->buildJoinConditions($join['conditions']);
             } else {
                 // Build table expression with optional alias
                 $tableExpr = $this->connection->wrap($join['table']);
@@ -2672,13 +2672,13 @@ abstract class BaseSqlSyntax
                     $tableExpr .= ' ' . $this->connection->quoteName($join['alias']);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->connection->quoteName($join['left']) .
-                    ' = ' .
-                    $this->connection->quoteName($join['right']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->connection->quoteName($join['left'])
+                    . ' = '
+                    . $this->connection->quoteName($join['right']);
             }
         }
 

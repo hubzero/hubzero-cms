@@ -91,17 +91,17 @@ class Vendor
 
             // Filter out composer fund advertisement lines
             if (
-                strpos($plainLine, 'composer fund') !== false ||
-                strpos($plainLine, 'are looking for funding') !== false
+                strpos($plainLine, 'composer fund') !== false
+                || strpos($plainLine, 'are looking for funding') !== false
             ) {
                 continue;
             }
 
             // Add blank line before certain lines for readability
             if (
-                strpos($plainLine, 'Generating autoload') !== false ||
-                strpos($plainLine, 'Using config file:') !== false ||
-                strpos($plainLine, 'Nothing to install') !== false
+                strpos($plainLine, 'Generating autoload') !== false
+                || strpos($plainLine, 'Using config file:') !== false
+                || strpos($plainLine, 'Nothing to install') !== false
             ) {
                 echo "\n";
             }
@@ -115,8 +115,8 @@ class Vendor
 
             // Add blank line after "Package operations:" and "Generating autoload" for readability
             if (
-                strpos($plainLine, 'Package operations:') !== false ||
-                strpos($plainLine, 'Generating autoload') !== false
+                strpos($plainLine, 'Package operations:') !== false
+                || strpos($plainLine, 'Generating autoload') !== false
             ) {
                 echo "\n";
             }

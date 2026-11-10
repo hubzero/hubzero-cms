@@ -99,8 +99,7 @@ Toolbar::cancel();
                                             <option value="<?php echo $this->escape($role->alias); ?>"<?php
                                             if (
                                                 $row->role
-                                                        ==
-                                                        $role->alias
+                                                        == $role->alias
                                             ) {
                                                 echo ' selected="selected"';
                                             }?>><?php

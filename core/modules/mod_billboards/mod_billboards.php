@@ -82,8 +82,8 @@ class Billboards extends Module
             $background = $slide->background_img ? "background-image: url('{$slide->background_img}');" : '';
             $padding    = $slide->padding        ? "padding: {$slide->padding};"                        : '';
 
-            $css =
-                "#{$slide->alias} {
+            $css
+                = "#{$slide->alias} {
 					$background
 					}
 				#{$slide->alias} p {
@@ -99,8 +99,8 @@ class Billboards extends Module
         if ($this->pager != 'null') {
             $js_pager    = "'#{$this->pager}{$this->collection}'";
             $this->pager = $this->pager . $this->collection;
-            $pager =
-                ".slider #{$this->pager} a.activeSlide {
+            $pager
+                = ".slider #{$this->pager} a.activeSlide {
 					opacity:1.0;
 					}";
             $this->css($pager);

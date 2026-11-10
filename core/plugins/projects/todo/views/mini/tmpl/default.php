@@ -72,8 +72,8 @@ $seeAll = ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL'));
             <span class="duetd<?php echo $dueClass; ?>"><?php echo $due; ?></span> |
             <?php } ?>
             <span><?php echo $row->comments('count') . ' ';
-            echo $row->comments('count') == 1 ? strtolower(Lang::txt('COM_PROJECTS_COMMENT')) :
-            Lang::txt('COM_PROJECTS_COMMENTS'); ?></span>
+            echo $row->comments('count') == 1 ? strtolower(Lang::txt('COM_PROJECTS_COMMENT'))
+            : Lang::txt('COM_PROJECTS_COMMENTS'); ?></span>
         </span>
        </li>
         <?php } ?>

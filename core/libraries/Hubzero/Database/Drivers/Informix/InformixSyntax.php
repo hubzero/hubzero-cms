@@ -362,9 +362,9 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableExistsQuery($table)
     {
-        return "SELECT COUNT(*) FROM systables WHERE tabname = " .
-            $this->connection->quote(strtolower($table)) .
-            " AND tabtype = 'T'";
+        return "SELECT COUNT(*) FROM systables WHERE tabname = "
+            . $this->connection->quote(strtolower($table))
+            . " AND tabtype = 'T'";
     }
 
     /**
@@ -500,12 +500,12 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 . ' AS ' . $this->connection->quoteName($column);
         }
 
-        $sql = 'MERGE INTO ' . $this->connection->quoteName($this->upsertTable) . ' t ' .
-               'USING (SELECT ' . implode(', ', $sourceColumns) . ' FROM sysmaster:sysdual) s ' .
-               'ON (' . implode(' AND ', $onConditions) . ') ' .
-               'WHEN MATCHED THEN UPDATE SET ' . implode(', ', $updateSets) . ' ' .
-               'WHEN NOT MATCHED THEN INSERT (' . implode(', ', $quotedColumns) . ') ' .
-               'VALUES (' . implode(', ', array_map(fn($c) => 's.' . $this->connection->quoteName($c), $columns)) . ')';
+        $sql = 'MERGE INTO ' . $this->connection->quoteName($this->upsertTable) . ' t '
+               . 'USING (SELECT ' . implode(', ', $sourceColumns) . ' FROM sysmaster:sysdual) s '
+               . 'ON (' . implode(' AND ', $onConditions) . ') '
+               . 'WHEN MATCHED THEN UPDATE SET ' . implode(', ', $updateSets) . ' '
+               . 'WHEN NOT MATCHED THEN INSERT (' . implode(', ', $quotedColumns) . ') '
+               . 'VALUES (' . implode(', ', array_map(fn($c) => 's.' . $this->connection->quoteName($c), $columns)) . ')';
 
         return $sql;
     }

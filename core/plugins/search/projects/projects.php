@@ -62,9 +62,9 @@ class Projects extends Plugin
 				'Projects' AS `section`
 			FROM `#__projects` AS p $from
 			WHERE
-				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC",
+				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . " ORDER BY $weight DESC",
         ));
     }
 

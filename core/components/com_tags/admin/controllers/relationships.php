@@ -202,8 +202,8 @@ class Relationships extends AdminController
 					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.tagid = ' . $tag['id'];
 
                 $this->database->setQuery(
-                    $tag['type'] == 'child' ? $children :
-                    ($tag['type'] == 'parent' ? $parents : "$parents UNION $children"),
+                    $tag['type'] == 'child' ? $children
+                    : ($tag['type'] == 'parent' ? $parents : "$parents UNION $children"),
                 );
 
                 foreach ($this->database->loadAssocList() as $subTag) {
@@ -420,10 +420,10 @@ class Relationships extends AdminController
             }
             $tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
-            $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES (' .
-                (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
-                (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
-                $tag['id'] . ')');
+            $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES ('
+                . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
+                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', '
+                . $tag['id'] . ')');
             $this->database->execute();
             $id = $this->database->insertid();
             if (isset($_POST['types-new-' . $idx])) {

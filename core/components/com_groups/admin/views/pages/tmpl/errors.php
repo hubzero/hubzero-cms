@@ -29,12 +29,12 @@ $content = $this->page->version()->get('content');
 
 <?php
 $url = Route::url(
-    'index.php?option=' .
-    $this->option .
-    '&controller=' .
-    $this->controller .
-    '&gid=' .
-    $this->group->cn,
+    'index.php?option='
+    . $this->option
+    . '&controller='
+    . $this->controller
+    . '&gid='
+    . $this->group->cn,
 );
 ?>
 <form action="<?php echo $url; ?>" method="post" name="adminForm" id="item-form">

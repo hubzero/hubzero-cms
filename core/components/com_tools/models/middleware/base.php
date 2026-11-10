@@ -42,8 +42,8 @@ class Base extends Model
 
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' .
-                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
+                    __CLASS__ . '::' . __FUNCTION__ . '(); '
+                    . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
                 throw new \LogicException(
                     Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),

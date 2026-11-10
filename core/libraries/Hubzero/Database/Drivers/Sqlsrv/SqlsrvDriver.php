@@ -655,8 +655,8 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $table = $this->replacePrefix($table);
         $this->setQuery(
-            "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE, COLUMN_DEFAULT " .
-            "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " . $this->quote($table),
+            "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE, COLUMN_DEFAULT "
+            . "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " . $this->quote($table),
         );
 
         $columns = [];
@@ -817,14 +817,14 @@ class SqlsrvDriver extends BaseSqlDriver
         $indexes = [];
 
         $this->setQuery(
-            "SELECT i.name as index_name, i.is_unique, i.is_primary_key, " .
-            "c.name as column_name, ic.key_ordinal " .
-            "FROM sys.indexes i " .
-            "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id " .
-            "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
-            "WHERE i.object_id = OBJECT_ID(" . $this->quote($table) . ") " .
-            "AND i.name IS NOT NULL " .
-            "ORDER BY i.name, ic.key_ordinal",
+            "SELECT i.name as index_name, i.is_unique, i.is_primary_key, "
+            . "c.name as column_name, ic.key_ordinal "
+            . "FROM sys.indexes i "
+            . "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id "
+            . "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id "
+            . "WHERE i.object_id = OBJECT_ID(" . $this->quote($table) . ") "
+            . "AND i.name IS NOT NULL "
+            . "ORDER BY i.name, ic.key_ordinal",
         );
 
         $results = $this->loadObjectList();
@@ -990,10 +990,10 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $table = $this->replacePrefix($table);
         $this->setQuery(
-            "SELECT c.name FROM sys.indexes i " .
-            "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id " .
-            "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
-            "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ")",
+            "SELECT c.name FROM sys.indexes i "
+            . "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id "
+            . "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id "
+            . "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ")",
         );
         return $this->loadResult();
     }
@@ -1008,11 +1008,11 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $table = $this->replacePrefix($table);
         $this->setQuery(
-            "SELECT c.name FROM sys.indexes i " .
-            "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id " .
-            "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
-            "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ") " .
-            "ORDER BY ic.key_ordinal",
+            "SELECT c.name FROM sys.indexes i "
+            . "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id "
+            . "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id "
+            . "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ") "
+            . "ORDER BY ic.key_ordinal",
         );
         $rows = $this->loadColumn();
         return $rows ?: [];
@@ -2169,8 +2169,8 @@ class SqlsrvDriver extends BaseSqlDriver
 
         // Get the primary key constraint name
         $this->setQuery(
-            "SELECT name FROM sys.key_constraints " .
-            "WHERE type = 'PK' AND parent_object_id = OBJECT_ID(" . $this->quote($table) . ")",
+            "SELECT name FROM sys.key_constraints "
+            . "WHERE type = 'PK' AND parent_object_id = OBJECT_ID(" . $this->quote($table) . ")",
         );
         $pkName = $this->loadResult();
 
@@ -2281,10 +2281,10 @@ class SqlsrvDriver extends BaseSqlDriver
         $orderClause = $orderBy ? $this->quoteName($orderBy) : '(SELECT NULL)';
 
         // Use SQL Server's CTE with ROW_NUMBER() to update in place
-        $query = "WITH cte AS (" .
-                 "SELECT $quotedColumn, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn " .
-                 "FROM $quotedTable) " .
-                 "UPDATE cte SET $quotedColumn = rn";
+        $query = "WITH cte AS ("
+                 . "SELECT $quotedColumn, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn "
+                 . "FROM $quotedTable) "
+                 . "UPDATE cte SET $quotedColumn = rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

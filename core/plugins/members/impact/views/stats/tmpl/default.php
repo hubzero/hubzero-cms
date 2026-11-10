@@ -102,8 +102,8 @@ tooltip: true,
     <?php
 
     foreach ($this->pubstats as $stat) {
-        $toDate = strtotime($stat->first_published) > strtotime($this->firstlog) ? $stat->first_published :
-        $this->firstlog;
+        $toDate = strtotime($stat->first_published) > strtotime($this->firstlog) ? $stat->first_published
+        : $this->firstlog;
 
         $yTickSize = max(
             $stat->threemonth_views,

@@ -3229,14 +3229,14 @@ abstract class Driver implements LoggerAwareInterface
         // SQLSTATE HY000 with -803 = Firebird duplicate key error
         // SQLSTATE HY000 with ORA-00001 = Oracle unique constraint violated
         // ASE/PDO_DBLIB: "duplicate key row" in error message
-        return in_array($sqlState, ['23000', '23505'], true) ||
-            ($sqlState === 'HY000' && (
-                strpos($errorMessage, '-803') !== false ||
-                strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
-                strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
-                strpos($errorMessage, 'ORA-00001') !== false
-            )) ||
-            strpos($errorMessage, 'duplicate key row') !== false;
+        return in_array($sqlState, ['23000', '23505'], true)
+            || ($sqlState === 'HY000' && (
+                strpos($errorMessage, '-803') !== false
+                || strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false
+                || strpos($errorMessage, 'UNIQUE KEY constraint') !== false
+                || strpos($errorMessage, 'ORA-00001') !== false
+            ))
+            || strpos($errorMessage, 'duplicate key row') !== false;
     }
 
     /**

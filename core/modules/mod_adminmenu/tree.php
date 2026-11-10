@@ -247,9 +247,9 @@ class Tree extends \Hubzero\Base\Obj
                 $class = preg_replace('#\.[^.]*$#', '', basename($identifier));
                 $class = preg_replace('#\.\.[^A-Za-z0-9\.\_\- ]#', '', $class);
 
-                $this->css  .= "\n.icon-$class {\n" .
-                        "\tbackground: url($identifier) no-repeat;\n" .
-                    "}\n";
+                $this->css  .= "\n.icon-$class {\n"
+                        . "\tbackground: url($identifier) no-repeat;\n"
+                    . "}\n";
 
                 $classes[$identifier] = "icon-$class";
             }

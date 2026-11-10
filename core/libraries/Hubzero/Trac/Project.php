@@ -170,11 +170,11 @@ class Project
         }
 
         if (is_numeric($this->id)) {
-            $query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " .
-                $db->quote($this->id) .
-                "," .
-                $db->quote($this->name) .
-                ");";
+            $query = "INSERT INTO `#__trac_project` (id,name) VALUES ( "
+                . $db->quote($this->id)
+                . ","
+                . $db->quote($this->name)
+                . ");";
             $db->setQuery($query);
 
             $result = $db->query();
@@ -581,9 +581,9 @@ class Project
             $values .= "($quoted_project_id,$quoted_user_id," . $db->quote($a) . ")";
         }
 
-        $query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES " .
-             $values .
-            ";";
+        $query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES "
+             . $values
+            . ";";
 
         $db->setQuery($query);
         $db->query();
@@ -627,9 +627,9 @@ class Project
             $values .= "($quoted_project_id,$quoted_group_id," . $db->quote($a) . ")";
         }
 
-        $query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES " .
-             $values .
-            ";";
+        $query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES "
+             . $values
+            . ";";
 
         $db->setQuery($query);
         $db->query();
@@ -756,12 +756,12 @@ class Project
         }
         $quoted_user = $db->quote($user);
         if (is_numeric($user)) {
-            $query = "SELECT action FROM `#__trac_user_permission` AS up " .
-                "WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
+            $query = "SELECT action FROM `#__trac_user_permission` AS up "
+                . "WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
         } else {
-            $query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u " .
-                "WHERE up.trac_project_id=$quoted_project_id " .
-                "AND u.id=up.user_id AND u.username=$quoted_user;";
+            $query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u "
+                . "WHERE up.trac_project_id=$quoted_project_id "
+                . "AND u.id=up.user_id AND u.username=$quoted_user;";
         }
 
         $db->setQuery($query);
@@ -787,12 +787,12 @@ class Project
         }
         $quoted_group = $db->quote($group);
         if (is_numeric($group)) {
-            $query = "SELECT action FROM `#__trac_group_permission` AS gp " .
-                "WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
+            $query = "SELECT action FROM `#__trac_group_permission` AS gp "
+                . "WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
         } else {
-            $query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g " .
-                "WHERE gp.trac_project_id=$quoted_project_id " .
-                "AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
+            $query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g "
+                . "WHERE gp.trac_project_id=$quoted_project_id "
+                . "AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
         }
 
         $db->setQuery($query);

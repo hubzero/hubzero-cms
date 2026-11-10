@@ -437,12 +437,12 @@ class Tinymce extends Plugin
 
         switch ($mode) {
             case 0: /* Simple mode*/
-                $load = "\t<script type=\"text/javascript\" src=\"" .
-                        Request::root() . $this->_basePath .
-                        "/tiny_mce.js\"></script>\n";
+                $load = "\t<script type=\"text/javascript\" src=\""
+                        . Request::root() . $this->_basePath
+                        . "/tiny_mce.js\"></script>\n";
 
-                $return = $load .
-                "\t<script type=\"text/javascript\">
+                $return = $load
+                . "\t<script type=\"text/javascript\">
 				tinyMCE.init({
 					// General
 					directionality: \"$text_direction\",
@@ -467,12 +467,12 @@ class Tinymce extends Plugin
                 break;
 
             case 1: /* Advanced mode*/
-                $load = "\t<script type=\"text/javascript\" src=\"" .
-                        Request::root() . $this->_basePath .
-                        "/tiny_mce.js\"></script>\n";
+                $load = "\t<script type=\"text/javascript\" src=\""
+                        . Request::root() . $this->_basePath
+                        . "/tiny_mce.js\"></script>\n";
 
-                $return = $load .
-                "\t<script type=\"text/javascript\">
+                $return = $load
+                . "\t<script type=\"text/javascript\">
 				tinyMCE.init({
 					// General
 					directionality: \"$text_direction\",
@@ -507,12 +507,12 @@ class Tinymce extends Plugin
                 break;
 
             case 2: /* Extended mode*/
-                $load = "\t<script type=\"text/javascript\" src=\"" .
-                        Request::root() . $this->_basePath .
-                        "/tiny_mce.js\"></script>\n";
+                $load = "\t<script type=\"text/javascript\" src=\""
+                        . Request::root() . $this->_basePath
+                        . "/tiny_mce.js\"></script>\n";
 
-                $return = $load .
-                "\t<script type=\"text/javascript\">
+                $return = $load
+                . "\t<script type=\"text/javascript\">
 				tinyMCE.init({
 					// General
 					$dialog_type
@@ -680,9 +680,9 @@ class Tinymce extends Plugin
 
         $editor  = '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row
             . '" style="width: ' . $width . '; height:' . $height . ';" class="mce_editable">'
-            . $content . "</textarea>\n" .
-        $this->displayButtons($id, $buttons, $asset, $author) .
-        $this->toggleButton($id);
+            . $content . "</textarea>\n"
+        . $this->displayButtons($id, $buttons, $asset, $author)
+        . $this->toggleButton($id);
 
         return $editor;
     }

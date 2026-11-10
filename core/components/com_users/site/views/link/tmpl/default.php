@@ -28,13 +28,13 @@ $innerLoginUrl = Route::url(
     false,
 );
 $innerReturnUrl = Route::url(
-    'index.php?option=' . $this->option . '&view=login&reset=1&return=' .
-    base64_encode($innerLoginUrl),
+    'index.php?option=' . $this->option . '&view=login&reset=1&return='
+    . base64_encode($innerLoginUrl),
     false,
 );
 $urlLogout = Route::url(
-    'index.php?option=' . $this->option . '&view=logout&return=' .
-    base64_encode($innerReturnUrl),
+    'index.php?option=' . $this->option . '&view=logout&return='
+    . base64_encode($innerReturnUrl),
 );
 ?>
 

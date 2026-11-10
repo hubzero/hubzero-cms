@@ -419,11 +419,11 @@ class SqliteGrammar extends BaseSchemaGrammar
         $statements = [];
 
         // Check if we need a table rebuild for complex operations
-        $needsRebuild = !empty($builder->getDropColumns()) ||
-                        !empty($builder->getModifyColumns()) ||
-                        !empty($builder->getRenameColumns()) ||
-                        $builder->getDropPrimaryKeyFlag() ||
-                        $builder->getAddPrimaryKey() !== null;
+        $needsRebuild = !empty($builder->getDropColumns())
+                        || !empty($builder->getModifyColumns())
+                        || !empty($builder->getRenameColumns())
+                        || $builder->getDropPrimaryKeyFlag()
+                        || $builder->getAddPrimaryKey() !== null;
 
         // Simple operations that SQLite supports directly
         if (!$needsRebuild) {

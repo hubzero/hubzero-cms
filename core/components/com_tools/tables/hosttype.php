@@ -155,8 +155,8 @@ class Hosttype extends Table
             $this->$k = $oid;
         }
 
-        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) .
-                ' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
+        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl)
+                . ' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
         $this->_db->setQuery($query);
 
         if ($this->_db->query()) {

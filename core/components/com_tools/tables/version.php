@@ -318,8 +318,8 @@ class Version extends Table
     public function store($updateNulls = false)
     {
         if (empty($this->id)) {
-            $query = "SELECT id FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($this->toolname) .
-                    " AND instance=" . $this->_db->quote($this->instance) . ";";
+            $query = "SELECT id FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($this->toolname)
+                    . " AND instance=" . $this->_db->quote($this->instance) . ";";
             $this->_db->setQuery($query);
             $result = $this->_db->loadResult();
 

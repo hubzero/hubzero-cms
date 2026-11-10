@@ -16,8 +16,8 @@ defined('_HZEXEC_') or die();
 $href = Route::url($this->base . '&asset=' . $this->a->get('id'));
 
 if ($this->a->get('type') == 'video') {
-    $href = Route::url($this->base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' .
-    $this->ag->get('alias'));
+    $href = Route::url($this->base . '&active=outline&unit=' . $this->unit->get('alias') . '&b='
+    . $this->ag->get('alias'));
 }
 
 ?>

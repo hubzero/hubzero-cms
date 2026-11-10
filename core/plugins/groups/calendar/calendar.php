@@ -175,8 +175,8 @@ class Calendar extends Plugin
             }
 
             // load events lang file
-            Lang::load('com_events') ||
-            Lang::load('com_events', Component::path('com_events') . DS . 'site');
+            Lang::load('com_events')
+            || Lang::load('com_events', Component::path('com_events') . DS . 'site');
 
             //push styles to the view
             $this->css('calendar');

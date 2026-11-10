@@ -137,19 +137,19 @@ class RelatedItems extends Module
                     );
                     $query->where('(' . $concat_string . ' LIKE "%' . $likeConditions . '%")');
                     $query->where(
-                        '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
-                        ' OR a.publish_up <= ' . $db->quote($now) . ')',
+                        '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate)
+                        . ' OR a.publish_up <= ' . $db->quote($now) . ')',
                     );
                     $query->where(
-                        '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
-                        ' OR a.publish_down >= ' . $db->quote($now) . ')',
+                        '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate)
+                        . ' OR a.publish_down >= ' . $db->quote($now) . ')',
                     );
 
                     // Filter by language
                     if (\Hubzero\Facades\App::get('language.filter')) {
                         $query->where(
-                            'a.language in (' . $db->quote(Lang::getTag()) . ',' .
-                            $db->quote('*') . ')',
+                            'a.language in (' . $db->quote(Lang::getTag()) . ','
+                            . $db->quote('*') . ')',
                         );
                     }
 

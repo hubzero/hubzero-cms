@@ -264,8 +264,8 @@ foreach ($this->results as $category) {
         // Build the category HTML
         $html .= '<h4 class="category-header opened" id="rel-' . $divid . '">';
         if (!$dopaging) {
-            $html .= '<a href="' . Route::url($this->member->link() . '&active=contributions&area=' .
-            urlencode(stripslashes($this->cats[$k]['category']))) . '">';
+            $html .= '<a href="' . Route::url($this->member->link() . '&active=contributions&area='
+            . urlencode(stripslashes($this->cats[$k]['category']))) . '">';
         }
         $html .= $name . ' <span>(' . $num . $total . ')</span>';
         if (!$dopaging) {
@@ -325,8 +325,8 @@ foreach ($this->results as $category) {
             // Ad a "more" link if necessary
             //if ($totals[$k] > 5) {
             if ($this->cats[$k]['total'] > 5) {
-                $html .= ' | <a href="' . Route::url($this->member->link() . '&active=contributions&area=' .
-                urlencode(strToLower($this->cats[$k]['category']))) . '">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE')
+                $html .= ' | <a href="' . Route::url($this->member->link() . '&active=contributions&area='
+                . urlencode(strToLower($this->cats[$k]['category']))) . '">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE')
                 . '</a>';
             }
             $html .= '</p>' . "\n\n";

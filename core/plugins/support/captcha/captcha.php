@@ -622,10 +622,10 @@ class Captcha extends Plugin
                     $frsy1 = 1 - $frsy;
 
                     $newcolor = (
-                        $color * $frsx1 * $frsy1 +
-                        $color_x * $frsx * $frsy1 +
-                        $color_y * $frsx1 * $frsy +
-                        $color_xy * $frsx * $frsy
+                        $color * $frsx1 * $frsy1
+                        + $color_x * $frsx * $frsy1
+                        + $color_y * $frsx1 * $frsy
+                        + $color_xy * $frsx * $frsy
                     );
 
                     if ($newcolor > 255) {

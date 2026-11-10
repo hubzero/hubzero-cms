@@ -168,8 +168,8 @@ class Usage extends Plugin
     {
         $database = App::get('db');
 
-        $sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, MIN(res.publish_up) AS first_contrib, " .
-            "MAX(res.publish_up) AS last_contrib
+        $sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, MIN(res.publish_up) AS first_contrib, "
+            . "MAX(res.publish_up) AS last_contrib
 				FROM `#__resources` AS res, `#__author_assoc` AS aa, `#__resource_types` AS restypes
 				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "
             . $database->quote($authorid)
@@ -404,8 +404,8 @@ class Usage extends Plugin
     {
         $database = App::get('db');
 
-        $sql = "SELECT id FROM `#__resource_types` WHERE `alias` IN " .
-            "('series', 'workshop', 'workshops', 'course', 'courses')";
+        $sql = "SELECT id FROM `#__resource_types` WHERE `alias` IN "
+            . "('series', 'workshop', 'workshops', 'course', 'courses')";
 
         $database->setQuery($sql);
         return $database->loadColumn();

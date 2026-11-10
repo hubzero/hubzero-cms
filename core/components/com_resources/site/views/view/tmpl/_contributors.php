@@ -51,8 +51,8 @@ if ($this->contributors) {
         {
             $contributor->org = $contributor->xorg;
         }*/
-        $contributor->organization = $this->escape(stripslashes(trim($contributor->organization ?
-        $contributor->organization : '')));
+        $contributor->organization = $this->escape(stripslashes(trim($contributor->organization
+        ? $contributor->organization : '')));
 
         if (!isset($contributor->authorid) && isset($contributor->uid)) {
             $contributor->authorid = $contributor->uid;
@@ -91,8 +91,8 @@ if ($this->contributors) {
     }
 
     if (count($names) > 0) {
-        $html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode('; ', $names) :
-        implode('; ', $names_s))) . '</p>';
+        $html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode('; ', $names)
+        : implode('; ', $names_s))) . '</p>';
     }
 
     if (count($orgs) > 0) {

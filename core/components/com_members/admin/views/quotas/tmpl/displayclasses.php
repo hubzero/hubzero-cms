@@ -86,8 +86,8 @@ Toolbar::help('quotaclasses');
                 </td>
                 <td class="priority-5">
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
-                            $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->get('id')); ?>
                         </a>
                     <?php else : ?>
@@ -96,8 +96,8 @@ Toolbar::help('quotaclasses');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
-                            $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=editClass&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->get('alias')); ?>
                         </a>
                     <?php else : ?>

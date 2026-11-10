@@ -136,8 +136,8 @@ class Component extends AdminController
             User::setState($this->_option . '.config.global.data', $data);
 
             // Redirect back to the edit screen.
-            $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
-                $option . '&tmpl=component&path=' . $model->get('component.path');
+            $url = 'index.php?option=' . $this->_option . '&view=component&component='
+                . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
             return false;
         }
@@ -184,8 +184,8 @@ class Component extends AdminController
             // Save failed, go back to the screen and display a notice.
             Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
 
-            $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
-                $option . '&tmpl=component&path=' . $model->get('component.path');
+            $url = 'index.php?option=' . $this->_option . '&view=component&component='
+                . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
             return false;
         }
@@ -197,15 +197,15 @@ class Component extends AdminController
             case 'apply':
                 Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 
-                $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
-                    $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1';
+                $url = 'index.php?option=' . $this->_option . '&view=component&component='
+                    . $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1';
                 App::redirect(Route::url($url, false));
                 break;
 
             case 'save':
             default:
-                $url = 'index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' .
-                    $model->get('component.path');
+                $url = 'index.php?option=' . $this->_option . '&view=close&tmpl=component&path='
+                    . $model->get('component.path');
                 App::redirect(Route::url($url, false));
                 break;
         }

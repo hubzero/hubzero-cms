@@ -237,8 +237,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                         ?>
                             <?php if ($allowUnpublish) { ?>
                             <li id="next-cancel"><p>
-                                <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISHED_UNPUBLISH') .
-                                ' <a href="' . Route::url($this->pub->link('editversion') . '&action=cancel') . '">'
+                                <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISHED_UNPUBLISH')
+                                . ' <a href="' . Route::url($this->pub->link('editversion') . '&action=cancel') . '">'
                                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION') . ' &raquo;</a> ';  ?></p></li>
                             <?php } ?>
                             <li id="next-usage"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS')

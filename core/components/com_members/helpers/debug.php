@@ -43,8 +43,8 @@ class Debug
                 // Load language
                 $extension = $item->value;
                 $source    = Component::path($extension) . '/admin';
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", $source, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", $source, null, false, true);
 
                 // Translate component name
                 $item->text = Lang::txt($item->text);
@@ -111,8 +111,8 @@ class Debug
                 $extension = 'com_config';
                 $source    = Component::path($extension) . '/admin';
 
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", $source, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", $source, null, false, true);
             }
         }
 

@@ -33,10 +33,10 @@ class Resources extends Macro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'This macro will insert a linked title to a resource. ' .
-            'It can be passed wither an ID or alias.';
-        $txt['html'] = '<p>This macro will insert a linked title to a resource. ' .
-            'It can be passed wither an ID or alias.</p>';
+        $txt['wiki'] = 'This macro will insert a linked title to a resource. '
+            . 'It can be passed wither an ID or alias.';
+        $txt['html'] = '<p>This macro will insert a linked title to a resource. '
+            . 'It can be passed wither an ID or alias.</p>';
         return $txt['html'];
     }
 

@@ -292,11 +292,11 @@ abstract class Model extends Obj
             }
         } else {
             $this->_logError(
-                __CLASS__ .
-                    '::' .
-                    __FUNCTION__ .
-                    '(); ' .
-                    Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)),
+                __CLASS__
+                    . '::'
+                    . __FUNCTION__
+                    . '(); '
+                    . Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)),
             );
             throw new \InvalidArgumentException(
                 Lang::txt(

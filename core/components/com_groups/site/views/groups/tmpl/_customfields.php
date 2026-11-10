@@ -16,8 +16,8 @@ foreach ($this->customFields as $field) {
     }
     if ($field->type == 'textarea') {
         $fieldName = $field->get('name');
-        $fieldValue = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->
-            get('default_value', '');
+        $fieldValue = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field
+            ->get('default_value', '');
         $fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
         $fieldIdAttr = $formInfo['control'] . '_' . $fieldName;
         echo $this->editor(

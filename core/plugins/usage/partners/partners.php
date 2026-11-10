@@ -72,8 +72,8 @@ class Partners extends Plugin
         );
 
         // Build HTML
-        $html  = '<form method="post" action="' .
-                Route::url('index.php?option=' . $option . '&task=' . $task) . '">' . "\n";
+        $html  = '<form method="post" action="'
+                . Route::url('index.php?option=' . $option . '&task=' . $task) . '">' . "\n";
         $html .= "\t" . '<fieldset class="filters">' . "\n";
         $html .= "\t\t" . '<label>' . "\n";
         $html .= "\t\t\t" . Lang::txt('COM_USAGE_SHOW_DATA_FOR') . ': ' . "\n";

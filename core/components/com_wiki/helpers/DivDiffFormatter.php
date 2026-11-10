@@ -202,10 +202,10 @@ class DivDiffFormatter extends DiffFormatter
     public function _context($lines)
     {
         foreach ($lines as $line) {
-            echo '<div>' .
-                $this->contextLine(htmlspecialchars($line)) .
-                $this->contextLine(htmlspecialchars($line)) .
-                "</div>\n";
+            echo '<div>'
+                . $this->contextLine(htmlspecialchars($line))
+                . $this->contextLine(htmlspecialchars($line))
+                . "</div>\n";
         }
     }
 

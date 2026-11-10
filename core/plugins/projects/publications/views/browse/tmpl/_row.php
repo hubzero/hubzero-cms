@@ -66,9 +66,9 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')
                 . '</a></span>';
         } else {
-            echo ' <span class="block"><a href="' . Route::url($this->project->link('publications') . '&pid=' .
-            $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">' .
-            Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
+            echo ' <span class="block"><a href="' . Route::url($this->project->link('publications') . '&pid='
+            . $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">'
+            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
         }
     }
 } elseif ($row->isDev() && $this->project->access('content')) {
@@ -81,9 +81,9 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')
             . '</a></span>';
     } else {
-        echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') .
-        '&action=continue&version=dev') . '" class="btn mini icon-next">' .
-        Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
+        echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id')
+        . '&action=continue&version=dev') . '" class="btn mini icon-next">'
+        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
     }
 } elseif ($row->isWorked()) {
     $workedUrl = Route::url(

@@ -143,10 +143,10 @@ class Members extends GroupMacro
 
             foreach ($profiles as $profile) {
                 $profileName = stripslashes($profile->get('name'));
-                $content .= '<a href="' . Route::url($profile->link()) . '" class="member" ' .
-                    'title="Go to ' . $profileName . '\'s Profile.">';
-                $content .= '<img src="' . $profile->picture() . '" alt="' . $profileName . '" ' .
-                    'class="member-border" width="50px" height="50px" />';
+                $content .= '<a href="' . Route::url($profile->link()) . '" class="member" '
+                    . 'title="Go to ' . $profileName . '\'s Profile.">';
+                $content .= '<img src="' . $profile->picture() . '" alt="' . $profileName . '" '
+                    . 'class="member-border" width="50px" height="50px" />';
                 $content .= '<span class="name">' . $profileName . '</span>';
                 $content .= '<span class="org">' . stripslashes($profile->get('organization', '')) . '</span>';
                 $content .= '</a>';

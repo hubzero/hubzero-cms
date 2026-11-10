@@ -93,11 +93,11 @@ class Usage extends Plugin
 
         if (!in_array($table, $tables)) {
             $arr['html']     = '<p class="error">' . Lang::txt('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
-            $arr['metadata'] = '<p class="usage"><a href="' .
-                    $url .
-                    '">' .
-                    Lang::txt('PLG_PUBLICATION_USAGE_DETAILED') .
-                    '</a></p>';
+            $arr['metadata'] = '<p class="usage"><a href="'
+                    . $url
+                    . '">'
+                    . Lang::txt('PLG_PUBLICATION_USAGE_DETAILED')
+                    . '</a></p>';
             return $arr;
         }
 

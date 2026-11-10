@@ -16,8 +16,8 @@ $period = Request::getString('period', '1999-12');
 
 $date = $period;
 
-$dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type .
-'&no_html=1&data=markers&local=us');
+$dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type
+. '&no_html=1&data=markers&local=us');
 $dataurl = str_replace('&amp;', '&', $dataurl);
 ?>
 <!DOCTYPE html>

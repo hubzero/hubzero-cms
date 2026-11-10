@@ -25,8 +25,8 @@ $this->css();
         <ul id="useroptions">
             <li class="last">
                 <?php $url = Route::url(
-                    'index.php?option=' . $this->option .
-                    '&cn=' . $this->group->get('cn'),
+                    'index.php?option=' . $this->option
+                    . '&cn=' . $this->group->get('cn'),
                 ); ?>
                 <a class="icon-group btn" href="<?php echo $url; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>

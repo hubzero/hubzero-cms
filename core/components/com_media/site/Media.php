@@ -33,8 +33,8 @@ class Media extends AbstractComponent
         $asset = Request::getCmd('asset');
         $author = Request::getCmd('author');
         if (
-            !$asset or
-                !User::authorise('core.edit', $asset)
+            !$asset
+                or !User::authorise('core.edit', $asset)
             &&  !User::authorise('core.create', $asset)
             &&  count(User::getAuthorisedCategories($asset, 'core.create')) == 0
             &&  !(User::get('id') == $author && User::authorise('core.edit.own', $asset))

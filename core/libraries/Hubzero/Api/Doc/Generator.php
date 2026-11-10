@@ -259,8 +259,8 @@ class Generator
 
             // Skip methods we don't want processed
             if (
-                substr($method->getName(), -4) != 'Task' ||
-                in_array($method->getName(), ['registerTask', 'unregisterTask', 'indexTask'])
+                substr($method->getName(), -4) != 'Task'
+                || in_array($method->getName(), ['registerTask', 'unregisterTask', 'indexTask'])
             ) {
                 continue;
             }
@@ -273,9 +273,9 @@ class Generator
             // Skip if we dont have a short desc
             // but put in error
             if (!$phpdoc->getSummary()) {
-                $this->
-                    output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method->
-                    getName(), $file);
+                $this
+                    ->output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method
+                    ->getName(), $file);
                 continue;
             }
 

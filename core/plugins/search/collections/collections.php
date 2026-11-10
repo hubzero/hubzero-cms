@@ -58,9 +58,9 @@ class Collections extends Plugin
 			INNER JOIN `#__collections_items` AS i ON p.item_id=i.id
 			INNER JOIN `#__users` u ON u.id = p.created_by
 			WHERE
-				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC",
+				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . " ORDER BY $weight DESC",
         ));
     }
 

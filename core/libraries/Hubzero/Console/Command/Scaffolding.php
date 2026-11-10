@@ -213,8 +213,8 @@ class Scaffolding extends Base implements CommandInterface
                 if (is_dir($template['path'])) {
                     if (!Filesystem::copyDirectory($template['path'], $template['destination'])) {
                         $this->output->error(
-                            "Error: an problem occured copying {$template['path']} " .
-                            "to {$template['destination']}.",
+                            "Error: an problem occured copying {$template['path']} "
+                            . "to {$template['destination']}.",
                         );
                     }
 
@@ -223,8 +223,8 @@ class Scaffolding extends Base implements CommandInterface
                 } elseif (is_file($template['path'])) {
                     if (!copy($template['path'], $template['destination'])) {
                         $this->output->error(
-                            "Error: an problem occured copying {$template['path']} " .
-                            "to {$template['destination']}.",
+                            "Error: an problem occured copying {$template['path']} "
+                            . "to {$template['destination']}.",
                         );
                     }
 
@@ -264,13 +264,13 @@ class Scaffolding extends Base implements CommandInterface
     protected function addTemplateFile($filename, $destination, $fullPath = false)
     {
         $this->templateFiles[] = [
-            'path'        => ((!$fullPath) ? __DIR__ .
-                DS .
-                'Scaffolding' .
-                DS .
-                'Templates' .
-                DS .
-                $filename : $filename),
+            'path'        => ((!$fullPath) ? __DIR__
+                . DS
+                . 'Scaffolding'
+                . DS
+                . 'Templates'
+                . DS
+                . $filename : $filename),
             'destination' => $destination,
         ];
 
@@ -341,16 +341,16 @@ class Scaffolding extends Base implements CommandInterface
                 foreach ($match as $key) {
                     // Get template contents
                     $keyReal = preg_replace('/\$\^([[:alpha:]\.]*)\^\$/', '$1', $key);
-                    $subPath = __DIR__ .
-                        DS .
-                        'Scaffolding' .
-                        DS .
-                        'Templates' .
-                        DS .
-                        $this->getType() .
-                        '.' .
-                        $keyReal .
-                        '.tmpl';
+                    $subPath = __DIR__
+                        . DS
+                        . 'Scaffolding'
+                        . DS
+                        . 'Templates'
+                        . DS
+                        . $this->getType()
+                        . '.'
+                        . $keyReal
+                        . '.tmpl';
 
                     if (!is_file($subPath)) {
                         continue;
@@ -394,8 +394,8 @@ class Scaffolding extends Base implements CommandInterface
 
         // See if we need to do var replacement in actual filename
         if (
-            preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches) &&
-            isset($this->replacements[$matches[1]])
+            preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches)
+            && isset($this->replacements[$matches[1]])
         ) {
             $newfile = str_replace($matches[0], $this->replacements[$matches[1]], $info['filename']);
 
@@ -449,9 +449,9 @@ class Scaffolding extends Base implements CommandInterface
                 } else {
                     // See if we need to do var replacement in directory name
                     if (
-                        preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $path .
-                        DS .
-                        $file, $matches) && isset($this->replacements[$matches[1]])
+                        preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $path
+                        . DS
+                        . $file, $matches) && isset($this->replacements[$matches[1]])
                     ) {
                         $newfile = str_replace($matches[0], $this->replacements[$matches[1]], $file);
 

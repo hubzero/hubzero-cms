@@ -217,10 +217,10 @@ class Help extends Base implements CommandInterface
             foreach ($methods as $method) {
                 // We're assuming here that all public methods are available to be called
                 if (
-                    $method->isPublic() &&
-                    !$method->isConstructor() &&
-                    $method->name != 'execute' &&
-                    $method->name != 'help'
+                    $method->isPublic()
+                    && !$method->isConstructor()
+                    && $method->name != 'execute'
+                    && $method->name != 'help'
                 ) {
                     $this->output->addLine(
                         $method->name,

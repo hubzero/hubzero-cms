@@ -224,8 +224,8 @@ class Support extends Plugin
 
         // If we're sending a message...
         if ($message_id && !empty($tickets)) {
-            Lang::load('com_support') ||
-                Lang::load('com_support', Component::path('com_support') . DS . 'site');
+            Lang::load('com_support')
+                || Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
             $message = \Components\Support\Models\Message::oneOrNew($message_id);
 

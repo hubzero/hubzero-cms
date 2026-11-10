@@ -60,8 +60,8 @@ class Activity extends Plugin
         }
 
         // Load language files
-        Lang::load('plg_members_activity') ||
-        Lang::load('plg_members_activity', PATH_CORE . DS . 'plugins' . DS . 'members' . DS . 'activity');
+        Lang::load('plg_members_activity')
+        || Lang::load('plg_members_activity', PATH_CORE . DS . 'plugins' . DS . 'members' . DS . 'activity');
 
         // Database connection
         $db = App::get('db');

@@ -54,8 +54,8 @@ class Courses extends Plugin
 			INNER JOIN #__users u ON u.id = c.created_by
 			WHERE
 				$authorization AND
-				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+				$weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
         if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
             return;

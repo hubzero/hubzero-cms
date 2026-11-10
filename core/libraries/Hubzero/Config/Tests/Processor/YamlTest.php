@@ -142,11 +142,11 @@ seo:
      **/
     public function testParse()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.yaml');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.yaml');
 
         $this->assertEquals($this->arr, $result);
     }

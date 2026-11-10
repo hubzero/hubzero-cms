@@ -320,9 +320,9 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableExistsQuery($table)
     {
-        return "SELECT COUNT(*) FROM information_schema.tables " .
-            "WHERE table_schema = 'public' AND table_name = " .
-            $this->connection->quote($table);
+        return "SELECT COUNT(*) FROM information_schema.tables "
+            . "WHERE table_schema = 'public' AND table_name = "
+            . $this->connection->quote($table);
     }
 
     /**
@@ -332,9 +332,9 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableListQuery()
     {
-        return "SELECT table_name FROM information_schema.tables " .
-            "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' " .
-            "ORDER BY table_name";
+        return "SELECT table_name FROM information_schema.tables "
+            . "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
+            . "ORDER BY table_name";
     }
 
     // =========================================================================

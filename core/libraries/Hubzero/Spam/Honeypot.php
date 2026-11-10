@@ -32,11 +32,11 @@ class Honeypot
     {
         $name = $name ?: self::getName();
 
-        return '<label id="hypt_' . $name . '_wrap" style="display:none;">' . "\n" .
-                    'Leave this field empty:' . "\n" .
-                    Input::input('text', $name . '[p]') . "\n" .
-                    Input::input('text', $name . '[t]', self::getEncrypter()->encrypt(time())) . "\n" .
-                '</label>' . "\n";
+        return '<label id="hypt_' . $name . '_wrap" style="display:none;">' . "\n"
+                    . 'Leave this field empty:' . "\n"
+                    . Input::input('text', $name . '[p]') . "\n"
+                    . Input::input('text', $name . '[t]', self::getEncrypter()->encrypt(time())) . "\n"
+                . '</label>' . "\n";
     }
 
     /**

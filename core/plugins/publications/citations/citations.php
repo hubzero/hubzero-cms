@@ -112,9 +112,9 @@ class Citations extends Plugin
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = $this->view('default', 'metadata')
-                ->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' .
-                $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' .
-                $publication->version_number))
+                ->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias='
+                . $publication->alias : 'id=' . $publication->id) . '&active=citations&v='
+                . $publication->version_number))
                 ->set('citations', $citations);
 
             $arr['metadata'] = $view->loadTemplate();

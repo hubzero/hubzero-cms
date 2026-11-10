@@ -844,9 +844,9 @@ abstract class Table extends \stdClass
         // If an ordering filter is set, attempt reorder the rows in the table based on the filter and value.
         if ($orderingFilter) {
             $filterValue = $this->$orderingFilter;
-            $this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter) .
-                ' = ' .
-                $this->_db->Quote($filterValue) : '');
+            $this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter)
+                . ' = '
+                . $this->_db->Quote($filterValue) : '');
         }
 
         // Set the error to empty and return true.
@@ -1122,13 +1122,13 @@ abstract class Table extends \stdClass
         // Static, so there is no $this to take a connection from
         $db = App::get('db');
 
-        $db->setQuery('SELECT COUNT(userid)' .
-            ' FROM ' .
-            $db->quoteName('#__session') .
-            ' WHERE ' .
-            $db->quoteName('userid') .
-            ' = ' .
-            (int) $against);
+        $db->setQuery('SELECT COUNT(userid)'
+            . ' FROM '
+            . $db->quoteName('#__session')
+            . ' WHERE '
+            . $db->quoteName('userid')
+            . ' = '
+            . (int) $against);
         $checkedOut = (bool) $db->loadResult();
 
         // If a session exists for the user then it is checked out.

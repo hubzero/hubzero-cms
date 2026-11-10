@@ -209,15 +209,15 @@ class Ldap
             return false;
         }
 
-        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, " .
-                " p.gidNumber, u.homeDirectory, u.loginShell, " .
-                " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, 
-                    " .
-                " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
-                " FROM #__users AS u " .
-                " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id " .
-                " LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber " .
-                " WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
+        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, "
+                . " p.gidNumber, u.homeDirectory, u.loginShell, "
+                . " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, 
+                    "
+                . " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag "
+                . " FROM #__users AS u "
+                . " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id "
+                . " LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber "
+                . " WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
 
         $db->setQuery($query);
         $dbinfo = $db->loadAssoc();
@@ -235,11 +235,11 @@ class Ldap
             if (!trim($dbinfo['cn']) && $dbinfo['uid']) {
                 $dbinfo['cn'] = $dbinfo['uid'];
 
-                $query = "UPDATE `#__users` SET `name`=" .
-                    $db->quote($dbinfo['uid']) .
-                    " WHERE `id`=" .
-                    $db->quote($dbinfo['uidNumber']) .
-                    ";";
+                $query = "UPDATE `#__users` SET `name`="
+                    . $db->quote($dbinfo['uid'])
+                    . " WHERE `id`="
+                    . $db->quote($dbinfo['uidNumber'])
+                    . ";";
                 $db->setQuery($query);
                 $db->query();
             }
@@ -251,8 +251,8 @@ class Ldap
             // If user has been de-identified or is a temporary auth_link account
             // treat as if database entry does not exist (eg, delete from LDAP)
             if (
-                (is_numeric($dbinfo['uid']) &&
-                $dbinfo['uid'] <= 0) || (substr($dbinfo['uid'], 0, 13) === "anonUsername_")
+                (is_numeric($dbinfo['uid'])
+                && $dbinfo['uid'] <= 0) || (substr($dbinfo['uid'], 0, 13) === "anonUsername_")
             ) {
                 $dbinfo = null;
             }
@@ -463,9 +463,9 @@ class Ldap
 
         if (!empty($dbinfo)) {
             $query = "SELECT DISTINCT(u.username) AS memberUid FROM `#__xgroups_members` AS gm, 
-                `#__users` AS u WHERE gm.gidNumber = " .
-                $db->quote($dbinfo['gidNumber']) .
-                " AND gm.uidNumber=u.id;";
+                `#__users` AS u WHERE gm.gidNumber = "
+                . $db->quote($dbinfo['gidNumber'])
+                . " AND gm.uidNumber=u.id;";
             $db->setQuery($query);
             $dbinfo['memberUid'] = $db->loadColumn();
         }

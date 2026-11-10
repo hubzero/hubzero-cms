@@ -117,16 +117,16 @@ class File extends WikiMacro
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
         $argues = preg_replace_callback(
-            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
-            '|details)=(?:["\'])([^"\']*)(?:["\'])/i',
+            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel'
+            . '|details)=(?:["\'])([^"\']*)(?:["\'])/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
         $argues = preg_replace_callback(
-            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
-            '|details)=([^"\',]*)(?:[, ]|$)/i',
+            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel'
+            . '|details)=([^"\',]*)(?:[, ]|$)/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );
@@ -212,8 +212,8 @@ class File extends WikiMacro
         $val = trim($matches[2]);
 
         $size   = '/^[0-9]+(%|px|em)+$/';
-        $attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|details)' .
-            '=(.+)/';
+        $attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|details)'
+            . '=(.+)/';
         $quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
         // Set width if just a pixel size is given

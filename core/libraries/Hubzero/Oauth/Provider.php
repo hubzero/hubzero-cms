@@ -356,11 +356,11 @@ class Provider
 
         $db->setQuery(
             "INSERT INTO `#__oauthp_nonces` (nonce,stamp,created) "
-                . " VALUES (" .
-                $db->quote($this->provider->nonce) .
-                "," .
-                $db->quote($this->provider->timestamp) .
-                ", UTC_TIMESTAMP());",
+                . " VALUES ("
+                . $db->quote($this->provider->nonce)
+                . ","
+                . $db->quote($this->provider->timestamp)
+                . ", UTC_TIMESTAMP());",
         );
 
         if (($db->query() === false) && ($db->getErrorNum() != 1062)) { // duplicate row error ok (well expected anyway)

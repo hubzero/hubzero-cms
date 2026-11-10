@@ -126,8 +126,8 @@ class Resources extends Plugin
 				ON rt.id = r.type
 			WHERE
 				$whereClause
-				AND ($weight > 0)" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+				AND ($weight > 0)"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
         $assoc = $sql->to_associative();
 

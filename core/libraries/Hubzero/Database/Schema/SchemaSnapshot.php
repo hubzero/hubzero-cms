@@ -383,11 +383,11 @@ class SchemaSnapshot
             $summary['counts']['renamed_tables']++;
         }
 
-        $summary['counts']['total_changes'] =
-            $summary['counts']['added_tables'] +
-            $summary['counts']['removed_tables'] +
-            $summary['counts']['modified_tables'] +
-            $summary['counts']['renamed_tables'];
+        $summary['counts']['total_changes']
+            = $summary['counts']['added_tables']
+            + $summary['counts']['removed_tables']
+            + $summary['counts']['modified_tables']
+            + $summary['counts']['renamed_tables'];
 
         return $summary;
     }

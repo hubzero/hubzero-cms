@@ -293,8 +293,8 @@ class Support extends Plugin
             Log::error('CRON query failed: ' . $database->getErrorMsg());
         } elseif ($message_id && !empty($tickets)) {
             // If we're sending a message...
-            Lang::load('com_support') ||
-            Lang::load('com_support', Component::path('com_support') . DS . 'site');
+            Lang::load('com_support')
+            || Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
             $message = \Components\Support\Models\Message::oneOrNew($message_id);
 
@@ -426,8 +426,8 @@ class Support extends Plugin
 
         $sconfig = Component::params('com_support');
 
-        Lang::load('com_support') ||
-        Lang::load('com_support', Component::path('com_support') . DS . 'site');
+        Lang::load('com_support')
+        || Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
         $sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
@@ -571,8 +571,8 @@ class Support extends Plugin
 
         $sconfig = Component::params('com_support');
 
-        Lang::load('com_support') ||
-        Lang::load('com_support', Component::path('com_support') . DS . 'site');
+        Lang::load('com_support')
+        || Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
         $sql = "SELECT t.*, o.`name` AS owner_name, s.`title` as status_title FROM `#__support_tickets` AS t "
             . "LEFT JOIN `#__users` AS o ON o.`id`=t.`owner` LEFT JOIN `#__support_statuses` AS s ON s.`id`=t.`status`";

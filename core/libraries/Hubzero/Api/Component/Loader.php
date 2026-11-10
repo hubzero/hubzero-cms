@@ -65,12 +65,12 @@ class Loader extends Base
                 // If no version is specified, try to determine the most
                 // recent version from the available controllers
                 if (!$version) {
-                    $files = glob(PATH_COMPONENT .
-                        DIRECTORY_SEPARATOR .
-                        'controllers' .
-                        DIRECTORY_SEPARATOR .
-                        $controller .
-                        'v*.php');
+                    $files = glob(PATH_COMPONENT
+                        . DIRECTORY_SEPARATOR
+                        . 'controllers'
+                        . DIRECTORY_SEPARATOR
+                        . $controller
+                        . 'v*.php');
 
                     if (!empty($files)) {
                         // Rank v1r0 and legacy v1_0 names on the same footing
@@ -94,10 +94,10 @@ class Loader extends Base
                     }
                 }
 
-                $controllerClass = '\\Components\\' .
-                    ucfirst(substr($option, 4)) .
-                    '\\Api\\Controllers\\' .
-                    ucfirst($controller);
+                $controllerClass = '\\Components\\'
+                    . ucfirst(substr($option, 4))
+                    . '\\Api\\Controllers\\'
+                    . ucfirst($controller);
 
                 // Class will be autoloaded by ClassLoader
             }

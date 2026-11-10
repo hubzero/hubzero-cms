@@ -38,10 +38,10 @@ class Announcements extends Module
         $nullDate = $db->getNullDate();
 
         // Build slug expressions using database-agnostic helpers
-        $articleSlug = 'CASE WHEN ' . $db->sqlLength('a.alias') . ' THEN ' .
-            $db->sqlConcatWs(':', ['a.id', 'a.alias']) . ' ELSE a.id END';
-        $catSlug = 'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN ' .
-            $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END';
+        $articleSlug = 'CASE WHEN ' . $db->sqlLength('a.alias') . ' THEN '
+            . $db->sqlConcatWs(':', ['a.id', 'a.alias']) . ' ELSE a.id END';
+        $catSlug = 'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN '
+            . $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END';
 
         $query = $db->getQuery()
             ->select('a.*')
@@ -53,12 +53,12 @@ class Announcements extends Module
             ->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'inner')
             ->whereEquals('a.state', 1)
             ->whereRaw(
-                '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
-                ' OR a.publish_up <= ' . $db->quote($now) . ')',
+                '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate)
+                . ' OR a.publish_up <= ' . $db->quote($now) . ')',
             )
             ->whereRaw(
-                '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
-                ' OR a.publish_down >= ' . $db->quote($now) . ')',
+                '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate)
+                . ' OR a.publish_down >= ' . $db->quote($now) . ')',
             )
             ->whereEquals('cc.id', (int) $catid)
             ->whereEquals('cc.published', 1)

@@ -115,11 +115,11 @@ class Helper
                 if (!$member->get('picture')) {
                     // Do we auto-generate a picture?
                     if ($config->get('identicon')) {
-                        $path = PATH_APP .
-                            DS .
-                            trim($config->get('webpath', '/site/members'), DS) .
-                            DS .
-                            self::niceidformat($member->get('uidNumber'));
+                        $path = PATH_APP
+                            . DS
+                            . trim($config->get('webpath', '/site/members'), DS)
+                            . DS
+                            . self::niceidformat($member->get('uidNumber'));
 
                         if (!is_dir($path)) {
                             App::get('filesystem')->makeDirectory($path);
@@ -129,27 +129,27 @@ class Helper
                             $identicon = new Identicon();
 
                             // Create a profile image
-                            $imageData = $identicon->
-                                getImageData($member->
-                                get('email'), 200, $config->
-                                get('identicon_color', null));
+                            $imageData = $identicon
+                                ->getImageData($member
+                                ->get('email'), 200, $config
+                                ->get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon.png', $imageData);
 
                             // Create a thumbnail image
-                            $imageData = $identicon->
-                                getImageData($member->
-                                get('email'), 50, $config->
-                                get('identicon_color', null));
+                            $imageData = $identicon
+                                ->getImageData($member
+                                ->get('email'), 50, $config
+                                ->get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon_thumb.png', $imageData);
 
                             // Save image to profile
                             $member->set('picture', 'identicon.png');
                             // Update directly. Using update() method can cause unexpected data loss in some cases.
                             $database = App::get('db');
-                            $database->setQuery("UPDATE `#__xprofiles` SET picture=" .
-                                $database->quote($member->get('picture')) .
-                                " WHERE uidNumber=" .
-                                $member->get('uidNumber'));
+                            $database->setQuery("UPDATE `#__xprofiles` SET picture="
+                                . $database->quote($member->get('picture'))
+                                . " WHERE uidNumber="
+                                . $member->get('uidNumber'));
                             $database->query();
                             //$member->update();
                         }
@@ -182,15 +182,14 @@ class Helper
                         return $protocol
                                 . '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
                                 . (!$thumbit ? 's=300&' : '')
-                                .
-                                    'd=' .
-                                    urlencode(str_replace(
+                                    . 'd='
+                                    . urlencode(str_replace(
                                         '/administrator',
                                         '',
                                         rtrim(App::get('request')->base(), '/'),
-                                    ) .
-                                    '/' .
-                                    $dfthumb);
+                                    )
+                                    . '/'
+                                    . $dfthumb);
                     }
                 }
             }

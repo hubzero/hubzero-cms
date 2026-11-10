@@ -63,8 +63,8 @@ $this->css()
                     $sheader = $component->name;
                     Lang::load($component->name);
 
-                    $display_header = Lang::hasKey($component->name) ? Lang::txt($component->name) :
-                    ucfirst(str_replace('com_', '', $component->name));
+                    $display_header = Lang::hasKey($component->name) ? Lang::txt($component->name)
+                    : ucfirst(str_replace('com_', '', $component->name));
                     ?>
                 <tr class="section-header">
                     <th scope="col"><?php echo $this->escape($display_header); ?></th>

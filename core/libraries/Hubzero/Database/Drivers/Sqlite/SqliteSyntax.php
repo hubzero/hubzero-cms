@@ -100,10 +100,10 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function buildInsert()
     {
-        return 'INSERT ' .
-            ($this->ignore ? 'OR IGNORE ' : '') .
-            'INTO ' .
-            $this->connection->quoteName($this->insert);
+        return 'INSERT '
+            . ($this->ignore ? 'OR IGNORE ' : '')
+            . 'INTO '
+            . $this->connection->quoteName($this->insert);
     }
 
     /**
@@ -363,9 +363,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             if (!$progress) {
                 if ($this->fullJoinUnionBuilt) {
                     throw new UnsupportedSyntaxException(
-                        'Unable to reorder FULL JOIN emulation for SQLite. ' .
-                        'A JOIN references tables to its right. ' .
-                        'Rewrite the query with explicit UNIONs or reorder joins.',
+                        'Unable to reorder FULL JOIN emulation for SQLite. '
+                        . 'A JOIN references tables to its right. '
+                        . 'Rewrite the query with explicit UNIONs or reorder joins.',
                     );
                 }
 
@@ -581,8 +581,8 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         if (in_array($type, ['right', 'right outer', 'full', 'full outer'])) {
             throw new UnsupportedSyntaxException(
-                'RIGHT and FULL OUTER JOINs are not supported by SQLite. ' .
-                'Consider rewriting as a LEFT JOIN with reversed table order.',
+                'RIGHT and FULL OUTER JOINs are not supported by SQLite. '
+                . 'Consider rewriting as a LEFT JOIN with reversed table order.',
                 500,
             );
         }
@@ -668,9 +668,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         if (
-            strpos($upperType, 'CHAR') !== false ||
-            strpos($upperType, 'CLOB') !== false ||
-            strpos($upperType, 'TEXT') !== false
+            strpos($upperType, 'CHAR') !== false
+            || strpos($upperType, 'CLOB') !== false
+            || strpos($upperType, 'TEXT') !== false
         ) {
             return 'TEXT';
         }
@@ -680,9 +680,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         if (
-            strpos($upperType, 'REAL') !== false ||
-            strpos($upperType, 'FLOA') !== false ||
-            strpos($upperType, 'DOUB') !== false
+            strpos($upperType, 'REAL') !== false
+            || strpos($upperType, 'FLOA') !== false
+            || strpos($upperType, 'DOUB') !== false
         ) {
             return 'REAL';
         }
@@ -732,8 +732,8 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableExistsQuery($table)
     {
-        return "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = " .
-            $this->connection->quote($table);
+        return "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = "
+            . $this->connection->quote($table);
     }
 
     /**
@@ -744,8 +744,8 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableCreateQuery($table)
     {
-        return "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = " .
-            $this->connection->quote($table);
+        return "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = "
+            . $this->connection->quote($table);
     }
 
     // =========================================================================

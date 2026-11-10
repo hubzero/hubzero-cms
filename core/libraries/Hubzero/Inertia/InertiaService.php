@@ -229,8 +229,8 @@ class InertiaService
                     && is_array($this->debugContext['_warnings'])
                     ? $this->debugContext['_warnings']
                     : [];
-                $this->debugContext['_warnings'][] =
-                    'flush() ignored: call flush() before profileStart/share/debugContext.';
+                $this->debugContext['_warnings'][]
+                    = 'flush() ignored: call flush() before profileStart/share/debugContext.';
             }
             return;
         }

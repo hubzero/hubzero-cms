@@ -149,8 +149,8 @@ $maintext = $this->model->description;
                         if ($field->name == 'citations') {
                             $citations = $data[$field->name];
                         } elseif (
-                            $elements->display($field->type, $data[$field->name]) && ((isset($field->display) &&
-                            $field->display == $tab) || (!isset($field->display) && 'about' == $tab))
+                            $elements->display($field->type, $data[$field->name]) && ((isset($field->display)
+                            && $field->display == $tab) || (!isset($field->display) && 'about' == $tab))
                         ) {
                             ?>
                             <h3><?php echo $field->label; ?></h3>
@@ -187,8 +187,8 @@ $maintext = $this->model->description;
                     $cite->url      = '';
                     $cite->type     = '';
                     $authors = [];
-                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool') :
-                    $this->model->contributors('!submitter'));
+                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool')
+                    : $this->model->contributors('!submitter'));
                     if ($contributors) {
                         foreach ($contributors as $contributor) {
                             if ($contributor->role == 'submitter') {
@@ -205,8 +205,8 @@ $maintext = $this->model->description;
                         $doi = '';
 
                         if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
-                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder :
-                            $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
+                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder
+                            : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
                             $cite->doi = $doi;
                         }
 
@@ -274,8 +274,8 @@ $maintext = $this->model->description;
                 $exp = Lang::txt('TIME_FORMAT_HZ1') . ', ' . Lang::txt('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
             }
             if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
-                $seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' &&
-                $this->model->attribs->get('timeof', '') != '')
+                $seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00'
+                && $this->model->attribs->get('timeof', '') != '')
                               ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
                               : '';
             } else {

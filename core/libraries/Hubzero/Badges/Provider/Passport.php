@@ -84,12 +84,12 @@ class Passport implements ProviderInterface
     public function setCredentials($passportCredentials)
     {
         $this->credentials = $passportCredentials;
-        $this->
-            request = new \OAuth($this->
-            credentials->
-            client_id, $this->
-            credentials->
-            client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+        $this
+            ->request = new \OAuth($this
+            ->credentials
+            ->client_id, $this
+            ->credentials
+            ->client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
         $params['username'] = $this->credentials->username;
         $params['password'] = $this->credentials->password;
         $params['client_id'] = $this->credentials->client_id;
@@ -190,8 +190,8 @@ class Passport implements ProviderInterface
             $this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
             try {
                 $this->request->fetch(
-                    self::PASSPORT_API_ENDPOINT .
-                    "assertions/",
+                    self::PASSPORT_API_ENDPOINT
+                    . "assertions/",
                     $assertionsData,
                     OAUTH_HTTP_METHOD_POST,
                     ['Content-Type' => 'application/json'],

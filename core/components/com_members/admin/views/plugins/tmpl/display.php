@@ -173,8 +173,8 @@ $saveOrder = $listOrder == 'ordering';
                         <?php if ($canChange) : ?>
                             <?php if ($saveOrder) :?>
                                 <?php if ($listDirn == 'asc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] ==
-                                        $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1]
+                                        == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
                                     <?php
                                     $val = $this->items->pagination->orderDownIcon(
                                         $i,
@@ -187,8 +187,8 @@ $saveOrder = $listOrder == 'ordering';
                                     ?>
                                     <span><?php echo $val; ?></span>
                                 <?php elseif ($listDirn == 'desc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] ==
-                                        $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1]
+                                        == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
                                     <?php
                                     $val = $this->items->pagination->orderDownIcon(
                                         $i,

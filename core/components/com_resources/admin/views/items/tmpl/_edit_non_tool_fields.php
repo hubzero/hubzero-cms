@@ -61,12 +61,9 @@ $time = $this->time;
                         'license',
                         $this->row->params->get('license'),
                     )
-                    ==
-                    '')
-                            ?
-                            'selected="selected"'
-                            :
-                            '';?>><?php
+                    == '')
+                            ? 'selected="selected"'
+                            : '';?>><?php
                     echo
                     Lang::txt('COM_RESOURCES_NONE');
 ?></option>
@@ -77,12 +74,9 @@ $time = $this->time;
                             'license',
                             $this->row->params->get('license'),
                         )
-                        ==
-                        $license->get('name'))
-                               ?
-                               'selected="selected"'
-                               :
-                               '';
+                        == $license->get('name'))
+                               ? 'selected="selected"'
+                               : '';
                                 ?>><?php
                         echo
                         $license->get('title');

@@ -37,8 +37,8 @@ if (count($this->activities) > 0) {
                 //$a = $activity['activity'];
 
                 if (!isset($projects[$activity->get('scope_id')])) {
-                    $projects[$activity->get('scope_id')] =
-                    \Components\Projects\Models\Project::getInstance($activity->get('scope_id'));
+                    $projects[$activity->get('scope_id')]
+                    = \Components\Projects\Models\Project::getInstance($activity->get('scope_id'));
                 }
 
                 // Show activity

@@ -62,8 +62,8 @@ if ($this->params->get('show_address', 1) == 1) {
 }
 
 if (
-    $this->params->get('show_position', 1) == 1 && (isset($this->register['position']) ||
-    isset($this->register['position_other']))
+    $this->params->get('show_position', 1) == 1 && (isset($this->register['position'])
+    || isset($this->register['position_other']))
 ) {
     $message .= 'Current position: ';
     $message .= ($this->register['position']) ? $this->register['position'] : $this->register['position_other'];

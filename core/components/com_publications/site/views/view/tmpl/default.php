@@ -142,21 +142,21 @@ if ($this->config->get('launcher_layout', 0)) {
 
                 $from = '';
                 if (
-                    $ancestor->version->get('state') == 1 &&
-                    (
-                        !$ancestor->version->get('published_up') ||
-                        $ancestor->version->get('published_up') == '0000-00-00 00:00:00' ||
-                        (
-                            $ancestor->version->get('published_up') != '0000-00-00 00:00:00' &&
-                            $ancestor->version->get('published_up') <= Date::toSql()
+                    $ancestor->version->get('state') == 1
+                    && (
+                        !$ancestor->version->get('published_up')
+                        || $ancestor->version->get('published_up') == '0000-00-00 00:00:00'
+                        || (
+                            $ancestor->version->get('published_up') != '0000-00-00 00:00:00'
+                            && $ancestor->version->get('published_up') <= Date::toSql()
                         )
-                    ) &&
-                    (
-                        !$ancestor->version->get('published_down') ||
-                        $ancestor->version->get('published_down') == '0000-00-00 00:00:00' ||
-                        (
-                            $ancestor->version->get('published_down') != '0000-00-00 00:00:00' &&
-                            $ancestor->version->get('published_down') > Date::toSql()
+                    )
+                    && (
+                        !$ancestor->version->get('published_down')
+                        || $ancestor->version->get('published_down') == '0000-00-00 00:00:00'
+                        || (
+                            $ancestor->version->get('published_down') != '0000-00-00 00:00:00'
+                            && $ancestor->version->get('published_down') > Date::toSql()
                         )
                     )
                 ) {

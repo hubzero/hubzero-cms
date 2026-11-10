@@ -325,8 +325,8 @@ class Db2DriverTest extends AbstractDriverTestCase
             if (is_array($keyData)) {
                 foreach ($keyData as $col) {
                     if (
-                        isset($col->Non_unique) && $col->Non_unique == 0 &&
-                        isset($col->Key_name) && in_array(strtoupper($col->Key_name), ['PRIMARY', 'PK'])
+                        isset($col->Non_unique) && $col->Non_unique == 0
+                        && isset($col->Key_name) && in_array(strtoupper($col->Key_name), ['PRIMARY', 'PK'])
                     ) {
                         $hasPrimary = true;
                         break 2;

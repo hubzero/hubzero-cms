@@ -61,8 +61,8 @@ class ModeDsl
 
             $dd = json_decode($database['data_definition'] ?? '', true);
         } else {
-            $sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name) .
-                ' AND version=' . $db->quote($version);
+            $sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name)
+                . ' AND version=' . $db->quote($version);
             $db->setQuery($sql);
             $ver = $db->loadAssoc();
 
@@ -73,11 +73,11 @@ class ModeDsl
             $dd = json_decode($ver['data_definition'], true);
 
             // Check publication state
-            $sql = 'SELECT state, curator FROM #__publication_versions ' .
-                'LEFT JOIN #__publication_attachments ON ' .
-                    '(#__publication_versions.publication_id=#__publication_attachments.publication_id ' .
-                    'AND #__publication_versions.id=#__publication_attachments.publication_version_id) ' .
-                'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
+            $sql = 'SELECT state, curator FROM #__publication_versions '
+                . 'LEFT JOIN #__publication_attachments ON '
+                    . '(#__publication_versions.publication_id=#__publication_attachments.publication_id '
+                    . 'AND #__publication_versions.id=#__publication_attachments.publication_version_id) '
+                . 'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
 
             $db->setQuery($sql);
             $pub_version = $db->loadAssoc();

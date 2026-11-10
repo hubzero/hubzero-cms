@@ -508,8 +508,8 @@ class Modules extends AdminController
 
             // 1.5 Format; Core files or language packs then
             // 1.6 3PD Extension Support
-            $lang->load($item->module . '.sys', PATH_APP . '/modules/' . $item->module, null, false, true) ||
-            $lang->load($item->module . '.sys', PATH_CORE . '/modules/' . $item->module, null, false, true);
+            $lang->load($item->module . '.sys', PATH_APP . '/modules/' . $item->module, null, false, true)
+            || $lang->load($item->module . '.sys', PATH_CORE . '/modules/' . $item->module, null, false, true);
 
             $item->name = Lang::txt($item->name);
 
@@ -617,8 +617,8 @@ class Modules extends AdminController
 
             $tplPath = '/templates/' . $template->element;
             $langFile = 'tpl_' . $template->element . '.sys';
-            Lang::load($langFile, PATH_APP . $tplPath, null, false, true) ||
-            Lang::load($langFile, PATH_CORE . $tplPath, null, false, true);
+            Lang::load($langFile, PATH_APP . $tplPath, null, false, true)
+            || Lang::load($langFile, PATH_CORE . $tplPath, null, false, true);
 
             foreach ($declared as $value => $label) {
                 if (!$label) {

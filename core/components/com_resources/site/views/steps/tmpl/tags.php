@@ -70,12 +70,12 @@ $this->css('create.css')
             $props = $fa_props[$fa['label']];
             $multiple = !is_null($props['multiple_depth']) && $props['multiple_depth'] <= $depth;
             echo '<div class="fa' . ($depth === 1 ? ' top-level' : '') . '">';
-            echo '<input class="option" class="' . ($multiple ? 'checkbox' : 'radio') . '" type="' . ($multiple ?
-            'checkbox' : 'radio') . '" ' . (isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ) .
-            'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '') . '[]"
+            echo '<input class="option" class="' . ($multiple ? 'checkbox' : 'radio') . '" type="' . ($multiple
+            ? 'checkbox' : 'radio') . '" ' . (isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' )
+            . 'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '') . '[]"
             value="' . $fa['tag'] . '"';
-            echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="' .
-            htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
+            echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="'
+            . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
             if ($fa['children']) {
                 echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
             }
@@ -141,8 +141,8 @@ $this->css('create.css')
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {
-                    echo '<textarea name="tags" id="tags-men" rows="6" cols="35">' .
-                    $recommended->getExistingTagsValueList() . '</textarea>' . "\n";
+                    echo '<textarea name="tags" id="tags-men" rows="6" cols="35">'
+                    . $recommended->getExistingTagsValueList() . '</textarea>' . "\n";
                 }
                 //echo '<input type="text" name="tags" rel="tags,multi," id="actags"'
                 //    . ' class="autocomplete " value="' . $recommended->getExistingTagsValueList() . '"'

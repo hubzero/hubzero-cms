@@ -80,8 +80,8 @@ class Wishlist extends Plugin
 
         $this->config = Component::params('com_wishlist');
 
-        Lang::load('com_wishlist', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
-        Lang::load('com_wishlist', Component::path('com_wishlist') . DS . 'site');
+        Lang::load('com_wishlist', PATH_APP . DS . 'bootstrap' . DS . 'site')
+        || Lang::load('com_wishlist', Component::path('com_wishlist') . DS . 'site');
 
         $database = App::get('db');
 

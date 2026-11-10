@@ -84,8 +84,8 @@ class Publications extends Plugin
         $limit = $pconfig->get('limitStats', 5);
         $image = $pconfig->get('email_image', '');
 
-        Lang::load('com_publications', PATH_APP) ||
-        Lang::load('com_publications', Component::path('com_publications') . '/site');
+        Lang::load('com_publications', PATH_APP)
+        || Lang::load('com_publications', Component::path('com_publications') . '/site');
 
         // Is logging enabled?
         if (is_file(Component::path('com_publications') . '/tables/Log.php')) {

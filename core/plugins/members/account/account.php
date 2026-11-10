@@ -338,8 +338,8 @@ class Account extends Plugin
             Notify::warning(Lang::txt('You must be logged in to access this area.'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' .
-                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false),
+                Route::url('index.php?option=com_users&view=login&return='
+                    . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false),
             );
             return;
         }
@@ -450,8 +450,8 @@ class Account extends Plugin
             Notify::warning(Lang::txt('You must be logged in to access this area.'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' .
-                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false),
+                Route::url('index.php?option=com_users&view=login&return='
+                    . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false),
             );
             return;
         }

@@ -18,8 +18,8 @@ $this->lat = 20;
 $this->long = 0;
 $this->zoom = 2;
 
-$dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type .
-'&no_html=1&data=online');
+$dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type
+. '&no_html=1&data=online');
 $dataurl = str_replace('&amp;', '&', $dataurl);
 ?>
 <!DOCTYPE html>

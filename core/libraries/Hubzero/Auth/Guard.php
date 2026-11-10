@@ -94,9 +94,9 @@ class Guard
             // Make sure we haven't already attached this array as an observer
             foreach ($this->_observers as $check) {
                 if (
-                    is_array($check) &&
-                    $check['event'] == $observer['event'] &&
-                    $check['handler'] == $observer['handler']
+                    is_array($check)
+                    && $check['event'] == $observer['event']
+                    && $check['handler'] == $observer['handler']
                 ) {
                     return;
                 }

@@ -24,10 +24,10 @@ class FootNote extends Macro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes ' .
-            'when no args (footnote text) are given.';
-        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes ' .
-            'when no args (footnote text) are given.</p>';
+        $txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes '
+            . 'when no args (footnote text) are given.';
+        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes '
+            . 'when no args (footnote text) are given.</p>';
         return $txt['html'];
     }
 
@@ -85,8 +85,8 @@ class FootNote extends Macro
             $wm->footnotes_notes[] = $note;
             $wm->footnotes[] = $footnote;
 
-            return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">' .
-                '&#91;' . $i . '&#93;</a></sup>';
+            return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">'
+                . '&#91;' . $i . '&#93;</a></sup>';
         } else {
             $letters = [
                 'A','B','C','D','E','F','G','H','I','J','K','L','M',

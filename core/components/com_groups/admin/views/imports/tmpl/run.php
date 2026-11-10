@@ -61,12 +61,12 @@ $this->js('import')
         </div>
         <?php
         $url = Route::url(
-            'index.php?option=' .
-            $this->option .
-            '&controller=' .
-            $this->controller .
-            '&task=progress&id=' .
-            $this->import->get('id'),
+            'index.php?option='
+            . $this->option
+            . '&controller='
+            . $this->controller
+            . '&task=progress&id='
+            . $this->import->get('id'),
         );
         ?>
         <div class="countdown-actions" data-progress="<?php echo $url; ?>">

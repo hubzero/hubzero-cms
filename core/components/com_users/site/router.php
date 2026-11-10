@@ -226,9 +226,9 @@ class Router extends Base
             // Get the package id from the packages table by alias.
             $db = App::get('db');
             $db->setQuery(
-                'SELECT ' . $db->quoteName('id') .
-                ' FROM ' . $db->quoteName('#__users') .
-                ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId,
+                'SELECT ' . $db->quoteName('id')
+                . ' FROM ' . $db->quoteName('#__users')
+                . ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId,
             );
             $userId = $db->loadResult();
         }

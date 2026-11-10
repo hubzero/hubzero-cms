@@ -53,11 +53,11 @@ class Toolbar extends Facade
         $app->set('ComponentTitle', $html);
 
         if ($app->has('document')) {
-            $app->get('document')->setTitle($app->get('config')->get('sitename') .
-                ' - ' .
-                $app->get('language')->txt('JADMINISTRATION') .
-                ' - ' .
-                $title);
+            $app->get('document')->setTitle($app->get('config')->get('sitename')
+                . ' - '
+                . $app->get('language')->txt('JADMINISTRATION')
+                . ' - '
+                . $title);
         }
     }
 
@@ -154,8 +154,8 @@ class Toolbar extends Facade
             'Popup',
             'upload',
             $alt,
-            \Hubzero\Facades\Route::url('index.php?option=com_media&tmpl=component&task=popupUpload&folder=' .
-            $directory),
+            \Hubzero\Facades\Route::url('index.php?option=com_media&tmpl=component&task=popupUpload&folder='
+            . $directory),
             800,
             520,
         );
@@ -445,11 +445,11 @@ class Toolbar extends Facade
             'Popup',
             'options',
             $alt,
-            \Hubzero\Facades\Route::url('index.php?option=com_config&view=component&component=' .
-            $component .
-            '&path=' .
-            $path .
-            '&tmpl=component'),
+            \Hubzero\Facades\Route::url('index.php?option=com_config&view=component&component='
+            . $component
+            . '&path='
+            . $path
+            . '&tmpl=component'),
             $width,
             $height,
             $top,

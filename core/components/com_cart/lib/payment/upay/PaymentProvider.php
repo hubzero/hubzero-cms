@@ -65,8 +65,8 @@ class PaymentProvider
         $this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
         $this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
         $this->transactionDetails['VALIDATION_KEY'] = $this->generateValidationKey();
-        $this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
-        $transactionDetails->token . '-' . $transactionDetails->info->tId;
+        $this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId='
+        . $transactionDetails->token . '-' . $transactionDetails->info->tId;
     }
 
     /**

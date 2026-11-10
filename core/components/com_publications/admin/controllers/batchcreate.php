@@ -703,10 +703,10 @@ class Batchcreate extends AdminController
 
             // Take care of thumbnail, if appropriate
             if (
-                $fileRecord['subtype'] == 'thumbnail' &&
-                $configs->handler &&
-                $configs->handler->getName() == 'imageviewer' &&
-                !$attachment->getDefault($pub->version_id)
+                $fileRecord['subtype'] == 'thumbnail'
+                && $configs->handler
+                && $configs->handler->getName() == 'imageviewer'
+                && !$attachment->getDefault($pub->version_id)
             ) {
                 $configs->handler->makeDefault($attachment, $pub, $configs);
             }
@@ -833,8 +833,8 @@ class Batchcreate extends AdminController
 
         $return .= trim($error->message);
         if ($error->line || $error->column) {
-            $return .= "\n  Line: $error->line" .
-            "\n  Column: $error->column";
+            $return .= "\n  Line: $error->line"
+            . "\n  Column: $error->column";
         }
 
         return "$return\n\n--------------------------------------------\n\n";

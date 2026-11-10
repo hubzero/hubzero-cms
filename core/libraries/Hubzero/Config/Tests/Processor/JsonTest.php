@@ -43,10 +43,10 @@ class JsonTest extends TestCase
      *
      * @var  string
      */
-    private $str = '{"app":{"application_env":"development","editor":"ckeditor","list_limit":25,' .
-        '"helpurl":"English (GB) - HUBzero help","debug":1,"debug_lang":0,"sef":1,"sef_rewrite":1,' .
-        '"sef_suffix":0,"sef_groups":0,"feed_limit":10,"feed_email":"author"},"seo":{"sef":1,' .
-        '"sef_groups":0,"sef_rewrite":1,"sef_suffix":0,"unicodeslugs":0,"sitename_pagetitles":0}}';
+    private $str = '{"app":{"application_env":"development","editor":"ckeditor","list_limit":25,'
+        . '"helpurl":"English (GB) - HUBzero help","debug":1,"debug_lang":0,"sef":1,"sef_rewrite":1,'
+        . '"sef_suffix":0,"sef_groups":0,"feed_limit":10,"feed_email":"author"},"seo":{"sef":1,'
+        . '"sef_groups":0,"sef_rewrite":1,"sef_suffix":0,"unicodeslugs":0,"sitename_pagetitles":0}}';
     /**
      * Test setup
      *
@@ -111,10 +111,10 @@ class JsonTest extends TestCase
     public function testCanParse()
     {
         $this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
-        $this->
-            assertFalse($this->
-                processor->
-                canParse('<config><app><setting name="application_env">development</setting></app></config>'));
+        $this
+            ->assertFalse($this
+                ->processor
+                ->canParse('<config><app><setting name="application_env">development</setting></app></config>'));
         $this->assertFalse(
             $this->processor->canParse('{Cras justo odio,
             dapibus ac facilisis in,
@@ -130,21 +130,21 @@ class JsonTest extends TestCase
      **/
     public function testParse()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.json');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.json');
 
         $this->assertEquals($this->arr, $result);
 
         $this->expectException(\Hubzero\Config\Exception\ParseException::class);
 
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.xml');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.xml');
     }
 
     /**

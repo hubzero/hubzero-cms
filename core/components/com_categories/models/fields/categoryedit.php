@@ -188,8 +188,8 @@ class CategoryEdit extends Select
             }
         }
         if (
-            ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories') &&
-            (isset($row) && !isset($options[0])) && isset($this->element['show_root'])
+            ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories')
+            && (isset($row) && !isset($options[0])) && isset($this->element['show_root'])
         ) {
             if ($row->parent_id == '1') {
                 $parent = new stdClass();

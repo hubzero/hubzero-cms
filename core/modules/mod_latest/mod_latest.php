@@ -330,8 +330,8 @@ class Latest extends Module
                 );
                 $item->displayCategoryLink = Route::url($categoryRoute);
                 if ($show_category) {
-                    $item->displayCategoryTitle = '<a href="' . $item->displayCategoryLink . '">' .
-                        $item->category_title . '</a>';
+                    $item->displayCategoryTitle = '<a href="' . $item->displayCategoryLink . '">'
+                        . $item->category_title . '</a>';
                 } else {
                     $item->displayCategoryTitle = '';
                 }

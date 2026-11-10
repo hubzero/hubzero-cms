@@ -45,10 +45,10 @@ class Daterangefilter extends Filter
         $enddate = (isset($dateValues['enddate']) && is_scalar($dateValues['enddate']))
             ? htmlspecialchars((string) $dateValues['enddate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '';
         $html = '<ul><li><fieldset class="search-filters"><legend>' . htmlspecialchars((string) $this->label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</legend>';
-        $html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' .
-            $this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
-        $html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' .
-            $this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
+        $html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters['
+            . $this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
+        $html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters['
+            . $this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
         $html .= '</li></ul></fieldset>';
         return $html;
     }

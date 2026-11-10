@@ -73,8 +73,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         <input type="hidden" name="sharing" id="sharing" value="<?php echo $sharing; ?>" />
         <?php if ($sharing && $this->model->access('content')) {
             foreach ($this->services as $service) {
-                $lastsync = $this->rSync->get('status') == 'complete' ? date("c") : $this->model->params->get($service .
-                '_sync', '');
+                $lastsync = $this->rSync->get('status') == 'complete' ? date("c") : $this->model->params->get($service
+                . '_sync', '');
                 if ($lastsync) {
                     $lastsync = '<span class="faded">'
                         . Lang::txt('PLG_PROJECTS_FILES_LAST_SYNC')

@@ -563,13 +563,13 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $this->bind($binding);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->connection->quoteName($join['left']) .
-                    ' = ' .
-                    $this->connection->quoteName($join['right']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->connection->quoteName($join['left'])
+                    . ' = '
+                    . $this->connection->quoteName($join['right']);
             } elseif (isset($join['raw'])) {
                 $joins[] = strtoupper($join['type']) . ' JOIN ' . $join['table'] . ' ON ' . $join['raw'];
             } elseif (isset($join['conditions'])) {
@@ -580,11 +580,11 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $tableExpr .= ' ' . $this->connection->quoteName($join['alias']);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->buildJoinConditions($join['conditions']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->buildJoinConditions($join['conditions']);
             } else {
                 // Simple join with left/right equality
                 // Build table expression with optional alias
@@ -593,13 +593,13 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $tableExpr .= ' ' . $this->connection->quoteName($join['alias']);
                 }
 
-                $joins[] = strtoupper($join['type']) .
-                    ' JOIN ' .
-                    $tableExpr .
-                    ' ON ' .
-                    $this->connection->quoteName($join['left']) .
-                    ' = ' .
-                    $this->connection->quoteName($join['right']);
+                $joins[] = strtoupper($join['type'])
+                    . ' JOIN '
+                    . $tableExpr
+                    . ' ON '
+                    . $this->connection->quoteName($join['left'])
+                    . ' = '
+                    . $this->connection->quoteName($join['right']);
             }
         }
 
@@ -871,8 +871,8 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function getTableExistsQuery($table)
     {
-        return "SELECT COUNT(*) FROM RDB\$RELATIONS WHERE RDB\$RELATION_NAME = " .
-            $this->connection->quote(strtoupper($table));
+        return "SELECT COUNT(*) FROM RDB\$RELATIONS WHERE RDB\$RELATION_NAME = "
+            . $this->connection->quote(strtoupper($table));
     }
 
     /**
@@ -1221,8 +1221,8 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     public function setJsonPathWhere($column, $path, $operator, $value, $logical = 'and', $depth = 0)
     {
         throw new UnsupportedSyntaxException(
-            'Native JSON operations are not fully supported in Firebird. ' .
-            'Consider storing JSON as text and parsing in application code.',
+            'Native JSON operations are not fully supported in Firebird. '
+            . 'Consider storing JSON as text and parsing in application code.',
             500,
         );
     }
@@ -1241,8 +1241,8 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     public function setJsonContainsWhere($column, $value, $path = null, $logical = 'and', $depth = 0)
     {
         throw new UnsupportedSyntaxException(
-            'JSON_CONTAINS is not supported in Firebird. ' .
-            'Consider using LIKE or POSITION for text-based searches.',
+            'JSON_CONTAINS is not supported in Firebird. '
+            . 'Consider using LIKE or POSITION for text-based searches.',
             500,
         );
     }

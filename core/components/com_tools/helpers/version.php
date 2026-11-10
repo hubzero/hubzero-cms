@@ -59,12 +59,12 @@ class Version
         $db = App::get('db');
 
         if (is_numeric($toolid)) {
-            $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-                $db->Quote($toolid) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
+            $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid="
+                . $db->Quote($toolid) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
         } else {
-            $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-                $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=1 ORDER BY v.revision " .
-                " DESC LIMIT 1";
+            $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname="
+                . $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=1 ORDER BY v.revision "
+                . " DESC LIMIT 1";
         }
 
         $db->setQuery($query);
@@ -90,12 +90,12 @@ class Version
         $db = App::get('db');
 
         if (is_numeric($toolid)) {
-            $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-                $db->Quote($toolid) . " AND v.state=3 ORDER BY v.revision DESC LIMIT 1";
+            $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid="
+                . $db->Quote($toolid) . " AND v.state=3 ORDER BY v.revision DESC LIMIT 1";
         } else {
-            $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-                $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=3 ORDER BY v.revision " .
-                " DESC LIMIT 1";
+            $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname="
+                . $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=3 ORDER BY v.revision "
+                . " DESC LIMIT 1";
         }
 
         $db->setQuery($query);
@@ -123,32 +123,32 @@ class Version
 
         if ($revision == 'dev' || $revision == 'development') {
             if (is_numeric($toolid)) {
-                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-                    $db->Quote($toolid) . " AND v.state=3 ORDER BY v.revision DESC LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid="
+                    . $db->Quote($toolid) . " AND v.state=3 ORDER BY v.revision DESC LIMIT 1";
             } else {
-                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-                    $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=3 ORDER BY v.revision " .
-                    " DESC LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname="
+                    . $db->Quote($toolid) . " AND v.toolid=t.id AND v.state=3 ORDER BY v.revision "
+                    . " DESC LIMIT 1";
             }
         } elseif ($revision == 'current') {
             if (is_numeric($toolid)) {
-                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-                    $db->Quote($toolid) . " AND v.state IN (1, 0) ORDER BY v.state DESC, " .
-                    "v.revision DESC LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid="
+                    . $db->Quote($toolid) . " AND v.state IN (1, 0) ORDER BY v.state DESC, "
+                    . "v.revision DESC LIMIT 1";
             } else {
-                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-                    $db->Quote($toolid) . " AND v.toolid=t.id AND v.state IN (1, 0) "
-                    . "ORDER BY v.state DESC, v.revision " .
-                    " DESC LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname="
+                    . $db->Quote($toolid) . " AND v.toolid=t.id AND v.state IN (1, 0) "
+                    . "ORDER BY v.state DESC, v.revision "
+                    . " DESC LIMIT 1";
             }
         } else {
             if (is_numeric($toolid)) {
-                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-                    $db->Quote($toolid) . " AND v.state<>'3' AND v.revision=" . $db->Quote($revision) . "  LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid="
+                    . $db->Quote($toolid) . " AND v.state<>'3' AND v.revision=" . $db->Quote($revision) . "  LIMIT 1";
             } else {
-                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-                    $db->Quote($toolid) . " AND v.toolid=" .  $db->Quote($toolid) . " AND v.state<>'3' AND " .
-                    " v.revision=" . $db->Quote($revision) . "  LIMIT 1";
+                $query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname="
+                    . $db->Quote($toolid) . " AND v.toolid=" .  $db->Quote($toolid) . " AND v.state<>'3' AND "
+                    . " v.revision=" . $db->Quote($revision) . "  LIMIT 1";
             }
         }
 

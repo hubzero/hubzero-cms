@@ -543,25 +543,25 @@ class Orcid extends SiteController
             exit();
         }
 
-        $xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' .
-                    '<orcid-message' .
-                        ' xmlns="http://www.orcid.org/ns/orcid"' .
-                        ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' .
-                        ' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/'
-                        . 'orcid-model/src/main/resources/orcid-message-1.2.xsd">' .
-                        '<message-version>1.2</message-version>' .
-                        '<orcid-profile>' .
-                            '<orcid-bio>' .
-                                '<personal-details>' .
-                                    '<given-names>' . $first_name . '</given-names>' .
-                                    '<family-name>' . $last_name . '</family-name>' .
-                                '</personal-details>' .
-                                '<contact-details>' .
-                                    '<email primary="true">' . $email . '</email>' .
-                                '</contact-details>' .
-                            '</orcid-bio>' .
-                        '</orcid-profile>' .
-                    '</orcid-message>';
+        $xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                    . '<orcid-message'
+                        . ' xmlns="http://www.orcid.org/ns/orcid"'
+                        . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+                        . ' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/'
+                        . 'orcid-model/src/main/resources/orcid-message-1.2.xsd">'
+                        . '<message-version>1.2</message-version>'
+                        . '<orcid-profile>'
+                            . '<orcid-bio>'
+                                . '<personal-details>'
+                                    . '<given-names>' . $first_name . '</given-names>'
+                                    . '<family-name>' . $last_name . '</family-name>'
+                                . '</personal-details>'
+                                . '<contact-details>'
+                                    . '<email primary="true">' . $email . '</email>'
+                                . '</contact-details>'
+                            . '</orcid-bio>'
+                        . '</orcid-profile>'
+                    . '</orcid-message>';
 
         $initedCurl = curl_init($url);
         curl_setopt($initedCurl, CURLOPT_POST, 1);

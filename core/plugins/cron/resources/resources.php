@@ -251,8 +251,8 @@ class Resources extends Plugin
         // Loop through members and get their groups that have the digest set
         if ($users && count($users) > 0) {
             // Load language files
-            Lang::load('plg_cron_resources') ||
-            Lang::load('plg_cron_resources', __DIR__);
+            Lang::load('plg_cron_resources')
+            || Lang::load('plg_cron_resources', __DIR__);
 
             $limit = intval($params->get('digest_limit', 3));
 

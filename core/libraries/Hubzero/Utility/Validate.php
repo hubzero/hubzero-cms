@@ -629,11 +629,11 @@ class Validate
         // pattern rejects it. Allowed here rather than in that pattern, which is
         // shared with the address validator and should not start accepting mail
         // for a host that cannot receive it.
-        $regex = '/^(?:(?:https?|ftps?|sftp|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?') .
-            '(?:' . self::$_pattern['IPv4'] . '|\[' . self::$_pattern['IPv6'] . '\]|localhost|' . self::$_pattern['hostname'] . ')(?::[1-9][0-9]{0,4})?' .
-            '(?:\/?|\/' . $validChars . '*)?' .
-            '(?:\?' . $validChars . '*)?' .
-            '(?:#' . $validChars . '*)?$/iu';
+        $regex = '/^(?:(?:https?|ftps?|sftp|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?')
+            . '(?:' . self::$_pattern['IPv4'] . '|\[' . self::$_pattern['IPv6'] . '\]|localhost|' . self::$_pattern['hostname'] . ')(?::[1-9][0-9]{0,4})?'
+            . '(?:\/?|\/' . $validChars . '*)?'
+            . '(?:\?' . $validChars . '*)?'
+            . '(?:#' . $validChars . '*)?$/iu';
 
         return self::_check($check, $regex);
     }

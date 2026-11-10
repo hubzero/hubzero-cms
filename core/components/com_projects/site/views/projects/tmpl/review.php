@@ -16,9 +16,9 @@ if ($this->reviewer == 'sponsored') {
     $title = Lang::txt('COM_PROJECTS_REVIEW_PROJECT_SPS');
     $approved = $this->params->get('grant_approval') || $this->params->get('grant_status') == 1 ? 1 : 0;
 
-    $b_action = $approved ?
-            Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED') :
-            Lang::txt('COM_PROJECTS_SAVE_SPS');
+    $b_action = $approved
+            ? Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED')
+            : Lang::txt('COM_PROJECTS_SAVE_SPS');
 } elseif ($this->reviewer == 'sensitive') {
     $title = Lang::txt('COM_PROJECTS_REVIEW_PROJECT_SENSITIVE');
     $b_action = Lang::txt('COM_PROJECTS_SAVE');

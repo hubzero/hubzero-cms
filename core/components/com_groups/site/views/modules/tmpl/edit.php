@@ -76,8 +76,8 @@ foreach ($menus as $menu) {
 
                             // open in source mode if contains php or scripts
                         if (
-                            strstr(stripslashes($this->module->get('content')), '<script>') ||
-                                strstr(stripslashes($this->module->get('content')), '<?php')
+                            strstr(stripslashes($this->module->get('content')), '<script>')
+                                || strstr(stripslashes($this->module->get('content')), '<?php')
                         ) {
                             $startupMode  = 'source';
                             //$showSourceBtn = false;

@@ -822,8 +822,8 @@ class Base extends Obj
                 ' GMT' */);
         }
 
-        App::get('response')->headers->set('Content-Type', $this->_mime .
-            ($this->_charset ? '; charset=' .
-            $this->_charset : ''));
+        App::get('response')->headers->set('Content-Type', $this->_mime
+            . ($this->_charset ? '; charset='
+            . $this->_charset : ''));
     }
 }

@@ -430,44 +430,44 @@ class WikiParser
         // e.g. [mylink My Link] => <a href="mylink">My Link</a>
         $char_regexes = [
             // [http://external.links]
-            'external' => '(' .
-                '\[' . // opening brackets
-                    '(https?:|mailto:|ftp:|gopher:|news:|file:|\/\/)' . // protocol
-                    '([^\]\[]*?)' . // link
-                    '(\s+[^\]]*?)?' . // optional title
-                '\]' . // closing brackets
-            ')',
+            'external' => '('
+                . '\[' // opening brackets
+                    . '(https?:|mailto:|ftp:|gopher:|news:|file:|\/\/)' // protocol
+                    . '([^\]\[]*?)' // link
+                    . '(\s+[^\]]*?)?' // optional title
+                . '\]' // closing brackets
+            . ')',
 
             // [InternalLinks]
-            'internal' => '(' .
-                '\[' . // opening brackets
-                    '(?:([^\]]*?)\:)?' . // namespace (if any)
-                    '([^\]\[]*?)' .
-                    '(\s+[^\]]*?)?' .
-                '\]' . // closing brackets
-            ')',
+            'internal' => '('
+                . '\[' // opening brackets
+                    . '(?:([^\]]*?)\:)?' // namespace (if any)
+                    . '([^\]\[]*?)'
+                    . '(\s+[^\]]*?)?'
+                . '\]' // closing brackets
+            . ')',
 
             // URL pattern
-            'autourl'    => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
+            'autourl'    => "(?<=[^=\"\'\[])\!?"  // Make sure it's not preceeded by quotes and brackets
                 //"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
                 //"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
-                "(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»]))",
+                . "(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»]))",
 
             // Email pattern
-            'autoemail'    => "([\s]*)" .  // whitespace
-                "([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
-                "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
+            'autoemail'    => "([\s]*)"  // whitespace
+                . "([\._a-zA-Z0-9-\+]+@"  // characters leading up to @
+                . "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
 
             // Camelcase links (e.g. MyLink)
-            'wikiname' => "(" .
-                    "!?\\/?" .  // Optionally starts with ! \ /
-                    "[A-Z][A-Za-z]*[a-z]+[A-Z][A-Za-z]*" .  // CamelCase pattern
-                    "(?:(?:\\/[A-Z][A-Za-z]*)+)?" .
-                ")" .
-                "(" .
-                    "(\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?" .
-                ")" .
-                "(\"\")?",
+            'wikiname' => "("
+                    . "!?\\/?"  // Optionally starts with ! \ /
+                    . "[A-Z][A-Za-z]*[a-z]+[A-Z][A-Za-z]*"  // CamelCase pattern
+                    . "(?:(?:\\/[A-Z][A-Za-z]*)+)?"
+                . ")"
+                . "("
+                    . "(\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?"
+                . ")"
+                . "(\"\")?",
         ];
 
         foreach ($char_regexes as $func => $regex) {
@@ -2627,8 +2627,8 @@ class WikiParser
                 // XXX: use a stack for nestable elements like span, table and div
                 $openmatch  = preg_match('/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li|<\\/tr|<\\/td|<\\/th)/iS', $t);
                 $closematch = preg_match(
-                    '/(?:<\\/table|<\\/blockquote|<\\/h1|<\\/h2|<\\/h3|<\\/h4|<\\/h5|<\\/h6|' .
-                    '<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->token() . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS',
+                    '/(?:<\\/table|<\\/blockquote|<\\/h1|<\\/h2|<\\/h3|<\\/h4|<\\/h5|<\\/h6|'
+                    . '<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->token() . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS',
                     $t,
                 );
                 if ($openmatch or $closematch) {
@@ -3036,14 +3036,14 @@ class WikiParser
         $url = $this->get('url');
         $url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
 
-        return "\n" . '<li class="toclevel toclevel-' . $level . '">' .
-                        '<div class="toc-item">' .
-                            '<button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button>' .
-                            '<a href="' . Route::url($url) . '#' . $anchor . '">' .
-                                '<span class="tocnumber">' . $tocnumber . ' </span>' .
-                                '<span class="toctext">' . $tocLine . '</span>' .
-                            '</a>' .
-                        '</div>';
+        return "\n" . '<li class="toclevel toclevel-' . $level . '">'
+                        . '<div class="toc-item">'
+                            . '<button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button>'
+                            . '<a href="' . Route::url($url) . '#' . $anchor . '">'
+                                . '<span class="tocnumber">' . $tocnumber . ' </span>'
+                                . '<span class="toctext">' . $tocLine . '</span>'
+                            . '</a>'
+                        . '</div>';
     }
 
     /**

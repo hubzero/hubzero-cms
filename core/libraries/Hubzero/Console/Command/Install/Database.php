@@ -599,8 +599,8 @@ class Database
             // 1049 = Unknown database
             // 1698 = Access denied (auth plugin issue)
             if (
-                in_array($code, [1045, 1044, 1049, 1698]) ||
-                stripos($message, 'Access denied') !== false
+                in_array($code, [1045, 1044, 1049, 1698])
+                || stripos($message, 'Access denied') !== false
             ) {
                 self::output("\e[32mMySQL is reachable.\e[39m\n", $ansi);
                 return 'reachable';
@@ -620,8 +620,8 @@ class Database
                 self::output("\e[31mCould not connect via Unix socket.\e[39m\n", $ansi);
                 self::output("Check that MySQL is running and the socket path is correct.\n", $ansi);
             } elseif (
-                stripos($message, 'Connection refused') !== false ||
-                      in_array($code, [2002, 2003])
+                stripos($message, 'Connection refused') !== false
+                      || in_array($code, [2002, 2003])
             ) {
                 self::output("\e[31mConnection refused.\e[39m\n", $ansi);
                 self::output("Check that MySQL is running and accepting connections.\n", $ansi);
@@ -935,8 +935,8 @@ class Database
 
                 // Access denied - wrong credentials
                 if (
-                    in_array($code, [1045, 1044, 1698]) ||
-                    stripos($e->getMessage(), 'Access denied') !== false
+                    in_array($code, [1045, 1044, 1698])
+                    || stripos($e->getMessage(), 'Access denied') !== false
                 ) {
                     self::output("\e[31mAccess denied.\e[39m The username or password is incorrect.\n", $ansi);
                 } else {
@@ -1049,8 +1049,8 @@ class Database
                     } elseif (!$isLocalConnection && !$myCnfIsLocal) {
                         // Both remote - check host and port match
                         if (
-                            strtolower($requestedHost) === strtolower($myCnfHost) &&
-                            $requestedPort === $myCnfPort
+                            strtolower($requestedHost) === strtolower($myCnfHost)
+                            && $requestedPort === $myCnfPort
                         ) {
                             $compatible = true;
                         }
@@ -1185,8 +1185,8 @@ class Database
                         } elseif (!$isLocalConnection && !$myCnfIsLocal) {
                             // Both remote - check host and port match
                             if (
-                                strtolower($requestedHost) === strtolower($myCnfHost) &&
-                                $requestedPort === $myCnfPort
+                                strtolower($requestedHost) === strtolower($myCnfHost)
+                                && $requestedPort === $myCnfPort
                             ) {
                                 $compatible = true;
                             }
@@ -1363,8 +1363,8 @@ class Database
                     $hasGrant = true;
                 }
                 if (
-                    strpos($grantUpper, 'CREATE') !== false &&
-                    strpos($grantUpper, 'ON *.*') !== false
+                    strpos($grantUpper, 'CREATE') !== false
+                    && strpos($grantUpper, 'ON *.*') !== false
                 ) {
                     $hasCreateDb = true;
                 }
@@ -1625,8 +1625,8 @@ class Database
             self::output("Resetting password... ", $ansi);
 
             try {
-                $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost) .
-                               " IDENTIFIED BY " . $adminPdo->quote($newPassword));
+                $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
+                               . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
                 $adminPdo->exec("FLUSH PRIVILEGES");
                 self::output("\e[32mDone.\e[39m\n", $ansi);
             } catch (\PDOException $e) {
@@ -1721,8 +1721,8 @@ class Database
                 self::output("Resetting password... ", $ansi);
 
                 try {
-                    $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost) .
-                                   " IDENTIFIED BY " . $adminPdo->quote($newPassword));
+                    $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
+                                   . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
                     $adminPdo->exec("FLUSH PRIVILEGES");
                     self::output("\e[32mDone.\e[39m\n", $ansi);
                 } catch (\PDOException $e) {
@@ -1797,21 +1797,21 @@ class Database
             }
 
             // Create the user
-            $adminPdo->exec("CREATE USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost) .
-                           " IDENTIFIED BY " . $adminPdo->quote($password));
+            $adminPdo->exec("CREATE USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
+                           . " IDENTIFIED BY " . $adminPdo->quote($password));
 
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Create the database
             self::output("Creating database '\e[32m{$database}\e[39m'... ", $ansi);
-            $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database) .
-                           " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database)
+                           . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Grant privileges
             self::output("Granting privileges... ", $ansi);
-            $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO " .
-                           $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
+            $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO "
+                           . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
             $adminPdo->exec("FLUSH PRIVILEGES");
             self::output("\e[32mDone.\e[39m\n", $ansi);
 
@@ -2091,8 +2091,8 @@ class Database
 
                 // Access denied - wrong credentials
                 if (
-                    in_array($code, [1045, 1044, 1698]) ||
-                    stripos($e->getMessage(), 'Access denied') !== false
+                    in_array($code, [1045, 1044, 1698])
+                    || stripos($e->getMessage(), 'Access denied') !== false
                 ) {
                     self::output("\e[31mAccess denied.\e[39m The username or password is incorrect.\n", $ansi);
                 } else {
@@ -2593,8 +2593,8 @@ class Database
 
                 // Remove quotes from value
                 if (
-                    (substr($value, 0, 1) === '"' && substr($value, -1) === '"') ||
-                    (substr($value, 0, 1) === "'" && substr($value, -1) === "'")
+                    (substr($value, 0, 1) === '"' && substr($value, -1) === '"')
+                    || (substr($value, 0, 1) === "'" && substr($value, -1) === "'")
                 ) {
                     $value = substr($value, 1, -1);
                 }
@@ -2615,10 +2615,10 @@ class Database
     private static function isLocalHost($host)
     {
         $host = strtolower(trim($host));
-        return $host === 'localhost' ||
-               $host === '127.0.0.1' ||
-               $host === '::1' ||
-               $host === '';
+        return $host === 'localhost'
+               || $host === '127.0.0.1'
+               || $host === '::1'
+               || $host === '';
     }
 
     /**
@@ -2656,14 +2656,14 @@ class Database
 
             // Create the database
             self::output("Creating database '\e[32m{$database}\e[39m'... ", $ansi);
-            $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database) .
-                           " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database)
+                           . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Grant privileges
             self::output("Granting privileges... ", $ansi);
-            $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO " .
-                           $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
+            $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO "
+                           . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
             $adminPdo->exec("FLUSH PRIVILEGES");
             self::output("\e[32mDone.\e[39m\n", $ansi);
 

@@ -128,9 +128,9 @@ class Helper extends \Hubzero\Base\Obj
         // edited one keeps its author
         $row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
-        $message = $row->id ?
-                Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') :
-                Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_POSTED');
+        $message = $row->id
+                ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED')
+                : Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_POSTED');
 
         // Perform some text cleaning, etc.
         $row->set('content', \Hubzero\Utility\Sanitize::clean($row->get('content')));
@@ -387,9 +387,9 @@ class Helper extends \Hubzero\Base\Obj
         $row->created    = ($row->created) ? $row->created : Date::toSql();
         $row->created_by = User::get('id');
 
-        $message = $row->id ?
-                Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') :
-                Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_POSTED');
+        $message = $row->id
+                ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED')
+                : Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_POSTED');
 
         // Check for missing (required) fields
         if (!$row->check()) {

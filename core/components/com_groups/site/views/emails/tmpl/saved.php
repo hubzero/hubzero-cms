@@ -348,9 +348,9 @@ $onOffLabel = function ($v) {
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php if ($this->group->get('logo')) : ?>
-                                        <img src="<?php echo $base .
-                                            DS .
-                                            ltrim($this->group->getLogo(), DS); ?>" width="50px" />
+                                        <img src="<?php echo $base
+                                            . DS
+                                            . ltrim($this->group->getLogo(), DS); ?>" width="50px" />
                                     <?php else : ?>
                                         &#60;Not Set&#62;
                                     <?php endif; ?>

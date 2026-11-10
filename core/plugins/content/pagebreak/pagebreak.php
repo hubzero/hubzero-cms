@@ -238,8 +238,8 @@ class Pagebreak extends Plugin
         );
         $row->toc .= '<ul>
             <li>
-                <a href="' . Route::url($articleRoute . '&showall=&limitstart=') . '" class="' .
-                $class . '">' . $heading . '</a>
+                <a href="' . Route::url($articleRoute . '&showall=&limitstart=') . '" class="'
+                . $class . '">' . $heading . '</a>
             </li>
             ';
 
@@ -309,8 +309,8 @@ class Pagebreak extends Plugin
 
             $link_next = Route::url($articleRoute . '&showall=&limitstart=' . ($page_next));
             // Next >>
-            $next = '<a href="' . $link_next . '">' . Lang::txt('JNEXT') . $pnSpace .
-                Lang::txt('JGLOBAL_GT') . Lang::txt('JGLOBAL_GT') . '</a>';
+            $next = '<a href="' . $link_next . '">' . Lang::txt('JNEXT') . $pnSpace
+                . Lang::txt('JGLOBAL_GT') . Lang::txt('JGLOBAL_GT') . '</a>';
         } else {
             $next = Lang::txt('JNEXT');
         }
@@ -320,8 +320,8 @@ class Pagebreak extends Plugin
 
             $link_prev = Route::url($articleRoute . '&showall=&limitstart=' . ($page_prev));
             // << Prev
-            $prev = '<a href="' . $link_prev . '">' . Lang::txt('JGLOBAL_LT') . Lang::txt('JGLOBAL_LT') .
-                $pnSpace . Lang::txt('JPREV') . '</a>';
+            $prev = '<a href="' . $link_prev . '">' . Lang::txt('JGLOBAL_LT') . Lang::txt('JGLOBAL_LT')
+                . $pnSpace . Lang::txt('JPREV') . '</a>';
         } else {
             $prev = Lang::txt('JPREV');
         }

@@ -67,9 +67,9 @@ class Migration20260708130725ComEvents extends Base
             if ($num == (int) $num) {
                 $etc = 'Etc/GMT' . ($num <= 0 ? '+' . abs((int) $num) : '-' . abs((int) $num));
                 $this->db->setQuery(
-                    "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($etc) .
-                    " WHERE `time_zone` = " . $this->db->quote($offset) .
-                    " AND `params` LIKE '%\"ignore_dst\":\"1\"%'",
+                    "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($etc)
+                    . " WHERE `time_zone` = " . $this->db->quote($offset)
+                    . " AND `params` LIKE '%\"ignore_dst\":\"1\"%'",
                 );
                 $this->db->query();
             }
@@ -78,8 +78,8 @@ class Migration20260708130725ComEvents extends Base
         // Relabel the remaining numeric offsets to their IANA zone.
         foreach ($this->map as $offset => $zone) {
             $this->db->setQuery(
-                "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($zone) .
-                " WHERE `time_zone` = " . $this->db->quote($offset),
+                "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($zone)
+                . " WHERE `time_zone` = " . $this->db->quote($offset),
             );
             $this->db->query();
         }
@@ -97,8 +97,8 @@ class Migration20260708130725ComEvents extends Base
         // Map IANA zones (and the fixed Etc/GMT variants) back to numeric offsets.
         foreach ($this->map as $offset => $zone) {
             $this->db->setQuery(
-                "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset) .
-                " WHERE `time_zone` = " . $this->db->quote($zone),
+                "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset)
+                . " WHERE `time_zone` = " . $this->db->quote($zone),
             );
             $this->db->query();
 
@@ -106,8 +106,8 @@ class Migration20260708130725ComEvents extends Base
             if ($num == (int) $num) {
                 $etc = 'Etc/GMT' . ($num <= 0 ? '+' . abs((int) $num) : '-' . abs((int) $num));
                 $this->db->setQuery(
-                    "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset) .
-                    " WHERE `time_zone` = " . $this->db->quote($etc),
+                    "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset)
+                    . " WHERE `time_zone` = " . $this->db->quote($etc),
                 );
                 $this->db->query();
             }

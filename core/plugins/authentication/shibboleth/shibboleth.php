@@ -278,12 +278,12 @@ class Shibboleth extends Plugin
         // Saved id provider? Use it as the default
         $prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : null;
         if (
-            !$prefill && // no cookie
-                ($host = self::getHostByAddress(
+            !$prefill // no cookie
+                && ($host = self::getHostByAddress(
                     self::clientAddress((bool) $params->get('behind_proxy', 0)),
                     $params->get('dns', '8.8.8.8'),
-                )) && // can get a host
-                preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma)
+                )) // can get a host
+                && preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma)
         ) { // Hostname lookup seems php jsonrational (not an ip address, has a few dots in it)
             // Try to look up a provider to pre-select based on the user's hostname
             foreach (self::getInstitutions() as $inst) {

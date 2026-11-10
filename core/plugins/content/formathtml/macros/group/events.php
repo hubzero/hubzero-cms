@@ -217,8 +217,8 @@ class Events extends GroupMacro
 
                 // Is this an open-ended event?
                 if (
-                    $down <= Date::of('0000-00-00 00:00:00') ||
-                    $down->format('Y-m-d') != $up->format('Y-m-d')
+                    $down <= Date::of('0000-00-00 00:00:00')
+                    || $down->format('Y-m-d') != $up->format('Y-m-d')
                 ) {
                     $event->start = $up->format('M j');
                     $event->end = $down->format('M j');
@@ -326,8 +326,8 @@ class Events extends GroupMacro
 
                 // Validation - Check if from is a number, space, then word
                 if (
-                    !preg_match('/([\d]*)\s([\w]*)/', $for, $matches) ||
-                    !in_array($matches[2], ['day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'])
+                    !preg_match('/([\d]*)\s([\w]*)/', $for, $matches)
+                    || !in_array($matches[2], ['day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'])
                 ) {
                     $for = false; // Invalid
                 }
@@ -357,8 +357,8 @@ class Events extends GroupMacro
 
                 // Validation - Check if from is a number, space, then word, or the word "today"
                 if (
-                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $from, $matches) && (strtotime($matches[1]) !== false)) &&
-                    !in_array($from, ["today", "yesterday", "tomorrow"])
+                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $from, $matches) && (strtotime($matches[1]) !== false))
+                    && !in_array($from, ["today", "yesterday", "tomorrow"])
                 ) {
                     $from = false; // Invalid
                 } elseif ($from == "today") {
@@ -394,8 +394,8 @@ class Events extends GroupMacro
 
                 // Validation - Check if to is a number, space, then word, or the word "today"
                 if (
-                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $to, $matches) && (strtotime($matches[1]) !== false)) &&
-                    !in_array($to, ["today", "yesterday", "tomorrow"])
+                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $to, $matches) && (strtotime($matches[1]) !== false))
+                    && !in_array($to, ["today", "yesterday", "tomorrow"])
                 ) {
                     $to = false; // Invalid
                 } elseif ($to == "today") {

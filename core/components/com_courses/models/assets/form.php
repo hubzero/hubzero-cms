@@ -93,8 +93,8 @@ class Form extends Content
             $oid = Request::getString('offering');
 
             // Build our JavaScript to return to the view to be executed
-            $js =
-                "// Open up forms in a lightbox
+            $js
+                = "// Open up forms in a lightbox
 				$.fancybox({
 					fitToView: false,
 					autoResize: false,
@@ -141,8 +141,8 @@ class Form extends Content
 						$('body').on('savesuccessful', function( e, title ) {
 							$.fancybox.close();
 
-							var data = " .
-                                json_encode(
+							var data = "
+                                . json_encode(
                                     [
                                         'assets' => [
                                             $return['assets'],
@@ -182,8 +182,8 @@ class Form extends Content
         $oid = Request::getString('offering');
 
         // Compile our return var
-        $js =
-            "// Open up forms in a lightbox
+        $js
+            = "// Open up forms in a lightbox
 			$.fancybox({
 				fitToView: false,
 				autoResize: false,

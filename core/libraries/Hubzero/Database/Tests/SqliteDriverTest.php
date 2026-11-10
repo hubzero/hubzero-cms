@@ -259,8 +259,8 @@ class SqliteDriverTest extends AbstractDriverTestCase
 
         // Should contain rebuild statements (CREATE TABLE ... _rebuild_)
         $sqlString = implode(' ', $sql);
-        $hasRebuild = stripos($sqlString, 'CREATE TABLE') !== false &&
-                      stripos($sqlString, '_rebuild_') !== false;
+        $hasRebuild = stripos($sqlString, 'CREATE TABLE') !== false
+                      && stripos($sqlString, '_rebuild_') !== false;
 
         $this->assertTrue(
             $hasRebuild,

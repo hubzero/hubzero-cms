@@ -934,15 +934,15 @@ class Detector
                         if (stristr($this->lowerAgent, 'nt 5.2')) { // windows server 2003
                             $this->platformVersion = 5.2;
                         } elseif (
-                            stristr($this->lowerAgent, 'nt 5.1') ||
-                            stristr($this->lowerAgent, 'xp')
+                            stristr($this->lowerAgent, 'nt 5.1')
+                            || stristr($this->lowerAgent, 'xp')
                         ) { // windows xp
                             //$this->platformVersion = 5.1;
                             $this->platformVersion = 'XP';
                             $this->platform = 'Windows';
                         } elseif (
-                            stristr($this->lowerAgent, 'nt 5') ||
-                            stristr($this->lowerAgent, '2000')
+                            stristr($this->lowerAgent, 'nt 5')
+                            || stristr($this->lowerAgent, '2000')
                         ) { // windows 2000
                             //$this->platformVersion = 5.0;
                             $this->platformVersion = '2000';
@@ -981,8 +981,8 @@ class Detector
                 for ($j = 0; $j < count($s_os); $j++) {
                     if (stristr($this->lowerAgent, $s_os[$j])) {
                         $this->platform = 'Unix'; // if the os is in the unix array, it's unix, obviously...
-                        $this->platformVersion =
-                            ($s_os[$j] != 'unix') ? $s_os[$j] : ''; // assign sub unix version from the unix array
+                        $this->platformVersion
+                            = ($s_os[$j] != 'unix') ? $s_os[$j] : ''; // assign sub unix version from the unix array
                         break;
                     }
                 }

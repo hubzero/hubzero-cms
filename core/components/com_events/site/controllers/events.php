@@ -1258,14 +1258,14 @@ class Events extends SiteController
 				website, position_description, highest_degree, gender, arrival, departure, disability_needs,
 				dietary_needs, attending_dinner, abstract, comment
 			)
-			VALUES (' .
-                $this->event->id . ', ' .
-                $this->_getValueString($this->database, $reg, [
+			VALUES ('
+                . $this->event->id . ', '
+                . $this->_getValueString($this->database, $reg, [
                     'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
                     'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability',
                     'dietary', 'dinner', 'additional', 'comments',
-                ]) .
-            ')',
+                ])
+            . ')',
         );
         $this->database->query();
         $races = Request::getArray('race', null, 'post');

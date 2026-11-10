@@ -67,9 +67,9 @@ class OneToManyThrough extends OneToMany
     {
         $this->mediate();
 
-        $this->related->whereEquals($this->associativeTable .
-            '.' .
-            $this->associativeLocal, $this->model->getPkValue());
+        $this->related->whereEquals($this->associativeTable
+            . '.'
+            . $this->associativeLocal, $this->model->getPkValue());
 
         // Apply any default conditions
         return $this->applyDefaultConditions($this->related);

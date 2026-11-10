@@ -24,8 +24,8 @@ class Migration20161212181802ComSearch extends Base
         $schema = $this->db->schema();
 
         if (
-            $schema->tableExists('#__search_blacklist') &&
-            $schema->hasColumn('#__search_blacklist', 'scope_id')
+            $schema->tableExists('#__search_blacklist')
+            && $schema->hasColumn('#__search_blacklist', 'scope_id')
         ) {
             $schema->renameColumn('#__search_blacklist', 'scope', 'doc_id')
                 ->string(255)
@@ -45,8 +45,8 @@ class Migration20161212181802ComSearch extends Base
         $schema = $this->db->schema();
 
         if (
-            $schema->tableExists('#__search_blacklist') &&
-            !$schema->hasColumn('#__search_blacklist', 'scope_id')
+            $schema->tableExists('#__search_blacklist')
+            && !$schema->hasColumn('#__search_blacklist', 'scope_id')
         ) {
             $schema->renameColumn('#__search_blacklist', 'doc_id', 'scope')
                 ->string(255)

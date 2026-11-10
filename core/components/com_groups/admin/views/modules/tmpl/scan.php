@@ -16,8 +16,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title($this->group->get('description') . ': ' . $this->module->
-    get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'), 'groups.png');
+Toolbar::title($this->group->get('description') . ': ' . $this->module
+    ->get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'), 'groups.png');
 Toolbar::custom('markscanned', 'check', 'check', 'COM_GROUPS_MODULES_MARK_SCANNED', false);
 Toolbar::spacer();
 Toolbar::custom('scanagain', 'check', 'check', 'COM_GROUPS_MODULES_SCAN_AGAIN', false);
@@ -34,9 +34,9 @@ $content = $this->module->get('content');
 
 <?php
 $formUrl = Route::url(
-    'index.php?option=' . $this->option .
-    '&controller=' . $this->controller .
-    '&gid=' . $this->group->cn,
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&gid=' . $this->group->cn,
 );
 $confirmTxt = Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM');
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));

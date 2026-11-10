@@ -91,8 +91,8 @@ class Migration extends Base implements CommandInterface
         if ($this->arguments->getOpt('force')) {
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
                 $this->output->error(
-                    'Error: You cannot specify the "force" option without ' .
-                    'specifying a specific extention or file',
+                    'Error: You cannot specify the "force" option without '
+                    . 'specifying a specific extention or file',
                 );
             } else {
                 $force = true;
@@ -104,8 +104,8 @@ class Migration extends Base implements CommandInterface
         if ($this->arguments->getOpt('m')) {
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
                 $this->output->error(
-                    'Error: You cannot specify the "Log only (-m)" option without ' .
-                    'specifying a specific extention or file',
+                    'Error: You cannot specify the "Log only (-m)" option without '
+                    . 'specifying a specific extention or file',
                 );
             } else {
                 $logOnly = true;
@@ -121,12 +121,12 @@ class Migration extends Base implements CommandInterface
         // Specific extension
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|' .
-                '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
+                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
-                    'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core',
+                    'Error: extension should match the pattern of '
+                    . 'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -185,9 +185,9 @@ class Migration extends Base implements CommandInterface
                 !preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,
                 4}$/', $this->arguments->getOpt('email'))
             ) {
-                $this->output->error('Error: ' .
-                    $this->arguments->getOpt('email') .
-                    ' does not appear to be a valid email address');
+                $this->output->error('Error: '
+                    . $this->arguments->getOpt('email')
+                    . ' does not appear to be a valid email address');
             } else {
                 $email = $this->arguments->getOpt('email');
             }
@@ -205,11 +205,11 @@ class Migration extends Base implements CommandInterface
                     if ($namespace != '.' && $namespace != '..' && is_dir($vendorPath . DS . $namespace)) {
                         foreach (scandir($vendorPath . DS . $namespace) as $package) {
                             if (
-                                $package != '.' && $package != '..' && is_dir($vendorPath .
-                                DS .
-                                $namespace .
-                                DS .
-                                $package)
+                                $package != '.' && $package != '..' && is_dir($vendorPath
+                                . DS
+                                . $namespace
+                                . DS
+                                . $package)
                             ) {
                                 $migrationPath = $vendorPath . DS . $namespace . DS . $package . DS . 'src';
                                 if (is_dir($migrationPath . DS . 'migrations')) {
@@ -283,8 +283,7 @@ class Migration extends Base implements CommandInterface
                                         $log['message'],
                                         $matches,
                                     )
-                                    ||
-                                    preg_match(
+                                    || preg_match(
                                         '/would ignore up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
                                         $log['message'],
                                         $matches,
@@ -365,12 +364,12 @@ class Migration extends Base implements CommandInterface
         // Specific extension filter
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|' .
-                '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
+                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
-                    'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core',
+                    'Error: extension should match the pattern of '
+                    . 'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -592,12 +591,12 @@ class Migration extends Base implements CommandInterface
         // Specific extension filter
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|' .
-                '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
+                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
-                    'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core',
+                    'Error: extension should match the pattern of '
+                    . 'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -631,8 +630,8 @@ class Migration extends Base implements CommandInterface
             if ($dryrun) {
                 if ($currentStatus) {
                     $this->output->addLine(
-                        "Would mark {$file} as {$direction} (currently: {$currentStatus->direction}, " .
-                        "status: " . ($currentStatus->status ?? 'success') . ")",
+                        "Would mark {$file} as {$direction} (currently: {$currentStatus->direction}, "
+                        . "status: " . ($currentStatus->status ?? 'success') . ")",
                         'info',
                     );
                 } else {
@@ -655,8 +654,8 @@ class Migration extends Base implements CommandInterface
             if ($dryrun) {
                 if ($currentStatus) {
                     $this->output->addLine(
-                        "Would remove tracking record for {$file} (currently: {$currentStatus->direction}, " .
-                        "status: " . ($currentStatus->status ?? 'success') . ", date: {$currentStatus->date})",
+                        "Would remove tracking record for {$file} (currently: {$currentStatus->direction}, "
+                        . "status: " . ($currentStatus->status ?? 'success') . ", date: {$currentStatus->date})",
                         'info',
                     );
                 } else {

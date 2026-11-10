@@ -37,8 +37,8 @@ class Resources extends GroupMacro
             <ul>
                 <li><code>[[Group.Resources()]]</code></li>
                 <li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>
-                <li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> - Displays the 5 ' .
-                'latest group teachingmaterials resources.</li>
+                <li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> - Displays the 5 '
+                . 'latest group teachingmaterials resources.</li>
             </ul>';
         return $txt['html'];
     }
@@ -71,13 +71,13 @@ class Resources extends GroupMacro
         foreach ($groupResources as $resource) {
             $resourceLink = Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
             $resourceTypeLink = Route::url(
-                'index.php?option=com_groups&cn=' . $this->group->get('cn') .
-                '&active=resources&area=' . $resource->type->get('alias'),
+                'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                . '&active=resources&area=' . $resource->type->get('alias'),
             );
 
             $html .= '<a href="' . $resourceLink . '"><strong>' . $resource->get('title') . '</strong></a>';
-            $html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' .
-                $resource->type->get('type') . '</a></p>';
+            $html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">'
+                . $resource->type->get('type') . '</a></p>';
             $html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->get('introtext')) . '</p>';
         }
 

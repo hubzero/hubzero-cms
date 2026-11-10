@@ -46,8 +46,8 @@ $this->css('register')
     <?php $val = $this->escape($this->email); ?>
     <p>
         You can have a new confirmation email sent to "<?php echo $val; ?>" by <a href="<?php echo
-        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resend&return=' .
-        $this->return); ?>">clicking here</a>.
+        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resend&return='
+        . $this->return); ?>">clicking here</a>.
     </p>
 <?php } ?>
 </section><!-- / .section -->

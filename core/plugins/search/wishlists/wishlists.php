@@ -59,9 +59,9 @@ class Wishlists extends Plugin
 			INNER JOIN `#__wishlist` wl
 				ON wl.id = wli.wishlist AND wl.public = 1
 			WHERE
-				NOT wli.private AND $weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " AND wli.status != 2 ORDER BY $weight DESC",
+				NOT wli.private AND $weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . " AND wli.status != 2 ORDER BY $weight DESC",
         );
         foreach ($rows->to_associative() as $row) {
             if (!$row) {

@@ -402,9 +402,9 @@ class Pages extends SiteController
         }
 
         Document::setTitle(
-            Document::getTitle() . ': ' .
-            $this->page->title . ': ' .
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            Document::getTitle() . ': '
+            . $this->page->title . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
         );
 
         // Set the pathway
@@ -857,9 +857,9 @@ class Pages extends SiteController
             default:
                 // Set the page's <title> tag
                 Document::setTitle(
-                    Lang::txt(strtoupper($this->_option)) . ': ' .
-                    $this->page->title . ': ' .
-                    Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+                    Lang::txt(strtoupper($this->_option)) . ': '
+                    . $this->page->title . ': '
+                    . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
                 );
 
                 // Set the pathway
@@ -929,9 +929,9 @@ class Pages extends SiteController
 
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->_name)) . ': ' .
-            $this->page->title . ': ' .
-            Lang::txt('RENAME'),
+            Lang::txt(strtoupper($this->_name)) . ': '
+            . $this->page->title . ': '
+            . Lang::txt('RENAME'),
         );
 
         // Set the pathway

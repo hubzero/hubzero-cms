@@ -100,8 +100,8 @@ class WinCache extends Store
      */
     public static function isAvailable()
     {
-        return (extension_loaded('wincache') &&
-            function_exists('wincache_ucache_get') &&
-            !strcmp(ini_get('wincache.ucenabled'), "1"));
+        return (extension_loaded('wincache')
+            && function_exists('wincache_ucache_get')
+            && !strcmp(ini_get('wincache.ucenabled'), "1"));
     }
 }

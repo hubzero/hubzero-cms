@@ -574,8 +574,8 @@ class Group extends Obj
                 }
             } else {
                 if (in_array($property, ['members', 'managers', 'applicants', 'invitees'])) {
-                    $query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" .
-                        $db->quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
+                    $query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber="
+                        . $db->quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
                 }
             }
 

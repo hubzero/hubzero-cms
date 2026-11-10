@@ -76,8 +76,8 @@ class Blogs extends Plugin
 			LEFT JOIN `#__xgroups` AS g ON g.gidNumber=be.scope_id AND be.scope='group'
 			WHERE
 				be.state=1 AND
-				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+				$weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
 
         if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {

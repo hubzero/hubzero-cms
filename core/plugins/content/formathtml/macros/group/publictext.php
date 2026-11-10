@@ -39,12 +39,12 @@ class Publictext extends GroupMacro
     public function description()
     {
         $txt = [];
-        $txt['html']  = '<p>Display public content. Note: Content wrapped in this macro will ' .
-            '<strong>only</strong> be displayed to non-members of the group.</p>';
+        $txt['html']  = '<p>Display public content. Note: Content wrapped in this macro will '
+            . '<strong>only</strong> be displayed to non-members of the group.</p>';
         $txt['html'] .= '<p>Examples:</p>
             <ul>
-                <li><code>[[Group.Publictext(start)]]Everyone can see this' .
-                '[[Group.Publictext(end)]]</code></li>
+                <li><code>[[Group.Publictext(start)]]Everyone can see this'
+                . '[[Group.Publictext(end)]]</code></li>
             </ul>';
 
         return $txt['html'];

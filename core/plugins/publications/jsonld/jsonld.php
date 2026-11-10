@@ -126,8 +126,8 @@ class Jsonld extends Plugin
             if (!$contributor->organization) {
                 $contributor->organization = $contributor->p_organization;
             }
-            $contributor->organization = stripslashes(trim($contributor->organization ?
-                    $contributor->organization : ''));
+            $contributor->organization = stripslashes(trim($contributor->organization
+                    ? $contributor->organization : ''));
 
             $author = [
                 '@type'      => 'Person',
@@ -153,10 +153,10 @@ class Jsonld extends Plugin
             }
 
             if ($contributor->user_id && $contributor->open) {
-                $author['url'] = rtrim(Request::root(), '/') .
-                    '/' .
-                    ltrim(Route::url('index.php?option=com_members&id=' .
-                    $contributor->user_id), '/');
+                $author['url'] = rtrim(Request::root(), '/')
+                    . '/'
+                    . ltrim(Route::url('index.php?option=com_members&id='
+                    . $contributor->user_id), '/');
             }
 
             $authors[] = $author;

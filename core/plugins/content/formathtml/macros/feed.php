@@ -29,10 +29,10 @@ class Feed extends Macro
             <p>Examples:</p>
             <ul>
                 <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss)]]</code></li>
-                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, 3)]]</code> - ' .
-                'show 3 feed items</li>
-                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, class=cnn_feed)]]</code> - ' .
-                'feed with class "cnn_feed"</li>
+                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, 3)]]</code> - '
+                . 'show 3 feed items</li>
+                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, class=cnn_feed)]]</code> - '
+                . 'feed with class "cnn_feed"</li>
             </ul>';
 
         return $txt['html'];

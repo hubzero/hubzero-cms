@@ -94,8 +94,8 @@ class Extension extends Relational
                 $extension = $this->get('element');
                 $source = PATH_APP . '/components/' . $extension . '/admin';
 
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", $source, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", $source, null, false, true);
                 break;
             case 'file':
                 $extension = 'files_' . $this->get('element');
@@ -103,8 +103,8 @@ class Extension extends Relational
                 break;
             case 'library':
                 $extension = 'lib_' . $this->get('element');
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", PATH_CORE, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", PATH_CORE, null, false, true);
                 break;
             case 'module':
                 $extension = $this->get('element');
@@ -114,22 +114,22 @@ class Extension extends Relational
                 break;
             case 'package':
                 $extension = $this->get('element');
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", PATH_CORE, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", PATH_CORE, null, false, true);
                 break;
             case 'plugin':
                 $extension = 'plg_' . $this->get('folder') . '_' . $this->get('element');
                 $source = PATH_CORE . '/plugins/' . $this->get('folder') . '/' . $this->get('element');
 
-                $lang->load("$extension.sys", PATH_APP, null, false, true) ||
-                $lang->load("$extension.sys", $source, null, false, true);
+                $lang->load("$extension.sys", PATH_APP, null, false, true)
+                || $lang->load("$extension.sys", $source, null, false, true);
                 break;
             case 'template':
                 $extension = 'tpl_' . $this->get('element');
                 $source = $path . '/templates/' . $this->get('element');
 
-                $lang->load("$extension.sys", $path, null, false, true) ||
-                $lang->load("$extension.sys", $source, null, false, true);
+                $lang->load("$extension.sys", $path, null, false, true)
+                || $lang->load("$extension.sys", $source, null, false, true);
                 break;
         }
 

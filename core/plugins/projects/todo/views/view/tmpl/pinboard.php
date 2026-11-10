@@ -26,8 +26,8 @@ $listName = $this->todo->getListName($this->model->get('id'), $this->filters);
 
 $whatsleft = $total - $this->filters['start'] - $this->filters['limit'];
 $team_ids = ['0' => ''];
-$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) :
-Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
+$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED'))
+: Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
 $where = $listName ? ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
 $where .= $this->filters['mine'] == 1 ? ' ' . Lang::txt('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
 

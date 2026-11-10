@@ -42,10 +42,8 @@ if ($this->roles) {
             <option value="<?php echo $this->escape($role->alias); ?>"<?php
             if (
                 isset($this->role)
-                        &&
-                        ($this->role
-                        ==
-                        $role->alias)
+                        && ($this->role
+                        == $role->alias)
             ) {
                 echo ' selected="selected"';
             }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>

@@ -687,11 +687,11 @@ class Sessions extends SiteController
 
         // We've passed all checks so let's actually start the session
         $status = Utils::middleware(
-            "start user=" . escapeshellarg(User::get('username')) .
-            " ip=" . escapeshellarg($app->ip) .
-            " app=" . escapeshellarg($app->name) .
-            " version=" . escapeshellarg($app->version) .
-            $toolparams,
+            "start user=" . escapeshellarg(User::get('username'))
+            . " ip=" . escapeshellarg($app->ip)
+            . " app=" . escapeshellarg($app->name)
+            . " version=" . escapeshellarg($app->version)
+            . $toolparams,
             $output,
         );
         if (!$status) {
@@ -796,11 +796,11 @@ class Sessions extends SiteController
 
         // We've passed all checks so let's actually start the new session
         $status = Utils::middleware(
-            "start user=" . escapeshellarg(User::get('username')) .
-            " ip=" . escapeshellarg(Request::ip()) .
-            " app=" . escapeshellarg($session->app()) .
-            " version=" . escapeshellarg($session->app('version')) .
-            $toolparams,
+            "start user=" . escapeshellarg(User::get('username'))
+            . " ip=" . escapeshellarg(Request::ip())
+            . " app=" . escapeshellarg($session->app())
+            . " version=" . escapeshellarg($session->app('version'))
+            . $toolparams,
             $output,
         );
         if (!$status) {

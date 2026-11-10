@@ -59,8 +59,8 @@ class Wishlist extends Module
 
         foreach ($queries as $key => $state) {
             $database->setQuery(
-                "SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist=" .
-                $database->quote($wishlist) . " AND status=" . $state,
+                "SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist="
+                . $database->quote($wishlist) . " AND status=" . $state,
             );
             $this->$key = $database->loadResult();
         }

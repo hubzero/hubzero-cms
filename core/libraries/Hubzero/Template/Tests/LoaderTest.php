@@ -107,9 +107,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 0);
         $this->assertEquals($template->home, 0);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
     }
 
     /**
@@ -192,9 +192,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 3);
         $this->assertEquals($template->home, 1);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         $template = $this->loader->getTemplate(1);
 
@@ -204,9 +204,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 1);
         $this->assertEquals($template->home, 1);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         $template = $this->loader->getTemplate(0, 4);
 
@@ -236,9 +236,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 0);
         $this->assertEquals($template->home, 0);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         $template = $this->loader->getTemplate(0, 8);
 
@@ -248,9 +248,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 0);
         $this->assertEquals($template->home, 0);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
     }
 
     /**
@@ -269,9 +269,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 3);
         $this->assertEquals($template->home, 1);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         // Load site tmeplate by client ID
         $template = $this->loader->load(0);
@@ -282,9 +282,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 3);
         $this->assertEquals($template->home, 1);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         // Load admin template by client name
         $template = $this->loader->load('administrator');
@@ -295,9 +295,9 @@ class LoaderTest extends TestCase
         $this->assertEquals($template->id, 1);
         $this->assertEquals($template->home, 1);
         $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
-        $this->assertEquals($template->path, $this->loader->getPath('core') .
-            DIRECTORY_SEPARATOR .
-            $template->template);
+        $this->assertEquals($template->path, $this->loader->getPath('core')
+            . DIRECTORY_SEPARATOR
+            . $template->template);
 
         $this->expectException(\InvalidArgumentException::class);
 

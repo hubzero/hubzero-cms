@@ -472,11 +472,11 @@ class Migration
 
                 if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
                     if ($scope == 'core/migrations') {
-                        $query .= " AND (`scope`='' OR `scope` IN (" .
-                            $this->db->quote($scope) .
-                            "," .
-                            $this->db->quote('migrations') .
-                            "))";
+                        $query .= " AND (`scope`='' OR `scope` IN ("
+                            . $this->db->quote($scope)
+                            . ","
+                            . $this->db->quote('migrations')
+                            . "))";
                     } else {
                         $query .= " AND `scope` = " . $this->db->quote($scope);
                     }
@@ -693,9 +693,9 @@ class Migration
                         } elseif ($useTransaction) {
                             $runDb->transactionRollback();
                         }
-                        $this->
-                            log("Error: running {$direction}() resulted in\n\n{$e->
-                            getMessage()}\n\nin {$scope}/{$file}", 'error');
+                        $this
+                            ->log("Error: running {$direction}() resulted in\n\n{$e
+                            ->getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     } catch (\PDOException $e) {
                         // Rollback transaction on failure
@@ -705,9 +705,9 @@ class Migration
                         } elseif ($useTransaction) {
                             $runDb->transactionRollback();
                         }
-                        $this->
-                            log("Error: running {$direction}() resulted in\n\n{$e->
-                            getMessage()}\n\nin {$scope}/{$file}", 'error');
+                        $this
+                            ->log("Error: running {$direction}() resulted in\n\n{$e
+                            ->getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     }
                 }
@@ -847,8 +847,8 @@ class Migration
 
                     if (is_array($result) && !$result['success']) {
                         // Just a warning...display message and carry on (my wayward son)
-                        $message = (isset($result['message']) &&
-                            !empty($result['message'])) ? $result['message'] : '[no message provided]';
+                        $message = (isset($result['message'])
+                            && !empty($result['message'])) ? $result['message'] : '[no message provided]';
                         $this->log(
                             "Warning: {$timing} hook '{$hook['name']}' resulted in an error: {$message}",
                             'warning',
@@ -1177,8 +1177,8 @@ class Migration
             } elseif ($executed[$key]->direction === 'down') {
                 $pending[] = $file;
             } elseif (
-                isset($executed[$key]->status) &&
-                      in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])
+                isset($executed[$key]->status)
+                      && in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])
             ) {
                 $pending[] = $file;
             }
@@ -1191,8 +1191,8 @@ class Migration
         $lastExecuted = null;
         foreach ($history as $entry) {
             if (
-                $entry->direction === 'up' &&
-                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
+                $entry->direction === 'up'
+                && (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
             ) {
                 $lastExecuted = $entry;
                 break;
@@ -1206,8 +1206,8 @@ class Migration
         $executedCount = 0;
         foreach ($executed as $entry) {
             if (
-                $entry->direction === 'up' &&
-                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
+                $entry->direction === 'up'
+                && (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
             ) {
                 $executedCount++;
             }

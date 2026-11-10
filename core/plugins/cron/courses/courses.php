@@ -133,8 +133,8 @@ class Courses extends Plugin
         $database = App::get('db');
         $cconfig  = Component::params('com_courses');
 
-        Lang::load('com_courses') ||
-        Lang::load('com_courses', Component::path('com_courses') . '/site');
+        Lang::load('com_courses')
+        || Lang::load('com_courses', Component::path('com_courses') . '/site');
 
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),

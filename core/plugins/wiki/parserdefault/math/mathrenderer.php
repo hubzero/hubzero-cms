@@ -193,11 +193,11 @@ class MathRenderer
             if (function_exists('is_executable') && !is_executable($texvc)) {
                 return $this->error('math_notexvc');
             }
-            $cmd = $texvc . ' ' .
-                    escapeshellarg($tmpDirectory) . ' ' .
-                    escapeshellarg($tmpDirectory) . ' ' .
-                    escapeshellarg($this->tex) . ' ' .
-                    escapeshellarg($inputEncoding);
+            $cmd = $texvc . ' '
+                    . escapeshellarg($tmpDirectory) . ' '
+                    . escapeshellarg($tmpDirectory) . ' '
+                    . escapeshellarg($this->tex) . ' '
+                    . escapeshellarg($inputEncoding);
 
             //echo("TeX: $cmd\n");
             $contents = `$cmd`;

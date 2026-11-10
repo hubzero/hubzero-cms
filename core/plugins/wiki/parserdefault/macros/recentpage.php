@@ -30,10 +30,10 @@ class RecentPage extends WikiMacro
     {
         $txt = [];
 
-        $txt['wiki'] = Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . "\n\n" .
-                        Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . "\n\n" .
-                        ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . "\n" .
-                        ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . "\n";
+        $txt['wiki'] = Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . "\n\n"
+                        . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . "\n\n"
+                        . ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . "\n"
+                        . ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . "\n";
 
         $txt['html'] = '
 			<p>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . '</p>

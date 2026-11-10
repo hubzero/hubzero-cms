@@ -13,8 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-Lang::load('tpl_' . $this->template) ||
-Lang::load('tpl_' . $this->template, __DIR__);
+Lang::load('tpl_' . $this->template)
+|| Lang::load('tpl_' . $this->template, __DIR__);
 
 $code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
 

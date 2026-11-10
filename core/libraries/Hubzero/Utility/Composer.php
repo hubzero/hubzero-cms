@@ -112,8 +112,8 @@ class Composer
         }
 
         if (!self::$composer) {
-            self::$composer = self::$factory->createComposer(self::$io, PATH_APP .
-                '/composer.json', false, PATH_APP, true);
+            self::$composer = self::$factory->createComposer(self::$io, PATH_APP
+                . '/composer.json', false, PATH_APP, true);
         }
         return true;
     }

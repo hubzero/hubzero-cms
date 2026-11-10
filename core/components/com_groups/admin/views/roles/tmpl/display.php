@@ -122,15 +122,15 @@ Html::behavior('tooltip');
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
                         <?php $val = Route::url(
-                            'index.php?option=' .
-                                $this->option .
-                                '&controller=' .
-                                $this->controller .
-                                '&task=edit&id=' .
-                                $row->get('id') .
-                                '&gid=' .
-                                $this->filters['gid'] .
-                                ($tmpl ? '&tmpl=' . $tmpl : ''),
+                            'index.php?option='
+                                . $this->option
+                                . '&controller='
+                                . $this->controller
+                                . '&task=edit&id='
+                                . $row->get('id')
+                                . '&gid='
+                                . $this->filters['gid']
+                                . ($tmpl ? '&tmpl=' . $tmpl : ''),
                         ); ?>
                         <a href="<?php echo $val; ?>">
                             <?php echo $this->escape(stripslashes($row->get('name'))); ?>

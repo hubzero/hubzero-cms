@@ -21,8 +21,8 @@ class Migration20180516000000ComNewsletter extends Base
     public function up()
     {
         if (
-            $this->db->tableExists('#__newsletter_mailinglists') &&
-            !$this->db->tableHasField('#__newsletter_mailinglists', 'guest')
+            $this->db->tableExists('#__newsletter_mailinglists')
+            && !$this->db->tableHasField('#__newsletter_mailinglists', 'guest')
         ) {
             $query = "ALTER TABLE `#__newsletter_mailinglists` ADD COLUMN
 			  `guest` int(11) DEFAULT '0';";
@@ -43,8 +43,8 @@ class Migration20180516000000ComNewsletter extends Base
     public function down()
     {
         if (
-            $this->db->tableExists('#__newsletter_mailinglists') &&
-            $this->db->tableHasField('#__newsletter_mailinglists', 'guest')
+            $this->db->tableExists('#__newsletter_mailinglists')
+            && $this->db->tableHasField('#__newsletter_mailinglists', 'guest')
         ) {
             $query = "DELETE FROM `#__newsletter_mailinglists` WHERE `guest`='1';";
             $this->db->setQuery($query);

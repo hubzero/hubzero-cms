@@ -495,12 +495,12 @@ class Processor extends Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geo_pretty_fracs2dec($fracs)
     {
-        return $this->geo_frac2dec($fracs[0]) .
-            '&deg; ' .
-            $this->geo_frac2dec($fracs[1]) .
-            '&prime; ' .
-            $this->geo_frac2dec($fracs[2]) .
-            '&Prime; ';
+        return $this->geo_frac2dec($fracs[0])
+            . '&deg; '
+            . $this->geo_frac2dec($fracs[1])
+            . '&prime; '
+            . $this->geo_frac2dec($fracs[2])
+            . '&Prime; ';
     }
 
     /**
@@ -512,10 +512,10 @@ class Processor extends Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geo_single_fracs2dec($fracs)
     {
-        return $this->
-            geo_frac2dec($fracs[0]) + $this->
-            geo_frac2dec($fracs[1]) / 60 + $this->
-            geo_frac2dec($fracs[2]) / 3600;
+        return $this
+            ->geo_frac2dec($fracs[0]) + $this
+            ->geo_frac2dec($fracs[1]) / 60 + $this
+            ->geo_frac2dec($fracs[2]) / 3600;
     }
 
     /**

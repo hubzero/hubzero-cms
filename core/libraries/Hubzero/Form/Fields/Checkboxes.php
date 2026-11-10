@@ -123,8 +123,8 @@ class Checkboxes extends Field
             $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
             $html[] = '<li>';
-            $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"' .
-                ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . $dataAttributes . '/>';
+            $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"'
+                . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . $dataAttributes . '/>';
 
             $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . App::get('language')->txt($option->text) . '</label>';
             $html[] = '</li>';

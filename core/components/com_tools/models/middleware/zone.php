@@ -129,8 +129,8 @@ class Zone extends Base
             $path .= '/' . $file;
             if (file_exists($path)) {
                 $path = Route::url(
-                    'index.php?option=com_tools&app=zones&task=assets&version=' .
-                    $this->get('id') . '&file=' . $file,
+                    'index.php?option=com_tools&app=zones&task=assets&version='
+                    . $this->get('id') . '&file=' . $file,
                 );
             }
             return $path;

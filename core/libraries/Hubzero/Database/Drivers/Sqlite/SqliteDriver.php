@@ -245,8 +245,8 @@ class SqliteDriver extends BaseSqlDriver
             $table = $this->replacePrefix($table);
 
             $this->setQuery(
-                "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = " .
-                $this->quote($table),
+                "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = "
+                . $this->quote($table),
             );
 
             $row = $this->loadResult();
@@ -897,8 +897,8 @@ class SqliteDriver extends BaseSqlDriver
         $newTable = $this->replacePrefix($newTable);
 
         $this->setQuery(
-            'ALTER TABLE ' . $this->quoteName($oldTable) .
-            ' RENAME TO ' . $this->quoteName($newTable),
+            'ALTER TABLE ' . $this->quoteName($oldTable)
+            . ' RENAME TO ' . $this->quoteName($newTable),
         )->execute();
 
         return $this;
@@ -2757,10 +2757,10 @@ class SqliteDriver extends BaseSqlDriver
         $orderClause = $orderBy ? "`$orderBy`" : 'rowid';
 
         // Use SQLite's rowid and ROW_NUMBER() window function (requires SQLite 3.25+)
-        $query = "UPDATE `$table` SET `$column` = (" .
-                 "SELECT rn FROM (" .
-                 "SELECT rowid, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn FROM `$table`" .
-                 ") sub WHERE sub.rowid = `$table`.rowid)";
+        $query = "UPDATE `$table` SET `$column` = ("
+                 . "SELECT rn FROM ("
+                 . "SELECT rowid, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn FROM `$table`"
+                 . ") sub WHERE sub.rowid = `$table`.rowid)";
 
         $this->setQuery($query);
         return (bool) $this->execute();

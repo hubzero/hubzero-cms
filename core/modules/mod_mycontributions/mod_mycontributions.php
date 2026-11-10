@@ -115,8 +115,8 @@ class Mycontributions extends Module
 
                     if ($show_wishes) {
                         // Get open wishes
-                        $wishlistControllerPath = Component::path('com_wishlist') . DS . 'site' .
-                            DS . 'controllers' . DS . 'wishlists.php';
+                        $wishlistControllerPath = Component::path('com_wishlist') . DS . 'site'
+                            . DS . 'controllers' . DS . 'wishlists.php';
                         require_once $wishlistControllerPath;
 
                         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource');

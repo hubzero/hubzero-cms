@@ -614,8 +614,8 @@ class Assetgroups extends AdminController
             return;
         }
 
-        $message = "Duplicated Asset from Asset Group " . $assetGroupIdStart .
-            " to Asset Group Parent" . $assetGroupParent;
+        $message = "Duplicated Asset from Asset Group " . $assetGroupIdStart
+            . " to Asset Group Parent" . $assetGroupParent;
 
         // Redirect to the asset groups
         App::redirect(

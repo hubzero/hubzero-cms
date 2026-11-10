@@ -108,8 +108,8 @@ class MysqlDriver extends BaseSqlDriver
                     $options['dsn'] .= ";port={$options['port']}";
                 }
             }
-            $options['dsn'] .= (isset($options['database']) &&
-                $options['database']) ? ";dbname={$options['database']}" : '';
+            $options['dsn'] .= (isset($options['database'])
+                && $options['database']) ? ";dbname={$options['database']}" : '';
         }
 
         if (substr($options['dsn'], 0, 6) != 'mysql:') {
@@ -625,15 +625,15 @@ class MysqlDriver extends BaseSqlDriver
 
         try {
             $this->setQuery(
-                "SELECT DIGEST_TEXT as query, " .
-                "COUNT_STAR as exec_count, " .
-                "SUM_TIMER_WAIT/1000000000000 as total_time_sec, " .
-                "AVG_TIMER_WAIT/1000000000000 as avg_time_sec, " .
-                "SUM_ROWS_EXAMINED as rows_examined, " .
-                "SUM_ROWS_SENT as rows_sent " .
-                "FROM performance_schema.events_statements_summary_by_digest " .
-                "ORDER BY SUM_TIMER_WAIT DESC " .
-                "LIMIT " . (int) $limit,
+                "SELECT DIGEST_TEXT as query, "
+                . "COUNT_STAR as exec_count, "
+                . "SUM_TIMER_WAIT/1000000000000 as total_time_sec, "
+                . "AVG_TIMER_WAIT/1000000000000 as avg_time_sec, "
+                . "SUM_ROWS_EXAMINED as rows_examined, "
+                . "SUM_ROWS_SENT as rows_sent "
+                . "FROM performance_schema.events_statements_summary_by_digest "
+                . "ORDER BY SUM_TIMER_WAIT DESC "
+                . "LIMIT " . (int) $limit,
             );
             return $this->loadObjectList() ?: [];
         } catch (\Exception $e) {
@@ -654,12 +654,12 @@ class MysqlDriver extends BaseSqlDriver
         }
 
         try {
-            $sql = "SELECT OBJECT_SCHEMA as db, OBJECT_NAME as table_name, " .
-                   "COUNT_READ as reads, COUNT_WRITE as writes, " .
-                   "SUM_TIMER_READ/1000000000000 as read_time_sec, " .
-                   "SUM_TIMER_WRITE/1000000000000 as write_time_sec " .
-                   "FROM performance_schema.table_io_waits_summary_by_table " .
-                   "WHERE OBJECT_SCHEMA NOT IN ('mysql', 'performance_schema', 'information_schema', 'sys')";
+            $sql = "SELECT OBJECT_SCHEMA as db, OBJECT_NAME as table_name, "
+                   . "COUNT_READ as reads, COUNT_WRITE as writes, "
+                   . "SUM_TIMER_READ/1000000000000 as read_time_sec, "
+                   . "SUM_TIMER_WRITE/1000000000000 as write_time_sec "
+                   . "FROM performance_schema.table_io_waits_summary_by_table "
+                   . "WHERE OBJECT_SCHEMA NOT IN ('mysql', 'performance_schema', 'information_schema', 'sys')";
 
             if ($table) {
                 $table = $this->replacePrefix($table);
@@ -716,8 +716,8 @@ class MysqlDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
 
         $this->setQuery(
-            "ALTER TABLE `$table` ADD COLUMN `$column` $type " .
-            "GENERATED ALWAYS AS ($expression) VIRTUAL",
+            "ALTER TABLE `$table` ADD COLUMN `$column` $type "
+            . "GENERATED ALWAYS AS ($expression) VIRTUAL",
         );
         $this->execute();
 
@@ -752,8 +752,8 @@ class MysqlDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
 
         $this->setQuery(
-            "ALTER TABLE `$table` ADD COLUMN `$column` $type " .
-            "GENERATED ALWAYS AS ($expression) STORED",
+            "ALTER TABLE `$table` ADD COLUMN `$column` $type "
+            . "GENERATED ALWAYS AS ($expression) STORED",
         );
         $this->execute();
 
@@ -850,10 +850,10 @@ class MysqlDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
 
         $this->setQuery(
-            "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression " .
-            "FROM information_schema.CHECK_CONSTRAINTS " .
-            "WHERE CONSTRAINT_SCHEMA = DATABASE() " .
-            "AND TABLE_NAME = " . $this->quote($table),
+            "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression "
+            . "FROM information_schema.CHECK_CONSTRAINTS "
+            . "WHERE CONSTRAINT_SCHEMA = DATABASE() "
+            . "AND TABLE_NAME = " . $this->quote($table),
         );
 
         return $this->loadObjectList() ?: [];
@@ -1460,8 +1460,8 @@ class MysqlDriver extends BaseSqlDriver
     public function getPrimaryKeyColumns($table): array
     {
         $this->setQuery(
-            'SHOW KEYS FROM ' . $this->quoteName($table) .
-            " WHERE Key_name = 'PRIMARY'",
+            'SHOW KEYS FROM ' . $this->quoteName($table)
+            . " WHERE Key_name = 'PRIMARY'",
         );
         return $this->extractPrimaryKeyColumnsFromTableKeyRows($this->loadObjectList());
     }

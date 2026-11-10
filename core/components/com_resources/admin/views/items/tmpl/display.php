@@ -77,12 +77,9 @@ $this->css();
                     <option value="all"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            'all')
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 'all')
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_FILTER_STATUS_ALL');
@@ -90,12 +87,9 @@ $this->css();
                     <option value="2"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            2)
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 2)
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -103,12 +97,9 @@ $this->css();
                     <option value="5"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            5)
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 5)
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_DRAFT_INTERNAL');
@@ -116,12 +107,9 @@ $this->css();
                     <option value="3"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            3)
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 3)
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_PENDING');
@@ -129,16 +117,11 @@ $this->css();
                     <option value="0"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            0
-                            &&
-                            $this->filters['status']
-                            !=
-                            'all')
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 0
+                            && $this->filters['status']
+                            != 'all')
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('JUNPUBLISHED');
@@ -146,12 +129,9 @@ $this->css();
                     <option value="1"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            1)
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 1)
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('JPUBLISHED');
@@ -159,12 +139,9 @@ $this->css();
                     <option value="4"<?php
                             echo
                             ($this->filters['status']
-                            ==
-                            4)
-                            ?
-                            ' selected="selected"'
-                            :
-                            '';
+                            == 4)
+                            ? ' selected="selected"'
+                            : '';
                             ?>><?php
                             echo
                             Lang::txt('JTRASHED');
@@ -176,12 +153,9 @@ $this->css();
                     <option value="all"<?php
                             echo
                             ($this->filters['license']
-                            ==
-                            'all')
-                            ?
-                            'selected="selected"'
-                            :
-                            '';?>><?php
+                            == 'all')
+                            ? 'selected="selected"'
+                            : '';?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL');
 ?></option>
@@ -189,12 +163,9 @@ $this->css();
                         <option value="<?php echo $license->get('name'); ?>"<?php
                                 echo
                                 ($this->filters['license']
-                                ==
-                                $license->get('name'))
-                                       ?
-                                       'selected="selected"'
-                                       :
-                                       '';
+                                == $license->get('name'))
+                                       ? 'selected="selected"'
+                                       : '';
                                         ?>><?php
                                 echo
                                 $license->get('title');
@@ -209,12 +180,9 @@ $this->css();
                         <option value="<?php echo $type->id; ?>"<?php
                                 echo
                                 ($this->filters['type']
-                                ==
-                                $type->id)
-                                       ?
-                                       ' selected="selected"'
-                                       :
-                                       '';
+                                == $type->id)
+                                       ? ' selected="selected"'
+                                       : '';
                                         ?>><?php
                                 echo
                                 $this->escape($type->type);
@@ -457,8 +425,8 @@ $this->css();
                 $checked .= '<span class="checkedout"></span>' . '</span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' .
-                         Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
+                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': '
+                         . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
                          : '';
 
                 if ($editor) {

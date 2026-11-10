@@ -133,12 +133,12 @@ $this->css('import');
                             <?php if ($canDo->get('core.admin')) { ?>
                                 <?php
                                 $url = Route::url(
-                                    'index.php?option=' .
-                                    $this->option .
-                                    '&controller=' .
-                                    $this->controller .
-                                    '&task=edit&id=' .
-                                    $import->get('id'),
+                                    'index.php?option='
+                                    . $this->option
+                                    . '&controller='
+                                    . $this->controller
+                                    . '&task=edit&id='
+                                    . $import->get('id'),
                                 );
                                 ?>
                                 <a href="<?php echo $url; ?>">

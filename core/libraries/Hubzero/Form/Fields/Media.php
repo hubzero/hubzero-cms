@@ -42,12 +42,12 @@ class Media extends Field
     {
         $assetField  = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
         $authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
-        $asset = $this->
-            form->
-            getValue($assetField) ? $this->
-            form->
-            getValue($assetField) : (string) $this->
-            element['asset_id'];
+        $asset = $this
+            ->form
+            ->getValue($assetField) ? $this
+            ->form
+            ->getValue($assetField) : (string) $this
+            ->element['asset_id'];
         if ($asset == '') {
             $asset = App::get('request')->getCmd('option');
         }
@@ -120,17 +120,17 @@ class Media extends Field
         // The text field.
         $html[] = '<div class="input-modal">';
         $html[] = '	<span class="input-cell">';
-        $html[] = '	<input type="text" name="' .
-            $this->name .
-            '" id="' .
-            $this->id .
-            '"' .
-            ' value="' .
-            htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-            '"' .
-            ' readonly="readonly"' .
-            $attr .
-            ' />';
+        $html[] = '	<input type="text" name="'
+            . $this->name
+            . '" id="'
+            . $this->id
+            . '"'
+            . ' value="'
+            . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')
+            . '"'
+            . ' readonly="readonly"'
+            . $attr
+            . ' />';
         $html[] = '	</span>';
 
         $directory = (string) $this->element['directory'];
@@ -140,11 +140,11 @@ class Media extends Field
             array_pop($folder);
             $folder = implode('/', $folder);
         } elseif (
-            file_exists(PATH_APP .
-            '/' .
-            App::get('component')->params('com_media')->get('image_path', 'images') .
-            '/' .
-            $directory)
+            file_exists(PATH_APP
+            . '/'
+            . App::get('component')->params('com_media')->get('image_path', 'images')
+            . '/'
+            . $directory)
         ) {
             $folder = $directory;
         } else {
@@ -207,20 +207,20 @@ class Media extends Field
                 'style' => 'max-width:160px; max-height:100px;',
             ];
             $img = Asset::image($src, $lang->txt('JLIB_FORM_MEDIA_PREVIEW_ALT'), $attr);
-            $previewImg = '<div id="' .
-                $this->id .
-                '_preview_img"' .
-                ($src ? '' : ' style="display:none"') .
-                '>' .
-                $img .
-                '</div>';
-            $previewImgEmpty = '<div id="' .
-                $this->id .
-                '_preview_empty"' .
-                ($src ? ' style="display:none"' : '') .
-                '>' .
-                $lang->txt('JLIB_FORM_MEDIA_PREVIEW_EMPTY') .
-                '</div>';
+            $previewImg = '<div id="'
+                . $this->id
+                . '_preview_img"'
+                . ($src ? '' : ' style="display:none"')
+                . '>'
+                . $img
+                . '</div>';
+            $previewImgEmpty = '<div id="'
+                . $this->id
+                . '_preview_empty"'
+                . ($src ? ' style="display:none"' : '')
+                . '>'
+                . $lang->txt('JLIB_FORM_MEDIA_PREVIEW_EMPTY')
+                . '</div>';
 
             //$html[] = '<div class="media-preview fltlft">';
             if ($showAsTooltip) {
@@ -234,15 +234,15 @@ class Media extends Field
                     'text'  => htmlspecialchars($lang->txt('JLIB_FORM_MEDIA_PREVIEW_TIP_TITLE'), ENT_COMPAT, 'UTF-8'),
                     'class' => 'hasTipPreview',
                 ];
-                $html[] = '<span class="' .
-                    $options['class'] .
-                    '" title="' .
-                    $options['title'] .
-                    '::' .
-                    htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') .
-                    '">' .
-                    $options['text'] .
-                    '</span>';
+                $html[] = '<span class="'
+                    . $options['class']
+                    . '" title="'
+                    . $options['title']
+                    . '::'
+                    . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8')
+                    . '">'
+                    . $options['text']
+                    . '</span>';
 
                 Behavior::tooltip('.hasTipPreview', $options);
             } else {

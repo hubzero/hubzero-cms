@@ -65,30 +65,30 @@ switch ($bground) {
     case 'plaid':
         $opacity = $opacity ?: '0.9';
         // Define the plaid gradient stops for reuse
-        $plaidGrad45 = 'rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, ' .
-            'rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, ' .
-            'rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, ' .
-            'rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, ' .
-            'rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, ' .
-            'rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, ' .
-            'rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, ' .
-            'rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px';
-        $plaidGrad135 = 'rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, ' .
-            'rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, ' .
-            'rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, ' .
-            'rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, ' .
-            'rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, ' .
-            'rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, ' .
-            'rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, ' .
-            'rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px';
+        $plaidGrad45 = 'rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, '
+            . 'rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, '
+            . 'rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, '
+            . 'rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, '
+            . 'rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, '
+            . 'rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, '
+            . 'rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, '
+            . 'rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px';
+        $plaidGrad135 = 'rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, '
+            . 'rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, '
+            . 'rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, '
+            . 'rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, '
+            . 'rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, '
+            . 'rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, '
+            . 'rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, '
+            . 'rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px';
         $styles .= '
 		#outer-wrap {
-			background: -webkit-repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), ' .
-                '-webkit-repeating-linear-gradient(-45deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
-			background: -moz-repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), ' .
-                '-moz-repeating-linear-gradient(135deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
-			background: repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), ' .
-                'repeating-linear-gradient(135deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
+			background: -webkit-repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), '
+                . '-webkit-repeating-linear-gradient(-45deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
+			background: -moz-repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), '
+                . '-moz-repeating-linear-gradient(135deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
+			background: repeating-linear-gradient(45deg, ' . $plaidGrad45 . '), '
+                . 'repeating-linear-gradient(135deg, ' . $plaidGrad135 . '), rgb(234, 213, 185);
 			-webkit-background-origin: padding-box;
 			   -moz-background-origin: padding-box;
 			        background-origin: padding-box;
@@ -107,16 +107,16 @@ switch ($bground) {
 
     case 'picnic':
         $opacity = $opacity ?: '0.75';
-        $picnicGrad = 'rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, ' .
-            'rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%';
+        $picnicGrad = 'rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, '
+            . 'rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%';
         $styles .= '
 		#outer-wrap {
-			background: -webkit-linear-gradient(135deg, ' . $picnicGrad . '), ' .
-                '-webkit-linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
-			background: -moz-linear-gradient(-45deg, ' . $picnicGrad . '), ' .
-                '-moz-linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
-			background: linear-gradient(-45deg, ' . $picnicGrad . '), ' .
-                'linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
+			background: -webkit-linear-gradient(135deg, ' . $picnicGrad . '), '
+                . '-webkit-linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
+			background: -moz-linear-gradient(-45deg, ' . $picnicGrad . '), '
+                . '-moz-linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
+			background: linear-gradient(-45deg, ' . $picnicGrad . '), '
+                . 'linear-gradient(45deg, ' . $picnicGrad . '), rgb(153, 153, 153);
 			background-position: auto auto;
 			-webkit-background-origin: padding-box;
 			   -moz-background-origin: padding-box;
@@ -139,18 +139,18 @@ switch ($bground) {
         $bpGradThin0 = 'rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px';
         $styles .= '
 		#outer-wrap {
-			background: -webkit-linear-gradient(90deg, ' . $bpGrad90 . '), ' .
-                '-webkit-linear-gradient(0deg, ' . $bpGrad0 . '), ' .
-                '-webkit-linear-gradient(90deg, ' . $bpGradThin90 . '), ' .
-                '-webkit-linear-gradient(0deg, ' . $bpGradThin0 . '), rgb(153, 153, 153);
-			background: -moz-linear-gradient(0deg, ' . $bpGrad0 . '), ' .
-                '-moz-linear-gradient(90deg, ' . $bpGrad90 . '), ' .
-                '-moz-linear-gradient(0deg, ' . $bpGradThin0 . '), ' .
-                '-moz-linear-gradient(90deg, ' . $bpGradThin90 . '), rgb(153, 153, 153);
-			background: linear-gradient(0deg, ' . $bpGrad0 . '), ' .
-                'linear-gradient(90deg, ' . $bpGrad90 . '), ' .
-                'linear-gradient(0deg, ' . $bpGradThin0 . '), ' .
-                'linear-gradient(90deg, ' . $bpGradThin90 . '), rgb(153, 153, 153);
+			background: -webkit-linear-gradient(90deg, ' . $bpGrad90 . '), '
+                . '-webkit-linear-gradient(0deg, ' . $bpGrad0 . '), '
+                . '-webkit-linear-gradient(90deg, ' . $bpGradThin90 . '), '
+                . '-webkit-linear-gradient(0deg, ' . $bpGradThin0 . '), rgb(153, 153, 153);
+			background: -moz-linear-gradient(0deg, ' . $bpGrad0 . '), '
+                . '-moz-linear-gradient(90deg, ' . $bpGrad90 . '), '
+                . '-moz-linear-gradient(0deg, ' . $bpGradThin0 . '), '
+                . '-moz-linear-gradient(90deg, ' . $bpGradThin90 . '), rgb(153, 153, 153);
+			background: linear-gradient(0deg, ' . $bpGrad0 . '), '
+                . 'linear-gradient(90deg, ' . $bpGrad90 . '), '
+                . 'linear-gradient(0deg, ' . $bpGradThin0 . '), '
+                . 'linear-gradient(90deg, ' . $bpGradThin90 . '), rgb(153, 153, 153);
 			background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 			-webkit-background-origin: padding-box;
 			   -moz-background-origin: padding-box;
@@ -173,18 +173,18 @@ switch ($bground) {
         $chk45b = 'rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%';
         $styles .= '
 		#outer-wrap {
-			background: -webkit-linear-gradient(135deg, ' . $chk135 . '), ' .
-                '-webkit-linear-gradient(45deg, ' . $chk45a . '), ' .
-                '-webkit-linear-gradient(135deg, ' . $chk135b . '), ' .
-                '-webkit-linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
-			background: -moz-linear-gradient(-45deg, ' . $chk135 . '), ' .
-                '-moz-linear-gradient(45deg, ' . $chk45a . '), ' .
-                '-moz-linear-gradient(-45deg, ' . $chk135b . '), ' .
-                '-moz-linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
-			background: linear-gradient(-45deg, ' . $chk135 . '), ' .
-                'linear-gradient(45deg, ' . $chk45a . '), ' .
-                'linear-gradient(-45deg, ' . $chk135b . '), ' .
-                'linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
+			background: -webkit-linear-gradient(135deg, ' . $chk135 . '), '
+                . '-webkit-linear-gradient(45deg, ' . $chk45a . '), '
+                . '-webkit-linear-gradient(135deg, ' . $chk135b . '), '
+                . '-webkit-linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
+			background: -moz-linear-gradient(-45deg, ' . $chk135 . '), '
+                . '-moz-linear-gradient(45deg, ' . $chk45a . '), '
+                . '-moz-linear-gradient(-45deg, ' . $chk135b . '), '
+                . '-moz-linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
+			background: linear-gradient(-45deg, ' . $chk135 . '), '
+                . 'linear-gradient(45deg, ' . $chk45a . '), '
+                . 'linear-gradient(-45deg, ' . $chk135b . '), '
+                . 'linear-gradient(45deg, ' . $chk45b . '), rgb(255, 255, 255);
 			background-position: 50% 50%;
 			-webkit-background-origin: padding-box;
 			   -moz-background-origin: padding-box;
@@ -201,8 +201,8 @@ switch ($bground) {
 
     case 'stripes':
         $opacity = $opacity ?: '0.9';
-        $stripesGrad = 'rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, ' .
-            'rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0';
+        $stripesGrad = 'rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, '
+            . 'rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0';
         $styles .= '
 		#outer-wrap {
 			background: -webkit-linear-gradient(45deg, ' . $stripesGrad . '), rgba(153, 153, 153,1);
@@ -223,8 +223,8 @@ switch ($bground) {
         break;
 
     case 'hubbub2015':
-        $hubbubGrad = 'rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 40%, rgba(243, 174, 39, 1) 40%, ' .
-            'rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0)';
+        $hubbubGrad = 'rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 40%, rgba(243, 174, 39, 1) 40%, '
+            . 'rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0)';
         $styles .= '
 		#outer-wrap {
 			background-color: #f7b82b;
@@ -257,34 +257,34 @@ switch ($bground) {
         ];
         // Build webkit-gradient version (legacy)
         $wkGradLegacy = [
-            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40,' .
-                'from(rgba(150, 150, 150, 0.2)), color-stop(0.3, rgba(150, 150, 150, 0.3)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, ' .
-                'from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, ' .
-                'from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 38, 50% 50%, 46, ' .
-                'from(rgba(113, 113, 113, 0.3)), color-stop(0.3, rgba(113, 113, 113, 0.4)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 20, 50% 50%, 80, ' .
-                'from(rgba(113, 113, 113, 0)), color-stop(0.3, rgba(113, 113, 113, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 90, ' .
-                'from(rgba(113, 113, 113, 0)), color-stop(0.5, rgba(113, 113, 113, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, ' .
-                'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, ' .
-                'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, ' .
-                'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, ' .
-                'from(rgba(50, 50, 50, 0.3)), color-stop(0.2, rgba(50, 50, 50, 0.4)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, ' .
-                'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.1)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, ' .
-                'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, ' .
-                'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
-            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, ' .
-                'from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40,'
+                . 'from(rgba(150, 150, 150, 0.2)), color-stop(0.3, rgba(150, 150, 150, 0.3)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, '
+                . 'from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, '
+                . 'from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 38, 50% 50%, 46, '
+                . 'from(rgba(113, 113, 113, 0.3)), color-stop(0.3, rgba(113, 113, 113, 0.4)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 20, 50% 50%, 80, '
+                . 'from(rgba(113, 113, 113, 0)), color-stop(0.3, rgba(113, 113, 113, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 90, '
+                . 'from(rgba(113, 113, 113, 0)), color-stop(0.5, rgba(113, 113, 113, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, '
+                . 'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, '
+                . 'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, '
+                . 'from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, '
+                . 'from(rgba(50, 50, 50, 0.3)), color-stop(0.2, rgba(50, 50, 50, 0.4)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, '
+                . 'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.1)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, '
+                . 'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, '
+                . 'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
+            '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, '
+                . 'from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent))',
         ];
         $wkRadial = [];
         $mozRadial = [];
@@ -296,12 +296,12 @@ switch ($bground) {
             $oRadial[] = '-o-radial-gradient(circle contain, ' . $g . ')';
             $stdRadial[] = 'radial-gradient(circle contain, ' . $g . ')';
         }
-        $bgSizes = '593px 483px, 549px 847px, 581px 867px, 683px 559px, 679px 589px, ' .
-            '571px 489px, 647px 481px, 577px 571px, 633px 463px, 763px 549px, ' .
-            '491px 341px, 611px 350px, 439px 593px';
-        $bgPositions = '197px 251px, 313px 499px, 419px 359px, 263px 433px, 449px 197px, ' .
-            '389px 317px, 439px 281px, 541px 263px, 397px 449px, 191px 463px, ' .
-            '271px 271px, 491px 397px, 211px 349px';
+        $bgSizes = '593px 483px, 549px 847px, 581px 867px, 683px 559px, 679px 589px, '
+            . '571px 489px, 647px 481px, 577px 571px, 633px 463px, 763px 549px, '
+            . '491px 341px, 611px 350px, 439px 593px';
+        $bgPositions = '197px 251px, 313px 499px, 419px 359px, 263px 433px, 449px 197px, '
+            . '389px 317px, 439px 281px, 541px 263px, 397px 449px, 191px 463px, '
+            . '271px 271px, 491px 397px, 211px 349px';
         $styles .= '
 		#outer-wrap {
 			background-color: transparent;

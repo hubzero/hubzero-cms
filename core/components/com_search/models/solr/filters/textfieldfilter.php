@@ -29,8 +29,8 @@ class Textfieldfilter extends Filter
     {
         $textValue = empty($textValue) ? '' : htmlentities($textValue);
         $html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
-        $html .= '<input type="text" class="" name="filters[' .
-            $this->field . ']" value="' . $textValue . '"/>';
+        $html .= '<input type="text" class="" name="filters['
+            . $this->field . ']" value="' . $textValue . '"/>';
         $html .= '</li></ul></fieldset>';
         return $html;
     }
@@ -50,9 +50,9 @@ class Textfieldfilter extends Filter
             return false;
         }
         if (
-            (strpos($textValue, ' AND ') === false) &&
-            (strpos($textValue, ' OR ') === false) &&
-            (strpos($textValue, '"') === false)
+            (strpos($textValue, ' AND ') === false)
+            && (strpos($textValue, ' OR ') === false)
+            && (strpos($textValue, '"') === false)
         ) {
             $textValue = str_replace(' ', ' AND ', $textValue);
         }

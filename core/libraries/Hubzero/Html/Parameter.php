@@ -145,9 +145,9 @@ class Parameter extends Registry
         }
 
         if (count($params) < 1) {
-            $html[] = '<p class="noparams">' .
-                App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') .
-                '</p>';
+            $html[] = '<p class="noparams">'
+                . App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM')
+                . '</p>';
         }
 
         return implode(PHP_EOL, $html);
@@ -308,9 +308,9 @@ class Parameter extends Registry
 
         $signature = md5($type);
         if (
-            (isset($this->_elements[$signature]) &&
-            !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class)) &&
-            $new === false
+            (isset($this->_elements[$signature])
+            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class))
+            && $new === false
         ) {
             return $this->_elements[$signature];
         }
@@ -327,8 +327,8 @@ class Parameter extends Registry
                 '_',
                 DS,
                 $type,
-            ) .
-                '.php', $matches);
+            )
+                . '.php', $matches);
             $file = @ (string) $matches[0];
 
             if ($elementFile = App::get('filesystem')->find($dirs, $file)) {

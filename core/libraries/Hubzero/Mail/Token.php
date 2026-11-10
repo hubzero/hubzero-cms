@@ -89,18 +89,18 @@ class Token
         $encryption_info = $HubmailConfig1->$prop;
 
         if (empty($encryption_info)) {
-            throw new RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' .
-                $this->currentVersion);
+            throw new RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: '
+                . $this->currentVersion);
         }
 
         // Encryption info is comma delimited (key, iv) in this configuraiton value
         $keyArray = explode(',', $encryption_info);
 
         if (count($keyArray) <> 2) {
-            throw new RuntimeException(__CLASS__ .
-                '::__construct(); config.email_token_encryption_info_v' .
-                $tokenVersion .
-                ' cannot be split');
+            throw new RuntimeException(__CLASS__
+                . '::__construct(); config.email_token_encryption_info_v'
+                . $tokenVersion
+                . ' cannot be split');
         }
 
         $this->key = $keyArray[0];
@@ -165,9 +165,9 @@ class Token
         $encrypted = hex2bin($rawtoken);
 
         // Do the decryption
-        $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this->
-            key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this->
-            iv);
+        $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this
+            ->key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this
+            ->iv);
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
         $arr = unpack("N3", $decrypted);

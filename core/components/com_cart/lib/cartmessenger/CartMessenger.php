@@ -312,8 +312,8 @@ class CartMessenger
                 }
 
                 if (
-                    $sInfo['info']->sTrackInventory &&
-                    $sInfo['info']->sInventory <= $sInfo['meta']['inventoryNotificationThreshold']
+                    $sInfo['info']->sTrackInventory
+                    && $sInfo['info']->sInventory <= $sInfo['meta']['inventoryNotificationThreshold']
                 ) {
                     $lowInventoryNotifySummary .= "\n\t" . $sInfo['info']->pName;
                     if (!empty($sInfo['info']->oName)) {

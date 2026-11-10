@@ -470,8 +470,8 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
         $data = new Hubzero\Config\Registry();
         $data->set('params', $this->profile->params->toArray());
         $form = new Hubzero\Form\Form('fields', ['control' => 'fields']);
-        $form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS .
-        'user.xml', true));
+        $form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS
+        . 'user.xml', true));
         $form->bind($data);
 
         $fieldsets = $form->getFieldsets();

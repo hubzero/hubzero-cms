@@ -145,8 +145,8 @@ Html::behavior('multiselect');
                 </td>
                 <td>
                     <?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
-                            $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->get('title')); ?>
                         </a>
                     <?php else : ?>

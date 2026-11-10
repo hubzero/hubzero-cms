@@ -1338,8 +1338,8 @@ class Publications extends SiteController
         }
 
         // Load language file
-        Lang::load('com_projects') ||
-        Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
+        Lang::load('com_projects')
+        || Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
         // Instantiate a new view
         $this->view  = new \Hubzero\Component\View([
@@ -1526,8 +1526,8 @@ class Publications extends SiteController
         }
 
         // Load language file
-        Lang::load('com_projects') ||
-        Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
+        Lang::load('com_projects')
+        || Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
         // Set page title
         $this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');

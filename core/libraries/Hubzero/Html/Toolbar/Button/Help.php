@@ -60,18 +60,18 @@ class Help extends Button
             );
         }
 
-        $html  = '<a href="' .
-            $url .
-            '" data-title="' .
-            $text .
-            '" data-message="' .
-            $msg .
-            '" data-width="' .
-            $width .
-            '" data-height="' .
-            $height .
-            '" rel="help" class="toolbar toolbar-popup">' .
-            "\n";
+        $html  = '<a href="'
+            . $url
+            . '" data-title="'
+            . $text
+            . '" data-message="'
+            . $msg
+            . '" data-width="'
+            . $width
+            . '" data-height="'
+            . $height
+            . '" rel="help" class="toolbar toolbar-popup">'
+            . "\n";
         $html .= '<span class="' . $class . '">' . "\n";
         $html .= $text . "\n";
         $html .= '</span>' . "\n";

@@ -284,8 +284,8 @@ class View
 
                 //page menu item
                 if (
-                    ($pageAccess == 'registered' && User::isGuest()) ||
-                    ($pageAccess == 'members' && !in_array(User::get("id"), $group->get('members')))
+                    ($pageAccess == 'registered' && User::isGuest())
+                    || ($pageAccess == 'members' && !in_array(User::get("id"), $group->get('members')))
                 ) {
                     $out .= "<li class=\"protected\"><span class=\"page\">" . $page->get('title') . "</span></li>";
                 } else {
@@ -452,8 +452,8 @@ class View
         foreach ($files as $file) {
             // dont include the default template (default.php or index.php)
             if (
-                strpos($file, 'default.php') !== false ||
-                strpos($file, 'index.php') !== false
+                strpos($file, 'default.php') !== false
+                || strpos($file, 'index.php') !== false
             ) {
                 continue;
             }

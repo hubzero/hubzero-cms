@@ -68,9 +68,9 @@ class Content extends Plugin
 		WHERE
 			state = 1 AND
 			(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down)
-			AND $weight > 0" .
-            ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-        " ORDER BY $weight DESC";
+			AND $weight > 0"
+            . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+        . " ORDER BY $weight DESC";
 
         $sql = new \Components\Search\Models\Basic\Result\Sql($query);
         $results->add($sql);

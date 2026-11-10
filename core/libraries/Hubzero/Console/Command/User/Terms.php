@@ -64,8 +64,8 @@ class Terms extends Base implements CommandInterface
         } elseif ($this->output->isInteractive()) {
             // Confirm clearing
             $confirm = $this->output->getResponse(
-                'Are you sure you want to clear Terms of Use for all users? ' .
-                'This will also require users to agree to new terms with next login? (yes/no)',
+                'Are you sure you want to clear Terms of Use for all users? '
+                . 'This will also require users to agree to new terms with next login? (yes/no)',
             );
         }
 
@@ -81,9 +81,9 @@ class Terms extends Base implements CommandInterface
             $params->set('registrationTOU', $newTOU);
 
             // Update registration param in db
-            $query = "UPDATE `#__extensions` SET `params`=" .
-                $dbo->quote($params->toString()) .
-                " WHERE `name`='com_members'";
+            $query = "UPDATE `#__extensions` SET `params`="
+                . $dbo->quote($params->toString())
+                . " WHERE `name`='com_members'";
             $dbo->setQuery($query);
             if (!$dbo->query()) {
                 $this->output->error('Unable to set registration field TOU to required on next update.');

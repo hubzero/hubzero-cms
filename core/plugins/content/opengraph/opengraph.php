@@ -80,8 +80,8 @@ class Opengraph extends Plugin
             $suffix = 'c';
             if (isset($article->catid) && (int)$article->catid > 0) {
                 $db = App::get('db');
-                $query = 'SELECT c.metadesc, c.title FROM `#__categories` AS c ' .
-                    'WHERE c.id = ' . (int) $article->catid;
+                $query = 'SELECT c.metadesc, c.title FROM `#__categories` AS c '
+                    . 'WHERE c.id = ' . (int) $article->catid;
                 $db->setQuery($query);
                 $cItem = $db->loadObjectList();
 

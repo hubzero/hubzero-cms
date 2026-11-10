@@ -285,9 +285,9 @@ class Menus extends AdminController
 
         // Load a lookup table of all the component id's.
         $components = $db->setQuery(
-            'SELECT element, extension_id' .
-            ' FROM #__extensions' .
-            ' WHERE type = ' . $db->quote('component'),
+            'SELECT element, extension_id'
+            . ' FROM #__extensions'
+            . ' WHERE type = ' . $db->quote('component'),
         )->loadAssocList('element', 'extension_id');
 
         if ($error = $db->getErrorMsg()) {
@@ -296,9 +296,9 @@ class Menus extends AdminController
 
         // Load all the component menu links
         $items = $db->setQuery(
-            'SELECT id, link, component_id' .
-            ' FROM #__menu' .
-            ' WHERE type = ' . $db->quote('component'),
+            'SELECT id, link, component_id'
+            . ' FROM #__menu'
+            . ' WHERE type = ' . $db->quote('component'),
         )->loadObjectList();
 
         if ($error = $db->getErrorMsg()) {
@@ -328,9 +328,9 @@ class Menus extends AdminController
                     echo "<br/>$log";
 
                     $db->setQuery(
-                        'UPDATE `#__menu`' .
-                        ' SET component_id = ' . $componentId .
-                        ' WHERE id = ' . $item->id,
+                        'UPDATE `#__menu`'
+                        . ' SET component_id = ' . $componentId
+                        . ' WHERE id = ' . $item->id,
                     )->query();
 
                     if ($error = $db->getErrorMsg()) {

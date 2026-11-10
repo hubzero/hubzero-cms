@@ -210,9 +210,9 @@ class Local
                 $matches,
             )
         ) {
-            ($matches[1] == 'True' || $matches[1] == 'Yes') ?
-                $result->isSpam = true :
-                $result->isSpam = false;
+            ($matches[1] == 'True' || $matches[1] == 'Yes')
+                ? $result->isSpam = true
+                : $result->isSpam = false;
 
             $result->score = (float) $matches[2];
             $result->thresold = (float) $matches[3];
@@ -230,9 +230,9 @@ class Local
                     $matches,
                 )
             ) {
-                ($matches[1] == 'Yes') ?
-                    $result->isSpam = true :
-                    $result->isSpam = false;
+                ($matches[1] == 'Yes')
+                    ? $result->isSpam = true
+                    : $result->isSpam = false;
 
                 $result->score = (float) $matches[2];
                 $result->thresold = (float) $matches[3];

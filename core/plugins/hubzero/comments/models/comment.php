@@ -88,8 +88,8 @@ class Comment extends ItemComment
 
             case 'abuse':
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' .
-                    $this->get('id') . '&parent=' . $this->get('parent');
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('parent');
                 break;
 
             case 'permalink':

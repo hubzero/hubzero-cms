@@ -1849,8 +1849,8 @@ class OciDriver extends BaseSqlDriver
         $table = strtoupper($table);
         $column = strtoupper($column);
         $this->setQuery(
-            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-            ' IS ' . $this->quote($comment),
+            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column)
+            . ' IS ' . $this->quote($comment),
         );
         $this->execute();
     }
@@ -1921,8 +1921,8 @@ class OciDriver extends BaseSqlDriver
         // Rename first if needed
         if ($oldColumn !== $newColumn) {
             $this->setQuery(
-                'ALTER TABLE ' . $this->quoteName($table) .
-                ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn),
+                'ALTER TABLE ' . $this->quoteName($table)
+                . ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn),
             );
             $this->execute();
         }
@@ -2353,12 +2353,12 @@ class OciDriver extends BaseSqlDriver
         $orderClause = $orderBy ? $this->quoteName(strtoupper($orderBy)) : 'ROWID';
 
         // Use MERGE with ROW_NUMBER()
-        $query = "MERGE INTO {$quotedTable} t " .
-                 "USING (SELECT ROWID AS rid, " .
-                 "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn " .
-                 "FROM {$quotedTable}) s " .
-                 "ON (t.ROWID = s.rid) " .
-                 "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
+        $query = "MERGE INTO {$quotedTable} t "
+                 . "USING (SELECT ROWID AS rid, "
+                 . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
+                 . "FROM {$quotedTable}) s "
+                 . "ON (t.ROWID = s.rid) "
+                 . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

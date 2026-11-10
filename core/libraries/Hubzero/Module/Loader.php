@@ -254,8 +254,8 @@ class Loader
         // Load the module
         // $module->user is a check for 1.0 custom modules and is deprecated refactoring
         if (file_exists($path)) {
-            $this->app['language']->load($module->module, PATH_APP, null, false, true) ||
-            $this->app['language']->load($module->module, dirname($path), null, false, true);
+            $this->app['language']->load($module->module, PATH_APP, null, false, true)
+            || $this->app['language']->load($module->module, dirname($path), null, false, true);
 
             $module->path = $path;
 

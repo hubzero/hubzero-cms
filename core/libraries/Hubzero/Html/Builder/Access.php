@@ -167,9 +167,9 @@ class Access
 
             // If checkSuperAdmin is true, only add item if the user is superadmin or the group is not super admin
             if (
-                (!$checkSuperAdmin) ||
-                $isSuperAdmin ||
-                (!\Hubzero\Access\Access::checkGroup($item->id, 'core.admin'))
+                (!$checkSuperAdmin)
+                || $isSuperAdmin
+                || (!\Hubzero\Access\Access::checkGroup($item->id, 'core.admin'))
             ) {
                 // Setup  the variable attributes.
                 $eid = $count . 'group_' . $item->id;
@@ -182,16 +182,16 @@ class Access
 
                 // Build the HTML for the item.
                 $html[] = '	<li>';
-                $html[] = '		<input type="checkbox" name="' .
-                    $name .
-                    '[]" value="' .
-                    $item->id .
-                    '" id="' .
-                    $eid .
-                    '"' .
-                    $checked .
-                    $rel .
-                    ' />';
+                $html[] = '		<input type="checkbox" name="'
+                    . $name
+                    . '[]" value="'
+                    . $item->id
+                    . '" id="'
+                    . $eid
+                    . '"'
+                    . $checked
+                    . $rel
+                    . ' />';
                 $html[] = '		<label for="' . $eid . '">';
                 $html[] = '		' . str_repeat('<span class="gi">|&mdash;</span>', $item->level) . $item->title;
                 $html[] = '		</label>';
@@ -243,15 +243,15 @@ class Access
 
             // Build the HTML for the item.
             $html[] = '	<li>';
-            $html[] = '		<input type="checkbox" name="' .
-                $name .
-                '[]" value="' .
-                $item->id .
-                '" id="' .
-                $eid .
-                '"' .
-                $checked .
-                ' />';
+            $html[] = '		<input type="checkbox" name="'
+                . $name
+                . '[]" value="'
+                . $item->id
+                . '" id="'
+                . $eid
+                . '"'
+                . $checked
+                . ' />';
             $html[] = '		<label for="' . $eid . '">' . Lang::txt($item->title) . '</label>';
             $html[] = '	</li>';
         }

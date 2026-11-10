@@ -296,13 +296,13 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
         $name = $this->replacePrefix($name);
         $cycleStr = $cycle ? 'CYCLE' : 'NOCYCLE';
 
-        $sql = "CREATE SEQUENCE IF NOT EXISTS `$name` " .
-               "START WITH $start " .
-               "INCREMENT BY $increment " .
-               "MINVALUE $minValue " .
-               "MAXVALUE $maxValue " .
-               "$cycleStr " .
-               "CACHE $cache";
+        $sql = "CREATE SEQUENCE IF NOT EXISTS `$name` "
+               . "START WITH $start "
+               . "INCREMENT BY $increment "
+               . "MINVALUE $minValue "
+               . "MAXVALUE $maxValue "
+               . "$cycleStr "
+               . "CACHE $cache";
 
         $this->setQuery($sql);
         $this->execute();
@@ -415,10 +415,10 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
 
         // Sequences are stored in the INFORMATION_SCHEMA.TABLES as 'SEQUENCE' type
         $this->setQuery(
-            "SELECT COUNT(*) FROM information_schema.TABLES " .
-            "WHERE TABLE_SCHEMA = DATABASE() " .
-            "AND TABLE_NAME = " . $this->quote($name) . " " .
-            "AND TABLE_TYPE = 'SEQUENCE'",
+            "SELECT COUNT(*) FROM information_schema.TABLES "
+            . "WHERE TABLE_SCHEMA = DATABASE() "
+            . "AND TABLE_NAME = " . $this->quote($name) . " "
+            . "AND TABLE_TYPE = 'SEQUENCE'",
         );
 
         return (int) $this->loadResult() > 0;
@@ -560,10 +560,10 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
         $table = $this->replacePrefix($table);
 
         $this->setQuery(
-            "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression " .
-            "FROM information_schema.CHECK_CONSTRAINTS " .
-            "WHERE CONSTRAINT_SCHEMA = DATABASE() " .
-            "AND TABLE_NAME = " . $this->quote($table),
+            "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression "
+            . "FROM information_schema.CHECK_CONSTRAINTS "
+            . "WHERE CONSTRAINT_SCHEMA = DATABASE() "
+            . "AND TABLE_NAME = " . $this->quote($table),
         );
 
         return $this->loadObjectList() ?: [];

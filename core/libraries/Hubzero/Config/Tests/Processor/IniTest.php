@@ -154,11 +154,11 @@ sitename_pagetitles=0';
      **/
     public function testParse()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.ini');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.ini');
 
         // parse_ini_file with INI_SCANNER_RAW returns all values as strings
         $expected = [
@@ -201,11 +201,11 @@ sitename_pagetitles=0';
     {
         $this->expectException(\Hubzero\Config\Exception\ParseException::class);
 
-        $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'nonexistent.ini');
+        $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'nonexistent.ini');
     }
 
     /**

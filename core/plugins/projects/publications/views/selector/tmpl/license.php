@@ -21,8 +21,8 @@ $pubParams = $this->publication->params;
         // Select license if
         //   (1) license type matches item id, or
         //   (2) there is no license type yet and this item is the default license
-        $selected = ($this->publication->get('license_type') && $this->publication->get('license_type') == $item->id) ||
-        (!$this->publication->get('license_type') && $item->main) ? true : false;
+        $selected = ($this->publication->get('license_type') && $this->publication->get('license_type') == $item->id)
+        || (!$this->publication->get('license_type') && $item->main) ? true : false;
 
         $liId = 'choice-' . $item->id;
 

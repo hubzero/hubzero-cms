@@ -272,8 +272,8 @@ class CurrentCart extends Cart
      */
     public function hasMessages()
     {
-        return ((!empty($this->cart->hasMessages) && $this->cart->hasMessages) ||
-                $this->cartChanged()
+        return ((!empty($this->cart->hasMessages) && $this->cart->hasMessages)
+                || $this->cartChanged()
         );
     }
 
@@ -910,8 +910,8 @@ class CurrentCart extends Cart
         foreach ($coupon->objects as $couponObject) {
             foreach ($cartItems as $sId => $cartItem) {
                 if (
-                    ($coupon->info->cnObject == 'sku' && $sId == $couponObject->cnoObjectId) ||
-                    ($coupon->info->cnObject == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
+                    ($coupon->info->cnObject == 'sku' && $sId == $couponObject->cnoObjectId)
+                    || ($coupon->info->cnObject == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
                 ) {
                     // return true as soon as at least one match found
                     return true;
@@ -1121,8 +1121,8 @@ class CurrentCart extends Cart
                     foreach ($cartItems as $sId => $cartItem) {
                         // try to find a match
                         if (
-                            ($couponObjectType == 'sku' && $sId == $couponObject->cnoObjectId) ||
-                            ($couponObjectType == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
+                            ($couponObjectType == 'sku' && $sId == $couponObject->cnoObjectId)
+                            || ($couponObjectType == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
                         ) {
                             // Initialize the perk
                             unset($perk);

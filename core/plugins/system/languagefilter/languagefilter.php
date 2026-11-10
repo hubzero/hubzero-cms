@@ -153,8 +153,8 @@ class Languagefilter extends Plugin
 
                         $boot = DS . 'bootstrap' . DS . ucfirst(App::get('client')->name);
 
-                        Lang::load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
-                        Lang::load('lib_hubzero', PATH_CORE . $boot, null, false, true);
+                        Lang::load('lib_hubzero', PATH_APP . $boot, null, false, true)
+                        || Lang::load('lib_hubzero', PATH_CORE . $boot, null, false, true);
                     }
 
                     // Create a cookie
@@ -347,9 +347,9 @@ class Languagefilter extends Plugin
                         }
                     } elseif (
                         // redirect if sef is the default one
-                        isset(self::$sefs[$sef]) &&
-                        self::$default_lang == self::$sefs[$sef]->lang_code &&
-                        (!$this->params->get('detect_browser', 1) || Lang::detect() == self::$tag || self::$cookie)
+                        isset(self::$sefs[$sef])
+                        && self::$default_lang == self::$sefs[$sef]->lang_code
+                        && (!$this->params->get('detect_browser', 1) || Lang::detect() == self::$tag || self::$cookie)
                     ) {
                         array_shift($parts);
                         $uri->setPath(implode('/', $parts));

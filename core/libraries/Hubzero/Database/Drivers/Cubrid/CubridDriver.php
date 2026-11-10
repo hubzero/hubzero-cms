@@ -92,8 +92,8 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
                 // Default CUBRID port
                 $options['dsn'] .= ";port=33300";
             }
-            $options['dsn'] .= (isset($options['database']) &&
-                $options['database']) ? ";dbname={$options['database']}" : '';
+            $options['dsn'] .= (isset($options['database'])
+                && $options['database']) ? ";dbname={$options['database']}" : '';
             // Add charset to DSN for REGEXP and other charset-sensitive operations
             $options['dsn'] .= ";charset=utf8";
         }

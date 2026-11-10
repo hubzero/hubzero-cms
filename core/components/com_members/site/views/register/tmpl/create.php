@@ -23,8 +23,8 @@ $this->css('register.css');
         <div class="col span-half">
             <div class="<?php echo $this->getError() ? 'error' : 'success'; ?>-message">
                 <p>
-                    <?php echo $this->getError() ? Lang::txt('COM_MEMBERS_REGISTER_ERROR_OCCURRED') :
-                    Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED'); ?>
+                    <?php echo $this->getError() ? Lang::txt('COM_MEMBERS_REGISTER_ERROR_OCCURRED')
+                    : Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED'); ?>
                 </p>
             </div>
         </div><!-- / .col span-half -->

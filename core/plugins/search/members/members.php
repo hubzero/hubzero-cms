@@ -167,9 +167,9 @@ class Members extends Plugin
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
 				u.block=0 AND u.approved>0 AND
-				u.access IN (" . $accessLevels . ") AND $weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC";
+				u.access IN (" . $accessLevels . ") AND $weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . " ORDER BY $weight DESC";
         $results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
     }
 

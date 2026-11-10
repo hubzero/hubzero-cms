@@ -130,9 +130,9 @@ class History extends SiteController
     {
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->_option)) . ': ' .
-            $this->page->title . ': ' .
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            Lang::txt(strtoupper($this->_option)) . ': '
+            . $this->page->title . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
         );
 
         // Set the pathway
@@ -196,9 +196,9 @@ class History extends SiteController
 
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->_option)) . ': ' .
-            $this->page->title . ': ' .
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            Lang::txt(strtoupper($this->_option)) . ': '
+            . $this->page->title . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
         );
 
         // Set the pathway

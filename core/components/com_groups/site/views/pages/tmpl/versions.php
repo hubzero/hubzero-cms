@@ -15,10 +15,10 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$editPageUrl = 'index.php?option=com_groups&cn=' .
-    $this->group->get('cn') .
-    '&controller=pages&task=edit&pageid=' .
-    $this->page->get('id');
+$editPageUrl = 'index.php?option=com_groups&cn='
+    . $this->group->get('cn')
+    . '&controller=pages&task=edit&pageid='
+    . $this->page->get('id');
 
 // add page stylesheets
 $stylesheets = \Components\Groups\Helpers\View::getPageCss($this->group);
@@ -105,8 +105,8 @@ $this->css()
                         if ($pageVersion->get('created_by') == 1000) {
                             $created_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
                         } elseif (
-                            $pageVersion->get('created_by') != null && is_numeric($pageVersion->
-                            get('created_by'))
+                            $pageVersion->get('created_by') != null && is_numeric($pageVersion
+                            ->get('created_by'))
                         ) {
                             $profile = User::getInstance($pageVersion->get('created_by'));
                             $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));
@@ -122,8 +122,8 @@ $this->css()
                         if ($pageVersion->get('approved_by') == 1000) {
                             $approved_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
                         } elseif (
-                            $pageVersion->get('approved_by') != null && is_numeric($pageVersion->
-                            get('approved_by'))
+                            $pageVersion->get('approved_by') != null && is_numeric($pageVersion
+                            ->get('approved_by'))
                         ) {
                             $profile = User::getInstance($pageVersion->get('approved_by'));
                             $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));
@@ -186,8 +186,8 @@ $this->css()
 
                                 // out formatted diff table
                                 $formatter = new \Components\Wiki\Helpers\TableDiffFormatter();
-                                $diff = $formatter->
-                                    format(new \Components\Wiki\Helpers\Diff($previous, $current), $contextFormatter);
+                                $diff = $formatter
+                                    ->format(new \Components\Wiki\Helpers\Diff($previous, $current), $contextFormatter);
                                 echo $diff;
     ?>
                         </div>

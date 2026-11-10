@@ -117,8 +117,8 @@ $this->css('import');
                         </td>
                         <td>
                             <?php if ($canDo->get('core.admin')) { ?>
-                                <?php $editUrl = Route::url('index.php?option=' . $this->option . '&controller=' .
-                                    $this->controller . '&task=edit&id=' . $import->get('id')); ?>
+                                <?php $editUrl = Route::url('index.php?option=' . $this->option . '&controller='
+                                    . $this->controller . '&task=edit&id=' . $import->get('id')); ?>
                                 <a href="<?php echo $editUrl; ?>">
                                     <?php echo $this->escape($import->get('name')); ?>
                                 </a>

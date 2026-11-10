@@ -92,13 +92,13 @@ class History
 
         $user_id = $this->user_id;
 
-        $query = "INSERT INTO `#__users_password_history` (user_id," .
-            "passhash,invalidated)" .
-            " VALUES ( " .
-            $db->quote($user_id) . "," .
-            $db->quote($passhash) . "," .
-            $invalidated .
-            ");";
+        $query = "INSERT INTO `#__users_password_history` (user_id,"
+            . "passhash,invalidated)"
+            . " VALUES ( "
+            . $db->quote($user_id) . ","
+            . $db->quote($passhash) . ","
+            . $invalidated
+            . ");";
 
         $db->setQuery($query);
 
@@ -168,10 +168,10 @@ class History
         }
 
         $db->setQuery(
-            "DELETE FROM `#__users_password_history` WHERE user_id= " .
-            $db->quote($this->user_id) . " AND passhash = " .
-            $db->quote($passhash) . " AND invalidated = " .
-            $db->quote($timestamp) . ";",
+            "DELETE FROM `#__users_password_history` WHERE user_id= "
+            . $db->quote($this->user_id) . " AND passhash = "
+            . $db->quote($passhash) . " AND invalidated = "
+            . $db->quote($timestamp) . ";",
         );
 
         if (!$db->query()) {

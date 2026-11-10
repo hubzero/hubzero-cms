@@ -233,11 +233,11 @@ class Mozify extends Obj
 
         //build css needed for mozify
         $css  = '<style type="text/css">';
-        $css .= '.ExternalClass .ecxhm1_3 { width:' .
-            $this->imageWidth .
-            'px !important; height:' .
-            $this->imageHeight .
-            'px !important; float:none !important }';
+        $css .= '.ExternalClass .ecxhm1_3 { width:'
+            . $this->imageWidth
+            . 'px !important; height:'
+            . $this->imageHeight
+            . 'px !important; float:none !important }';
         $css .= '.ExternalClass .ecxhm2_3 { display:none !important }';
         $css .= '.' . $class . ' td b { width:1px; height:1px; font-size:1px }';
         $css .= '.' . $class . '{ -webkit-text-size-adjust: none }';
@@ -256,19 +256,19 @@ class Mozify extends Obj
         $class = $this->getCssClassName();
 
         //build mso hack
-        $mosHack  = '<!--[if mso]><style>.' .
-            $class .
-            '{ display:none !important }</style><table cellpadding="0" cellspacing="0" 
+        $mosHack  = '<!--[if mso]><style>.'
+            . $class
+            . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" 
                 style="display:block;float:none;" align=""><tr><td>';
-        $mosHack .= '<img src="' .
-            $this->imageUrl .
-            '" alt="' .
-            $this->imageAlt .
-            '" style="display:block;" moz="3" valid="true" height="' .
-            $this->imageHeight .
-            '" width="' .
-            $this->imageWidth .
-            '"></td></tr></table><style type="text/css">/*<![endif]-->';
+        $mosHack .= '<img src="'
+            . $this->imageUrl
+            . '" alt="'
+            . $this->imageAlt
+            . '" style="display:block;" moz="3" valid="true" height="'
+            . $this->imageHeight
+            . '" width="'
+            . $this->imageWidth
+            . '"></td></tr></table><style type="text/css">/*<![endif]-->';
         return $mosHack;
     }
 
@@ -294,29 +294,29 @@ class Mozify extends Obj
         $class = $this->getCssClassName();
 
         //build replacement html
-        $replacement  = '<table width="' .
-            $this->imageWidth .
-            '" cellspacing="0" cellpadding="0" border="0" align="" moz="3" style="display:block;float:none" class="' .
-            $class .
-            '">';
+        $replacement  = '<table width="'
+            . $this->imageWidth
+            . '" cellspacing="0" cellpadding="0" border="0" align="" moz="3" style="display:block;float:none" class="'
+            . $class
+            . '">';
         $replacement .= '<tbody>';
         $replacement .= '<tr>';
         $replacement .= '<td style="padding:0px 0px 0px 0px;" class="' . $class . '">';
-        $replacement .= '<div class="' .
-            $class .
-            '" style="width:0px;height:0px;overflow:visible;float:left;position:absolute">';
+        $replacement .= '<div class="'
+            . $class
+            . '" style="width:0px;height:0px;overflow:visible;float:left;position:absolute">';
         $replacement .= '<table cellspacing="0" cellpadding="0" class="' . $class . '">';
         $replacement .= '<tbody>';
         $replacement .= '<tr>';
-        $replacement .= '<td background="' .
-            $this->imageUrl .
-            '"><div class="' .
-            $class .
-            '" style="width:' .
-            $this->imageWidth .
-            'px;height:' .
-            $this->imageHeight .
-            'px"></div></td>';
+        $replacement .= '<td background="'
+            . $this->imageUrl
+            . '"><div class="'
+            . $class
+            . '" style="width:'
+            . $this->imageWidth
+            . 'px;height:'
+            . $this->imageHeight
+            . 'px"></div></td>';
         $replacement .= '</tr>';
         $replacement .= '</tbody>';
         $replacement .= '</table>';
@@ -338,13 +338,13 @@ class Mozify extends Obj
         $class = $this->getCssClassName();
 
         //build mosaic html
-        $mosaic  = '<table width="' .
-            $this->imageWidth .
-            '" height="' .
-            $this->imageHeight .
-            '" cellspacing="0" cellpadding="0" border="0" bgcolor="#fefefe" class="' .
-            $class .
-            '">';
+        $mosaic  = '<table width="'
+            . $this->imageWidth
+            . '" height="'
+            . $this->imageHeight
+            . '" cellspacing="0" cellpadding="0" border="0" bgcolor="#fefefe" class="'
+            . $class
+            . '">';
         $mosaic .= '<tbody>';
         for ($y = 0; $y < $this->imageHeight; $y += $this->mosaicSize) {
             $mosaic .= '<tr>';
@@ -353,12 +353,12 @@ class Mozify extends Obj
                 $rgba = imagecolorsforindex($resource, $color);
                 //$rgba['alpha'] = $rgba['alpha'];
                 $color_string = $this->rgb2hex($rgba);
-                $mosaic .= '<td width="' .
-                    $this->mosaicSize .
-                    '" bgcolor="' .
-                    $color_string .
-                    '"><b></b></td>' .
-                    PHP_EOL;
+                $mosaic .= '<td width="'
+                    . $this->mosaicSize
+                    . '" bgcolor="'
+                    . $color_string
+                    . '"><b></b></td>'
+                    . PHP_EOL;
             }
             $mosaic .= '</tr>' . PHP_EOL;
         }

@@ -59,9 +59,9 @@ class Article extends Field
 
         $db = App::get('db');
         $db->setQuery(
-            'SELECT title' .
-            ' FROM #__content' .
-            ' WHERE id = ' . (int) $this->value,
+            'SELECT title'
+            . ' FROM #__content'
+            . ' WHERE id = ' . (int) $this->value,
         );
         $title = $db->loadResult();
 

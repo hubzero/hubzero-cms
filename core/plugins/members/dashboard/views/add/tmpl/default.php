@@ -52,11 +52,11 @@ defined('_HZEXEC_') or die();
 
                 $xml = null;
                 if (file_exists(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml')) {
-                    $xml = simplexml_load_file(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module .
-                    '.xml');
+                    $xml = simplexml_load_file(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module
+                    . '.xml');
                 } elseif (
-                    file_exists(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module .
-                    '.xml')
+                    file_exists(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module
+                    . '.xml')
                 ) {
                     $xml = simplexml_load_file(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module
                     . '.xml');
@@ -73,8 +73,8 @@ defined('_HZEXEC_') or die();
                         <dd><?php
 
                         if (!strstr($xml->description, ' ')) {
-                            Lang::load($module->module, PATH_APP . DS . 'modules' . DS . $module->module) ||
-                            Lang::load($module->module, PATH_CORE . DS . 'modules' . DS . $module->module);
+                            Lang::load($module->module, PATH_APP . DS . 'modules' . DS . $module->module)
+                            || Lang::load($module->module, PATH_CORE . DS . 'modules' . DS . $module->module);
                             $xml->description = Lang::txt($xml->description);
                         }
                         echo $xml->description; ?></dd>

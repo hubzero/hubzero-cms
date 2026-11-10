@@ -256,8 +256,8 @@ class Windows extends AdminController
         $total = count($rows);
 
         // Get a list of all apps for the filters bar
-        $apps =
-            Entry::all()
+        $apps
+            = Entry::all()
             ->whereEquals('type', $this->config->get('windows_type'))
             //->ordered('filter_order', 'filter_order_Dir')
             //->paginated('limitstart', 'limit')

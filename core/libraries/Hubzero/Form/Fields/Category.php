@@ -58,10 +58,10 @@ class Category extends Select
         // Initialise variables.
 
         $options   = [];
-        $extension = $this->
-            element['extension'] ? (string) $this->
-            element['extension'] : (string) $this->
-            element['scope'];
+        $extension = $this
+            ->element['extension'] ? (string) $this
+            ->element['extension'] : (string) $this
+            ->element['scope'];
         $published = (string) $this->element['published'];
 
         $name      = (string) $this->element['name'];

@@ -21,8 +21,8 @@ $this->css('import');
 $this->js('import');
 
 // set title
-$title = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT') :
-Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
+$title = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT')
+: Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
@@ -265,12 +265,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                2)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 2)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -281,12 +278,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                5)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 5)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('COM_RESOURCES_DRAFT_INTERNAL');
@@ -297,12 +291,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                3)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 3)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('COM_RESOURCES_PENDING');
@@ -313,12 +304,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                0)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 0)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('JUNPUBLISHED');
@@ -329,12 +317,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                1)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 1)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('JPUBLISHED');
@@ -345,12 +330,9 @@ Toolbar::cancel();
                                     'status',
                                     1,
                                 )
-                                ==
-                                4)
-                                ?
-                                ' selected="selected"'
-                                :
-                                '';
+                                == 4)
+                                ? ' selected="selected"'
+                                : '';
                                 ?>><?php
                                 echo
                                 Lang::txt('JTRASHED');

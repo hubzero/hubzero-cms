@@ -157,12 +157,12 @@ class Items extends AdminController
             ->select($a . '.home')
             ->select($a . '.language')
             ->select($a . '.client_id');
-        $query->select('CASE ' . $a . '.type' .
-            ' WHEN \'component\' THEN ' . $a . '.published+2*(e.enabled-1) ' .
-            ' WHEN \'url\' THEN ' . $a . '.published+2 ' .
-            ' WHEN \'alias\' THEN ' . $a . '.published+4 ' .
-            ' WHEN \'separator\' THEN ' . $a . '.published+6 ' .
-            ' END', 'published');
+        $query->select('CASE ' . $a . '.type'
+            . ' WHEN \'component\' THEN ' . $a . '.published+2*(e.enabled-1) '
+            . ' WHEN \'url\' THEN ' . $a . '.published+2 '
+            . ' WHEN \'alias\' THEN ' . $a . '.published+4 '
+            . ' WHEN \'separator\' THEN ' . $a . '.published+6 '
+            . ' END', 'published');
         //$query->from($query->getTableName(), 'a');
 
         // Join over the language

@@ -154,11 +154,11 @@ class PhpTest extends TestCase
      **/
     public function testParse()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.php');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.php');
         $this->assertEquals($this->arr, $result);
     }
 
@@ -169,11 +169,11 @@ class PhpTest extends TestCase
      **/
     public function testParseCallable()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'testCallable.php');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'testCallable.php');
         $this->assertEquals($this->arr, $result);
     }
 
@@ -185,11 +185,11 @@ class PhpTest extends TestCase
     public function testParseException()
     {
         $this->expectException(ParseException::class);
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'testException.php');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'testException.php');
     }
 
     /**
@@ -200,11 +200,11 @@ class PhpTest extends TestCase
     public function testParseEmptyFile()
     {
         $this->expectException(UnsupportedFormatException::class);
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'testEmpty.php');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'testEmpty.php');
     }
 
     /**

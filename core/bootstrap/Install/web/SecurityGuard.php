@@ -167,10 +167,10 @@ class SecurityGuard
 
         // No secure location available
         throw new \RuntimeException(
-            'Unable to create secure storage directory outside document root. ' .
-            'Tried: ' . implode('; ', $triedPaths) . '. ' .
-            'Document root: ' . $this->docRoot . '. ' .
-            'Please ensure the PHP process owner has a writable home directory outside the web root.',
+            'Unable to create secure storage directory outside document root. '
+            . 'Tried: ' . implode('; ', $triedPaths) . '. '
+            . 'Document root: ' . $this->docRoot . '. '
+            . 'Please ensure the PHP process owner has a writable home directory outside the web root.',
         );
     }
 

@@ -29,10 +29,10 @@ $this->css()
 
 <div id="members-account-section">
     <form action="<?php echo Route::url(
-        'index.php?option=' . $this->option .
-                                        '&id=' . $this->id .
-                                        '&active=account' .
-        '&task=confirmtoken',
+        'index.php?option=' . $this->option
+                                        . '&id=' . $this->id
+                                        . '&active=account'
+        . '&task=confirmtoken',
     ); ?>" method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></legend>

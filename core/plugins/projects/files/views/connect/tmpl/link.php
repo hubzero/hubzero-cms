@@ -24,13 +24,13 @@ $on = ($google['on'] || $dropbox['on']) ? 1 : 0;
 // Project creator
 $creator = ($this->model->access('owner')) ? 1 : 0;
 
-$limited = $this->params->get('connectedProjects') ?
-\Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : [];
+$limited = $this->params->get('connectedProjects')
+? \Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : [];
 
 $authorized = (empty($limited) || (!empty($limited) && in_array($this->model->get('alias'), $limited))) ? true : false;
 
-$connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $this->oparams->get('dropbox_token'))) ?
-1 : 0;
+$connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $this->oparams->get('dropbox_token')))
+? 1 : 0;
 
 
 $connectUrl = Route::url(

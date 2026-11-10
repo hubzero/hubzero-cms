@@ -26,8 +26,8 @@ $itemDropdownClass = $handlers ? ' hasMultiple' : '';
 $itemFileNameShort = Html::shortenFileName($this->itemFileName, 60);
 $itemMimeType = $this->itemMimeType;
 
-$linkUrl = Route::url($model->link('files') .
-"&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
+$linkUrl = Route::url($model->link('files')
+. "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
 $linkTarget = '';
 
 if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {

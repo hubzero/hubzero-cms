@@ -80,14 +80,14 @@ class StringUtils
         $m = [];
 
         while (
-            $inputPos < strlen($subject) &&
-            preg_match("!($encStart)|($encEnd)!S$flags", $subject, $m, PREG_OFFSET_CAPTURE, $inputPos)
+            $inputPos < strlen($subject)
+            && preg_match("!($encStart)|($encEnd)!S$flags", $subject, $m, PREG_OFFSET_CAPTURE, $inputPos)
         ) {
             $tokenOffset = $m[0][1];
             if ($m[1][0] != '') {
                 if (
-                    $foundStart &&
-                    $strcmp($endDelim, substr($subject, $tokenOffset, $endLength)) == 0
+                    $foundStart
+                    && $strcmp($endDelim, substr($subject, $tokenOffset, $endLength)) == 0
                 ) {
                     // An end match is present at the same location
                     $tokenType = 'end';

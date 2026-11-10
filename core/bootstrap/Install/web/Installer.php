@@ -958,8 +958,8 @@ class Installer
             while ($row = $connection->fetchArray($stmt)) {
                 $grant = (string) ($row[0] ?? '');
                 if (
-                    stripos($grant, 'ALL PRIVILEGES') !== false ||
-                    stripos($grant, 'CREATE') !== false
+                    stripos($grant, 'ALL PRIVILEGES') !== false
+                    || stripos($grant, 'CREATE') !== false
                 ) {
                     $hasPrivileges = true;
                     break;

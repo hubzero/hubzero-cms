@@ -32,11 +32,11 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
         <ul id="useroptions">
             <li class="last">
                 <?php $val = Route::url(
-                    'index.php?option=' .
-                        $this->option .
-                        '&cn=' .
-                        $this->group->get('cn') .
-                        '&controller=media&task=filebrowser&tmpl=component&path=/uploads',
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&controller=media&task=filebrowser&tmpl=component&path=/uploads',
                 ); ?>
                 <a class="icon-group group btn popup 1200x600" href="<?php echo $val; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_UPLOAD_MANAGER'); ?>

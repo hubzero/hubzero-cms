@@ -244,8 +244,8 @@ Html::behavior('framework', true);
                             }
                             $found[] = 'plg_' . $plugin->element;
                             if (strstr($plugin->name, '_')) {
-                                Lang::load($plugin->name) ||
-                                Lang::load($plugin->name, PATH_CORE . DS . 'plugins' . DS . $plugin->folder . DS
+                                Lang::load($plugin->name)
+                                || Lang::load($plugin->name, PATH_CORE . DS . 'plugins' . DS . $plugin->folder . DS
                                     . $plugin->element);
                             }
                             ?>

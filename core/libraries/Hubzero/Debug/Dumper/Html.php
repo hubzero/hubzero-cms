@@ -79,12 +79,12 @@ class Html extends AbstractRenderer
         if (is_array($arr)) {
             foreach ($arr as $key => $val) {
                 if (is_array($val)) {
-                    $a[] = "\t" .
-                        '<code class="ky">' .
-                        $key .
-                        '</code> <code class="op">=></code> <code class="vl">' .
-                        $this->_deflate($val) .
-                        '</code>';
+                    $a[] = "\t"
+                        . '<code class="ky">'
+                        . $key
+                        . '</code> <code class="op">=></code> <code class="vl">'
+                        . $this->_deflate($val)
+                        . '</code>';
                 } else {
                     $val = htmlentities($val, ENT_COMPAT, 'UTF-8');
                     $val = preg_replace(
@@ -92,12 +92,12 @@ class Html extends AbstractRenderer
                         '<code class="ky">[$1]</code> <code class="op">=></code>',
                         $val,
                     );
-                    $a[] = "\t" .
-                        '<code class="ky">' .
-                        $key .
-                        '</code> <code class="op">=></code> <code class="vl">' .
-                        $val .
-                        '</code>';
+                    $a[] = "\t"
+                        . '<code class="ky">'
+                        . $key
+                        . '</code> <code class="op">=></code> <code class="vl">'
+                        . $val
+                        . '</code>';
                 }
             }
         }

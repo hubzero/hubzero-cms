@@ -77,8 +77,8 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
         ?>
         <pre><?php echo htmlentities($this->data); ?></pre>
     <?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) {
-            $source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' .
-            $this->model->get('alias') . '&media=Compiled:' . $this->embed);
+            $source = Route::url('index.php?option=' . $this->option . '&controller=media&alias='
+            . $this->model->get('alias') . '&media=Compiled:' . $this->embed);
         ?>
         <div id="compiled-doc"
             embed-src="<?php echo $source; ?>"

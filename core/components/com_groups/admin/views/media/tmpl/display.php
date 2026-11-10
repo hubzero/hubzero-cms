@@ -23,12 +23,12 @@ $this->css('media.css')
 <div id="attachments">
     <?php
     $url = Route::url(
-        'index.php?option=' .
-        $this->option .
-        '&tmpl=component&controller=' .
-        $this->controller .
-        '&gidNumber=' .
-        $this->group->get('gidNumber'),
+        'index.php?option='
+        . $this->option
+        . '&tmpl=component&controller='
+        . $this->controller
+        . '&gidNumber='
+        . $this->group->get('gidNumber'),
     );
     ?>
     <form action="<?php echo $url . '&task=upload'; ?>" id="adminForm" method="post" enctype="multipart/form-data">
@@ -82,16 +82,16 @@ $this->css('media.css')
             </div>
 
             <?php $val = Route::url(
-                'index.php?option=' .
-                    $this->option .
-                    '&tmpl=component&controller=' .
-                    $this->controller .
-                    '&gidNumber=' .
-                    $this->group->get('gidNumber') .
-                    '&task=list' .
-                    ($this->dir ? '&dir=' . $this->dir : '') .
-                    '&t=' .
-                    Date::toUnix(),
+                'index.php?option='
+                    . $this->option
+                    . '&tmpl=component&controller='
+                    . $this->controller
+                    . '&gidNumber='
+                    . $this->group->get('gidNumber')
+                    . '&task=list'
+                    . ($this->dir ? '&dir=' . $this->dir : '')
+                    . '&t='
+                    . Date::toUnix(),
             ); ?>
             <iframe src="<?php echo $val; ?>" name="filer" id="filer" width="98%" height="400"></iframe>
         </div>

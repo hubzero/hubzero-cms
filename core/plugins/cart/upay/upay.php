@@ -202,8 +202,8 @@ class Upay extends Plugin
         $validationKey =  base64_encode(md5($base, true));
 
         $this->transactionDetails['VALIDATION_KEY'] = $validationKey;
-        $this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
-            $transactionDetails->token . '-' . $transactionDetails->info->tId;
+        $this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId='
+            . $transactionDetails->token . '-' . $transactionDetails->info->tId;
     }
 
     /**

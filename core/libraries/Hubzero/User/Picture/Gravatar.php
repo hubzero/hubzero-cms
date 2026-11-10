@@ -54,8 +54,7 @@ class Gravatar implements Resolver
                 if ($key == 'fallback') {
                     if (
                         filter_var($config['fallback'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
-                        ||
-                        in_array(
+                        || in_array(
                             $config['fallback'],
                             ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'],
                         )

@@ -26,8 +26,8 @@ class Migration20261012000000ComInstaller extends Base
     public function up()
     {
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            !$this->db->tableHasField('#__custom_extensions', 'apikey')
+            $this->db->tableExists('#__custom_extensions')
+            && !$this->db->tableHasField('#__custom_extensions', 'apikey')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` ADD COLUMN `apikey` varchar(255) DEFAULT NULL AFTER `url`;";
             $this->db->setQuery($query);
@@ -43,9 +43,9 @@ class Migration20261012000000ComInstaller extends Base
 
         // ...and the branch it kept in `branch`
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            $this->db->tableHasField('#__custom_extensions', 'branch') &&
-            $this->db->tableHasField('#__custom_extensions', 'git_branch')
+            $this->db->tableExists('#__custom_extensions')
+            && $this->db->tableHasField('#__custom_extensions', 'branch')
+            && $this->db->tableHasField('#__custom_extensions', 'git_branch')
         ) {
             $query = "UPDATE `#__custom_extensions` SET `git_branch`=`branch` WHERE (`git_branch` IS NULL OR `git_branch`='') AND `branch` IS NOT NULL AND `branch`!='';";
             $this->db->setQuery($query);

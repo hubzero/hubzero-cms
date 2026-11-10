@@ -167,8 +167,8 @@ class Message extends Relational
      */
     public function transformMessage()
     {
-        $UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" .
-            "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        $UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 
         $message = str_replace("\n", "\n ", htmlspecialchars(stripslashes($this->get('message') ?? ''), ENT_NOQUOTES, 'UTF-8'));
         $message = preg_replace_callback("/$UrlPtrn/", [$this,'autolink'], $message);

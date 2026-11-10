@@ -184,10 +184,10 @@ class Youtube extends Module
                     $duration = $this->formatTime($media['yt$duration']['seconds']);
 
                     $html .= "<li>";
-                    $html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entryLink}\">" .
-                        "<img src=\"{$thumbUrl}\" alt=\"\" /></a>";
-                    $html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entryLink}\">" .
-                        "{$entryTitle}</a>";
+                    $html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entryLink}\">"
+                        . "<img src=\"{$thumbUrl}\" alt=\"\" /></a>";
+                    $html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entryLink}\">"
+                        . "{$entryTitle}</a>";
                     $html .= "<br /><span class=\"entry-duration\">" . $duration . "</span>";
                     $html .= "</li>";
                 }
@@ -201,8 +201,8 @@ class Youtube extends Module
                 $moreText = Lang::txt('MOD_YOUTUBE_MORE_VIDEOS');
 
                 if ($alt_link != '') {
-                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle .
-                        "\" href=\"{$alt_link}\">" . $moreText . "</a></p><br class=\"clear\" />";
+                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle
+                        . "\" href=\"{$alt_link}\">" . $moreText . "</a></p><br class=\"clear\" />";
                 } else {
                     switch ($type) {
                         case 'playlists':
@@ -215,8 +215,8 @@ class Youtube extends Module
                             $link = "http://www.youtube.com/results?search_query=" . $content;
                             break;
                     }
-                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle .
-                        "\" href=\"{$link}\">" . $moreText . "</a></p><br class=\"clear\" />";
+                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle
+                        . "\" href=\"{$link}\">" . $moreText . "</a></p><br class=\"clear\" />";
                 }
             }
 

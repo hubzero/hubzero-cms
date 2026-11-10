@@ -180,8 +180,8 @@ class Respondent extends Table
     public function fetch($bounded = true)
     {
         $this->_db->setQuery(
-            'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->_tbl WHERE " . $this->filters . $this->order .
-                ($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : ''),
+            'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->_tbl WHERE " . $this->filters . $this->order
+                . ($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : ''),
         );
         return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
     }

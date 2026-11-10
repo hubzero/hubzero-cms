@@ -1071,11 +1071,11 @@ class Translator extends Obj
         $result = null;
 
         if (!is_file("$path/$file")) {
-            $path = self::getLanguagePath(PATH_CORE .
-                DS .
-                'bootstrap' .
-                DS .
-                ucfirst(App::get('client')->name), $lang);
+            $path = self::getLanguagePath(PATH_CORE
+                . DS
+                . 'bootstrap'
+                . DS
+                . ucfirst(App::get('client')->name), $lang);
         }
 
         if (is_file("$path/$file")) {

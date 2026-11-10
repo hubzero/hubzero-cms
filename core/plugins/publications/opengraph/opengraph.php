@@ -44,9 +44,9 @@ class Opengraph extends Plugin
 
         Document::addCustomTag('<meta property="og:title" content="' . $view->escape($publication->title) . '" />');
 
-        Document::addCustomTag('<meta property="og:description" content="' .
-                    $view->escape($publication->abstract) .
-                    '" />');
+        Document::addCustomTag('<meta property="og:description" content="'
+                    . $view->escape($publication->abstract)
+                    . '" />');
 
         Document::addCustomTag('<meta property="og:type" content="article" />');
 

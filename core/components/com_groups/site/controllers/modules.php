@@ -222,9 +222,9 @@ class Modules extends Base
 
         // if we have php or script tags we must get module approved by admin
         if (
-            strpos($this->module->get('content'), '<?') !== false ||
-            strpos($this->module->get('content'), '<?php') !== false ||
-            strpos($this->module->get('content'), '<script') !== false
+            strpos($this->module->get('content'), '<?') !== false
+            || strpos($this->module->get('content'), '<?php') !== false
+            || strpos($this->module->get('content'), '<script') !== false
         ) {
             // only change approve status if content changed
             if ($contentChanged) {

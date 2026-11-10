@@ -281,8 +281,8 @@ class Log extends Base implements CommandInterface
                                 $this->output->addLine('Date format changed', 'success');
                             }
                             $this->output->addLine(
-                                'You can set the date format using: "date [format]". ' .
-                                'Options include: full, long, normal/default, and short.',
+                                'You can set the date format using: "date [format]". '
+                                . 'Options include: full, long, normal/default, and short.',
                             );
                             $this->output->addString('input mode >>> ');
                             break;
@@ -315,15 +315,15 @@ class Log extends Base implements CommandInterface
                                     foreach ($threshold as $t) {
                                         $printable[] = $t['key'] . $t['operator'] . $t['value'];
                                     }
-                                    $this->output->addString('Threshold is currently set to ' .
-                                        implode(', ', $printable) .
-                                        '. ');
+                                    $this->output->addString('Threshold is currently set to '
+                                        . implode(', ', $printable)
+                                        . '. ');
                                 } else {
                                     $this->output->addString('No thresholds are currently set. ');
                                 }
                                 $this->output->addLine(
-                                    'You can set thresholds using the format: ' .
-                                    '"threshold field>value[, field=value]"',
+                                    'You can set thresholds using the format: '
+                                    . '"threshold field>value[, field=value]"',
                                 );
                             }
 

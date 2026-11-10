@@ -35,10 +35,10 @@ $this->css()
 
 <div id="members-account-section">
     <form action="<?php echo Route::url(
-        'index.php?option=' . $this->option .
-                                        '&id=' . $this->id .
-                                        '&active=account' .
-        '&task=setlocalpass',
+        'index.php?option=' . $this->option
+                                        . '&id=' . $this->id
+                                        . '&active=account'
+        . '&task=setlocalpass',
     ); ?>" method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></legend>

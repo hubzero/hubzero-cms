@@ -73,28 +73,17 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                            <?php
                             if (
                                 $this->row->id
-                                ==
-                                7
-                                ||
-                                $this->row->id
-                                ==
-                                1
-                                ||
-                                $this->row->id
-                                ==
-                                2
-                                ||
-                                $this->row->id
-                                ==
-                                3
-                                ||
-                                $this->row->id
-                                ==
-                                6
-                                ||
-                                $this->row->id
-                                ==
-                                31
+                                == 7
+                                || $this->row->id
+                                == 1
+                                || $this->row->id
+                                == 2
+                                || $this->row->id
+                                == 3
+                                || $this->row->id
+                                == 6
+                                || $this->row->id
+                                == 31
                             ) {
                                 echo ' readonly="readonly"';
                             } ?>
@@ -131,10 +120,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                            value="1"<?php
                             echo
                             ($this->row->contributable)
-                            ?
-                            ' checked="checked"'
-                            :
-                            '';
+                            ? ' checked="checked"'
+                            : '';
                             ?>
                            />
                            <?php
@@ -154,10 +141,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                            value="1"<?php
                             echo
                             ($this->row->collection)
-                            ?
-                            ' checked="checked"'
-                            :
-                            '';
+                            ? ' checked="checked"'
+                            : '';
                             ?>
                            />
                            <?php
@@ -176,12 +161,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             <option value="extension"<?php
                                     echo
                                     ($params->get('linkAction')
-                                    ==
-                                    'extension')
-                                                     ?
-                                                     ' selected="selected"'
-                                                     :
-                                                     '';
+                                    == 'extension')
+                                                     ? ' selected="selected"'
+                                                     : '';
                                                         ?>><?php
                                     echo
                                     Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_BY_EXT');
@@ -189,12 +171,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             <option value="external"<?php
                                     echo
                                     ($params->get('linkAction')
-                                    ==
-                                    'external')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                    == 'external')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                     echo
                                     Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW');
@@ -202,12 +181,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             <option value="lightbox"<?php
                                     echo
                                     ($params->get('linkAction')
-                                    ==
-                                    'lightbox')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                    == 'lightbox')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                     echo
                                     Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX');
@@ -215,12 +191,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             <option value="download"<?php
                                     echo
                                     ($params->get('linkAction')
-                                    ==
-                                    'download')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                    == 'download')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                     echo
                                     Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD');
@@ -459,12 +432,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="text"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'text')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                        == 'text')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_TEXT');
@@ -472,12 +442,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="textarea"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'textarea')
-                                                        ?
-                                                        ' selected="selected"'
-                                                        :
-                                                        '';
+                                        == 'textarea')
+                                                        ? ' selected="selected"'
+                                                        : '';
                                                         ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_TEXTAREA');
@@ -485,12 +452,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="list"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'list')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                        == 'list')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_LIST');
@@ -498,12 +462,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="radio"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'radio')
-                                                     ?
-                                                     ' selected="selected"'
-                                                     :
-                                                     '';
+                                        == 'radio')
+                                                     ? ' selected="selected"'
+                                                     : '';
                                                         ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_RADIO');
@@ -511,12 +472,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="checkbox"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'checkbox')
-                                                        ?
-                                                        ' selected="selected"'
-                                                        :
-                                                        '';
+                                        == 'checkbox')
+                                                        ? ' selected="selected"'
+                                                        : '';
                                                         ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_CHECKBOX');
@@ -524,12 +482,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="hidden"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'hidden')
-                                                      ?
-                                                      ' selected="selected"'
-                                                      :
-                                                      '';
+                                        == 'hidden')
+                                                      ? ' selected="selected"'
+                                                      : '';
                                                         ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_TYPES_HIDDEN');
@@ -539,12 +494,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="date"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'date')
-                                                    ?
-                                                    ' selected="selected"'
-                                                    :
-                                                    '';
+                                        == 'date')
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                     ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_FIELD_PREDEFINED_DATE');
@@ -552,12 +504,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="geo"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'geo')
-                                                   ?
-                                                   ' selected="selected"'
-                                                   :
-                                                   '';
+                                        == 'geo')
+                                                   ? ' selected="selected"'
+                                                   : '';
                                                     ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_FIELD_PREDEFINED_GEO');
@@ -565,12 +514,9 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 <option value="languages"<?php
                                         echo
                                         ($field->type
-                                        ==
-                                        'languages')
-                                                         ?
-                                                         ' selected="selected"'
-                                                         :
-                                                         '';
+                                        == 'languages')
+                                                         ? ' selected="selected"'
+                                                         : '';
                                                             ?>><?php
                                         echo
                                         Lang::txt('COM_RESOURCES_FIELD_PREDEFINED_LANG');
@@ -615,10 +561,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                value="1"<?php
                                 echo
                                 ($field->required)
-                                ?
-                                ' checked="checked"'
-                                :
-                                '';
+                                ? ' checked="checked"'
+                                : '';
                                 ?>
                                />
                     </td>

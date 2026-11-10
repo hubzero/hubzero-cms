@@ -22,8 +22,8 @@ $this->css('import')
 $canDo = Components\Groups\Helpers\Permissions::getActions('component');
 
 // set title
-$title  = ($this->import->
-    get('id')) ? Lang::txt('COM_GROUPS_IMPORT_TITLE_EDIT') : Lang::txt('COM_GROUPS_IMPORT_TITLE_ADD');
+$title  = ($this->import
+    ->get('id')) ? Lang::txt('COM_GROUPS_IMPORT_TITLE_EDIT') : Lang::txt('COM_GROUPS_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . $title, 'import');
 if ($canDo->get('core.admin')) {

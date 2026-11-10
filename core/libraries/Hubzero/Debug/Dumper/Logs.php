@@ -77,19 +77,19 @@ class Logs extends AbstractRenderer
         $a = [];
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
-                $a[] = "\t" .
-                    '<code class="ky">' .
-                    $key .
-                    '</code> <code class="op">=></code> <code class="vl">' .
-                    $this->_deflate($val) .
-                    '</code>';
+                $a[] = "\t"
+                    . '<code class="ky">'
+                    . $key
+                    . '</code> <code class="op">=></code> <code class="vl">'
+                    . $this->_deflate($val)
+                    . '</code>';
             } else {
-                $a[] = "\t" .
-                    '<code class="ky">' .
-                    $key .
-                    '</code> <code class="op">=></code> <code class="vl">' .
-                    htmlentities($val, ENT_COMPAT, 'UTF-8') .
-                    '</code>';
+                $a[] = "\t"
+                    . '<code class="ky">'
+                    . $key
+                    . '</code> <code class="op">=></code> <code class="vl">'
+                    . htmlentities($val, ENT_COMPAT, 'UTF-8')
+                    . '</code>';
             }
         }
         $output .= implode(", \n", $a) . "\n" . ' )' . "\n";

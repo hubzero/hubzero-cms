@@ -153,21 +153,21 @@ class XmlTest extends TestCase
      **/
     public function testParse()
     {
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.xml');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.xml');
 
         $this->assertEquals($this->arr, $result);
 
         $this->expectException(\Hubzero\Config\Exception\ParseException::class);
 
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.ini');
+        $result = $this->processor->parse(dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'Files'
+            . DIRECTORY_SEPARATOR
+            . 'test.ini');
     }
 
     /**

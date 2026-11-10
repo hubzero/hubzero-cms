@@ -6457,14 +6457,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             case $relationship instanceof ManyToMany:
                 throw new RuntimeException(
-                    "ManyToMany relationships require manual join handling. " .
-                    "Use \$query->join() directly with the intermediate table.",
+                    "ManyToMany relationships require manual join handling. "
+                    . "Use \$query->join() directly with the intermediate table.",
                 );
 
             case $relationship instanceof OneToManyThrough:
                 throw new RuntimeException(
-                    "OneToManyThrough relationships require manual join handling. " .
-                    "Use \$query->join() directly with the intermediate model's table.",
+                    "OneToManyThrough relationships require manual join handling. "
+                    . "Use \$query->join() directly with the intermediate model's table.",
                 );
 
             default:

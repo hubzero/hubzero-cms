@@ -955,18 +955,18 @@ class InformixDriver extends BaseSqlDriver
 
         // Find the primary key index name (via sysconstraints)
         $this->setQuery(
-            "SELECT c.idxname FROM sysconstraints c " .
-            "JOIN systables t ON c.tabid = t.tabid " .
-            "WHERE t.tabname = " . $this->quote($table) . " AND c.constrtype = 'P'",
+            "SELECT c.idxname FROM sysconstraints c "
+            . "JOIN systables t ON c.tabid = t.tabid "
+            . "WHERE t.tabname = " . $this->quote($table) . " AND c.constrtype = 'P'",
         );
         $pkIndexName = trim($this->loadResult() ?? '');
 
         // Get indexes with up to 16 parts
         $this->setQuery(
-            "SELECT idxname, idxtype, " .
-            "part1, part2, part3, part4, part5, part6, part7, part8, " .
-            "part9, part10, part11, part12, part13, part14, part15, part16 " .
-            "FROM sysindexes WHERE tabid = " . (int) $tabid,
+            "SELECT idxname, idxtype, "
+            . "part1, part2, part3, part4, part5, part6, part7, part8, "
+            . "part9, part10, part11, part12, part13, part14, part15, part16 "
+            . "FROM sysindexes WHERE tabid = " . (int) $tabid,
         );
         $indexes = $this->loadObjectList();
 

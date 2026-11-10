@@ -793,8 +793,8 @@ class Query
             $this->syntax->setInsertSelect($sql, $bindings);
         } else {
             throw new \InvalidArgumentException(
-                'fromSelect() expects a Query object or closure. ' .
-                'For raw SQL, use fromSelectRaw() instead.',
+                'fromSelect() expects a Query object or closure. '
+                . 'For raw SQL, use fromSelectRaw() instead.',
             );
         }
 
@@ -5474,8 +5474,8 @@ class Query
 
                 if (!array_key_exists($name, $mergedParams)) {
                     throw new \InvalidArgumentException(
-                        "Missing named parameter ':$name' in query bindings. " .
-                        "Set it via setParameter('$name', \$value) or pass in the bindings array.",
+                        "Missing named parameter ':$name' in query bindings. "
+                        . "Set it via setParameter('$name', \$value) or pass in the bindings array.",
                     );
                 }
 

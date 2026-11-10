@@ -119,9 +119,9 @@ class MenuItem extends Element
         foreach ($menuTypes as $type) {
             if ($menuType == '') {
                 $options[] = Select::option('0', '&#160;', 'value', 'text', true);
-                $options[] = Select::option($type->menutype, $type->title .
-                    ' - ' .
-                    App::get('language')->txt('JGLOBAL_TOP'), 'value', 'text', true);
+                $options[] = Select::option($type->menutype, $type->title
+                    . ' - '
+                    . App::get('language')->txt('JGLOBAL_TOP'), 'value', 'text', true);
             }
             if (isset($groupedList[$type->menutype])) {
                 $n = count($groupedList[$type->menutype]);
@@ -139,8 +139,8 @@ class MenuItem extends Element
                     }
 
                     $disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-                    $options[] = Select::option($item->id, '&#160;&#160;&#160;' .
-                        $item->treename, 'value', 'text', $disable);
+                    $options[] = Select::option($item->id, '&#160;&#160;&#160;'
+                        . $item->treename, 'value', 'text', $disable);
                 }
             }
         }

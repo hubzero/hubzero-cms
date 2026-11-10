@@ -143,9 +143,9 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
             && $this->progress[$this->steps[$i]] == 1)
             || $this->step > $i
         ) {
-            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' .
-            $this->id . '&group=' . $this->group_cn) . '">' . Lang::txt('COM_CONTRIBUTE_STEP_' .
-            strtoupper($this->steps[$i])) . '</a>';
+            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id='
+            . $this->id . '&group=' . $this->group_cn) . '">' . Lang::txt('COM_CONTRIBUTE_STEP_'
+            . strtoupper($this->steps[$i])) . '</a>';
         } else {
             if ($this->progress['submitted'] == 1) {
                 $html .= '<a href="'

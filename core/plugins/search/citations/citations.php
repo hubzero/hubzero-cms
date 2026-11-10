@@ -189,38 +189,38 @@ class Citations extends Plugin
                 $title = $row->title;
 
                 // Build the description, clean up text
-                $content = $row->address . ' ' .
-                    $row->author . ' ' .
-                    $row->booktitle . ' ' .
-                    $row->chapter . ' ' .
-                    $row->cite . ' ' .
-                    $row->edition . ' ' .
-                    $row->eprint . ' ' .
-                    $row->howpublished . ' ' .
-                    $row->institution . ' ' .
-                    $row->isbn . ' ' .
-                    $row->journal . ' ' .
-                    $row->month . ' ' .
-                    $row->note . ' ' .
-                    $row->number . ' ' .
-                    $row->organization . ' ' .
-                    $row->pages . ' ' .
-                    $row->publisher . ' ' .
-                    $row->series . ' ' .
-                    $row->school . ' ' .
-                    $row->title . ' ' .
-                    $row->url . ' ' .
-                    $row->volume . ' ' .
-                    $row->year . ' ' .
-                    $row->doi . ' ' .
-                    $row->ref_type . ' ' .
-                    $row->date_submit . ' ' .
-                    $row->date_accept . ' ' .
-                    $row->date_publish . ' ' .
-                    $row->software_use . ' ' .
-                    $row->notes . ' ' .
-                    $row->language . ' ' .
-                    $row->label . ' ';
+                $content = $row->address . ' '
+                    . $row->author . ' '
+                    . $row->booktitle . ' '
+                    . $row->chapter . ' '
+                    . $row->cite . ' '
+                    . $row->edition . ' '
+                    . $row->eprint . ' '
+                    . $row->howpublished . ' '
+                    . $row->institution . ' '
+                    . $row->isbn . ' '
+                    . $row->journal . ' '
+                    . $row->month . ' '
+                    . $row->note . ' '
+                    . $row->number . ' '
+                    . $row->organization . ' '
+                    . $row->pages . ' '
+                    . $row->publisher . ' '
+                    . $row->series . ' '
+                    . $row->school . ' '
+                    . $row->title . ' '
+                    . $row->url . ' '
+                    . $row->volume . ' '
+                    . $row->year . ' '
+                    . $row->doi . ' '
+                    . $row->ref_type . ' '
+                    . $row->date_submit . ' '
+                    . $row->date_accept . ' '
+                    . $row->date_publish . ' '
+                    . $row->software_use . ' '
+                    . $row->notes . ' '
+                    . $row->language . ' '
+                    . $row->label . ' ';
 
                 $content = preg_replace('/<[^>]*>/', ' ', $content);
                 $content = preg_replace('/ {2,}/', ' ', $content);

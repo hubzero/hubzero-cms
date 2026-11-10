@@ -125,8 +125,8 @@ class Related extends Plugin
 						INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 						INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
 						WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group'
-                        AND wl.scope_id=" . $database->quote($resource->id) .
-                        "AND w.scope_id in ($g))";
+                        AND wl.scope_id=" . $database->quote($resource->id)
+                        . "AND w.scope_id in ($g))";
             }
         } else {
             $sql1 .= "AND w.access!=1 ";

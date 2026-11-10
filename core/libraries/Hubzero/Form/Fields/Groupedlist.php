@@ -47,9 +47,9 @@ class Groupedlist extends Field
                     // Create a new option object based on the <option /> element.
                     $tmp = Dropdown::option(
                         ($element['value']) ? (string) $element['value'] : trim((string) $element),
-                        App::get('language')->
-                            alt(trim((string) $element), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->
-                            fieldname)),
+                        App::get('language')
+                            ->alt(trim((string) $element), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
+                            ->fieldname)),
                         'value',
                         'text',
                         ((string) $element['disabled'] == 'true'),
@@ -157,26 +157,26 @@ class Groupedlist extends Field
                 $groups,
                 null,
                 [
-                    'list.attr' => $attr, 'id' => $this->
-                        id, 'list.select' => $this->
-                        value, 'group.items' => null, 'option.key.toHtml' => false,
+                    'list.attr' => $attr, 'id' => $this
+                        ->id, 'list.select' => $this
+                        ->value, 'group.items' => null, 'option.key.toHtml' => false,
                     'option.text.toHtml' => false,
                 ],
             );
-            $html[] = '<input type="hidden" name="' .
-                $this->name .
-                '" value="' .
-                htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-                '"/>';
+            $html[] = '<input type="hidden" name="'
+                . $this->name
+                . '" value="'
+                . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')
+                . '"/>';
         } else {
             // Create a regular list.
             $html[] = Dropdown::groupedlist(
                 $groups,
                 $this->name,
                 [
-                    'list.attr' => $attr, 'id' => $this->
-                        id, 'list.select' => $this->
-                        value, 'group.items' => null, 'option.key.toHtml' => false,
+                    'list.attr' => $attr, 'id' => $this
+                        ->id, 'list.select' => $this
+                        ->value, 'group.items' => null, 'option.key.toHtml' => false,
                     'option.text.toHtml' => false,
                 ],
             );

@@ -597,10 +597,10 @@ class Git
      **/
     private function call($cmd, $arguments = [])
     {
-        $command  = "umask 0002 && {$this->baseCmd} {$cmd}" .
-            ((!empty($arguments)) ? ' ' .
-            implode(' ', $arguments) : '') .
-            ' 2>&1';
+        $command  = "umask 0002 && {$this->baseCmd} {$cmd}"
+            . ((!empty($arguments)) ? ' '
+            . implode(' ', $arguments) : '')
+            . ' 2>&1';
         $response = shell_exec($command);
 
         return $response;

@@ -63,8 +63,8 @@ class Migration20260921170000PlgContentFormathtml extends Base
             $params['sanitizeBefore'] = 1;
 
             $this->db->setQuery(
-                "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) .
-                " WHERE `extension_id` = " . (int) $row->extension_id,
+                "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params))
+                . " WHERE `extension_id` = " . (int) $row->extension_id,
             );
             $this->db->query();
 

@@ -85,8 +85,8 @@ class Whatsnew extends Module
                 if ($i < $num) {
                     // display tag
                     $tagText = $this->escape(stripslashes($tag->get('raw_tag')));
-                    $out .= "\t" . '<a href="' . Route::url($tag->link()) . '">' .
-                        $tagText . '</a> ' . "\n";
+                    $out .= "\t" . '<a href="' . Route::url($tag->link()) . '">'
+                        . $tagText . '</a> ' . "\n";
                 }
             }
             if ($i > $num) {

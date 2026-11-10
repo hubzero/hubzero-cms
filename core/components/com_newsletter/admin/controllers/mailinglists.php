@@ -247,8 +247,8 @@ class Mailinglists extends AdminController
 
         // Fix issue with going from one sorted list to another
         if (
-            $filters['sort'] !== 'email' && $filters['sort'] !== 'date_added' &&
-            $filters['sort'] !== 'date_confirmed'
+            $filters['sort'] !== 'email' && $filters['sort'] !== 'date_added'
+            && $filters['sort'] !== 'date_confirmed'
         ) {
             $filters['sort'] = 'id';
             $filters['sortdir'] = 'DESC';

@@ -370,8 +370,8 @@ class MorphTo extends Relationship
     public function join()
     {
         throw new \RuntimeException(
-            'Join is not supported for polymorphic MorphTo relationships. ' .
-            'The parent table cannot be determined at query time.',
+            'Join is not supported for polymorphic MorphTo relationships. '
+            . 'The parent table cannot be determined at query time.',
         );
     }
 }

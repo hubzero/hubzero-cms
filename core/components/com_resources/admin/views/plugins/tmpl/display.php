@@ -132,8 +132,8 @@ $saveOrder = $listOrder == 'ordering';
 
                 $ordering   = ($listOrder == 'ordering');
                 $canEdit    = User::authorise('core.edit', 'com_plugins');
-                $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id') ||
-                $item->checked_out == 0;
+                $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id')
+                || $item->checked_out == 0;
                 $canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">

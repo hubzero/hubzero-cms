@@ -844,8 +844,8 @@ class FirebirdDriver extends BaseSqlDriver
             // Firebird MVCC: Ignore "index already exists" errors for CREATE INDEX
             // This handles metadata visibility issues where indexes persist after table drop
             if (
-                stripos($sql, 'CREATE') !== false && stripos($sql, 'INDEX') !== false &&
-                stripos($e->getMessage(), 'already exists') !== false
+                stripos($sql, 'CREATE') !== false && stripos($sql, 'INDEX') !== false
+                && stripos($e->getMessage(), 'already exists') !== false
             ) {
                 // Commit and treat as success
                 if ($this->transactionDepth == 0 && $this->connection && $this->connection->inTransaction()) {
@@ -880,9 +880,9 @@ class FirebirdDriver extends BaseSqlDriver
             // Ignore "table does not exist" errors for DROP TABLE
             // This handles the case where IF EXISTS was stripped in setQuery()
             if (
-                stripos($sql, 'DROP') !== false && stripos($sql, 'TABLE') !== false &&
-                strpos($e->getMessage(), '-607') !== false &&
-                stripos($e->getMessage(), 'does not exist') !== false
+                stripos($sql, 'DROP') !== false && stripos($sql, 'TABLE') !== false
+                && strpos($e->getMessage(), '-607') !== false
+                && stripos($e->getMessage(), 'does not exist') !== false
             ) {
                 // Commit and treat as success
                 if ($this->transactionDepth == 0 && $this->connection && $this->connection->inTransaction()) {
@@ -1250,8 +1250,8 @@ class FirebirdDriver extends BaseSqlDriver
                 $columnDefs[] = 'PRIMARY KEY (' . $this->quoteName($pk) . ')';
             }
 
-            $result[$table] = 'CREATE TABLE ' . $this->quoteName($tableName) . " (\n    " .
-                implode(",\n    ", $columnDefs) . "\n)";
+            $result[$table] = 'CREATE TABLE ' . $this->quoteName($tableName) . " (\n    "
+                . implode(",\n    ", $columnDefs) . "\n)";
         }
 
         return $result;
@@ -1316,8 +1316,8 @@ class FirebirdDriver extends BaseSqlDriver
         try {
             $pdo = $this->getConnection()->getNativeConnection();
             $stmt = $pdo->prepare(
-                "SELECT 1 FROM RDB\$RELATION_FIELDS " .
-                "WHERE RDB\$RELATION_NAME = ? AND TRIM(RDB\$FIELD_NAME) = 'ID'",
+                "SELECT 1 FROM RDB\$RELATION_FIELDS "
+                . "WHERE RDB\$RELATION_NAME = ? AND TRIM(RDB\$FIELD_NAME) = 'ID'",
             );
             $stmt->execute([$upperTable]);
             $result = (bool) $stmt->fetch();
@@ -1473,9 +1473,9 @@ class FirebirdDriver extends BaseSqlDriver
             // So to have next INSERT get value V, we need RESTART WITH (V-1)
             $columnName = strtoupper(trim($result));
             $restartValue = $value - 1;  // Subtract 1 because next value = restart + 1
-            $this->setQuery("ALTER TABLE " . $this->quoteName($table) .
-                           " ALTER COLUMN " . $this->quoteName($columnName) .
-                           " RESTART WITH " . $restartValue);
+            $this->setQuery("ALTER TABLE " . $this->quoteName($table)
+                           . " ALTER COLUMN " . $this->quoteName($columnName)
+                           . " RESTART WITH " . $restartValue);
             $this->execute();
 
             // Commit to ensure the change takes effect
@@ -1687,11 +1687,11 @@ class FirebirdDriver extends BaseSqlDriver
         $columns = $this->getTableColumnDefinitions($oldTable);
         if (empty($columns)) {
             throw new \RuntimeException(
-                "PDO_FIREBIRD MVCC metadata visibility limitation: Table '$oldTable' exists but " .
-                "getTableColumnDefinitions() returned no columns. This is a known issue where " .
-                "Firebird's MVCC architecture prevents the JOIN between RDB\$RELATION_FIELDS and " .
-                "RDB\$FIELDS from seeing recently committed DDL metadata, even after reconnecting. " .
-                "See getTableColumnDefinitions() diagnostic output for details.",
+                "PDO_FIREBIRD MVCC metadata visibility limitation: Table '$oldTable' exists but "
+                . "getTableColumnDefinitions() returned no columns. This is a known issue where "
+                . "Firebird's MVCC architecture prevents the JOIN between RDB\$RELATION_FIELDS and "
+                . "RDB\$FIELDS from seeing recently committed DDL metadata, even after reconnecting. "
+                . "See getTableColumnDefinitions() diagnostic output for details.",
             );
         }
 
@@ -1739,8 +1739,8 @@ class FirebirdDriver extends BaseSqlDriver
         $colNames = array_map(function ($col) {
             return $this->quoteName($col->name);
         }, $columns);
-        $copySql = 'INSERT INTO ' . $this->quoteName($newTable) . ' (' . implode(', ', $colNames) . ') ' .
-                   'SELECT ' . implode(', ', $colNames) . ' FROM ' . $this->quoteName($oldTable);
+        $copySql = 'INSERT INTO ' . $this->quoteName($newTable) . ' (' . implode(', ', $colNames) . ') '
+                   . 'SELECT ' . implode(', ', $colNames) . ' FROM ' . $this->quoteName($oldTable);
         $this->setQuery($copySql);
         $this->execute();
 
@@ -1791,8 +1791,8 @@ class FirebirdDriver extends BaseSqlDriver
             $unique = $index->unique ? 'UNIQUE ' : '';
 
             try {
-                $this->setQuery('CREATE ' . $unique . 'INDEX ' . $this->quoteName($newIndexName) .
-                               ' ON ' . $this->quoteName($newTable) . ' (' . implode(', ', $indexCols) . ')');
+                $this->setQuery('CREATE ' . $unique . 'INDEX ' . $this->quoteName($newIndexName)
+                               . ' ON ' . $this->quoteName($newTable) . ' (' . implode(', ', $indexCols) . ')');
                 $this->execute();
             } catch (\Exception $e) {
                 // Continue even if index creation fails
@@ -1806,11 +1806,11 @@ class FirebirdDriver extends BaseSqlDriver
             $refCols = array_map([$this, 'quoteName'], $fk->foreign_columns);
 
             try {
-                $this->setQuery('ALTER TABLE ' . $this->quoteName($newTable) .
-                               ' ADD CONSTRAINT ' . $this->quoteName($newFkName) .
-                               ' FOREIGN KEY (' . implode(', ', $fkCols) . ')' .
-                               ' REFERENCES ' . $this->quoteName($fk->foreign_table) .
-                               ' (' . implode(', ', $refCols) . ')');
+                $this->setQuery('ALTER TABLE ' . $this->quoteName($newTable)
+                               . ' ADD CONSTRAINT ' . $this->quoteName($newFkName)
+                               . ' FOREIGN KEY (' . implode(', ', $fkCols) . ')'
+                               . ' REFERENCES ' . $this->quoteName($fk->foreign_table)
+                               . ' (' . implode(', ', $refCols) . ')');
                 $this->execute();
             } catch (\Exception $e) {
                 // Continue even if FK creation fails
@@ -3198,9 +3198,9 @@ class FirebirdDriver extends BaseSqlDriver
         }
 
         // Execute ALTER COLUMN TYPE
-        $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                 ' ALTER COLUMN ' . $this->quoteName($column) .
-                 ' TYPE ' . $definition;
+        $query = 'ALTER TABLE ' . $this->quoteName($table)
+                 . ' ALTER COLUMN ' . $this->quoteName($column)
+                 . ' TYPE ' . $definition;
 
         $this->setQuery($query);
         if (!$this->execute()) {
@@ -3209,17 +3209,17 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Handle NOT NULL constraint separately
         if ($notNull === 'NOT NULL') {
-            $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                     ' ALTER COLUMN ' . $this->quoteName($column) .
-                     ' SET NOT NULL';
+            $query = 'ALTER TABLE ' . $this->quoteName($table)
+                     . ' ALTER COLUMN ' . $this->quoteName($column)
+                     . ' SET NOT NULL';
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
             }
         } elseif ($notNull === 'NULL') {
-            $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                     ' ALTER COLUMN ' . $this->quoteName($column) .
-                     ' DROP NOT NULL';
+            $query = 'ALTER TABLE ' . $this->quoteName($table)
+                     . ' ALTER COLUMN ' . $this->quoteName($column)
+                     . ' DROP NOT NULL';
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
@@ -3228,9 +3228,9 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Handle DEFAULT value separately
         if ($defaultValue !== null) {
-            $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                     ' ALTER COLUMN ' . $this->quoteName($column) .
-                     ' SET DEFAULT ' . $defaultValue;
+            $query = 'ALTER TABLE ' . $this->quoteName($table)
+                     . ' ALTER COLUMN ' . $this->quoteName($column)
+                     . ' SET DEFAULT ' . $defaultValue;
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
@@ -3328,9 +3328,9 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Firebird: rename column first if needed
         if ($oldColumn !== $newColumn) {
-            $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                     ' ALTER COLUMN ' . $this->quoteName($oldColumn) .
-                     ' TO ' . $this->quoteName($newColumn);
+            $query = 'ALTER TABLE ' . $this->quoteName($table)
+                     . ' ALTER COLUMN ' . $this->quoteName($oldColumn)
+                     . ' TO ' . $this->quoteName($newColumn);
             $this->setQuery($query);
             $this->execute();
         }
@@ -3519,8 +3519,8 @@ class FirebirdDriver extends BaseSqlDriver
             return true; // No primary key exists
         }
 
-        $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                 ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName ?? ''));
+        $query = 'ALTER TABLE ' . $this->quoteName($table)
+                 . ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName ?? ''));
 
         $this->setQuery($query);
         return (bool) $this->execute();
@@ -3559,8 +3559,8 @@ class FirebirdDriver extends BaseSqlDriver
 
             // If NULL_FLAG is null or 0, column is nullable - make it NOT NULL
             if (!$nullFlag) {
-                $this->setQuery('ALTER TABLE ' . $this->quoteName($table) .
-                               ' ALTER COLUMN ' . $quotedCol . ' SET NOT NULL');
+                $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
+                               . ' ALTER COLUMN ' . $quotedCol . ' SET NOT NULL');
                 $this->execute();
             }
         }
@@ -3569,8 +3569,8 @@ class FirebirdDriver extends BaseSqlDriver
             return $this->quoteName(strtoupper($col));
         }, $columns));
 
-        $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                 ' ADD PRIMARY KEY (' . $columnList . ')';
+        $query = 'ALTER TABLE ' . $this->quoteName($table)
+                 . ' ADD PRIMARY KEY (' . $columnList . ')';
 
         $this->setQuery($query);
         return (bool) $this->execute();
@@ -3645,15 +3645,15 @@ END';
             $id = $maxId + 1;
 
             // Step 3: Make column NOT NULL
-            $this->setQuery('ALTER TABLE ' . $this->quoteName($table) .
-                           ' ALTER COLUMN ' . $this->quoteName($column) . ' SET NOT NULL');
+            $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
+                           . ' ALTER COLUMN ' . $this->quoteName($column) . ' SET NOT NULL');
             if (!$this->execute()) {
                 return false;
             }
 
             // Step 4: Add primary key constraint
-            $this->setQuery('ALTER TABLE ' . $this->quoteName($table) .
-                           ' ADD PRIMARY KEY (' . $this->quoteName($column) . ')');
+            $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
+                           . ' ADD PRIMARY KEY (' . $this->quoteName($column) . ')');
             if (!$this->execute()) {
                 return false;
             }
@@ -3719,9 +3719,9 @@ END';
 
         $value = 1;
         foreach ($rows as $pkValue) {
-            $this->setQuery('UPDATE ' . $this->quoteName($table) .
-                           ' SET ' . $this->quoteName($column) . ' = ' . $value .
-                           ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($pkValue));
+            $this->setQuery('UPDATE ' . $this->quoteName($table)
+                           . ' SET ' . $this->quoteName($column) . ' = ' . $value
+                           . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($pkValue));
             $this->execute();
             $value++;
         }

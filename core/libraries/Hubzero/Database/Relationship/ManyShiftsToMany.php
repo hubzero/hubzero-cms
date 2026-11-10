@@ -51,9 +51,9 @@ class ManyShiftsToMany extends ManyToMany
         parent::mediate();
 
         // Add this where clause in mediation as it's really a factor of the join itself
-        $this->related->whereEquals($this->associativeTable .
-            '.' .
-            $this->shifter, strtolower($this->model->getModelName()));
+        $this->related->whereEquals($this->associativeTable
+            . '.'
+            . $this->shifter, strtolower($this->model->getModelName()));
 
         return $this;
     }

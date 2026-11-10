@@ -302,8 +302,8 @@ class ColumnBuilder
         }
 
         throw new \RuntimeException(
-            "Column definition required. Either provide a raw SQL definition or use type methods " .
-            "(e.g., ->integer(), ->string(255), ->boolean()).",
+            "Column definition required. Either provide a raw SQL definition or use type methods "
+            . "(e.g., ->integer(), ->string(255), ->boolean()).",
         );
     }
 

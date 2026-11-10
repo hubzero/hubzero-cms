@@ -14,11 +14,11 @@ $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
 if ($item->menu_image) {
     $imgTag = '<img src="' . $item->menu_image
         . '" alt="' . $item->title . '" />';
-    $item->params->get('menu_text', 1) ?
-        $linktype = $imgTag
+    $item->params->get('menu_text', 1)
+        ? $linktype = $imgTag
             . '<span class="image-title">'
-            . $item->title . '</span> ' :
-        $linktype = $imgTag;
+            . $item->title . '</span> '
+        : $linktype = $imgTag;
 } else {
     $linktype = $item->title;
 }

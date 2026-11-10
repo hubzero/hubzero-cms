@@ -93,9 +93,9 @@ class Wiki extends Plugin
 				$authorization AND
 				$weight > 0 AND
 				wp.state < 2 AND
-				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) " .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-                " AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
+				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) "
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . " AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			 ORDER BY $weight DESC",
         );
 

@@ -115,8 +115,8 @@ class Questions extends Plugin
         $this->count = $this->find()->count();
 
         // Load component language file
-        Lang::load('com_answers') ||
-        Lang::load('com_answers', Component::path('com_answers') . DS . 'site');
+        Lang::load('com_answers')
+        || Lang::load('com_answers', Component::path('com_answers') . DS . 'site');
 
         // Are we returning HTML?
         if ($rtrn == 'all' || $rtrn == 'html') {

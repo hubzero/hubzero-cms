@@ -66,13 +66,13 @@ class Sliders
         } else {
             self::$open = true;
         }
-        $content .= '<h3 class="pane-toggler title" id="' .
-            $id .
-            '"><a href="#' .
-            $id .
-            '"><span>' .
-            $text .
-            '</span></a></h3><div class="panel"><div class="pane-slider content">';
+        $content .= '<h3 class="pane-toggler title" id="'
+            . $id
+            . '"><a href="#'
+            . $id
+            . '"><span>'
+            . $text
+            . '</span></a></h3><div class="panel"><div class="pane-slider content">';
 
         return $content;
     }
@@ -90,13 +90,13 @@ class Sliders
 
         if (!array_key_exists($group, $loaded)) {
             $loaded[$group] = true;
-            $display = (isset($params['startOffset']) &&
-                isset($params['startTransition']) &&
-                $params['startTransition'])
+            $display = (isset($params['startOffset'])
+                && isset($params['startTransition'])
+                && $params['startTransition'])
                 ? (int) $params['startOffset'] : null;
-            $show = (isset($params['startOffset']) &&
-                !(isset($params['startTransition']) &&
-                $params['startTransition']))
+            $show = (isset($params['startOffset'])
+                && !(isset($params['startTransition'])
+                && $params['startTransition']))
                 ? (int) $params['startOffset'] : null;
 
             $opt = [];

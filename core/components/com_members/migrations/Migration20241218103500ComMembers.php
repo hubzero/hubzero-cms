@@ -179,10 +179,10 @@ class Migration20241218103500ComMembers extends Base
     public function syncProfiles()
     {
 
-        $query = "UPDATE `#__users` AS u, `#__xprofiles` AS x SET x.name=u.name," .
-            " x.surname=u.surname,x.middleName=u.middleName,x.givenName=u.givenName" .
-            " WHERE u.id=x.uidNumber AND (u.name != x.name OR u.surname != x.surname" .
-            " OR u.givenName != x.givenName OR u.middleName != x.middleName);";
+        $query = "UPDATE `#__users` AS u, `#__xprofiles` AS x SET x.name=u.name,"
+            . " x.surname=u.surname,x.middleName=u.middleName,x.givenName=u.givenName"
+            . " WHERE u.id=x.uidNumber AND (u.name != x.name OR u.surname != x.surname"
+            . " OR u.givenName != x.givenName OR u.middleName != x.middleName);";
         $this->db->setQuery($query);
         $this->db->execute();
     }

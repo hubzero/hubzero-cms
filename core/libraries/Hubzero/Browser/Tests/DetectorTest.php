@@ -74,9 +74,9 @@ class DetectorTest extends Basic
         foreach ($uas as $userAgentString) {
             $browser = new Detector($userAgentString->string);
             if (
-                $userAgentString->device == 'iPhone' ||
-                $userAgentString->device == 'iPad' ||
-                $userAgentString->device == 'phone'
+                $userAgentString->device == 'iPhone'
+                || $userAgentString->device == 'iPad'
+                || $userAgentString->device == 'phone'
             ) {
                 $this->assertTrue($browser->isMobile());
             } else {
@@ -128,11 +128,11 @@ class DetectorTest extends Basic
     {
         $collection = [];
 
-        $xml = new SimpleXmlElement(file_get_contents(__DIR__ .
-            DIRECTORY_SEPARATOR .
-            'Fixtures' .
-            DIRECTORY_SEPARATOR .
-            'UserAgentStrings.xml'));
+        $xml = new SimpleXmlElement(file_get_contents(__DIR__
+            . DIRECTORY_SEPARATOR
+            . 'Fixtures'
+            . DIRECTORY_SEPARATOR
+            . 'UserAgentStrings.xml'));
 
         if ($xml) {
             foreach ($xml->strings->string as $string) {

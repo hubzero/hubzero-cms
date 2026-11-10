@@ -101,13 +101,13 @@ class Sanitize
      */
     public static function stripScripts($str)
     {
-        $regex =
-            '/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|' .
-            'style="[^"]*")|' . //<img[^>]*>|
-            '<script[^>]*>.*?<\/script>|' .
-            '<style[^>]*>.*?<\/style>|' .
-            '<\?php.*?\?>|' .
-            '<!--.*?-->/is';
+        $regex
+            = '/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|'
+            . 'style="[^"]*")|' //<img[^>]*>|
+            . '<script[^>]*>.*?<\/script>|'
+            . '<style[^>]*>.*?<\/style>|'
+            . '<\?php.*?\?>|'
+            . '<!--.*?-->/is';
         return preg_replace($regex, '', $str);
     }
 
@@ -169,12 +169,12 @@ class Sanitize
 
         // strip out any KL_PHP, script, style, HTML comments
         $string = preg_replace('/{kl_php}(.*?){\/kl_php}/is', '', $string);
-        $regex =
-            '/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|' .
-            '<script[^>]*>.*?<\/script>|' .
-            '<style[^>]*>.*?<\/style>|' .
-            '<\?php.*?\?>|' .
-            '<!--.*?-->)/is';
+        $regex
+            = '/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|'
+            . '<script[^>]*>.*?<\/script>|'
+            . '<style[^>]*>.*?<\/style>|'
+            . '<\?php.*?\?>|'
+            . '<!--.*?-->)/is';
         $string = preg_replace($regex, '', $string);
 
         $string = str_replace(

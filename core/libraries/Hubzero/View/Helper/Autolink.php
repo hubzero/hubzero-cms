@@ -32,10 +32,10 @@ class Autolink extends AbstractHelper
         // e.g. [mylink My Link] => <a href="mylink">My Link</a>
         $char_regexes = [
             // URL pattern
-            'url'   => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
+            'url'   => "(?<=[^=\"\'\[])\!?"  // Make sure it's not preceeded by quotes and brackets
                 //"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
                 //"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
-                <<<'REGEX'
+                . <<<'REGEX'
 (?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)
 ([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+
 (\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»""'']))
@@ -43,9 +43,9 @@ REGEX
             ,
 
             // Email pattern
-            'email' => "([\s]*)" .  // whitespace
-                "([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
-                "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
+            'email' => "([\s]*)"  // whitespace
+                . "([\._a-zA-Z0-9-\+]+@"  // characters leading up to @
+                . "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
         ];
 
         foreach ($char_regexes as $func => $regex) {

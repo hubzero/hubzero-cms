@@ -138,12 +138,12 @@ class Db2Driver extends BaseSqlDriver
                         . "PROTOCOL=TCPIP;VALIDATE=RUN";
                 } else {
                     // ODBC fallback
-                    $options['dsn'] = "odbc:DRIVER={IBM DB2 ODBC DRIVER};" .
-                                      "DATABASE={$database};" .
-                                      "HOSTNAME={$host};" .
-                                      "PORT={$port};" .
-                                      "PROTOCOL=TCPIP;" .
-                                      "VALIDATE=RUN";
+                    $options['dsn'] = "odbc:DRIVER={IBM DB2 ODBC DRIVER};"
+                                      . "DATABASE={$database};"
+                                      . "HOSTNAME={$host};"
+                                      . "PORT={$port};"
+                                      . "PROTOCOL=TCPIP;"
+                                      . "VALIDATE=RUN";
                 }
             } elseif (isset($options['database'])) {
                 // Cataloged database name
@@ -846,8 +846,8 @@ class Db2Driver extends BaseSqlDriver
             // Query the maximum value from the table
             // This is the most reliable way to get the next auto-increment value
             $this->setQuery(
-                "SELECT MAX(" . $this->quoteName($identityCol) . ") " .
-                "FROM " . $this->quoteName($table),
+                "SELECT MAX(" . $this->quoteName($identityCol) . ") "
+                . "FROM " . $this->quoteName($table),
             );
 
             try {
@@ -1786,8 +1786,8 @@ class Db2Driver extends BaseSqlDriver
         $table = strtoupper($table);
         $column = strtoupper($column);
         $this->setQuery(
-            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-            ' IS ' . $this->quote($comment),
+            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column)
+            . ' IS ' . $this->quote($comment),
         );
         try {
             $this->execute();
@@ -1864,8 +1864,8 @@ class Db2Driver extends BaseSqlDriver
         // Rename first if needed
         if ($oldColumn !== $newColumn) {
             $this->setQuery(
-                'ALTER TABLE ' . $this->quoteName($table) .
-                ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn),
+                'ALTER TABLE ' . $this->quoteName($table)
+                . ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn),
             );
             $this->execute();
         }
@@ -2248,12 +2248,12 @@ class Db2Driver extends BaseSqlDriver
         $orderClause = $orderBy ? $this->quoteName(strtoupper($orderBy)) : $quotedColumn;
 
         // Use MERGE with ROW_NUMBER()
-        $query = "MERGE INTO {$quotedTable} t " .
-                 "USING (SELECT RID_BIT(t2) AS rid, " .
-                 "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn " .
-                 "FROM {$quotedTable} t2) s " .
-                 "ON (RID_BIT(t) = s.rid) " .
-                 "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
+        $query = "MERGE INTO {$quotedTable} t "
+                 . "USING (SELECT RID_BIT(t2) AS rid, "
+                 . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
+                 . "FROM {$quotedTable} t2) s "
+                 . "ON (RID_BIT(t) = s.rid) "
+                 . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

@@ -235,8 +235,8 @@ class Members extends Plugin
             . " AND p.`shadowExpire` IS NULL"
             . " AND " . $lastSeen . " < " . $quotedCutoff
             . " AND (p.`shadowLastChange` IS NULL OR p.`shadowLastChange` < " . (int) $cutoffDay . ")"
-            . ($quotedExemptGroup === null ? '' :
-                " AND u.`id` NOT IN (SELECT m.`user_id` FROM `#__user_usergroup_map` AS m"
+            . ($quotedExemptGroup === null ? ''
+                : " AND u.`id` NOT IN (SELECT m.`user_id` FROM `#__user_usergroup_map` AS m"
                 . " JOIN `#__usergroups` AS g ON g.`id` = m.`group_id` WHERE g.`title` = " . $quotedExemptGroup . ")");
     }
 

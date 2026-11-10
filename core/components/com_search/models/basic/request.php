@@ -141,9 +141,9 @@ class Request
 				'Tags' AS section
 			FROM `#__tags` t
 			WHERE
-				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC",
+				$weight > 0"
+                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+            . " ORDER BY $weight DESC",
         );
         $this->tags = $tags->to_associative();
 

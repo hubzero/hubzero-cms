@@ -92,10 +92,10 @@ class Helper
             return $domain_username;
         }
 
-        $query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE ' .
-                 '#__xdomains.domain_id=#__xdomain_users.domain_id AND ' .
-                 '#__xdomains.domain=' . $db->quote($domain) . ' AND ' .
-                 '#__xdomain_users.domain_username=' . $db->quote($domain_username);
+        $query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE '
+                 . '#__xdomains.domain_id=#__xdomain_users.domain_id AND '
+                 . '#__xdomains.domain=' . $db->quote($domain) . ' AND '
+                 . '#__xdomain_users.domain_username=' . $db->quote($domain_username);
         $db->setQuery($query);
 
         $result = $db->loadObject();
@@ -173,8 +173,8 @@ class Helper
             return false;
         }
 
-        $query = 'SELECT domain_id FROM `#__xdomains` WHERE ' .
-                 '#__xdomains.domain=' . $db->quote($domain);
+        $query = 'SELECT domain_id FROM `#__xdomains` WHERE '
+                 . '#__xdomains.domain=' . $db->quote($domain);
 
         $db->setQuery($query);
 
@@ -224,8 +224,8 @@ class Helper
             return 0;
         }
 
-        $query = 'SELECT domain_id FROM `#__xdomains` WHERE ' .
-                 '#__xdomains.domain=' . $db->quote($domain);
+        $query = 'SELECT domain_id FROM `#__xdomains` WHERE '
+                 . '#__xdomains.domain=' . $db->quote($domain);
 
         $db->setQuery($query);
 
@@ -243,9 +243,9 @@ class Helper
             $domain_id = $result->domain_id;
         }
 
-        $query = 'INSERT INTO `#__xdomain_users` (domain_id,domain_username,uidNumber) ' .
-            ' VALUES (' . $db->quote($domain_id) . ',' .
-            $db->quote($domain_username) . ',' . $db->quote($uidNumber) . ')';
+        $query = 'INSERT INTO `#__xdomain_users` (domain_id,domain_username,uidNumber) '
+            . ' VALUES (' . $db->quote($domain_id) . ','
+            . $db->quote($domain_username) . ',' . $db->quote($uidNumber) . ')';
 
         $db->setQuery($query);
 

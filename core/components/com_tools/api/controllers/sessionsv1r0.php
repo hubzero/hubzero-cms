@@ -671,10 +671,10 @@ class Sessionsv1r0 extends ApiController
 
         // We've passed all checks so let's actually start the session
         $status = \Components\Tools\Helpers\Utils::middleware(
-            "start user=" . escapeshellarg($result->get('username')) .
-            " ip=" . escapeshellarg($app->ip) .
-            " app=" . escapeshellarg($app->name) .
-            " version=" . escapeshellarg($app->version),
+            "start user=" . escapeshellarg($result->get('username'))
+            . " ip=" . escapeshellarg($app->ip)
+            . " app=" . escapeshellarg($app->name)
+            . " version=" . escapeshellarg($app->version),
             $output,
         );
 
@@ -1279,8 +1279,8 @@ class Sessionsv1r0 extends ApiController
         // not ours simply looks like it has not started -- we never leak it.)
         if (!$alive || !$row->sessnum) {
             $mwdb->setQuery(
-                "SELECT COUNT(*) FROM `sessionlog` WHERE sessnum=" . $mwdb->quote($sess) .
-                " AND username=" . $mwdb->quote($username),
+                "SELECT COUNT(*) FROM `sessionlog` WHERE sessnum=" . $mwdb->quote($sess)
+                . " AND username=" . $mwdb->quote($username),
             );
             $exited = ((int) $mwdb->loadResult() > 0);
 
@@ -1311,9 +1311,9 @@ class Sessionsv1r0 extends ApiController
             // The VNC server for this display must be up and bound to us. This
             // is the authoritative "the display is ready to connect" signal.
             $mwdb->setQuery(
-                "SELECT status FROM `display` WHERE hostname=" . $mwdb->quote($exechost) .
-                " AND dispnum=" . (int) $dispnum .
-                " AND sessnum=" . $mwdb->quote($sess) . " LIMIT 1",
+                "SELECT status FROM `display` WHERE hostname=" . $mwdb->quote($exechost)
+                . " AND dispnum=" . (int) $dispnum
+                . " AND sessnum=" . $mwdb->quote($sess) . " LIMIT 1",
             );
             $dstatus = $mwdb->loadResult();
 
@@ -1762,12 +1762,12 @@ class Sessionsv1r0 extends ApiController
 
         $username = User::get('username');
 
-        $command = "/usr/bin/sudo /usr/bin/hzappstream --remote 128.46.19.124 fileshare add " .
-            escapeshellarg($username) . " " .
-            escapeshellarg($sessionid) . " " .
-            escapeshellarg($public_ip) . " " .
-            escapeshellarg($private_ip) .
-            " --ipsec-use-default-psk";
+        $command = "/usr/bin/sudo /usr/bin/hzappstream --remote 128.46.19.124 fileshare add "
+            . escapeshellarg($username) . " "
+            . escapeshellarg($sessionid) . " "
+            . escapeshellarg($public_ip) . " "
+            . escapeshellarg($private_ip)
+            . " --ipsec-use-default-psk";
 
         $descriptorspec = [
             0 => ["pipe", "r"],  // stdin is a pipe that the child will read from

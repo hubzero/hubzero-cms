@@ -36,14 +36,14 @@ class Migration20170902000000ComProjects extends Base
                     ],
                     [
                         'Content publication',
-                        'Projects created with the purpose to publish data as a resource ' .
-                            'or a collection of related resources',
+                        'Projects created with the purpose to publish data as a resource '
+                            . 'or a collection of related resources',
                         $params,
                     ],
                     [
                         'Application development',
-                        'Projects created with the purpose to develop and publish ' .
-                            'a simulation tool or a code library',
+                        'Projects created with the purpose to develop and publish '
+                            . 'a simulation tool or a code library',
                         'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0',
                     ],
                 ];

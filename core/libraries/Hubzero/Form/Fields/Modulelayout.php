@@ -121,8 +121,8 @@ class Modulelayout extends Field
 
             // Add the layout options from the module path.
             if (
-                is_dir($module_path) &&
-                ($module_layouts = App::get('filesystem')->files($module_path, '^[^_]*\.php$'))
+                is_dir($module_path)
+                && ($module_layouts = App::get('filesystem')->files($module_path, '^[^_]*\.php$'))
             ) {
                 // Create the group for the module
                 $groups['_'] = [];
@@ -161,8 +161,8 @@ class Modulelayout extends Field
 
                     // Add the layout options from the template path.
                     if (
-                        is_dir($template_path) &&
-                        ($files = App::get('filesystem')->files($template_path, '^[^_]*\.php$'))
+                        is_dir($template_path)
+                        && ($files = App::get('filesystem')->files($template_path, '^[^_]*\.php$'))
                     ) {
                         foreach ($files as $i => $file) {
                             // Remove layout that already exist in component ones
@@ -181,17 +181,17 @@ class Modulelayout extends Field
                             foreach ($files as $file) {
                                 // Add an option to the template group
                                 $value = App::get('filesystem')->name(ltrim($file, DIRECTORY_SEPARATOR));
-                                $text = $lang->hasKey($key = strtoupper('TPL_' .
-                                    $template->element .
-                                    '_' .
-                                    $module .
-                                    '_LAYOUT_' .
-                                    $value))
+                                $text = $lang->hasKey($key = strtoupper('TPL_'
+                                    . $template->element
+                                    . '_'
+                                    . $module
+                                    . '_LAYOUT_'
+                                    . $value))
                                     ? $lang->txt($key)
                                     : $value;
-                                $groups[$template->element]['items'][] = Dropdown::option($template->element .
-                                    ':' .
-                                    $value, $text);
+                                $groups[$template->element]['items'][] = Dropdown::option($template->element
+                                    . ':'
+                                    . $value, $text);
                             }
                         }
                     }

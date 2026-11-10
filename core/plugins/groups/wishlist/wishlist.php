@@ -173,8 +173,8 @@ class Wishlist extends Plugin
         // Get the component parameters
         $this->config = Component::params('com_wishlist');
 
-        Lang::load('com_wishlist') ||
-        Lang::load('com_wishlist', Component::path('com_wishlist') . DS . 'site');
+        Lang::load('com_wishlist')
+        || Lang::load('com_wishlist', Component::path('com_wishlist') . DS . 'site');
 
         //set some more vars
         $gid = $this->group->get('gidNumber');

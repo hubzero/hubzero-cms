@@ -58,8 +58,8 @@ class Forum extends Plugin
         // Require posts file
 
         // Load language files
-        Lang::load('plg_groups_forum') ||
-        Lang::load('plg_groups_forum', PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'forum');
+        Lang::load('plg_groups_forum')
+        || Lang::load('plg_groups_forum', PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'forum');
 
         // Make sure digests are enabled?  The cron job being on may be evidence enough...
         if (!Component::params('com_groups')->get('enable_forum_email_digest', false)) {

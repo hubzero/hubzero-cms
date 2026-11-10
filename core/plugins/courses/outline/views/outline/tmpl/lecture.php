@@ -37,8 +37,8 @@ $altBase = $this->course->offering()->link();
 $current = $unit->assetgroups()->key();
 
 if (
-    !$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2 &&
-    $unit->get('ordering') > 1))
+    !$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2
+    && $unit->get('ordering') > 1))
 ) { ?>
     <?php
     $restrictedMsg = Lang::txt(
@@ -81,8 +81,8 @@ if (
                 // Render video
                 foreach ($lecture->assets() as $a) {
                     if (
-                        $a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished() &&
-                        $this->course->offering()->access('manage')))
+                        $a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished()
+                        && $this->course->offering()->access('manage')))
                     ) {
                         // Prefer published assets
                         if ($used) {

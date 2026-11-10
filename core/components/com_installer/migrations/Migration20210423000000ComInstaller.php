@@ -21,8 +21,8 @@ class Migration20210423000000ComInstaller extends Base
     public function up()
     {
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            !$this->db->tableHasField('#__custom_extensions', 'git_branch')
+            $this->db->tableExists('#__custom_extensions')
+            && !$this->db->tableHasField('#__custom_extensions', 'git_branch')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` ADD COLUMN `git_branch` varchar(255) DEFAULT NULL;";
             $this->db->setQuery($query);
@@ -30,8 +30,8 @@ class Migration20210423000000ComInstaller extends Base
         }
 
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            !$this->db->tableHasField('#__custom_extensions', 'git_tag')
+            $this->db->tableExists('#__custom_extensions')
+            && !$this->db->tableHasField('#__custom_extensions', 'git_tag')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` ADD COLUMN `git_tag` varchar(255) DEFAULT NULL;";
             $this->db->setQuery($query);
@@ -39,8 +39,8 @@ class Migration20210423000000ComInstaller extends Base
         }
 
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            !$this->db->tableHasField('#__custom_extensions', 'previous_version')
+            $this->db->tableExists('#__custom_extensions')
+            && !$this->db->tableHasField('#__custom_extensions', 'previous_version')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` ADD COLUMN `previous_version` varchar(255) DEFAULT NULL;";
             $this->db->setQuery($query);
@@ -48,8 +48,8 @@ class Migration20210423000000ComInstaller extends Base
         }
 
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            $this->db->tableHasField('#__custom_extensions', 'installed_version')
+            $this->db->tableExists('#__custom_extensions')
+            && $this->db->tableHasField('#__custom_extensions', 'installed_version')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` CHANGE `installed_version`";
             $query .= " `installed_version` varchar(255) DEFAULT NULL;";
@@ -64,8 +64,8 @@ class Migration20210423000000ComInstaller extends Base
     public function down()
     {
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            $this->db->tableHasField('#__custom_extensions', 'git_branch')
+            $this->db->tableExists('#__custom_extensions')
+            && $this->db->tableHasField('#__custom_extensions', 'git_branch')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` DROP COLUMN `git_branch`";
             $this->db->setQuery($query);
@@ -73,8 +73,8 @@ class Migration20210423000000ComInstaller extends Base
         }
 
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            $this->db->tableHasField('#__custom_extensions', 'git_tag')
+            $this->db->tableExists('#__custom_extensions')
+            && $this->db->tableHasField('#__custom_extensions', 'git_tag')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` DROP COLUMN `git_tag`";
             $this->db->setQuery($query);
@@ -82,8 +82,8 @@ class Migration20210423000000ComInstaller extends Base
         }
 
         if (
-            $this->db->tableExists('#__custom_extensions') &&
-            $this->db->tableHasField('#__custom_extensions', 'previous_version')
+            $this->db->tableExists('#__custom_extensions')
+            && $this->db->tableHasField('#__custom_extensions', 'previous_version')
         ) {
             $query = "ALTER TABLE `#__custom_extensions` DROP COLUMN `previous_version`";
             $this->db->setQuery($query);

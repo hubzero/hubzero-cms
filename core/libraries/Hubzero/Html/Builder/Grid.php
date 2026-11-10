@@ -43,17 +43,17 @@ class Grid
         $bool  .= ($value) ? ' on' : ' off';
 
         if ($toggle) {
-            $html = '<a class="grid-action grid-boolean state grid_' .
-                $bool .
-                ' hasTip" title="' .
-                $title .
-                '" data-id="cb' .
-                $i .
-                '" data-task="' .
-                $task .
-                '" href="#toggle"><span>' .
-                $title .
-                '</span></a>';
+            $html = '<a class="grid-action grid-boolean state grid_'
+                . $bool
+                . ' hasTip" title="'
+                . $title
+                . '" data-id="cb'
+                . $i
+                . '" data-task="'
+                . $task
+                . '" href="#toggle"><span>'
+                . $title
+                . '</span></a>';
         } else {
             $html = '<a class="grid-action grid-boolean state grid_' . $bool . '"><span>' . $title . '</span></a>';
         }
@@ -86,15 +86,15 @@ class Grid
             $direction = ($direction == 'desc') ? 'asc' : 'desc';
         }
 
-        $html  = '<a href="#" data-order="' .
-            $order .
-            '" data-direction="' .
-            $direction .
-            '" data-task="' .
-            $task .
-            '" title="' .
-            Lang::txt('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') .
-            '" class="grid-order ';
+        $html  = '<a href="#" data-order="'
+            . $order
+            . '" data-direction="'
+            . $direction
+            . '" data-task="'
+            . $task
+            . '" title="'
+            . Lang::txt('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN')
+            . '" class="grid-order ';
         if ($order == $selected) {
             $html .= 'active ' . ($direction == 'desc' ? 'asc' : 'desc') . ' ';
         }
@@ -119,19 +119,19 @@ class Grid
             return '';
         }
 
-        return '<input type="checkbox" id="cb' .
-            $rowNum .
-            '" name="' .
-            $name .
-            '[]" value="' .
-            $recId .
-            '" class="checkbox-toggle" title="' .
-            Lang::txt('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) .
-            '" /><label for="cb' .
-            $rowNum .
-            '" class="sr-only visually-hidden">' .
-            $recId .
-            '</label>';
+        return '<input type="checkbox" id="cb'
+            . $rowNum
+            . '" name="'
+            . $name
+            . '[]" value="'
+            . $recId
+            . '" class="checkbox-toggle" title="'
+            . Lang::txt('JGRID_CHECKBOX_ROW_N', ($rowNum + 1))
+            . '" /><label for="cb'
+            . $rowNum
+            . '" class="sr-only visually-hidden">'
+            . $recId
+            . '</label>';
     }
 
     /**
@@ -292,17 +292,17 @@ class Grid
         // Load the behavior.
         self::behavior();
 
-        $href = '<a href="#" data-rows="' .
-            (count($rows) - 1) .
-            '" data-task="' .
-            $task .
-            '" class="grid-order-save ' .
-            $cls .
-            '" title="' .
-            Lang::txt('JLIB_HTML_SAVE_ORDER') .
-            '"><span>' .
-            Lang::txt('JLIB_HTML_SAVE_ORDER') .
-            '</span></a>';
+        $href = '<a href="#" data-rows="'
+            . (count($rows) - 1)
+            . '" data-task="'
+            . $task
+            . '" class="grid-order-save '
+            . $cls
+            . '" title="'
+            . Lang::txt('JLIB_HTML_SAVE_ORDER')
+            . '"><span>'
+            . Lang::txt('JLIB_HTML_SAVE_ORDER')
+            . '</span></a>';
 
         return $href;
     }
@@ -325,15 +325,15 @@ class Grid
             $date = with(new Date($row->checked_out_time))->toLocal(Lang::txt('DATE_FORMAT_LC1'));
             $time = with(new Date($row->checked_out_time))->toLocal('H:i');
 
-            $hover = '<span class="editlinktip hasTip" title="' .
-                Lang::txt('JLIB_HTML_CHECKED_OUT') .
-                '::' .
-                $text .
-                '<br />' .
-                $date .
-                '<br />' .
-                $time .
-                '">';
+            $hover = '<span class="editlinktip hasTip" title="'
+                . Lang::txt('JLIB_HTML_CHECKED_OUT')
+                . '::'
+                . $text
+                . '<br />'
+                . $date
+                . '<br />'
+                . $time
+                . '">';
         }
 
         return $hover . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
@@ -778,26 +778,26 @@ class Grid
         if ($enabled) {
             $html[] = '<a class="grid-action' . ($tip ? ' hasTip' : '') . '"';
             $html[] = ' href="#" data-id="' . $checkbox . $i . '" data-task="' . $prefix . $task . '"';
-            $html[] = ' title="' .
-                addslashes(htmlspecialchars(
+            $html[] = ' title="'
+                . addslashes(htmlspecialchars(
                     $translate ? Lang::txt($active_title) : $active_title,
                     ENT_COMPAT,
                     'UTF-8',
-                )) .
-                '">';
+                ))
+                . '">';
             $html[] = '<span class="state ' . $active_class . '">';
             $html[] = $text ? ('<span class="text">' . ($translate ? Lang::txt($text) : $text) . '</span>') : '';
             $html[] = '</span>';
             $html[] = '</a>';
         } else {
             $html[] = '<a class="grid-action' . ($tip ? ' hasTip' : '') . '"';
-            $html[] = ' title="' .
-                addslashes(htmlspecialchars(
+            $html[] = ' title="'
+                . addslashes(htmlspecialchars(
                     $translate ? Lang::txt($inactive_title) : $inactive_title,
                     ENT_COMPAT,
                     'UTF-8',
-                )) .
-                '">';
+                ))
+                . '">';
             $html[] = '<span class="state ' . $inactive_class . '">';
             $html[] = $text ? ('<span class="text">' . ($translate ? Lang::txt($text) : $text) . '</span>') : '';
             $html[] = '</span>';

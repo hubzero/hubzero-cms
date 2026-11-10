@@ -272,9 +272,9 @@ class Tool
             return false;
         }
         if (is_numeric($this->id)) {
-            $query = "INSERT INTO #__tool (id,toolname,title) VALUES (" .
-                $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," .
-                $db->Quote($this->title) . ");";
+            $query = "INSERT INTO #__tool (id,toolname,title) VALUES ("
+                . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . ","
+                . $db->Quote($this->title) . ");";
 
             $db->setQuery($query);
 
@@ -284,8 +284,8 @@ class Tool
                 return true;
             }
         } else {
-            $query = "INSERT INTO #__tool (toolname,title) VALUES (" .
-                $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
+            $query = "INSERT INTO #__tool (toolname,title) VALUES ("
+                . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
             $db->setQuery($query);
 
@@ -349,13 +349,13 @@ class Tool
         }
 
         if (is_numeric($this->toolname)) {
-            $query = "SELECT id,toolname,title,registered,registered_by,state_changed," .
-                "ticketid,published,state,priority FROM #__tool WHERE id=" .
-                $db->Quote($this->toolname) . ";";
+            $query = "SELECT id,toolname,title,registered,registered_by,state_changed,"
+                . "ticketid,published,state,priority FROM #__tool WHERE id="
+                . $db->Quote($this->toolname) . ";";
         } else {
-            $query = "SELECT id,toolname,title,registered,registered_by,state_changed," .
-                "ticketid,published,state,priority FROM #__tool WHERE " .
-                " toolname=" . $db->Quote($this->toolname) . ";";
+            $query = "SELECT id,toolname,title,registered,registered_by,state_changed,"
+                . "ticketid,published,state,priority FROM #__tool WHERE "
+                . " toolname=" . $db->Quote($this->toolname) . ";";
         }
 
         $db->setQuery($query);
@@ -512,8 +512,8 @@ class Tool
 
                     $first = false;
 
-                    $query .= '(' . $db->Quote($this->id) . ',' . $db->Quote($this->toolname) .
-                        "," . $db->Quote($value) . ')';
+                    $query .= '(' . $db->Quote($this->id) . ',' . $db->Quote($this->toolname)
+                        . "," . $db->Quote($value) . ')';
 
                     $order++;
                 }
@@ -543,11 +543,11 @@ class Tool
                 }
 
                 if ($property == 'version') {
-                    $query = "DELETE FROM $aux_table WHERE toolid=" . $db->Quote($this->id) .
-                        " AND instance NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE toolid=" . $db->Quote($this->id)
+                        . " AND instance NOT IN ($valuelist);";
                 } else {
-                    $query = "DELETE FROM $aux_table WHERE tool_id=" . $db->Quote($this->id) .
-                        " AND $property NOT IN ($valuelist);";
+                    $query = "DELETE FROM $aux_table WHERE tool_id=" . $db->Quote($this->id)
+                        . " AND $property NOT IN ($valuelist);";
                 }
             }
 
@@ -689,8 +689,8 @@ class Tool
                     if (in_array($property, ['version'])) {
                         $aux_table = "#__tool_" . $property;
 
-                        $query = "SELECT instance FROM $aux_table AS aux WHERE aux.toolid=" .
-                            $db->Quote($this->id) . " ORDER BY $property" . " ASC;";
+                        $query = "SELECT instance FROM $aux_table AS aux WHERE aux.toolid="
+                            . $db->Quote($this->id) . " ORDER BY $property" . " ASC;";
                     } else {
                         $query = null;
                     }
@@ -963,9 +963,9 @@ class Tool
             return false;
         }
 
-        $query = "SELECT id FROM #__tool_version AS v WHERE v.toolname=" .
-            $db->Quote($this->toolname) . " AND v.instance=" . $db->Quote($instance) .
-            " ORDER BY v.revision DESC LIMIT 1";
+        $query = "SELECT id FROM #__tool_version AS v WHERE v.toolname="
+            . $db->Quote($this->toolname) . " AND v.instance=" . $db->Quote($instance)
+            . " ORDER BY v.revision DESC LIMIT 1";
 
         $db->setQuery($query);
 
@@ -1001,8 +1001,8 @@ class Tool
             return false;
         }
 
-        $query = "SELECT id FROM `#__tool_version` AS v WHERE v.toolname=" .
-            $db->Quote($this->toolname) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
+        $query = "SELECT id FROM `#__tool_version` AS v WHERE v.toolname="
+            . $db->Quote($this->toolname) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
 
         $db->setQuery($query);
 
@@ -1043,8 +1043,8 @@ class Tool
 
         $start = '0';
         if (
-            isset($filters['start']) && intval($filters['start']) == $filters['start'] &&
-            $filters['start'] > 0
+            isset($filters['start']) && intval($filters['start']) == $filters['start']
+            && $filters['start'] > 0
         ) {
             $start = $filters['start'];
         }
@@ -1208,9 +1208,9 @@ class Tool
     {
         $db = App::get('db');
 
-        $query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered," .
-            " t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
-            " where t.id=v.toolid ";
+        $query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered,"
+            . " t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v "
+            . " where t.id=v.toolid ";
         $query .= self::buildQuerySearch($filters, $admin);
         $query .= self::buildQueryState($filters, $admin);
         $query .= " GROUP BY t.toolname ";
@@ -1237,8 +1237,8 @@ class Tool
 
         $db = App::get('db');
 
-        $query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM `#__tool_version` AS v " .
-            " WHERE v.toolid=" . $db->Quote($this->id);
+        $query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM `#__tool_version` AS v "
+            . " WHERE v.toolid=" . $db->Quote($this->id);
         $query .= self::buildQuerySort($filters, $admin) . self::buildQueryLimit($filters, $admin);
         $query .= ";";
         $db->setQuery($query);
@@ -1307,8 +1307,8 @@ class Tool
             $clause = " $clause1 AND $clause2 ";
         }
 
-        $query = 'SELECT r.id FROM `#__tool` as t ' .
-            'LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE ' . "$clause ;";
+        $query = 'SELECT r.id FROM `#__tool` as t '
+            . 'LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE ' . "$clause ;";
 
         $db->setQuery($query);
 
@@ -1327,8 +1327,8 @@ class Tool
     {
         $db = App::get('db');
 
-        $query = "SELECT t.id FROM `#__tool` AS t " .
-            "WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
+        $query = "SELECT t.id FROM `#__tool` AS t "
+            . "WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
 
         if ($id) {
             $query .= " AND id != " . $db->Quote($id);
@@ -1427,8 +1427,8 @@ class Tool
             // or on the dev team. If the user were neither in apps, nor on the dev team,
             // they would immediately lose access to the tool after saving
             if (
-                !Component::params('com_tools')->get('access-manage-component') &&
-                !in_array(User::get('username'), $devs)
+                !Component::params('com_tools')->get('access-manage-component')
+                && !in_array(User::get('username'), $devs)
             ) {
                 $err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_CREATER_NOT_DEVELOPER');
             }
@@ -1458,9 +1458,9 @@ class Tool
                 $grp = Group::getInstance($groupName);
                 if (!is_object($grp) || !$grp->get('gidNumber')) {
                     if ($groupName != ($group_prefix . strtolower($tool['toolname']))) {
-                        $err['membergroups' . $k] = 'Group name ' . $groupName .
-                            ' is not valid and is not ' .
-                            $group_prefix . strtolower($tool['toolname']);
+                        $err['membergroups' . $k] = 'Group name ' . $groupName
+                            . ' is not valid and is not '
+                            . $group_prefix . strtolower($tool['toolname']);
                     }
                 }
             }
@@ -1503,10 +1503,10 @@ class Tool
         } elseif (!preg_match('#^[_0-9a-zA-Z.:-]+$#i', $newversion)) {
             $err = Lang::txt('COM_TOOLS_ERR_VERSION_ILLEGAL');
         } else {
-            $query = "SELECT v.id FROM `#__tool` AS t, `#__tool_version` AS v " .
-                "WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) .
-                " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") " .
-                "AND v.state!='3' LIMIT 1;";
+            $query = "SELECT v.id FROM `#__tool` AS t, `#__tool_version` AS v "
+                . "WHERE v.toolid=t.id AND t.id=" . $db->Quote($id)
+                . " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") "
+                . "AND v.state!='3' LIMIT 1;";
 
             $db->setQuery($query);
 
@@ -1714,9 +1714,9 @@ class Tool
 
         $query  = "SELECT tv.toolname, tg.cn ";
         $query .= "FROM `#__tool_groups` AS tg, `#__tool_version` AS tv ";
-        $query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid) .
-            " AND role=0 AND tv.instance=" . $db->quote($instance) .
-            " AND tv.toolaccess='@GROUP'";
+        $query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid)
+            . " AND role=0 AND tv.instance=" . $db->quote($instance)
+            . " AND tv.toolaccess='@GROUP'";
 
         $db->setQuery($query);
         return $db->loadObjectList();
@@ -1831,9 +1831,9 @@ class Tool
         $db = App::get('db');
         $filter = self::xbuildQuery($filters, $admin);
 
-        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, " .
-            "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup" .
-            " FROM $filter";
+        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, "
+            . "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
+            . " FROM $filter";
         if (isset($filters['start']) && isset($filters['limit'])) {
             $sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
         }

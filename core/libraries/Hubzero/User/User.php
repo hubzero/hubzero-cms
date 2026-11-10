@@ -561,8 +561,8 @@ class User extends \Hubzero\Database\Relational
 
         // check for a jwt if user is not logged in
         if (
-            $this->guest && array_key_exists('jwt', $_COOKIE) &&
-            $env == 'cloud' && !is_null($pubkeyb64)
+            $this->guest && array_key_exists('jwt', $_COOKIE)
+            && $env == 'cloud' && !is_null($pubkeyb64)
         ) {
             try {
                 // decode public key and use it to check jwt signature
@@ -595,14 +595,14 @@ class User extends \Hubzero\Database\Relational
                         // Using SQL here because the ORM does not currently support writing
                         // new records with a specific primary key value
                         $db = App::get('db');
-                        $query = "INSERT INTO `#__users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, " .
-                            "`approved`, `sendEmail`, `activation`, `params`, `access`, `usageAgreement`, `homeDirectory`, `loginShell`, `ftpShell`)
-							VALUES (" . $db->quote($jwtid) . ", " . $db->quote($jwtname) . ", " . $db->quote($jwtuser) .
-                            ", " . $db->quote($jwtemail) . ", " . $db->quote('') . ", " . $db->quote('') . ", " .
-                            $db->quote('0') . ", " . $db->quote('2') . ", " . $db->quote('0') . ", " . $db->quote('1') .
-                            ", " . $db->quote('') . ", " . $db->quote('5') . ", " . $db->quote('1') . ", " .
-                            $db->quote(self::defaultHomeDirectory($jwtuser)) . ", " . $db->quote('/bin/bash') . ", " .
-                            $db->quote('/usr/lib/sftp-server') . ")";
+                        $query = "INSERT INTO `#__users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, "
+                            . "`approved`, `sendEmail`, `activation`, `params`, `access`, `usageAgreement`, `homeDirectory`, `loginShell`, `ftpShell`)
+							VALUES (" . $db->quote($jwtid) . ", " . $db->quote($jwtname) . ", " . $db->quote($jwtuser)
+                            . ", " . $db->quote($jwtemail) . ", " . $db->quote('') . ", " . $db->quote('') . ", "
+                            . $db->quote('0') . ", " . $db->quote('2') . ", " . $db->quote('0') . ", " . $db->quote('1')
+                            . ", " . $db->quote('') . ", " . $db->quote('5') . ", " . $db->quote('1') . ", "
+                            . $db->quote(self::defaultHomeDirectory($jwtuser)) . ", " . $db->quote('/bin/bash') . ", "
+                            . $db->quote('/usr/lib/sftp-server') . ")";
 
                         $db->setQuery($query);
                         $result = $db->query();
@@ -707,15 +707,15 @@ class User extends \Hubzero\Database\Relational
         static $fallback;
 
         if (!isset($fallback)) {
-            $image = "<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64' style='stroke-width: 0px; background-color: #ffffff;'>" .
-                    "<path fill='#d9d9d9' d='M63.9 64v-3c-.6-.9-1-1.8-1.4-2.8l-1.2-3c-.4-1-.9-1.9-1.4-2.8S58.8 50.9 58 " .
-                    "50c-.8-.8-1.5-1.3-2.4-1.5-.6-.2-1.1-.3-1.7-.4-.6 0-2.1-.3-4.4-.6l-8.4-1.3c-.2-.8-.4-1.5-.5-2.4-.1-" .
-                    ".8-.3-1.5-.6-2.4.3-.6.7-1 1.1-1.5.4-.6.8-1 1.1-1.5.4-.6.7-1.3 1-2.2.3-.8.8-3.5 1.3-7.8l.4-3c.1-.9." .
-                    "1-1.4.1-1.5 0-2.9-1-5.6-3.1-8-1-1.3-2.4-2.4-4.1-3.2-1.8-.9-3.7-1.4-6-1.4-2.2 0-4.3.4-6 1.3-1.8.9-3" .
-                    ".1 2-4.2 3.2-1.1 1.3-1.8 2.6-2.3 4.1-.6 1.4-.7 2.5-.7 3.2 0 .7 0 1.5.1 2.3l.4 2.9.4 3.1.4 3.3c.2 1" .
-                    ".1.7 2.4 1.5 3.7.3.6.7 1.1 1.1 1.5l1.1 1.5c-.2.8-.4 1.5-.6 2.4-.1.8-.3 1.5-.6 2.4l-5.6.8-4.6.8c-1." .
-                    "2.2-2.1.3-2.6.4-.6.1-1.1.2-1.7.4-2.1.8-4 3.1-5.7 6.8L.9 58.5c-.4 1-.8 1.9-1.3 2.8V64h64.3z'/>" .
-                    "</svg>";
+            $image = "<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64' style='stroke-width: 0px; background-color: #ffffff;'>"
+                    . "<path fill='#d9d9d9' d='M63.9 64v-3c-.6-.9-1-1.8-1.4-2.8l-1.2-3c-.4-1-.9-1.9-1.4-2.8S58.8 50.9 58 "
+                    . "50c-.8-.8-1.5-1.3-2.4-1.5-.6-.2-1.1-.3-1.7-.4-.6 0-2.1-.3-4.4-.6l-8.4-1.3c-.2-.8-.4-1.5-.5-2.4-.1-"
+                    . ".8-.3-1.5-.6-2.4.3-.6.7-1 1.1-1.5.4-.6.8-1 1.1-1.5.4-.6.7-1.3 1-2.2.3-.8.8-3.5 1.3-7.8l.4-3c.1-.9."
+                    . "1-1.4.1-1.5 0-2.9-1-5.6-3.1-8-1-1.3-2.4-2.4-4.1-3.2-1.8-.9-3.7-1.4-6-1.4-2.2 0-4.3.4-6 1.3-1.8.9-3"
+                    . ".1 2-4.2 3.2-1.1 1.3-1.8 2.6-2.3 4.1-.6 1.4-.7 2.5-.7 3.2 0 .7 0 1.5.1 2.3l.4 2.9.4 3.1.4 3.3c.2 1"
+                    . ".1.7 2.4 1.5 3.7.3.6.7 1.1 1.1 1.5l1.1 1.5c-.2.8-.4 1.5-.6 2.4-.1.8-.3 1.5-.6 2.4l-5.6.8-4.6.8c-1."
+                    . "2.2-2.1.3-2.6.4-.6.1-1.1.2-1.7.4-2.1.8-4 3.1-5.7 6.8L.9 58.5c-.4 1-.8 1.9-1.3 2.8V64h64.3z'/>"
+                    . "</svg>";
 
             $fallback = sprintf('data:image/svg+xml;base64,%s', base64_encode($image));
         }

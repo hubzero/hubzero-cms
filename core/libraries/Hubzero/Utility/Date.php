@@ -181,12 +181,12 @@ class Date extends DateTime
             default:
                 $trace = debug_backtrace();
                 trigger_error(
-                    'Undefined property via __get(): ' .
-                        $name .
-                        ' in ' .
-                        $trace[0]['file'] .
-                        ' on line ' .
-                        $trace[0]['line'],
+                    'Undefined property via __get(): '
+                        . $name
+                        . ' in '
+                        . $trace[0]['file']
+                        . ' on line '
+                        . $trace[0]['line'],
                     E_USER_NOTICE,
                 );
         }

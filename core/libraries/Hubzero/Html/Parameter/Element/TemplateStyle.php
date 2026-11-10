@@ -52,10 +52,10 @@ class TemplateStyle extends Element
         array_unshift($data, $default);
 
         $selected = $this->_getSelected();
-        $html = Builder\Select::genericlist($data, $control_name .
-            '[' .
-            $name .
-            ']', 'class="inputbox" size="6"', 'id', 'description', $selected);
+        $html = Builder\Select::genericlist($data, $control_name
+            . '['
+            . $name
+            . ']', 'class="inputbox" size="6"', 'id', 'description', $selected);
 
         return $html;
     }

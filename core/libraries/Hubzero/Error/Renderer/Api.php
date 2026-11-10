@@ -70,8 +70,8 @@ class Api implements RendererInterface
 
                 for ($i = count($backtrace) - 1; $i >= 0; $i--) {
                     if (isset($backtrace[$i]['class'])) {
-                        $line = "[$i] " .
-                            sprintf(
+                        $line = "[$i] "
+                            . sprintf(
                                 "%s %s %s()",
                                 $backtrace[$i]['class'],
                                 $backtrace[$i]['type'],

@@ -44,19 +44,19 @@ class Text extends Element
 
         $value = htmlspecialchars(htmlspecialchars_decode($value, ENT_QUOTES), ENT_QUOTES, 'UTF-8');
 
-        return '<input type="text" name="' .
-            $control_name .
-            '[' .
-            $name .
-            ']" id="' .
-            $control_name .
-            $name .
-            '" value="' .
-            $value .
-            '" ' .
-            $class .
-            ' ' .
-            $size .
-            ' />';
+        return '<input type="text" name="'
+            . $control_name
+            . '['
+            . $name
+            . ']" id="'
+            . $control_name
+            . $name
+            . '" value="'
+            . $value
+            . '" '
+            . $class
+            . ' '
+            . $size
+            . ' />';
     }
 }

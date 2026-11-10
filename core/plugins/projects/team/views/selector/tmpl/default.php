@@ -22,8 +22,8 @@ if (count($this->authors) > 0) {
     }
 }
 
-$newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=team&action=newauthor&p=' .
-$this->props);
+$newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=team&action=newauthor&p='
+. $this->props);
 
 ?>
 <div id="abox-content-wrap">

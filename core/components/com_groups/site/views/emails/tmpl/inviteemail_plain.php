@@ -24,15 +24,15 @@ if ($this->msg) {
     $message .= '=====================' . "\n\n";
 }
 
-$message .= "If you already have a registered account on " .
-    $this->sitename .
-    ", click or copy and paste the link below into a browser window. \r\n";
-$sef = ltrim(Route::url('index.php?option=' .
-    $this->option .
-    '&cn=' .
-    $this->group->get('cn') .
-    '&task=accept&token=' .
-    $this->token), '/');
+$message .= "If you already have a registered account on "
+    . $this->sitename
+    . ", click or copy and paste the link below into a browser window. \r\n";
+$sef = ltrim(Route::url('index.php?option='
+    . $this->option
+    . '&cn='
+    . $this->group->get('cn')
+    . '&task=accept&token='
+    . $this->token), '/');
 
 $message .= rtrim(Request::base(), '/') . '/' . $sef . "\n\n";
 $message .= "--------------------------------------------\n\n";

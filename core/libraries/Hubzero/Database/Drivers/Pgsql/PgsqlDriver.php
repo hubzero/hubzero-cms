@@ -786,8 +786,8 @@ class PgsqlDriver extends BaseSqlDriver
     public function sequenceExists($name): bool
     {
         $this->setQuery(
-            "SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = " .
-            $this->quote($name),
+            "SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = "
+            . $this->quote($name),
         );
         return (bool) $this->loadResult();
     }
@@ -854,8 +854,8 @@ class PgsqlDriver extends BaseSqlDriver
         $newTable = $this->replacePrefix($newTable);
 
         $this->setQuery(
-            'ALTER TABLE ' . $this->quoteName($oldTable) .
-            ' RENAME TO ' . $this->quoteName($newTable),
+            'ALTER TABLE ' . $this->quoteName($oldTable)
+            . ' RENAME TO ' . $this->quoteName($newTable),
         )->execute();
 
         return $this;

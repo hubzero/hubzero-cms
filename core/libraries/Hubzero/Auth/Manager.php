@@ -88,9 +88,9 @@ class Manager
                             return new \Exception($this->app['language']->txt('JLIB_LOGIN_DENIED'), 102003);
                             break;
                         default:
-                            return new \Exception($this->
-                                app['language']->
-                                txt('JLIB_LOGIN_AUTHORISATION'), 102004);
+                            return new \Exception($this
+                                ->app['language']
+                                ->txt('JLIB_LOGIN_AUTHORISATION'), 102004);
                             break;
                     }
                 }
@@ -121,11 +121,11 @@ class Manager
                     $cookie_path   = $this->app['config']->get('cookie_path', '/');
 
                     // Check for SSL connection
-                    $secure = ((isset($_SERVER['HTTPS']) &&
-                        ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION'));
-                    setcookie($this->
-                        app->
-                        hash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain, $secure, true);
+                    $secure = ((isset($_SERVER['HTTPS'])
+                        && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION'));
+                    setcookie($this
+                        ->app
+                        ->hash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain, $secure, true);
                 }
 
                 return true;

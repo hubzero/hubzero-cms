@@ -119,8 +119,8 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
     if ($this->lastPubRelease && $this->lastPubRelease->id != $this->publication->version_id) { ?>
         <p>
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
-            [<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' .
-                    $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->escape($this->lastPubRelease->version_label); ?></a>]
+            [<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id='
+                    . $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->escape($this->lastPubRelease->version_label); ?></a>]
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
         </p>
     <?php }

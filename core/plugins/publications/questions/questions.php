@@ -107,8 +107,8 @@ class Questions extends Plugin
         $arr['name']  = 'questions';
 
         // Load component language file
-        Lang::load('com_answers') ||
-        Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+        Lang::load('com_answers')
+        || Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
 
         // Are we returning HTML?
         if ($rtrn == 'all' || $rtrn == 'html') {
@@ -238,12 +238,12 @@ class Questions extends Plugin
     {
         // Login required
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' .
-                    $this->option .
-                    '&id=' .
-                    $this->publication->id .
-                    '&active=' .
-                    $this->_name, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option='
+                    . $this->option
+                    . '&id='
+                    . $this->publication->id
+                    . '&active='
+                    . $this->_name, false, true), 'server');
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -360,8 +360,8 @@ class Questions extends Plugin
         $row->tag($tags);
 
         // Add the tag to link to the publication
-        $identifier = $this->publication->get('alias') ?
-            $this->publication->get('alias') : $this->publication->get('id');
+        $identifier = $this->publication->get('alias')
+            ? $this->publication->get('alias') : $this->publication->get('id');
         $tag = $this->publication->isTool() ?  'tool:' . $identifier : 'publication:' . $identifier;
 
         $row->addTag($tag, User::get('id'), ($this->publication->isTool() ? 0 : 1));

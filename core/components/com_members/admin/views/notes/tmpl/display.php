@@ -162,8 +162,8 @@ Toolbar::help('notes');
                         <?php echo Html::grid('checkedout', $i, $row->editor, $row->get('checked_out_time')); ?>
                     <?php endif; ?>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
-                            $this->controller . '&task=edit&id=' . $row->get('id'));?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=edit&id=' . $row->get('id'));?>">
                             <?php echo $this->escape($row->member->get('name')); ?></a>
                     <?php else : ?>
                         <?php echo $this->escape($row->member->get('name')); ?>
