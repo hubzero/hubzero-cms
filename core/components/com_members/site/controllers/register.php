@@ -324,7 +324,7 @@ class Register extends SiteController
 
         $xprofile = Member::oneOrFail(User::get('id'));
 
-        $hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
+        $hzal = \Hubzero\Auth\Link::findById(User::get('auth_link_id'));
 
         // Get users component config options, specifically whether or not 'simple' registration is enabled
         $method             = Request::getMethod();
@@ -564,7 +564,7 @@ class Register extends SiteController
                         }
 
                         if (is_object($hzal) && !$profileRow->get('orcid')) {
-                            $domain = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
+                            $domain = \Hubzero\Auth\Domain::findById($hzal->auth_domain_id);
 
                             if ($domain && is_object($domain) && $domain->get('authenticator') == 'orcid') {
                                 $profileRow->set('orcid', $hzal->username);
@@ -718,7 +718,7 @@ class Register extends SiteController
 
         $hzal = null;
         if (User::get('auth_link_id')) {
-            $hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
+            $hzal = \Hubzero\Auth\Link::findById(User::get('auth_link_id'));
         }
 
         // Instantiate a new registration object

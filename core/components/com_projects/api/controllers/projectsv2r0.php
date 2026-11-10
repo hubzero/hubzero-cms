@@ -433,8 +433,8 @@ class Projectsv2r0 extends ApiController
             // becomes managers, so this cannot be an arbitrary gid.
             if (
                 !User::authorise('core.manage', $this->option)
-                && !$group->is_member_of('members', User::get('id'))
-                && !$group->is_member_of('managers', User::get('id'))
+                && !$group->isMemberOf('members', User::get('id'))
+                && !$group->isMemberOf('managers', User::get('id'))
             ) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
             }
@@ -926,8 +926,8 @@ class Projectsv2r0 extends ApiController
             if (
                 (int) $row->get('owned_by_group') != $oldGroup
                 && !User::authorise('core.manage', $this->option)
-                && !$group->is_member_of('members', User::get('id'))
-                && !$group->is_member_of('managers', User::get('id'))
+                && !$group->isMemberOf('members', User::get('id'))
+                && !$group->isMemberOf('managers', User::get('id'))
             ) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
             }

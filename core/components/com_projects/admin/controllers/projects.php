@@ -1086,7 +1086,7 @@ class Projects extends AdminController
             $server->disposition('attachment');
             $server->acceptranges(false);
             $server->saveas('sync.' . Date::format('Y-m') . '.txt');
-            $result = $server->serve_attachment($sfile, 'sync.' . Date::format('Y-m') . '.txt', false);
+            $result = $server->serveAttachment($sfile, 'sync.' . Date::format('Y-m') . '.txt', false);
             exit;
         }
 

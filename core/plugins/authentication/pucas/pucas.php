@@ -165,7 +165,7 @@ class Pucas extends Plugin
         if ($authenticated) {
             $username = phpCAS::getUser();
 
-            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'findOrCreate' : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', 'pucas', null, $username);
 
             if ($hzal === false) {
@@ -299,7 +299,7 @@ class Pucas extends Plugin
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'pucas', null, $username);
                 // if `$hzal` === false, then either:
                 //    the authenticator Domain couldn't be found,
                 //    no username was provided,
@@ -309,7 +309,7 @@ class Pucas extends Plugin
                     $hzal->set('email', phpCAS::getAttribute('email'));
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "pucas", null, %s) returned false', $username));
+                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", "pucas", null, %s) returned false', $username));
                 }
             }
         } else {

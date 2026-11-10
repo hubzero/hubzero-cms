@@ -773,7 +773,7 @@ class Resume extends Plugin
         $xserver->disposition('attachment');
         $xserver->acceptranges(false); // @TODO fix byte range support
         $xserver->saveas(stripslashes($resume->title));
-        $result = $xserver->serve_attachment($file, stripslashes($default_title), false); // @TODO fix byte range support
+        $result = $xserver->serveAttachment($file, stripslashes($default_title), false); // @TODO fix byte range support
 
         if (!$result) {
             App::abort(500, Lang::txt('SERVER_ERROR'));

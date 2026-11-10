@@ -68,8 +68,8 @@ Two convenience methods skip the setters:
 
 | Method | Equivalent to |
 |---|---|
-| `serve_attachment($filename, $saveas = null, $acceptranges = true)` | disposition `attachment`, then `serve()` |
-| `serve_inline($filename, $acceptranges = true)` | disposition `inline`, no save-as, then `serve()` |
+| `serveAttachment($filename, $saveas = null, $acceptranges = true)` | disposition `attachment`, then `serve()` |
+| `serveInline($filename, $acceptranges = true)` | disposition `inline`, no save-as, then `serve()` |
 
 ## X-Sendfile
 

@@ -652,7 +652,7 @@ class Questions extends SiteController
         if ($this->config->get('banking')) {
             $BTL = new Teller(User::get('id'));
 
-            $funds = $BTL->summary() - $BTL->credit_summary();
+            $funds = $BTL->summary() - $BTL->creditSummary();
             $funds = ($funds > 0) ? $funds : 0;
         }
 
@@ -993,8 +993,8 @@ class Questions extends SiteController
 
             // Make credit adjustment
             $teller = new Teller(User::get('id'));
-            $adjusted = $teller->credit_summary() - $reward;
-            $teller->credit_adjustment($adjusted);
+            $adjusted = $teller->creditSummary() - $reward;
+            $teller->creditAdjustment($adjusted);
         }
 
         // Log activity

@@ -109,7 +109,7 @@ class Inflector
             return $result;
         }
 
-        if (! static::is_countable($result)) {
+        if (! static::isCountable($result)) {
             return $result;
         }
 
@@ -133,7 +133,7 @@ class Inflector
     {
         $result = strval($word);
 
-        if (! static::is_countable($result)) {
+        if (! static::isCountable($result)) {
             return $result;
         }
 
@@ -154,7 +154,7 @@ class Inflector
      * @return  bool    if the word is countable
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function is_countable($word)
+    public static function isCountable($word)
     {
         return ! (in_array(strtolower(strval($word)), static::$uncountable_words));
     }

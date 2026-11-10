@@ -491,7 +491,7 @@ class Hubzero extends Plugin
 
         // Now, also check to see if user came in via an auth plugin, as that may affect their approval status
         if (isset($user['auth_link'])) {
-            $domain = \Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
+            $domain = \Hubzero\Auth\Domain::findById($user['auth_link']->auth_domain_id);
 
             if ($domain && is_object($domain)) {
                 $params = \Plugin::params('authentication', $domain->authenticator);

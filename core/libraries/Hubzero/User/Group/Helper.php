@@ -236,7 +236,7 @@ class Helper
      * @param   string  $role
      * @return  array|null
      */
-    public static function search_roles($group, $role = '')
+    public static function searchRoles($group, $role = '')
     {
         if ($role == '') {
             return false;

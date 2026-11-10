@@ -147,7 +147,7 @@ class Xml
             $xml .= "\n";
         }
 
-        self::last_error(self::XML_ERROR_NONE);
+        self::lastError(self::XML_ERROR_NONE);
 
         return $xml;
     }
@@ -159,7 +159,7 @@ class Xml
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function last_error($id)
+    public static function lastError($id)
     {
         static $last_error = 0;
 
@@ -274,7 +274,7 @@ class Xml
             }
         }
 
-        self::last_error(self::XML_ERROR_NONE);
+        self::lastError(self::XML_ERROR_NONE);
 
         return $obj;
     }

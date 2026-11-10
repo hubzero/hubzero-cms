@@ -209,7 +209,7 @@ class Server extends Obj
      */
     public function serve()
     {
-        return self::serve_file($this->filename, $this->saveas, $this->disposition, $this->acceptranges);
+        return self::serveFile($this->filename, $this->saveas, $this->disposition, $this->acceptranges);
     }
 
     /**
@@ -222,9 +222,9 @@ class Server extends Obj
      * @return  boolean  True on success, False if error
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function serve_attachment($filename, $saveas = null, $acceptranges = true)
+    public function serveAttachment($filename, $saveas = null, $acceptranges = true)
     {
-        return self::serve_file($filename, $saveas, 'attachment', $acceptranges);
+        return self::serveFile($filename, $saveas, 'attachment', $acceptranges);
     }
 
     /**
@@ -236,9 +236,9 @@ class Server extends Obj
      * @return  boolean  True on success, False if error
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function serve_inline($filename, $acceptranges = true)
+    public function serveInline($filename, $acceptranges = true)
     {
-        return self::serve_file($filename, null, 'inline', $acceptranges);
+        return self::serveFile($filename, null, 'inline', $acceptranges);
     }
 
     /**
@@ -251,7 +251,7 @@ class Server extends Obj
      * @return  boolean  True on success, False if error
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function serve_file($filename, $saveas = null, $disposition = 'inline', $acceptranges = true)
+    public static function serveFile($filename, $saveas = null, $disposition = 'inline', $acceptranges = true)
     {
         if (!self::valid($filename)) {
             return false;

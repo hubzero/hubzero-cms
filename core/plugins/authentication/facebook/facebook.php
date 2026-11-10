@@ -242,7 +242,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             }
 
             // Create the hubzero auth link
-            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'findOrCreate' : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', $this->name, null, $id);
 
             if ($hzal === false) {
@@ -356,7 +356,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', $this->name, null, $id);
                 // if `$hzal` === false, then either:
                 //    the authenticator Domain couldn't be found,
                 //    no username was provided,
@@ -366,7 +366,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                     $hzal->set('email', $email);
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", ' . $this->name . ', null, %s) returned false', $id));
+                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", ' . $this->name . ', null, %s) returned false', $id));
                 }
             }
         } else {

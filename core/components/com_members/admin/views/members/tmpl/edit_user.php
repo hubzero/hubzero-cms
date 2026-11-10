@@ -37,8 +37,8 @@ $incomplete = false;
 $authenticator = 'hub';
 if (substr($this->profile->get('email', ''), -8) == '@invalid') {
     $authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
-    if ($lnk = Hubzero\Auth\Link::find_by_id(abs($this->profile->get('username')))) {
-        $domain = Hubzero\Auth\Domain::find_by_id($lnk->auth_domain_id);
+    if ($lnk = Hubzero\Auth\Link::findById(abs($this->profile->get('username')))) {
+        $domain = Hubzero\Auth\Domain::findById($lnk->auth_domain_id);
         $authenticator = $domain->authenticator;
     }
     $incomplete = true;
@@ -364,7 +364,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                         $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED')
                             . '<input type="hidden" name="activation" id="activation" value="3" />';
 
-                        if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id'))) {
+                        if ($lnks = Hubzero\Auth\Link::findByUserId($this->profile->get('id'))) {
                             $confirmed .= '<fieldset class="radio authenticators">';
                             $confirmed .= '<ul>';
                             foreach ($lnks as $lnk) {

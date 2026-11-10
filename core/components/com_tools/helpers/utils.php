@@ -448,7 +448,7 @@ class Utils
         }
 
         //if the user is in an E1 nation
-        if (\Hubzero\Geocode\Geocode::is_e1nation($country)) {
+        if (\Hubzero\Geocode\Geocode::isE1nation($country)) {
             $export_access->valid = 0;
             $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
             Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
@@ -458,7 +458,7 @@ class Utils
         //run checks depending on the export ac
         switch ($export_control) {
             case 'us':
-                if ($country != 'us' && !\Hubzero\Geocode\Geocode::is_iplocation($ip, 'pu')) {
+                if ($country != 'us' && !\Hubzero\Geocode\Geocode::isIplocation($ip, 'pu')) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
                     Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
@@ -467,7 +467,7 @@ class Utils
                 break;
 
             case 'd1':
-                if (\Hubzero\Geocode\Geocode::is_d1nation($country)) {
+                if (\Hubzero\Geocode\Geocode::isD1nation($country)) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
                     Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
@@ -476,7 +476,7 @@ class Utils
                 break;
 
             case 'pu':
-                if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $export_control)) {
+                if (!\Hubzero\Geocode\Geocode::isIplocation($ip, $export_control)) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
                     Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");

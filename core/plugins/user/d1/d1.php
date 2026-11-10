@@ -59,7 +59,7 @@ class D1 extends Plugin
             return true;
         }
 
-        if (\Hubzero\Geocode\Geocode::is_d1nation($country)) {
+        if (\Hubzero\Geocode\Geocode::isD1nation($country)) {
             Log::debug($ip . ' is in a D1 nation, [' . $username . '] in group [d1_nation].');
 
             \Hubzero\User\Group::setMember('d1_nation', $uid, true);

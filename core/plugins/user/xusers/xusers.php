@@ -548,7 +548,7 @@ class Xusers extends Plugin
             $xprofile->delete();
         }
 
-        \Hubzero\Auth\Link::delete_by_user_id($user['id']);
+        \Hubzero\Auth\Link::deleteByUserId($user['id']);
 
         // Check if quota exists for the user
 

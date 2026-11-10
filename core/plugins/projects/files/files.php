@@ -1824,7 +1824,7 @@ class Files extends Plugin
             if ($image && is_file($image)) {
                 $server = new \Hubzero\Content\Server();
                 $server->filename($image);
-                $server->serve_inline($image);
+                $server->serveInline($image);
                 exit;
             }
         }
@@ -1947,7 +1947,7 @@ class Files extends Plugin
                 $server->disposition('attachment');
                 $server->acceptranges(false);
                 $server->saveas($serveas);
-                $result = $server->serve_attachment($downloadPath, $serveas, false);
+                $result = $server->serveAttachment($downloadPath, $serveas, false);
 
                 if (!$result) {
                     // Should only get here on error
@@ -2177,7 +2177,7 @@ class Files extends Plugin
                 $server->disposition('attachment');
                 $server->acceptranges(false);
                 $server->saveas($pdfName);
-                $result = $server->serve_attachment(PATH_APP . $outputDir . DS . $contentFile, $pdfName, false);
+                $result = $server->serveAttachment(PATH_APP . $outputDir . DS . $contentFile, $pdfName, false);
 
                 if (!$result) {
                     // Should only get here on error

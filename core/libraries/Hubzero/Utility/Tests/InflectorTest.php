@@ -104,13 +104,13 @@ class InflectorTest extends Basic
     public function testIsCountable()
     {
         foreach (self::$uncountable_words as $word) {
-            $result = Inflector::is_countable($word);
+            $result = Inflector::isCountable($word);
 
             $this->assertFalse($result);
         }
 
         foreach (self::$strings as $word) {
-            $result = Inflector::is_countable($word);
+            $result = Inflector::isCountable($word);
 
             $this->assertTrue($result);
         }

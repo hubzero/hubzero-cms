@@ -115,7 +115,7 @@ class Media extends SiteController
         if (is_file($source)) {
             $server = new \Hubzero\Content\Server();
             $server->filename($source);
-            $server->serve_inline($source);
+            $server->serveInline($source);
             exit;
         }
 

@@ -819,13 +819,13 @@ class Admin extends SiteController
      */
     protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
-        if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) {
+        if (!($hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $toolname))) {
             return false;
         }
 
         switch ($codeaccess) {
             case '@OPEN':
-                $hztrac->add_user_permission(0, [
+                $hztrac->addUserPermission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
                     'FILE_VIEW',
@@ -833,7 +833,7 @@ class Admin extends SiteController
                 break;
 
             case '@DEV':
-                $hztrac->remove_user_permission(0, [
+                $hztrac->removeUserPermission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
                     'FILE_VIEW',
@@ -847,7 +847,7 @@ class Admin extends SiteController
 
         switch ($wikiaccess) {
             case '@OPEN':
-                $hztrac->add_user_permission(0, [
+                $hztrac->addUserPermission(0, [
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',
@@ -856,7 +856,7 @@ class Admin extends SiteController
                 break;
 
             case '@DEV':
-                $hztrac->remove_user_permission(0, [
+                $hztrac->removeUserPermission(0, [
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',

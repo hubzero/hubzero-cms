@@ -785,18 +785,18 @@ class Pipeline extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
-        if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) {
+        if (!($hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $toolname))) {
             return false;
         }
 
         if ($codeaccess == '@OPEN') {
-            $hztrac->add_user_permission(0, [
+            $hztrac->addUserPermission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
                 'FILE_VIEW',
             ]);
         } elseif ($codeaccess == '@DEV') {
-            $hztrac->remove_user_permission(0, [
+            $hztrac->removeUserPermission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
                 'FILE_VIEW',
@@ -804,14 +804,14 @@ class Pipeline extends SiteController
         }
 
         if ($wikiaccess == '@OPEN') {
-            $hztrac->add_user_permission(0, [
+            $hztrac->addUserPermission(0, [
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
                 'SEARCH_VIEW',
             ]);
         } elseif ($wikiaccess == '@DEV') {
-            $hztrac->remove_user_permission(0, [
+            $hztrac->removeUserPermission(0, [
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
@@ -1056,8 +1056,8 @@ class Pipeline extends SiteController
         }
         $hzg->set('members', $tool['developers']);
 
-        $hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $tool['toolname']);
-        $hztrac->add_group_permission('apps', [
+        $hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $tool['toolname']);
+        $hztrac->addGroupPermission('apps', [
             'WIKI_ADMIN',
             'MILESTONE_ADMIN',
             'BROWSER_VIEW',
@@ -1068,7 +1068,7 @@ class Pipeline extends SiteController
             'TIMELINE_VIEW',
             'SEARCH_VIEW',
         ]);
-        $hztrac->add_group_permission($hzg->cn, [
+        $hztrac->addGroupPermission($hzg->cn, [
             'WIKI_ADMIN',
             'MILESTONE_ADMIN',
             'BROWSER_VIEW',

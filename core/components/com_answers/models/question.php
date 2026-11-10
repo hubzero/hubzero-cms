@@ -597,7 +597,7 @@ class Question extends Relational
 
                 // Make credit adjustment
                 $BTL_Q = new Teller(User::get('id'));
-                $BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
+                $BTL_Q->creditAdjustment($BTL_Q->creditSummary() - $reward);
             } else {
                 $db = App::get('db');
 
@@ -635,9 +635,9 @@ class Question extends Relational
             // Make credit adjustment
             if (is_object($this->creator)) {
                 $BTL = new Teller($this->get('created_by'));
-                $credit = $BTL->credit_summary();
+                $credit = $BTL->creditSummary();
                 $adjusted = $credit - $reward;
-                $BTL->credit_adjustment($adjusted);
+                $BTL->creditAdjustment($adjusted);
             }
 
             $this->set('reward', 0);

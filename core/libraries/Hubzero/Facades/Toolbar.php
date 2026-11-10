@@ -141,14 +141,14 @@ class Toolbar extends Facade
     }
 
     /**
-     * Writes a media_manager button.
+     * Writes a mediaManager button.
      *
      * @param   string  $directory  The sub-drectory to upload the media to.
      * @param   string  $alt        An override for the alt text.
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function media_manager($directory = '', $alt = 'JTOOLBAR_UPLOAD')
+    public static function mediaManager($directory = '', $alt = 'JTOOLBAR_UPLOAD')
     {
         static::getRoot()->appendButton(
             'Popup',

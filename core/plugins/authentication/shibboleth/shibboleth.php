@@ -604,7 +604,7 @@ class Shibboleth extends Plugin
         if (isset($options['shibboleth']['eppn'])) {
             self::log('auth with', $options['shibboleth']);
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
-                ? 'find_or_create'
+                ? 'findOrCreate'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method(
                 'authentication',
@@ -721,7 +721,7 @@ class Shibboleth extends Plugin
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'shibboleth', $status['idp'], $username);
                 // if `$hzal` === false, then either:
                 //    the authenticator Domain couldn't be found,
                 //    no username was provided,
@@ -733,7 +733,7 @@ class Shibboleth extends Plugin
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
-                        'Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false',
+                        'Hubzero\Auth\Link::findOrCreate("authentication", "shibboleth", %s, %s) returned false',
                         $status['idp'],
                         $username,
                     ));

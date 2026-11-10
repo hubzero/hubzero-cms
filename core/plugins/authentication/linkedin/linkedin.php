@@ -214,7 +214,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
             // Create the hubzero auth link
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
-                ? 'find_or_create'
+                ? 'findOrCreate'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', $this->name, null, $id);
 
@@ -336,7 +336,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', $this->name, null, $id);
 
                 if ($hzal) {
                     $hzal->set('user_id', User::get('id'));
@@ -344,7 +344,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
-                        'Hubzero\Auth\Link::find_or_create("authentication", "linkedin", null, %s) returned false',
+                        'Hubzero\Auth\Link::findOrCreate("authentication", "linkedin", null, %s) returned false',
                         $id,
                     ));
                 }
@@ -378,7 +378,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $hzad = \Hubzero\Auth\Domain::find_or_create('authentication', $this->name, null);
+        $hzad = \Hubzero\Auth\Domain::findOrCreate('authentication', $this->name, null);
 
         if (!is_object($hzad) || !$hzad->get('id')) {
             return;

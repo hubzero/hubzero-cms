@@ -370,9 +370,9 @@ class Answers extends Plugin
 
                             // Make credit adjustment
                             $BTL_Q = new \Hubzero\Bank\Teller($asker_id);
-                            $credit = $BTL_Q->credit_summary();
+                            $credit = $BTL_Q->creditSummary();
                             $adjusted = $credit - $reward;
-                            $BTL_Q->credit_adjustment($adjusted);
+                            $BTL_Q->creditAdjustment($adjusted);
                         }
                     }
                 }

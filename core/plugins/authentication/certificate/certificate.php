@@ -133,12 +133,12 @@ class Certificate extends Plugin
         // Check for the required subject dn field
         if ($this->isAuthenticated()) {
             // A verified certificate need not carry a CN or an e-mail address;
-            // an empty username is refused by Link::find/find_or_create below
+            // an empty username is refused by Link::find/findOrCreate below
             $domain   = isset($_SERVER['SSL_CLIENT_I_DN_CN']) ? $_SERVER['SSL_CLIENT_I_DN_CN'] : '';
             $username = isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
 
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
-                ? 'find_or_create'
+                ? 'findOrCreate'
                 : 'find';
             $hzal   = \Hubzero\Auth\Link::$method('authentication', 'certificate', $domain, $username);
 
@@ -220,7 +220,7 @@ class Certificate extends Plugin
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'certificate', $domain, $username);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'certificate', $domain, $username);
                 // if `$hzal` === false, then either:
                 //    the authenticator Domain couldn't be found,
                 //    no username was provided,
@@ -231,7 +231,7 @@ class Certificate extends Plugin
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
-                        'Hubzero\Auth\Link::find_or_create("authentication", "certificate", %s, %s) returned false',
+                        'Hubzero\Auth\Link::findOrCreate("authentication", "certificate", %s, %s) returned false',
                         $domain,
                         $username,
                     ));

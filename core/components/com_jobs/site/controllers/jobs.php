@@ -586,7 +586,7 @@ class Jobs extends SiteController
         // check available user funds (if paying with points)
         $BTL = new \Hubzero\Bank\Teller($subscription->uid);
         $balance = $BTL->summary();
-        $credit  = $BTL->credit_summary();
+        $credit  = $BTL->creditSummary();
         $funds   = $balance;
         $funds   = ($funds > 0) ? $funds : '0';
 
@@ -1913,7 +1913,7 @@ class Jobs extends SiteController
             $xserver->disposition('attachment');
             $xserver->acceptranges(false);
             $xserver->saveas(Lang::txt('JOBS_RESUME_BATCH=Resume Batch'));
-            $result = $xserver->serve_attachment($archive['path'], $archive['name'], false);
+            $result = $xserver->serveAttachment($archive['path'], $archive['name'], false);
 
             // Delete downloaded zip
             Filesystem::delete($archive['path']);

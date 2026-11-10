@@ -86,7 +86,7 @@ class Certificate extends SiteController
             // Serve up the file
             $xserver = new Server();
             $xserver->filename($file);
-            $xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
+            $xserver->serveAttachment($file); // Firefox and Chrome fail if served inline
             exit;
         }
 

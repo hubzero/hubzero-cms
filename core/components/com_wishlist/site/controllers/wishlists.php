@@ -584,7 +584,7 @@ class Wishlists extends SiteController
         if ($action == 'addbonus' && $this->banking) {
             $BTL = new Teller(User::get('id'));
             $balance = $BTL->summary();
-            $credit  = $BTL->credit_summary();
+            $credit  = $BTL->creditSummary();
             $funds   = $balance - $credit;
             $funds   = ($funds > 0) ? $funds : '0';
             $wish->set('funds', $funds);
@@ -975,7 +975,7 @@ class Wishlists extends SiteController
         if ($this->banking) {
             $BTL = new Teller(User::get('id'));
             $balance = $BTL->summary();
-            $credit  = $BTL->credit_summary();
+            $credit  = $BTL->creditSummary();
             $funds   = $balance - $credit;
             $funds   = ($funds > 0) ? $funds : '0';
         }
@@ -1638,7 +1638,7 @@ class Wishlists extends SiteController
         // check available user funds
         $BTL = new Teller(User::get('id'));
         $balance = $BTL->summary();
-        $credit  = $BTL->credit_summary();
+        $credit  = $BTL->creditSummary();
         $funds   = $balance - $credit;
         $funds   = ($funds > 0) ? $funds : '0';
 

@@ -741,7 +741,7 @@ class Filefsv1r0 extends ApiController
             if ($image && is_file($image)) {
                 $server = new \Hubzero\Content\Server();
                 $server->filename($image);
-                $server->serve_inline($image);
+                $server->serveInline($image);
                 exit;
             }
         }
@@ -801,7 +801,7 @@ class Filefsv1r0 extends ApiController
             $server->disposition('attachment');
             $server->acceptranges(false);
             $server->saveas($serveas);
-            $result = $server->serve_attachment($downloadPath, $serveas, false);
+            $result = $server->serveAttachment($downloadPath, $serveas, false);
 
             if (!$result) {
                 // Should only get here on error

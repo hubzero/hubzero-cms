@@ -136,7 +136,7 @@ class Subscriptions extends AdminController
         // check available user funds
         $BTL = new \Hubzero\Bank\Teller($subscription->get('uid'));
         $balance = $BTL->summary();
-        $credit  = $BTL->credit_summary();
+        $credit  = $BTL->creditSummary();
         $funds   = $balance;
         $funds   = ($funds > 0) ? $funds : 0;
 

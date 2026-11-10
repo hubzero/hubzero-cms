@@ -94,7 +94,7 @@ class Points extends Plugin
 
             $view->sum = $BTL->summary();
 
-            $view->credit = $BTL->credit_summary();
+            $view->credit = $BTL->creditSummary();
             $funds = $view->sum - $view->credit;
 
             $view->funds = ($funds > 0) ? $funds : 0;

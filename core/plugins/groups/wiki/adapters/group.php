@@ -151,7 +151,7 @@ class Group extends Base
         // Is this a group manager?
         if ($group && $group->published == 1) {
             // Is this a group manager?
-            if ($group->is_member_of('managers', User::get('id'))) {
+            if ($group->isMemberOf('managers', User::get('id'))) {
                 // Allow access to all options
                 $page->config()->set('access-page-manage', true);
                 $page->config()->set('access-page-create', true);
@@ -189,7 +189,7 @@ class Group extends Base
 
                         // Standard wiki
                     default:
-                        if ($group->is_member_of('members', User::get('id'))) {
+                        if ($group->isMemberOf('members', User::get('id'))) {
                             $page->config()->set('access-page-create', true);
 
                             if (!$page->isLocked()) {

@@ -208,7 +208,7 @@ class Link extends Relational
      */
     public static function find($type, $authenticator, $domain, $username)
     {
-        $hzad = Domain::find_or_create($type, $authenticator, $domain);
+        $hzad = Domain::findOrCreate($type, $authenticator, $domain);
 
         if (!is_object($hzad)) {
             return false;
@@ -237,7 +237,7 @@ class Link extends Relational
      * @return  mixed    Object on success, False on failure
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_by_id($id)
+    public static function findById($id)
     {
         $row = self::oneOrNew($id);
 
@@ -258,9 +258,9 @@ class Link extends Relational
      * @return  mixed   Object on success, False on failure
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_or_create($type, $authenticator, $domain, $username)
+    public static function findOrCreate($type, $authenticator, $domain, $username)
     {
-        $hzad = Domain::find_or_create($type, $authenticator, $domain);
+        $hzad = Domain::findOrCreate($type, $authenticator, $domain);
 
         if (!$hzad) {
             return false;
@@ -297,7 +297,7 @@ class Link extends Relational
      * @return  array    Array of auth link entries for the given user_id
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_by_user_id($user_id = null)
+    public static function findByUserId($user_id = null)
     {
         if (empty($user_id)) {
             return false;
@@ -327,7 +327,7 @@ class Link extends Relational
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_trusted_emails($user_id)
+    public static function findTrustedEmails($user_id)
     {
         if (empty($user_id) || !is_numeric($user_id)) {
             return false;
@@ -352,7 +352,7 @@ class Link extends Relational
      * @return  boolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function delete_by_user_id($user_id = null)
+    public static function deleteByUserId($user_id = null)
     {
         if (empty($user_id)) {
             return true;
@@ -380,7 +380,7 @@ class Link extends Relational
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_by_email($email, $exclude = [])
+    public static function findByEmail($email, $exclude = [])
     {
         if (empty($email)) {
             return false;

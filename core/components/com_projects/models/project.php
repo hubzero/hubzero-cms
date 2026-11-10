@@ -636,8 +636,8 @@ class Project extends Model
 
                     if ($group) {
                         if (
-                            $group->is_member_of('members', User::get('id'))
-                            || $group->is_member_of('managers', User::get('id'))
+                            $group->isMemberOf('members', User::get('id'))
+                            || $group->isMemberOf('managers', User::get('id'))
                         ) {
                             $this->params->set('access-create-project', true);
                         }

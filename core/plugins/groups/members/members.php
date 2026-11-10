@@ -298,7 +298,7 @@ class Members extends Plugin
                         break;
                     case 'managers':
                         $view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
-                        $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter) : $view->groupusers;
+                        $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter) : $view->groupusers;
                         $view->managers   = $group->get('managers');
                         break;
                     case 'members':
@@ -307,11 +307,11 @@ class Members extends Plugin
                         // Managers/admins see the full list so they can administer membership.
                         if ($view->authorized == 'manager' || $view->authorized == 'admin') {
                             $view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
-                            $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter) : $view->groupusers;
+                            $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter) : $view->groupusers;
                         } elseif ($view->q) {
                             $view->groupusers = $group->search('members', $view->q);
                         } elseif ($view->role_filter) {
-                            $view->groupusers = \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter);
+                            $view->groupusers = \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter);
                         } else {
                             $view->groupusers = [];
                             $view->prompt_filter = true;

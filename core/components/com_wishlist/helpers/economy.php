@@ -99,9 +99,9 @@ class Economy extends Obj
                     $BTL = new Teller($p->uid);
                     $hold = $this->getTotalPayment($wishid, $p->uid);
                     if ($hold) {
-                        $credit = $BTL->credit_summary();
+                        $credit = $BTL->creditSummary();
                         $adjusted = $credit - $hold;
-                        $BTL->credit_adjustment($adjusted);
+                        $BTL->creditAdjustment($adjusted);
                     }
                 }
             }
@@ -185,9 +185,9 @@ class Economy extends Obj
                     $BTL = new Teller($p->uid);
                     $hold = $this->getTotalPayment($wishid, $p->uid);
                     if ($hold) {
-                        $credit = $BTL->credit_summary();
+                        $credit = $BTL->creditSummary();
                         $adjusted = $credit - $hold;
-                        $BTL->credit_adjustment($adjusted);
+                        $BTL->creditAdjustment($adjusted);
 
                         // withdraw bonus amount
                         $msg = Lang::txt('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist);

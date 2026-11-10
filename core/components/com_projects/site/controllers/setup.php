@@ -129,8 +129,8 @@ class Setup extends Base
         } elseif (!$this->model->exists() && $this->_gid) {
             // Check group authorization to create a project
             if (
-                !$this->group->is_member_of('members', User::get('id'))
-                && !$this->group->is_member_of('managers', User::get('id'))
+                !$this->group->isMemberOf('members', User::get('id'))
+                && !$this->group->isMemberOf('managers', User::get('id'))
             ) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
             }
@@ -280,8 +280,8 @@ class Setup extends Base
         } elseif (!$this->model->exists() && $this->_gid) {
             // Check group authorization to create a project
             if (
-                !$this->group->is_member_of('members', User::get('id'))
-                && !$this->group->is_member_of('managers', User::get('id'))
+                !$this->group->isMemberOf('members', User::get('id'))
+                && !$this->group->isMemberOf('managers', User::get('id'))
             ) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
             }

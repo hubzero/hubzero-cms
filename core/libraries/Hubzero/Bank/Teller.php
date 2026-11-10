@@ -67,7 +67,7 @@ class Teller extends Obj
             $this->credit   = $BA->get('credit');
         } else {
             // no points are given initially
-            $this->_saveBalance('creation');
+            $this->saveBalance('creation');
         }
     }
 
@@ -87,7 +87,7 @@ class Teller extends Obj
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function credit_summary()
+    public function creditSummary()
     {
         return $this->credit;
     }
@@ -103,7 +103,7 @@ class Teller extends Obj
      */
     public function deposit($amount, $desc, $cat, $ref)
     {
-        $amount = $this->_amountCheck($amount);
+        $amount = $this->amountCheck($amount);
 
         if ($this->getError()) {
             echo $this->getError();
@@ -113,7 +113,7 @@ class Teller extends Obj
         $this->balance  += $amount;
         $this->earnings += $amount;
 
-        if (!$this->_save('deposit', $amount, $desc, $cat, $ref)) {
+        if (!$this->save('deposit', $amount, $desc, $cat, $ref)) {
             echo $this->getError();
         }
     }
@@ -129,17 +129,17 @@ class Teller extends Obj
      */
     public function withdraw($amount, $desc, $cat, $ref)
     {
-        $amount = $this->_amountCheck($amount);
+        $amount = $this->amountCheck($amount);
 
         if ($this->getError()) {
             echo $this->getError();
             return;
         }
 
-        if ($this->_creditCheck($amount)) {
+        if ($this->creditCheck($amount)) {
             $this->balance -= $amount;
 
-            if (!$this->_save('withdraw', $amount, $desc, $cat, $ref)) {
+            if (!$this->save('withdraw', $amount, $desc, $cat, $ref)) {
                 echo $this->getError();
             }
         } else {
@@ -158,7 +158,7 @@ class Teller extends Obj
      */
     public function hold($amount, $desc, $cat, $ref)
     {
-        $amount = $this->_amountCheck($amount);
+        $amount = $this->amountCheck($amount);
 
         if ($this->getError()) {
             echo $this->getError();
@@ -172,10 +172,10 @@ class Teller extends Obj
         //
         // See https://hubzero.org/support/ticket/234 for details
 
-        if ($this->_creditCheck($amount)) {
+        if ($this->creditCheck($amount)) {
             $this->credit += $amount;
 
-            if (!$this->_save('hold', $amount, $desc, $cat, $ref)) {
+            if (!$this->save('hold', $amount, $desc, $cat, $ref)) {
                 echo $this->getError();
             }
         } else {
@@ -190,13 +190,13 @@ class Teller extends Obj
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function credit_adjustment($amount)
+    public function creditAdjustment($amount)
     {
         $amount = intval($amount);
 
         $this->credit = ($amount > 0 ? $amount : 0);
 
-        $this->_saveBalance('update');
+        $this->saveBalance('update');
     }
 
     /**
@@ -217,7 +217,7 @@ class Teller extends Obj
      * @return  boolean  True if they have enough credit
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _creditCheck($amount)
+    public function creditCheck($amount)
     {
         $b = $this->balance;
         $b -= $amount;
@@ -239,7 +239,7 @@ class Teller extends Obj
      * @return  integer
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _amountCheck($amount)
+    public function amountCheck($amount)
     {
         $amount = intval($amount);
 
@@ -261,13 +261,13 @@ class Teller extends Obj
      * @return  boolean  True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _save($type, $amount, $desc, $cat, $ref)
+    public function save($type, $amount, $desc, $cat, $ref)
     {
-        if (!$this->_saveBalance($type)) {
+        if (!$this->saveBalance($type)) {
             return false;
         }
 
-        if (!$this->_saveTransaction($type, $amount, $desc, $cat, $ref)) {
+        if (!$this->saveTransaction($type, $amount, $desc, $cat, $ref)) {
             return false;
         }
 
@@ -281,7 +281,7 @@ class Teller extends Obj
      * @return  boolean  True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _saveBalance($type)
+    public function saveBalance($type)
     {
         if ($type == 'creation') {
             $model = Account::blank();
@@ -316,7 +316,7 @@ class Teller extends Obj
      * @return  boolean  True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _saveTransaction($type, $amount, $desc, $cat, $ref)
+    public function saveTransaction($type, $amount, $desc, $cat, $ref)
     {
         $transaction = Transaction::blank()->set([
             'uid'         => $this->uid,

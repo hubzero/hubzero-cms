@@ -228,7 +228,7 @@ class Google extends \Hubzero\Plugin\OauthClient
 
             // Create the hubzero auth link
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
-                ? 'find_or_create'
+                ? 'findOrCreate'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', 'google', null, $username);
 
@@ -337,7 +337,7 @@ class Google extends \Hubzero\Plugin\OauthClient
                 );
             } else {
                 // Create the hubzero auth link
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'google', null, $username);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'google', null, $username);
                 // if `$hzal` === false, then either:
                 //    the authenticator Domain couldn't be found,
                 //    no username was provided,
@@ -348,7 +348,7 @@ class Google extends \Hubzero\Plugin\OauthClient
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
-                        'Hubzero\Auth\Link::find_or_create("authentication", "google", null, %s) returned false',
+                        'Hubzero\Auth\Link::findOrCreate("authentication", "google", null, %s) returned false',
                         $username,
                     ));
                 }

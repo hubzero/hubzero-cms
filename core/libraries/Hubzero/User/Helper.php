@@ -21,7 +21,7 @@ class Helper
      * @param   integer  $length
      * @return  string
      */
-    public static function random_password($length = 8)
+    public static function randomPassword($length = 8)
     {
         $genpass = '';
         $salt = "abchefghjkmnpqrstuvwxyz0123456789";
@@ -46,7 +46,7 @@ class Helper
      * @param   string  $password
      * @return  string
      */
-    public static function encrypt_password($password)
+    public static function encryptPassword($password)
     {
         return "{MD5}" . base64_encode(pack('H*', md5($password)));
     }

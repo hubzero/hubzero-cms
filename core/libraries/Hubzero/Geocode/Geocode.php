@@ -639,7 +639,7 @@ class Geocode
      * @param   string   $country  Country to check
      * @return  boolean  True if D1
      */
-    public static function is_d1nation($country)
+    public static function isD1nation($country)
     {
         return $country ? in_array('D1', (array) self::countryGroups($country)) : false;
     }
@@ -650,7 +650,7 @@ class Geocode
      * @param   string   $country  Country to check
      * @return  boolean  True if E1
      */
-    public static function is_e1nation($country)
+    public static function isE1nation($country)
     {
         return $country ? in_array('E1', (array) self::countryGroups($country)) : false;
     }
@@ -662,7 +662,7 @@ class Geocode
      * @param   string   $location  Location to check in
      * @return  boolean  True if IP is in the location
      */
-    public static function is_iplocation($ip, $location)
+    public static function isIplocation($ip, $location)
     {
         $ip = \Hubzero\Utility\Ip::normalize($ip);
 

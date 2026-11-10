@@ -2332,7 +2332,7 @@ class Resources extends SiteController
         $xserver->acceptranges(true);
         $xserver->saveas($tarname);
 
-        if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) {
+        if (!$xserver->serveAttachment($tarpath . $tarname, $tarname, false)) {
             App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
         }
 

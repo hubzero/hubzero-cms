@@ -137,7 +137,7 @@ class Project
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_or_create($name)
+    public static function findOrCreate($name)
     {
         $hztp = new self();
 
@@ -545,7 +545,7 @@ class Project
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function add_user_permission($user, $action)
+    public function addUserPermission($user, $action)
     {
         $db =  App::get('db');
 
@@ -593,7 +593,7 @@ class Project
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function add_group_permission($group, $action)
+    public function addGroupPermission($group, $action)
     {
         $db =  App::get('db');
 
@@ -639,7 +639,7 @@ class Project
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function remove_user_permission($user, $action)
+    public function removeUserPermission($user, $action)
     {
         $db =  App::get('db');
         $all = false;
@@ -692,7 +692,7 @@ class Project
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function remove_group_permission($group, $action)
+    public function removeGroupPermission($group, $action)
     {
         $db =  App::get('db');
         $all = false;
@@ -742,7 +742,7 @@ class Project
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_user_permission($user)
+    public function getUserPermission($user)
     {
         $db =  App::get('db');
         $quoted_project_id = $db->quote($this->id);
@@ -773,7 +773,7 @@ class Project
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_group_permission($group)
+    public function getGroupPermission($group)
     {
         $db =  App::get('db');
         $quoted_project_id = $db->quote($this->id);

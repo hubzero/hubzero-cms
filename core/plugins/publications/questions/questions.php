@@ -264,7 +264,7 @@ class Questions extends Plugin
 
         if ($banking) {
             $BTL = new \Hubzero\Bank\Teller(User::get('id'));
-            $funds = $BTL->summary() - $BTL->credit_summary();
+            $funds = $BTL->summary() - $BTL->creditSummary();
             $funds = ($funds > 0) ? $funds : 0;
         }
 

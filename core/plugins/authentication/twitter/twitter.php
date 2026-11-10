@@ -213,7 +213,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
             // Create the hubzero auth link
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
-                ? 'find_or_create'
+                ? 'findOrCreate'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', $this->name, null, $id);
 
@@ -333,14 +333,14 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                     'error',
                 );
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', $this->name, null, $id);
 
                 if ($hzal) {
                     $hzal->set('user_id', User::get('id'));
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
-                        'Hubzero\Auth\Link::find_or_create("authentication", "twitter", null, %s) returned false',
+                        'Hubzero\Auth\Link::findOrCreate("authentication", "twitter", null, %s) returned false',
                         $id,
                     ));
                 }

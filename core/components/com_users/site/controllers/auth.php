@@ -609,8 +609,8 @@ class Auth extends SiteController
         }
 
         // Look up a few things
-        $hzal    = \Hubzero\Auth\Link::find_by_id($user->get('auth_link_id'));
-        $hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
+        $hzal    = \Hubzero\Auth\Link::findById($user->get('auth_link_id'));
+        $hzad    = \Hubzero\Auth\Domain::findById($hzal->auth_domain_id);
         $plugins = Plugin::byType('authentication');
 
         // Get the display name for the current plugin being used
@@ -630,13 +630,13 @@ class Auth extends SiteController
             ->rows();
 
         // Now check the auth_link table
-        $link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, [$hzad->id]);
+        $link_conflicts = \Hubzero\Auth\Link::findByEmail($hzal->email, [$hzad->id]);
 
         $conflict = [];
 
         if ($profile_conflicts) {
             foreach ($profile_conflicts as $auser) {
-                $auth_link  = \Hubzero\Auth\Link::find_by_user_id($auser->id);
+                $auth_link  = \Hubzero\Auth\Link::findByUserId($auser->id);
                 $dname = (is_object($auth_link) && $auth_link->auth_domain_name)
                     ? $auth_link->auth_domain_name
                     : 'hubzero';
@@ -910,11 +910,11 @@ class Auth extends SiteController
             // redirect to a page indicating this and offering complete signout
             if (isset($user->auth_link_id) && $user->auth_link_id && empty($authenticator)) {
                 $auth_domain_name = '';
-                $auth_domain      = \Hubzero\Auth\Link::find_by_id($user->auth_link_id);
+                $auth_domain      = \Hubzero\Auth\Link::findById($user->auth_link_id);
 
                 if (is_object($auth_domain)) {
                     $auth_domain_id   = $auth_domain->auth_domain_id;
-                    $auth_domain_name = \Hubzero\Auth\Domain::find_by_id($auth_domain_id)->authenticator;
+                    $auth_domain_name = \Hubzero\Auth\Domain::findById($auth_domain_id)->authenticator;
                 }
 
                 // Redirect to user third party signout view

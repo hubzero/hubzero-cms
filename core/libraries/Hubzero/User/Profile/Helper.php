@@ -26,7 +26,7 @@ class Helper
      * @return  boolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function iterate_profiles($func)
+    public static function iterateProfiles($func)
     {
         $db = App::get('db');
         $db->setQuery("SELECT uidNumber FROM `#__xprofiles`;");
@@ -52,7 +52,7 @@ class Helper
      * @return  mixed   False if not found, string if found
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_by_email($email)
+    public static function findByEmail($email)
     {
         if (empty($email)) {
             return false;

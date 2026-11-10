@@ -199,7 +199,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             $username = $orcid->id();
 
             // Create the hubzero auth link
-            $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
+            $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'orcid', null, $username);
 
             if ($hzal === false) {
                 $response->status = \Hubzero\Auth\Status::FAILURE;
@@ -367,14 +367,14 @@ class Orcid extends \Hubzero\Plugin\OauthClient
                 );
             } else {
                 // Create the hubzero auth link
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
+                $hzal = \Hubzero\Auth\Link::findOrCreate('authentication', 'orcid', null, $username);
 
                 if ($hzal) {
                     $hzal->set('user_id', User::get('id'));
                     $hzal->set('email', $orcid->email());
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "orcid", null, %s) returned false', $username));
+                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", "orcid", null, %s) returned false', $username));
                 }
             }
         } else {

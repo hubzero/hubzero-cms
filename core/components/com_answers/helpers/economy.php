@@ -193,9 +193,9 @@ class Economy extends Obj
             //$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
             // Separate commission and reward payment
             // Remove credit
-            $credit = $BTL_Q->credit_summary();
+            $credit = $BTL_Q->creditSummary();
             $adjusted = $credit - $reward;
-            $BTL_Q->credit_adjustment($adjusted);
+            $BTL_Q->creditAdjustment($adjusted);
 
             if (intval($share) > 0) {
                 $share_msg = ($type == 'royalty')

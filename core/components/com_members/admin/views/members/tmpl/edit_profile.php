@@ -143,7 +143,7 @@ $fields = $form->getFieldset('basic');
         </fieldset>
 
         <?php
-        if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id'))) {
+        if ($lnks = Hubzero\Auth\Link::findByUserId($this->profile->get('id'))) {
             ?>
             <fieldset class="adminform">
                 <legend><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_DATA'); ?></legend>

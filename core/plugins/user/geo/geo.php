@@ -38,7 +38,7 @@ class Geo extends Plugin
         }
 
         // Check user location
-        if (\Hubzero\Geocode\Geocode::is_iplocation(Request::ip(), $location)) {
+        if (\Hubzero\Geocode\Geocode::isIplocation(Request::ip(), $location)) {
             // Opens and saves the group only if the user is not in it yet
             \Hubzero\User\Group::setMember($groupAlias, User::getInstance($user['username'])->get('id'), true);
         }

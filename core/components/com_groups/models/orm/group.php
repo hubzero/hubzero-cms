@@ -317,7 +317,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * @param   integer  $uid    User ID
      * @return  boolean
      */
-    public function is_member_of($table, $uid)
+    public function isMemberOf($table, $uid)
     {
         if (!in_array($table, ['applicants', 'members', 'managers', 'invitees'])) {
             return false;
@@ -338,7 +338,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function isMember($uid)
     {
-        return $this->is_member_of('members', $uid);
+        return $this->isMemberOf('members', $uid);
     }
 
     /**
@@ -349,7 +349,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function isApplicant($uid)
     {
-        return $this->is_member_of('applicants', $uid);
+        return $this->isMemberOf('applicants', $uid);
     }
 
     /**
@@ -360,7 +360,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function isManager($uid)
     {
-        return $this->is_member_of('managers', $uid);
+        return $this->isMemberOf('managers', $uid);
     }
 
     /**
@@ -371,7 +371,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function isInvitee($uid)
     {
-        return $this->is_member_of('invitees', $uid);
+        return $this->isMemberOf('invitees', $uid);
     }
 
     /**
