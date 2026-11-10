@@ -11,7 +11,7 @@ namespace Components\Search\Tests\Traits;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Component;
 
-trait canMock
+trait CanMock
 {
     public $mock;
 
@@ -24,11 +24,11 @@ trait canMock
 
     public function mock($args = [])
     {
-        $this->mockClass = $this->_resolveClass($args['class']);
+        $this->mockClass = $this->resolveClass($args['class']);
         $this->mock      = $this->getMockBuilder($this->mockClass);
 
-        $this->_setMethods($args);
-        $this->_setProps($args);
+        $this->setMethods($args);
+        $this->setProps($args);
 
         return $this->mock;
     }
@@ -65,7 +65,7 @@ trait canMock
      * @param   string  $name
      * @return  string
      */
-    protected function _resolveClass($name)
+    protected function resolveClass($name)
     {
         if (class_exists($name) || interface_exists($name)) {
             return $name;
@@ -84,49 +84,49 @@ trait canMock
         return $class;
     }
 
-    protected function _setProps($args)
+    protected function setProps($args)
     {
-        $props = $this->_extractMockInstantiationData($args, 'props');
+        $props = $this->extractMockInstantiationData($args, 'props');
 
-        $this->_setPropNamesAndValues($props);
+        $this->setPropNamesAndValues($props);
     }
 
-    protected function _setPropNamesAndValues($props)
+    protected function setPropNamesAndValues($props)
     {
         foreach ($props as $name => $value) {
             $this->mock->$name = $value;
         }
     }
 
-    protected function _setMethods($args)
+    protected function setMethods($args)
     {
-        $methods = $this->_extractMockInstantiationData($args, 'methods');
+        $methods = $this->extractMockInstantiationData($args, 'methods');
 
-        $this->_setMethodNames($methods);
-        $this->_setMethodReturnValues($methods);
+        $this->setMethodNames($methods);
+        $this->setMethodReturnValues($methods);
     }
 
-    protected function _extractMockInstantiationData($args, $key)
+    protected function extractMockInstantiationData($args, $key)
     {
         $instantiationData = Arr::getValue($args, $key, []);
 
-        $instantiationData = $this->_mapInstantiationData($instantiationData);
+        $instantiationData = $this->mapInstantiationData($instantiationData);
 
         return $instantiationData;
     }
 
-    protected function _mapInstantiationData($instantiationData)
+    protected function mapInstantiationData($instantiationData)
     {
         $mappedInstantiationData = [];
 
         foreach ($instantiationData as $name => $value) {
-            $this->_mapNameAndValue($mappedInstantiationData, $name, $value);
+            $this->mapNameAndValue($mappedInstantiationData, $name, $value);
         }
 
         return $mappedInstantiationData;
     }
 
-    protected function _mapNameAndValue(&$mappedInstantiationData, $name, $value)
+    protected function mapNameAndValue(&$mappedInstantiationData, $name, $value)
     {
         if (!is_string($name)) {
             $mappedInstantiationData[$value] = null;
@@ -135,7 +135,7 @@ trait canMock
         }
     }
 
-    protected function _setMethodNames($methods)
+    protected function setMethodNames($methods)
     {
         // setMethods() was removed in PHPUnit 10. It doubled as both
         // "replace this existing method" and "invent one that does not exist",
@@ -162,7 +162,7 @@ trait canMock
         $this->mock = $this->mock->getMock();
     }
 
-    protected function _setMethodReturnValues($methods)
+    protected function setMethodReturnValues($methods)
     {
         foreach ($methods as $name => $returnValue) {
             // A bare method name carries no return value and only means "stub

@@ -9,13 +9,13 @@
 namespace Components\Search\Tests;
 
 use Components\Search\Helpers\SolariumBoostQueries as Queries;
-use Components\Search\Tests\Traits\canMock;
+use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
 use Component;
 
 class SolariumBoostQueriesTest extends Basic
 {
-    use canMock;
+    use CanMock;
 
     public function testOneReturnsInstance()
     {

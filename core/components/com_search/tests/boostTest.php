@@ -9,13 +9,13 @@
 namespace Components\Search\Tests;
 
 use Components\Search\Models\Solr\Boost;
-use Components\Search\Tests\Traits\canMock;
+use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
 use Component;
 
 class BoostTest extends Basic
 {
-    use canMock;
+    use CanMock;
 
     public function testGetIdReturnsId()
     {

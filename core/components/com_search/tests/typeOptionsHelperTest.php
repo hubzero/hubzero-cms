@@ -9,13 +9,13 @@
 namespace Components\Search\Tests;
 
 use Components\Search\Helpers\TypeOptionsHelper as Helper;
-use Components\Search\Tests\Traits\canMock;
+use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
 use Component;
 
 class TypeOptionsHelperTest extends Basic
 {
-    use canMock;
+    use CanMock;
 
     public function testGetAll()
     {
