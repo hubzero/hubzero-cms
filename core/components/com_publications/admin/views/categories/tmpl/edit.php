@@ -309,7 +309,7 @@ Html::behavior('framework', true);
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
+                        <td colspan="<?php echo '5';//($this->row->id) ? '5' : '4';?>">
                             <button id="add-custom-field" href="#addRow">
                                 <span><?php echo Lang::txt('COM_PUBLICATIONS_ADD_ROW'); ?></span>
                             </button>

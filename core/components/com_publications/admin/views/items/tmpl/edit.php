@@ -315,7 +315,7 @@ $panels = [
                     ?>
                 </div>
                 <?php // Verifies that there are groups setup, cannot assume that every hub has groups.
-                if (isset($this->groups)) : // && $this->model->project()->groupOwner()): ?>
+                if (isset($this->groups)) : // && $this->model->project()->groupOwner()):?>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
                         <?php

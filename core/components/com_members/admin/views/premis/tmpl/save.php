@@ -40,4 +40,3 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEM
         echo '</p>';
     }
 }
-

@@ -152,7 +152,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                 </form>
                 <?php } ?>
             </div><!-- /.container -->
-        <?php } // foreach ?>
+        <?php } // foreach?>
 
         <?php if ($this->config->get('access-create-section')) { ?>
             <div class="container">

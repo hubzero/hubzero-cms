@@ -27,7 +27,7 @@ $this->css()
     foreach ($this->notifications as $notification) { ?>
     <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
     <?php } // close foreach
-} // close if count ?>
+} // close if count?>
 
 <?php if ($this->getError()) : ?>
     <p class="error"><?php echo $this->getError(); ?></p>

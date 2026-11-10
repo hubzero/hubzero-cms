@@ -115,10 +115,10 @@ $this->css('
                     ?>
                     <?php if (preg_match('/\.vtt$/i', $source)) : ?>
                         <?php // VTT: use native <track> — browser renders captions with
-                          // user-preferred styles from OS accessibility settings. ?>
+                          // user-preferred styles from OS accessibility settings.?>
                     <track kind="captions" src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>" srclang="<?php echo $this->escape(isset($subtitle->lang) ? $subtitle->lang : 'en'); ?>" label="<?php echo $this->escape($subtitle->name); ?>"<?php echo ($auto) ? ' default' : ''; ?> />
                     <?php else : ?>
-                        <?php // SRT: use custom JS overlay (browsers don't support native SRT) ?>
+                        <?php // SRT: use custom JS overlay (browsers don't support native SRT)?>
                     <div aria-hidden="true"
                         data-autoplay="<?php echo $this->escape($auto); ?>"
                         data-type="subtitle"

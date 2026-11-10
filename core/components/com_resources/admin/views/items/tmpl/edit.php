@@ -227,7 +227,7 @@ $this->view('_edit_script')
                         <label><?php echo Lang::txt('COM_RESOURCES_FIELD_CREATOR'); ?>:</label><br />
                         <?php echo $this->lists['created_by']; ?>
                     </div>
-                <?php // if ($this->row->standalone == 1) { ?>
+                <?php // if ($this->row->standalone == 1) {?>
                     <div class="input-wrap">
                         <label for="publish_up"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
                         <?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
@@ -243,7 +243,7 @@ $this->view('_edit_script')
                         ?>
                         <?php echo Html::input('calendar', 'fields[publish_down]', $down); ?>
                     </div>
-                <?php // } ?>
+                <?php // }?>
             </div>
         <?php
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_ACL'), 'acl-page');

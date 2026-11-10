@@ -134,8 +134,8 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <input type="hidden" name="active" value="discussions" />
         <input type="hidden" name="action" value="savethread" />
 
-        <input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
-        <input type="hidden" name="return" value="<?php //echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
+        <input type="hidden" name="section" value="<?php //echo $this->filters['section'];?>" />
+        <input type="hidden" name="return" value="<?php //echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias));?>" />
 
         <?php echo Html::input('token'); ?>
     <?php if (!$no_html) { ?>

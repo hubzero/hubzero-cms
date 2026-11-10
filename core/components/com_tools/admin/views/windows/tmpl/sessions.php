@@ -109,7 +109,7 @@ $sortAvailability = Html::grid(
                         <span><?php echo $this->escape($s['status']); ?></span>
                     </td>
                     <td class="priority-3">
-                        <span><?php //echo $this->escape($s->get('availability')); ?></span>
+                        <span><?php //echo $this->escape($s->get('availability'));?></span>
                     </td>
                 </tr>
                 <?php

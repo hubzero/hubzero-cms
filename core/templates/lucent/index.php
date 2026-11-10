@@ -103,7 +103,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 
 <div class="wrap">
-    <?php // On the front page the header and the hero share one ground ?>
+    <?php // On the front page the header and the hero share one ground?>
     <?php if ($isFrontPage && $this->countModules('hero')) : ?>
     <div class="home-head">
     <?php endif; ?>
@@ -120,7 +120,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                     </div>
 
                     <nav class="nav">
-                        <?php // main navigation bar ?>
+                        <?php // main navigation bar?>
                         <nav role="navigation" aria-label="Primary navigation"
                              title="Primary navigation" class="main-nav">
                             <jdoc:include type="modules" name="user3" />

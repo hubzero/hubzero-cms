@@ -114,8 +114,8 @@ class ServiceProviderTest extends Basic
         $body = 'MIIEMDCCAxigAwIBAgIJAPBXgeztn8U2';
 
         $pem = "-----BEGIN CERTIFICATE-----\n"
-        	. "MIIEMDCCAxigAwIBAgIJ\nAPBXgeztn8U2\n"
-        	. "-----END CERTIFICATE-----\n";
+            . "MIIEMDCCAxigAwIBAgIJ\nAPBXgeztn8U2\n"
+            . "-----END CERTIFICATE-----\n";
 
         $this->assertEquals($body, ServiceProvider::normalizeCertificate($pem));
         $this->assertEquals($body, ServiceProvider::normalizeCertificate($body));

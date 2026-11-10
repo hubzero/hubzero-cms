@@ -56,13 +56,13 @@ $this->css();
                 <th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PROJECTS'); ?></a>  > (<?php echo $this->escape(stripslashes($this->project->get('alias'))); ?>) <?php echo $this->escape(stripslashes($this->project->get('title'))); ?></th>
             </tr>
             <tr>
-                <?php //if (!$groupSynced) { ?>
+                <?php //if (!$groupSynced) {?>
                     <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
                     <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <?php //} ?>
-                <?php // the controller names these sortby/sortdir (sort/sort_Dir were never set) ?>
+                <?php //}?>
+                <?php // the controller names these sortby/sortdir (sort/sort_Dir were never set)?>
                 <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
                 <th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
@@ -113,7 +113,7 @@ $this->css();
             }
             ?>
             <tr class="<?php echo "row$k"; ?>">
-                <?php //if (!$groupSynced) { ?>
+                <?php //if (!$groupSynced) {?>
                     <td>
                         <?php if ($disabled) { ?>
                             <!-- <input type="hidden" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" /> -->
@@ -122,7 +122,7 @@ $this->css();
                             <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                         <?php } ?>
                     </td>
-                <?php //} ?>
+                <?php //}?>
                 <td class="priority-4">
                     <?php echo $this->escape($row->userid); ?>
                 </td>
@@ -144,7 +144,7 @@ $this->css();
                 </td>
                 <td class="priority-5">
                     <span>
-                        <?php //echo ($creator && !$this->project->groupOwner() ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '') . $this->escape($role); ?>
+                        <?php //echo ($creator && !$this->project->groupOwner() ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '') . $this->escape($role);?>
                     <?php if ($creator) { ?>
                         <span class="prominent"><?php echo Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role); ?></span>
                     <?php } else { ?>

@@ -243,14 +243,14 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only ?>
+                                    <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only?>
                                         <th><?php echo Lang::txt('COM_WISHLIST_MY_OPINION'); ?></th>
                                     <?php } ?>
                                     <th><?php echo Lang::txt('COM_WISHLIST_CONSENSUS'); ?></th>
                                     <th><?php echo Lang::txt('COM_WISHLIST_COMMUNITY_VOTE'); ?></th>
                                 </tr>
                             </thead>
-                        <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only ?>
+                        <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only?>
                             <tfoot>
                                 <tr>
                                     <td></td>
@@ -374,7 +374,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         <input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
                     </form>
                 </div><!-- / .container -->
-            <?php } //if ($this->admin) { ?>
+            <?php } //if ($this->admin) {?>
 
             <?php if ($this->wish->get('action') == 'delete') { ?>
                 <div class="warning" id="action">
@@ -616,7 +616,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         </form>
                     </div><!-- / .moveitem -->
                 <?php } ?>
-            <?php } // if not withdrawn ?>
+            <?php } // if not withdrawn?>
             </div><!-- / .wish -->
         </div><!-- / .subject -->
         <aside class="aside">
@@ -688,7 +688,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
         </div><!-- / .aside -->
     </section><!-- / .below section -->
 
-                <?php if (!User::isGuest()) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) { ?>
+                <?php if (!User::isGuest()) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) {?>
         <section class="below section">
             <div class="subject">
                 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
@@ -766,7 +766,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
         </section><!-- / .below section -->
                 <?php } ?>
 
-                <?php if ($this->wishlist->access('manage')) {  // let advisory committee view this too ?>
+                <?php if ($this->wishlist->access('manage')) {  // let advisory committee view this too?>
         <section class="below section" id="plan">
             <div class="subject" id="full_plan">
                 <h3>
@@ -893,8 +893,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     <?php } ?>
             </aside><!-- / .aside -->
         </section><!-- / .below section -->
-                <?php } // if ($this->admin) ?>
-            <?php } // if not withdrawn ?>
+                <?php } // if ($this->admin)?>
+            <?php } // if not withdrawn?>
 
             <?php
         }

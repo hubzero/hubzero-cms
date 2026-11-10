@@ -125,7 +125,7 @@ $maintext = $this->model->description;
             </div>
         <?php } ?>
 
-        <?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
+        <?php if (!$this->model->access('view-all')) { // Protected - only show the introtext?>
             <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h3>
             <div class="resource-content">
                 <?php echo $maintext; ?>

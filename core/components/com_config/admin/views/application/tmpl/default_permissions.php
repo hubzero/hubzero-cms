@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
         <legend class="hidden"><span><?php echo Lang::txt('COM_CONFIG_PERMISSION_SETTINGS'); ?></span></legend>
 
         <?php foreach ($this->form->getFieldset('permissions') as $field) : ?>
-            <?php //echo $field->label; ?>
+            <?php //echo $field->label;?>
             <?php echo $field->input; ?>
         <?php endforeach; ?>
     </fieldset>

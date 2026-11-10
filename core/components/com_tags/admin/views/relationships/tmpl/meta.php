@@ -63,7 +63,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
             foreach ($fas as $i => $fa) :
                 $type_ids = array_flip(explode(',', $fa['types']));
                 ?>
-                <fieldset class="adminform" id="group-<?php echo $i; //echo $fa['id']; ?>">
+                <fieldset class="adminform" id="group-<?php echo $i; //echo $fa['id'];?>">
                     <legend><span><?php echo Lang::txt('COM_TAGS_GROUP'); ?></span></legend>
 
                     <div class="input-wrap">
@@ -175,8 +175,8 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                     <div class="input-wrap">
                         <button
                             class="delete-group"
-                            id="delete-<?php echo $i; //$fa['id']; ?>"
-                            rel="group-<?php echo $i; //$fa['id']; ?>">
+                            id="delete-<?php echo $i; //$fa['id'];?>"
+                            rel="group-<?php echo $i; //$fa['id'];?>">
                             <?php echo Lang::txt('COM_TAGS_DELETE_GROUP'); ?>
                         </button>
                     </div>

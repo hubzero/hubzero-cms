@@ -193,7 +193,7 @@ if (!$this->app->sess) {
             ?>
         </div><!-- / #app-content -->
         <div id="app-footer" data-more="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_MORE')); ?>" data-morehelp="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_MORE')); ?>">
-            <?php // Designer mark (dark two-tone), seated on the metal footer ?>
+            <?php // Designer mark (dark two-tone), seated on the metal footer?>
             <div id="app-logo" class="brand" aria-hidden="true">
                 <svg viewBox="0 0 48.52 85.7" xmlns="http://www.w3.org/2000/svg" focusable="false">
                     <path fill="#383a36" d="M34.93 61.44c0 5.2-3.1 12.31-10.67 12.31s-10.67-6.2-10.67-12.31v-8.68L0 57.53v3.55C0 79.5 15.05 85.7 24.53 85.7s23.98-6.2 23.98-24.62V57.4l-13.59-4.59v8.64ZM24.35 15.66c-2.98 0-6.92.69-10.76 2.43V0L0 3.9v42.5h1.04l12.55 4.24V40.02c0-5.93 3.01-12.4 10.58-12.4 9.3 0 10.76 8.48 10.76 12.31v11.14l13.59-4.77v-6.01c0-18.24-14.68-24.62-24.17-24.62Z"/>
@@ -442,7 +442,7 @@ if (!$this->app->sess) {
             </div><!-- / .col span4 -->
         </div><!-- / .grid -->
     </form>
-    <?php } // shareable ?>
+    <?php } // shareable?>
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>

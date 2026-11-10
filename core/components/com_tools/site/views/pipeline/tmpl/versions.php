@@ -53,7 +53,7 @@ $this->css('pipeline.css')
             <?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
                     <h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
-                <?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
+                <?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>
                     <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
@@ -75,7 +75,7 @@ $this->css('pipeline.css')
 
         <h3><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_EXISTING_VERSIONS'); ?>:</h3>
 
-        <?php if ($this->versions && $this->status['toolname']) { // show versions ?>
+        <?php if ($this->versions && $this->status['toolname']) { // show versions?>
             <table id="tktlist">
                 <thead>
                     <tr>

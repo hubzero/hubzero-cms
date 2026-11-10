@@ -59,7 +59,7 @@ $option = 'com_groups';
 </h3>
 
 <?php if ($this->membership_control == 1) { ?>
-    <?php //if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+    <?php //if ($this->authorized == 'manager' || $this->authorized == 'admin') {?>
         <ul id="page_options">
             <li>
                 <?php if ($this->group->get('join_policy') < 3) : ?>
@@ -86,7 +86,7 @@ $option = 'com_groups';
                 <?php endif; ?>
             </li>
         </ul>
-    <?php //} ?>
+    <?php //}?>
 <?php } ?>
 
 <?php if ($myTerm) : ?>

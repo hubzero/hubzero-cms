@@ -197,7 +197,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                 </tbody>
             </table>
             <?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, ['useCookie' => 1]); ?>
-            <?php // Do not show the publishing options if the edit form is configured not to. ?>
+            <?php // Do not show the publishing options if the edit form is configured not to.?>
             <?php if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))) : ?>
                 <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
                 <fieldset class="panelform">
@@ -230,11 +230,11 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
             <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
             <?php foreach ($fieldSets as $name => $fieldSet) : ?>
                 <?php // If the parameter says to show the article options or if the parameters have never been set, we will
-                      // show the article options. ?>
+                      // show the article options.?>
 
                 <?php if ($params['show_article_options'] || (( $params['show_article_options'] == '' && !empty($editoroptions) ))) : ?>
                     <?php // Go through all the fieldsets except the configuration and basic-limited, which are
-                          // handled separately below. ?>
+                          // handled separately below.?>
 
                     <?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
                         <?php echo Html::sliders('panel', Lang::txt($fieldSet->label), $name . '-options'); ?>
@@ -250,7 +250,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                             <?php endforeach; ?>
                         </fieldset>
                     <?php endif ?>
-                    <?php // If we are not showing the options we need to use the hidden fields so the values are not lost.  ?>
+                    <?php // If we are not showing the options we need to use the hidden fields so the values are not lost.?>
                 <?php  elseif ($name == 'basic-limited') : ?>
                     <?php foreach ($this->form->getFieldset('basic-limited') as $field) : ?>
                         <?php  echo $field->input; ?>
@@ -258,7 +258,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                 <?php endif; ?>
             <?php endforeach; ?>
 
-            <?php // Not the best place, but here for continuity with 1.5/1/6/1.7 ?>
+            <?php // Not the best place, but here for continuity with 1.5/1/6/1.7?>
             <fieldset class="panelform">
                 <div class="form-group input-wrap">
                     <?php echo $this->form->getLabel('xreference'); ?>
@@ -282,8 +282,8 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                 </fieldset>
             <?php endif ?>
 
-            <?php // The url and images fields only show if the configuration is set to allow them.  ?>
-            <?php // This is for legacy reasons. ?>
+            <?php // The url and images fields only show if the configuration is set to allow them.?>
+            <?php // This is for legacy reasons.?>
             <?php if ($params['show_urls_images_backend']) : ?>
                 <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'), 'urls_and_images-options'); ?>
                 <fieldset class="panelform">

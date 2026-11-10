@@ -421,5 +421,5 @@ if ($mode != 'preview') {
                 </div>
             </section><!-- / .main section -->
         </form>
-    <?php } // if ($this->tab == 'about' && $ccount > 0) ?>
+    <?php } // if ($this->tab == 'about' && $ccount > 0)?>
 <?php }

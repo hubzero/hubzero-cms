@@ -244,7 +244,7 @@ $formAction = Route::url(
                         <?php endforeach; ?>
                     </ul>
                     <?php elseif (!$displayed) : ?>
-                        <?php // Offering a module here would put the routing table on a page ?>
+                        <?php // Offering a module here would put the routing table on a page?>
                         <span class="smallsub"><?php echo Lang::txt('COM_MENUS_NOT_DISPLAYED'); ?></span>
                     <?php elseif ($this->modMenuId) : ?>
                         <?php

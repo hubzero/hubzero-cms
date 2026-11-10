@@ -94,7 +94,7 @@ if ($this->wishlist->get('id')) {
                     </label>
                 </div>
 
-            <?php if ($this->wishlist->access('manage') && $this->wishlist->isPublic()) { // list owner ?>
+            <?php if ($this->wishlist->access('manage') && $this->wishlist->isPublic()) { // list owner?>
                 <div class="form-group form-check">
                     <label for="field-private" class="form-check-label">
                         <input class="option form-check-input"

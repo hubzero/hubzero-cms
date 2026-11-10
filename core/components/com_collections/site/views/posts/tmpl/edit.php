@@ -96,7 +96,7 @@ if (!$dir) {
                 <div class="asset-uploader">
                     <div class="grid">
                     <div class="col span-half">
-                        <div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+                        <div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
                             <noscript>
                                 <label for="upload">
                                     <?php echo Lang::txt('COM_COLLECTIONS_FILE'); ?>
@@ -106,7 +106,7 @@ if (!$dir) {
                         </div>
                     </div><!-- / .col span-half -->
                     <div class="col span-half omega">
-                        <div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+                        <div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
                             <noscript>
                                 <label for="add-link">
                                     <?php echo Lang::txt('COM_COLLECTIONS_ADD_A_LINK'); ?>

@@ -78,7 +78,7 @@ $this->css();
     <p><em><?php echo Lang::txt('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></em></p>
 <?php } ?>
 
-<?php if ($this->show_assigned) { // Questions related to my contributions ?>
+<?php if ($this->show_assigned) { // Questions related to my contributions?>
     <h4>
         <a href="<?php echo Route::url('index.php?option=com_answers&task=search&area=assigned&filterby=open'); ?>">
             <?php echo Lang::txt('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS'); ?>
@@ -121,7 +121,7 @@ $this->css();
     <?php } ?>
 <?php } ?>
 
-<?php if ($this->show_interests) { // Questions of interest ?>
+<?php if ($this->show_interests) { // Questions of interest?>
     <?php
     $interestUrl = Route::url(
         'index.php?option=com_answers&task=search&area=interest&filterby=open',

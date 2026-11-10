@@ -147,7 +147,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                         </td>
                         <?php endif; ?>
 
-                    <?php else : // Show unauth links. ?>
+                    <?php else : // Show unauth links.?>
                         <td>
                             <?php
                                 echo $this->escape($article->title) . ' : ';
@@ -170,12 +170,12 @@ $listDirn  = $this->escape($this->filters['direction']);
         </table>
 <?php endif; ?>
 
-    <!-- <?php // REMOVE BECAUSE it is currently not working ?>
+    <!-- <?php // REMOVE BECAUSE it is currently not working?>
     <?php if ($this->category->getParams()->get('access-create')) : ?>
         <?php echo Html::icon('create', $this->category, $this->category->params); ?>
     <?php endif; ?> -->
 
-    <?php // Add pagination links ?>
+    <?php // Add pagination links?>
     <?php if (!empty($this->items)) : ?>
         <?php if (($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
             <div class="pagination">

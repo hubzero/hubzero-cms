@@ -123,7 +123,7 @@ $formAction = Route::url(
                     <?php echo $this->form->getInput('alias'); ?>
                 </div>
 
-                <?php // An external link has no address of ours to answer at ?>
+                <?php // An external link has no address of ours to answer at?>
                 <?php if ($this->item->type !== 'url' && $this->item->type !== 'separator') : ?>
                     <div class="input-wrap">
                         <?php echo $this->form->getLabel('route'); ?>

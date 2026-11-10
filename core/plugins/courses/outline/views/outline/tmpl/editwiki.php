@@ -39,7 +39,7 @@ $assets = [];
         echo $this->editor('content', $content, 35, 10, 'content'); //, null, null, array('class' => 'minimal no-footer images'));
         ?>
 
-<?php // @TODO: implement asset insertion to wiki body! ?>
+<?php // @TODO: implement asset insertion to wiki body!?>
 
 <!--        <div class="wiki-include-assets">
             <div class="wiki-assets-inner">

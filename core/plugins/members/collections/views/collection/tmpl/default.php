@@ -151,7 +151,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         </p>
                         <div class="actions">
                             <?php if (!User::isGuest()) { ?>
-                                <?php //if ($item->get('created_by') == User::get('id')) { ?>
+                                <?php //if ($item->get('created_by') == User::get('id')) {?>
                                 <?php if ($row->get('created_by') == User::get('id')) { ?>
                                     <a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
@@ -165,7 +165,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                 // Let comment only if enabled
                                 if ($allow_comments) :
                                     ?>
-                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                 <?php endif; ?>
@@ -189,7 +189,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                     // Let comment only if enabled
                                 if ($allow_comments) :
                                     ?>
-                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                 <?php endif; ?>

@@ -259,7 +259,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php $followersLabel = Lang::txt('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>
                         <th class="key"><?php echo $followersLabel; ?>:</th>
                         <td>
-                            <?php //echo $this->row->count('followers'); ?>
+                            <?php //echo $this->row->count('followers');?>
                         </td>
                     </tr>
                 </tbody>

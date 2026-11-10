@@ -188,7 +188,7 @@ $this->css('pipeline.css')
                             <!-- / tool admin icons -->
                                 <ul class="developer actions">
                                     <li class="history"><a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $this->status['ticketid']); ?>" title="<?php echo Lang::txt('COM_TOOLS_HISTORY_TIPS');?>">History</a></li>
-                                    <?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status ?>
+                                    <?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status?>
                                         <li class="wiki"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki" title="<?php echo Lang::txt('COM_TOOLS_WIKI_TIPS');?>">Wiki</a></li>
                                         <li class="sourcecode"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/browser" title="<?php echo Lang::txt('COM_TOOLS_SOURCE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_SOURCE');?></a></li>
                                         <li class="timeline"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/timeline" title="<?php echo Lang::txt('COM_TOOLS_TIMELINE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></a></li>
@@ -198,7 +198,7 @@ $this->css('pipeline.css')
                                         <li class="timeline"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></span></li>
                                     <?php } ?>
                                     <li class="message"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO');?> <?php echo ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN'); ?>" class="showmsg"><?php echo Lang::txt('COM_TOOLS_MESSAGE');?></a></li>
-                                    <?php if ($this->status['published'] != 1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
+                                    <?php if ($this->status['published'] != 1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
                                         <li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('JCANCEL');?></a></li>
                                     <?php } ?>
                                 </ul>
@@ -289,7 +289,7 @@ $this->css('pipeline.css')
                                                 <option value="7"<?php if ($this->status['state'] == 7) {
                                                     echo ' selected="selected"';
                                                                  } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
-                                                <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on ?>
+                                                <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on?>
                                                     <option value="8"<?php if ($this->status['state'] == 8) {
                                                         echo ' selected="selected"';
                                                                      } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>

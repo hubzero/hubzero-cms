@@ -28,4 +28,3 @@ if (!empty($this->notifications)) {
     $view->notifications = $this->notifications;
     $view->display();
 }
-

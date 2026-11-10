@@ -152,14 +152,14 @@ $this->js('edit.js', 'com_massmail');
                             <span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_TO'); ?></span>
                             <div class="mm-to-display<?php echo $badRcpt ? ' mm-invalid' : ''; ?>" id="mm-to-display">
                                 <?php if ($editable) { ?>
-                                    <?php // Filled in by the compose JS from the recipient config. ?>
+                                    <?php // Filled in by the compose JS from the recipient config.?>
                                     <ul class="mm-to-chips" id="mm-to-summary"></ul>
                                     <button type="button" class="mm-to-edit" id="mm-to-edit"><?php echo Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'); ?></button>
                                     <?php if ($badRcpt) {
                                         ?><span class="mm-required-note"><?php echo Lang::txt('COM_MASSMAIL_REQUIRED'); ?></span><?php
                                     } ?>
                                 <?php } else { ?>
-                                    <?php // Read-only view: render the saved audience as static chips. ?>
+                                    <?php // Read-only view: render the saved audience as static chips.?>
                                     <ul class="mm-to-chips">
                                         <?php foreach ($toChips as $c) { ?>
                                             <li class="mm-to-chip"><span class="mm-chip-ic" aria-hidden="true"><?php echo $chipIcon[$c['kind']]; ?></span> <?php echo $this->escape($c['label']); ?></li>
@@ -330,14 +330,14 @@ $this->js('edit.js', 'com_massmail');
                         </tbody>
                     </table>
 
-                    <?php // Admin status controls, shown as appropriate to the current state. ?>
+                    <?php // Admin status controls, shown as appropriate to the current state.?>
                     <div class="mm-status-actions">
                         <?php // Pull a held/pending/scheduled mailing back to draft to re-edit.
-                              // It must be re-launched after, which re-runs the send gates. ?>
+                              // It must be re-launched after, which re-runs the send gates.?>
                         <?php // Each control is a submit button bound to the small POST form
                               // (#mm-action, after the main form) so state changes never ride
                               // on a GET link; formaction carries the task and id, the form
-                              // carries the token. ?>
+                              // carries the token.?>
                         <?php if ($this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))) { ?>
                             <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?php echo Route::url($base . '&task=todraft&id=' . $this->row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT'); ?></button>
                         <?php } ?>
@@ -361,7 +361,7 @@ $this->js('edit.js', 'com_massmail');
                               // cancelled). On an editable draft this is omitted: the compose
                               // bar's "Discard" does the same thing (both purge the mailing),
                               // so we only surface Delete on the read-only deletable states
-                              // (held / pending / scheduled) which have no Discard button. ?>
+                              // (held / pending / scheduled) which have no Discard button.?>
                         <?php if (!$editable && $this->row->isDeletable() && $canDo->get('core.delete')) { ?>
                             <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')); ?>" formaction="<?php echo Route::url($base . '&task=delete&id=' . $this->row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING'); ?></button>
                         <?php } ?>
@@ -410,7 +410,7 @@ $this->js('edit.js', 'com_massmail');
                 <?php // Mass mailing is off: a boxed notice (matching the review page's
                       // disposition style) shown for any not-yet-sent mailing -- both the
                       // editable draft and the read-only held/pending/scheduled views -- so
-                      // the "off / will be held / needs release" state is always clear. ?>
+                      // the "off / will be held / needs release" state is always clear.?>
                 <?php if (!$sendingOn && ($editable || $this->row->canReturnToDraft())) { ?>
                     <div class="mm-disp mm-disp-hold">
                         <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
@@ -436,7 +436,7 @@ $this->js('edit.js', 'com_massmail');
     <?php // Carrier for the status/discard buttons above (they reference it via
           // form="mm-action"). It holds only the token; the task and id come
           // from each button's formaction, so it cannot share the main form,
-          // whose own hidden "task" field would override them. ?>
+          // whose own hidden "task" field would override them.?>
     <form action="<?php echo Route::url($base); ?>" method="post" id="mm-action" class="mm-action-form">
         <?php echo Html::input('token'); ?>
     </form>

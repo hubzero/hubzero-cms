@@ -246,7 +246,7 @@ $saveOrder = $listOrder == 'ordering';
         <tfoot>
             <tr>
                 <td colspan="10">
-                    <?php //echo $this->items->pagination; ?>
+                    <?php //echo $this->items->pagination;?>
                     <?php
                 // Initiate paging
                     $pagination = $this->pagination(
@@ -442,7 +442,7 @@ $saveOrder = $listOrder == 'ordering';
         </tbody>
     </table>
 
-    <?php //Load the batch processing form.is user is allowed ?>
+    <?php //Load the batch processing form.is user is allowed?>
     <?php
     $canBatch = User::authorise('core.create', 'com_modules')
         && User::authorise('core.edit', 'com_modules')

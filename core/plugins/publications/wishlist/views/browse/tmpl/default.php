@@ -284,7 +284,7 @@ if ($this->rows->count() > 0) {
                             break;
                     }
                         echo $html;
-                    //} ?>
+                    //}?>
                     </td>
             <?php } ?>
                 </tr>

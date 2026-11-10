@@ -842,4 +842,3 @@ if ($type == 'hubpresenter' || $type == 'html5') {
 <?php else : ?>
     <p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
 <?php endif;
-

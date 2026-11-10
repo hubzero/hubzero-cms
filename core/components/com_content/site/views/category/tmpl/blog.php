@@ -121,7 +121,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                         <?php echo $this->pagination->getPagesCounter(); ?>
                     </p>
                 <?php endif;*/ ?>
-                <?php echo $this->pagination->render(); //getPagesLinks(); ?>
+                <?php echo $this->pagination->render(); //getPagesLinks();?>
             </div>
         <?php endif; ?>
     </div>

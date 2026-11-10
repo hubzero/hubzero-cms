@@ -150,7 +150,7 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 <span><?php echo ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
                                             </button>
                                         <?php } ?>
-                                        <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
+                                        <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                         </a>
                                     <?php } ?>
@@ -182,7 +182,7 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                     <a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
-                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
+                                    <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">

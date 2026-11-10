@@ -131,7 +131,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         </div>
      </div>
         <?php } ?>
-        <?php // Select publication date ?>
+        <?php // Select publication date?>
     <div class="blockelement" id="review-date">
         <div class="element_editing">
             <div class="pane-wrapper">
@@ -219,7 +219,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         </ul>
                     <?php } ?>
 
-                    <?php if ($requireDoi == 2 && !$this->pub->doi) {   // Choice of publish/post  ?>
+                    <?php if ($requireDoi == 2 && !$this->pub->doi) {   // Choice of publish/post?>
                         <h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_OR_PUBLISH'); ?></h6>
                         <label>
                             <input class="option" name="action" type="radio" value="publish" checked="checked" />
@@ -238,7 +238,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
             </div>
         </div>
      </div>
-        <?php // Comments ?>
+        <?php // Comments?>
     <div class="blockelement" id="review-comment">
         <div class="element_editing">
             <div class="pane-wrapper">
@@ -253,7 +253,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
             </div>
         </div>
      </div>
-        <?php // Agreements ?>
+        <?php // Agreements?>
     <div class="blockelement" id="review-agreement">
         <div class="element_editing">
             <div class="pane-wrapper">
@@ -298,7 +298,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
          </div>
         <?php endif; ?>
 
-        <?php // Submission ?>
+        <?php // Submission?>
     <div class="submitarea" id="submit-area">
         <span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
         <span class="button-wrapper icon-apply">

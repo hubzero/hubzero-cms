@@ -132,7 +132,7 @@ $this->css()
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } ?>
-                                <?php if ($this->params->get('access-delete-collection')) { //!$row->get('is_default') && ?>
+                                <?php if ($this->params->get('access-delete-collection')) { //!$row->get('is_default') &&?>
                                     <a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/delete'); ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>

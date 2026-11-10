@@ -471,7 +471,7 @@ class Spreadsheet
                 <?php endif; ?>
 
 
-            <?php endif; //Table Only ?>
+            <?php endif; //Table Only?>
 
 
         <div id="dv-spreadsheet-container" style="margin: 0px; padding; 0px; <?php print $hide_str; ?>">

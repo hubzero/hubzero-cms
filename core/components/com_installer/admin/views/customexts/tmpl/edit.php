@@ -93,8 +93,8 @@ $this->js();
                 </div>
 
                 <!-- <div class="input-wrap">
-                    <?php //echo $this->form->getLabel('git_tag'); ?><br />
-                    <input type="text" name="fields[git_tag]" id="field-git_tag" maxlength="250" value="<?php //echo $this->escape(stripslashes($this->row->get('git_tag'))); ?>" />
+                    <?php //echo $this->form->getLabel('git_tag');?><br />
+                    <input type="text" name="fields[git_tag]" id="field-git_tag" maxlength="250" value="<?php //echo $this->escape(stripslashes($this->row->get('git_tag')));?>" />
                 </div> -->
 
                 <div class="input-wrap">

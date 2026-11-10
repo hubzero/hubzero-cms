@@ -76,7 +76,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
         <p class="help"><?php echo urldecode($this->note['msg']); ?></p>
         <?php } else {*/ ?>
         <p class="error"><?php echo Lang::txt('COM_ANSWERS_NOTICE_QUESTION_REMOVED'); ?></p>
-        <?php //} ?>
+        <?php //}?>
     </div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
@@ -484,7 +484,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
 </section>
 
         <?php if (!$this->question->isReported()) { ?>
-            <?php if ($this->task == 'answer') { // answer form ?>
+            <?php if ($this->task == 'answer') { // answer form?>
             <section class="below section">
                 <div class="section-inner hz-layout-with-aside">
                     <div class="subject">

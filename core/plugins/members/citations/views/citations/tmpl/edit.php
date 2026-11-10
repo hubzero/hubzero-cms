@@ -172,7 +172,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                                 </p>
                             <?php } ?>
                         <?php } else { ?>
-                            <p class="author-instructions"><?php //echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></p>
+                            <p class="author-instructions"><?php //echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT');?></p>
                         <?php } ?>
                     </div>
                     </fieldset>

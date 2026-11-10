@@ -184,7 +184,7 @@ endforeach;
                     </div>
                 </li>
 
-            <?php endforeach; // foreach asset groups ?>
+            <?php endforeach; // foreach asset groups?>
 
             </ul>
             <?php
@@ -206,7 +206,7 @@ endforeach;
             ?>
         </li>
 
-        <?php endforeach; // foreach unit ?>
+        <?php endforeach; // foreach unit?>
 
         <li class="add-new unit-item">
             Add a new unit

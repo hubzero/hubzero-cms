@@ -48,7 +48,7 @@ if (count($this->authors) > 0) {
             <?php } ?>
         </fieldset>
         <div id="quick-add" class="quick-add">
-            <?php // if ($this->model->isProvisioned()) { ?>
+            <?php // if ($this->model->isProvisioned()) {?>
                 <div class="block">
                     <label>
                         <?php
@@ -111,7 +111,7 @@ if (count($this->authors) > 0) {
                         <?php } ?>
                     </label>
                 </div>
-            <?php //} ?>
+            <?php //}?>
             <div class="block">
                 <div class="block-liner">
                     <label for="firstName">

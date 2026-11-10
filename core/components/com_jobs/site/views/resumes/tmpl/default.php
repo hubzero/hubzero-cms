@@ -74,7 +74,7 @@ $resumesUrl = Route::url(
             <?php if ($filters['filterby'] == 'shortlisted') { ?>
                 <h4><?php echo Lang::txt('Candidate Shortlist '); ?></h4>
             <?php } ?>
-            <?php if (count($seekers) > 0) { // show how many ?>
+            <?php if (count($seekers) > 0) { // show how many?>
                 <p class="note_total">
                     <?php echo Lang::txt('Displaying '); ?>
                     <?php
@@ -123,7 +123,7 @@ $resumesUrl = Route::url(
                 }
                 ?>
                 </ul>
-            <?php } else { // no candidates found ?>
+            <?php } else { // no candidates found?>
                 <p>
                     <?php
                     echo $filters['filterby'] == 'shortlisted'

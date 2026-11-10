@@ -123,7 +123,7 @@ if (!$this->activity->log->get('anonymous')) {
             </div><!-- / .activity-details -->
 
             <div class="activity-event">
-                <div class="activity-event-content <?php echo $class; //if ($a->admin) { echo ' admin-action'; } ?>" id="activity-event-content<?php echo $this->activity->log->get('id'); ?>">
+                <div class="activity-event-content <?php echo $class; //if ($a->admin) { echo ' admin-action'; }?>" id="activity-event-content<?php echo $this->activity->log->get('id'); ?>">
                     <?php
                     $content = $this->activity->log->get('description');
                     $short = null;

@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
         <p><?php echo Lang::txt('COM_CONFIG_TEXT_FILTERS_DESC'); ?></p>
 
         <?php foreach ($this->form->getFieldset('filters') as $field) : ?>
-            <?php //echo $field->label; ?>
+            <?php //echo $field->label;?>
             <?php echo $field->input; ?>
         <?php endforeach; ?>
     </fieldset>

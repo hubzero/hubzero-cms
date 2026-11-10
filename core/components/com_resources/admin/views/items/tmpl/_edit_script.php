@@ -97,12 +97,12 @@ function doFileoptions()
                     content = content + '<p><img class="contentimg" src="<?php
                         echo $path;
                     ?>' + filepath + '" alt="image" /></p>';
-                    <?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+                    <?php //echo $this->editor()->setContent('field-fulltxt', 'content');?>
                     setEditorContent('field-fulltxt', content);
                 } else if (act == '4') {
                     var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
                     content = content + '<p><a href="<?php echo $path; ?>' + filepath + '">' + filepath + '</a></p>';
-                    <?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+                    <?php //echo $this->editor()->setContent('field-fulltxt', 'content');?>
                     setEditorContent('field-fulltxt', content);
                 }
             }

@@ -35,4 +35,3 @@ defined('_HZEXEC_') or die();
 }
 
 echo '<span class="mini">' . $ownedby . '</span>';
-

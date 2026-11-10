@@ -235,7 +235,7 @@ if (substr($base, -13) == 'administrator') {
                                 <span class="privacy <?php echo $cls; ?>">
                                     <span><?php echo $this->escape($access->title); ?></span>
                                 </span>
-                            <?php //} ?>
+                            <?php //}?>
                         </td>
                         <td class="priority-4">
                             <?php echo $quota . 'GB'; ?>

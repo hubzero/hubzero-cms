@@ -153,7 +153,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 
 <div class="wrap">
-    <?php // On the front page the header and the hero share one ground ?>
+    <?php // On the front page the header and the hero share one ground?>
     <?php if ($isFrontPage && $this->countModules('hero')) : ?>
     <div class="home-head">
     <?php endif; ?>
@@ -178,7 +178,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                     </div>
 
                     <nav class="nav">
-                        <?php // main navigation bar ?>
+                        <?php // main navigation bar?>
                         <nav role="navigation" aria-label="Primary navigation"
                              title="Primary navigation" class="main-nav">
                             <jdoc:include type="modules" name="user3" />
@@ -339,7 +339,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             <div class="inner">
                 <jdoc:include type="modules" name="hero" />
             </div>
-            <?php // A hub on a screen, with what it runs behind it. Decoration. ?>
+            <?php // A hub on a screen, with what it runs behind it. Decoration.?>
             <div class="hero-devices" aria-hidden="true">
                 <img class="device-web" alt=""
                     src="<?php echo $this->asset('images/hubzero-web.png'); ?>" />
@@ -349,7 +349,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                     src="<?php echo $this->asset('images/screen.png'); ?>" />
             </div>
         </div>
-        <?php // Decoration, and the boundary between the hero's ground and the page's ?>
+        <?php // Decoration, and the boundary between the hero's ground and the page's?>
         <div class="home-clouds" aria-hidden="true">
             <span class="clouds-band"></span>
             <span class="clouds-hill"></span>

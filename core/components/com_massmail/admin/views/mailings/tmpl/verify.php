@@ -152,7 +152,7 @@ $this->js('verify.js', 'com_massmail');
                     </div>
                 <?php } ?>
 
-                <?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too. ?>
+                <?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too.?>
                 <?php if ($disp['held']) { ?>
                     <div class="mm-disp mm-disp-hold">
                         <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
@@ -177,7 +177,7 @@ $this->js('verify.js', 'com_massmail');
 </form>
 
 <?php // Carrier for the Discard button (form="mm-action"): token only, the
-      // task and id come from the button's formaction. ?>
+      // task and id come from the button's formaction.?>
 <form action="<?php echo Route::url($base); ?>" method="post" id="mm-action" class="mm-action-form">
     <?php echo Html::input('token'); ?>
 </form>

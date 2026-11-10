@@ -84,7 +84,7 @@ $this->js('status.js', 'com_massmail');
     <div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_MASSMAIL'); ?></div>
     <div class="mm-statusline">
         <?php // Send-pipeline health (sending toggle + delivery cron) is shown as a
-              // single traffic-light status pill on the sub-navigation (see massmail.php). ?>
+              // single traffic-light status pill on the sub-navigation (see massmail.php).?>
         <?php if ($this->heldMailings > 0) { ?>
             <a class="mm-sending held" href="<?php echo Route::url('index.php?option=com_massmail&controller=mailings&status=' . \Components\Massmail\Models\Mailing::STATUS_HELD); ?>"><?php echo Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)); ?></a>
         <?php } ?>
@@ -154,7 +154,7 @@ $this->js('status.js', 'com_massmail');
 </div>
 
 <?php // data-enlarge-hint, not data-hint: the admin template styles [data-hint] as an
-      // inline tooltip anchor, which overrode this modal's display:none. ?>
+      // inline tooltip anchor, which overrode this modal's display:none.?>
 <div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>" data-enlarge-hint="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>">
     <div class="mm-modal-inner">
         <button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')); ?>">&times;</button>

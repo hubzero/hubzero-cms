@@ -261,10 +261,10 @@ if (
                 echo $this->loadTemplate('links');
             endif;
             ?>
-            <?php //optional teaser intro text for guests ?>
+            <?php //optional teaser intro text for guests?>
         <?php elseif ($params->get('show_noauth') == true && User::isGuest()) : ?>
             <?php echo $this->item->introtext; ?>
-            <?php //Optional link to let them register to see the whole article. ?>
+            <?php //Optional link to let them register to see the whole article.?>
             <?php if ($params->get('show_readmore') && $this->item->fulltext != null) :
                 $link1 = Route::url('index.php?option=com_login');
                 $link = new Hubzero\Utility\Uri($link1);?>

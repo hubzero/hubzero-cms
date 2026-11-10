@@ -90,7 +90,7 @@ endif;
                     echo $this->maxlon;
                                                                       } ?>" />
             </fieldset>
-        <?php } // end if ?>
+        <?php } // end if?>
         </div>
     </section>
 
@@ -217,7 +217,7 @@ endif;
                     </div><!-- / .container -->
                 </div><!-- / .subject -->
             </div><!-- / .section-inner -->
-        <?php } // end if ?>
+        <?php } // end if?>
     </section><!-- / .main section -->
 </form>
 <!-- end component output -->

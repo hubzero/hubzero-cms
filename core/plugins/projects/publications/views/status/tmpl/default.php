@@ -331,7 +331,7 @@ if ($revertAllowed && $this->pub->accepted()) {
         <?php } ?>
  </div>
 </form>
-<?php // We need this to make CKEditor checker work ?>
+<?php // We need this to make CKEditor checker work?>
 <script>
 jQuery(document).ready(function($) {
     HUB.ProjectPublicationsDraft.initialize();

@@ -349,9 +349,9 @@ if ($this->wishlist->get('id')) {
                                             echo $html;
                                             ?>
                                         </td>
-                                    <?php } // end if (!$item->isReported()) ?>
+                                    <?php } // end if (!$item->isReported())?>
                                     </tr>
-                                <?php } // end foreach wish ?>
+                                <?php } // end foreach wish?>
                             <?php } else { ?>
                                     <tr>
                                         <td>
@@ -369,7 +369,7 @@ if ($this->wishlist->get('id')) {
                                         <?php } ?>
                                         </td>
                                     </tr>
-                            <?php } // end if wishlist item ?>
+                            <?php } // end if wishlist item?>
                                 </tbody>
                             </table>
                             <?php
@@ -455,7 +455,7 @@ if ($this->wishlist->get('id')) {
                 </div>
             </section><!-- / .main section -->
         </form>
-    <?php } // end if public ?>
+    <?php } // end if public?>
 <?php } else { ?>
     <p class="error"><?php echo Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>
 <?php } // end if wish list

@@ -153,7 +153,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
             </fieldset>
             <div class="clear"></div>
 
-            <input type="hidden" name="lid" value="<?php //echo $lid; ?>" />
+            <input type="hidden" name="lid" value="<?php //echo $lid;?>" />
             <input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
             <input type="hidden" name="entry[id]" value="<?php echo $this->entry->get('id'); ?>" />
             <input type="hidden" name="entry[alias]" value="<?php echo $this->entry->get('alias'); ?>" />

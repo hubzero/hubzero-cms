@@ -764,14 +764,14 @@ $bars = [];
                 $(function () {
                     var datasets = [
                         {
-                            lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)"); ?>' },
-                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line", "#999"); ?>', //#93ACCA
+                            lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)");?>' },
+                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line", "#999");?>', //#93ACCA
                             label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
                             data: [<?php echo implode(',', $users); ?>]
                         },
                         {
-                            lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)"); ?>' },
-                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line2", "#CFCFAB"); ?>', //#CFCFAB
+                            lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)");?>' },
+                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line2", "#CFCFAB");?>', //#CFCFAB
                             label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
                             data: [<?php echo implode(',', $runs); ?>]
                         }

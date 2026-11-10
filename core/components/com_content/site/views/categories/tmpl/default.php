@@ -25,7 +25,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 <section class="main section">
     <div class="categories-list<?php echo $this->pageclass_sfx; ?>">
         <?php if ($this->params->get('show_base_description')) : ?>
-            <?php //If there is a description in the menu parameters use that; ?>
+            <?php //If there is a description in the menu parameters use that;?>
                 <?php if ($this->params->get('categories_description')) : ?>
                     <?php
                     echo Html::content(
@@ -36,7 +36,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                     );
                     ?>
                 <?php  else : ?>
-                    <?php //Otherwise get one from the database if it exists. ?>
+                    <?php //Otherwise get one from the database if it exists.?>
                     <?php if ($this->parent->description) : ?>
                         <div class="category-desc">
                             <?php

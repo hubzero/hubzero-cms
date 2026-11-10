@@ -86,4 +86,3 @@ if ($parentLink && $disclosureMenu && !$toplevelLinks) {
 if ($disclosureMenu) {
     echo '</div>';
 }
-

@@ -109,7 +109,7 @@ if ($this->contributors) {
                     <td>
                         <span class="author-name"><?php echo $this->escape($name); ?></span><br />
                         <input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION'); ?>" />
-                        <?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
+                        <?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : '';?>
                     </td>
                     <td>
                         <select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">

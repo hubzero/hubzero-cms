@@ -70,4 +70,3 @@ if ($parentLink && $disclosureMenu) {
 if ($disclosureMenu) {
     echo '</div>';
 }
-

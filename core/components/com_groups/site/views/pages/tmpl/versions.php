@@ -74,7 +74,7 @@ $this->css()
                         <?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_NEXT'); ?>
                     </a>
                 </div>
-                <?php // The script points the button at the version being shown; the current one can't be restored ?>
+                <?php // The script points the button at the version being shown; the current one can't be restored?>
                 <button type="submit" form="hz-post-action" formaction="" class="btn btn-info version-restore" disabled>
                     <?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_RESTORE'); ?>
                 </button>

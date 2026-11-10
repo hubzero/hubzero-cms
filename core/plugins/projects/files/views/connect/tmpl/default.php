@@ -103,7 +103,7 @@ $i = 0;
     } ?>
 
     <?php if ($i == 1 && count($this->services) > 1) {
-        // There may be more services available in the future ?>
+        // There may be more services available in the future?>
         <div class="connect-service infuture">
             <div class="service-info">
                 <h5><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_MORE_TO_COME'); ?></h5>

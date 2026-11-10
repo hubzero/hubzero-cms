@@ -167,7 +167,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                             <?php echo $status->element; ?>
                         </td>
                 <?php endif; ?>
-                <?php if ($status->element) : // Published Site languages ?>
+                <?php if ($status->element) : // Published Site languages?>
                         <td class="center">
                             <span title="<?php echo Lang::txt('JON'); ?>">
                                 <?php echo Html::asset('icon', 'ok-sign'); ?>
@@ -178,7 +178,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                             <?php echo Lang::txt('JNO'); ?>
                         </td>
                 <?php endif; ?>
-                <?php if ($status->lang_code && $status->published) : // Published Content languages ?>
+                <?php if ($status->lang_code && $status->published) : // Published Content languages?>
                         <td class="center">
                             <span title="<?php echo Lang::txt('JON'); ?>">
                                 <?php echo Html::asset('icon', 'ok-sign'); ?>
@@ -191,7 +191,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                             </span>
                         </td>
                 <?php endif; ?>
-                <?php if ($status->home_language) : // Published Home pages ?>
+                <?php if ($status->home_language) : // Published Home pages?>
                         <td class="center">
                             <span title="<?php echo Lang::txt('JON'); ?>">
                                 <?php echo Html::asset('icon', 'ok-sign'); ?>

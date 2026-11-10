@@ -27,7 +27,7 @@ $this->css()
     foreach ($this->notifications as $notification) { ?>
         <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
     <?php } // close foreach
-} // close if count ?>
+} // close if count?>
 
 <div id="members-account-section">
 
@@ -114,7 +114,7 @@ $this->css()
             ?>
         </div><!-- / .sub-section-content -->
     </div><!-- / .sub-section -->
-<?php } // close linked accounts subsection check ?>
+<?php } // close linked accounts subsection check?>
 
     <div class="sub-section">
         <h4><?php
@@ -150,7 +150,7 @@ $this->css()
                             ?>
                         <?php endif ?>
                     </p>
-                <?php } // close if is array passinfo ?>
+                <?php } // close if is array passinfo?>
                 <p class="error" id="section-edit-errors"></p>
                 <?php
                 $groupClass = (count($this->password_rules) > 0)

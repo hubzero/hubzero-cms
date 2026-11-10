@@ -300,7 +300,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                 <?php } ?>
                 </fieldset>
                 <div class="clear"></div>
-            <?php } // -- end if allow advisory ?>
+            <?php } // -- end if allow advisory?>
 
             <p class="submit">
                 <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />

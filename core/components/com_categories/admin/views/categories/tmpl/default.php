@@ -365,7 +365,7 @@ $formAction = Route::url(
             <?php endforeach; ?>
         </tbody>
     </table>
-    <?php //Load the batch processing form. ?>
+    <?php //Load the batch processing form.?>
     <?php
     $canCreate = User::authorise('core.create', $extension);
     $canEditExt = User::authorise('core.edit', $extension);

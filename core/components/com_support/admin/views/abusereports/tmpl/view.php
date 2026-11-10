@@ -54,7 +54,7 @@ Html::behavior('modal', 'a.modals');
                                 <?php // The reported body is rendered markup for some sources -- the
                                 // wiki support plugin selects rc.chtml into this column -- so escaping
                                 // it shows an administrator literal <p> and <a> tags. Purify it, which
-                                // is what the site twin (site/views/abuse/tmpl/display.php) does. ?>
+                                // is what the site twin (site/views/abuse/tmpl/display.php) does.?>
                                 <p><?php echo (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : ''; ?></p>
                                 <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject != '') {
                                     echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';

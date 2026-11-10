@@ -174,7 +174,7 @@ $this->js();
 
                 $comment->set('parent', $parent);
                 ?>
-                <?php if ($this->depth <= 1) {  // && $this->params->get('access-review-comment') ?>
+                <?php if ($this->depth <= 1) {  // && $this->params->get('access-review-comment')?>
                     <fieldset class="rating">
                         <legend><?php echo Lang::txt('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
 

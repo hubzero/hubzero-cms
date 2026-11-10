@@ -479,7 +479,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                 </ul>
                                             </div><!-- / .asset-group -->
                                         <?php endif; ?>
-                                    <?php } // foreach ($agt->children() as $ag) ?>
+                                    <?php } // foreach ($agt->children() as $ag)?>
 
                                         <?php if ($agt->assets()->total()) { ?>
                                             <ul class="asset-list">
@@ -555,7 +555,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
                                 <?php $k++; ?>
                             <?php } ?>
-                        <?php } // foreach ($unit->assetgroups() as $agt) ?>
+                        <?php } // foreach ($unit->assetgroups() as $agt)?>
 
                         <?php if ($unit->assets()->total()) { ?>
                             <ul class="asset-list">
@@ -603,14 +603,14 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                             </div>
                         <?php } ?>
 
-                    <?php } // close else ?>
+                    <?php } // close else?>
                         </div><!-- / .details -->
                     </div><!-- / .unit-availability -->
                 </div><!-- / .unit-content -->
             </div><!-- / .unit-wrap -->
         </div><!-- / .unit -->
                 <?php } ?>
-            <?php } // close foreach ?>
+            <?php } // close foreach?>
 
         <?php } else { ?>
         <p class="warning">The access time for this section has expired and the content is no longer available.</p>

@@ -68,8 +68,8 @@ $sort = @$this->filters['sort'];
                 <th scope="col"><?php echo Html::grid('sort', 'Type', 'cType', $sortDir, $sort); ?></th>
 <?php $stateSort = Html::grid('sort', 'COM_STOREFRONT_PUBLISHED', 'state', $sortDir, $sort); ?>
                 <th scope="col"><?php echo $stateSort; ?></th>
-<?php //$accessSort = Html::grid('sort', 'COM_STOREFRONT_ACCESS', 'access', $sortDir, $sort); ?>
-                <!--th scope="col"><?php //echo $accessSort; ?></th-->
+<?php //$accessSort = Html::grid('sort', 'COM_STOREFRONT_ACCESS', 'access', $sortDir, $sort);?>
+                <!--th scope="col"><?php //echo $accessSort;?></th-->
             </tr>
         </thead>
         <tfoot>

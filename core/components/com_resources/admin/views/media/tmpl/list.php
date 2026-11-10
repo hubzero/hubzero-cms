@@ -60,7 +60,7 @@ $this->js('media.js');
                             </span>
                         </td>
                         <td width="100%">
-                            <?php //echo $folderName; ?>
+                            <?php //echo $folderName;?>
                         </td>
                         <td>
                             <?php

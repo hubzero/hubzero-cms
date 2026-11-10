@@ -461,7 +461,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
         </tbody>
     </table>
 
-    <?php //Load the batch processing form. ?>
+    <?php //Load the batch processing form.?>
     <?php
     $canBatch = User::authorise('core.create', 'com_content')
         && User::authorise('core.edit', 'com_content')

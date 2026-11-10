@@ -184,7 +184,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             </div>
         <?php endif; ?>
 
-        <?php if ($this->registrationUsername != Field::STATE_HIDDEN || $this->registrationPassword != Field::STATE_HIDDEN) { // Login information ?>
+        <?php if ($this->registrationUsername != Field::STATE_HIDDEN || $this->registrationPassword != Field::STATE_HIDDEN) { // Login information?>
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_MEMBERS_REGISTER_CANNOT_CHANGE_USERNAME'); ?></p>
 
@@ -619,6 +619,6 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
         <input type="hidden" name="act" value="submit" />
         <?php echo Html::input('token'); ?>
         <input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
-        <input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411 ?>" />
+        <input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411?>" />
     </form>
 </section><!-- / .main section -->

@@ -28,7 +28,7 @@ $this->css('register')
                 <input type="text" class="form-control" name="identifier" id="identifier" value="<?php echo $this->escape($this->identifier); ?>" autocomplete="email" required />
             </label>
 
-            <?php // Honeypot -- hidden by #botcheck-label in register.css; only bots fill it in. ?>
+            <?php // Honeypot -- hidden by #botcheck-label in register.css; only bots fill it in.?>
             <label id="botcheck-label" for="botcheck">
                 Leave this field blank
                 <input type="text" class="form-control" name="botcheck" id="botcheck" value="" tabindex="-1" autocomplete="off" />

@@ -58,7 +58,7 @@ $this->css()
 
                 <?php // The save handler drops fields[admin] for anyone without
                 // access-manage-tag, so offering the control to them is a
-                // checkbox that silently does nothing. ?>
+                // checkbox that silently does nothing.?>
                 <?php if ($this->config->get('access-manage-tag')) : ?>
                 <label for="field-admin">
                     <input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1"<?php echo $this->tag->get('admin') ? ' checked="checked"' : ''; ?> />

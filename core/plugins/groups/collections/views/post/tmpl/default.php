@@ -107,7 +107,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             </div><!-- / .actions -->
     <?php }*/ ?>
         </div><!-- / .meta -->
-<?php //if ($this->post->created_by != $this->post->created_by) { ?>
+<?php //if ($this->post->created_by != $this->post->created_by) {?>
         <div class="convo attribution clearfix">
             <a href="<?php echo Route::url($this->post->creator()->link()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
                 <img src="<?php echo $this->post->creator()->picture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />

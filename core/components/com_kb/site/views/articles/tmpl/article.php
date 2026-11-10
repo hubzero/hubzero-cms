@@ -140,7 +140,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
     </div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
-<?php //if ($this->article->param('allow_comments')) { ?>
+<?php //if ($this->article->param('allow_comments')) {?>
 <section class="below section" id="comments">
     <div class="section-inner">
         <div class="subject">

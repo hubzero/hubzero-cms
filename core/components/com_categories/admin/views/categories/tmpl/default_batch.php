@@ -37,7 +37,7 @@ $extension = $this->filters['extension'];
         <div class="col span6">
             <?php // No status filter is not the same as a negative one: under PHP 7
                   // '' >= 0 was true, under PHP 8 it is false, and the category
-                  // this panel needs to move things into stopped being drawn at all ?>
+                  // this panel needs to move things into stopped being drawn at all?>
             <?php if ($published === '' || $published >= 0) : ?>
                 <div class="input-wrap combo" id="batch-choose-action">
                     <label id="batch-choose-action-lbl" for="batch-category-id">

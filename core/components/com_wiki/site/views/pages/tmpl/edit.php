@@ -148,7 +148,7 @@ $authors = implode(', ', $authors);
                     <?php if ($this->page->exists() && $this->page->access('edit') && !$isHome) { ?>
                         <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
                     <?php } ?>
-                    <?php //} ?>
+                    <?php //}?>
                     <fieldset>
                         <legend><?php echo Lang::txt('COM_WIKI_FIELDSET_PAGE'); ?></legend>
 
@@ -237,7 +237,7 @@ $authors = implode(', ', $authors);
                             </label>
                         </div>
 
-                        <?php //if ($this->sub) { ?>
+                        <?php //if ($this->sub) {?>
                         <div class="field-wrap">
                             <div class="grid">
                                 <div class="col span-half">
@@ -254,7 +254,7 @@ $authors = implode(', ', $authors);
                                 </div>
                             </div><!-- / .grid -->
                         </div>
-                        <?php //} ?>
+                        <?php //}?>
                     </fieldset><div class="clear"></div>
 
                     <?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>

@@ -21,9 +21,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 <section id="import" class="section">
     <div class="section-inner">
         <?php if ($this->messages) : ?>
-            <?php //foreach ($this->messages as $message) { ?>
-            <p class="<?php //echo $message['type']; ?>"><?php echo $message['message']; ?></p>
-            <?php //} ?>
+            <?php //foreach ($this->messages as $message) {?>
+            <p class="<?php //echo $message['type'];?>"><?php echo $message['message']; ?></p>
+            <?php //}?>
         <?php endif; ?>
         <ul id="steps">
             <li><a href="<?php echo Route::url($base . '&action=import'); ?>

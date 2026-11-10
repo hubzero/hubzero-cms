@@ -72,7 +72,7 @@ $canEdit = $this->item->params->get('access-edit');
 
 <?php echo $this->item->event->beforeDisplayContent; ?>
 
-<?php // to do not that elegant would be nice to group the params ?>
+<?php // to do not that elegant would be nice to group the params?>
 
 <?php if (
     ($params->get('show_author'))

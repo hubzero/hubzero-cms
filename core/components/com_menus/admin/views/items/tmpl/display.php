@@ -81,7 +81,7 @@ $formAction = Route::url(
 $filterLabel = Lang::txt('JSEARCH_FILTER_LABEL');
 $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
 ?>
-<?php //Set up the filter bar. ?>
+<?php //Set up the filter bar.?>
 <form action="<?php echo $formAction; ?>"
     method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
@@ -176,7 +176,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
         </div>
     </fieldset>
 
-<?php //Set up the grid heading. ?>
+<?php //Set up the grid heading.?>
     <table class="adminlist">
         <thead>
             <tr>
@@ -239,7 +239,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 </td>
             </tr>
         </tfoot>
-        <?php // Grid layout ?>
+        <?php // Grid layout?>
         <tbody>
         <?php
         $originalOrders = [];
@@ -469,7 +469,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
         endforeach; ?>
         </tbody>
     </table>
-    <?php //Load the batch processing form if user is allowed ?>
+    <?php //Load the batch processing form if user is allowed?>
     <?php
     $canBatch = User::authorise('core.create', 'com_menus')
         && User::authorise('core.edit', 'com_menus')
