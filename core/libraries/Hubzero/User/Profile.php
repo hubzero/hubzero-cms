@@ -22,6 +22,13 @@ use Hubzero\Facades\App;
 class Profile extends Obj
 {
     /**
+     * Properties the profile keeps for itself, not fields
+     *
+     * @var  array
+     */
+    private const INTERNAL = ['plainPassword', 'paramsRegistry'];
+
+    /**
      * ID (primary key)
      *
      * @var  integer
@@ -295,70 +302,70 @@ class Profile extends Obj
      *
      * @var  string
      */
-    private $_auxs_bio = null;
+    private $auxsBio = null;
 
     /**
      * List of diabilities
      *
      * @var  array
      */
-    private $_auxv_disability = [];
+    private $auxvDisability = [];
 
     /**
      * List of hispanic options
      *
      * @var  array
      */
-    private $_auxv_hispanic = [];
+    private $auxvHispanic = [];
 
     /**
      * List of races
      *
      * @var  array
      */
-    private $_auxv_race = [];
+    private $auxvRace = [];
 
     /**
-     * Description for '_auxv_admin'
+     * Description for 'auxvAdmin'
      *
      * @var  array
      */
-    private $_auxv_admin = [];
+    private $auxvAdmin = [];
 
     /**
-     * Description for '_auxv_host'
+     * Description for 'auxvHost'
      *
      * @var  array
      */
-    private $_auxv_host = [];
+    private $auxvHost = [];
 
     /**
      * List of Edu levels
      *
      * @var  array
      */
-    private $_auxv_edulevel = [];
+    private $auxvEdulevel = [];
 
     /**
      * List of roles
      *
      * @var  array
      */
-    private $_auxv_role = [];
+    private $auxvRole = [];
 
     /**
-     * Description for '_password'
+     * Description for 'plainPassword'
      *
      * @var  string
      */
-    private $_password = null;
+    private $plainPassword = null;
 
     /**
      * Registry
      *
      * @var  object
      */
-    private $_params = null;
+    private $paramsRegistry = null;
 
     /**
      * Add an error message.
@@ -406,6 +413,63 @@ class Profile extends Obj
     }
 
     /**
+     * Whether a name is one the profile keeps for itself rather than a field
+     *
+     * @param   string  $property
+     * @return  bool
+     */
+    private static function isOwn($property)
+    {
+        return !is_string($property) || $property === '' || $property[0] === '_'
+            || in_array($property, self::INTERNAL, true)
+            || self::isAux($property);
+    }
+
+    /**
+     * The property holding a field kept in a table of its own
+     *
+     * @param   string  $field  Field name, e.g. "race"
+     * @param   string  $kind   "s" for a single value, "v" for a list
+     * @return  string
+     */
+    private static function auxProperty($field, $kind)
+    {
+        return 'aux' . $kind . ucfirst((string) $field);
+    }
+
+    /**
+     * Whether a property holds a field kept in a table of its own
+     *
+     * @param   string  $property
+     * @param   string  $kinds  Which kinds to accept: "s", "v" or "sv"
+     * @return  bool
+     */
+    private static function isAux($property, $kinds = 'sv')
+    {
+        foreach (str_split($kinds) as $kind) {
+            if (
+                is_string($property) && strlen($property) > 4
+                && str_starts_with($property, 'aux' . $kind) && property_exists(__CLASS__, $property)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The field a property kept in a table of its own holds
+     *
+     * @param   string  $property  e.g. "auxvRace"
+     * @return  string  e.g. "race", also the name of its table, xprofiles_race
+     */
+    private static function auxField($property)
+    {
+        return lcfirst(substr($property, 4));
+    }
+
+    /**
      * Load a record from the MySQL database
      *
      * @param   mixed    $user  Integer (ID) or string (username)
@@ -444,7 +508,7 @@ class Profile extends Obj
 
         $this->clear();
 
-        $this->_params = new Registry($result['params']);
+        $this->paramsRegistry = new Registry($result['params']);
 
         foreach ($result as $property => $value) {
             $this->set($property, $value);
@@ -453,12 +517,12 @@ class Profile extends Obj
         $classvars = get_class_vars(__CLASS__);
 
         foreach ($classvars as $property => $value) {
-            if ('_auxv_' == substr($property, 0, 6) || '_auxs_' == substr($property, 0, 6)) {
+            if (self::isAux($property)) {
                 $this->$property = false; // This property is loaded on demand
             }
         }
 
-        $this->_params->merge($this->params);
+        $this->paramsRegistry->merge($this->params);
 
         return true;
     }
@@ -810,7 +874,7 @@ class Profile extends Obj
         $affected = 0;
 
         foreach ($classvars as $property => $value) {
-            if ('_' == substr($property, 0, 1)) {
+            if (self::isOwn($property)) {
                 continue;
             }
 
@@ -821,8 +885,8 @@ class Profile extends Obj
             }
 
             if ($property == 'params') {
-                if (is_object($this->_params)) {
-                    $query .= "params=" . $db->quote($this->_params->toString());
+                if (is_object($this->paramsRegistry)) {
+                    $query .= "params=" . $db->quote($this->paramsRegistry->toString());
                 } else {
                     $query .= "params=''";
                 }
@@ -852,11 +916,11 @@ class Profile extends Obj
         $affected = $db->getAffectedRows();
 
         foreach ($classvars as $property => $value) {
-            if (('_auxv_' != substr($property, 0, 6)) && ('_auxs_' != substr($property, 0, 6))) {
+            if (!self::isAux($property)) {
                 continue;
             }
 
-            $property = substr($property, 6);
+            $property = self::auxField($property);
 
             $first = true;
 
@@ -889,7 +953,7 @@ class Profile extends Obj
                 }
             }
 
-            if (property_exists(__CLASS__, '_auxv_' . $property)) {
+            if (property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
                 foreach ($list as $key => $value) {
                     $list[$key] = $db->quote($value);
                 }
@@ -938,11 +1002,11 @@ class Profile extends Obj
         $affected = 0;
 
         foreach ($classvars as $property => $value) {
-            if ('_auxv_' != substr($property, 0, 6) && '_auxs_' != substr($property, 0, 6)) {
+            if (!self::isAux($property)) {
                 continue;
             }
 
-            $property = substr($property, 6);
+            $property = self::auxField($property);
 
             $query = "DELETE FROM `#__xprofiles_$property` WHERE uidNumber = " . $db->quote($this->get('uidNumber'));
             $db->setQuery($query);
@@ -982,19 +1046,19 @@ class Profile extends Obj
     public function get($property, $default = null)
     {
         if ($property == 'password') {
-            return $this->_password;
+            return $this->plainPassword;
         }
 
-        if ('_' == substr($property, 0, 1)) {
+        if (self::isOwn($property)) {
             $this->setError("Can't access private properties");
             return false;
         }
 
         if (!property_exists(__CLASS__, $property)) {
-            if (property_exists(__CLASS__, '_auxs_' . $property)) {
-                $property = '_auxs_' . $property;
-            } elseif (property_exists(__CLASS__, '_auxv_' . $property)) {
-                $property = '_auxv_' . $property;
+            if (property_exists(__CLASS__, self::auxProperty($property, 's'))) {
+                $property = self::auxProperty($property, 's');
+            } elseif (property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
+                $property = self::auxProperty($property, 'v');
             } else {
                 $this->setError("Unknown property: $property");
                 return false;
@@ -1004,7 +1068,7 @@ class Profile extends Obj
         if ($this->$property === false) {
             $db = App::get('db');
 
-            $property_name = substr($property, 6);
+            $property_name = self::auxField($property);
 
             $query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
 
@@ -1014,7 +1078,7 @@ class Profile extends Obj
 
             if ($result === false) {
                 $this->setError("Error retrieving data from xprofiles $property table: " . $db->getErrorMsg());
-            } elseif ('_auxs_' == substr($property, 0, 6)) {
+            } elseif (self::isAux($property, 's')) {
                 if (isset($result[0])) {
                     $this->set($property_name, $result[0]);
                 } else {
@@ -1048,28 +1112,28 @@ class Profile extends Obj
                 $this->userPassword = '';
             }
 
-            $this->_password = $value;
+            $this->plainPassword = $value;
 
             return true;
         }
 
-        if ('_' == substr($property, 0, 1)) {
+        if (self::isOwn($property)) {
             $this->setError("Can't access private properties");
             return false;
         }
 
         if (!property_exists(__CLASS__, $property)) {
-            if (property_exists(__CLASS__, '_auxs_' . $property)) {
-                $property = '_auxs_' . $property;
-            } elseif (property_exists(__CLASS__, '_auxv_' . $property)) {
-                $property = '_auxv_' . $property;
+            if (property_exists(__CLASS__, self::auxProperty($property, 's'))) {
+                $property = self::auxProperty($property, 's');
+            } elseif (property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
+                $property = self::auxProperty($property, 'v');
             } else {
                 $this->setError("Unknown property: $property");
                 return false;
             }
         }
 
-        if ('_auxv_' == substr($property, 0, 6)) {
+        if (self::isAux($property, 'v')) {
             if (empty($value)) {
                 $value = [];
             } else {
@@ -1092,7 +1156,7 @@ class Profile extends Obj
         $this->$property = $value;
 
         if ($property == 'userPassword') {
-            $this->_password = '';
+            $this->plainPassword = '';
         }
 
         if (is_string($property) && in_array($property, ['givenName','middleName','surname','name'])) {
@@ -1111,17 +1175,17 @@ class Profile extends Obj
      */
     public function add($property, $value)
     {
-        if ('_' == substr($property, 0, 1)) {
+        if (self::isOwn($property)) {
             $this->setError("Can't access private properties");
             return false;
         }
 
-        if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, '_auxs_' . $property)) {
+        if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, self::auxProperty($property, 's'))) {
             $this->setError("Can't add value(s) to non-array property.");
             return false;
         }
 
-        if (!property_exists(__CLASS__, '_auxv_' . $property)) {
+        if (!property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
             $this->setError("Unknown property: $property");
             return false;
         }
@@ -1134,7 +1198,7 @@ class Profile extends Obj
             $value = [$value];
         }
 
-        $property = '_auxv_' . $property;
+        $property = self::auxProperty($property, 'v');
 
         foreach ($value as $v) {
             $v = strval($v);
@@ -1158,17 +1222,17 @@ class Profile extends Obj
      */
     public function remove($property, $value)
     {
-        if ('_' == substr($property, 0, 1)) {
+        if (self::isOwn($property)) {
             $this->setError("Can't access private properties");
             return false;
         }
 
-        if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, '_auxs_' . $property)) {
+        if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, self::auxProperty($property, 's'))) {
             $this->setError("Can't remove value(s) from non-array property.");
             return false;
         }
 
-        if (!property_exists(__CLASS__, '_auxv_' . $property)) {
+        if (!property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
             $this->setError("Unknown property: $property");
             return false;
         }
@@ -1181,7 +1245,7 @@ class Profile extends Obj
             $value = [$value];
         }
 
-        $property = '_auxv_' . $property;
+        $property = self::auxProperty($property, 'v');
 
         foreach ($value as $v) {
             $v = strval($v);
@@ -1204,7 +1268,7 @@ class Profile extends Obj
      */
     public function getParam($key, $default = null)
     {
-        return $this->_params->get($key, $default);
+        return $this->paramsRegistry->get($key, $default);
     }
 
     /**
@@ -1216,7 +1280,7 @@ class Profile extends Obj
      */
     public function setParam($key, $value)
     {
-        return $this->_params->set($key, $value);
+        return $this->paramsRegistry->set($key, $value);
     }
 
     /**
@@ -1229,7 +1293,7 @@ class Profile extends Obj
      */
     public function defParam($key, $value)
     {
-        return $this->_params->def($key, $value);
+        return $this->paramsRegistry->def($key, $value);
     }
 
     /**
@@ -1266,11 +1330,11 @@ class Profile extends Obj
                 $file = $parampath . DS . 'user.xml';
             }
 
-            $this->_params->loadSetupFile($file);
+            $this->paramsRegistry->loadSetupFile($file);
         }
         */
 
-        return $this->_params;
+        return $this->paramsRegistry;
     }
 
     /**
@@ -1281,7 +1345,7 @@ class Profile extends Obj
      */
     public function setParameters($params)
     {
-        $this->_params = $params;
+        $this->paramsRegistry = $params;
     }
 
     /**

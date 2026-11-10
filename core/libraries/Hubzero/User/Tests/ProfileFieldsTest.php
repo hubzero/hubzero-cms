@@ -89,7 +89,7 @@ class ProfileFieldsTest extends TestCase
         $profile = new Profile();
         $profile->set('password', 'secret');
 
-        foreach (['_password', '_params', '_auxs_bio', '_auxv_race'] as $own) {
+        foreach (['plainPassword', 'paramsRegistry', 'auxsBio', 'auxvRace', '_password'] as $own) {
             $this->assertFalse($profile->get($own), $own);
             $this->assertFalse($profile->set($own, 'x'), $own);
         }
