@@ -77,7 +77,7 @@ extending [`Hubzero\Module\Module`](../../../core/libraries/Hubzero/Module/Modul
 [`Hubzero\Module\Loader`](../../../core/libraries/Hubzero/Module/Loader.php)
 works that class name out from the module's name, includes the file the first
 time it is needed, constructs the class with the instance's parameters and
-database row, and calls `run()` inside an output buffer. The class gathers
+database row, and calls `display()` inside an output buffer. The class gathers
 data and requires a layout out of `tmpl/`; whatever it echoes is the module.
 All 100 shipped modules are written this way. See
 [Controllers](03-controllers.md).

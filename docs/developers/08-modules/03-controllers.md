@@ -10,7 +10,7 @@ Modules have no controllers. There is no `controllers` directory, no
 the framework. A module never handles a request of its own: it is rendered as
 a side effect of whatever page the component is already drawing.
 
-What plays the part of a controller is one method, `run()`, on the class in
+What plays the part of a controller is one method, `display()`, on the class in
 the entry file. The loader calls it once for each instance on the page.
 
 ## The entry file
@@ -58,18 +58,20 @@ In order:
    instance of the same module on a page it already is, so the file is not
    included again and nothing is declared twice.
 3. If the class exists and extends `Hubzero\Module\Module`, the loader
-   constructs it with this instance's parameters and row, calls `run()`, and
+   constructs it with this instance's parameters and row, calls `display()`, and
    keeps everything echoed as `$module->content`.
 
 The loader then wraps `$module->content` in the chrome function named by the
 render style, which is what actually emits the markup into the page. See
 [Loading](09-loading.md).
 
-On the base class, `run()` calls `display()`, and `display()` requires the
+On the base class, `display()` calls `run()`, and `run()` requires the
 layout named by the `layout` parameter. So the ordinary module overrides
 `display()`: it gathers data, sets properties, and requires a layout. 79 of
-the 100 core modules do exactly that and leave `run()` alone. See
-[The module class](04-helpers.md).
+the 100 core modules do exactly that and leave `run()` alone. The 19 that
+cache their output override both: `run()` does the work, and `display()`
+serves a stored copy when there is one. See
+[The module class](04-helpers.md#caching).
 
 ## What the class is handed
 

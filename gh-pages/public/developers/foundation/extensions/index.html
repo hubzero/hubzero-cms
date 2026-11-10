@@ -299,7 +299,7 @@ user holds and whose menu assignment matches, ordered by <code>ordering</code>;
 position at a time.</p>
 <p>Rendering a module means loading <code>mod_{name}.php</code>, which declares one class —
 <code>Modules\Login\Login</code> for <code>mod_login</code> — constructing it for the instance and
-calling <code>run()</code> with output buffering on. The output is then wrapped in a
+calling <code>display()</code> with output buffering on. The output is then wrapped in a
 <em>chrome</em> function from the template's <code>html/modules.php</code>. Chrome is the
 template's name for the markup around a module's output: the box, its heading
 and its CSS classes. An entry file that declares no such class is included

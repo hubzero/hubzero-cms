@@ -185,7 +185,7 @@
 <code>controller.php</code>, no task dispatch, and no <code>Hubzero\Module\Controller</code> class in
 the framework. A module never handles a request of its own: it is rendered as
 a side effect of whatever page the component is already drawing.</p>
-<p>What plays the part of a controller is one method, <code>run()</code>, on the class in
+<p>What plays the part of a controller is one method, <code>display()</code>, on the class in
 the entry file. The loader calls it once for each instance on the page.</p>
 <h2 id="the-entry-file">The entry file</h2>
 <p>The file is named after the directory and sits at its top level —
@@ -252,7 +252,7 @@ finds the entry file, loads the module's language file, and then:</p>
                 $instance = new $className($params, $module);
 
                 ob_start();
-                $instance-&gt;run();
+                $instance-&gt;display();
                 $module-&gt;content = ob_get_contents();
                 ob_end_clean();
             } else {
@@ -268,17 +268,19 @@ finds the entry file, loads the module's language file, and then:</p>
 instance of the same module on a page it already is, so the file is not
 included again and nothing is declared twice.</li>
 <li>If the class exists and extends <code>Hubzero\Module\Module</code>, the loader
-constructs it with this instance's parameters and row, calls <code>run()</code>, and
+constructs it with this instance's parameters and row, calls <code>display()</code>, and
 keeps everything echoed as <code>$module-&gt;content</code>.</li>
 </ol>
 <p>The loader then wraps <code>$module-&gt;content</code> in the chrome function named by the
 render style, which is what actually emits the markup into the page. See
 <a href="../loading/index.html">Loading</a>.</p>
-<p>On the base class, <code>run()</code> calls <code>display()</code>, and <code>display()</code> requires the
+<p>On the base class, <code>display()</code> calls <code>run()</code>, and <code>run()</code> requires the
 layout named by the <code>layout</code> parameter. So the ordinary module overrides
 <code>display()</code>: it gathers data, sets properties, and requires a layout. 79 of
-the 100 core modules do exactly that and leave <code>run()</code> alone. See
-<a href="../helpers/index.html">The module class</a>.</p>
+the 100 core modules do exactly that and leave <code>run()</code> alone. The 19 that
+cache their output override both: <code>run()</code> does the work, and <code>display()</code>
+serves a stored copy when there is one. See
+<a href="../helpers/index.html#caching">The module class</a>.</p>
 <h2 id="what-the-class-is-handed">What the class is handed</h2>
 <p>The constructor stores its two arguments as properties:</p>
 <table>

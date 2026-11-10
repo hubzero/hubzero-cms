@@ -187,7 +187,7 @@ layout needs, keeps it in properties, and requires the layout. It lives in the
 entry file, is named for the module — <code>Modules\UpcomingBookings\UpcomingBookings</code>
 in <code>mod_upcoming_bookings.php</code> — and extends
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>.
-The loader constructs one per instance and calls <code>run()</code>; see
+The loader constructs one per instance and calls <code>display()</code>; see
 <a href="../controllers/index.html">Controllers</a>.</p>
 <p>Earlier releases put this class in a separate <code>helper.php</code> and named it
 <code>Helper</code>. Neither is true of any core module now.</p>
@@ -216,11 +216,11 @@ head:</p>
 <td>Stores both. Takes them positionally, in that order.</td>
 </tr>
 <tr>
-<td><code>run()</code></td>
-<td>What the loader calls. Calls <code>display()</code>.</td>
+<td><code>display()</code></td>
+<td>What the loader calls. Calls <code>run()</code>.</td>
 </tr>
 <tr>
-<td><code>display()</code></td>
+<td><code>run()</code></td>
 <td>Requires the layout named by the <code>layout</code> parameter, defaulting to <code>default</code>.</td>
 </tr>
 <tr>
@@ -245,8 +245,9 @@ head:</p>
 </tr>
 </tbody>
 </table>
-<p>Override <code>display()</code>. Leave <code>run()</code> to the base class unless you have a reason
-to put something between the loader and <code>display()</code>.</p>
+<p>Override <code>display()</code>. Override <code>run()</code> as well only to cache the output; see
+<a href="#caching">Caching</a>. A <code>display()</code> that calls <code>parent::display()</code> reaches the
+base <code>run()</code> and so the layout — unless the class also overrides <code>run()</code>.</p>
 <h2 id="the-smallest-one-that-works">The smallest one that works</h2>
 <p>The whole of <code>mod_upcoming_bookings/mod_upcoming_bookings.php</code>:</p>
 <pre><code class="language-php">&lt;?php
@@ -304,7 +305,7 @@ wrote. Import every facade the file names: <code>App</code>, <code>Lang</code>, 
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> A module is rendered inside somebody else's page, so an
 uncaught exception in <code>display()</code> takes the whole page with it — not just
-the block. Nothing wraps <code>run()</code> in a <code>try</code>. A model call that can throw
+the block. Nothing wraps <code>display()</code> in a <code>try</code>. A model call that can throw
 because the component is missing, or a table that does not exist yet, breaks
 every page the module is placed on.</p>
 </aside>
@@ -345,9 +346,10 @@ cache store is configured, the instance's <code>cache</code> parameter is on,
 <code>cache_time</code> is non-zero, and the application is not in debug mode. On a miss
 it buffers a call to <code>run()</code>, appends an HTML comment recording when the copy
 was made, stores it, and returns it.</p>
-<p>The core modules that cache split the class in two: <code>run()</code> produces the
-output, and <code>display()</code> decides whether to reuse a stored copy.
-<code>mod_findresources</code> is the pattern in full:</p>
+<p>A module opts in by splitting the class in two: <code>run()</code> produces the output,
+and <code>display()</code>, which the loader calls, decides whether to reuse a stored
+copy. The 19 core modules that cache do this. <code>mod_findresources</code> is the
+pattern in full:</p>
 <pre><code class="language-php">class Findresources extends Module
 {
     protected $categories;
@@ -389,15 +391,12 @@ output, and <code>display()</code> decides whether to reuse a stored copy.
     }
 }
 </code></pre>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> That pattern was written for the old entry stub, which called
-<code>display()</code>. The loader now calls <code>run()</code>, so in the 19 core modules written
-this way <code>display()</code> is never reached and the cache is never consulted:
-every request does the work. Calling <code>getCacheContent()</code> from <code>run()</code>
-instead does not help — on a miss it calls <code>run()</code> again, and recurses until
-PHP runs out of stack. As things stand, module output caching has no working
-entry point.</p>
-</aside>
+<p>Never call <code>getCacheContent()</code> from <code>run()</code>, and never call <code>display()</code>
+from <code>run()</code>: on a miss <code>getCacheContent()</code> calls <code>run()</code>, and either one
+recurses until PHP runs out of stack. Anything that must happen on every
+request, cached or not — pushing a stylesheet with <code>css()</code>, say — goes in
+<code>display()</code> before the cache check, because a cached copy holds only what
+was echoed.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The cache key is <code>modules.{id}</code> and nothing else. It does not
 vary by user, view level, or menu item. Cache a per-user module and the

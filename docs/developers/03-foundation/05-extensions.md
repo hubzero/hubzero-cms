@@ -110,7 +110,7 @@ position at a time.
 
 Rendering a module means loading `mod_{name}.php`, which declares one class —
 `Modules\Login\Login` for `mod_login` — constructing it for the instance and
-calling `run()` with output buffering on. The output is then wrapped in a
+calling `display()` with output buffering on. The output is then wrapped in a
 *chrome* function from the template's `html/modules.php`. Chrome is the
 template's name for the markup around a module's output: the box, its heading
 and its CSS classes. An entry file that declares no such class is included

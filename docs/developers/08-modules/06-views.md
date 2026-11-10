@@ -156,5 +156,5 @@ warning beyond an undefined-variable notice.
 
 There is no view object in a module and no `loadTemplate()`. The class is the
 view context, the layout is the template, and the output goes to the buffer
-that `Hubzero\Module\Loader::render()` opened around `run()`. Plugins
+that `Hubzero\Module\Loader::render()` opened around `display()`. Plugins
 work differently — see [Plugin views](../10-plugins/05-views.md).

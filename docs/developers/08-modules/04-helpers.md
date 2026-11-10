@@ -10,7 +10,7 @@ layout needs, keeps it in properties, and requires the layout. It lives in the
 entry file, is named for the module — `Modules\UpcomingBookings\UpcomingBookings`
 in `mod_upcoming_bookings.php` — and extends
 [`Hubzero\Module\Module`](../../../core/libraries/Hubzero/Module/Module.php).
-The loader constructs one per instance and calls `run()`; see
+The loader constructs one per instance and calls `display()`; see
 [Controllers](03-controllers.md).
 
 Earlier releases put this class in a separate `helper.php` and named it
@@ -27,16 +27,17 @@ head:
 | `$params` | `Hubzero\Config\Registry` of the instance's parameters. |
 | `$module` | The `#__modules` row for this instance. |
 | `__construct($params, $module)` | Stores both. Takes them positionally, in that order. |
-| `run()` | What the loader calls. Calls `display()`. |
-| `display()` | Requires the layout named by the `layout` parameter, defaulting to `default`. |
+| `display()` | What the loader calls. Calls `run()`. |
+| `run()` | Requires the layout named by the `layout` parameter, defaulting to `default`. |
 | `getLayoutPath($layout = 'default')` | Resolves a layout name to a file path, honouring template overrides. |
 | `getCacheContent()` | Returns cached output for this instance, generating it by calling `run()` if the cache is cold. See [Caching](#caching). |
 | `css()`, `js()`, `img()` | From `AssetAware`. See [Assets](07-assets.md). |
 | `escape($var)`, `setEscape($spec)` | From `Escapable`. Escapes a value for output; `htmlspecialchars` by default. |
 | `setError()`, `getError()`, `getErrors()`, `setErrors()` | From `ErrorBag`. |
 
-Override `display()`. Leave `run()` to the base class unless you have a reason
-to put something between the loader and `display()`.
+Override `display()`. Override `run()` as well only to cache the output; see
+[Caching](#caching). A `display()` that calls `parent::display()` reaches the
+base `run()` and so the layout — unless the class also overrides `run()`.
 
 ## The smallest one that works
 
@@ -100,7 +101,7 @@ maps `Components\` namespaces to component directories on its own. See
 
 > **Warning:** A module is rendered inside somebody else's page, so an
 > uncaught exception in `display()` takes the whole page with it — not just
-> the block. Nothing wraps `run()` in a `try`. A model call that can throw
+> the block. Nothing wraps `display()` in a `try`. A model call that can throw
 > because the component is missing, or a table that does not exist yet, breaks
 > every page the module is placed on.
 
@@ -151,19 +152,19 @@ cache store is configured, the instance's `cache` parameter is on,
 it buffers a call to `run()`, appends an HTML comment recording when the copy
 was made, stores it, and returns it.
 
-The core modules that cache split the class in two: `run()` produces the
-output, and `display()` decides whether to reuse a stored copy.
-`mod_findresources` is the pattern in full:
+A module opts in by splitting the class in two: `run()` produces the output,
+and `display()`, which the loader calls, decides whether to reuse a stored
+copy. The 19 core modules that cache do this. `mod_findresources` is the
+pattern in full:
 
 <!--include: core/modules/mod_findresources/mod_findresources.php:18-57-->
 
-> **Warning:** That pattern was written for the old entry stub, which called
-> `display()`. The loader now calls `run()`, so in the 19 core modules written
-> this way `display()` is never reached and the cache is never consulted:
-> every request does the work. Calling `getCacheContent()` from `run()`
-> instead does not help — on a miss it calls `run()` again, and recurses until
-> PHP runs out of stack. As things stand, module output caching has no working
-> entry point.
+Never call `getCacheContent()` from `run()`, and never call `display()`
+from `run()`: on a miss `getCacheContent()` calls `run()`, and either one
+recurses until PHP runs out of stack. Anything that must happen on every
+request, cached or not — pushing a stylesheet with `css()`, say — goes in
+`display()` before the cache check, because a cached copy holds only what
+was echoed.
 
 > **Warning:** The cache key is `modules.{id}` and nothing else. It does not
 > vary by user, view level, or menu item. Cache a per-user module and the

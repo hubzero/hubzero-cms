@@ -51,11 +51,15 @@ class Module
     /**
      * Display module
      *
+     * The loader calls this. A module that caches its output overrides it
+     * to return a stored copy from getCacheContent() and call run() only
+     * when there is none; any other module can override either method.
+     *
      * @return  void
      */
     public function display()
     {
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->run();
     }
 
     /**
@@ -72,15 +76,15 @@ class Module
     /**
      * Run the module logic and output content
      *
-     * Subclasses should override this method to implement
-     * their module logic. The default implementation simply
-     * calls display().
+     * This is the work getCacheContent() buffers on a cache miss, so it
+     * must not call display(). The default renders the layout named by the
+     * `layout` parameter.
      *
      * @return  void
      */
     public function run()
     {
-        $this->display();
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
     }
 
     /**

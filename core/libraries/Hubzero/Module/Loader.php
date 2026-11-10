@@ -281,7 +281,7 @@ class Loader
                 $instance = new $className($params, $module);
 
                 ob_start();
-                $instance->run();
+                $instance->display();
                 $module->content = ob_get_contents();
                 ob_end_clean();
             } else {
