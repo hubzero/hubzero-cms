@@ -244,9 +244,11 @@ class Credentials extends SiteController
 
         // Make sure we have at least one and not more than one
         if ($user->count() < 1) {
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         } elseif ($user->count() > 1) {
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         }
 
         // Get the user object
@@ -254,17 +256,20 @@ class Credentials extends SiteController
 
         // Make sure the user isn't blocked
         if ($user->get('block')) {
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         }
 
         // Make sure the user isn't a super admin
         if ($user->authorise('core.admin')) {
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         }
 
         // Make sure the user has not exceeded the reset limit
         if ($this->hasExceededResetLimit($user)) {
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         }
 
         // An account expired for inactivity gets an explanation instead of a

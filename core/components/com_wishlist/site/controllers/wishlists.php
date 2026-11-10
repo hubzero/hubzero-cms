@@ -247,7 +247,8 @@ class Wishlists extends SiteController
         if (!$model->isPublic() && User::isGuest()) {
             if (!$plugin) {
                 $this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
-                return $this->loginTask();
+                $this->loginTask();
+                return;
             } else {
                 // not authorized
                 App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
@@ -498,19 +499,22 @@ class Wishlists extends SiteController
         if (User::isGuest()) {
             if ($action) {
                 $this->_msg = ($action == 'addbonus') ? Lang::txt('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
-                return $this->loginTask();
+                $this->loginTask();
+                return;
             }
 
             if (!$wishlist->isPublic()) {
                 // need to log in to private list
                 $this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
-                return $this->loginTask();
+                $this->loginTask();
+                return;
             }
 
             if ($wish->isPrivate()) {
                 // need to log in to view private wish
                 $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
-                return $this->loginTask();
+                $this->loginTask();
+                return;
             }
         }
 
@@ -726,7 +730,8 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Settings (owners, advisory members) are for list managers only
@@ -781,7 +786,8 @@ class Wishlists extends SiteController
 
             // Set the pathway
             $this->buildPathway($wishlist);
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // The implementation plan, assignee and due date are offered to list
@@ -948,7 +954,8 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // get admin privileges
@@ -1006,7 +1013,8 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // The wish form posts a token
@@ -1276,7 +1284,8 @@ class Wishlists extends SiteController
             $this->_taskpath = $wish->link();
             $this->_taskname = Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
             $this->buildPathway($wishlist);
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id')) {
@@ -1420,7 +1429,8 @@ class Wishlists extends SiteController
         Request::checkToken();
 
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $listid   = Request::getInt('wishlist', 0);
@@ -1632,7 +1642,8 @@ class Wishlists extends SiteController
 
             // Set the pathway
             $this->buildPathway($wishlist);
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // check available user funds
@@ -1702,7 +1713,8 @@ class Wishlists extends SiteController
             $this->buildPathway($wishlist);
 
             // Return to the wish, which can be requested with GET, not to this task
-            return $this->loginTask(Route::url($wish->link(), false, true));
+            $this->loginTask(Route::url($wish->link(), false, true));
+            return;
         }
 
         // Reached from the confirmation's Yes button, which posts the token
@@ -1790,7 +1802,8 @@ class Wishlists extends SiteController
             // Set the pathway
             $this->buildPathway($wishlist);
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_RANK');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Need to be list admin
@@ -1890,7 +1903,8 @@ class Wishlists extends SiteController
         // is the user logged in?
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         if ($id && $category) {
@@ -2204,7 +2218,8 @@ class Wishlists extends SiteController
             // Set the pathway
             $this->buildPathway($wishlist);
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $this->wishTask();
@@ -2240,7 +2255,8 @@ class Wishlists extends SiteController
 
             // Return to the page the vote was cast from, which can be requested with GET, not to this task
             $route = Request::getCmd('page', 'wishlist') == 'wishlist' ? $wishlist->link() : $wish->link();
-            return $this->loginTask(Route::url($route, false, true));
+            $this->loginTask(Route::url($route, false, true));
+            return;
         }
 
         // Require POST

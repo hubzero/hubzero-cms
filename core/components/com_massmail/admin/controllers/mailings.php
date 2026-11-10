@@ -183,7 +183,8 @@ class Mailings extends AdminController
         Notify::info(Lang::txt('COM_MASSMAIL_RETURNED_TO_DRAFT'));
 
         // Open the editor on the now-draft mailing.
-        return $this->editTask($row);
+        $this->editTask($row);
+        return;
     }
 
     /**
@@ -296,13 +297,15 @@ class Mailings extends AdminController
                     }
                     Notify::error(Lang::txt('COM_MASSMAIL_REQUIRED_FIELDS', implode(', ', $names)));
                 }
-                return $this->editTask($row, $invalid);
+                $this->editTask($row, $invalid);
+                return;
             }
         }
 
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         $this->handleUploads($row);
@@ -311,13 +314,15 @@ class Mailings extends AdminController
         // rather than dispatching straight away.
         if ($this->getTask() == 'review') {
             Request::setVar('id', [$row->get('id')]);
-            return $this->verifyTask($row);
+            $this->verifyTask($row);
+            return;
         }
 
         Notify::success(Lang::txt('COM_MASSMAIL_MAILING_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
         $this->cancelTask();
     }
@@ -394,11 +399,13 @@ class Mailings extends AdminController
 
         if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body'))) {
             Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
         if ($preview < 1) {
             Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // Render both parts exactly as they will be built at launch, with the
@@ -750,7 +757,8 @@ class Mailings extends AdminController
         $att->destroy();
 
         Request::setVar('id', [$mailingId]);
-        return $this->editTask();
+        $this->editTask();
+        return;
     }
 
     /**
@@ -781,11 +789,13 @@ class Mailings extends AdminController
 
         if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body'))) {
             Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
         if ($preview < 1) {
             Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // Freeze the rendered bodies at launch time.
@@ -1013,7 +1023,8 @@ class Mailings extends AdminController
         }
 
         Request::setVar('id', [$row->get('id')]);
-        return $this->editTask();
+        $this->editTask();
+        return;
     }
 
     /**

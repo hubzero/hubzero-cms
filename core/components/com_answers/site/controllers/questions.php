@@ -85,7 +85,8 @@ class Questions extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Incoming
@@ -263,7 +264,8 @@ class Questions extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $this->questionTask();
@@ -616,7 +618,8 @@ class Questions extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         if (
@@ -680,7 +683,8 @@ class Questions extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         if (
@@ -886,7 +890,8 @@ class Questions extends SiteController
             $rtrn = 'index.php?option=' . $this->option . '&task=question&id=' . Request::getInt('qid', 0);
 
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-            return $this->loginTask(Route::url($rtrn, false, true));
+            $this->loginTask(Route::url($rtrn, false, true));
+            return;
         }
 
         // Require POST to prevent accidental deletion by crawlers
@@ -1034,7 +1039,8 @@ class Questions extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $r_u = Component::params('com_answers')->get('restrict_users');
@@ -1208,7 +1214,8 @@ class Questions extends SiteController
         // Login required
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Incoming

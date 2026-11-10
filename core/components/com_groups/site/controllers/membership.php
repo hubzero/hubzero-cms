@@ -859,10 +859,11 @@ class Membership extends Base
         // Check if they're logged in. A posted join can't be replayed after
         // logging in, so come back to the page that asks to join.
         if (User::isGuest()) {
-            return $this->loginTask(
+            $this->loginTask(
                 Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'),
                 'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=join',
             );
+            return;
         }
 
         //check to make sure we have  cname
@@ -990,7 +991,8 @@ class Membership extends Base
         // (/groups/<cn>/request) arrives without the group, so it goes the
         // same way.
         if (empty($this->view->group)) {
-            return $this->joinTask();
+            $this->joinTask();
+            return;
         }
 
         // Get view notifications

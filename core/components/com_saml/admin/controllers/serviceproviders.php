@@ -256,7 +256,8 @@ class Serviceproviders extends AdminController
                 // The same goes for the gates passed when there are no gates
                 if ($entry['source'] == 'groups:allowed' && !$groups) {
                     Notify::error(Lang::txt('COM_SAML_ERROR_GROUPS_ALLOWED_WITHOUT_GROUPS'));
-                    return $this->editTask($row);
+                    $this->editTask($row);
+                    return;
                 }
             }
         }

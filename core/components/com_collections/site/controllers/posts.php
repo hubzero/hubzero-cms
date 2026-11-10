@@ -148,7 +148,8 @@ class Posts extends SiteController
     {
         // Login is required
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $this->view->config = $this->config;
@@ -265,7 +266,8 @@ class Posts extends SiteController
 
         // Login is required
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Incoming
@@ -304,7 +306,8 @@ class Posts extends SiteController
         // Bind content
         if (!$row->bind($fields)) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // The owner is never the submitter's to set
@@ -319,7 +322,8 @@ class Posts extends SiteController
         // Store new content
         if (!$row->store()) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // Create a post entry linking the item to the board
@@ -385,7 +389,8 @@ class Posts extends SiteController
 
         // Check for any errors
         if ($this->getError()) {
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // Redirect to main listing
@@ -411,7 +416,8 @@ class Posts extends SiteController
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         // Incoming
@@ -539,7 +545,8 @@ class Posts extends SiteController
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            return;
         }
 
         // Require POST
@@ -615,7 +622,8 @@ class Posts extends SiteController
     public function voteTask()
     {
         if (User::isGuest()) {
-            return $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            return;
         }
 
         // Require POST
@@ -693,7 +701,8 @@ class Posts extends SiteController
     public function collectTask()
     {
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+            return;
         }
 
         $model = new Archive('member', User::get('id'));

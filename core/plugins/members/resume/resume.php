@@ -208,7 +208,7 @@ class Resume extends Plugin
                     $arr['html'] = $this->activate($database, $option, $member, $emp);
                     break;
                 case 'download':
-                    $arr['html'] = $this->download($member);
+                    $this->download($member);
                     break;
                 case 'view':
                 default:

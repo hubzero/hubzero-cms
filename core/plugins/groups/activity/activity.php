@@ -370,7 +370,8 @@ class Activity extends Plugin
     protected function removeAction()
     {
         if (User::isGuest()) {
-            return $this->loginRedirect();
+            $this->loginRedirect();
+            return;
         }
 
         // Check for request forgeries
@@ -425,7 +426,8 @@ class Activity extends Plugin
     protected function starAction()
     {
         if (User::isGuest()) {
-            return $this->loginRedirect();
+            $this->loginRedirect();
+            return;
         }
 
         if (!$this->canStar) {
@@ -490,7 +492,8 @@ class Activity extends Plugin
     protected function postAction()
     {
         if (User::isGuest()) {
-            return $this->loginRedirect();
+            $this->loginRedirect();
+            return;
         }
 
         // Check for request forgeries

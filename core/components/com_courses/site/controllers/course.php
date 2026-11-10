@@ -184,7 +184,8 @@ class Course extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         // Build the title
@@ -245,7 +246,8 @@ class Course extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         // Incoming
@@ -285,7 +287,8 @@ class Course extends SiteController
         // Push back into edit mode if any errors
         if (!$course->store(true)) {
             Notify::error($course->getError(), 'courses');
-            return $this->editTask($course);
+            $this->editTask($course);
+            return;
         }
 
         if (isset($_POST['tags'])) {
@@ -333,7 +336,8 @@ class Course extends SiteController
     {
         // Check if they're logged in (returning to the course, not to this action)
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
+            return;
         }
 
         // Check for request forgeries
@@ -377,7 +381,8 @@ class Course extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         $this->view
@@ -395,7 +400,8 @@ class Course extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         $this->view->no_html = Request::getInt('no_html', 0);
@@ -426,7 +432,8 @@ class Course extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         $data    = Request::getArray('offering', [], 'post');
@@ -514,7 +521,8 @@ class Course extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         // Ensure we found the course info
@@ -648,7 +656,8 @@ class Course extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+            return;
         }
 
         // Incoming
@@ -735,7 +744,8 @@ class Course extends SiteController
     {
         // Check if they're logged in (returning to the course, not to this action)
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
+            $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
+            return;
         }
 
         // Check for request forgeries

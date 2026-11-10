@@ -80,7 +80,8 @@ class Authors extends SiteController
         // internal callers go through saveAuthors() directly.
         Request::checkToken();
 
-        return $this->saveAuthors(0, [], 1);
+        $this->saveAuthors(0, [], 1);
+        return;
     }
 
     /**
