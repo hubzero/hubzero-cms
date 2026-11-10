@@ -150,7 +150,10 @@ class ConfigHelper
         foreach ($matches['macroname'] as $k => $match) {
             $macroname = $match;
             $argument = $matches['macroargs'][$k];
-            $replacement = $this->$macroname($argument, $row);
+            // Hubs name the macros in their configuration as Group_cn and
+            // Member_id; the methods are camelCase, and PHP finds a method
+            // whatever its case, so only the underscore needs dropping
+            $replacement = $this->{str_replace('_', '', $macroname)}($argument, $row);
             $path = (preg_replace("(\\[\[" . $macroname . "\(" . $argument . "\)\\]\])", $replacement, $path));
         }
         return $path;
@@ -184,8 +187,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function Year($date, $row)
+    private function year($date, $row)
     {
         $date = $row->$date;
         return \Date::of(strtotime($date))->toLocal('Y');
@@ -199,8 +201,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function Month($date, $row)
+    private function month($date, $row)
     {
         $date = $row->$date;
         return \Date::of(strtotime($date))->toLocal('m');
@@ -214,8 +215,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function Field($argument, $row)
+    private function field($argument, $row)
     {
         $argument = $row->$argument;
         return $argument;
@@ -229,8 +229,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function Group_cn($id, $row)
+    private function groupCn($id, $row)
     {
         $group = Group::getInstance($id);
         return $group->get('cn');
@@ -244,8 +243,7 @@ class ConfigHelper
      * @access  private
      * @return  int
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function Member_id($id, $row)
+    private function memberId($id, $row)
     {
         $id = $row->scope_id;
         return $id;
