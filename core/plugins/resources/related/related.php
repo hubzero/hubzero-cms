@@ -73,7 +73,8 @@ class Related extends Plugin
 				FROM `#__resource_types` AS rt, `#__resources` AS r
 				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
-				WHERE r.published=1 AND a.child_id= " . $database->quote($resource->id) . "AND r.type=rt.id AND r.type!=8 ";
+				WHERE r.published=1 AND a.child_id= " . $database->quote($resource->id)
+            . "AND r.type=rt.id AND r.type!=8 ";
 
         $sql3 = "";
 

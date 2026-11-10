@@ -136,9 +136,11 @@ class Event extends Table
 						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= "
                     . $this->db->quote($select_date . '%') . " AND publish_down <= "
                     . $this->db->quote($select_date_fin . '%') . ")
-						OR (publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down "
+						OR (publish_up >= " . $this->db->quote($select_date . '%')
+                    . " AND publish_down IS NOT NULL AND publish_down "
                 . "!='0000-00-00 00:00:00' AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
-						OR (publish_up <= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down "
+						OR (publish_up <= " . $this->db->quote($select_date . '%')
+                    . " AND publish_down IS NOT NULL AND publish_down "
                 . "!='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date_fin . '%') . ")
 					)
 					AND $this->tableName.state = '1'";
@@ -169,7 +171,8 @@ class Event extends Table
 
                 $sql = "SELECT $this->tableName.* FROM #__categories AS b, $this->tableName
 					WHERE $this->tableName.catid = b.id
-					AND publish_up LIKE " . $this->db->quote($year . '%') . " AND (publish_down >= " . $this->db->quote($year . '%')
+					AND publish_up LIKE " . $this->db->quote($year . '%') . " AND (publish_down >= "
+                    . $this->db->quote($year . '%')
                     . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
 					AND $this->tableName.state = '1'";
 

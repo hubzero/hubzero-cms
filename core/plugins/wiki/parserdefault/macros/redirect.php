@@ -75,7 +75,8 @@ class Redirect extends WikiMacro
         if (!$delay) {
             return '<script type="text/javascript">
 					window.onload = function () {
-						window.location.href = ' . json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)
+						window.location.href = '
+                . json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)
                 . ';
 					};
 				</script>';
@@ -95,7 +96,8 @@ class Redirect extends WikiMacro
 						}, 1000);
 					};
 				</script>
-				<p class="warning">' . Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
+				<p class="warning">'
+            . Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
             . '</p>';
     }
 

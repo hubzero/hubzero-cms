@@ -102,7 +102,8 @@ class Rss extends Renderer
             $feed .= '		<image>' . "\n";
             $feed .= '			<url>' . $this->escapeUrl($data->image->url) . '</url>' . "\n";
             $feed .= '			<title>' . $this->escape($data->image->title) . '</title>' . "\n";
-            $feed .= '			<link>' . $this->escapeUrl(str_replace(' ', '%20', $data->image->link)) . '</link>' . "\n";
+            $feed .= '			<link>' . $this->escapeUrl(str_replace(' ', '%20', $data->image->link)) . '</link>'
+                . "\n";
             if ($data->image->width != "") {
                 $feed .= '			<width>' . $this->escape($data->image->width) . '</width>' . "\n";
             }
@@ -118,7 +119,8 @@ class Rss extends Renderer
             $feed .= '		</image>' . "\n";
         }
         if ($data->language != '') {
-            $feed .= "		<language>" . htmlspecialchars((string) $data->language, ENT_QUOTES, 'UTF-8') . "</language>\n";
+            $feed .= "		<language>" . htmlspecialchars((string) $data->language, ENT_QUOTES, 'UTF-8')
+                . "</language>\n";
         }
         if ($data->copyright != '') {
             $feed .= "		<copyright>" . $this->escape($data->copyright) . "</copyright>\n";
@@ -168,7 +170,8 @@ class Rss extends Renderer
 
             $feed .= "		<item>\n";
             $feed .= "			<title>" . $this->escape(strip_tags($data->items[$i]->title)) . "</title>\n";
-            $feed .= "			<link>" . $this->escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</link>\n";
+            $feed .= "			<link>" . $this->escapeUrl(str_replace(' ', '%20', $data->items[$i]->link))
+                . "</link>\n";
             $feed .= "			<description><![CDATA["
                 . str_replace(
                     ']]>',
@@ -207,10 +210,12 @@ class Rss extends Renderer
                     . "</itunes:keywords>\n";
             }
             if ($data->items[$i]->itunes_author != '') {
-                $feed .= "			<itunes:author>" . $this->escape($data->items[$i]->itunes_author) . "</itunes:author>\n";
+                $feed .= "			<itunes:author>" . $this->escape($data->items[$i]->itunes_author)
+                    . "</itunes:author>\n";
             }
             if ($data->items[$i]->itunes_category != '') {
-                $feed .= "			<itunes:category text=\"" . $this->escape($data->items[$i]->itunes_category) . "\">\n";
+                $feed .= "			<itunes:category text=\"" . $this->escape($data->items[$i]->itunes_category)
+                    . "\">\n";
                 if ($data->items[$i]->itunes_subcategories != '') {
                     $icats = $data->items[$i]->itunes_subcategories;
                     foreach ($icats as $icat) {
@@ -228,7 +233,8 @@ class Rss extends Renderer
                     $feed .= "			<width>" . $this->escape($data->items[$i]->itunes_image->width) . "</width>\n";
                 }
                 if ($data->items[$i]->itunes_image->height != '') {
-                    $feed .= "			<height>" . $this->escape($data->items[$i]->itunes_image->height) . "</height>\n";
+                    $feed .= "			<height>" . $this->escape($data->items[$i]->itunes_image->height)
+                        . "</height>\n";
                 }
                 if ($data->items[$i]->itunes_image->description != '') {
                     $feed .= "			<description><![CDATA["

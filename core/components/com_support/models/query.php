@@ -459,7 +459,8 @@ class Query extends Relational
 							SELECT st.' . $db->quoteName('objectid') . ' FROM #__tags_object AS st
 							LEFT JOIN #__tags AS t ON st.' . $db->quoteName('tagid') . '=t.' . $db->quoteName('id') . '
 							WHERE st.' . $db->quoteName('tbl') . '=\'support\'
-							AND (t.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.'
+							AND (t.' . $db->quoteName('tag')
+                    . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.'
                     . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
                     . '))';
                 $having = " GROUP BY f.id ";
@@ -477,7 +478,8 @@ class Query extends Relational
 							SELECT jto.' . $db->quoteName('objectid') . ' FROM #__tags_object AS jto
 							JOIN #__tags AS jt ON jto.' . $db->quoteName('tagid') . '=jt.' . $db->quoteName('id') . '
 							WHERE jto.' . $db->quoteName('tbl') . '=\'support\'
-							AND (jt.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR '
+							AND (jt.' . $db->quoteName('tag')
+                    . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR '
                 . 'jt.'
                 . $db->quoteName('raw_tag')
                 . ' '

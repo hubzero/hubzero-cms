@@ -83,7 +83,8 @@ class Kb extends Plugin
 				AND c.published = 1
 				AND f.created > 
 				" . $database->quote($period->cStartDat) . "AND f.created < 
-				" . $database->quote($period->cEndDate) . "AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
+				" . $database->quote($period->cEndDate) . "AND f.access IN ("
+            . implode(',', User::getAuthorisedViewLevels()) . ")";
 
         $order_by = " ORDER BY f.created DESC, f.title";
         $order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";

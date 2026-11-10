@@ -514,7 +514,8 @@ class File extends Macro
                     . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="' . (Request::scheme() == 'https' ? 'https://ssl-' : 'http://')
+									<img alt="Unity Web Player. Install now!" src="'
+                    . (Request::scheme() == 'https' ? 'https://ssl-' : 'http://')
                     . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>

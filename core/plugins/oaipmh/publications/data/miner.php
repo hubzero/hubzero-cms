@@ -440,7 +440,8 @@ class Miner extends Obj implements Provider
             "SELECT *
 			FROM `#__citations` AS a
 			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`='owner' AND a.`published`=1
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id)
+                . " AND n.`type`='owner' AND a.`published`=1
 			ORDER BY `year` DESC",
         );
         $references = $this->database->loadObjectList();
@@ -470,7 +471,8 @@ class Miner extends Obj implements Provider
             "SELECT *
 			FROM `#__citations` AS a
 			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`!='owner' AND a.`published`=1
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id)
+                . " AND n.`type`!='owner' AND a.`published`=1
 			ORDER BY `year` DESC",
         );
         $references = $this->database->loadObjectList();

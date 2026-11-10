@@ -74,7 +74,8 @@ class Tags extends Cloud
 				AND o.objectid=r.id
 				AND r.published=1
 				AND r.standalone=1
-				AND (r.publish_up IS NULL OR r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->db->quote($now) . ")
+				AND (r.publish_up IS NULL OR r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= "
+            . $this->db->quote($now) . ")
 				AND (r.publish_down IS NULL OR r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= "
             . $this->db->quote($now) . ") ";
         if ($type) {

@@ -217,7 +217,8 @@ class Sender
             "SELECT COUNT(*) FROM `#__massmail_recipients` r
 			 JOIN `#__massmail_mailings` m ON m.id = r.mailing_id
 			 WHERE r.status = " . Recipient::PENDING . "
-			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", "
+			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING)
+                . ", "
                 . $db->quote(Mailing::STATUS_PAUSED) . ")",
         );
         $pending = (int) $db->loadResult();
@@ -365,7 +366,8 @@ class Sender
         $mid = (int) $mailing->get('id');
         $db->setQuery(
             "UPDATE `#__massmail_mailings`
-			 SET `status` = " . $db->quote(Mailing::STATUS_SENT) . ", `completed_on` = " . $db->quote(\Date::toSql()) . "
+			 SET `status` = " . $db->quote(Mailing::STATUS_SENT) . ", `completed_on` = " . $db->quote(\Date::toSql())
+                . "
 			 WHERE `id` = $mid
 			 AND `status` = " . $db->quote(Mailing::STATUS_SENDING) . "
 			 AND NOT EXISTS (

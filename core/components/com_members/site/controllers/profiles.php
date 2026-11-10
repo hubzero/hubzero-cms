@@ -144,7 +144,8 @@ class Profiles extends SiteController
         if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search'])) {
             $query = "SELECT u.id, u.name, u.username, u.access
 					FROM `#__users` AS u
-					WHERE u.block = 0 AND orcid= " . $this->database->quote($filters['search']) . " AND u.activation>0 $restrict
+					WHERE u.block = 0 AND orcid= " . $this->database->quote($filters['search'])
+                . " AND u.activation>0 $restrict
 					ORDER BY u.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
         } else {
@@ -164,8 +165,10 @@ class Profiles extends SiteController
                 . "LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
             } else {
                 $match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . ")";
+					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%')
+                    . "
+					OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%')
+                    . ")";
             }
             $query = "SELECT u.id, u.name, u.username, u.access, $match as rel
 					FROM `#__users` AS u

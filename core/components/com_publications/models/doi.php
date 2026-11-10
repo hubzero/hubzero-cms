@@ -676,7 +676,8 @@ class Doi extends Obj
 
             foreach ($this->get('contactPerson') as $contactPerson) {
                 $xmlfile .= '	<contributor contributorType="ContactPerson">';
-                $xmlfile .= '		<contributorName nameType="Personal">' . $contactPerson->name . '</contributorName>';
+                $xmlfile .= '		<contributorName nameType="Personal">' . $contactPerson->name
+                    . '</contributorName>';
                 if ($contactPerson->user_id) {
                     $xmlfile .= '		<givenName>' . $contactPerson->givenName . '</givenName>';
                     $xmlfile .= '		<familyName>' . $contactPerson->surname . '</familyName>';
@@ -698,7 +699,8 @@ class Doi extends Obj
                             . '"'
                             . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"'
                         : "";
-                    $xmlfile .= '		<affiliation' . $orgidAtr . '>' . $contactPerson->organization . '</affiliation>';
+                    $xmlfile .= '		<affiliation' . $orgidAtr . '>' . $contactPerson->organization
+                        . '</affiliation>';
                 }
 
                 $xmlfile .= '	</contributor>';

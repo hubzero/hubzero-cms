@@ -1441,7 +1441,8 @@ class Owner extends Table
         $query  = "SELECT o.id as owner";
         $query .= " FROM #__projects AS p ";
         $query .= " LEFT JOIN $this->tableName AS o ON o.projectid=p.id
-					AND o.userid=0 AND o.status != 2 AND LOWER(o.invited_email)=" . $this->db->quote(strtolower($email)) . "
+					AND o.userid=0 AND o.status != 2 AND LOWER(o.invited_email)=" . $this->db->quote(strtolower($email))
+            . "
 					AND o.invited_code=" . $this->db->quote($code);
         $query .= " WHERE ";
         $query .= is_numeric($identifier)

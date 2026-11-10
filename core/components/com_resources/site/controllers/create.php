@@ -1039,7 +1039,8 @@ class Create extends SiteController
             'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND '
                 . 'subid = ' . $id . '
 			UNION
-			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = '
+			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id')
+                . ' OR modified_by = '
                 . User::get('id') . ')
 			UNION
 			SELECT 1 FROM `#__users` u
@@ -1102,7 +1103,8 @@ class Create extends SiteController
                 'SELECT t.tag, t.id
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
-				INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+				INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4]
+                    . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
 				WHERE to1.objectid = ' . $tag[3] . ' AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
             );
             $any_match = false;
@@ -1133,9 +1135,11 @@ class Create extends SiteController
                             'SELECT t.id
 							FROM `#__tags_object` to1
 							INNER JOIN `#__tags` t ON t.id = to1.tagid
-							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = '
+							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4]
+                                . ' AND to2.tbl = \'tags\' AND to2.objectid = '
                             . 'to1.tagid
-							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
+							WHERE to1.objectid IN (' . implode(',', $parent_id)
+                                . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
                         );
                         $parent_id = $this->database->loadColumn();
                     }

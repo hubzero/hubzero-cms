@@ -1537,7 +1537,8 @@ class Calendar extends Plugin
         unset($r['nativetribe']);
         $r = (empty($r)) ? [] : $r;
         $sql = "INSERT INTO `#__events_respondent_race_rel` (respondent_id, race, tribal_affiliation)
-		        VALUES (" . $this->database->quote($eventsRespondent->id) . ", " . $this->database->quote(implode(',', $r))
+		        VALUES (" . $this->database->quote($eventsRespondent->id) . ", "
+            . $this->database->quote(implode(',', $r))
             . ", " . $this->database->quote($race['nativetribe']) . ")";
         $this->database->setQuery($sql);
         $this->database->query();
@@ -2203,7 +2204,8 @@ class Calendar extends Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >=" . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql())
+				AND (publish_up >=" . $db->quote(Date::of()->toSql()) . " OR publish_down >= "
+            . $db->quote(Date::of()->toSql())
             . ")";
         $db->setQuery($sql);
         return $db->loadResult();
@@ -2222,7 +2224,8 @@ class Calendar extends Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >= " . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql())
+				AND (publish_up >= " . $db->quote(Date::of()->toSql()) . " OR publish_down >= "
+            . $db->quote(Date::of()->toSql())
             . ") AND publish_up <= " . $db->quote(Date::of()->format("Y-m-t 23:59:59"));
         $db->setQuery($sql);
         return $db->loadResult();

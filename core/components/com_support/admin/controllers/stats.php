@@ -54,7 +54,8 @@ class Stats extends AdminController
         if ($filters['group'] || $filters['group'] == '_none_') {
             $query = "SELECT a.username, a.name, a.id
 				FROM `#__users` AS a, `#__xgroups` AS g, `#__xgroups_members` AS gm
-				WHERE g.cn=" . $this->database->quote($filters['group ']) . "AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
+				WHERE g.cn=" . $this->database->quote($filters['group '])
+                . "AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
 				ORDER BY a.name";
         } else {
             $query = "SELECT DISTINCT a.username, a.name, a.id

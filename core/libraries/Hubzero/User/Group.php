@@ -704,10 +704,12 @@ class Group extends Obj
 							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber="
                         . $db->quote($this->gidNumber) . ")
 						UNION
-							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->quote($this->gidNumber)
+							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber="
+                        . $db->quote($this->gidNumber)
                         . ")
 						UNION
-							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->quote($this->gidNumber)
+							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber="
+                        . $db->quote($this->gidNumber)
                         . ")";
 
                     $db->setQuery($query);

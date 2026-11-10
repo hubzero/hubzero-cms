@@ -294,7 +294,8 @@ class BundleQueue extends Relational
 			WHERE `status` = '" . self::STATUS_QUEUED . "'
 			  AND `attempts` < `max_attempts`
 			  AND (`last_attempt_at` IS NULL
-			       OR `last_attempt_at` <= (NOW() - INTERVAL (POW(2, `attempts`) * " . (int) self::BACKOFF_BASE . ") SECOND))
+			       OR `last_attempt_at` <= (NOW() - INTERVAL (POW(2, `attempts`) * " . (int) self::BACKOFF_BASE
+            . ") SECOND))
 			ORDER BY `queued_at` ASC
 			LIMIT 1";
 

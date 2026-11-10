@@ -247,7 +247,8 @@ class Resources extends Plugin
 				AND u.`activation` > 0
 				AND u.`approved` > 0
 				AND u.`sendEmail`=1
-				AND (l.`created` IS NULL OR l.`created` = '0000-00-00 00:00:00' OR l.`created` <= " . $db->quote($previous) . ")
+				AND (l.`created` IS NULL OR l.`created` = '0000-00-00 00:00:00' OR l.`created` <= "
+            . $db->quote($previous) . ")
 				LIMIT 0," . $batch;
         $db->setQuery($query);
         $users = $db->loadColumn();
@@ -305,7 +306,8 @@ class Resources extends Plugin
 							((90 / ((datediff(NOW(), " . $r . ".created) * 1) + 90)) + 0)
 						)
 						+
-						(LN(LN(1 / (case when datediff(NOW(), " . $r . ".created) >= 1 then datediff(NOW(), " . $r . ".created) else 1 "
+						(LN(LN(1 / (case when datediff(NOW(), " . $r . ".created) >= 1 then datediff(NOW(), " . $r
+                        . ".created) else 1 "
                     . "end) + 1)) + 10)
 					";
 

@@ -346,7 +346,8 @@ class Courses extends Plugin
 						LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
                         . "AND r.alias=
-						" . $this->database->Quote($who) . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . ","
+						" . $this->database->Quote($who) . "ORDER BY " . $filters['sort '] . "ASC LIMIT "
+                            . $filters['start'] . ","
                             . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
@@ -447,7 +448,8 @@ class Courses extends Plugin
 					LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 					LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-					WHERE m.user_id= " . $database->Quote($uidNumber) . "AND m.student=0 AND r.alias='instructor' AND c.state=1";
+					WHERE m.user_id= " . $database->Quote($uidNumber)
+                . "AND m.student=0 AND r.alias='instructor' AND c.state=1";
             $database->setQuery($query);
             $rows = $database->loadObjectList();
 

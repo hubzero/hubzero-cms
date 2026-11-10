@@ -53,7 +53,8 @@ class Related extends Plugin
 					AND m.user_id IN (" . implode(",", $ids) . ")
 					AND m.student=0
 					AND c.state=1
-					AND c.id !=" . $database->Quote($course->get('id ')) . "LIMIT " . (int) $this->params->get('display_limit', 3);
+					AND c.id !=" . $database->Quote($course->get('id ')) . "LIMIT "
+            . (int) $this->params->get('display_limit', 3);
 
         $database->setQuery($query);
         if ($courses = $database->loadObjectList()) {

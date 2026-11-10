@@ -132,7 +132,8 @@ class Atom extends Renderer
             $feed .= "		<published>"
                 . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8')
                 . "</published>\n";
-            $feed .= "		<updated>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</updated>\n";
+            $feed .= "		<updated>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8')
+                . "</updated>\n";
             if (empty($data->items[$i]->guid) === true) {
                 $feed .= "		<id>" . $this->escapeUrl($itemLink) . "</id>\n";
             } else {
@@ -141,7 +142,8 @@ class Atom extends Renderer
 
             if ($data->items[$i]->author != "") {
                 $feed .= "		<author>\n";
-                $feed .= "			<name>" . htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8') . "</name>\n";
+                $feed .= "			<name>" . htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8')
+                    . "</name>\n";
                 if ($data->items[$i]->authorEmail != "") {
                     $feed .= "			<email>"
                         . htmlspecialchars($data->items[$i]->authorEmail, ENT_COMPAT, 'UTF-8')

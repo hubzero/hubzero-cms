@@ -341,7 +341,8 @@ class DoiService extends Obj
                 $xmlfile .= '<creator>';
                 $xmlfile .= '	<creatorName>' . $name . '</creatorName>';
                 if (isset($author->orcid) && !empty($author->orcid)) {
-                    $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">' . $author->orcid . '</nameIdentifier>';
+                    $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">' . $author->orcid
+                        . '</nameIdentifier>';
                 }
                 $xmlfile .= '</creator>';
             }

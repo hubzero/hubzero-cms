@@ -159,7 +159,8 @@ class Project extends Table
                 } else {
                     $query .= $uid
                             ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2
-								AND ((p.state NOT IN (0, 1, 2, 3, 4, 5) AND p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								AND ((p.state NOT IN (0, 1, 2, 3, 4, 5) AND p.setup_stage >= "
+                        . $this->db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 }
@@ -661,7 +662,8 @@ class Project extends Table
 
             $query = "SELECT COUNT(*)
 					FROM `#__activity_recipients` AS pa
-					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid=" . $this->db->quote($uid) . "
+					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid="
+                . $this->db->quote($uid) . "
 					WHERE pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND pa.state !=2 AND pa.created >= o.added
 					AND pa.scope='project'
