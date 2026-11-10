@@ -367,7 +367,7 @@ class Query extends Relational
 
             if (strtoupper($expr->val) == 'NULL' || $expr->val === null) {
                 $expr->opval = ($expr->opval == '=') ? 'IS $1' : 'IS NOT $1';
-            } else if ($expr->val == '*') {
+            } elseif ($expr->val == '*') {
                 $expr->opval = 'IN ($1)';
 
                 if ($expr->fldval == 'group_id') {
@@ -400,7 +400,7 @@ class Query extends Relational
 
                 if ($expr->val == '$me') {
                     $expr->val = $user->get($uid);
-                } else if (strtolower($expr->fldval) == 'owner') {
+                } elseif (strtolower($expr->fldval) == 'owner') {
                     $vuser = User::getInstance($expr->val);
 
                     if ($vuser) {
@@ -426,7 +426,7 @@ class Query extends Relational
 							WHERE st.' . $db->quoteName('tbl') . '=\'support\'
 							AND (t.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
                 $having = " GROUP BY f.id ";
-            } else if (count($tags) && count($nottags)) {
+            } elseif (count($tags) && count($nottags)) {
                 $e[] = '(t.' . $db->quoteName('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
                 $e[] = 'f.' . $db->quoteName('id') . ' NOT IN (
 							SELECT jto.' . $db->quoteName('objectid') . ' FROM #__tags_object AS jto

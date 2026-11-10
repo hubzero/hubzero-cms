@@ -258,7 +258,7 @@ if ($revertAllowed && $this->pub->accepted()) {
                             . $this->pub->versionProperty('version_label', 'dev') . '</strong>)  <span class="block"><a href="'
                             . Route::url($this->pub->link('edit') . '&version=dev') . '">'
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE') . '</a></span>';  ?></p></li>
-                            <?php } else if (!$this->pub->versionProperty('version_label', 'dev')) {
+                            <?php } elseif (!$this->pub->versionProperty('version_label', 'dev')) {
                                 ?>
                             <li id="next-edit">
                                 <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED_OPTION');

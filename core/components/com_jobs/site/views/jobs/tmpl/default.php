@@ -26,10 +26,10 @@ if ($this->subscriptionCode && $this->employer) {
         <ul id="useroptions">
             <?php if (User::isGuest()) { ?>
                 <li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a class="btn" href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-            <?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
+            <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
                 <li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
                 <li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
-            <?php } else if ($this->admin) { ?>
+            <?php } elseif ($this->admin) { ?>
                 <li>
                     <?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
                     <a class="icon-dashboard btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>

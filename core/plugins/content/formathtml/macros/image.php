@@ -180,7 +180,7 @@ Examples:
 
                 $ret = true;
             }
-        } else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
+        } elseif (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
             // Check for file existence
             $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
@@ -279,7 +279,7 @@ Examples:
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
@@ -296,11 +296,11 @@ Examples:
                 $this->attr['style']['float'] = $val;
                 if ($val == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($val == 'right') {
+                } elseif ($val == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-        } else if ($key == 'border') {
+        } elseif ($key == 'border') {
             $this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
         } else {
             $this->attr[$key] = $val;
@@ -354,7 +354,7 @@ Examples:
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }

@@ -117,7 +117,7 @@ class Storagev1r0 extends ApiController
                         // Mirrors the site view: the storage roots are protected
                         'deletable' => !in_array(strtolower($name), ['data', 'sessions']),
                     ];
-                } else if ($f->isFile()) {
+                } elseif ($f->isFile()) {
                     $ln = strtolower($name);
                     if ($ln === 'cvs' || $ln === '.svn') {
                         continue;

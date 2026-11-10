@@ -98,7 +98,7 @@ class AssocScalar extends SearchResult
             }
             $this->weight = 1.0;
             $this->weight_log[] = 'plugin did not suggest weight, guessing ' . $this->weight . ' based on tag count(' . $this->tag_count . ')';
-        } else if ($this->tag_count) {
+        } elseif ($this->tag_count) {
             $this->weight_log[] = 'plugin suggested weight of ' . $this->weight;
             $this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of ' . $this->tag_count);
         }

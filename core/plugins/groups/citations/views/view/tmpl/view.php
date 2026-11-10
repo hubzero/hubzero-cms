@@ -37,7 +37,7 @@ $sponsors = $citation->sponsors;
 $urlSeparator = PHP_EOL;
 if (strstr($citation->url, " ") !== false) {
     $urlSeparator = " ";
-} else if (strstr($citation->url, "\t") !== false) {
+} elseif (strstr($citation->url, "\t") !== false) {
     $urlSeparator = "\t";
 }
 

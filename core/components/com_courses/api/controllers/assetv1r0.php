@@ -151,7 +151,7 @@ class Assetv1r0 extends base
 
         if ($assocScope === 'asset_group') {
             $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
-        } else if ($assocScope === 'offering') {
+        } elseif ($assocScope === 'offering') {
             $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
         } else {
             App::abort(403, 'Unsupported asset scope');
@@ -494,7 +494,7 @@ class Assetv1r0 extends base
 
             if ($assocScope === 'asset_group') {
                 $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
-            } else if ($assocScope === 'offering') {
+            } elseif ($assocScope === 'offering') {
                 $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
             } else {
                 App::abort(403, 'Unsupported asset scope');
@@ -542,7 +542,7 @@ class Assetv1r0 extends base
 
                 if ($assocScope === 'asset_group') {
                     $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
-                } else if ($assocScope === 'offering') {
+                } elseif ($assocScope === 'offering') {
                     $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
                 } else {
                     App::abort(403, 'Unsupported asset scope');
@@ -818,7 +818,7 @@ class Assetv1r0 extends base
         // (assets/js/build.js).
         if ($scope == 'asset_group') {
             $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $scope_id);
-        } else if ($scope == 'offering') {
+        } elseif ($scope == 'offering') {
             $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . (int) $scope_id);
         } else {
             App::abort(403, 'Unsupported asset scope');

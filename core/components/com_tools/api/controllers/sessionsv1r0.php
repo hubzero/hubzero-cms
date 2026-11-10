@@ -181,7 +181,7 @@ class Sessionsv1r0 extends ApiController
         $hztv_current = $hzt->getRevision('current');
         if ($version == 'current') {
             $version = $hztv_current ? $hztv_current->revision : null;
-        } else if ($version == 'dev') {
+        } elseif ($version == 'dev') {
             $version = $hztv_dev ? $hztv_dev->revision : null;
         }
 
@@ -357,7 +357,7 @@ class Sessionsv1r0 extends ApiController
         $image_type = IMAGETYPE_PNG;
         if ($type == 'jpeg' || $type == 'jpg') {
             $image_type = IMAGETYPE_JPEG;
-        } else if ($type == 'gif') {
+        } elseif ($type == 'gif') {
             $image_type = IMAGETYPE_GIF;
         }
 
@@ -1320,7 +1320,7 @@ class Sessionsv1r0 extends ApiController
             if ($dstatus === 'broken') {
                 $steps['display'] = 'broken';
                 $state = 'display_broken';
-            } else if (in_array($dstatus, ['used', 'ready'])) {
+            } elseif (in_array($dstatus, ['used', 'ready'])) {
                 $steps['display'] = 'pass';
                 $displayReady = true;
             }
@@ -1339,7 +1339,7 @@ class Sessionsv1r0 extends ApiController
         // Overall readiness
         if ($state == 'display_broken') {
             $ready = false;
-        } else if ($mode == 'redirect') {
+        } elseif ($mode == 'redirect') {
             // A redirect tool (e.g. Jupyter) is reachable once the middleware
             // has registered it -- the proxy handles any remaining app spawn.
             $ready = $hasToken;
@@ -1350,7 +1350,7 @@ class Sessionsv1r0 extends ApiController
 
             if ($ready) {
                 $state = 'ready';
-            } else if ($hasToken && !$displayReady) {
+            } elseif ($hasToken && !$displayReady) {
                 $state = 'display_pending';
             }
         }

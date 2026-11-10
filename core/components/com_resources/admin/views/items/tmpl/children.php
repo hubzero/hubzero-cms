@@ -111,11 +111,11 @@ if ($this->filters['parent_id'] > 0) {
                         $alt   = Lang::txt('COM_RESOURCES_PENDING');
                         $class = 'pending';
                         $task  = 'unpublish';
-                    } else if ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
+                    } elseif ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
                         $alt   = Lang::txt('JPUBLISHED');
                         $class = 'published';
                         $task  = 'unpublish';
-                    } else if ($now > $row->publish_down) {
+                    } elseif ($now > $row->publish_down) {
                         $alt   = Lang::txt('COM_RESOURCES_EXPIRED');
                         $class = 'expired';
                         $task  = 'unpublish';

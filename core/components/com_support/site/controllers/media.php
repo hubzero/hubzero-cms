@@ -564,7 +564,7 @@ class Media extends SiteController
             // uploader files attachments against it by comment_id
             $model = Comment::blank();
             $model->set('id', $comment);
-        } else if ($comment) {
+        } elseif ($comment) {
             $model = Comment::oneOrFail($comment);
 
             // Comment::attachments() is oneToMany on comment_id with no ticket

@@ -192,7 +192,7 @@ class Sessions extends SiteController
 
                 if ($dpt !== '') {
                     $mode = (strpos($dpt, 'weber') !== false) ? 'redirect' : 'vnc';
-                } else if ($pub !== '') {
+                } elseif ($pub !== '') {
                     $mode = (strpos($pub, 'weber') !== false || strpos($pub, 'jupyter') !== false) ? 'redirect' : 'vnc';
                 }
             }
@@ -486,7 +486,7 @@ class Sessions extends SiteController
                         } else {
                             $verified_params[] = $type . ':' . $value;
                         }
-                    } else if ($type == 'int') {
+                    } elseif ($type == 'int') {
                         // Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
                         if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0) {
                             break;
@@ -503,7 +503,7 @@ class Sessions extends SiteController
                             $verified_params[] = $type . ':' . $value;
                         }
                     }
-                } else if (!empty($line)) { // Fail if unrecognized non-empty parameter line
+                } elseif (!empty($line)) { // Fail if unrecognized non-empty parameter line
                     break;
                 }
 

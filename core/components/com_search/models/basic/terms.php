@@ -224,7 +224,7 @@ class Terms extends Obj
         if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match)) {
             $this->section = explode(':', $match[1]);
             $raw = preg_replace('/^' . preg_quote($match[1]) . ':/', '', $raw);
-        } else if (array_key_exists('section', $_GET) && is_string($_GET['section'])) {
+        } elseif (array_key_exists('section', $_GET) && is_string($_GET['section'])) {
             $this->section = [preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section'])];
         }
 
@@ -238,18 +238,18 @@ class Terms extends Obj
                 } else {
                     $partial .= $cur;
                 }
-            } else if ($cur == '"') {
+            } elseif ($cur == '"') {
                 if ($partial) {
                     $this->addChunk($partial, $sign);
                 }
                 $accumulating_phrase = true;
-            } else if ($cur == ' ') {
+            } elseif ($cur == ' ') {
                 $this->addChunk($partial, $sign);
-            } else if ($cur == '+' && $partial == '') {
+            } elseif ($cur == '+' && $partial == '') {
                 $sign = '+';
-            } else if ($cur == '-' && $partial == '') {
+            } elseif ($cur == '-' && $partial == '') {
                 $sign = '-';
-            } else if ($cur != ' ') {
+            } elseif ($cur != ' ') {
                 $partial .= $cur;
             }
         }
@@ -278,7 +278,7 @@ class Terms extends Obj
 
         if ($sign == '-') {
             $this->forbidden_chunks[] = $partial;
-        } else if ($sign == '+') {
+        } elseif ($sign == '+') {
             $this->mandatory_chunks[] = $partial;
         } else {
             $this->optional_chunks[] = $partial;

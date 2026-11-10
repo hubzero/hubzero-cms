@@ -93,9 +93,9 @@ class Router extends Base
                         if ($method == 'GET') {
                             $vars['task'] = 'read';
                         }
-                    } else if (isset($segments[2])) {
+                    } elseif (isset($segments[2])) {
                         $vars['task'] = $segments[2];
-                    } else if (App::get('request')->method() == 'GET') {
+                    } elseif (App::get('request')->method() == 'GET') {
                         $vars['task'] = 'list';
                     }
                 } else {

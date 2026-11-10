@@ -193,7 +193,7 @@ $this->css()
                          ->set('url', $this->url)
                          ->set('cls', 'odd')
                          ->display();
-                } else if ($this->depth <= 1) { ?>
+                } elseif ($this->depth <= 1) { ?>
                     <p class="no-comments">
                         <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_NO_COMMENTS'); ?>
                     </p>

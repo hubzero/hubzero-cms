@@ -204,7 +204,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 <input name="login" id="userlogin" class="form-control" type="hidden" value="<?php echo $this->escape($this->registration['login']); ?>" />
                             </label>
                         </div>
-                    <?php } else if ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
+                    <?php } elseif ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
                         <div class="form-group">
                             <label for="userlogin" <?php echo !empty($this->xregistration->_invalid['login']) ? 'class="fieldWithErrors"' : ''; ?>>
                                 <?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?> <?php echo $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
@@ -369,7 +369,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                     <?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
                         <?php if ($this->task == 'proxycreate') { ?>
                             <p class="warning">Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.</p>
-                        <?php } else if ($this->task == 'create') { ?>
+                        <?php } elseif ($this->task == 'create') { ?>
                             <?php
                             $usersConfig    = Component::params('com_members');
                             $useractivation = $usersConfig->get('useractivation', 1);
@@ -604,7 +604,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                 </div>
             </fieldset>
             <div class="clear"></div>
-        <?php } else if ($this->registration['usageAgreement']) { ?>
+        <?php } elseif ($this->registration['usageAgreement']) { ?>
             <input name="usageAgreement" type="hidden" id="usageAgreement" value="checked" />
             <div class="clear"></div>
         <?php } ?>

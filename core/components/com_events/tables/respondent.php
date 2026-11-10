@@ -124,7 +124,7 @@ class Respondent extends Table
                 if ($match[1] == 'name') {
                     $this->order_desc = 'name ' . $dir;
                     $this->order = ' ORDER BY last_name, first_name';
-                } else if ($match[1] == 'special') {
+                } elseif ($match[1] == 'special') {
                     $this->order_desc = 'special ' . $dir;
                     $this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN comment IS NOT null THEN 2 ELSE 3 END ' . $dir;
                 } else {

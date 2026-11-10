@@ -280,7 +280,7 @@ class Pages extends AdminController
                     $child->set('state', $page['state']);
                     $child->store(false);
                 }
-            } else if ($page['state'] == 2) {
+            } elseif ($page['state'] == 2) {
                 // if deleting lets set the first childs parent
                 // to be the deleted pages parents
                 // update the first childs parent

@@ -36,7 +36,7 @@ if (!$this->comment->get('anonymous')) {
 if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) {
     if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) {
         $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
-    } else if (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) {
+    } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) {
         $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
     }
 }
@@ -76,7 +76,7 @@ if ($this->lecture) {
                     <span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
                         <?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))); ?>
                     </span>
-                    <?php } else if (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
+                    <?php } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
                         <span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
                             <?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))); ?>
                         </span>

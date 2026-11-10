@@ -82,7 +82,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                 <?php if (!$this->row->isComplete()) { ?>
                     <p><?php echo Lang::txt('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>'; ?></p>
                     <p><?php echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
-                <?php } else if ($this->row->isComplete()) { ?>
+                <?php } elseif ($this->row->isComplete()) { ?>
                         <p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')); ?></p>
                         <p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
                 <?php } ?>

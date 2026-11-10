@@ -52,7 +52,7 @@ $this->css();
 
                 if ($item->status == 7) {
                     $status = 'outstanding';
-                } else if (isset($item->ranked) && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status != 4 && ($this->admin == 2 or $this->admin == 3)) {
+                } elseif (isset($item->ranked) && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status != 4 && ($this->admin == 2 or $this->admin == 3)) {
                     $status = 'unranked';
                 } else {
                     $status = 'outstanding';
@@ -110,7 +110,7 @@ $this->css();
                         <span class="entry-reward">
                         <?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)) { ?>
                             <a class="bonus tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . $item->bonusgivenby . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span></a>
-                        <?php } else if ($item->status == 0 || $item->status == 6) { ?>
+                        <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
                             <a class="nobonus tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span></a>
                         <?php } else { ?>
                             <span class="inactive" title="<?php echo Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
@@ -148,7 +148,7 @@ $this->css();
                         case 0:
                             if (isset($item->ranked) && !$item->ranked && ($this->admin == 2 or $this->admin == 3)) {
                                 $html .= '<a class="rankit" href="index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
-                            } else if (isset($item->ranked) && $item->ranked) {
+                            } elseif (isset($item->ranked) && $item->ranked) {
                                 $this->css('
 										.priority-level' . $item->id . ' {
 											width: ' . (($item->ranking / 50) * 100) . '%;

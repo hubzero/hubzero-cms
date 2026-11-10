@@ -245,7 +245,7 @@ class Credentials extends SiteController
         // Make sure we have at least one and not more than one
         if ($user->count() < 1) {
             return $this->pretendSent();
-        } else if ($user->count() > 1) {
+        } elseif ($user->count() > 1) {
             return $this->pretendSent();
         }
 

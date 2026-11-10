@@ -366,11 +366,11 @@ class Version
         } else { // object method call
             if (is_numeric($tool)) {
                 $where_clause = "toolid=" . $db->Quote($tool);
-            } else if (!empty($tool)) {
+            } elseif (!empty($tool)) {
                 $where_clause = "toolname=" . $db->Quote($tool);
-            } else if (empty($this->toolname)) {
+            } elseif (empty($this->toolname)) {
                 $where_clause = "toolid=" . $db->Quote($this->id);
-            } else if (empty($this->toolid)) {
+            } elseif (empty($this->toolid)) {
                 $where_clause = "toolname=" . $db->Quote($this->toolname);
             } else {
                 $where_clause = "toolname=" . $db->Quote($this->toolname) . " AND toolid=" . $db->Quote($this->toolid);
@@ -469,7 +469,7 @@ class Version
 
         if (empty($db)) {
             return false;
-        } else if (is_numeric($this->id)) {
+        } elseif (is_numeric($this->id)) {
             $query = "INSERT INTO #__tool_version (id,toolname,instance) VALUES ( "
                 . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . ","
                 . $db->Quote($this->instance) . ");";
@@ -503,7 +503,7 @@ class Version
 
                 $this->id = $result;
                 return true;
-            } else if ($result !== false) {
+            } elseif ($result !== false) {
                 $this->id = $db->insertid();
                 return true;
             }
@@ -701,7 +701,7 @@ class Version
 
             if ($property == 'author') {
                 $aux_table = '#__tool_authors';
-            } else if ($property == 'member' || $property == 'owner') {
+            } elseif ($property == 'member' || $property == 'owner') {
                 $aux_table = '#__tool_groups';
             } else {
                 $aux_table = "#__tool_version_" . $property;
@@ -718,7 +718,7 @@ class Version
 
                 if ($property == 'author') {
                     $query = "REPLACE INTO $aux_table (toolname,revision,uid,ordering,version_id) VALUES ";
-                } else if ($property == 'member' || $property == 'owner') {
+                } elseif ($property == 'member' || $property == 'owner') {
                     $query = "REPLACE INTO $aux_table (cn,toolid,role) VALUES ";
                 } else {
                     $query = "REPLACE INTO $aux_table (tool_version_id, " . $property . ") VALUES ";
@@ -737,10 +737,10 @@ class Version
                         $query .= '(' . $db->Quote($this->toolname) . ','
                             . $db->Quote($this->revision) . ',' . $db->Quote($value) . ','
                             . $db->Quote($order) . ',' . $db->Quote($this->id) . ')';
-                    } else if ($property == 'member') {
+                    } elseif ($property == 'member') {
                         $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) . ','
                             . $db->Quote('0') . ')';
-                    } else if ($property == 'owner') {
+                    } elseif ($property == 'owner') {
                         if ($value == 'apps' || $value == 'contribtooladmin') {
                             $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid)
                                 . ',' . $db->Quote('2') . ')';
@@ -765,9 +765,9 @@ class Version
             if (!is_array($list) || count($list) == 0) {
                 if ($property == 'author') {
                     $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id) . ";";
-                } else if ($property == 'member') {
+                } elseif ($property == 'member') {
                     $query = "DELETE FROM $aux_table WHERE toolid=" . $db->Quote($this->toolid) . " AND role='0';";
-                } else if ($property == 'owner') {
+                } elseif ($property == 'owner') {
                     $query = "DELETE FROM $aux_table WHERE toolid=" . $db->Quote($this->toolid) . " AND role='1';";
                 } else {
                     $query = "DELETE FROM $aux_table WHERE tool_version_id=" . $db->Quote($this->id) . ";";
@@ -786,10 +786,10 @@ class Version
                 if ($property == 'author') {
                     $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id)
                         . " AND uid NOT IN ($valuelist);";
-                } else if ($property == 'member') {
+                } elseif ($property == 'member') {
                     $query = "DELETE FROM $aux_table WHERE role='0' AND toolid="
                         . $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
-                } else if ($property == 'owner') {
+                } elseif ($property == 'owner') {
                     $query = "DELETE FROM $aux_table WHERE (role='1' OR role='2') AND toolid="
                         . $db->Quote($this->toolid) . " AND cn NOT IN ($valuelist);";
                 } else {
@@ -956,13 +956,13 @@ class Version
                         $query = "SELECT $property FROM $aux_table AS aux WHERE "
                             . " aux.tool_version_id=" . $db->Quote($this->id)
                             . " ORDER BY $property" . " ASC;";
-                    } else if ($property == 'author') {
+                    } elseif ($property == 'author') {
                         $query = "SELECT uid FROM #__tool_authors WHERE version_id="
                             . $db->Quote($this->id) . " ORDER BY ordering ASC;";
-                    } else if ($property == 'member') {
+                    } elseif ($property == 'member') {
                         $query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid="
                             . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
-                    } else if ($property == 'owner') {
+                    } elseif ($property == 'owner') {
                         $query = "SELECT cn FROM #__tool_groups WHERE (role='1' OR role='2') AND "
                             . " toolid=" . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
                     } else {
@@ -1018,7 +1018,7 @@ class Version
                 "strtolower",
                 array_values(array_unique(array_diff((array) $value, ['']))),
             );
-        } else if (in_array($property, $this->_list_keys)) {
+        } elseif (in_array($property, $this->_list_keys)) {
             $this->$property = array_values(array_unique(array_diff((array) $value, [''])));
         } else {
             $this->$property = $value;
@@ -1201,7 +1201,7 @@ class Version
         $query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
         if ($id) {
             $query .= "WHERE v.id = " . $db->quote($id) . " ";
-        } else if ($version && $toolname) {
+        } elseif ($version && $toolname) {
             if (is_array($toolname)) {
                 $query .= "LEFT JOIN #__tool_version AS v2 ON v2.revision < v.revision AND v2.toolname=v.toolname ";
                 $query .= "WHERE v.toolname IN (" . implode(',', array_map([$db, 'quote'], $toolname)) . ") ";
@@ -1225,7 +1225,7 @@ class Version
                     $query .= "AND v.version = " . $db->quote($version) . " ";
                     break;
             }
-        } else if ($instance) {
+        } elseif ($instance) {
             $query .= "WHERE v.instance=" . $db->quote($instance) . " ";
         }
         $db->setQuery($query);

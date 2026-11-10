@@ -418,7 +418,7 @@ class Mailinglists extends AdminController
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $badEmails[] = $email;
                 unset($emails[$k]);
-            } else if (in_array($email, $currentEmails)) {
+            } elseif (in_array($email, $currentEmails)) {
                 $duplicateEmails[] = $email;
                 unset($emails[$k]);
             } else {
@@ -769,10 +769,10 @@ class Mailinglists extends AdminController
                 foreach ($matches as $match) {
                     $parsedEmails[] = $match[1];
                 }
-            } else if (strstr($emailLine, ',')) {
+            } elseif (strstr($emailLine, ',')) {
                 // check to see if line contains comma
                 $parsedEmails = array_merge($parsedEmails, explode(',', $emailLine));
-            } else if (strstr($emailLine, "\t")) {
+            } elseif (strstr($emailLine, "\t")) {
                 // or contains a tab
                 $parsedEmails = array_merge($parsedEmails, explode("\t", $emailLine));
             } else {

@@ -267,7 +267,7 @@ class Reviews extends Plugin
 
         if ($item_id = Request::getInt('voteup', 0)) {
             $how = 1;
-        } else if ($item_id = Request::getInt('votedown', 0)) {
+        } elseif ($item_id = Request::getInt('votedown', 0)) {
             $how = -1;
         }
 

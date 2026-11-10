@@ -41,7 +41,7 @@ class Formathtml extends Plugin
             || $article instanceof \Hubzero\Database\Relational
         ) {
             $content = $article->get($key);
-        } else if (isset($article->$key)) {
+        } elseif (isset($article->$key)) {
             $content = $article->$key;
         }
 
@@ -110,7 +110,7 @@ class Formathtml extends Plugin
             || $article instanceof \Hubzero\Database\Relational
         ) {
             $content = $article->get($key);
-        } else if (isset($article->$key)) {
+        } elseif (isset($article->$key)) {
             $content = $article->$key;
         }
 

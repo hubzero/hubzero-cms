@@ -191,11 +191,11 @@ $this->css('compare.css');
                                 if ($att->lft->get('content_hash') != $att->rgt->get('content_hash')) {
                                     $cls = 'change-replace';
                                 }
-                            } else if ($att->lft->get('type') == 'link') {
+                            } elseif ($att->lft->get('type') == 'link') {
                                 if ($att->lft->get('path') != $att->rgt->get('path')) {
                                     $cls = 'change-replace';
                                 }
-                            } else if ($att->rgt->get('type') == 'publication') {
+                            } elseif ($att->rgt->get('type') == 'publication') {
                                 if ($att->lft->get('path') != $att->rgt->get('path')) {
                                     $cls = 'change-replace';
                                 }

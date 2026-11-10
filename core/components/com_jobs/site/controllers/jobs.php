@@ -118,7 +118,7 @@ class Jobs extends SiteController
         $this->_title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
         if ($this->_subtitle) {
             $this->_title .= ': ' . $this->_subtitle;
-        } else if ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
+        } elseif ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
         Document::setTitle($this->_title);
@@ -475,7 +475,7 @@ class Jobs extends SiteController
             $this->view->setName('resumes')
                         ->setLayout('default')
                         ->display();
-        } else if ($this->_allowSubscriptions) {
+        } elseif ($this->_allowSubscriptions) {
             // need to subscribe first
             $employer = new Employer($this->database);
             if ($employer->loadEmployer(User::get('id'))) {
@@ -727,7 +727,7 @@ class Jobs extends SiteController
                     // enroll in new service
                     $subscription = Subscription::blank();
                     $new = 1;
-                } else if ($subscription->expires > $now) {
+                } elseif ($subscription->expires > $now) {
                     // extending?
                     $subscription->status = $autoapprove && !$total ? 1 : $subscription->status;
                     $subscription->status = $subscription->status == 2 ? 1 : $subscription->status;
@@ -900,9 +900,9 @@ class Jobs extends SiteController
                 Route::url('index.php?option=com_jobs&task=subscribe'),
             );
             return;
-        } else if ($admin) {
+        } elseif ($admin) {
             $employer->id = 1;
-        } else if (!isset($employer->id)) {
+        } elseif (!isset($employer->id)) {
             App::abort(404, Lang::txt('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
         }
 
@@ -1424,7 +1424,7 @@ class Jobs extends SiteController
             $job->companyLocation  = rtrim(stripslashes($_POST['companyLocation']));
             $job->applyInternal    = Request::getInt('applyInternal', 0);
             $job->applyExternalUrl = Request::getString('applyExternalUrl', '');
-        } else if ($job->status == 4 && $this->_task == 'confirmjob') {
+        } elseif ($job->status == 4 && $this->_task == 'confirmjob') {
             // make sure we aren't over quota
             $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
 
@@ -1590,7 +1590,7 @@ class Jobs extends SiteController
         // load Employer
         if (!$employer->loadEmployer($uid) && !$this->_admin) {
             App::abort(404, Lang::txt('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
-        } else if (!$employer->id && $this->_admin) {
+        } elseif (!$employer->id && $this->_admin) {
             $employer->uid = 1;
             $employer->subscriptionid  = 1;
             $employer->companyName     = Config::get('sitename');

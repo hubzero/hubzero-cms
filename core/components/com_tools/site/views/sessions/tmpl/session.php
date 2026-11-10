@@ -40,7 +40,7 @@ if ($declared) {
         $preferences->param()->set('viewer', $declared);
         $preferences->store();
     }
-} else if ($declared = $preferences->param('viewer')) {
+} elseif ($declared = $preferences->param('viewer')) {
     Request::setVar('viewer', $declared);
 }
 

@@ -672,7 +672,7 @@ class Dashboard extends Plugin
             if (is_string($preferences)) {
                 $preferences = json_decode($preferences);
             }
-        } else if ($preferences === '') {
+        } elseif ($preferences === '') {
             // handle user setting dashboard to empty
             $preferences = [];
         } else {

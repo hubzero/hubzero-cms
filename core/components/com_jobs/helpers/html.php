@@ -48,7 +48,7 @@ class Html
                 <p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') . " ";
                 if ($action == 'cancelsubscription') {
                     echo strtolower(Lang::txt('COM_JOBSSUBSCRIPTION_CANCEL_THIS'));
-                } else if ($action == 'withdrawapp') {
+                } elseif ($action == 'withdrawapp') {
                     echo Lang::txt('COM_JOBS_APPLICATION_WITHDRAW');
                 } else {
                     echo Lang::txt('COM_JOBS_ACTION_PERFORM_THIS');

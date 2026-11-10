@@ -292,7 +292,7 @@ class SiteController extends Obj implements ControllerInterface
                 $this->_controller = strtolower($r[2]);
                 $name   = $this->_controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
-            } else if (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r)) {
+            } elseif (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r)) {
                 // Namepsaced component
                 $this->_controller = strtolower($r[2]);
                 $name   = $this->_controller;

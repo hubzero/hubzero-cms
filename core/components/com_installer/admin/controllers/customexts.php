@@ -330,7 +330,7 @@ class Customexts extends AdminController
         // Set path
         if ($model->folder) {
             $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/" . $model->alias);
-        } else if ($model->type == "non-standard") {
+        } elseif ($model->type == "non-standard") {
             $model->set('path', PATH_APP . "/" . $model->alias);
         } else {
             $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->alias);
@@ -505,13 +505,13 @@ class Customexts extends AdminController
                 if (preg_grep("/cloned an empty repository.../uis", $clone_response)) {
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH')];
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                } else if (preg_grep("/could not read Username.../uis", $clone_response)) {
+                } elseif (preg_grep("/could not read Username.../uis", $clone_response)) {
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN')];
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                } else if (preg_grep("/fatal: Authentication failed.../uis", $clone_response)) {
+                } elseif (preg_grep("/fatal: Authentication failed.../uis", $clone_response)) {
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE')];
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                } else if (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)) {
+                } elseif (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)) {
                     // Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
                     // Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'...
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')];
@@ -541,7 +541,7 @@ class Customexts extends AdminController
                 if ($updateGitURLconf_response === null) {
                     // add failed MUSE message
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => ["MUSE updateGitURLconf returned NULL", $museCmd]];
-                } else if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE) {
+                } elseif ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE) {
                     // add failed message
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response];
                 } else {
@@ -574,19 +574,19 @@ class Customexts extends AdminController
                         if (!is_null($fetch_response) && preg_grep("/command not found/uis", $fetch_response)) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } else if (!is_null($fetch_response) && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response)) {
+                        } elseif (!is_null($fetch_response) && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response)) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } else if (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response)) {
+                        } elseif (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response)) {
                             // muse now reports a fetch that could not reach or log in to the
                             // remote (it used to be silent and look "up to date"); that is a
                             // failure, not a list of incoming changes to merge.
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } else if (!is_null($fetch_response) && preg_grep("/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis", $fetch_response)) {
+                        } elseif (!is_null($fetch_response) && preg_grep("/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis", $fetch_response)) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } else if (!is_null($fetch_response) && preg_grep("/^fetch failed:/uis", $fetch_response)) {
+                        } elseif (!is_null($fetch_response) && preg_grep("/^fetch failed:/uis", $fetch_response)) {
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response];
                         } else {
                             // Run migrations
@@ -665,7 +665,7 @@ class Customexts extends AdminController
             if ($result['status'] !== 0) {
                 $update_response = trim($result['output']) !== '' ? json_decode($result['output']) : null;
                 $update_response = is_array($update_response) ? $update_response : [$result['output'] !== '' ? $result['output'] : 'muse exited with status ' . $result['status']];
-            } else if (trim($result['output']) === '') {
+            } elseif (trim($result['output']) === '') {
                 $update_response = [];
             } else {
                 $update_response = json_decode($result['output']);
@@ -725,7 +725,7 @@ class Customexts extends AdminController
             // If enextion is enabled
             if ($extension->enabled == 1) {
                 $museCmd = 'removeRepo -path=' . escapeshellarg($extension->path);
-            } else if ($extension->enabled == 0) {
+            } elseif ($extension->enabled == 0) {
                 // If enextion is disabled
                 $pieces = explode("/", $extension->path);
                 $repodir = array_pop($pieces);

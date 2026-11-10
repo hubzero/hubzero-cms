@@ -113,16 +113,16 @@ if ($this->masterAdmin) {
                 <p class="reg myjob<?php
                 if ($mj->status == 3) {
                     echo '_inactive';
-                } else if ($mj->status == 4 or $mj->status == 0) {
+                } elseif ($mj->status == 4 or $mj->status == 0) {
                     echo '_pending';
                 } ?>">
                                 <span class="view"><?php if ($mj->status == 1) {
                                     echo $mj->applications . ' ' . Lang::txt('COM_JOBS_DASHBOARD_APPLICATIONS') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '#applications" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>';
-                                                   } else if ($mj->status == 4) {
+                                                   } elseif ($mj->status == 4) {
                                                        echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_DRAFT')) . ')';
-                                                   } else if ($mj->status == 0) {
+                                                   } elseif ($mj->status == 0) {
                                                        echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_PENDING')) . ')';
-                                                   } else if ($mj->status == 3) {
+                                                   } elseif ($mj->status == 3) {
                                                        echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE')) . ')';
                                                    } ?>
                                 </span>

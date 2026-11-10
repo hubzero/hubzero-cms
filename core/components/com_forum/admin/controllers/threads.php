@@ -311,7 +311,7 @@ class Threads extends AdminController
             if (is_array($filters['category_id'])) {
                 $entries->whereIn('category_id', (int) $filters['category_id']);
                 $filters['category_id'] = -1;
-            } else if ($filters['category_id'] >= 0) {
+            } elseif ($filters['category_id'] >= 0) {
                 $entries->whereEquals('category_id', (int) $filters['category_id']);
             }
         }
@@ -761,7 +761,7 @@ class Threads extends AdminController
         $thread = 0;
         if (isset($fields['thread']) && $fields['thread']) {
             $thread = $fields['thread'];
-        } else if (isset($fields['id'])) {
+        } elseif (isset($fields['id'])) {
             $thread = $fields['id'];
         }
         $thread = $thread ?: Request::getInt('thread', 0);

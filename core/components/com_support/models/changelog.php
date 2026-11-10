@@ -248,7 +248,7 @@ class Changelog extends Obj
                     // Logged values are stored as submitted (severity, category, cc addresses)
                     if ($type == 'changes' && $items->before != $items->after) {
                         $clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $this->esc($items->field), $this->esc($items->before), $this->esc($items->after)) . '</li>';
-                    } else if ($type == 'notifications') {
+                    } elseif ($type == 'notifications') {
                         $clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $this->esc($items->role), $this->esc($items->name), $this->esc($items->address)) . '</li>';
                     }
                 }
@@ -322,7 +322,7 @@ class Changelog extends Obj
                     // Move on - nothing else we can do here
                     continue;
                 }
-            } else if (Validate::email($acc)) {
+            } elseif (Validate::email($acc)) {
                 // Make sure it's a valid e-mail address
                 $this->log['cc'][] = $acc;
             }

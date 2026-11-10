@@ -187,7 +187,7 @@ class Project extends Table
                     if ($filterby == 'public') {
                         //$privacy = " AND p.private = 0 ";
                         $access = [4];
-                    } else if ($filterby == 'open') {
+                    } elseif ($filterby == 'open') {
                         //$privacy = " AND p.private < 0 ";
                         $access[] = 1;
                     } else {
@@ -496,7 +496,7 @@ class Project extends Table
         if (isset($filters['filterby']) && in_array($filters['filterby'], ['active', 'archived'])) {
             if ($filters['filterby'] == 'archived') {
                 $query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
-            } else if ($filters['filterby'] == 'active') {
+            } elseif ($filters['filterby'] == 'active') {
                 $query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . (int) $groupid;
             }
         } else {
@@ -506,7 +506,7 @@ class Project extends Table
         $filters['which'] = isset($filters['which']) ? $filters['which'] : '';
         if ($filters['which'] == 'owned') {
             $query .= " AND p.owned_by_group = " . (int) $groupid . " ";
-        } else if ($filters['which'] == 'other') {
+        } elseif ($filters['which'] == 'other') {
             $query .= " AND p.owned_by_group != " . (int) $groupid . " ";
         }
 
@@ -543,7 +543,7 @@ class Project extends Table
         if (isset($filters['count']) && $filters['count'] == 1) {
             $this->_db->setQuery($query);
             return $this->_db->loadResult();
-        } else if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0) {
+        } elseif (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0) {
             $filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }

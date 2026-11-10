@@ -42,7 +42,7 @@ class Member extends Table
 
         if (!$cid && !$oid && !is_null($sid) && is_numeric($sid)) {
             return $this->loadBySection($uid, $sid);
-        } else if ($cid === null) {
+        } elseif ($cid === null) {
             return parent::load($uid);
         }
 

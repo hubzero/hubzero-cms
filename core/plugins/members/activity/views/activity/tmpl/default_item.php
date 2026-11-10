@@ -45,7 +45,7 @@ if ($this->row->log->get('created_by') == User::get('id')) {
     $name = 'You';
 
     $online = true;
-} else if (!$this->row->log->get('anonymous')) {
+} elseif (!$this->row->log->get('anonymous')) {
     // Someone else
     // Is it not anonymous?
     // Get their full name
@@ -90,7 +90,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     echo $context . ' ' . $this->row->log->get('action');
                 ?>"><?php echo $context . ' ' . $this->row->log->get('action'); ?></span>
             </span>
-        <?php } else if ($creator->get('public')) { ?>
+        <?php } elseif ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
                 <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
                 <?php if ($online) { ?>
@@ -149,7 +149,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                         </div>
                         <?php
                     }
-                } else if (substr($this->row->log->get('scope'), 0, strlen('project')) == 'project') {
+                } elseif (substr($this->row->log->get('scope'), 0, strlen('project')) == 'project') {
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
 
                     $project = new Components\Projects\Models\Project($this->row->log->get('scope_id'));

@@ -769,7 +769,7 @@ class Password
 
         if ($encryption == 'md5') {
             $encryption = "md5-base64";
-        } else if ($encryption == 'crypt') {
+        } elseif ($encryption == 'crypt') {
             // A stored {CRYPT} hash that is not in $N$salt$ form (DES, or an
             // imported hash with another salt length) leaves $parts empty
             preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);
@@ -1031,7 +1031,7 @@ class Password
 
         if (is_object($hzup) && !empty($hzup->passhash)) {
             $passhash = $hzup->passhash;
-        } else if ($alltables) {
+        } elseif ($alltables) {
             $profile = Profile::getInstance($user);
 
             if (is_object($profile) && ($profile->get('userPassword') != '')) {

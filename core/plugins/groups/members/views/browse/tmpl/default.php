@@ -218,7 +218,7 @@ $option = 'com_groups';
                                 if (\Components\Members\Helpers\Utility::validemail($guser)) {
                                     $inviteemail = true;
                                     $pic = rtrim(Request::base(true), '/') . '/core/components/com_groups/site/assets/img/emailthumb.png';
-                                } else if (!is_object($u)) {
+                                } elseif (!is_object($u)) {
                                     continue;
                                 } else {
                                     $pic = $u->picture(0);
@@ -495,7 +495,7 @@ $option = 'com_groups';
                                         if ($u->get('activation') > 0) {
                                             if (in_array(User::get('id'), $this->group->get('managers')) && ($u->get('activation') > 0)) {
                                                 $html .= '<a class="tooltips" href="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=messages&action=new&users[]=' . $guser) . '" title="Message :: Send a message to ' . $this->escape($u->get('name')) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
-                                            } else if (($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members')))) && ($u->get('activation') > 0)) {
+                                            } elseif (($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members')))) && ($u->get('activation') > 0)) {
                                                 $html .= '<a class="tooltips" href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $guser) . '" title="Message :: Send a message to ' . $this->escape($u->get('name')) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
                                             }
                                         } else {
@@ -509,7 +509,7 @@ $option = 'com_groups';
                         </tr>
                                 <?php
                             }
-                        } else if (!empty($this->prompt_filter)) {
+                        } elseif (!empty($this->prompt_filter)) {
                             ?>
                         <tr>
                             <td>

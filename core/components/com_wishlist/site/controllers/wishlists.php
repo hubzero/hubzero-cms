@@ -228,7 +228,7 @@ class Wishlists extends SiteController
 
             if (in_array(User::get('id'), $owners['individuals'])) {
                 $this->_admin = 2;
-            } else if (in_array(User::get('id'), $owners['advisory'])) {
+            } elseif (in_array(User::get('id'), $owners['advisory'])) {
                 $this->_admin = 3;
             }
         }
@@ -647,7 +647,7 @@ class Wishlists extends SiteController
 
             if ($user) {
                 $wishlist->removeOwner('individuals', $user);
-            } else if ($group) {
+            } elseif ($group) {
                 $wishlist->removeOwner('group', $group);
             }
 
@@ -1378,7 +1378,7 @@ class Wishlists extends SiteController
                 $message['multipart'] = $eview->loadTemplate();
                 $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
             }
-        } else if ($this->_task == 'editwish') {
+        } elseif ($this->_task == 'editwish') {
             // no status change, only information
             return $this->addwishTask($wish->get('id'));
         }
@@ -1387,7 +1387,7 @@ class Wishlists extends SiteController
             // save changes
             if (!$wish->save()) {
                 App::abort(500, $wish->getError());
-            } else if ($this->_task == 'editwish') {
+            } elseif ($this->_task == 'editwish') {
                 if (!Event::trigger('xmessage.onSendMessage', ['wishlist_status_changed', $subject1, $message, $from, [$wish->get('proposed_by')], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
@@ -1648,7 +1648,7 @@ class Wishlists extends SiteController
         }
         if ($amount < 0) {
             App::abort(500, Lang::txt('COM_WISHLIST_ERROR_NEGATIVE_BONUS'));
-        } else if ($amount > $funds) {
+        } elseif ($amount > $funds) {
             App::abort(500, Lang::txt('COM_WISHLIST_ERROR_NO_FUNDS'));
         }
 

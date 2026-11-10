@@ -328,7 +328,7 @@ class Image extends Plugin
 
                 if ($color == 255 && $color_x == 255 && $color_y == 255 && $color_xy == 255) {
                     continue;
-                } else if ($color == 0 && $color_x == 0 && $color_y == 0 && $color_xy == 0) {
+                } elseif ($color == 0 && $color_x == 0 && $color_y == 0 && $color_xy == 0) {
                     $newred   = $foreground_color[0];
                     $newgreen = $foreground_color[1];
                     $newblue  = $foreground_color[2];
@@ -380,10 +380,10 @@ class Image extends Plugin
         if (function_exists('imagejpeg')) {
             header('Content-Type: image/jpeg');
             imagejpeg($img2, null, $jpeg_quality);
-        } else if (function_exists('imagegif')) {
+        } elseif (function_exists('imagegif')) {
             header('Content-Type: image/gif');
             imagegif($img2);
-        } else if (function_exists('imagepng')) {
+        } elseif (function_exists('imagepng')) {
             header('Content-Type: image/x-png');
             imagepng($img2);
         }
@@ -454,7 +454,7 @@ class Image extends Plugin
             $color['r'] = hexdec(str_repeat(substr($hex, 0, 1), 2));
             $color['g'] = hexdec(str_repeat(substr($hex, 1, 1), 2));
             $color['b'] = hexdec(str_repeat(substr($hex, 2, 1), 2));
-        } else if (strlen($hex) == 6) {
+        } elseif (strlen($hex) == 6) {
             $color['r'] = hexdec(substr($hex, 0, 2));
             $color['g'] = hexdec(substr($hex, 2, 2));
             $color['b'] = hexdec(substr($hex, 4, 2));

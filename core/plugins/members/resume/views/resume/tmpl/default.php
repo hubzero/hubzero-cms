@@ -31,7 +31,7 @@ $this->css('jobs', 'com_jobs');
             <p>
                 <?php if ($this->js->active && $this->file) { ?>
                     <?php echo Lang::txt('PLG_MEMBERS_RESUME_PROFILE_INCLUDED'); ?>
-                <?php } else if ($this->file) { ?>
+                <?php } elseif ($this->file) { ?>
                     <?php echo Lang::txt('PLG_MEMBERS_RESUME_PROFILE_NOT_INCLUDED'); ?>
                 <?php } ?>
 
@@ -40,7 +40,7 @@ $this->css('jobs', 'com_jobs');
                     <a href="<?php echo Route::url($this->member->link() . '&active=resume&action=activate' . '&on=' . ($this->js->active && $this->file ? 0 : 1)); ?>">
                 <?php if ($this->js->active && $this->file) { ?>
                     [-] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
-                <?php } else if ($this->file) { ?>
+                <?php } elseif ($this->file) { ?>
                     [+] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE'); ?>
                 <?php } ?>
                     </a>.
@@ -204,7 +204,7 @@ $this->css('jobs', 'com_jobs');
                     </tr>
                 </tbody>
             </table>
-        <?php } else if (!$this->js->active) { ?>
+        <?php } elseif (!$this->js->active) { ?>
             <p class="no_resume">
                 <?php echo (!$this->self) ? Lang::txt('PLG_MEMBERS_RESUME_USER_HAS_NO_RESUME') : Lang::txt('PLG_MEMBERS_RESUME_YOU_HAVE_NO_RESUME'); ?>
             </p>

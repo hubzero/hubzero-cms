@@ -134,7 +134,7 @@ $now = Date::of('now')->toSql();
                     <fieldset>
                         <?php if (User::isGuest()) { ?>
                             <p class="warning"><?php echo Lang::txt('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
-                        <?php } else if ($this->config->get('access-create-post')) { ?>
+                        <?php } elseif ($this->config->get('access-create-post')) { ?>
                             <p class="comment-title">
                                 <strong>
                                     <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>

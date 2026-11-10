@@ -643,7 +643,7 @@ class Media extends SiteController
                     } else {
                         $docs[$entry] = $img_file;
                     }
-                } else if (
+                } elseif (
                     is_dir($path . DS . $img_file)
                     && substr($entry, 0, 1) != '.'
                     && strtolower($entry) !== '..'

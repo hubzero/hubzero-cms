@@ -81,7 +81,7 @@ $pa = new \Components\Publications\Tables\Author($database);
                 $description = '';
                 if ($item->get('abstract')) {
                     $description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300)) . "\n";
-                } else if ($item->get('description')) {
+                } elseif ($item->get('description')) {
                     $description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300)) . "\n";
                 }
 

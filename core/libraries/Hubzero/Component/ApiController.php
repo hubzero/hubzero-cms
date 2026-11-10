@@ -262,7 +262,7 @@ class ApiController implements ControllerInterface
             if (isset($this->_taskMap['__default'])) {
                 $doTask = $this->_taskMap['__default'];
             }
-        } else if (isset($this->_taskMap[$this->_task])) {
+        } elseif (isset($this->_taskMap[$this->_task])) {
             // Check if the task is in the taskMap
             $doTask = $this->_taskMap[$this->_task];
         }

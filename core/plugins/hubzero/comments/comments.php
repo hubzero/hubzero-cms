@@ -257,7 +257,7 @@ class Comments extends Plugin
         if ($id = Request::getInt('voteup', 0)) {
             $item_id = $id;
             $how     = 1;
-        } else if ($id = Request::getInt('votedown', 0)) {
+        } elseif ($id = Request::getInt('votedown', 0)) {
             $item_id = $id;
             $how     = -1;
         }

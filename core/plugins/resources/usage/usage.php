@@ -248,11 +248,11 @@ class Usage extends Plugin
     {
         if ($time < 60) {
             $data = Lang::txt('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
-        } else if ($time >= 60 && $time < 3600) {
+        } elseif ($time >= 60 && $time < 3600) {
             $data = Lang::txt('PLG_RESOURCES_USAGE_MINUTES', round(($time / 60), 2));
-        } else if ($time >= 3600 && $time < 86400) {
+        } elseif ($time >= 3600 && $time < 86400) {
             $data = Lang::txt('PLG_RESOURCES_USAGE_HOURS', round(($time / 3600), 2));
-        } else if ($time >= 86400) {
+        } elseif ($time >= 86400) {
             $data = Lang::txt('PLG_RESOURCES_USAGE_DAYS', round(($time / 86400), 2));
         }
 

@@ -322,7 +322,7 @@ class Categories extends AdminController
                     App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
                 }
             }
-        } else if (!User::authorise('core.create', $extension)) {
+        } elseif (!User::authorise('core.create', $extension)) {
             App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
         }
 

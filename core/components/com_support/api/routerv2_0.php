@@ -82,14 +82,14 @@ class Router extends Base
                         if ($method == 'GET') {
                             $vars['task'] = 'read';
                         }
-                    } else if ($method == 'GET') {
+                    } elseif ($method == 'GET') {
                         $vars['task'] = 'list';
                     }
-                } else if ($method == 'GET') {
+                } elseif ($method == 'GET') {
                     // Read needs to be set explicttly because read, list, and the api docblock all use GETs
                     $vars['task'] = 'read';
                 }
-            } else if ($segments[1] == 'list') {
+            } elseif ($segments[1] == 'list') {
                 $vars['task'] = 'list';
             } else {
                 throw new Exception(Lang::txt("COM_SUPPORT_TASK_NOT_FOUND"), 404);

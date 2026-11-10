@@ -73,7 +73,7 @@ class Repository extends Base implements CommandInterface
     {
         if ($this->arguments->getOpt('mechanism')) {
             $this->output->addLine($this->mechanism->getName());
-        } else if ($this->arguments->getOpt('version')) {
+        } elseif ($this->arguments->getOpt('version')) {
             $this->output->addLine(\Hubzero\Version\Version::VERSION);
         } else {
             $this->status();
@@ -268,7 +268,7 @@ class Repository extends Base implements CommandInterface
                         );
                     }
                 }
-            } else if ($response['status'] == 'fatal') {
+            } elseif ($response['status'] == 'fatal') {
                 $this->output->addLine(
                     strtolower($response['message']),
                     [

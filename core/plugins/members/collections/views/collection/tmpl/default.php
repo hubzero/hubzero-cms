@@ -176,7 +176,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                     <a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>
-                                <?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
+                                <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
                                     <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>" class="btn unpost" data-id="<?php echo $row->get('id'); ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_REMOVE'); ?></span>
                                     </button>

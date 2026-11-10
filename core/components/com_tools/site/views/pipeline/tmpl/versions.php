@@ -53,7 +53,7 @@ $this->css('pipeline.css')
             <?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
                     <h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
-                <?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
+                <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>
                     <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
@@ -103,7 +103,7 @@ $this->css('pipeline.css')
                     if (isset($t->doi) && $t->doi && $tconfig->get('doi_shoulder')) {
                         $handle = 'doi:' . (isset($t->doi_shoulder) ? $t->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($t->doi);
                         $handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
-                    } else if (isset($t->doi_label) && $t->doi_label) {
+                    } elseif (isset($t->doi_label) && $t->doi_label) {
                         $handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $t->doi_label;
                         $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
                     }
@@ -139,7 +139,7 @@ $this->css('pipeline.css')
                                 <span class="actionlink">
                                     <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT'); ?></a>
                                 </span>
-                        <?php } else if ($t->state == 3) { ?>
+                        <?php } elseif ($t->state == 3) { ?>
                                 <span class="actionlink">
                                     <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT');?></a>
                                 </span>

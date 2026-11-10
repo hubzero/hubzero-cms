@@ -376,7 +376,7 @@ class Utils
             } else {
                 $access->valid = 1;
             }
-        } else if ($isToolPublished) {
+        } elseif ($isToolPublished) {
             //check for published tools
             // Only a published tool is export controlled, so only it pays
             // for the geo lookups

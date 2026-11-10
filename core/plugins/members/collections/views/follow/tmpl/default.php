@@ -109,7 +109,7 @@ if ($this->rows->total() > 0) {
                         <a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
                             <span><?php echo Lang::txt('Delete'); ?></span>
                         </a>
-                <?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
+                <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
                         <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>" class="unpost" data-id="<?php echo $row->get('id'); ?>">
                             <span><?php echo Lang::txt('Remove'); ?></span>
                         </button>

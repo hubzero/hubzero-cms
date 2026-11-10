@@ -721,7 +721,7 @@ class Pages extends SiteController
                 $this->page->set('version_id', $revision->get('id'));
                 $this->page->set('modified', $revision->get('created'));
             }
-        } else if (!$suggestOnly) {
+        } elseif (!$suggestOnly) {
             $this->page->set('modified', Date::toSql());
         }
 

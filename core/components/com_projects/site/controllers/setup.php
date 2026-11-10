@@ -711,7 +711,7 @@ class Setup extends Base
                             $descriptionValue = $existingField->get('description_value');
                             if (in_array($descriptionValue, $destroyKeyValues)) {
                                 $existingField->destroy();
-                            } else if (!$existingField->save()) {
+                            } elseif (!$existingField->save()) {
                                 $this->setError($existingField->getError());
                             }
                         }

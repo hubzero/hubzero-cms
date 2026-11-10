@@ -197,9 +197,9 @@ class Extension extends Base implements CommandInterface
 
                 if ($method == 'delete') {
                     $args = [$element, $client];
-                } else if ($method == 'add') {
+                } elseif ($method == 'add') {
                     $args = [$element, $name, $client, 1, 0, null, $isCore];
-                } else if ($method == 'install') {
+                } elseif ($method == 'install') {
                     $args = [$element, $name, $client, null, $isCore];
                 } else {
                     $args = [$element, $client];

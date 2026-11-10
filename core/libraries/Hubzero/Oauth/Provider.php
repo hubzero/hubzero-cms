@@ -136,7 +136,7 @@ class Provider
 
         if ($path == $this->request_token_path) {
             $this->provider->isRequestTokenEndpoint(true);
-        } else if ($path == $this->access_token_path) {
+        } elseif ($path == $this->access_token_path) {
             $header = '';
 
             if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -232,10 +232,10 @@ class Provider
         if ($message == "oauth_problem=signature_method_rejected") {
             $reason = 'Bad Request';
             $status = 400;
-        } else if (strpos($message, "oauth_problem=parameter_absent") !== false) {
+        } elseif (strpos($message, "oauth_problem=parameter_absent") !== false) {
             $reason = 'Bad Request';
             $status = 400;
-        } else if ($message == "oauth_problem=unknown_problem&code=503") {
+        } elseif ($message == "oauth_problem=unknown_problem&code=503") {
             $reason = 'Bad Request';
             $status = 400;
         }

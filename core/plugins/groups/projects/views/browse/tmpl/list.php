@@ -93,15 +93,15 @@ switch ($this->which) {
                         if ($row->access('owner')) {
                             if ($row->isActive()) {
                                 $html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
-                            } else if ($row->inSetup()) {
+                            } elseif ($row->inSetup()) {
                                 $html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
                             }
                         }
                         if ($row->isInactive()) {
                             $html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
-                        } else if ($row->isPending()) {
+                        } elseif ($row->isPending()) {
                             $html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
-                        } else if ($row->isArchived()) {
+                        } elseif ($row->isArchived()) {
                             $html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
                         }
 

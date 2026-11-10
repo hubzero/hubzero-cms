@@ -172,7 +172,7 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                             <a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
-                                        <?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
+                                        <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
                                             <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/remove'); ?>" class="btn unpost" data-id="<?php echo $row->get('id'); ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_REMOVE'); ?></span>
                                             </button>

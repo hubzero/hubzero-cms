@@ -108,7 +108,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
         <div class="aside">
         </div>
     </section><!-- / .main section -->
-        <?php } else if ($this->wish->isDeleted() || (!$this->wish->get('admin') && $this->wish->isWithdrawn())) { ?>
+        <?php } elseif ($this->wish->isDeleted() || (!$this->wish->get('admin') && $this->wish->isWithdrawn())) { ?>
             <p class="warning"><?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_WITHDRAWN'); ?></p>
         </div><!-- / .subject -->
         <div class="aside">
@@ -353,7 +353,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                         <span class="entry-reward icon-coins">
                                         <?php if ($this->wish->get('bonus', 0) > 0 && ($this->wish->isOpen() or $this->wish->isAccepted())) { ?>
                                             <a class="bonus tooltips" href="<?php echo Route::url($this->wish->link('addbonus')); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?>">+ <?php echo $this->wish->get('bonus', 0); ?></a>
-                                        <?php } else if ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
+                                        <?php } elseif ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
                                             <a class="no-bonus tooltips" href="<?php echo Route::url($this->wish->link('addbonus')); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?>">0</a>
                                         <?php } else { ?>
                                             <span class="bonus-inactive" title="<?php echo Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
@@ -842,7 +842,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 <?php echo Lang::txt('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?>
                             </p>
                         </div>
-                    <?php } else if (!$this->wish->plan->get('id')) { ?>
+                    <?php } elseif (!$this->wish->plan->get('id')) { ?>
                         <p>
                             <?php echo Lang::txt('COM_WISHLIST_THERE_IS_NO_PLAN'); ?>
                             <a href="<?php echo Route::url($this->wish->link('editplan')); ?>">

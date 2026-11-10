@@ -95,12 +95,12 @@ class Assetgroupv1r0 extends base
             if ((int) $db->loadResult() !== (int) $this->course_id) {
                 App::abort(403, 'Asset group is not a part of this course');
             }
-        } else if ($unitId = Request::getInt('unit_id', 0)) {
+        } elseif ($unitId = Request::getInt('unit_id', 0)) {
             $db->setQuery("SELECT o.course_id FROM `#__courses_units` AS u JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE u.id = " . (int) $unitId);
             if ((int) $db->loadResult() !== (int) $this->course_id) {
                 App::abort(403, 'Unit is not a part of this course');
             }
-        } else if ($parentId = Request::getInt('parent', 0)) {
+        } elseif ($parentId = Request::getInt('parent', 0)) {
             $db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $parentId);
             if ((int) $db->loadResult() !== (int) $this->course_id) {
                 App::abort(403, 'Parent asset group is not a part of this course');

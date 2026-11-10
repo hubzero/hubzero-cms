@@ -215,7 +215,7 @@ class Resume extends Plugin
                     $arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0);
                     break;
             }
-        } else if ($emp) {
+        } elseif ($emp) {
             $arr['metadata'] = '';
         }
 
@@ -267,7 +267,7 @@ class Resume extends Plugin
             if (!$js->store()) {
                 App::abort(500, $js->getError());
             }
-        } else if ($task == 'savetitle' && $author && $title) {
+        } elseif ($task == 'savetitle' && $author && $title) {
             if ($author != User::get('id') && !User::authorise('core.admin')) {
                 App::abort(403, Lang::txt('You are not authorized to perform this action.'));
             }
@@ -305,7 +305,7 @@ class Resume extends Plugin
         if (!$js->loadSeeker($member->get('id'))) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
             return '';
-        } else if (!$active) {
+        } elseif (!$active) {
             $js->active = $active;
             $js->updated = Date::toSql();
 
@@ -504,7 +504,7 @@ class Resume extends Plugin
             $row->id   = 0;
             $row->uid  = $member->get('id');
             $row->main = 1;
-        } else if (file_exists($path . DS . $row->filename)) { // remove prev file first
+        } elseif (file_exists($path . DS . $row->filename)) { // remove prev file first
             Filesystem::delete($path . DS . $row->filename);
 
             // Remove stats for prev resume

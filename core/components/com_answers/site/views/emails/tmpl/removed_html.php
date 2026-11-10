@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 
 if ($this->question->isOpen() && !$this->question->isReported()) {
     $status = 'open';
-} else if ($this->question->isReported()) {
+} elseif ($this->question->isReported()) {
     $status = 'underreview';
 } else {
     $status = 'closed';

@@ -40,9 +40,9 @@ if ($pNotes) {
 
         if ($level == 1) {
             $notes[$note->pagename] = [$level => [$note]];
-        } else if ($level == 2) {
+        } elseif ($level == 2) {
             $notes[$parent][$level][] = $note;
-        } else if ($level >= 3) {
+        } elseif ($level >= 3) {
             $thirdlevel[$parent][] = $note;
         }
     }

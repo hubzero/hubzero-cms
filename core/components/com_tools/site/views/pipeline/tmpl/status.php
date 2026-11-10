@@ -69,7 +69,7 @@ $this->css('pipeline.css')
             $cls = 'done';
             if (strtolower($state) == strtolower($states[$i])) {
                 $cls = 'active';
-            } else if (count($key) == 0 or $i > $key[0]) {
+            } elseif (count($key) == 0 or $i > $key[0]) {
                 $cls = 'future';
             }
             ?>

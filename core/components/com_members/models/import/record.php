@@ -248,9 +248,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
         // Either passed in the raw data or gotten from the title match
         if (isset($this->raw->uidNumber) && $this->raw->uidNumber > 1) {
             $this->record->entry = Member::oneOrNew($this->raw->uidNumber);
-        } else if (isset($this->raw->id) && $this->raw->id > 1) {
+        } elseif (isset($this->raw->id) && $this->raw->id > 1) {
             $this->record->entry = Member::oneOrNew($this->raw->id);
-        } else if (isset($this->raw->username) && $this->raw->username) {
+        } elseif (isset($this->raw->username) && $this->raw->username) {
             $this->record->entry = Member::oneByUsername($this->raw->username);
         }
 
@@ -337,7 +337,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 // Uh-oh. Notify the user.
                 array_push($this->record->notices, Lang::txt('Usernames for existing members cannot be changed at this time.'));
             }
-        } else if (isset($this->raw->username) && $this->raw->username) {
+        } elseif (isset($this->raw->username) && $this->raw->username) {
             $this->record->entry->set('username', $this->raw->username);
         }
     }

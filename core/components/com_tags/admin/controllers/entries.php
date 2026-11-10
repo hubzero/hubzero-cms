@@ -92,7 +92,7 @@ class Entries extends AdminController
 
         if ($filters['by'] == 'admin') {
             $model->whereEquals($t . '.admin', 1);
-        } else if ($filters['by'] == 'user') {
+        } elseif ($filters['by'] == 'user') {
             $model->whereEquals($t . '.admin', 0);
         }
 

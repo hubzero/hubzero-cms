@@ -363,7 +363,7 @@ $panels = [
                                     <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>
                                     <td><?php echo $this->model->submitted; ?></td>
                                 </tr>
-                            <?php } else if ($this->model->isPublished() || $this->model->isUnpublished()) { ?>
+                            <?php } elseif ($this->model->isPublished() || $this->model->isUnpublished()) { ?>
                                 <?php if ($this->model->submitted()) { ?>
                                         <tr>
                                             <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?></td>
@@ -399,9 +399,9 @@ $panels = [
                     <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" />
                     <?php if ($this->model->isPublished()) { ?>
                         <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" />
-                    <?php } else if ($this->model->isUnpublished()) { ?>
+                    <?php } elseif ($this->model->isUnpublished()) { ?>
                         <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" />
-                    <?php } else if ($this->model->isPending()) { ?>
+                    <?php } elseif ($this->model->isPending()) { ?>
                         <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" />
                         <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" />
                     <?php } ?>

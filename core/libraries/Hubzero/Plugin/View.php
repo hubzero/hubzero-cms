@@ -273,7 +273,7 @@ class View extends AbstractView
             $callback = null;
             if (class_exists($invokable1)) {
                 $callback = new $invokable1();
-            } else if (class_exists($invokable2)) {
+            } elseif (class_exists($invokable2)) {
                 $callback = new $invokable2();
             }
 

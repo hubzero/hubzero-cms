@@ -37,11 +37,11 @@ defined('_HZEXEC_') or die();
         <ul id="useroptions">
         <?php if (User::isGuest()) { ?>
             <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " " ?><a href="<?php Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login' ?>"><?php echo Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?php echo " " . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
-        <?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
+        <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
             <li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
             <li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
             <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
-        <?php } else if ($this->admin) { ?>
+        <?php } elseif ($this->admin) { ?>
             <li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
             <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
         <?php } else { ?>
@@ -107,7 +107,7 @@ defined('_HZEXEC_') or die();
         <p>
             <?php if ($job->applied) { ?>
                 <span class="alreadyapplied"><?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON') . ' ' . Date::of($job->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?><span><?php echo "\n";
-            } else if ($job->withdrawn) { ?>
+            } elseif ($job->withdrawn) { ?>
                 <span class="withdrawn"><?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON') . ' ' . Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?><span><?php echo "\n";
             } ?>
         </p>

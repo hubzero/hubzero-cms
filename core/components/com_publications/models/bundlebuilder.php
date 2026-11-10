@@ -630,7 +630,7 @@ class BundleBuilder
             // No role-1 files: verify the Databases (data element) or
             // metadata-only (Series) payload instead of treating it as nothing.
             $this->auditNonFile($versionId, $version, $base, $content, $name, $outer, $r, $deep);
-        } else if (!$r['outer_exists']) {
+        } elseif (!$r['outer_exists']) {
             $r['issues'][] = 'missing_bundle';
         } else {
             $carrier   = ($innerMap !== null) ? $innerMap : $outerData;
@@ -714,7 +714,7 @@ class BundleBuilder
                         // present, the rest missing. A rebuild restores them.
                         $r['issues'][] = 'incomplete:' . $present . '/' . $r['primary_count'];
                     }
-                } else if ($usedInner && $r['outer_has_bundle'] === false) {
+                } elseif ($usedInner && $r['outer_has_bundle'] === false) {
                     // Inner holds the data, but the served outer doesn't carry
                     // it — the download would be metadata-only.
                     $r['issues'][] = 'outer_missing_data';
@@ -1445,7 +1445,7 @@ class BundleBuilder
                 @unlink($tmp);
                 return ['ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.'];
             }
-        } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        } elseif ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
             return ['ok' => false, 'error' => 'Could not create ' . $tmp . '.'];
         }
@@ -1531,7 +1531,7 @@ class BundleBuilder
                 @unlink($tmp);
                 return ['ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.'];
             }
-        } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        } elseif ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
             return ['ok' => false, 'error' => 'Could not create ' . $tmp . '.'];
         }
@@ -1910,7 +1910,7 @@ class BundleBuilder
                 if (trim($licText) !== '') {
                     $readme .= $licText . "\n ";
                     $hasLicFile = true;
-                } else if (trim((string) $L['text']) !== '') {
+                } elseif (trim((string) $L['text']) !== '') {
                     $readme .= $L['text'] . "\n ";
                 }
             }
@@ -2514,7 +2514,7 @@ class BundleBuilder
 
                 if (is_link($path)) {
                     @unlink($path);
-                } else if (is_dir($path)) {
+                } elseif (is_dir($path)) {
                     $this->removeStage($path);
                 } else {
                     @unlink($path);

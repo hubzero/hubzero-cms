@@ -434,7 +434,7 @@ class File extends Obj
         } else {
             if (strpos($output, PATH_ROOT) === 0) {
                 $relative = rtrim(Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
-            } else if (strpos($output, PATH_CORE) === 0) {
+            } elseif (strpos($output, PATH_CORE) === 0) {
                 $relative = rtrim(Request::root(true), '/') . "/core/" . rtrim(substr($output, strlen(PATH_CORE)), '/');
             }
         }

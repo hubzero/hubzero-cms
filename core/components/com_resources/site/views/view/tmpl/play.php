@@ -91,14 +91,14 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
             }
         }
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
-    } else if (stristr($parsed['host'], 'vimeo')) {
+    } elseif (stristr($parsed['host'], 'vimeo')) {
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-    } else if (stristr($parsed['host'], 'blip')) {
+    } elseif (stristr($parsed['host'], 'blip')) {
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     } else {
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     }
-} else if (is_file($source)) {
+} elseif (is_file($source)) {
     if (strtolower($type) == 'swf') {
         $height = '400px';
         if ($this->no_html) {
@@ -125,9 +125,9 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
         $html .= '}' . "\n";
         $html .= '</script>' . "\n";
         $html .= '<script src="' . $rufle_path . '/ruffle.js"></script>' . "\n";
-    } else if (in_array(strtolower($type), $images)) {
+    } elseif (in_array(strtolower($type), $images)) {
         $html .= '<img ' . $attributes . ' src="' . $this->escape($url) . '" alt="Image" />' . "\n";
-    } else if (in_array(strtolower($type), $files)) {
+    } elseif (in_array(strtolower($type), $files)) {
         $token = '';
 
         if (!User::isGuest()) {
@@ -146,15 +146,15 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
         $sef = Route::url('index.php?option=com_resources&id=' . $this->activechild->id . '&task=download&file=' . basename($this->activechild->path) . '&token=' . $token . '&' . Session::getFormToken() . '=1');
 
         $html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" bgcolor="white"></iframe>' . "\n";
-    } else if (in_array(strtolower($type), $videos)) {
+    } elseif (in_array(strtolower($type), $videos)) {
         $html .= '<video controls autoplay ' . $attributes . '>' . "\n";
         $html .= '    <source src="' . $this->escape($url) . '" type="video/mp4"/>' . "\n";
         $html .= '</video>' . "\n";
-    } else if (in_array(strtolower($type), $audios)) {
+    } elseif (in_array(strtolower($type), $audios)) {
         $html .= '<audio controls autoplay ' . $attributes . '>' . "\n";
         $html .= '    <source src="' . $this->escape($url) . '" type="audio/mpeg"/>' . "\n";
         $html .= '</audio>' . "\n";
-    } else if (strtolower($type) == 'jar') {
+    } elseif (strtolower($type) == 'jar') {
         $html .= '<applet ' . $attributes . ' archive="' . $this->escape($url) . '" width="';
         $html .= ($width > 0) ? $width : '';
         $html .= '" height="';

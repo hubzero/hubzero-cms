@@ -993,7 +993,7 @@ class Profile extends Obj
         if (!property_exists(__CLASS__, $property)) {
             if (property_exists(__CLASS__, '_auxs_' . $property)) {
                 $property = '_auxs_' . $property;
-            } else if (property_exists(__CLASS__, '_auxv_' . $property)) {
+            } elseif (property_exists(__CLASS__, '_auxv_' . $property)) {
                 $property = '_auxv_' . $property;
             } else {
                 $this->setError("Unknown property: $property");
@@ -1014,7 +1014,7 @@ class Profile extends Obj
 
             if ($result === false) {
                 $this->setError("Error retrieving data from xprofiles $property table: " . $db->getErrorMsg());
-            } else if ('_auxs_' == substr($property, 0, 6)) {
+            } elseif ('_auxs_' == substr($property, 0, 6)) {
                 if (isset($result[0])) {
                     $this->set($property_name, $result[0]);
                 } else {
@@ -1061,7 +1061,7 @@ class Profile extends Obj
         if (!property_exists(__CLASS__, $property)) {
             if (property_exists(__CLASS__, '_auxs_' . $property)) {
                 $property = '_auxs_' . $property;
-            } else if (property_exists(__CLASS__, '_auxv_' . $property)) {
+            } elseif (property_exists(__CLASS__, '_auxv_' . $property)) {
                 $property = '_auxv_' . $property;
             } else {
                 $this->setError("Unknown property: $property");

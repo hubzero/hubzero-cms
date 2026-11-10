@@ -199,14 +199,14 @@ class Newsletters extends SiteController
         if (file_exists('/usr/bin/wkhtmltopdf') && file_exists('/usr/bin/xvfb-run')) {
             //$cmd = '/usr/bin/wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
             $cmd = '/usr/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
-        } else if (file_exists('/usr/local/bin/wkhtmltopdf') && file_exists('/usr/local/bin/xvfb-run')) {
+        } elseif (file_exists('/usr/local/bin/wkhtmltopdf') && file_exists('/usr/local/bin/xvfb-run')) {
             //$cmd = '/usr/local/bin/wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
             $cmd = '/usr/local/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
-        } else if (file_exists('/usr/local/bin/wkhtmltopdf')) {
+        } elseif (file_exists('/usr/local/bin/wkhtmltopdf')) {
             $cmd = '/usr/local/bin/wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
-        } else if (file_exists('/opt/wkhtmltopdf/bin/wkhtmltopdf')) {
+        } elseif (file_exists('/opt/wkhtmltopdf/bin/wkhtmltopdf')) {
             $cmd = '/opt/wkhtmltopdf/bin/wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
-        } else if (file_exists('/usr/bin/phantomjs')) {
+        } elseif (file_exists('/usr/bin/phantomjs')) {
             $rasterizeFile = dirname(__DIR__) . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
             $fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $escUrl . ' ' . $escPdf . ' 8.5in*11in';
             if (!$cmd) {

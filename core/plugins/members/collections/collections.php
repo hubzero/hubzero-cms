@@ -1572,7 +1572,7 @@ class Collections extends Plugin
                 $msg = $item->getError();
                 $type = 'error';
             }
-        } else if (!$post->delete()) {
+        } elseif (!$post->delete()) {
             // Moderation: drop the post, leave someone else's item alone
             $msg  = $post->getError();
             $type = 'error';

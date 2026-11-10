@@ -70,7 +70,7 @@ class Conditions extends Obj
     {
         if (is_string($record)) {
             $this->record = json_decode($record);
-        } else if (is_object($record)) {
+        } elseif (is_object($record)) {
             $this->record = $record;
         } else {
             throw new InvalidArgumentException(Lang::txt(__METHOD__ . '; Record must be JSON encoded string or object.'), 500);

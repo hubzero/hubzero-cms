@@ -211,20 +211,20 @@ class Loader
 
                 // Load local language files
                 $lang->load($option, $local, null, false, true);
-            } else if (is_file($path)) {
+            } elseif (is_file($path)) {
                 $found = true;
                 $type  = 'path';
 
                 // Load local language files
                 $lang->load($option, PATH_COMPONENT, null, false, true);
-            } else if (is_dir($react_path)) {
+            } elseif (is_dir($react_path)) {
                 $found = true;
                 $path = $react_path;
                 $type = 'react';
 
                 // Load local language files
                 $lang->load($option, PATH_COMPONENT, null, false, true);
-            } else if (is_dir(PATH_COMPONENT)) {
+            } elseif (is_dir(PATH_COMPONENT)) {
                 $found = true;
                 $path = $option;
                 $type = 'default';
@@ -267,11 +267,11 @@ class Loader
 
         if ($type == 'path') {
             $this->executePath($path);
-        } else if ($type == 'react') {
+        } elseif ($type == 'react') {
             $this->executeReactApp($path);
-        } else if ($type == 'default') {
+        } elseif ($type == 'default') {
             $this->executeDefault($path);
-        } else if ($type == 'bootstrap') {
+        } elseif ($type == 'bootstrap') {
             $this->executeBootstrap($path);
         }
 
@@ -381,11 +381,11 @@ class Loader
                 if ($node->hasAttribute('charset')) {
                     Document::setCharset($node->getAttribute('charset'));
                     // Doesn't seem to change anything
-                } else if ($node->hasAttribute('name')) {
+                } elseif ($node->hasAttribute('name')) {
                     Document::setMetaData($node->getAttribute('name'), $node->getAttribute('content'));
-                } else if ($node->hasAttribute('http-equiv')) {
+                } elseif ($node->hasAttribute('http-equiv')) {
                     Document::setMetaData($node->getAttribute('http-equiv'), $node->getAttribute('content'), true);
-                } else if ($node->hasAttribute('itemprop')) {
+                } elseif ($node->hasAttribute('itemprop')) {
                     // Not supported
                 }
             }
@@ -401,7 +401,7 @@ class Loader
 
                 if ($rel == 'stylesheet') {
                     Document::addStyleSheet($href);
-                } else if ($rel == 'script') {
+                } elseif ($rel == 'script') {
                     Document::addScript($href);
                 } else {
                     Document::addHeadLink($href, $rel);
@@ -476,7 +476,7 @@ class Loader
                 if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames())) {
                     self::$routers[$key] = new $name();
                 }
-            } else if (class_exists($legacy)) {
+            } elseif (class_exists($legacy)) {
                 $reflection = new ReflectionClass($legacy);
 
                 if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames())) {

@@ -32,9 +32,9 @@ class Redirect extends SiteController
         $host = preg_replace('/^www\./', '', $host);
         if (strpos($host, "proxy") !== false) {
             return "Proxy Service";
-        } else if (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {
+        } elseif (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {
             return $matches[1]; // e.g., google.com → google
-        } else if (preg_match('/([a-z0-9\-]+)\.[a-z0-9\-]+\.[a-z]{2,63}$/i', $host, $matches)) {
+        } elseif (preg_match('/([a-z0-9\-]+)\.[a-z0-9\-]+\.[a-z]{2,63}$/i', $host, $matches)) {
             return $matches[1]; // e.g., yahoo.co.uk → yahoo
         }
         return $host;
@@ -100,11 +100,11 @@ class Redirect extends SiteController
             // site root (gluing the Referer's path in front of it produced
             // "https://hub//path/from/referer<id>").
             App::redirect(Request::root() . ltrim($url, '/'));
-        } else if ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false) {
+        } elseif ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false) {
             App::redirect($url);
-        } else if (in_array($host['host'], $whitelist) !== false) {
+        } elseif (in_array($host['host'], $whitelist) !== false) {
             App::redirect($url);
-        } else if (in_array($host['host'], $blacklist) !== false) {
+        } elseif (in_array($host['host'], $blacklist) !== false) {
             App::redirect('https://' . $_SERVER['HTTP_HOST']);
         } else {
             if ($params) {

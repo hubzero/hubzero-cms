@@ -210,7 +210,7 @@ class Relationships extends AdminController
                     if (!array_key_exists($subTag['id'], $tagIdMap)) {
                         if ($subTag['direction'] == 'in' || $subTag['label'] != 'parent') {
                             $subTag['type'] = $subTag['label'];
-                        } else if ($subTag['label'] == 'parent') {
+                        } elseif ($subTag['label'] == 'parent') {
                             $subTag['type'] = 'child';
                         }
 

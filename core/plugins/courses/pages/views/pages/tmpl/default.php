@@ -49,7 +49,7 @@ if (!$this->page) {
         // If they're a course level manager
         if ($this->offering->access('manage')) {
             $authorized = true;
-        } else if ($this->offering->access('manage', 'section') && $this->page->get('section_id')) {
+        } elseif ($this->offering->access('manage', 'section') && $this->page->get('section_id')) {
             // If they're a section manager and the page is a section page
             $authorized = true;
         }

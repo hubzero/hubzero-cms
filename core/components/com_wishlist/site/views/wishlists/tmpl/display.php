@@ -214,7 +214,7 @@ if ($this->wishlist->get('id')) {
 
                                     if ($item->isReported()) {
                                         $status = 'outstanding';
-                                    } else if ($item->get('ranked') && !$item->isGranted() && !$item->isWithdrawn() && !$item->isRejected() && $this->wishlist->access('manage')) {
+                                    } elseif ($item->get('ranked') && !$item->isGranted() && !$item->isWithdrawn() && !$item->isRejected() && $this->wishlist->access('manage')) {
                                         $status = 'unranked';
                                     } else {
                                         $status = 'outstanding';
@@ -284,7 +284,7 @@ if ($this->wishlist->get('id')) {
                                                 <a class="bonus tooltips" href="<?php echo Route::url($item->link('addbonus', $filters)); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $item->get('bonusgivenby') . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->get('bonus') . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>">
                                                     <?php echo $item->get('bonus', 0); ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
                                                 </a>
-                                            <?php } else if ($item->isOpen() or $item->isAccepted()) { ?>
+                                            <?php } elseif ($item->isOpen() or $item->isAccepted()) { ?>
                                                 <a class="nobonus tooltips" href="<?php echo Route::url($item->link('addbonus', $filters)); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">
                                                     <?php echo $item->get('bonus', 0); ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
                                                 </a>
@@ -315,7 +315,7 @@ if ($this->wishlist->get('id')) {
                                                 case 0:
                                                     if (!$item->get('ranked') && $this->wishlist->access('manage')) {
                                                         $html .= '<a class="rankit" href="' . Route::url($item->link('rank', $filters)) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
-                                                    } else if ($item->get('ranked')) {
+                                                    } elseif ($item->get('ranked')) {
                                                         //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
                                                         $this->css('
 															.priority-level-' . $item->get('id') . ' {
@@ -419,7 +419,7 @@ if ($this->wishlist->get('id')) {
 
                     if ($this->wishlist->get('category') == 'resource') {
                         $html  = '<p>' . Lang::txt('COM_WISHLIST_THIS_LIST_IS_FOR_RES', '<a href="' . Route::url('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')) . '">' . $this->escape($this->wishlist->item('title')) . '</a>') . '</p>';
-                    } else if ($this->wishlist->get('description')) {
+                    } elseif ($this->wishlist->get('description')) {
                         $html  = '<p>' . $this->escape($this->wishlist->get('description')) . '<p>';
                     } else {
                         $html  = '<p>' . Lang::txt('COM_WISHLIST_HELP_US_IMPROVE', $sitename) . '</p>';

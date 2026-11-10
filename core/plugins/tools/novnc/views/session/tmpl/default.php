@@ -33,7 +33,7 @@ if (!$this->app->sess) {
 
     if ($engine == 'modern') {
         require __DIR__ . DIRECTORY_SEPARATOR . 'modern.php';
-    } else if ($engine == 'vanilla') {
+    } elseif ($engine == 'vanilla') {
         require __DIR__ . DIRECTORY_SEPARATOR . 'vanilla.php';
     } else {
         $this->js('jquery.editable.min.js', 'system');

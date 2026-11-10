@@ -122,7 +122,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                     <span class="alreadyapplied">
                         <?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y'); ?></span>
                     </span>
-                <?php } else if ($this->jobs[$i]->withdrawn) { ?>
+                <?php } elseif ($this->jobs[$i]->withdrawn) { ?>
                     <span class="withdrawn">
                         <?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y'); ?></span>
                     </span>
