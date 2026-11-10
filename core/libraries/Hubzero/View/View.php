@@ -245,8 +245,8 @@ class View extends Obj
     public function assign()
     {
         // Get the arguments; there may be 1 or 2.
-        $arg0 = @func_get_arg(0);
-        $arg1 = @func_get_arg(1);
+        $arg0 = func_num_args() > 0 ? func_get_arg(0) : null;
+        $arg1 = func_num_args() > 1 ? func_get_arg(1) : null;
 
         // Assign by object
         if (is_object($arg0)) {
