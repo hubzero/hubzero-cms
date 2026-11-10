@@ -117,7 +117,7 @@ class Redirect extends SiteController
             $this->view->time = $time;
             $this->view
                 ->set('option', $this->_option)
-                ->set('task', $this->task)
+                ->set('task', $this->_task)
                 ->set('config', $this->config)
                 ->setName('display')
                 ->setLayout('display')
