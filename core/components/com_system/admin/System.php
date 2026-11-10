@@ -48,9 +48,9 @@ class System extends AbstractComponent
             $controllerName == 'geodb',
         );
         Submenu::addEntry(
-            Lang::txt('COM_SYSTEM_APC'),
-            Route::url('index.php?option=com_system&controller=apc'),
-            $controllerName == 'apc',
+            Lang::txt('COM_SYSTEM_CACHE'),
+            Route::url('index.php?option=com_system&controller=cache'),
+            $controllerName == 'cache',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
