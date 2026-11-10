@@ -151,8 +151,8 @@ class Formathtml extends Plugin
             // Any other marker (HTML or a foreign format) is stored markup too.
             $isRendered = (stripos($formatMarker, '{FORMAT:RENDERED}') !== false);
             $trusted    = $isRendered
-                && class_exists('plgContentFormatwiki', false)
-                && \plgContentFormatwiki::wasRendered($content);
+                && class_exists(\Plugins\Content\Formatwiki\Formatwiki::class, false)
+                && \Plugins\Content\Formatwiki\Formatwiki::wasRendered($content);
 
             if (!$trusted) {
                 $content = substr($content, strlen($formatMarker));

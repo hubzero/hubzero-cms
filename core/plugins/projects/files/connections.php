@@ -408,9 +408,9 @@ class Connections
         Plugin::import('filesystem');
 
         $alias  = $this->connection->provider ? $this->connection->provider->alias : '';
-        $plugin = 'plgFilesystem' . ucfirst($alias);
+        $plugin = 'Plugins\\Filesystem\\' . ucfirst($alias) . '\\' . ucfirst($alias);
 
-        if (method_exists($plugin, 'authorize')) {
+        if ($alias && method_exists($plugin, 'authorize')) {
             // Make the connection id available to the provider's OAuth setup.
             Request::setVar('connection', $this->connection->get('id'));
 
