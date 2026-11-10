@@ -381,8 +381,7 @@ class Set extends Obj implements Iterator
             }
 
             $this->result_counts[$plugin->name] = [
-                'friendly_name'
-                    => $refl->hasMethod('getName')
+                'friendly_name' => $refl->hasMethod('getName')
                         ? $refl->getMethod('getName')->invoke(null)
                         : ucwords($plugin->name),
                 'plugin_name' => $plugin->name,

@@ -53,9 +53,10 @@ class SolrIndexAdapter implements IndexInterface
         $this->logPath = $config->get('solr_log_path');
 
         // Build the Solr config object
-        $solrConfig = [ 'endpoint'
-            => [ $core
-                => [  'host' => $host,
+        $solrConfig = [
+            'endpoint' => [
+                $core => [
+                    'host' => $host,
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,

@@ -373,8 +373,7 @@ class SchemaManager
                     'nullable' => (($info['Null'] ?? $info['null'] ?? $info['notnull'] ?? 'YES') === 'YES')
                                   || (isset($info['notnull']) && $info['notnull'] == 0),
                     'default' => $info['Default'] ?? $info['default'] ?? $info['dflt_value'] ?? null,
-                    'auto_increment'
-                        => (isset($info['Extra'])
+                    'auto_increment' => (isset($info['Extra'])
                             && stripos($info['Extra'], 'auto_increment') !== false)
                         || (isset($info['pk']) && $info['pk'] == 1),
                     'comment' => $info['Comment'] ?? $info['comment'] ?? null,

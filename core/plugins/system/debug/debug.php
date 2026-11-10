@@ -890,16 +890,13 @@ class Debug extends Plugin
         $regex = [
 
             // Tables are identified by the prefix
-            '/(=)/'
-            => '<b class="dbgOperator">$1</b>',
+            '/(=)/' => '<b class="dbgOperator">$1</b>',
 
             // All uppercase words have a special meaning
-            '/(?<!\w|>)([A-Z_]{2,})(?!\w)/x'
-            => '<span class="dbgCommand">$1</span>',
+            '/(?<!\w|>)([A-Z_]{2,})(?!\w)/x' => '<span class="dbgCommand">$1</span>',
 
             // Tables are identified by the prefix
-            '/(' . App::get('db')->getPrefix() . '[a-z_0-9]+)/'
-            => '<span class="dbgTable">$1</span>',
+            '/(' . App::get('db')->getPrefix() . '[a-z_0-9]+)/' => '<span class="dbgTable">$1</span>',
 
         ];
 

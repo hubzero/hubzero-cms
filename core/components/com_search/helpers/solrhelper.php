@@ -40,9 +40,10 @@ class SolrHelper
         $path = $config->get('solr_path', '/');
         $context = $config->get('solr_context', 'solr');
 
-        $solrConfig = ['endpoint'
-            => [$core
-                => [  'host' => $host,
+        $solrConfig = [
+            'endpoint' => [
+                $core => [
+                    'host' => $host,
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
