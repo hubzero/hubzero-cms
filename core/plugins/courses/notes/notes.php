@@ -12,6 +12,8 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Courses Plugin class for user notes

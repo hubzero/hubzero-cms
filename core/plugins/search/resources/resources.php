@@ -5,6 +5,7 @@ namespace Plugins\Search\Resources;
 use Components\Resources\Models\Entry;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 use Hubzero\Facades\User;
 
 /**

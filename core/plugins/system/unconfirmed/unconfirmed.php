@@ -16,6 +16,7 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
 
 class Unconfirmed extends Plugin
