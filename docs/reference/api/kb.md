@@ -20,7 +20,7 @@ Endpoints under `/api/kb`, from the `com_kb` API controllers. Authenticate with 
 
 Create a knowledge base article
 
-API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L289).
+API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L277).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -38,7 +38,7 @@ API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/c
 
 The knowledge base categories
 
-API version 1.0, task `categories` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L512).
+API version 1.0, task `categories` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L495).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -56,7 +56,7 @@ API version 1.0, task `categories` in [`entriesv1_0.php`](../../../core/componen
 
 List knowledge base articles
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L94).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L97).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -72,7 +72,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 
 Delete a knowledge base article
 
-API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L477).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L462).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -82,7 +82,7 @@ API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/c
 
 Get a single knowledge base article
 
-API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L243).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L233).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -92,7 +92,7 @@ API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com
 
 Update a knowledge base article
 
-API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/com_kb/api/controllers/entriesv1_0.php#L382).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_kb/api/controllers/entriesv1r0.php#L370).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

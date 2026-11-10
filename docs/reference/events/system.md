@@ -11,9 +11,9 @@ Events in the `system` group. A plugin in `core/plugins/system/` receives an eve
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/ComponentServiceProvider.php:54`](../../../core/bootstrap/Administrator/Providers/ComponentServiceProvider.php#L54)
-- [`core/bootstrap/Site/Providers/ComponentServiceProvider.php:54`](../../../core/bootstrap/Site/Providers/ComponentServiceProvider.php#L54)
-- [`core/libraries/Hubzero/Api/ComponentServiceProvider.php:58`](../../../core/libraries/Hubzero/Api/ComponentServiceProvider.php#L58)
+- [`core/bootstrap/Administrator/Providers/ComponentServiceProvider.php:52`](../../../core/bootstrap/Administrator/Providers/ComponentServiceProvider.php#L52)
+- [`core/bootstrap/Site/Providers/ComponentServiceProvider.php:68`](../../../core/bootstrap/Site/Providers/ComponentServiceProvider.php#L68)
+- [`core/libraries/Hubzero/Api/ComponentServiceProvider.php:55`](../../../core/libraries/Hubzero/Api/ComponentServiceProvider.php#L55)
 
 Listeners:
 
@@ -26,7 +26,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Base/Application.php:516`](../../../core/libraries/Hubzero/Base/Application.php#L516)
+- [`core/libraries/Hubzero/Base/Application.php:490`](../../../core/libraries/Hubzero/Base/Application.php#L490)
 
 Listeners:
 
@@ -44,8 +44,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:128`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L128)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:162`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L162)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:123`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L123)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:154`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L154)
 
 Listeners:
 
@@ -57,9 +57,9 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:73`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L73)
-- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:50`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L50)
-- [`core/bootstrap/Site/Providers/RouterServiceProvider.php:73`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L73)
+- [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:69`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L69)
+- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:48`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L48)
+- [`core/bootstrap/Site/Providers/RouterServiceProvider.php:69`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L69)
 
 Listeners:
 
@@ -78,8 +78,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:151`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L151)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:119`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L119)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:144`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L144)
 
 No plugin in the source tree listens for this event.
 
@@ -95,9 +95,9 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:66`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L66)
-- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:43`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L43)
-- [`core/bootstrap/Site/Providers/RouterServiceProvider.php:66`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L66)
+- [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:63`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L63)
+- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:42`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L42)
+- [`core/bootstrap/Site/Providers/RouterServiceProvider.php:63`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L63)
 
 No plugin in the source tree listens for this event.
 
@@ -105,7 +105,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_templates/admin/controllers/styles.php:492`](../../../core/components/com_templates/admin/controllers/styles.php#L492) with `[$group, $client_id]`
+- [`core/components/com_templates/admin/controllers/styles.php:461`](../../../core/components/com_templates/admin/controllers/styles.php#L461) with `[$group, $client_id]`
 
 Listeners:
 
@@ -123,7 +123,8 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Relational.php:1698`](../../../core/libraries/Hubzero/Database/Relational.php#L1698) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:4873`](../../../core/libraries/Hubzero/Database/Relational.php#L4873) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:310`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L310) with `[$this->getTableName(), $this]`
 
 Listeners:
 
@@ -137,21 +138,45 @@ Listeners:
 
 - `plg_system_languagecode` — [`onContentPrepareForm($form, $data)`](../../../core/plugins/system/languagecode/languagecode.php)
 
+## `system.onContentRestore`
+
+Fired from:
+
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:342`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L342) with `[$this->getTableName(), $this]`
+
+No plugin in the source tree listens for this event.
+
 ## `system.onContentSave`
 
 Fired from:
 
-- [`core/components/com_groups/models/orm/applicant.php:124`](../../../core/components/com_groups/models/orm/applicant.php#L124) with `[$this->getTableName(), $this]`
-- [`core/components/com_groups/models/orm/invitee.php:124`](../../../core/components/com_groups/models/orm/invitee.php#L124) with `[$this->getTableName(), $this]`
-- [`core/components/com_groups/models/orm/manager.php:124`](../../../core/components/com_groups/models/orm/manager.php#L124) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/applicant.php:123`](../../../core/components/com_groups/models/orm/applicant.php#L123) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/invitee.php:123`](../../../core/components/com_groups/models/orm/invitee.php#L123) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/manager.php:123`](../../../core/components/com_groups/models/orm/manager.php#L123) with `[$this->getTableName(), $this]`
 - [`core/components/com_groups/models/orm/member.php:124`](../../../core/components/com_groups/models/orm/member.php#L124) with `[$this->getTableName(), $this]`
 - [`core/components/com_modules/models/menu.php:71`](../../../core/components/com_modules/models/menu.php#L71) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Relational.php:1518`](../../../core/libraries/Hubzero/Database/Relational.php#L1518) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Table.php:582`](../../../core/libraries/Hubzero/Database/Table.php#L582) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:4400`](../../../core/libraries/Hubzero/Database/Relational.php#L4400) with `[$this->getTableName(), $this, $this->changes]`
+- [`core/libraries/Hubzero/Database/Table.php:736`](../../../core/libraries/Hubzero/Database/Table.php#L736) with `[$this->getTableName(), $this]`
 
 Listeners:
 
 - `plg_system_content` — [`onContentSave($table, $model)`](../../../core/plugins/system/content/content.php)
+
+## `system.onContentSoftDelete`
+
+Fired from:
+
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:241`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L241) with `[$this->getTableName(), $this]`
+
+No plugin in the source tree listens for this event.
+
+## `system.onMassPrune`
+
+Fired from:
+
+- [`core/libraries/Hubzero/Database/Traits/MassPrunable.php:134`](../../../core/libraries/Hubzero/Database/Traits/MassPrunable.php#L134) with `[$instance->getTableName(), $query]`
+
+No plugin in the source tree listens for this event.
 
 ## `system.onUserAfterSave`
 
@@ -175,7 +200,7 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_system_languagefilter` — [`onUserLogin($user, $options = array()`](../../../core/plugins/system/languagefilter/languagefilter.php)
+- `plg_system_languagefilter` — [`onUserLogin($user, $options = [])`](../../../core/plugins/system/languagefilter/languagefilter.php)
 
 ## `system.onUserLoginFailure`
 
@@ -192,4 +217,4 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_system_logout` — [`onUserLogout($user, $options = array()`](../../../core/plugins/system/logout/logout.php)
+- `plg_system_logout` — [`onUserLogout($user, $options = [])`](../../../core/plugins/system/logout/logout.php)

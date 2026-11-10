@@ -13,12 +13,6 @@ Newsletter plugin for Events
 
 This plugin has no parameters.
 
-## Newsletter - Jobs (`plg_newsletter_jobs`)
-
-Newsletter plugin for Jobs
-
-This plugin has no parameters.
-
 ## Newsletter - Resource (`plg_newsletter_resource`)
 
 Newsletter plugin for Resource

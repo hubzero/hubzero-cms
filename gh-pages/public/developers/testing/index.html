@@ -399,7 +399,7 @@ working directory. Run it from the installation root.</p>
 database, extend it — or extend <code>TestCase</code> directly — and follow the
 <a href="https://docs.phpunit.de/en/11.5/">PHPUnit documentation</a>.</p>
 <h3 id="database">Database</h3>
-<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Test/Database.php"><code>Hubzero\Test\Database</code></a> is
+<p><a href="../../core/libraries/Hubzero/Test/Database.php"><code>Hubzero\Test\Database</code></a> is
 for tests that need a driver. It gives you a real, throwaway SQLite database
 rather than a connection to anyone's development server:</p>
 <pre><code class="language-php">public function testBasicFetch()
@@ -432,7 +432,7 @@ does not fatal.</p>
 <p><strong>Note:</strong> This class is Hubzero's own, not PHPUnit's. It replaces
 <code>PHPUnit\DbUnit\TestCase</code>, which was abandoned years ago. The supporting
 classes are in
-<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Test/Database"><code>Hubzero\Test\Database</code></a> —
+<a href="../../core/libraries/Hubzero/Test/Database"><code>Hubzero\Test\Database</code></a> —
 <code>Connection</code>, <code>DataSet</code>, <code>XmlDataSet</code>, <code>Table</code>.</p>
 </aside>
 <h3 id="scaffolding">Scaffolding</h3>

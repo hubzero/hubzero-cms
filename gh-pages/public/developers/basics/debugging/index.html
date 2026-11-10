@@ -346,26 +346,26 @@ test to use. Check the resolved value, as the bootstrap providers do.</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Log/Manager.php"><code>Hubzero\Log\Manager</code></a>
 with three loggers registered at boot, writing to <code>/var/log/hubzero</code> where
 that exists and to the configured <code>log_path</code> otherwise:</p>
-<pre><code class="language-php">			$manager = new Manager($path);
+<pre><code class="language-php">            $manager-&gt;register('debug', [
+                'file'       =&gt; 'cmsdebug.log',
+                'dispatcher' =&gt; $dispatcher,
+            ]);
 
-			$manager-&gt;register('debug', array(
-				'file'       =&gt; 'cmsdebug.log',
-				'dispatcher' =&gt; $dispatcher
-			));
+            $manager-&gt;register('auth', [
+                'file'       =&gt; 'cmsauth.log',
+                'level'      =&gt; 'info',
+                'format'     =&gt; &quot;%datetime% %message%\n&quot;,
+                'dispatcher' =&gt; $dispatcher,
+            ]);
 
-			$manager-&gt;register('auth', array(
-				'file'       =&gt; 'cmsauth.log',
-				'level'      =&gt; 'info',
-				'format'     =&gt; &quot;%datetime% %message%\n&quot;,
-				'dispatcher' =&gt; $dispatcher
-			));
+            $manager-&gt;register('spam', [
+                'file'       =&gt; 'cmsspam.log',
+                'dispatcher' =&gt; $dispatcher,
+            ]);
 
-			$manager-&gt;register('spam', array(
-				'file'       =&gt; 'cmsspam.log',
-				'dispatcher' =&gt; $dispatcher
-			));
-
-			return $manager;
+            return $manager;
+        };
+    }
 </code></pre>
 <pre><code class="language-php">App::get('log')-&gt;logger('debug')-&gt;info('released ' . $count . ' expired holds');
 </code></pre>

@@ -260,15 +260,15 @@ call.</p>
 <p><code>$this-&gt;view($layout, $name = null)</code> builds a sibling view: same base path,
 same <code>option</code>, <code>controller</code>, and <code>task</code>, a different layout. <code>com_kb</code> uses it
 to render a comment thread:</p>
-<pre><code class="language-php">				$this-&gt;view('_list')
-					 -&gt;set('parent', 0)
-					 -&gt;set('cls', 'odd')
-					 -&gt;set('depth', 0)
-					 -&gt;set('option', $this-&gt;option)
-					 -&gt;set('article', $this-&gt;article)
-					 -&gt;set('comments', $comments)
-					 -&gt;set('base', $this-&gt;article-&gt;link())
-					 -&gt;display();
+<pre><code class="language-php">                &lt;?php }*/ ?&gt;
+            &lt;/h3&gt;
+
+            &lt;?php
+            $comments = $this-&gt;article-&gt;comments()
+                -&gt;whereIn('state', [
+                    Components\Kb\Models\Comment::STATE_PUBLISHED,
+                    Components\Kb\Models\Comment::STATE_FLAGGED,
+                ])
 </code></pre>
 <p>Pass a second argument to reach a partial in another view's directory.
 Data does <strong>not</strong> carry over from the parent — a partial sees only what you

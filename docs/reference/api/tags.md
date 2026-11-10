@@ -22,7 +22,7 @@ Endpoints under `/api/tags`, from the `com_tags` API controllers. Authenticate w
 
 Create an entry
 
-API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L171).
+API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L164).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -36,7 +36,7 @@ API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/c
 
 Displays a list of tags
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L40).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L39).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -53,7 +53,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 
 Retrieve tag's logs that preceeded the given log
 
-API version 2.0, task `previousLogs` in [`tagactivitylogsv2_0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2_0.php#L29).
+API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2r0.php#L24).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -65,7 +65,7 @@ API version 2.0, task `previousLogs` in [`tagactivitylogsv2_0.php`](../../../cor
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L428).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L405).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@ API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L287).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L271).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -85,7 +85,7 @@ API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L319).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L302).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -100,7 +100,7 @@ API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/c
 
 Add a tag to an item
 
-API version 1.0, task `add` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L548).
+API version 1.0, task `add` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L518).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ API version 1.0, task `add` in [`entriesv1_0.php`](../../../core/components/com_
 
 Remove tag from an item
 
-API version 1.0, task `remove` in [`entriesv1_0.php`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L473).
+API version 1.0, task `remove` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L447).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

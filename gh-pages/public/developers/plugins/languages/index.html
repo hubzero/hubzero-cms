@@ -216,7 +216,7 @@ with a property:</p>
 	 *
 	 * @var  boolean
 	 */
-	protected $_autoloadLanguage = true;
+	protected $autoloadLanguage = true;
 }
 </code></pre>
 <p>With that set, the constructor calls <code>loadLanguage()</code> for you. You can also
@@ -269,7 +269,7 @@ inside the group's own directory:</p>
 {
 	if (empty($extension))
 	{
-		$extension = 'plg_' . $this-&gt;_type . '_' . $this-&gt;_name;
+		$extension = 'plg_' . $this-&gt;pluginType . '_' . $this-&gt;pluginName;
 	}
 
 	$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));

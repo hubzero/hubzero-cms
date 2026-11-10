@@ -286,23 +286,22 @@ administrator's Tags screen changes it everywhere at once.</p>
 <h2 id="declaring-a-scope">Declaring a scope</h2>
 <p>Subclass <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/models/cloud.php"><code>Components\Tags\Models\Cloud</code></a>
 and set <code>$_scope</code>. The whole class is that:</p>
-<pre><code class="language-php">namespace Components\Blog\Models;
+<pre><code class="language-php">
+namespace Components\Blog\Models;
 
 use Components\Tags\Models\Cloud;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Blog Tagging class
  */
 class Tags extends Cloud
 {
-	/**
-	 * Object type, used for linking objects (such as resources) to tags
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'blog';
+    /**
+     * Object type, used for linking objects (such as resources) to tags
+     *
+     * @var string
+     */
+    protected $scope = 'blog';
 }
 </code></pre>
 <p>Pick a scope name once and never change it. <code>#__tags_object</code> rows are found

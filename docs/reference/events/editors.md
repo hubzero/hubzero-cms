@@ -13,14 +13,14 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_editors_ckeditor` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/ckeditor/ckeditor.php)
-- `plg_editors_ckeditor5` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/ckeditor5/ckeditor5.php)
-- `plg_editors_codemirror` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/codemirror/codemirror.php)
-- `plg_editors_none` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/none/none.php)
-- `plg_editors_pagedown` — [`onDisplay($name, $content, $width, $height, $columns, $rows, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/pagedown/pagedown.php)
-- `plg_editors_tinymce` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null)`](../../../core/plugins/editors/tinymce/tinymce.php)
-- `plg_editors_wikitoolbar` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/wikitoolbar/wikitoolbar.php)
-- `plg_editors_wikiwyg` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()`](../../../core/plugins/editors/wikiwyg/wikiwyg.php)
+- `plg_editors_ckeditor` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])`](../../../core/plugins/editors/ckeditor/ckeditor.php)
+- `plg_editors_ckeditor5` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])`](../../../core/plugins/editors/ckeditor5/ckeditor5.php)
+- `plg_editors_codemirror` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [],)`](../../../core/plugins/editors/codemirror/codemirror.php)
+- `plg_editors_none` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [],)`](../../../core/plugins/editors/none/none.php)
+- `plg_editors_pagedown` — [`onDisplay($name, $content, $width, $height, $columns, $rows, $buttons = true, $id = null, $asset = null, $author = null, $params = [],)`](../../../core/plugins/editors/pagedown/pagedown.php)
+- `plg_editors_tinymce` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null,)`](../../../core/plugins/editors/tinymce/tinymce.php)
+- `plg_editors_wikitoolbar` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [],)`](../../../core/plugins/editors/wikitoolbar/wikitoolbar.php)
+- `plg_editors_wikiwyg` — [`onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [],)`](../../../core/plugins/editors/wikiwyg/wikiwyg.php)
 
 ## `editors.onGetContent`
 

@@ -224,6 +224,10 @@
 <li class="toc__item toc__item--l2"><a href="#muse-database">muse database</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-database-dump">muse database dump</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-database-load">muse database load</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-schema">muse database schema</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-cli">muse database cli</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-query">muse database query</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-drivers">muse database drivers</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-environment">muse environment</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-extension">muse extension</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-extension-add">muse extension add</a></li>
@@ -250,6 +254,8 @@
 <li class="toc__item toc__item--l3"><a href="#muse-install-schema">muse install schema</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-install-settings">muse install settings</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-install-sample">muse install sample</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-template">muse install template</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-flavor">muse install flavor</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-install-migrations">muse install migrations</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-install-admin">muse install admin</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-install-verify">muse install verify</a></li>
@@ -260,9 +266,16 @@
 <li class="toc__item toc__item--l3"><a href="#muse-log-follow">muse log follow</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-migration">muse migration</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-migration-run">muse migration run</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-status">muse migration status</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-migration-history">muse migration history</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-mark">muse migration mark</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-refresh">muse migration refresh</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-fresh">muse migration fresh</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-repository-flavor">muse repository:flavor</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-flavor-list">muse repository:flavor list</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-flavor-show">muse repository:flavor show</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-repository-flavor-set">muse repository:flavor set</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-flavor-status">muse repository:flavor status</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-repository-package">muse repository:package</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-repository-package-install">muse repository:package install</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-repository-package-configure">muse repository:package configure</a></li>
@@ -283,9 +296,23 @@
 <li class="toc__item toc__item--l3"><a href="#muse-resources-gitstats">muse resources gitstats</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-resources-exportcsv">muse resources exportcsv</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-resources-exportxml">muse resources exportxml</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-routes">muse routes</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-routes-check">muse routes check</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-routes-fix">muse routes fix</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-scaffolding">muse scaffolding</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-scaffolding-create">muse scaffolding create</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-scaffolding-copy">muse scaffolding copy</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-schema">muse schema</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-diff">muse schema diff</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-introspect">muse schema introspect</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-sql">muse schema sql</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-tables">muse schema tables</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-export">muse schema export</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-compare">muse schema compare</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-generate">muse schema generate</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-blank">muse schema blank</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-snapshot">muse schema snapshot</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-schema-squash">muse schema squash</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-searchmigration">muse searchmigration</a></li>
 <li class="toc__item toc__item--l3"><a href="#muse-searchmigration-run">muse searchmigration run</a></li>
 <li class="toc__item toc__item--l2"><a href="#muse-test">muse test</a></li>
@@ -368,7 +395,7 @@
 </tr>
 <tr>
 <td><a href="#muse-database"><code>muse database</code></a></td>
-<td>2</td>
+<td>6</td>
 <td>Database class</td>
 </tr>
 <tr>
@@ -403,7 +430,7 @@
 </tr>
 <tr>
 <td><a href="#muse-install"><code>muse install</code></a></td>
-<td>10</td>
+<td>12</td>
 <td>Install  - fresh Hubzero installation</td>
 </tr>
 <tr>
@@ -428,13 +455,13 @@
 </tr>
 <tr>
 <td><a href="#muse-migration"><code>muse migration</code></a></td>
-<td>2</td>
+<td>6</td>
 <td>Migration class</td>
 </tr>
 <tr>
 <td><a href="#muse-repository-flavor"><code>muse repository:flavor</code></a></td>
-<td>1</td>
-<td>Repository flavor class</td>
+<td>4</td>
+<td>Shape a hub with a flavor</td>
 </tr>
 <tr>
 <td><a href="#muse-repository-package"><code>muse repository:package</code></a></td>
@@ -452,9 +479,19 @@
 <td>Resources</td>
 </tr>
 <tr>
+<td><a href="#muse-routes"><code>muse routes</code></a></td>
+<td>2</td>
+<td>The addresses a hub's components answer at</td>
+</tr>
+<tr>
 <td><a href="#muse-scaffolding"><code>muse scaffolding</code></a></td>
 <td>2</td>
 <td>Scaffolding class for generating template extensions</td>
+</tr>
+<tr>
+<td><a href="#muse-schema"><code>muse schema</code></a></td>
+<td>10</td>
+<td>Schema management command</td>
 </tr>
 <tr>
 <td><a href="#muse-searchmigration"><code>muse searchmigration</code></a></td>
@@ -549,6 +586,14 @@
 <p>Dumps the hub's database into a file</p>
 <h3 id="muse-database-load"><code>muse database load</code></h3>
 <p>Loads the provided database into the hubs currently configured database</p>
+<h3 id="muse-database-schema"><code>muse database schema</code></h3>
+<p>Converts schema.sql from one database type to another (e.g., mysql to sqlite)</p>
+<h3 id="muse-database-cli"><code>muse database cli</code></h3>
+<p>Opens the native database client (mysql/psql/sqlite3) with auto-configured credentials</p>
+<h3 id="muse-database-query"><code>muse database query</code></h3>
+<p>Runs a single SQL query against the database with automatic table prefix replacement</p>
+<h3 id="muse-database-drivers"><code>muse database drivers</code></h3>
+<p>Lists all supported database drivers and their PHP extension availability</p>
 <h2 id="muse-environment"><code>muse environment</code></h2>
 <p>Environment class.</p>
 <p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Environment.php"><code>Environment.php</code></a>.</p>
@@ -612,7 +657,20 @@
 <h3 id="muse-install-settings"><code>muse install settings</code></h3>
 <p>Configure site settings and generate config files</p>
 <h3 id="muse-install-sample"><code>muse install sample</code></h3>
-<p>Load sample/demo data into database</p>
+<p>Load a set of starting content into the database</p>
+<h3 id="muse-install-template"><code>muse install template</code></h3>
+<p>Make the configured template the hub's default style</p>
+<p>Arguments:</p>
+<ul>
+<li>template  The site template; without it the answer file's site_template decides</li>
+</ul>
+<h3 id="muse-install-flavor"><code>muse install flavor</code></h3>
+<p>Apply a flavor - the switches that make one hub differ from another</p>
+<p>Arguments:</p>
+<ul>
+<li>flavor   The flavor to apply; without it the answer file's <code>flavor</code> decides</li>
+<li>flavors  A directory of flavor files to read ahead of app/flavors and core/flavors</li>
+</ul>
 <h3 id="muse-install-migrations"><code>muse install migrations</code></h3>
 <p>Run database migrations to update schema</p>
 <h3 id="muse-install-admin"><code>muse install admin</code></h3>
@@ -643,14 +701,44 @@
 <p>Run alone, <code>muse migration</code> default (required) command - just executes run</p>
 <h3 id="muse-migration-run"><code>muse migration run</code></h3>
 <p>Runs pending migrations according to options provided</p>
+<h3 id="muse-migration-status"><code>muse migration status</code></h3>
+<p>Shows a summary of migration status (pending, executed, failed)</p>
 <h3 id="muse-migration-history"><code>muse migration history</code></h3>
 <p>Shows a history of previously run migrations</p>
+<h3 id="muse-migration-mark"><code>muse migration mark</code></h3>
+<p>Marks a migration as executed without running it, or removes a tracking record</p>
+<h3 id="muse-migration-refresh"><code>muse migration refresh</code></h3>
+<p>Rolls back all migrations then re-runs them (DESTRUCTIVE)</p>
+<h3 id="muse-migration-fresh"><code>muse migration fresh</code></h3>
+<p>Drops ALL tables and re-runs migrations (EXTREMELY DESTRUCTIVE)</p>
 <h2 id="muse-repository-flavor"><code>muse repository:flavor</code></h2>
-<p>Repository flavor class.</p>
+<p>Shape a hub with a flavor.</p>
 <p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Repository/Flavor.php"><code>Flavor.php</code></a>.</p>
-<p>Run alone, <code>muse repository:flavor</code> default (required) command</p>
+<p>Run alone, <code>muse repository:flavor</code> shape the hub with a flavor; run alone, lists the flavors there are</p>
+<h3 id="muse-repository-flavor-list"><code>muse repository:flavor list</code></h3>
+<p>List the flavors available, with their descriptions</p>
+<p>Arguments:</p>
+<ul>
+<li>path  A directory of flavor files to read ahead of app/flavors and core/flavors</li>
+</ul>
+<h3 id="muse-repository-flavor-show"><code>muse repository:flavor show</code></h3>
+<p>Show a flavor's levers, resolved through what it extends</p>
+<p>Arguments:</p>
+<ul>
+<li>path  A directory of flavor files to read ahead of app/flavors and core/flavors</li>
+</ul>
 <h3 id="muse-repository-flavor-set"><code>muse repository:flavor set</code></h3>
-<p>No description available.</p>
+<p>Pull every lever a flavor names</p>
+<p>Arguments:</p>
+<ul>
+<li>path  A directory of flavor files to read ahead of app/flavors and core/flavors</li>
+</ul>
+<h3 id="muse-repository-flavor-status"><code>muse repository:flavor status</code></h3>
+<p>Say how the hub differs from a flavor, or which flavor it matches</p>
+<p>Arguments:</p>
+<ul>
+<li>path  A directory of flavor files to read ahead of app/flavors and core/flavors</li>
+</ul>
 <h2 id="muse-repository-package"><code>muse repository:package</code></h2>
 <p>Repository class.</p>
 <p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Repository/Package.php"><code>Package.php</code></a>.</p>
@@ -706,6 +794,14 @@
 <p>No description available.</p>
 <h3 id="muse-resources-exportxml"><code>muse resources exportxml</code></h3>
 <p>No description available.</p>
+<h2 id="muse-routes"><code>muse routes</code></h2>
+<p>The addresses a hub's components answer at.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Routes.php"><code>Routes.php</code></a>.</p>
+<p>Run alone, <code>muse routes</code> default - say what is out of step without changing anything</p>
+<h3 id="muse-routes-check"><code>muse routes check</code></h3>
+<p>Report components whose route is missing or stale</p>
+<h3 id="muse-routes-fix"><code>muse routes fix</code></h3>
+<p>Create any missing component routes</p>
 <h2 id="muse-scaffolding"><code>muse scaffolding</code></h2>
 <p>Scaffolding class for generating template extensions.</p>
 <p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Scaffolding.php"><code>Scaffolding.php</code></a>.</p>
@@ -714,6 +810,30 @@
 <p>No description available.</p>
 <h3 id="muse-scaffolding-copy"><code>muse scaffolding copy</code></h3>
 <p>No description available.</p>
+<h2 id="muse-schema"><code>muse schema</code></h2>
+<p>Schema management command.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Schema.php"><code>Schema.php</code></a>.</p>
+<p>Run alone, <code>muse schema</code> default (required) command - show help</p>
+<h3 id="muse-schema-diff"><code>muse schema diff</code></h3>
+<p>Compares two tables and shows the structural differences</p>
+<h3 id="muse-schema-introspect"><code>muse schema introspect</code></h3>
+<p>Shows the structure of a single table</p>
+<h3 id="muse-schema-sql"><code>muse schema sql</code></h3>
+<p>Generates migration SQL from schema differences</p>
+<h3 id="muse-schema-tables"><code>muse schema tables</code></h3>
+<p>Lists all tables in the current database</p>
+<h3 id="muse-schema-export"><code>muse schema export</code></h3>
+<p>Exports the current database schema to JSON format</p>
+<h3 id="muse-schema-compare"><code>muse schema compare</code></h3>
+<p>Compares current database against a schema JSON file</p>
+<h3 id="muse-schema-generate"><code>muse schema generate</code></h3>
+<p>Generates a migration PHP file from schema differences</p>
+<h3 id="muse-schema-blank"><code>muse schema blank</code></h3>
+<p>Creates an empty migration file with up() and down() stubs</p>
+<h3 id="muse-schema-snapshot"><code>muse schema snapshot</code></h3>
+<p>Save, list, compare, and manage schema snapshots</p>
+<h3 id="muse-schema-squash"><code>muse schema squash</code></h3>
+<p>Generates a single migration from current database schema</p>
 <h2 id="muse-searchmigration"><code>muse searchmigration</code></h2>
 <p>Migration class.</p>
 <p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/SearchMigration.php"><code>SearchMigration.php</code></a>.</p>

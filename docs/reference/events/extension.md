@@ -11,7 +11,7 @@ Events in the `extension` group. A plugin in `core/plugins/extension/` receives 
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:814`](../../../core/components/com_modules/admin/controllers/modules.php#L814) with `['com_modules.module', $model->getTableName()]`
+- [`core/components/com_modules/admin/controllers/modules.php:765`](../../../core/components/com_modules/admin/controllers/modules.php#L765) with `['com_modules.module', $model->getTableName()]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,10 +19,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:452`](../../../core/components/com_modules/admin/controllers/modules.php#L452) with `[$this->_option . '.module', &$model, $model->isNew()]`
-- [`core/components/com_templates/admin/controllers/styles.php:344`](../../../core/components/com_templates/admin/controllers/styles.php#L344) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
-- [`core/components/com_templates/models/file.php:161`](../../../core/components/com_templates/models/file.php#L161) with `['com_templates.source', &$this, false]`
-- [`core/components/com_templates/models/source.php:166`](../../../core/components/com_templates/models/source.php#L166) with `['com_templates.source', &$this, false]`
+- [`core/components/com_modules/admin/controllers/modules.php:432`](../../../core/components/com_modules/admin/controllers/modules.php#L432) with `[$this->option . '.module', &$model, $model->isNew()]`
+- [`core/components/com_templates/admin/controllers/styles.php:325`](../../../core/components/com_templates/admin/controllers/styles.php#L325) with `['com_templates.style', $style, ($fields['id'] ? false : true)],`
+- [`core/components/com_templates/models/file.php:153`](../../../core/components/com_templates/models/file.php#L153) with `['com_templates.source', &$this, false]`
+- [`core/components/com_templates/models/source.php:149`](../../../core/components/com_templates/models/source.php#L149) with `['com_templates.source', &$this, false]`
 
 No plugin in the source tree listens for this event.
 
@@ -30,7 +30,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:804`](../../../core/components/com_modules/admin/controllers/modules.php#L804) with `['com_modules.module', $model->getTableName()]`
+- [`core/components/com_modules/admin/controllers/modules.php:756`](../../../core/components/com_modules/admin/controllers/modules.php#L756) with `['com_modules.module', $model->getTableName()]`
 
 No plugin in the source tree listens for this event.
 
@@ -38,9 +38,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:425`](../../../core/components/com_modules/admin/controllers/modules.php#L425) with `[$this->_option . '.module', &$model, $model->isNew()]`
-- [`core/components/com_templates/admin/controllers/styles.php:276`](../../../core/components/com_templates/admin/controllers/styles.php#L276) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
-- [`core/components/com_templates/models/file.php:135`](../../../core/components/com_templates/models/file.php#L135) with `['com_templates.source', &$data, false]`
-- [`core/components/com_templates/models/source.php:140`](../../../core/components/com_templates/models/source.php#L140) with `['com_templates.source', &$data, false]`
+- [`core/components/com_modules/admin/controllers/modules.php:408`](../../../core/components/com_modules/admin/controllers/modules.php#L408) with `$eventArgs`
+- [`core/components/com_templates/admin/controllers/styles.php:263`](../../../core/components/com_templates/admin/controllers/styles.php#L263) with `['com_templates.style', $style, ($fields['id'] ? false : true)],`
+- [`core/components/com_templates/models/file.php:131`](../../../core/components/com_templates/models/file.php#L131) with `['com_templates.source', &$data, false]`
+- [`core/components/com_templates/models/source.php:127`](../../../core/components/com_templates/models/source.php#L127) with `['com_templates.source', &$data, false]`
 
 No plugin in the source tree listens for this event.

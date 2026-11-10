@@ -58,7 +58,7 @@ Every parameter an administrator can set, generated from the extension manifests
 |---|---|---|
 | [answers](plugins/answers.md) | 2 | 0 |
 | [antispam](plugins/antispam.md) | 6 | 20 |
-| [authentication](plugins/authentication.md) | 13 | 82 |
+| [authentication](plugins/authentication.md) | 13 | 83 |
 | [authfactors](plugins/authfactors.md) | 2 | 0 |
 | [blog](plugins/blog.md) | 2 | 1 |
 | [captcha](plugins/captcha.md) | 3 | 10 |
@@ -76,11 +76,11 @@ Every parameter an administrator can set, generated from the extension manifests
 | [hubzero](plugins/hubzero.md) | 5 | 9 |
 | [members](plugins/members.md) | 20 | 45 |
 | [metadata](plugins/metadata.md) | 1 | 0 |
-| [newsletter](plugins/newsletter.md) | 3 | 0 |
+| [newsletter](plugins/newsletter.md) | 2 | 0 |
 | [oaipmh](plugins/oaipmh.md) | 2 | 3 |
 | [projects](plugins/projects.md) | 11 | 36 |
 | [publications](plugins/publications.md) | 17 | 24 |
-| [resources](plugins/resources.md) | 22 | 47 |
+| [resources](plugins/resources.md) | 21 | 46 |
 | [search](plugins/search.md) | 26 | 2 |
 | [support](plugins/support.md) | 13 | 38 |
 | [system](plugins/system.md) | 30 | 63 |

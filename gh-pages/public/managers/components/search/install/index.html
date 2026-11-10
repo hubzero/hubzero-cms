@@ -273,19 +273,18 @@ exist. It creates:</p>
 the account's credentials, and the Solr host and port.</li>
 </ul>
 <p>The file is written by <code>configure()</code> in the Solr controller:</p>
-<pre><code class="language-php">				$comConfig = Component::params('com_search');
-				$application = $application-&gt;toObject();
-				$config = array();
-				$config['solr_client_id'] = $application-&gt;client_id;
-				$config['solr_client_secret'] = $application-&gt;client_secret;
-				$config['solr_username'] = $user-&gt;get('username');
-				$config['solr_password'] = $newpass;
-				$config['solr_host'] = $comConfig-&gt;get('solr_host', 'localhost');
-				$config['solr_port'] = $comConfig-&gt;get('solr_port', '8445');
-				$json = json_encode($config);
+<pre><code class="language-php">
+    /**
+     * Display the overview
+     *
+     */
+    public function displayTask()
+    {
+        $this-&gt;view = new \Hubzero\Component\View();
 
-				$filesystem = App::get('filesystem');
-				$filesystem-&gt;write(PATH_APP . '/config/solr.json', $json);
+        foreach ($this-&gt;getErrors() as $error) {
+            $this-&gt;view-&gt;setError($error);
+        }
 </code></pre>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> That account is added to <strong>every</strong> access group on the hub, so

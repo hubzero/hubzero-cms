@@ -11,7 +11,7 @@ Events in the `cart` group. A plugin in `core/plugins/cart/` receives an event b
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/order.php:69`](../../../core/components/com_cart/site/controllers/order.php#L69) with `[$provider]`
+- [`core/components/com_cart/site/controllers/order.php:68`](../../../core/components/com_cart/site/controllers/order.php#L68) with `[$provider]`
 
 Listeners:
 
@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/order.php:220`](../../../core/components/com_cart/site/controllers/order.php#L220) with `[$_POST, User::getRoot()]`
+- [`core/components/com_cart/site/controllers/order.php:208`](../../../core/components/com_cart/site/controllers/order.php#L208) with `[$_POST, User::getRoot()]`
 
 Listeners:
 
@@ -33,7 +33,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/checkout.php:594`](../../../core/components/com_cart/site/controllers/checkout.php#L594) with `[$transaction, User::getInstance()]`
+- [`core/components/com_cart/site/controllers/checkout.php:545`](../../../core/components/com_cart/site/controllers/checkout.php#L545) with `[$transaction, User::getInstance()]`
 
 Listeners:
 
@@ -43,7 +43,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/views/checkout/tmpl/payment.php:37`](../../../core/components/com_cart/site/views/checkout/tmpl/payment.php#L37) with `[$this->transaction, User::getRoot()]`
+- [`core/components/com_cart/site/views/checkout/tmpl/payment.php:43`](../../../core/components/com_cart/site/views/checkout/tmpl/payment.php#L43) with `[$this->transaction, User::getRoot()]`
 
 Listeners:
 
@@ -55,7 +55,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/checkout.php:568`](../../../core/components/com_cart/site/controllers/checkout.php#L568) with `[$transaction, User::getInstance()]`
+- [`core/components/com_cart/site/controllers/checkout.php:523`](../../../core/components/com_cart/site/controllers/checkout.php#L523) with `[$transaction, User::getInstance()]`
 
 Listeners:
 

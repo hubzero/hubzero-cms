@@ -11,7 +11,7 @@ Events in the `answers` group. A plugin in `core/plugins/answers/` receives an e
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:881`](../../../core/components/com_answers/site/controllers/questions.php#L881) with `array($row)) as $results) { $recipients = array_merge($recipients, $results`
+- [`core/components/com_answers/site/controllers/questions.php:806`](../../../core/components/com_answers/site/controllers/questions.php#L806) with `[$row]) as $results) { $recipients = array_merge($recipients, $results`
 
 Listeners:
 
@@ -29,7 +29,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:526`](../../../core/components/com_answers/site/controllers/questions.php#L526) with `[$filters]`
+- [`core/components/com_answers/site/controllers/questions.php:478`](../../../core/components/com_answers/site/controllers/questions.php#L478) with `[$filters]`
 
 Listeners:
 

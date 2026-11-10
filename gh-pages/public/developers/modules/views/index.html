@@ -268,20 +268,19 @@ require $this-&gt;getLayoutPath($layout);
 is the module object. Every property the class set is available, along with
 <code>$this-&gt;params</code>, <code>$this-&gt;module</code>, <code>$this-&gt;escape()</code>, and the asset helpers:</p>
 <pre><code class="language-php">&lt;?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // no direct access
 defined('_HZEXEC_') or die();
-
-// Push the module CSS to the template
-$this-&gt;css()
-     -&gt;js();
-?&gt;
-&lt;div&lt;?php echo ($this-&gt;moduleclass) ? ' class=&quot;' . $this-&gt;moduleclass . '&quot;' : '';?&gt;&gt;
 </code></pre>
 <p>Two things to note. The layout has no <code>namespace</code> declaration, so it runs in
 the global namespace and can call <code>Lang::txt()</code>, <code>Route::url()</code>, and <code>User</code>

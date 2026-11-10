@@ -16,7 +16,7 @@ Endpoints under `/api/publications`, from the `com_publications` API controllers
 
 Display publications user authors
 
-API version 1.0, task `list` in [`publicationsv1_0.php`](../../../core/components/com_publications/api/controllers/publicationsv1_0.php#L28).
+API version 1.0, task `list` in [`publicationsv1r0.php`](../../../core/components/com_publications/api/controllers/publicationsv1r0.php#L28).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -29,7 +29,7 @@ API version 1.0, task `list` in [`publicationsv1_0.php`](../../../core/component
 
 Display publications user is listed as author
 
-API version 1.1, task `list` in [`publicationsv1_1.php`](../../../core/components/com_publications/api/controllers/publicationsv1_1.php#L28).
+API version 1.1, task `list` in [`publicationsv1r1.php`](../../../core/components/com_publications/api/controllers/publicationsv1r1.php#L28).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

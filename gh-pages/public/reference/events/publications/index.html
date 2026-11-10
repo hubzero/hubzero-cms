@@ -229,40 +229,40 @@
 <h2 id="publications-onaftersave"><code>publications.onAfterSave</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php#L868"><code>core/plugins/projects/publications/publications.php:868</code></a> with <code>$pub</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php#L837"><code>core/plugins/projects/publications/publications.php:837</code></a> with <code>[$pub]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="publications-onbeforesave"><code>publications.onBeforeSave</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php#L803"><code>core/plugins/projects/publications/publications.php:803</code></a> with <code>$pub</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php#L777"><code>core/plugins/projects/publications/publications.php:777</code></a> with <code>[$pub]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="publications-onpublication"><code>publications.onPublication</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L661"><code>core/components/com_publications/site/controllers/publications.php:661</code></a> with <code>[ $this-&gt;model, $this-&gt;_option, array($tab), 'all', $this-&gt;model-&gt;versionAlias, $extended]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L612"><code>core/components/com_publications/site/controllers/publications.php:612</code></a> with <code>[ $this-&gt;model, $this-&gt;option, [$tab], 'all', $this-&gt;model-&gt;versionAlias, $extended]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_publications_citations</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/citations/citations.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_dublincore</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/dublincore/dublincore.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_forks</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/forks/forks.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_googlescholar</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/googlescholar/googlescholar.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_jsonld</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/jsonld/jsonld.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_opengraph</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/opengraph/opengraph.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_questions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/questions/questions.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_reviews</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/reviews/reviews.php"><code>onPublication($model, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_share</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/share/share.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_supportingdocs</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/supportingdocs/supportingdocs.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = true)</code></a></li>
-<li><code>plg_publications_usage</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/usage/usage.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
-<li><code>plg_publications_versions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/versions/versions.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = false)</code></a></li>
-<li><code>plg_publications_wishlist</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/wishlist/wishlist.php"><code>onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_citations</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/citations/citations.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_dublincore</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/dublincore/dublincore.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_forks</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/forks/forks.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_googlescholar</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/googlescholar/googlescholar.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_jsonld</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/jsonld/jsonld.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_opengraph</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/opengraph/opengraph.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_questions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/questions/questions.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_reviews</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/reviews/reviews.php"><code>onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_share</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/share/share.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_supportingdocs</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/supportingdocs/supportingdocs.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = true,)</code></a></li>
+<li><code>plg_publications_usage</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/usage/usage.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
+<li><code>plg_publications_versions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/versions/versions.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = false,)</code></a></li>
+<li><code>plg_publications_wishlist</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/wishlist/wishlist.php"><code>onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)</code></a></li>
 </ul>
 <h2 id="publications-onpublicationareas"><code>publications.onPublicationAreas</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L654"><code>core/components/com_publications/site/controllers/publications.php:654</code></a> with <code>[ $this-&gt;model, $this-&gt;model-&gt;versionAlias, $extended]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L606"><code>core/components/com_publications/site/controllers/publications.php:606</code></a> with <code>[ $this-&gt;model, $this-&gt;model-&gt;versionAlias, $extended]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="publications-onpublicationextended"><code>publications.onPublicationExtended</code></h2>
@@ -280,26 +280,26 @@
 <h2 id="publications-onpublicationsub"><code>publications.onPublicationSub</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/views/view/tmpl/default.php#L200"><code>core/components/com_publications/site/views/view/tmpl/default.php:200</code></a> with <code>[$this-&gt;publication, $this-&gt;option, 1]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/views/view/tmpl/default.php#L240"><code>core/components/com_publications/site/views/view/tmpl/default.php:240</code></a> with <code>[$this-&gt;publication, $this-&gt;option, 1]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_publications_forks</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/forks/forks.php"><code>onPublicationSub($publication, $option, $miniview=0)</code></a></li>
-<li><code>plg_publications_groups</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/groups/groups.php"><code>onPublicationSub($publication, $option, $miniview=0)</code></a></li>
-<li><code>plg_publications_recommendations</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/recommendations/recommendations.php"><code>onPublicationSub($publication, $option, $miniview=0)</code></a></li>
-<li><code>plg_publications_related</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/related/related.php"><code>onPublicationSub($publication, $option, $miniview=0)</code></a></li>
-<li><code>plg_publications_watch</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/watch/watch.php"><code>onPublicationSub($publication, $option, $miniview=0)</code></a></li>
+<li><code>plg_publications_forks</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/forks/forks.php"><code>onPublicationSub($publication, $option, $miniview = 0)</code></a></li>
+<li><code>plg_publications_groups</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/groups/groups.php"><code>onPublicationSub($publication, $option, $miniview = 0)</code></a></li>
+<li><code>plg_publications_recommendations</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/recommendations/recommendations.php"><code>onPublicationSub($publication, $option, $miniview = 0)</code></a></li>
+<li><code>plg_publications_related</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/related/related.php"><code>onPublicationSub($publication, $option, $miniview = 0)</code></a></li>
+<li><code>plg_publications_watch</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/publications/watch/watch.php"><code>onPublicationSub($publication, $option, $miniview = 0)</code></a></li>
 </ul>
 <h2 id="publications-onpublicationslist"><code>publications.onPublicationsList</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/views/browse/tmpl/item.php#L51"><code>core/components/com_publications/site/views/browse/tmpl/item.php:51</code></a> with <code>[$this-&gt;line]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/views/browse/tmpl/item.php#L57"><code>core/components/com_publications/site/views/browse/tmpl/item.php:57</code></a> with <code>[$this-&gt;line]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="publications-onwatch"><code>publications.onWatch</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/curation.php#L966"><code>core/components/com_publications/site/controllers/curation.php:966</code></a> with <code>[$pub]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/curation.php#L875"><code>core/components/com_publications/site/controllers/curation.php:875</code></a> with <code>[$pub]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

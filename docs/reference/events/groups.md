@@ -19,7 +19,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/helpers/view.php:116`](../../../core/components/com_groups/helpers/view.php#L116) with `[ $group, $authorized ]`
+- [`core/components/com_groups/helpers/view.php:115`](../../../core/components/com_groups/helpers/view.php#L115) with `[ $group, $authorized, ]`
 
 Listeners:
 
@@ -29,35 +29,35 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/helpers/view.php:155`](../../../core/components/com_groups/helpers/view.php#L155) with `[ $group, 'com_groups', $authorized, $limit, $start, $action, $pluginAccess, array($tab) ]`
+- [`core/components/com_groups/helpers/view.php:153`](../../../core/components/com_groups/helpers/view.php#L153) with `[ $group, 'com_groups', $authorized, $limit, $start, $action, $pluginAccess, [$tab], ]`
 
 Listeners:
 
-- `plg_groups_activity` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/activity/activity.php)
-- `plg_groups_announcements` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/announcements/announcements.php)
-- `plg_groups_blog` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/blog/blog.php)
-- `plg_groups_calendar` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/calendar/calendar.php)
-- `plg_groups_citations` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/citations/citations.php)
-- `plg_groups_collections` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/collections/collections.php)
-- `plg_groups_courses` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/courses/courses.php)
-- `plg_groups_files` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/files/files.php)
-- `plg_groups_forum` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/forum/forum.php)
-- `plg_groups_memberoptions` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/memberoptions/memberoptions.php)
-- `plg_groups_members` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/members/members.php)
-- `plg_groups_messages` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/messages/messages.php)
-- `plg_groups_projects` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/projects/projects.php)
-- `plg_groups_resources` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/resources/resources.php)
-- `plg_groups_usage` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/usage/usage.php)
-- `plg_groups_wiki` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/wiki/wiki.php)
-- `plg_groups_wishlist` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)`](../../../core/plugins/groups/wishlist/wishlist.php)
+- `plg_groups_activity` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/activity/activity.php)
+- `plg_groups_announcements` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/announcements/announcements.php)
+- `plg_groups_blog` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/blog/blog.php)
+- `plg_groups_calendar` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/calendar/calendar.php)
+- `plg_groups_citations` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/citations/citations.php)
+- `plg_groups_collections` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/collections/collections.php)
+- `plg_groups_courses` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/courses/courses.php)
+- `plg_groups_files` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/files/files.php)
+- `plg_groups_forum` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/forum/forum.php)
+- `plg_groups_memberoptions` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/memberoptions/memberoptions.php)
+- `plg_groups_members` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/members/members.php)
+- `plg_groups_messages` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/messages/messages.php)
+- `plg_groups_projects` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/projects/projects.php)
+- `plg_groups_resources` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/resources/resources.php)
+- `plg_groups_usage` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/usage/usage.php)
+- `plg_groups_wiki` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/wiki/wiki.php)
+- `plg_groups_wishlist` — [`onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)`](../../../core/plugins/groups/wishlist/wishlist.php)
 
 ## `groups.onGroupAfterSave`
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:451`](../../../core/components/com_groups/admin/controllers/manage.php#L451) with `[$before, $group]`
-- [`core/components/com_groups/admin/controllers/manage.php:1267`](../../../core/components/com_groups/admin/controllers/manage.php#L1267) with `[$before, $group]`
-- [`core/components/com_groups/site/controllers/groups.php:821`](../../../core/components/com_groups/site/controllers/groups.php#L821) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:418`](../../../core/components/com_groups/admin/controllers/manage.php#L418) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1149`](../../../core/components/com_groups/admin/controllers/manage.php#L1149) with `[$before, $group]`
+- [`core/components/com_groups/site/controllers/groups.php:752`](../../../core/components/com_groups/site/controllers/groups.php#L752) with `[$before, $group]`
 
 Listeners:
 
@@ -68,14 +68,14 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/groupsv1_0.php:374`](../../../core/components/com_groups/api/controllers/groupsv1_0.php#L374) with `[]`
-- [`core/components/com_groups/api/controllers/groupsv1_1.php:364`](../../../core/components/com_groups/api/controllers/groupsv1_1.php#L364)
-- [`core/components/com_groups/api/controllers/groupsv1_1.php:386`](../../../core/components/com_groups/api/controllers/groupsv1_1.php#L386) with `[]`
-- [`core/components/com_groups/helpers/view.php:87`](../../../core/components/com_groups/helpers/view.php#L87) with `[]`
-- [`core/components/com_groups/site/controllers/groups.php:533`](../../../core/components/com_groups/site/controllers/groups.php#L533) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved.php:355`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L355) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:123`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L123) with `[]`
-- [`core/libraries/Hubzero/User/Group/Helper.php:286`](../../../core/libraries/Hubzero/User/Group/Helper.php#L286) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r0.php:361`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L361) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:350`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L350)
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:371`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L371) with `[]`
+- [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
+- [`core/components/com_groups/site/controllers/groups.php:491`](../../../core/components/com_groups/site/controllers/groups.php#L491) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved.php:425`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L425) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:124`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L124) with `[]`
+- [`core/libraries/Hubzero/User/Group/Helper.php:278`](../../../core/libraries/Hubzero/User/Group/Helper.php#L278) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -83,7 +83,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/groups/projects/views/browse/tmpl/default.php:59`](../../../core/plugins/groups/projects/views/browse/tmpl/default.php#L59) with `[$this->group]`
+- [`core/plugins/groups/projects/views/browse/tmpl/default.php:95`](../../../core/plugins/groups/projects/views/browse/tmpl/default.php#L95) with `[$this->group]`
 
 No plugin in the source tree listens for this event.
 
@@ -91,8 +91,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:1160`](../../../core/components/com_groups/admin/controllers/manage.php#L1160) with `[$group]`
-- [`core/components/com_groups/site/controllers/groups.php:1169`](../../../core/components/com_groups/site/controllers/groups.php#L1169) with `[$group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1048`](../../../core/components/com_groups/admin/controllers/manage.php#L1048) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:1069`](../../../core/components/com_groups/site/controllers/groups.php#L1069) with `[$group]`
 
 Listeners:
 
@@ -107,7 +107,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:1065`](../../../core/components/com_groups/site/controllers/groups.php#L1065) with `[$this->view->group]`
+- [`core/components/com_groups/site/controllers/groups.php:973`](../../../core/components/com_groups/site/controllers/groups.php#L973) with `[$this->view->group]`
 
 Listeners:
 
@@ -121,7 +121,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/groups/members/views/profile/tmpl/default.php:216`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L216) with `[$this->group, $this->profile]`
+- [`core/plugins/groups/members/views/profile/tmpl/default.php:232`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L232) with `[$this->group, $this->profile]`
 
 Listeners:
 
@@ -131,7 +131,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/groups/members/views/profile/tmpl/default.php:79`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L79) with `[$this->group, $this->profile]`
+- [`core/plugins/groups/members/views/profile/tmpl/default.php:97`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L97) with `[$this->group, $this->profile]`
 
 No plugin in the source tree listens for this event.
 
@@ -139,7 +139,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:839`](../../../core/components/com_groups/site/controllers/groups.php#L839) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:767`](../../../core/components/com_groups/site/controllers/groups.php#L767) with `[$group]`
 
 No plugin in the source tree listens for this event.
 
@@ -147,7 +147,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/groups/projects/views/partials/tmpl/submenu.php:11`](../../../core/plugins/groups/projects/views/partials/tmpl/submenu.php#L11) with `[$this->group]`
+- [`core/plugins/groups/projects/views/partials/tmpl/submenu.php:16`](../../../core/plugins/groups/projects/views/partials/tmpl/submenu.php#L16) with `[$this->group]`
 
 No plugin in the source tree listens for this event.
 
@@ -155,8 +155,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/models/orm/group.php:452`](../../../core/components/com_groups/models/orm/group.php#L452) with `[$this->get('gidNumber'), $userid]`
-- [`core/libraries/Hubzero/User/Group.php:660`](../../../core/libraries/Hubzero/User/Group.php#L660) with `[$this->gidNumber, $userid]`
+- [`core/components/com_groups/models/orm/group.php:430`](../../../core/components/com_groups/models/orm/group.php#L430) with `[$this->get('gidNumber'), $userid]`
+- [`core/libraries/Hubzero/User/Group.php:604`](../../../core/libraries/Hubzero/User/Group.php#L604) with `[$this->gidNumber, $userid]`
 
 Listeners:
 
@@ -166,7 +166,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Group/Membership.php:651`](../../../core/libraries/Hubzero/User/Group/Membership.php#L651) with `[$gid, $uid, $reason]`
+- [`core/libraries/Hubzero/User/Group/Membership.php:623`](../../../core/libraries/Hubzero/User/Group/Membership.php#L623) with `[$gid, $uid, $reason]`
 
 No plugin in the source tree listens for this event.
 
@@ -174,7 +174,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1_0.php:178`](../../../core/components/com_groups/api/controllers/pluginsv1_0.php#L178) with `[ $group, $active ]`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:170`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L170) with `[ $group, $active, ],`
 
 Listeners:
 
@@ -184,7 +184,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1_0.php:465`](../../../core/components/com_groups/api/controllers/pluginsv1_0.php#L465) with `[ $group, $active, $id ]`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:436`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L436) with `[ $group, $active, $id, ],`
 
 Listeners:
 
@@ -194,7 +194,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1_0.php:97`](../../../core/components/com_groups/api/controllers/pluginsv1_0.php#L97) with `[ $group, $active, $filters['start'], $filters['limit'] ]`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:95`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L95) with `[ $group, $active, $filters['start'], $filters['limit'], ],`
 
 Listeners:
 
@@ -204,7 +204,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1_0.php:273`](../../../core/components/com_groups/api/controllers/pluginsv1_0.php#L273) with `[ $group, $active, $id ]`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:258`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L258) with `[ $group, $active, $id, ],`
 
 Listeners:
 
@@ -214,7 +214,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1_0.php:369`](../../../core/components/com_groups/api/controllers/pluginsv1_0.php#L369) with `[ $group, $active, $id ]`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:347`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L347) with `[ $group, $active, $id, ],`
 
 Listeners:
 

@@ -242,43 +242,43 @@ same way. Put yours there unless you are changing the distribution.</p>
 <p>The plugin answers <code>onCronEvents</code> with a <code>stdClass</code> carrying a <code>plugin</code>
 name and an <code>events</code> array. The support plugin is the fullest example in the
 tree:</p>
-<pre><code class="language-php">	/**
-	 * Return a list of events
-	 *
-	 * @return  array
-	 */
-	public function onCronEvents()
-	{
-		$this-&gt;loadLanguage();
+<pre><code class="language-php">use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
-		$obj = new stdClass();
-		$obj-&gt;plugin = 'support';
+class Support extends Plugin
+{
+    /**
+     * Return a list of events
+     *
+     * @return  array
+     */
+    public function onCronEvents()
+    {
+        $this-&gt;loadLanguage();
 
-		$obj-&gt;events = array(
-			array(
-				'name'   =&gt; 'onClosePending',
-				'label'  =&gt; Lang::txt('PLG_CRON_SUPPORT_CLOSE_PENDING'),
-				'params' =&gt; 'ticketpending'
-			),
-			array(
-				'name'   =&gt; 'sendTicketsReminder',
-				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
-				'params' =&gt; 'ticketreminder'
-			),
-			array(
-				'name'   =&gt; 'sendTicketList',
-				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_LIST'),
-				'params' =&gt; 'ticketlist'
-			),
-			array(
-				'name'   =&gt; 'cleanTempUploads',
-				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
-				'params' =&gt; 'tickettemp'
-			)
-		);
+        $obj = new \stdClass();
+        $obj-&gt;plugin = 'support';
 
-		return $obj;
-	}
+        $obj-&gt;events = [
+            [
+                'name'   =&gt; 'onClosePending',
+                'label'  =&gt; Lang::txt('PLG_CRON_SUPPORT_CLOSE_PENDING'),
+                'params' =&gt; 'ticketpending',
+            ],
+            [
+                'name'   =&gt; 'sendTicketsReminder',
+                'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
+                'params' =&gt; 'ticketreminder',
+            ],
+            [
+                'name'   =&gt; 'sendTicketList',
 </code></pre>
 <p>Each entry has three keys:</p>
 <table>
@@ -311,7 +311,7 @@ had been done. The job's history shows a clean run every time and nothing
 happens. Check the spelling and the case against the method.</p>
 </aside>
 <p><code>loadLanguage()</code> is the first line for a reason. Cron plugins do not set
-<code>$_autoloadLanguage</code>, so without it the labels come back as raw keys in the
+<code>$autoloadLanguage</code>, so without it the labels come back as raw keys in the
 administrator's job form — see <a href="../languages/index.html">languages</a>.</p>
 <h2 id="job-parameters">Job parameters</h2>
 <p><code>params</code> is what lets one task back several jobs. The support plugin's
@@ -405,44 +405,44 @@ how the tick is delivered, is in
 hub's administrator to create one, ship a
 <a href="../../database/migrations/index.html">migration</a> that inserts the row — check for the
 job first so re-running the migration does not duplicate it:</p>
-<pre><code class="language-php">class Migration20260810000000PlgCronGroups extends Base
+<pre><code class="language-php"> * Both jobs are registered: without the notifier, end dates would be enforced
+ * with no warning to the member.
+ **/
+class Migration20260810000000PlgCronGroups extends Base
 {
-	/**
-	 * event =&gt; (title, recurrence)
-	 *
-	 * @var  array
-	 **/
-	protected static $jobs = array(
-		'expireGroupMemberships' =&gt; array(
-			'Group Membership Expiration',
-			'*/15 * * * *'
-		),
-		'notifyExpiringMemberships' =&gt; array(
-			'Group Membership Expiration Warnings',
-			'0 7 * * *'
-		)
-	);
+    /**
+     * event =&gt; (title, recurrence)
+     *
+     * @var  array
+     **/
+    protected static $jobs = [
+        'expireGroupMemberships' =&gt; [
+            'Group Membership Expiration',
+            '*/15 * * * *',
+        ],
+        'notifyExpiringMemberships' =&gt; [
+            'Group Membership Expiration Warnings',
+            '0 7 * * *',
+        ],
+    ];
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this-&gt;db-&gt;tableExists('#__cron_jobs'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this-&gt;db-&gt;tableExists('#__cron_jobs')) {
+            return;
+        }
 
-		foreach (self::$jobs as $event =&gt; $job)
-		{
-			list($title, $recurrence) = $job;
+        foreach (self::$jobs as $event =&gt; $job) {
+            list($title, $recurrence) = $job;
 
-			$query = &quot;SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=&quot; . $this-&gt;db-&gt;quote($event) . &quot;;&quot;;
-			$this-&gt;db-&gt;setQuery($query);
+            $query = &quot;SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=&quot; . $this-&gt;db-&gt;quote($event) . &quot;;&quot;;
+            $this-&gt;db-&gt;setQuery($query);
 
-			if ($this-&gt;db-&gt;loadResult())
-			{
-				continue;
+            if ($this-&gt;db-&gt;loadResult()) {
+                continue;
 </code></pre>
 
         </div>

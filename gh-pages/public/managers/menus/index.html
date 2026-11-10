@@ -83,6 +83,7 @@
 <li class="toc__item toc__item--l2"><a href="#menu-items">Menu items</a></li>
 <li class="toc__item toc__item--l3"><a href="#adding-a-menu-item">Adding a menu item</a></li>
 <li class="toc__item toc__item--l3"><a href="#where-the-types-come-from">Where the types come from</a></li>
+<li class="toc__item toc__item--l3"><a href="#keeping-an-item-out-of-the-menu">Keeping an item out of the menu</a></li>
 <li class="toc__item toc__item--l3"><a href="#what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does besides appear in a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#example-navigation-for-a-new-hub">Example: navigation for a new hub</a></li>
 <li class="toc__item toc__item--l2"><a href="#example-linking-into-one-component-s-content">Example: linking into one component&#x27;s content</a></li>
@@ -396,7 +397,7 @@ and <strong>Browse by tags</strong> all fall through to the Resources front page
 <strong>Articles → Create Article</strong> returns a 404. Open a new menu item on the
 site before you publish it. This is a known defect.</p>
 </aside>
-<p>The <strong>System Links</strong> group at the end is fixed, and holds three types that
+<p>The <strong>System Links</strong> group at the end is fixed, and holds four types that
 belong to no component:</p>
 <table>
 <thead>
@@ -418,8 +419,42 @@ belong to no component:</p>
 <td><strong>Text Separator</strong></td>
 <td>A label with no link, for breaking a long menu into groups.</td>
 </tr>
+<tr>
+<td><strong>No Component</strong></td>
+<td>A page the template draws itself. Nothing is rendered in the component area, and the item stays out of menus unless you say otherwise.</td>
+</tr>
 </tbody>
 </table>
+<p><strong>No Component</strong> is for a hub whose front page is the template's own. Set such
+an item as the default and the front page has no component on it at all: the
+template's <code>home.php</code> draws the page, and the item routes <code>/</code> without showing
+up in the navigation. The item is still a real menu item, so the page keeps its
+<code>Itemid</code> — which is what modules are assigned to, and what a template style is
+assigned to — unlike a hub with nothing marked home, which has neither.</p>
+<p>It is the one type other than a component that may be set as the default.</p>
+<h3 id="keeping-an-item-out-of-the-menu">Keeping an item out of the menu</h3>
+<p>Every item carries a <strong>Display in Menu</strong> setting, under <strong>Link Type Options</strong>.
+Set it to <strong>No</strong> and the menu stops showing a link to the page, while the page
+itself is untouched: it keeps its address, its <code>Itemid</code>, the modules assigned
+to it and its template style. Only the link goes away.</p>
+<p>This is how <strong>No Component</strong> items behave already — they default to <strong>No</strong>,
+since there is nothing for the menu to link to — but any item can be hidden
+this way. Two uses come up:</p>
+<ul>
+<li>A page that is reached from somewhere other than the menu: a landing page a
+campaign links to, a form the footer points at, a page you have not finished.</li>
+<li>An item that exists to give a component its address while the link a visitor
+actually follows sits elsewhere in the tree. See <a href="#what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does
+besides appear in a menu</a>
+for why that comes up.</li>
+</ul>
+<p>Hiding an item hides what is under it. Hide <strong>Discover</strong> and the pages beneath
+it go too, however deep they are nested — a branch whose head is gone reads as
+a set of pages belonging to nothing. To show a child without its parent, move
+the child somewhere else in the tree rather than hiding the parent.</p>
+<p>Hiding is display only. To make the pages themselves unavailable, unpublish
+them: an unpublished item stops answering at its address, a hidden one does
+not.</p>
 <h3 id="what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does besides appear in a menu</h3>
 <p>A menu item is also the hub's record of what a URL means, and that has two
 consequences worth knowing before you plan a menu.</p>

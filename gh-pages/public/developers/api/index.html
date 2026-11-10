@@ -295,19 +295,7 @@ decoration — two things read them. <code>Hubzero\Api\Doc\Generator</code> buil
 interactive explorer a hub serves at <code>/developer/api/docs</code>, and
 <code>docs/_tools/gen_api_reference.py</code> builds the
 <a href="../../reference/api/index.html">API reference</a> in these pages.</p>
-<pre><code class="language-php">	/**
-	 * Decide which blog an entry may be written to, and whose name goes on it.
-	 *
-	 * The API accepts an ordinary logged-in browser session, so none of these
-	 * three may come from the request for an ordinary caller: created_by is
-	 * the byline, and scope/scope_id decide whose blog the entry appears in.
-	 * Taken raw, any member could publish under another member's name, onto
-	 * another member's blog, or into a group they do not belong to.
-	 *
-	 * The site never takes them from the request either -- the member and
-	 * group blog plugins set both from the page context.
-	 *
-</code></pre>
+<!--include: core/components/com_blog/api/controllers/entriesv1_0.php:29-40-->
 <p>More <code>@apiParameter</code> blocks follow, one per parameter, and then
 <code>public function listTask()</code>.</p>
 <p>The rules, and what breaks when you get them wrong:</p>

@@ -236,23 +236,22 @@ what the caller means.</p>
 <h2 id="where-the-dispatcher-comes-from">Where the dispatcher comes from</h2>
 <p>The <code>Event</code> facade resolves the container key <code>dispatcher</code>, which
 <code>EventServiceProvider</code> binds:</p>
-<pre><code class="language-php">	public function register()
-	{
-		$this-&gt;app['dispatcher'] = function($app)
-		{
-			$dispatcher = new Dispatcher();
+<pre><code class="language-php">     */
+    public function register()
+    {
+        $this-&gt;app['dispatcher'] = function ($app) {
+            $dispatcher = new Dispatcher();
 
-			if ($app['config'] instanceof Repository)
-			{
-				if ($app['config']-&gt;get('debug'))
-				{
-					$dispatcher = new TraceableDispatcher($dispatcher);
-				}
-			}
+            if ($app['config'] instanceof Repository) {
+                if ($app['config']-&gt;get('debug')) {
+                    $dispatcher = new TraceableDispatcher($dispatcher);
+                }
+            }
 
-			return $dispatcher;
-		};
-	}
+            return $dispatcher;
+        };
+    }
+}
 </code></pre>
 <p>In debug mode the real dispatcher is wrapped in a <code>TraceableDispatcher</code> so
 the debug bar can list what fired — the quickest way to see whether an event
@@ -260,13 +259,13 @@ you expected actually happened.</p>
 <p>Plugins become reachable one step later. <code>PluginServiceProvider</code> registers
 the plugin loader as a service, then attaches it to the dispatcher in
 <code>boot()</code>, after every provider has registered:</p>
-<pre><code class="language-php">	public function boot()
-	{
-		if ($this-&gt;app-&gt;has('dispatcher'))
-		{
-			$this-&gt;app['dispatcher']-&gt;addListenerLoader($this-&gt;app['plugin']);
-		}
-	}
+<pre><code class="language-php">    public function boot()
+    {
+        if ($this-&gt;app-&gt;has('dispatcher')) {
+            $this-&gt;app['dispatcher']-&gt;addListenerLoader($this-&gt;app['plugin']);
+        }
+    }
+}
 </code></pre>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Anything that triggers an event before the application has

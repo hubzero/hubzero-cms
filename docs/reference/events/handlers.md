@@ -11,15 +11,15 @@ Events in the `handlers` group. A plugin in `core/plugins/handlers/` receives an
 
 Fired from:
 
-- [`core/plugins/projects/files/connections.php:1764`](../../../core/plugins/projects/files/connections.php#L1764) with `[$items]`
+- [`core/plugins/projects/files/connections.php:1601`](../../../core/plugins/projects/files/connections.php#L1601) with `[$items]`
 
 Listeners:
 
-- `plg_handlers_audio` — [`onHandleView(Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/audio/audio.php)
+- `plg_handlers_audio` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/audio/audio.php)
 - `plg_handlers_hubpresenter` — [`onHandleView(\Hubzero\Filesystem\Collection $collection, $entityId = null, $entityType = null)`](../../../core/plugins/handlers/hubpresenter/hubpresenter.php)
-- `plg_handlers_ipynb` — [`onHandleView(Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/ipynb/ipynb.php)
+- `plg_handlers_ipynb` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/ipynb/ipynb.php)
 - `plg_handlers_latex` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/latex/latex.php)
-- `plg_handlers_markdown` — [`onHandleView(Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/markdown/markdown.php)
+- `plg_handlers_markdown` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/markdown/markdown.php)
 - `plg_handlers_pdf` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/pdf/pdf.php)
-- `plg_handlers_script` — [`onHandleView(Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/script/script.php)
-- `plg_handlers_video` — [`onHandleView(Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/video/video.php)
+- `plg_handlers_script` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/script/script.php)
+- `plg_handlers_video` — [`onHandleView(\Hubzero\Filesystem\Collection $collection)`](../../../core/plugins/handlers/video/video.php)

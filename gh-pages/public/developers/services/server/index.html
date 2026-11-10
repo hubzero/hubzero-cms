@@ -195,20 +195,20 @@ will not seek.</p>
 <pre><code class="language-php">use Hubzero\Content\Server;
 </code></pre>
 <h2 id="serving-a-file">Serving a file</h2>
-<pre><code class="language-php">		);
+<pre><code class="language-php">        }
 
-		if (!$entry-&gt;get('id') || !$entry-&gt;access('view'))
-		{
-			throw new \Exception(Lang::txt('Access denied.'), 403);
-		}
+        if (!($file = Request::getString('file', ''))) {
+            $parts = explode('/', $_SERVER['REQUEST_URI']);
 
-		if (!($file = Request::getString('file', '')))
-		{
-			$parts = explode('/', $_SERVER['REQUEST_URI']);
+            $filename = array_pop($parts);
 
-			$filename = array_pop($parts);
-
-			// Get the file name
+            // Get the file name
+            if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') {
+                $file = substr($filename, strlen('image:'));
+            } elseif (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
+                $file = substr($filename, strlen('file:'));
+            }
+        }
 </code></pre>
 <p>That is the whole pattern: set the file, say how it should be presented,
 call <code>serve()</code>, and stop. <code>serve()</code> returns <code>false</code> if it could not send
@@ -276,11 +276,11 @@ $server-&gt;serve();
 </thead>
 <tbody>
 <tr>
-<td><code>serve_attachment($filename, $saveas = null, $acceptranges = true)</code></td>
+<td><code>serveAttachment($filename, $saveas = null, $acceptranges = true)</code></td>
 <td>disposition <code>attachment</code>, then <code>serve()</code></td>
 </tr>
 <tr>
-<td><code>serve_inline($filename, $acceptranges = true)</code></td>
+<td><code>serveInline($filename, $acceptranges = true)</code></td>
 <td>disposition <code>inline</code>, no save-as, then <code>serve()</code></td>
 </tr>
 </tbody>
@@ -293,15 +293,15 @@ reports the module <strong>and</strong> <code>allow_xsendfile</code> is set to <
 configuration, so calling it on a hub without either is harmless.</p>
 <p>The file service provider — the path that serves everything under the
 hub's file area — turns it on:</p>
-<pre><code class="language-php">		// Initiate a new content server
-		$server = new Server();
-		$server-&gt;disposition('inline');
-		$server-&gt;acceptranges(true);
-		$server-&gt;allowXsendFile();
-		$server-&gt;filename($filename);
+<pre><code class="language-php">        // Initiate a new content server
+        $server = new Server();
+        $server-&gt;disposition('inline');
+        $server-&gt;acceptranges(true);
+        $server-&gt;allowXsendFile();
+        $server-&gt;filename($filename);
 
-		// Serve up the file
-		$result = $server-&gt;serve();
+        // Serve up the file
+        $result = $server-&gt;serve();
 </code></pre>
 <h2 id="checking-a-path">Checking a path</h2>
 <p><code>Server::valid($filename)</code> is static and answers whether a path is safe to

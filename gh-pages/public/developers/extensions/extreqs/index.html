@@ -282,27 +282,7 @@ build:</p>
 and only then falls back to its default dispatcher. Write the second form:
 every component in the tree uses it, and it is four lines that hand off to the
 controller:</p>
-<pre><code class="language-php">&lt;?php
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-namespace Components\Blog\Site;
-
-require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-
-$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'entries'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'entries';
-}
-require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
-
-// Instantiate controller
-</code></pre>
+<!--include: core/components/com_blog/site/blog.php:1-20-->
 <p>A module's entry point is <code>mod_{name}.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s
 the file. A plugin's entry point is <code>{name}.php</code>, holding a class whose public
 methods are named for the events it answers — the method name <em>is</em> the

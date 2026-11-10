@@ -21,7 +21,7 @@ Endpoints under `/api/forum`, from the `com_forum` API controllers. Authenticate
 
 Create user's categories
 
-API version 2.0, task `create` in [`userscategoriesv2_0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2_0.php#L19).
+API version 2.0, task `create` in [`userscategoriesv2r0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2r0.php#L18).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -32,7 +32,7 @@ API version 2.0, task `create` in [`userscategoriesv2_0.php`](../../../core/comp
 
 Destroys user's categories
 
-API version 2.0, task `destroy` in [`userscategoriesv2_0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2_0.php#L114).
+API version 2.0, task `destroy` in [`userscategoriesv2r0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2r0.php#L111).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ API version 2.0, task `destroy` in [`userscategoriesv2_0.php`](../../../core/com
 
 Create a thread or post in a thread
 
-API version 1.0, task `create` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L551).
+API version 1.0, task `create` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L518).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `create` in [`threadsv1_0.php`](../../../core/components/c
 
 Display categories for a section
 
-API version 1.0, task `categories` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L117).
+API version 1.0, task `categories` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L116).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -83,7 +83,7 @@ API version 1.0, task `categories` in [`threadsv1_0.php`](../../../core/componen
 
 Display a list of threads
 
-API version 1.0, task `list` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L304).
+API version 1.0, task `list` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L291).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -102,7 +102,7 @@ API version 1.0, task `list` in [`threadsv1_0.php`](../../../core/components/com
 
 Display a list of sections
 
-API version 1.0, task `sections` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L33).
+API version 1.0, task `sections` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L32).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ API version 1.0, task `sections` in [`threadsv1_0.php`](../../../core/components
 
 Retrieve a thread
 
-API version 1.0, task `read` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L864).
+API version 1.0, task `read` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L812).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

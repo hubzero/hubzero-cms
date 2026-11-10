@@ -260,11 +260,11 @@ Never CR or CRLF.</li>
 </ul>
 <p>Every PHP file opens with the same four-line docblock:</p>
 <pre><code class="language-php">&lt;?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
- */
 </code></pre>
 <p><code>@package</code> is <code>hubzero-cms</code> for extensions and <code>framework</code> for files under
 <code>core/libraries/Hubzero</code>. <code>@license</code> is always MIT. A new file gets</p>
@@ -361,8 +361,8 @@ required, even for a single statement. <code>elseif</code>, not <code>else if</c
 core, and <code>elseif</code> is the rule for new code.</p>
 <p>Break a long condition before the operator, and indent the continuation so the
 operator hangs one column left of the first clause:</p>
-<pre><code class="language-php">		if (!User::authorise('core.edit', $this-&gt;_option)
-		 &amp;&amp; !User::authorise('core.create', $this-&gt;_option))
+<pre><code class="language-php">		if (!User::authorise('core.edit', $this-&gt;option)
+		 &amp;&amp; !User::authorise('core.create', $this-&gt;option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}

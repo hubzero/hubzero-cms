@@ -326,17 +326,17 @@ Xiino, imode, HotJava — that have not existed for a long time.</p>
 a class list for the <code>&lt;html&gt;</code> element from <code>$browser-&gt;name()</code> and
 <code>$browser-&gt;name() . $browser-&gt;major()</code>, alongside the text direction and, in
 the first two, a no-script flag:</p>
-<pre><code class="language-php">// Get browser info to set some classes
-$menu = App::get('menu');
-$browser = new \Hubzero\Browser\Detector();
-$cls = array(
-	'no-js',
-	$browser-&gt;name(),
-	$browser-&gt;name() . $browser-&gt;major(),
-	$this-&gt;direction,
-	$this-&gt;params-&gt;get('header', 'light'),
-	($menu-&gt;getActive() == $menu-&gt;getDefault() ? 'home' : '')
-);
+<pre><code class="language-php">$bground  = $this-&gt;params-&gt;get('backgroundImage', $this-&gt;params-&gt;get('background', 'delauney'));
+
+// Current page (used by the login link)
+$url = Request::getString('REQUEST_URI', '', 'server');
+
+$styles = include_once __DIR__ . '/css/theme.php';
+if ($styles) {
+    $this-&gt;addStyleDeclaration($styles);
+}
+
+// Get browser info to set some classes
 </code></pre>
 <p>Nothing keys off those classes to withhold a feature. The no-script flag is
 the one piece of progressive enhancement the templates actually implement,

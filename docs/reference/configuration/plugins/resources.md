@@ -219,16 +219,6 @@ Display Watch feature for a resource
 
 This plugin has no parameters.
 
-## Resource - Windows Tools (`plg_resources_windowstools`)
-
-Handles Windows Tools invocation and displays launch instructions.
-
-### Basic
-
-| Parameter | Label | Type | Default | Description |
-|---|---|---|---|---|
-| `invoke_url` | Invoke URL | text | `http://wapps.hubzero.org` | The base invoke URL domain. |
-
 ## Resource - Wishlist (`plg_resources_wishlist`)
 
 Display wishlist for a resource

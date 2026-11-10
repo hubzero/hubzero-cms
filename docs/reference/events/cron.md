@@ -19,7 +19,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cron/admin/controllers/jobs.php:145`](../../../core/components/com_cron/admin/controllers/jobs.php#L145)
+- [`core/components/com_cron/admin/controllers/jobs.php:141`](../../../core/components/com_cron/admin/controllers/jobs.php#L141)
 
 Listeners:
 

@@ -228,8 +228,8 @@
 <h2 id="search-onaddindex"><code>search.onAddIndex</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/search/search.php#L42"><code>core/plugins/groups/search/search.php:42</code></a> with <code>[$table, $ormGroup]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/content/content.php#L26"><code>core/plugins/system/content/content.php:26</code></a> with <code>[$table, $model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/search/search.php#L43"><code>core/plugins/groups/search/search.php:43</code></a> with <code>[$table, $ormGroup]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/content/content.php#L30"><code>core/plugins/system/content/content.php:30</code></a> with <code>[$table, $model]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -238,7 +238,7 @@
 <h2 id="search-onaddpermissionset"><code>search.onAddPermissionSet</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L437"><code>core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:437</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L425"><code>core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:425</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="search-onbeforesearchrendermembers"><code>search.onBeforeSearchRenderMembers</code></h2>
@@ -251,18 +251,18 @@
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_search_remote</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/search/remote/remote.php"><code>onExtensionAfterDelete($extension, Components\Plugins\Models\Plugin $model)</code></a></li>
+<li><code>plg_search_remote</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/search/remote/remote.php"><code>onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)</code></a></li>
 </ul>
 <h2 id="search-onformatresult"><code>search.onFormatResult</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/site/controllers/solr.php#L356"><code>core/components/com_search/site/controllers/solr.php:356</code></a> with <code>[$result['hubtype'], &amp;$result, $terms, $highlightOptions]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/site/controllers/solr.php#L311"><code>core/components/com_search/site/controllers/solr.php:311</code></a> with <code>[$result['hubtype'], &amp;$result, $terms, $highlightOptions]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="search-ongettypes"><code>search.onGetTypes</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/api/controllers/searchv1_0.php#L290"><code>core/components/com_search/api/controllers/searchv1_0.php:290</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/api/controllers/searchv1r0.php#L274"><code>core/components/com_search/api/controllers/searchv1r0.php:274</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -287,7 +287,7 @@
 <h2 id="search-onindex"><code>search.onIndex</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/search/search.php#L171"><code>core/plugins/cron/search/search.php:171</code></a> with <code>[$item-&gt;type, $item-&gt;type_id, true]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/search/search.php#L160"><code>core/plugins/cron/search/search.php:160</code></a> with <code>[$item-&gt;type, $item-&gt;type_id, true]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -312,7 +312,7 @@
 <h2 id="search-onremoveindex"><code>search.onRemoveIndex</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/content/content.php#L39"><code>core/plugins/system/content/content.php:39</code></a> with <code>[$table, $model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/content/content.php#L43"><code>core/plugins/system/content/content.php:43</code></a> with <code>[$table, $model]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

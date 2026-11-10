@@ -234,32 +234,32 @@ served by <code>com_cpanel</code>. It has no content of its own. It renders ever
 administrator module published in the <strong>cpanel</strong> position, one collapsible
 panel per module:</p>
 <figure class="figure"><a href="../media/maintenance-dashboard.png"><img src="../media/maintenance-dashboard.png" alt="The administrative dashboard: panels for support tickets, who is online, resources, members and the wish list, one for each module published in the cpanel position" loading="lazy"></a><figcaption>The administrative dashboard: panels for support tickets, who is online, resources, members and the wish list, one for each module published in the cpanel position</figcaption></figure>
-<pre><code class="language-php">echo Html::sliders('start', 'panel-sliders', array('useCookie' =&gt; '1'));
+<pre><code class="language-php">defined('_HZEXEC_') or die();
+
+// Set toolbar items for the page
+Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
+Toolbar::help('cpanel');
+
+echo Html::sliders('start', 'panel-sliders', ['useCookie' =&gt; '1']);
 
 $modules = Module::byPosition('cpanel');
 
-foreach ($modules as $module)
-{
-	$output = Module::render($module);
+foreach ($modules as $module) {
+    $output = Module::render($module);
 
-	$params = new Hubzero\Config\Registry($module-&gt;params);
+    $params = new Hubzero\Config\Registry($module-&gt;params);
 
-	if ($params-&gt;get('automatic_title', '0') == '0')
-	{
-		echo Html::sliders('panel', $module-&gt;title, 'cpanel-panel-' . $module-&gt;name);
-	}
-	elseif (method_exists('mod' . $module-&gt;name . 'Helper', 'getTitle'))
-	{
-		echo Html::sliders('panel', call_user_func_array(array('mod' . $module-&gt;name . 'Helper', 'getTitle'), array($params)), 'cpanel-panel-' . $module-&gt;name);
-	}
-	else
-	{
-		echo Html::sliders('panel', Lang::txt('MOD_' . $module-&gt;name . '_TITLE'), 'cpanel-panel-' . $module-&gt;name);
-	}
-	echo $output;
-}
-
-echo Html::sliders('end');
+    if ($params-&gt;get('automatic_title', '0') == '0') {
+        echo Html::sliders('panel', $module-&gt;title, 'cpanel-panel-' . $module-&gt;name);
+    } elseif (method_exists('mod' . $module-&gt;name . 'Helper', 'getTitle')) {
+        $helperClass = 'mod' . $module-&gt;name . 'Helper';
+        $panelTitle = call_user_func_array([$helperClass, 'getTitle'], [$params]);
+        echo Html::sliders('panel', $panelTitle, 'cpanel-panel-' . $module-&gt;name);
+    } else {
+        $panelTitle = Lang::txt('MOD_' . $module-&gt;name . '_TITLE');
+        echo Html::sliders('panel', $panelTitle, 'cpanel-panel-' . $module-&gt;name);
+    }
+    echo $output;
 </code></pre>
 <p>So what the dashboard shows depends entirely on which modules the hub
 publishes there. A fresh install ships only two panels — <strong>Popular Articles</strong>

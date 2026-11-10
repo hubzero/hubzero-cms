@@ -19,7 +19,7 @@ Endpoints under `/api/wiki`, from the `com_wiki` API controllers. Authenticate w
 
 Create a page
 
-API version 1.0, task `create` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L131).
+API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L129).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -38,7 +38,7 @@ API version 1.0, task `create` in [`pagesv1_0.php`](../../../core/components/com
 
 Display a list of pages
 
-API version 1.0, task `list` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L30).
+API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L30).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ API version 1.0, task `list` in [`pagesv1_0.php`](../../../core/components/com_w
 
 Delete a page
 
-API version 1.0, task `delete` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L516).
+API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L497).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -64,18 +64,18 @@ API version 1.0, task `delete` in [`pagesv1_0.php`](../../../core/components/com
 
 Display info for a page
 
-API version 1.0, task `read` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L213).
+API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L211).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `id` | integer | yes | 0 | Page identifier |
-| `version_id` | integer | no | 0 | Optional revision ID. If none specified, page will default to most current approved revision. |
+| `version_id` | integer | false | 0 | Optional revision ID. If none specified |
 
 ## PUT /wiki/{id}
 
 Update a page
 
-API version 1.0, task `update` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L275).
+API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L273).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

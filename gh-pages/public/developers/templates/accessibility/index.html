@@ -290,22 +290,22 @@ and <code>role=&quot;navigation&quot;</code> attributes in <code>kameleon</code>
 <code>&lt;nav&gt;</code> already convey; they are harmless and you do not need to copy them.</p>
 <p><code>lucent</code> is the only shipped template with a skip link, and it is the first
 thing in the body:</p>
-<pre><code class="language-php">&lt;body class=&quot;&lt;?php echo $bodyClass; ?&gt;&quot;&gt;
-&lt;a href=&quot;#maincontent&quot; class=&quot;vh&quot;&gt;Skip to main content&lt;/a&gt;
+<pre><code class="language-php">$cls = [
+    $this-&gt;direction,
 </code></pre>
 <h3 id="the-skip-link-never-becomes-visible">The skip link never becomes visible</h3>
 <p><code>.vh</code> is <code>lucent</code>'s visually-hidden utility, and it has no focused state:</p>
-<pre><code class="language-less">// visually hidden
-.vh {
+<pre><code class="language-less">// Visually hidden
+//
+// .vh is this template's name for it. The core uses .sr-only in a hundred and
+// fifty odd files, and a template that does not answer to that name shows
+// every one of those strings as ordinary text - &quot;Projects - Members only&quot;
+// beside a group's menu, and so on. Same rule, both names.
+.vh,
+.sr-only {
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
 	height: 1px;
-	width: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-}
 </code></pre>
 <p>There is no <code>.vh:focus</code> or <code>.vh:focus-within</code> rule anywhere in
 <code>core/templates/lucent/less</code>, so the link stays clipped to one pixel even while
@@ -352,16 +352,16 @@ and gives the <em>Display #</em> select a real <code>&lt;label for&gt;</code>.</
 <ul>
 <li>
 <p>The <strong>site</strong> branch labels its arrows:</p>
-<pre><code class="language-php">  	&lt;li class=&quot;pagination-prev prev&quot;&gt;
-  		&lt;?php if ($this-&gt;pages-&gt;previous-&gt;base !== null) { ?&gt;
-  			&lt;a href=&quot;&lt;?php echo $this-&gt;pages-&gt;previous-&gt;link; ?&gt;&quot; aria-label=&quot;&lt;?php echo Lang::txt('Previous page'); ?&gt;&quot;&gt;&amp;lsaquo;&lt;/a&gt;
-  		&lt;?php } else { ?&gt;
-  			&lt;span class=&quot;disabled&quot; aria-hidden=&quot;true&quot;&gt;&amp;lsaquo;&lt;/span&gt;
-  		&lt;?php } ?&gt;
-  	&lt;/li&gt;
-</code></pre>
+<pre><code class="language-php"></code></pre>
 </li>
 </ul>
+<p>// Show page 1 link and ellipsis
+$firstPage = isset($this-&gt;pages-&gt;pages[1]) ? $this-&gt;pages-&gt;pages[1] : null;
+if ($firstPage &amp;&amp; $firstPage-&gt;base !== null) { ?&gt;
+<li class="page"><?php echo paginator_item_active($firstPage, $this->prefix); ?></li>
+<?php } ?>
+<li class="page ellipsis" aria-hidden="true"><span>…</span></li>
+<?php } ?></p>
 <pre><code>
   The strings are passed to `Lang::txt()` as literal English — `'Previous page'`
   and `'Next page'` — and no such keys exist in any `en-GB.ini`, so `Lang::txt()`
@@ -391,15 +391,15 @@ builds admin list tables. What it emits:
 - `Grid::id()` builds the row checkbox:
 
   ```php
-	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid')
-	{
-		if ($checkedOut)
-		{
-			return '';
-		}
+        return $html;
+    }
 
-		return '&lt;input type=&quot;checkbox&quot; id=&quot;cb' . $rowNum . '&quot; name=&quot;' . $name . '[]&quot; value=&quot;' . $recId . '&quot; class=&quot;checkbox-toggle&quot; title=&quot;' . Lang::txt('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '&quot; /&gt;&lt;label for=&quot;cb' . $rowNum . '&quot; class=&quot;sr-only visually-hidden&quot;&gt;' . $recId . '&lt;/label&gt;';
-	}
+    /**
+     * Method to create a checkbox for a grid row.
+     *
+     * @param   integer  $rowNum      The row index
+     * @param   integer  $recId       The record id
+     * @param   boolean  $checkedOut  True if item is checke out
 </code></pre>
 <p>The <code>&lt;label&gt;</code> text is the <strong>record's database id</strong>, and the useful string
 (&quot;Checkbox for row 3&quot;, from <code>JGRID_CHECKBOX_ROW_N</code>) is in the <code>title</code>
@@ -446,17 +446,17 @@ required, add the attribute yourself.</p>
 <h3 id="tooltips">Tooltips</h3>
 <p><code>Html::behavior('tooltip')</code> binds jQuery UI tooltips to <code>.hasTip</code> and rewrites
 the <code>title</code> attribute on creation:</p>
-<pre><code class="language-php">					create: function(event, ui) {
-						var tip = $(this),
-							tipText = tip.attr('title');
+<pre><code class="language-php">     *                            - onShow
+     *                            - onHide
+     * @return  void
+     */
+    public static function modal($selector = 'a.modal', $params = [])
+    {
+        if (!isset(self::$loaded[__METHOD__])) {
+            self::framework();
 
-						if (tipText &amp;&amp; tipText.indexOf('::') != -1) {
-							var parts = tipText.split('::');
-							tip.attr('title', '&lt;div class=\&quot;tip-title\&quot;&gt;' + parts[0] + '&lt;/div&gt;&lt;div class=\&quot;tip-text\&quot;&gt;' + parts[1] + '&lt;/div&gt;');
-						} else {
-							tip.attr('title', '&lt;div class=\&quot;tip-text\&quot;&gt;' + tipText + '&lt;/div&gt;');
-						}
-					},
+            Asset::script('assets/jquery.fancybox.js', true, true);
+        }
 </code></pre>
 <p>After that runs, the element's <code>title</code> attribute contains a string of HTML tags.
 <code>title</code> is what assistive technology falls back to for an element's description,
@@ -476,20 +476,20 @@ of the three icon systems for that reason. See
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Sanitize.php"><code>Hubzero\Utility\Sanitize</code></a>
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:</p>
-<pre><code class="language-php">	protected static function _addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
-	{
-		$htmlPurifierWhitelist-&gt;addAttribute('img', 'usemap', 'CDATA');
+<pre><code class="language-php">
+            $element-&gt;excludes = $settings['excludes'];
+        }
+    }
 
-		// Allow ARIA attributes on common elements for accessibility
-		$ariaElements = ['a', 'div', 'span', 'img', 'table', 'ul', 'ol', 'li', 'nav', 'section', 'button'];
-		foreach ($ariaElements as $element)
-		{
-			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-label', 'Text');
-			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-labelledby', 'Text');
-			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-describedby', 'Text');
-			$htmlPurifierWhitelist-&gt;addAttribute($element, 'role', 'Text');
-		}
-	}
+    /**
+     * Adds attributes to HTML purifier whitelist
+     *
+     * @param    object   $htmlPurifierWhitelist HTML purifier whitelist
+     * @return   void
+     */
+    protected static function addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
+    {
+        $htmlPurifierWhitelist-&gt;addAttribute('img', 'usemap', 'CDATA');
 </code></pre>
 <p>So <code>role</code>, <code>aria-label</code>, <code>aria-labelledby</code> and <code>aria-describedby</code> survive on
 <code>a</code>, <code>div</code>, <code>span</code>, <code>img</code>, <code>table</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>nav</code>, <code>section</code> and
@@ -500,31 +500,30 @@ keeps ARIA:</p>
 markup.</p>
 <p>On a normal request, <code>&lt;jdoc:include type=&quot;message&quot; /&gt;</code> calls
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Type/Html/Message.php"><code>Hubzero\Document\Type\Html\Message</code></a>:</p>
-<pre><code class="language-php">		$buffer[] = '&lt;div id=&quot;system-message-container&quot;&gt;';
-
-		// If messages exist render them
-		if (!empty($lists))
-		{
-			$buffer[] = $tab . '&lt;dl id=&quot;system-message&quot;&gt;';
-			foreach ($lists as $type =&gt; $msgs)
-			{
-				if (count($msgs))
-				{
-					$buffer[] = $tab . $tab . '&lt;dt class=&quot;' . strtolower($type) . '&quot;&gt;' . \App::get('language')-&gt;txt($type) . '&lt;/dt&gt;';
-					$buffer[] = $tab . $tab . '&lt;dd class=&quot;' . strtolower($type) . ' message&quot;&gt;';
-					$buffer[] = $tab . $tab . $tab . '&lt;ul&gt;';
-					foreach ($msgs as $msg)
-					{
-						$buffer[] = $tab . $tab . $tab . $tab . '&lt;li&gt;' . $msg . '&lt;/li&gt;';
-					}
-					$buffer[] = $tab . $tab . $tab . '&lt;/ul&gt;';
-					$buffer[] = $tab . $tab . '&lt;/dd&gt;';
-				}
-			}
-			$buffer[] = $tab . '&lt;/dl&gt;';
-		}
-
-		$buffer[] = '&lt;/div&gt;';
+<pre><code class="language-php">
+        // If messages exist render them
+        if (!empty($lists)) {
+            $buffer[] = $tab . '&lt;dl id=&quot;system-message&quot;&gt;';
+            foreach ($lists as $type =&gt; $msgs) {
+                if (count($msgs)) {
+                    $buffer[] = $tab
+                        . $tab
+                        . '&lt;dt class=&quot;'
+                        . strtolower($type)
+                        . '&quot;&gt;'
+                        . App::get('language')-&gt;txt($type)
+                        . '&lt;/dt&gt;';
+                    $buffer[] = $tab . $tab . '&lt;dd class=&quot;' . strtolower($type) . ' message&quot;&gt;';
+                    $buffer[] = $tab . $tab . $tab . '&lt;ul&gt;';
+                    foreach ($msgs as $msg) {
+                        $buffer[] = $tab . $tab . $tab . $tab . '&lt;li&gt;' . $msg . '&lt;/li&gt;';
+                    }
+                    $buffer[] = $tab . $tab . $tab . '&lt;/ul&gt;';
+                    $buffer[] = $tab . $tab . '&lt;/dd&gt;';
+                }
+            }
+            $buffer[] = $tab . '&lt;/dl&gt;';
+        }
 </code></pre>
 <p>A <code>&lt;div id=&quot;system-message-container&quot;&gt;</code> holding a <code>&lt;dl id=&quot;system-message&quot;&gt;</code>,
 one <code>&lt;dt&gt;</code> per message type with the type name translated, and the messages in a

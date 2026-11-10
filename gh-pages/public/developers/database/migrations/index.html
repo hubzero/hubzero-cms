@@ -371,28 +371,27 @@ $this-&gt;db-&gt;query();
 so guard every change with the schema checks rather than assuming a starting
 state. <code>tableExists()</code>, <code>tableHasField()</code> and <code>tableHasKey()</code> are the three
 that matter, and a real migration reads like this:</p>
-<pre><code class="language-php">	public function up()
-	{
-		foreach (self::$tables as $table =&gt; $fields)
-		{
-			foreach ($fields as $field)
-			{
-				if ($this-&gt;db-&gt;tableExists($table)
-				 &amp;&amp; $this-&gt;db-&gt;tableHasField($table, $field))
-				{
-					$query = &quot;ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL&quot;;
+<pre><code class="language-php">    public function up()
+    {
+        foreach (self::$tables as $table =&gt; $fields) {
+            foreach ($fields as $field) {
+                if (
+                    $this-&gt;db-&gt;tableExists($table)
+                    &amp;&amp; $this-&gt;db-&gt;tableHasField($table, $field)
+                ) {
+                    $query = &quot;ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL&quot;;
 
-					$this-&gt;db-&gt;setQuery($query);
-					$this-&gt;db-&gt;query();
+                    $this-&gt;db-&gt;setQuery($query);
+                    $this-&gt;db-&gt;query();
 
-					$query = &quot;UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'&quot;;
+                    $query = &quot;UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'&quot;;
 
-					$this-&gt;db-&gt;setQuery($query);
-					$this-&gt;db-&gt;query();
-				}
-			}
-		}
-	}
+                    $this-&gt;db-&gt;setQuery($query);
+                    $this-&gt;db-&gt;query();
+                }
+            }
+        }
+    }
 </code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The methods are <code>tableExists()</code>, <code>tableHasField()</code> and
@@ -401,9 +400,9 @@ that matter, and a real migration reads like this:</p>
 driver and calling them raises a <code>BadMethodCallException</code>.</p>
 </aside>
 <p><code>Base</code> also has protected helpers that build the statement for you:
-<code>_generateSafeAddColumns($table, $columns)</code> and <code>_generateSafeDropColumns()</code>
+<code>generateSafeAddColumns($table, $columns)</code> and <code>generateSafeDropColumns()</code>
 produce an <code>ALTER TABLE</code> containing only the columns that are actually missing
-or actually present, and <code>_queryIfTableExists($table, $query)</code> runs a
+or actually present, and <code>queryIfTableExists($table, $query)</code> runs a
 statement only when the table is there.</p>
 <h2 id="working-with-extensions">Working with extensions</h2>
 <p>Registering a component, module, plugin or template is common enough that
@@ -412,21 +411,21 @@ statement only when the table is there.</p>
 The whole of <code>com_blog</code>'s first migration is one call each way:</p>
 <pre><code class="language-php">class Migration20170831000000ComBlog extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this-&gt;addComponentEntry('blog');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this-&gt;addComponentEntry('blog');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this-&gt;deleteComponentEntry('blog');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this-&gt;deleteComponentEntry('blog');
+    }
 }
 </code></pre>
 <table>

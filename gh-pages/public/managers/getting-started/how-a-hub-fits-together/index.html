@@ -254,27 +254,27 @@ whichever modules are published there.</li>
 <p>Here is the middle of the shipped site template, which is the whole idea in
 one screenful — an optional column of modules, the component, another
 optional column of modules:</p>
-<pre><code class="language-php">					&lt;?php if ($this-&gt;countModules('left')) : ?&gt;
-							&lt;aside class=&quot;aside&quot;&gt;
-								&lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; /&gt;
-							&lt;/aside&gt;&lt;!-- / .aside --&gt;
-					&lt;?php endif; ?&gt;
-					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
-							&lt;div class=&quot;subject&quot;&gt;
-					&lt;?php endif; ?&gt;
+<pre><code class="language-php">                                    &lt;?php $allowReg = Component::params('com_members')-&gt;get('allowUserRegistration'); ?&gt;
+                                    &lt;?php if ($this-&gt;params-&gt;get('registerLink') &amp;&amp; $allowReg) : ?&gt;
+                                        &lt;li class=&quot;user-account-create&quot;&gt;
+                                            &lt;a class=&quot;icon-register&quot;
+                                                href=&quot;&lt;?php echo Route::url('index.php?option=com_register'); ?&gt;&quot;
+                                                title=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_SIGN_UP'); ?&gt;&quot;&gt;&lt;?php
+                                                    echo Lang::txt('TPL_KIMERA_REGISTER'); ?&gt;&lt;/a&gt;
+                                        &lt;/li&gt;
+                                    &lt;?php endif; ?&gt;
+                                &lt;?php } ?&gt;
+                                &lt;/ul&gt;
+                            &lt;/nav&gt;
 
-								&lt;!-- start component output --&gt;
-								&lt;jdoc:include type=&quot;component&quot; /&gt;
-								&lt;!-- end component output --&gt;
+                            &lt;nav id=&quot;nav&quot; class=&quot;main-navigation&quot;
+                                aria-label=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_MAINMENU'); ?&gt;&quot;&gt;
+                                &lt;jdoc:include type=&quot;modules&quot; name=&quot;user3&quot; /&gt;
+                            &lt;/nav&gt;
+                        &lt;/header&gt;
 
-					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
-							&lt;/div&gt;&lt;!-- / .subject --&gt;
-					&lt;?php endif; ?&gt;
-					&lt;?php if ($this-&gt;countModules('right')) : ?&gt;
-							&lt;aside class=&quot;aside&quot;&gt;
-								&lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
-							&lt;/aside&gt;&lt;!-- / .aside --&gt;
-					&lt;?php endif; ?&gt;
+                        &lt;div id=&quot;sub-masthead&quot;&gt;
+                            &lt;?php if ($this-&gt;countModules('helppane')) : ?&gt;
 </code></pre>
 <p>Two consequences follow from that order, and between them they explain most
 of the surprises.</p>

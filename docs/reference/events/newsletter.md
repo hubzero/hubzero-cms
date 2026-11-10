@@ -11,24 +11,22 @@ Events in the `newsletter` group. A plugin in `core/plugins/newsletter/` receive
 
 Fired from:
 
-- [`core/components/com_newsletter/admin/controllers/stories.php:148`](../../../core/components/com_newsletter/admin/controllers/stories.php#L148)
-- [`core/components/com_newsletter/models/newsletter.php:451`](../../../core/components/com_newsletter/models/newsletter.php#L451)
+- [`core/components/com_newsletter/admin/controllers/stories.php:138`](../../../core/components/com_newsletter/admin/controllers/stories.php#L138)
+- [`core/components/com_newsletter/models/newsletter.php:442`](../../../core/components/com_newsletter/models/newsletter.php#L442)
 
 Listeners:
 
 - `plg_newsletter_event` — [`onGetEnabledDigests()`](../../../core/plugins/newsletter/event/event.php)
-- `plg_newsletter_jobs` — [`onGetEnabledDigests()`](../../../core/plugins/newsletter/jobs/jobs.php)
 - `plg_newsletter_resource` — [`onGetEnabledDigests()`](../../../core/plugins/newsletter/resource/resource.php)
 
 ## `newsletter.onGetLatest`
 
 Fired from:
 
-- [`core/components/com_newsletter/admin/controllers/stories.php:156`](../../../core/components/com_newsletter/admin/controllers/stories.php#L156) with `[$itemCount]`
-- [`core/components/com_newsletter/models/newsletter.php:457`](../../../core/components/com_newsletter/models/newsletter.php#L457) with `[$parts[2]))[$key]; // Apply the view template $view = new \Hubzero\Component\View(array(]`
+- [`core/components/com_newsletter/admin/controllers/stories.php:146`](../../../core/components/com_newsletter/admin/controllers/stories.php#L146) with `[$itemCount]`
+- [`core/components/com_newsletter/models/newsletter.php:448`](../../../core/components/com_newsletter/models/newsletter.php#L448) with `[$parts[2]])[$key]; // Apply the view template $view = new \Hubzero\Component\View([]`
 
 Listeners:
 
 - `plg_newsletter_event` — [`onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')`](../../../core/plugins/newsletter/event/event.php)
-- `plg_newsletter_jobs` — [`onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')`](../../../core/plugins/newsletter/jobs/jobs.php)
 - `plg_newsletter_resource` — [`onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')`](../../../core/plugins/newsletter/resource/resource.php)

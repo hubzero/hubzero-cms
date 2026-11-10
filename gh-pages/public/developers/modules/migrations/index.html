@@ -207,34 +207,38 @@ conventions, the <code>muse</code> commands, and the helpers available on <code>
 <h2 id="the-registration-migration">The registration migration</h2>
 <p>Most modules need exactly one migration, and it is four lines long:</p>
 <pre><code class="language-php">&lt;?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mygroups\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mygroups module
- **/
+ *
+*/
 class Migration20190109000000ModMyGroups extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this-&gt;addModuleEntry('mod_mygroups');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this-&gt;addModuleEntry('mod_mygroups');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this-&gt;deleteModuleEntry('mod_mygroups');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this-&gt;deleteModuleEntry('mod_mygroups');
+    }
 }
 </code></pre>
 <p><code>mod_upcoming_bookings</code> is the same file with its own name in it:</p>
@@ -311,44 +315,44 @@ appear as soon as it is installed, <code>installModule()</code> writes a publish
 each menu id in <code>$menus</code> — the default of <code>0</code> meaning all of them.</p>
 <p>One migration in the tree does this, and it is worth reading whole because it
 gets both hard parts right:</p>
-<pre><code class="language-php">	public function up()
-	{
-		$this-&gt;deletePluginEntry('content', 'collect');
-		$this-&gt;deletePluginEntry('resources', 'collect');
-		$this-&gt;deletePluginEntry('wiki', 'collect');
+<pre><code class="language-php">     **/
+    public function up()
+    {
+        $this-&gt;deletePluginEntry('content', 'collect');
+        $this-&gt;deletePluginEntry('resources', 'collect');
+        $this-&gt;deletePluginEntry('wiki', 'collect');
 
-		$this-&gt;addModuleEntry('mod_collect', 1, '', 0);
+        $this-&gt;addModuleEntry('mod_collect', 1, '', 0);
 
-		$query = &quot;SELECT COUNT(*) FROM `#__modules` WHERE `module`='mod_collect'&quot;;
-		$this-&gt;db-&gt;setQuery($query);
-		if (!$this-&gt;db-&gt;loadResult())
-		{
-			$position = 'endpage';
-			$found = false;
+        $count = $this-&gt;db-&gt;getQuery(true)
+            -&gt;from('#__modules')
+            -&gt;where('module', '=', 'mod_collect')
+            -&gt;count();
 
-			$query  = &quot;SELECT COUNT(*) FROM `#__modules` WHERE `client_id`=0 AND `position`=&quot;;
-			$this-&gt;db-&gt;setQuery($query . $this-&gt;db-&gt;quote($position));
-			if ($this-&gt;db-&gt;loadResult())
-			{
-				$found = true;
-			}
+        if (!$count) {
+            $position = 'endpage';
+            $found = false;
 
-			if (!$found)
-			{
-				$position = 'footer';
-				$this-&gt;db-&gt;setQuery($query . $this-&gt;db-&gt;quote($position));
-				if ($this-&gt;db-&gt;loadResult())
-				{
-					$found = true;
-				}
-			}
+            $count = $this-&gt;db-&gt;getQuery(true)
+                -&gt;from('#__modules')
+                -&gt;where('client_id', '=', 0)
+                -&gt;where('position', '=', $position)
+                -&gt;count();
 
-			if ($found)
-			{
-				$this-&gt;installModule('collect', $position);
-			}
-		}
-	}
+            if ($count) {
+                $found = true;
+            }
+
+            if (!$found) {
+                $position = 'footer';
+
+                $count = $this-&gt;db-&gt;getQuery(true)
+                    -&gt;from('#__modules')
+                    -&gt;where('client_id', '=', 0)
+                    -&gt;where('position', '=', $position)
+                    -&gt;count();
+
+                if ($count) {
 </code></pre>
 <p><code>addModuleEntry()</code> first, <code>installModule()</code> second, and the position is not
 guessed: the migration looks for a position other site modules are already

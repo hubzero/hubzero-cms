@@ -11,8 +11,8 @@ Events in the `search` group. A plugin in `core/plugins/search/` receives an eve
 
 Fired from:
 
-- [`core/plugins/groups/search/search.php:42`](../../../core/plugins/groups/search/search.php#L42) with `[$table, $ormGroup]`
-- [`core/plugins/system/content/content.php:26`](../../../core/plugins/system/content/content.php#L26) with `[$table, $model]`
+- [`core/plugins/groups/search/search.php:43`](../../../core/plugins/groups/search/search.php#L43) with `[$table, $ormGroup]`
+- [`core/plugins/system/content/content.php:30`](../../../core/plugins/system/content/content.php#L30) with `[$table, $model]`
 
 Listeners:
 
@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:437`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L437)
+- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:425`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L425)
 
 No plugin in the source tree listens for this event.
 
@@ -40,13 +40,13 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_search_remote` — [`onExtensionAfterDelete($extension, Components\Plugins\Models\Plugin $model)`](../../../core/plugins/search/remote/remote.php)
+- `plg_search_remote` — [`onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)`](../../../core/plugins/search/remote/remote.php)
 
 ## `search.onFormatResult`
 
 Fired from:
 
-- [`core/components/com_search/site/controllers/solr.php:356`](../../../core/components/com_search/site/controllers/solr.php#L356) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
+- [`core/components/com_search/site/controllers/solr.php:311`](../../../core/components/com_search/site/controllers/solr.php#L311) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
 
 No plugin in the source tree listens for this event.
 
@@ -54,7 +54,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/api/controllers/searchv1_0.php:290`](../../../core/components/com_search/api/controllers/searchv1_0.php#L290)
+- [`core/components/com_search/api/controllers/searchv1r0.php:274`](../../../core/components/com_search/api/controllers/searchv1r0.php#L274)
 
 Listeners:
 
@@ -80,7 +80,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/cron/search/search.php:171`](../../../core/plugins/cron/search/search.php#L171) with `[$item->type, $item->type_id, true]`
+- [`core/plugins/cron/search/search.php:160`](../../../core/plugins/cron/search/search.php#L160) with `[$item->type, $item->type_id, true]`
 
 Listeners:
 
@@ -106,7 +106,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/system/content/content.php:39`](../../../core/plugins/system/content/content.php#L39) with `[$table, $model]`
+- [`core/plugins/system/content/content.php:43`](../../../core/plugins/system/content/content.php#L43) with `[$table, $model]`
 
 Listeners:
 

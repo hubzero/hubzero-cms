@@ -209,20 +209,20 @@ cascade.</p>
 <p>Directly in the markup, before <code>&lt;jdoc:include type=&quot;head&quot; /&gt;</code>, so that it
 loads ahead of anything an extension queues:</p>
 <pre><code class="language-php">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot;
-      href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/index.css?v=&lt;?php echo filemtime(__DIR__ . '/css/index.css'); ?&gt;&quot; /&gt;
+      href=&quot;&lt;?php echo $this-&gt;asset('css/index.css'); ?&gt;&quot; /&gt;
 </code></pre>
 <p>Or through the document, in which case it lands <em>inside</em> the head block, after
 the component's stylesheets:</p>
-<pre><code class="language-php">// Load base styles
-$this-&gt;addStyleSheet($this-&gt;baseurl . '/templates/' . $this-&gt;template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'));
+<pre><code class="language-php">use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
 
-// Load theme
-$theme = $this-&gt;params-&gt;get('theme');
-if ($theme == 'custom')
-{
-	$color = $this-&gt;params-&gt;get('color');
-	$this-&gt;addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
-}
+// No direct access
+defined('_HZEXEC_') or die();
+
+Html::behavior('framework', true);
+
+// Load base styles
+$this-&gt;addStyleSheet(
 </code></pre>
 <p>Kimera and Lucent use the first form; Kameleon uses the second, which is why
 its own rules need enough specificity to win against a component's.</p>
@@ -230,18 +230,30 @@ its own rules need enough specificity to win against a component's.</p>
 what <code>northgate</code> does: brand styles load first, components layer on top, and
 the handful of component rules Northgate needs to beat are handled with
 <a href="../overrides/index.html">output overrides</a> rather than with a specificity war.</p>
-<p>Two details of the link are load-bearing:</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Base.php"><code>$this-&gt;asset()</code></a> takes
+the path inside the template and returns the whole address. It is doing three
+things the old hand-written form did by hand, and getting two of them right
+that the hand-written form often did not:</p>
 <ul>
-<li><code>$this-&gt;baseurl</code> is the URL prefix for the templates directory — <code>/app</code> when
-the template lives in <code>app/templates</code>, <code>/core</code> when it ships. Never hardcode
-either. A <code>northgate</code> layout with <code>/core/templates/…</code> in it links <code>kimera</code>'s
-stylesheet on every page and gives no error at all.</li>
-<li><code>?v=&lt;?php echo filemtime(...); ?&gt;</code> is the cache-busting convention used by
-every shipped template and by
+<li><strong>The root.</strong> <code>/app</code> when the template lives in <code>app/templates</code>, <code>/core</code> when
+it ships. A <code>northgate</code> layout with <code>/core/templates/…</code> written into it links
+<code>kimera</code>'s stylesheet on every page and gives no error at all.</li>
+<li><strong>The cache-buster.</strong> <code>?v={filemtime}</code>, the convention used by every shipped
+template and by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File::link()</code></a>.
-Use it. A stylesheet linked without it is cached by version-less URL and
-will not refresh for returning visitors after a deployment.</li>
+A stylesheet linked without one is cached by version-less URL and will not
+refresh for returning visitors after a deployment.
+It also does not throw. <code>filemtime()</code> on a file that has gone is a warning, and
+this platform promotes warnings to exceptions, so the hand-written form turns a
+missing asset into a blank page. <code>asset()</code> returns the address unversioned
+instead — a stylesheet that 404s is a worse page, not a broken one.</li>
 </ul>
+<p>Older layouts still spell the address out:</p>
+<pre><code class="language-php">href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/index.css?v=&lt;?php echo filemtime(__DIR__ . '/css/index.css'); ?&gt;&quot;
+</code></pre>
+<p><code>kimera</code>, <code>kameleon</code>, <code>welcome</code> and <code>system</code> are still written this way. It
+works for a template that is nobody's child, and it is what you will find when
+you open them.</p>
 <h3 id="what-each-shipped-template-links">What each shipped template links</h3>
 <table>
 <thead>
@@ -335,16 +347,21 @@ will not refresh for returning visitors after a deployment.</li>
 <tr>
 <td></td>
 <td><code>group.php</code></td>
-<td><code>getSystemStylesheet()</code>, and the <strong>active</strong> template's <code>css/main.css</code> and <code>css/group.css</code></td>
+<td><code>getSystemStylesheet()</code>, <code>css/main.css</code>, <code>css/group.css</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>system/group.php</code> is the super group layout, and it is the one place a
-stylesheet is looked for in a template other than the one that owns the
-layout. It asks the active template for <code>css/main.css</code> and <code>css/group.css</code>.
-Kimera ships <code>css/group.css</code> but no <code>css/main.css</code>, so a super group page
-under Kimera requests one stylesheet that does not exist. If you write a site
-template that will be used with super groups, ship both files.</p>
+<p><code>system/group.php</code> is the super group layout, and the stylesheets it asks for
+belong to <strong>whichever template supplied the layout</strong> — which, among the
+templates that ship with the CMS, is only ever <code>system</code> itself. No site
+template here carries a <code>group.php</code>, so a super group page falls through to
+<code>system/group.php</code> and takes <code>system</code>'s <code>css/main.css</code> and <code>css/group.css</code>
+with it. Both exist.</p>
+<p>A site template that ships its own <code>group.php</code> becomes the one that supplies
+the layout, and then its own <code>css/main.css</code> and <code>css/group.css</code> are what get
+asked for — so ship both if you write one. Kimera has <code>css/group.css</code> and no
+<code>css/main.css</code>, which would matter only if it grew a <code>group.php</code>; it has none,
+so nothing requests the missing file today.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Kimera also carries <code>css/print.css</code>, <code>css/download.css</code>,
 <code>css/upload.css</code> and <code>css/pages/*.css</code>. No layout links any of them and
@@ -524,34 +541,33 @@ name and goes to <code>addStyleDeclaration()</code>:</p>
 <code>Hubzero\Module\Module</code> and <code>Hubzero\Plugin\Plugin</code> get <code>css()</code>, <code>js()</code> and
 <code>img()</code> from
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Traits/AssetAware.php"><code>Hubzero\Base\Traits\AssetAware</code></a>:</p>
-<pre><code class="language-php">	public function css($stylesheet = '', $extension = null, $attributes = array())
-	{
-		$extension = $extension ?: $this-&gt;detectExtensionName();
+<pre><code class="language-php">     * @param   array   $attributes  Attributes
+     * @return  object
+     */
+    public function css($stylesheet = '', $extension = null, $attributes = [])
+    {
+        $extension = $extension ?: $this-&gt;detectExtensionName();
 
-		$attr = array_merge(array(
-			'type'    =&gt; 'text/css',
-			'media'   =&gt; null,
-			'attribs' =&gt; array()
-		), $attributes);
+        $attr = array_merge([
+            'type'    =&gt; 'text/css',
+            'media'   =&gt; null,
+            'attribs' =&gt; [],
+        ], $attributes);
 
-		$asset = new Stylesheet($extension, $stylesheet);
+        $asset = new Stylesheet($extension, $stylesheet);
 
-		$asset = $this-&gt;isSuperGroupAsset($asset);
+        $asset = $this-&gt;isSuperGroupAsset($asset);
 
-		if ($asset-&gt;exists())
-		{
-			if ($asset-&gt;isDeclaration())
-			{
-				\App::get('document')-&gt;addStyleDeclaration($asset-&gt;contents());
-			}
-			else
-			{
-				\App::get('document')-&gt;addStyleSheet($asset-&gt;link(), $attr['type'], $attr['media'], $attr['attribs']);
-			}
-		}
+        if ($asset-&gt;exists()) {
+            if ($asset-&gt;isDeclaration()) {
+                App::get('document')-&gt;addStyleDeclaration($asset-&gt;contents());
+            } else {
+                App::get('document')-&gt;addStyleSheet($asset-&gt;link(), $attr['type'], $attr['media'], $attr['attribs']);
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 </code></pre>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The third argument here is an <strong>attributes array</strong>, not a

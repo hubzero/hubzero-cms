@@ -313,7 +313,7 @@ markup.</p>
 <pre><code class="language-sql">INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
 VALUES (1,'welcome',0,'1','Welcome Template','{&quot;flavor&quot;:&quot;&quot;,&quot;template&quot;:&quot;kimera&quot;}');
 </code></pre>
-<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
+<p><a href="../../../core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
 <code>jdoc:include</code> tags at all — not for modules, not for messages, and not for the
 component. It prints its own splash page and nothing else, whatever the request
 asked for. So on a fresh hub no module renders and no component output reaches
@@ -363,7 +363,8 @@ that is <code>@pathTemplate: &quot;/core/templates/kimera&quot;</code> in <code>
 <li><a href="languages/index.html">Languages</a> — translatable strings.</li>
 <li><a href="structure/index.html">Structure</a> — the files and directories a template holds.</li>
 <li><a href="designing/index.html">Designing</a> — planning the design before you write markup.</li>
-<li><a href="layouts/index.html">Page layout</a> — <code>index.php</code>, <code>error.php</code> and the rest.</li>
+<li><a href="layouts/index.html">Page layout</a> — <code>index.php</code>, <code>home.php</code>, <code>error.php</code> and the
+rest.</li>
 <li><a href="css/index.html">Cascading style sheets</a> — the stylesheets a template loads.</li>
 <li><a href="javascript/index.html">JavaScript</a> — jQuery, template scripts and extension assets.</li>
 <li><a href="overrides/index.html">Output overrides</a> — replacing an extension's markup.</li>

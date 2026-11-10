@@ -278,22 +278,7 @@ and sits in the client directory: <code>com_blog/site/blog.php</code>,
 <code>com_blog/admin/blog.php</code>. <code>Hubzero\Component\Loader</code> builds that path from the
 request and includes it. 41 of the 57 core components have one.</p>
 <p>The entry file picks a controller from the request and runs it:</p>
-<pre><code class="language-php">namespace Components\Blog\Site;
-
-require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-
-$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'entries'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'entries';
-}
-require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller-&gt;execute();
-</code></pre>
+<!--include: core/components/com_blog/site/blog.php:8-22-->
 <p>A component with no entry file falls through to
 <code>Hubzero\Component\Loader::executeDefault()</code>, which instantiates
 <code>Components\[Name]\Site\Controllers\[Controller]</code> directly, defaulting the
@@ -387,11 +372,11 @@ ones.</p>
 loader also tries the directory without the prefix.</p>
 <p>On this branch a module is two files. <code>mod_login.php</code> is a stub that
 <code>Hubzero\Module\Loader</code> includes; it requires <code>helper.php</code> and calls the class:</p>
-<pre><code class="language-php">namespace Modules\Login;
+<pre><code class="language-php">
+namespace Modules\Login;
 
-require_once __DIR__ . DS . 'helper.php';
-
-with(new Helper($params, $module))-&gt;display();
+use Hubzero\Module\Module;
+use Hubzero\Config\Registry;
 </code></pre>
 <p>The class name is <code>Helper</code> in namespace <code>Modules\[Name]</code>. 201 module files
 carry a <code>Modules\</code> namespace and every module still has its <code>helper.php</code>.</p>

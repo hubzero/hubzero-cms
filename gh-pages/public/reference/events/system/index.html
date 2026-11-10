@@ -200,7 +200,10 @@
 <li class="toc__item toc__item--l2"><a href="#system-onconfigurationaftersave">system.onConfigurationAfterSave</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentdestroy">system.onContentDestroy</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentprepareform">system.onContentPrepareForm</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-oncontentrestore">system.onContentRestore</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentsave">system.onContentSave</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-oncontentsoftdelete">system.onContentSoftDelete</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-onmassprune">system.onMassPrune</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-onuseraftersave">system.onUserAfterSave</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-onuserbeforesave">system.onUserBeforeSave</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-onuserlogin">system.onUserLogin</a></li>
@@ -237,9 +240,9 @@
 <h2 id="system-onafterdispatch"><code>system.onAfterDispatch</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/ComponentServiceProvider.php#L54"><code>core/bootstrap/Administrator/Providers/ComponentServiceProvider.php:54</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/ComponentServiceProvider.php#L54"><code>core/bootstrap/Site/Providers/ComponentServiceProvider.php:54</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/ComponentServiceProvider.php#L58"><code>core/libraries/Hubzero/Api/ComponentServiceProvider.php:58</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/ComponentServiceProvider.php#L52"><code>core/bootstrap/Administrator/Providers/ComponentServiceProvider.php:52</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/ComponentServiceProvider.php#L68"><code>core/bootstrap/Site/Providers/ComponentServiceProvider.php:68</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/ComponentServiceProvider.php#L55"><code>core/libraries/Hubzero/Api/ComponentServiceProvider.php:55</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -251,7 +254,7 @@
 <h2 id="system-onafterinitialise"><code>system.onAfterInitialise</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Application.php#L516"><code>core/libraries/Hubzero/Base/Application.php:516</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Application.php#L490"><code>core/libraries/Hubzero/Base/Application.php:490</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -268,8 +271,8 @@
 <h2 id="system-onafterrender"><code>system.onAfterRender</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L128"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:128</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L162"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:162</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L123"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:123</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L154"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:154</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -280,9 +283,9 @@
 <h2 id="system-onafterroute"><code>system.onAfterRoute</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L73"><code>core/bootstrap/Administrator/Providers/RouterServiceProvider.php:73</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Api/Providers/RouterServiceProvider.php#L50"><code>core/bootstrap/Api/Providers/RouterServiceProvider.php:50</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/RouterServiceProvider.php#L73"><code>core/bootstrap/Site/Providers/RouterServiceProvider.php:73</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L69"><code>core/bootstrap/Administrator/Providers/RouterServiceProvider.php:69</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Api/Providers/RouterServiceProvider.php#L48"><code>core/bootstrap/Api/Providers/RouterServiceProvider.php:48</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/RouterServiceProvider.php#L69"><code>core/bootstrap/Site/Providers/RouterServiceProvider.php:69</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -300,8 +303,8 @@
 <h2 id="system-onbeforerender"><code>system.onBeforeRender</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L151"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:151</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L119"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:119</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L144"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:144</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="system-onbeforerendersupergroupcomponent"><code>system.onBeforeRenderSuperGroupComponent</code></h2>
@@ -313,15 +316,15 @@
 <h2 id="system-onbeforeroute"><code>system.onBeforeRoute</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L66"><code>core/bootstrap/Administrator/Providers/RouterServiceProvider.php:66</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Api/Providers/RouterServiceProvider.php#L43"><code>core/bootstrap/Api/Providers/RouterServiceProvider.php:43</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/RouterServiceProvider.php#L66"><code>core/bootstrap/Site/Providers/RouterServiceProvider.php:66</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L63"><code>core/bootstrap/Administrator/Providers/RouterServiceProvider.php:63</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Api/Providers/RouterServiceProvider.php#L42"><code>core/bootstrap/Api/Providers/RouterServiceProvider.php:42</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/RouterServiceProvider.php#L63"><code>core/bootstrap/Site/Providers/RouterServiceProvider.php:63</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="system-oncleancache"><code>system.onCleanCache</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/admin/controllers/styles.php#L492"><code>core/components/com_templates/admin/controllers/styles.php:492</code></a> with <code>[$group, $client_id]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/admin/controllers/styles.php#L461"><code>core/components/com_templates/admin/controllers/styles.php:461</code></a> with <code>[$group, $client_id]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -336,7 +339,8 @@
 <h2 id="system-oncontentdestroy"><code>system.onContentDestroy</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1698"><code>core/libraries/Hubzero/Database/Relational.php:1698</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L4873"><code>core/libraries/Hubzero/Database/Relational.php:4873</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L310"><code>core/libraries/Hubzero/Database/Traits/SoftDeletes.php:310</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -348,21 +352,39 @@
 <ul>
 <li><code>plg_system_languagecode</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/languagecode/languagecode.php"><code>onContentPrepareForm($form, $data)</code></a></li>
 </ul>
+<h2 id="system-oncontentrestore"><code>system.onContentRestore</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L342"><code>core/libraries/Hubzero/Database/Traits/SoftDeletes.php:342</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
 <h2 id="system-oncontentsave"><code>system.onContentSave</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/applicant.php#L124"><code>core/components/com_groups/models/orm/applicant.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/invitee.php#L124"><code>core/components/com_groups/models/orm/invitee.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/manager.php#L124"><code>core/components/com_groups/models/orm/manager.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/applicant.php#L123"><code>core/components/com_groups/models/orm/applicant.php:123</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/invitee.php#L123"><code>core/components/com_groups/models/orm/invitee.php:123</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/manager.php#L123"><code>core/components/com_groups/models/orm/manager.php:123</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/member.php#L124"><code>core/components/com_groups/models/orm/member.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_modules/models/menu.php#L71"><code>core/components/com_modules/models/menu.php:71</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1518"><code>core/libraries/Hubzero/Database/Relational.php:1518</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Table.php#L582"><code>core/libraries/Hubzero/Database/Table.php:582</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L4400"><code>core/libraries/Hubzero/Database/Relational.php:4400</code></a> with <code>[$this-&gt;getTableName(), $this, $this-&gt;changes]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Table.php#L736"><code>core/libraries/Hubzero/Database/Table.php:736</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_system_content</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/content/content.php"><code>onContentSave($table, $model)</code></a></li>
 </ul>
+<h2 id="system-oncontentsoftdelete"><code>system.onContentSoftDelete</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L241"><code>core/libraries/Hubzero/Database/Traits/SoftDeletes.php:241</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
+<h2 id="system-onmassprune"><code>system.onMassPrune</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Traits/MassPrunable.php#L134"><code>core/libraries/Hubzero/Database/Traits/MassPrunable.php:134</code></a> with <code>[$instance-&gt;getTableName(), $query]</code></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
 <h2 id="system-onuseraftersave"><code>system.onUserAfterSave</code></h2>
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
@@ -379,7 +401,7 @@
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_system_languagefilter</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/languagefilter/languagefilter.php"><code>onUserLogin($user, $options = array()</code></a></li>
+<li><code>plg_system_languagefilter</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/languagefilter/languagefilter.php"><code>onUserLogin($user, $options = [])</code></a></li>
 </ul>
 <h2 id="system-onuserloginfailure"><code>system.onUserLoginFailure</code></h2>
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
@@ -392,7 +414,7 @@
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_system_logout</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/logout/logout.php"><code>onUserLogout($user, $options = array()</code></a></li>
+<li><code>plg_system_logout</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/logout/logout.php"><code>onUserLogout($user, $options = [])</code></a></li>
 </ul>
 
         </div>

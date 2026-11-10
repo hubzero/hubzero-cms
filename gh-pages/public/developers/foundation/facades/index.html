@@ -279,24 +279,24 @@ for a matching file and finds none. Then the alias autoloader that
 <code>Facade::createAliases()</code> registered gets its turn, and it does not only
 match whole names — it takes the <strong>last segment</strong> of the name and looks that
 up too:</p>
-<pre><code class="language-php">	public static function loadAliases($class)
-	{
-		$aliases = static::$aliases;
+<pre><code class="language-php">    public static function loadAliases($class)
+    {
+        $aliases = static::$aliases;
 
-		if (array_key_exists($class, $aliases))
-		{
-			return class_alias($aliases[$class], $class);
-		}
+        if (array_key_exists($class, $aliases)) {
+            return class_alias($aliases[$class], $class);
+        }
 
-		// Allow calling facade in namespaced class
-		// without resetting to the root namespace
-		$classPieces = explode('\\', $class);
-		$classAlt    = array_pop($classPieces);
-		if (array_key_exists($classAlt, $aliases))
-		{
-			return class_alias($aliases[$classAlt], $class);
-		}
-	}
+        // Allow calling facade in namespaced class
+        // without resetting to the root namespace
+        $classPieces = explode('\\', $class);
+        $classAlt    = array_pop($classPieces);
+        if (array_key_exists($classAlt, $aliases)) {
+            return class_alias($aliases[$classAlt], $class);
+        }
+    }
+
+    /**
 </code></pre>
 <p><code>Route</code> is in the alias map, so it aliases the namespaced name to the facade
 and the call proceeds. Most of the time, on a site request, an unimported

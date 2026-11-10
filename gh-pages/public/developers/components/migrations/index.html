@@ -243,31 +243,31 @@ re-running the rest, and makes each <code>down()</code> obvious.</p>
 <p><code>addComponentEntry()</code> writes the <code>#__extensions</code> row, creates the asset row
 that permissions hang off, and adds the administrator menu entry. That one
 call is the whole of the first migration. <code>com_kb</code>'s is the pattern to copy:</p>
-<pre><code class="language-php">use Hubzero\Content\Migration\Base;
+<pre><code class="language-php">
+namespace Components\Kb\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_kb
  **/
 class Migration20170831000000ComKb extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this-&gt;addComponentEntry('kb');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this-&gt;addComponentEntry('kb');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this-&gt;deleteComponentEntry('kb');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this-&gt;deleteComponentEntry('kb');
+    }
 }
 </code></pre>
 <p><code>com_bookings</code> is the same file with the name changed:</p>
@@ -304,9 +304,8 @@ twice. The same is true of <code>addModuleEntry()</code>, <code>addPluginEntry()
 <h3 id="creating-the-tables">Creating the tables</h3>
 <p><code>$this-&gt;db</code> is a full database driver. Guard every statement so the migration
 can run against a hub that already has the table:</p>
-<pre><code class="language-php">		if (!$this-&gt;db-&gt;tableExists('#__kb_articles'))
-		{
-			$query = &quot;CREATE TABLE `#__kb_articles` (
+<pre><code class="language-php">        if (!$this-&gt;db-&gt;tableExists('#__kb_articles')) {
+            $query = &quot;CREATE TABLE `#__kb_articles` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(250) DEFAULT NULL,
 			  `alias` varchar(200) DEFAULT NULL,
@@ -335,9 +334,9 @@ can run against a hub that already has the table:</p>
 			  FULLTEXT KEY `ftidx_title_fulltxt` (`title`,`fulltxt`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;&quot;;
 
-			$this-&gt;db-&gt;setQuery($query);
-			$this-&gt;db-&gt;query();
-		}
+            $this-&gt;db-&gt;setQuery($query);
+            $this-&gt;db-&gt;query();
+        }
 </code></pre>
 <p><code>com_kb</code> repeats that block for <code>#__kb_comments</code> and <code>#__kb_votes</code>, and its
 <code>down()</code> drops all three. Table names use the <code>#__</code> prefix placeholder, which
@@ -390,47 +389,46 @@ same rule: check first, then change. <code>com_kb</code>'s third migration conve
 and checks both the table and the column before touching either:</p>
 <pre><code class="language-php">class Migration20190221000000ComKb extends Base
 {
-	/**
-	 * List of tables and their datetime fields
-	 *
-	 * @var  array
-	 **/
-	public static $tables = array(
-		'#__kb_articles' =&gt; array(
-			'created',
-			'modified',
-			'checked_out_time'
-		),
-		'#__kb_comments' =&gt; array(
-			'created'
-		)
-	);
+    /**
+     * List of tables and their datetime fields
+     *
+     * @var  array
+     **/
+    public static $tables = [
+        '#__kb_articles' =&gt; [
+            'created',
+            'modified',
+            'checked_out_time',
+        ],
+        '#__kb_comments' =&gt; [
+            'created',
+        ],
+    ];
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		foreach (self::$tables as $table =&gt; $fields)
-		{
-			foreach ($fields as $field)
-			{
-				if ($this-&gt;db-&gt;tableExists($table)
-				 &amp;&amp; $this-&gt;db-&gt;tableHasField($table, $field))
-				{
-					$query = &quot;ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL&quot;;
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        foreach (self::$tables as $table =&gt; $fields) {
+            foreach ($fields as $field) {
+                if (
+                    $this-&gt;db-&gt;tableExists($table)
+                    &amp;&amp; $this-&gt;db-&gt;tableHasField($table, $field)
+                ) {
+                    $query = &quot;ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL&quot;;
 
-					$this-&gt;db-&gt;setQuery($query);
-					$this-&gt;db-&gt;query();
+                    $this-&gt;db-&gt;setQuery($query);
+                    $this-&gt;db-&gt;query();
 
-					$query = &quot;UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'&quot;;
+                    $query = &quot;UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'&quot;;
 
-					$this-&gt;db-&gt;setQuery($query);
-					$this-&gt;db-&gt;query();
-				}
-			}
-		}
-	}
+                    $this-&gt;db-&gt;setQuery($query);
+                    $this-&gt;db-&gt;query();
+                }
+            }
+        }
+    }
 </code></pre>
 <p>The three checks worth knowing are <code>tableExists()</code>, <code>tableHasField()</code>, and
 <code>tableHasKey()</code>.</p>

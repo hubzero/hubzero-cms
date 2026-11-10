@@ -11,7 +11,7 @@ Events in the `members` group. A plugin in `core/plugins/members/` receives an e
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:191`](../../../core/components/com_members/admin/controllers/plugins.php#L191)
+- [`core/components/com_members/admin/controllers/plugins.php:173`](../../../core/components/com_members/admin/controllers/plugins.php#L173)
 
 Listeners:
 
@@ -21,7 +21,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/exports.php:349`](../../../core/components/com_members/admin/controllers/exports.php#L349) with `[$member, $tmp]`
+- [`core/components/com_members/admin/controllers/exports.php:304`](../../../core/components/com_members/admin/controllers/exports.php#L304) with `[$member, $tmp]`
 
 No plugin in the source tree listens for this event.
 
@@ -29,7 +29,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/exports.php:116`](../../../core/components/com_members/admin/controllers/exports.php#L116) with `[$keys]`
+- [`core/components/com_members/admin/controllers/exports.php:108`](../../../core/components/com_members/admin/controllers/exports.php#L108) with `[$keys]`
 
 No plugin in the source tree listens for this event.
 
@@ -37,17 +37,17 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:218`](../../../core/components/com_members/admin/controllers/plugins.php#L218) with `[ $this->_option, $this->_controller, Request::getString('action', 'default') ]`
+- [`core/components/com_members/admin/controllers/plugins.php:199`](../../../core/components/com_members/admin/controllers/plugins.php#L199) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ],`
 
 Listeners:
 
-- `plg_members_dashboard` — [`onManage($option, $controller='plugins', $action='default')`](../../../core/plugins/members/dashboard/dashboard.php)
+- `plg_members_dashboard` — [`onManage($option, $controller = 'plugins', $action = 'default')`](../../../core/plugins/members/dashboard/dashboard.php)
 
 ## `members.onMemberAfterDelete`
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:616`](../../../core/plugins/user/xusers/xusers.php#L616) with `[$user, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:564`](../../../core/plugins/user/xusers/xusers.php#L564) with `[$user, $success, $msg]`
 
 Listeners:
 
@@ -59,7 +59,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:563`](../../../core/plugins/user/xusers/xusers.php#L563) with `[$user, $isnew, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:515`](../../../core/plugins/user/xusers/xusers.php#L515) with `[$user, $isnew, $success, $msg]`
 
 Listeners:
 
@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/views/profiles/tmpl/browse.php:389`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L389) with `[$row]`
-- [`core/components/com_members/site/views/profiles/tmpl/view.php:82`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L82) with `[$this->profile]`
+- [`core/components/com_members/site/views/profiles/tmpl/browse.php:357`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L357) with `[$row]`
+- [`core/components/com_members/site/views/profiles/tmpl/view.php:115`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L115) with `[$this->profile]`
 
 No plugin in the source tree listens for this event.
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:898`](../../../core/components/com_members/site/controllers/profiles.php#L898) with `[User::getInstance(), $profile, $this->_option, array($tab)]`
+- [`core/components/com_members/site/controllers/profiles.php:800`](../../../core/components/com_members/site/controllers/profiles.php#L800) with `[User::getInstance(), $profile, $this->option, [$tab]]`
 
 Listeners:
 
@@ -105,7 +105,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:877`](../../../core/components/com_members/site/controllers/profiles.php#L877) with `[User::getInstance(), $profile]`
+- [`core/components/com_members/site/controllers/profiles.php:782`](../../../core/components/com_members/site/controllers/profiles.php#L782) with `[User::getInstance(), $profile]`
 
 Listeners:
 
@@ -116,22 +116,22 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/members/contributions/contributions.php:107`](../../../core/plugins/members/contributions/contributions.php#L107) with `[ $member, $option, 0, $limitstart, $sort, $activeareas ]`
-- [`core/plugins/members/contributions/contributions.php:167`](../../../core/plugins/members/contributions/contributions.php#L167) with `[ $member, $option, $limit, $limitstart, $sort, $activeareas]`
+- [`core/plugins/members/contributions/contributions.php:109`](../../../core/plugins/members/contributions/contributions.php#L109) with `[ $member, $option, 0, $limitstart, $sort, $activeareas, ]`
+- [`core/plugins/members/contributions/contributions.php:161`](../../../core/plugins/members/contributions/contributions.php#L161) with `[ $member, $option, $limit, $limitstart, $sort, $activeareas]`
 
 Listeners:
 
-- `plg_members_courses` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)`](../../../core/plugins/members/courses/courses.php)
-- `plg_members_impact` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)`](../../../core/plugins/members/impact/impact.php)
-- `plg_members_publications` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)`](../../../core/plugins/members/publications/publications.php)
-- `plg_members_resources` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)`](../../../core/plugins/members/resources/resources.php)
-- `plg_members_wiki` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)`](../../../core/plugins/members/wiki/wiki.php)
+- `plg_members_courses` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)`](../../../core/plugins/members/courses/courses.php)
+- `plg_members_impact` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)`](../../../core/plugins/members/impact/impact.php)
+- `plg_members_publications` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)`](../../../core/plugins/members/publications/publications.php)
+- `plg_members_resources` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)`](../../../core/plugins/members/resources/resources.php)
+- `plg_members_wiki` — [`onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)`](../../../core/plugins/members/wiki/wiki.php)
 
 ## `members.onMembersContributionsAreas`
 
 Fired from:
 
-- [`core/plugins/members/contributions/contributions.php:82`](../../../core/plugins/members/contributions/contributions.php#L82) with `[]`
+- [`core/plugins/members/contributions/contributions.php:89`](../../../core/plugins/members/contributions/contributions.php#L89) with `[]`
 
 Listeners:
 
@@ -145,11 +145,11 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_members_courses` — [`onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')`](../../../core/plugins/members/courses/courses.php)
-- `plg_members_impact` — [`onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')`](../../../core/plugins/members/impact/impact.php)
-- `plg_members_publications` — [`onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')`](../../../core/plugins/members/publications/publications.php)
-- `plg_members_resources` — [`onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')`](../../../core/plugins/members/resources/resources.php)
-- `plg_members_wiki` — [`onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')`](../../../core/plugins/members/wiki/wiki.php)
+- `plg_members_courses` — [`onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')`](../../../core/plugins/members/courses/courses.php)
+- `plg_members_impact` — [`onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')`](../../../core/plugins/members/impact/impact.php)
+- `plg_members_publications` — [`onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')`](../../../core/plugins/members/publications/publications.php)
+- `plg_members_resources` — [`onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')`](../../../core/plugins/members/resources/resources.php)
+- `plg_members_wiki` — [`onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')`](../../../core/plugins/members/wiki/wiki.php)
 
 ## `members.onMembersShortlist`
 
@@ -163,6 +163,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:329`](../../../core/components/com_members/admin/controllers/members.php#L329) with `[$user]`
+- [`core/components/com_members/admin/controllers/members.php:308`](../../../core/components/com_members/admin/controllers/members.php#L308) with `[$user]`
 
 No plugin in the source tree listens for this event.

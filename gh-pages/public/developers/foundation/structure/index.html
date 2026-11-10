@@ -356,8 +356,10 @@ directories that are not there.</p>
 <h2 id="the-request-lifecycle">The request lifecycle</h2>
 <p>Every request, whatever the URL, runs
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/index.php"><code>index.php</code></a>:</p>
-<pre><code class="language-php">define('PATH_ROOT', isset($_SERVER['DOCUMENT_ROOT']) &amp;&amp; $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : __DIR__);
-define('PATH_CORE', isset($_ENV['PATH_CORE']) &amp;&amp; $_ENV['PATH_CORE'] ? $_ENV['PATH_CORE'] : PATH_ROOT . '/core');
+<pre><code class="language-php"> */
+
+define('PATH_ROOT', $_SERVER['DOCUMENT_ROOT'] ?? __DIR__);
+define('PATH_CORE', $_ENV['PATH_CORE'] ?? PATH_ROOT . '/core');
 
 // Check if vendor dependencies are installed
 if (!file_exists(PATH_CORE . '/vendor/autoload.php')) {
@@ -367,8 +369,7 @@ if (!file_exists(PATH_CORE . '/vendor/autoload.php')) {
 }
 
 require PATH_CORE . '/vendor/autoload.php';
-
-(new Hubzero\Base\Application())-&gt;run();
+require_once PATH_CORE . '/bootstrap/app.php';
 </code></pre>
 <p>That is the whole entry point. <code>PATH_ROOT</code> comes from the web server's
 document root and <code>PATH_CORE</code> from the environment, so the platform can live

@@ -223,26 +223,7 @@ load.</p>
 <p>A language file is key/value pairs. Keys are case-insensitive — they are
 upper-cased before lookup — but the convention is upper case throughout, words
 separated by underscores, prefixed <code>TPL_{TEMPLATE}_</code>:</p>
-<pre><code class="language-ini">; @package      hubzero-cms
-; @copyright    Copyright (c) 2005-2020 The Regents of the University of California.
-; @license      http://opensource.org/licenses/MIT MIT
-
-; Note : All ini files need to be saved as UTF-8 - No BOM
-
-TPL_WELCOME=&quot;Welcome template&quot;
-TPL_WELCOME_XML_DESCRIPTION=&quot;HUBzero welcome template&quot;
-
-; Parameters
-TPL_WELCOME_FIELD_FLAVOR_LABEL=&quot;Service&quot;
-TPL_WELCOME_FIELD_FLAVOR_DESC=&quot;Display for use on the specified service. This will typically add an icon.&quot;
-TPL_WELCOME_FIELD_FLAVOR_NONE=&quot;(none)&quot;
-TPL_WELCOME_FIELD_TEMPLATE_LABEL=&quot;Template&quot;
-TPL_WELCOME_FIELD_TEMPLATE_DESC=&quot;The template to switch to with one-button-press.&quot;
-
-; Congratulations
-TPL_WELCOME_CONGRATS=&quot;Congratulations, you are now running HUBzero %s.&quot;
-TPL_WELCOME_CONGRATS_AMAZON=&quot;Congratulations, you are now running HUBzero %s in the Amazon&amp;nbsp;Cloud.&quot;
-</code></pre>
+<!--include: core/templates/welcome/language/en-GB/en-GB.tpl_welcome.ini:1-20-->
 <p>The prefix is not enforced. It exists to keep one extension's keys from
 colliding with another's, because every loaded file merges into one flat table
 of strings. Two extensions that both define <code>TITLE</code> will fight over it.</p>
@@ -250,10 +231,10 @@ of strings. Two extensions that both define <code>TITLE</code> will fight over i
 <h2 id="loading">Loading</h2>
 <p>You do not need to load the template's own file. The document loads it while
 fetching the template:</p>
-<pre><code class="language-php">	 * @param   string  $directory  The name of the template
-	 * @param   string  $filename   The actual filename
-	 * @return  string  The contents of the template
-	 */
+<pre><code class="language-php">            ob_start();
+            try {
+                require $directory . DS . $filename;
+                $contents = ob_get_contents();
 </code></pre>
 <p>Note the pair of calls. The first looks under
 <code>app/bootstrap/{client}/language/{tag}/</code>, which is where a hub puts a

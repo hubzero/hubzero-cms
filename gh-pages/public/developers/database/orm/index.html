@@ -234,69 +234,69 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
 <code>$table</code> rather than arguing with it.</p>
 </aside>
 <p>Here is a real model's declarations — a knowledge base article:</p>
-<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
-{
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'kb';
+<pre><code class="language-php">     *
+     * @var  string
+     */
+    protected $namespace = 'kb';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'title';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'title';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'title'    =&gt; 'notempty',
-		'category' =&gt; 'positive|nonzero',
-		'fulltxt'  =&gt; 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = [
+        'title'    =&gt; 'notempty',
+        'category' =&gt; 'positive|nonzero',
+        'fulltxt'  =&gt; 'notempty',
+    ];
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 **/
-	public $always = array(
-		'alias',
-		'modified',
-		'modified_by'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var  array
+     **/
+    public $always = [
+        'alias',
+        'modified',
+        'modified_by',
+    ];
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = [
+        'created',
+        'created_by',
+    ];
 
-	/**
-	 * Fields to be parsed
-	 *
-	 * @var  array
-	 **/
-	protected $parsed = array(
-		'fulltxt'
-	);
+    /**
+     * Fields to be parsed
+     *
+     * @var  array
+     **/
+    protected $parsed = [
+        'fulltxt',
+    ];
+
+    /**
+     * Base URL
+     *
 </code></pre>
 <table>
 <thead>
@@ -451,25 +451,25 @@ so does not save it.</p>
 <p>A method named <code>transformFoo()</code> makes <code>$model-&gt;foo</code> return its result instead
 of the raw attribute. <code>com_blog</code> uses one to hand back the entry's parameters
 as a <code>Registry</code> rather than a JSON string:</p>
-<pre><code class="language-php">
-	/**
-	 * Transform params
-	 *
-	 * @return  string
-	 */
-	public function transformParams()
-	{
-		if (!is_object($this-&gt;params))
-		{
-			$params = new Registry($this-&gt;get('params'));
+<pre><code class="language-php">    {
+        $field = 'content';
 
-			$p = Component::params('com_blog');
-			$p-&gt;merge($params);
+        $property = &quot;_{$field}Parsed&quot;;
 
-			$this-&gt;params = $p;
-		}
+        if (!isset($this-&gt;$property)) {
+            $published = Date::of($this-&gt;get('publish_up'));
 
-		return $this-&gt;params;
+            $scope  = $published-&gt;toLocal('Y') . '/';
+            $scope .= $published-&gt;toLocal('m');
+
+            $params = [
+                'option'   =&gt; $this-&gt;adapter()-&gt;get('option'),
+                'scope'    =&gt; $this-&gt;adapter()-&gt;get('scope') . '/' . $scope,
+                'pagename' =&gt; $this-&gt;get('alias'),
+                'pageid'   =&gt; 0,
+                'filepath' =&gt; $this-&gt;adapter()-&gt;get('path'),
+                'domain'   =&gt; '',
+            ];
 </code></pre>
 <p>A method named <code>helperFoo()</code> makes <code>$model-&gt;foo(...)</code> call it. Listing a field
 in <code>$parsed</code> makes <code>$model-&gt;field</code> return the content run through
@@ -483,17 +483,17 @@ the messages are then on <code>getErrors()</code>.</p>
 <p>For anything the built-ins do not cover, register a closure from <code>setup()</code>
 with <code>addRule($key, $rule)</code>. The closure receives the whole attributes array
 and returns <code>false</code> when valid or a message when not:</p>
-<pre><code class="language-php">	public function setup()
-	{
-		$this-&gt;addRule('publish_down', function($data)
-		{
-			if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00')
-			{
-				return false;
-			}
-			return $data['publish_down'] &gt;= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
-		});
-	}
+<pre><code class="language-php">    public function setup()
+    {
+        $this-&gt;addRule('publish_down', function ($data) {
+            if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00') {
+                return false;
+            }
+            return $data['publish_down'] &gt;= $data['publish_up']
+                ? false
+                : Lang::txt('The entry cannot end before it begins');
+        });
+    }
 </code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>Rules::validate()</code> iterates the <em>data</em>, not the rules. A rule on
@@ -510,18 +510,18 @@ current attributes, and stores the return value. <code>$initiate</code> runs on 
 <code>automaticCreatedBy()</code> (the current user id, unless already set) and
 <code>automaticAssetId()</code> (resolves an <code>#__assets</code> entry). Everything else you
 write yourself; a slug generator is the usual case:</p>
-<pre><code class="language-php">	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
-	{
-		$alias = (isset($data['alias']) &amp;&amp; $data['alias'] ? $data['alias'] : $data['title']);
-		$alias = str_replace(' ', '-', $alias);
-		return preg_replace(&quot;/[^a-zA-Z0-9\-]/&quot;, '', strtolower($alias));
-	}
+<pre><code class="language-php">     * @return  string
+     */
+    public function automaticAlias($data)
+    {
+        $alias = (isset($data['alias']) &amp;&amp; $data['alias'] ? $data['alias'] : $data['title']);
+        $alias = str_replace(' ', '-', $alias);
+        return preg_replace(&quot;/[^a-zA-Z0-9\-]/&quot;, '', strtolower($alias));
+    }
+
+    /**
+     * Are comments open?
+     *
 </code></pre>
 <h2 id="saving-and-deleting">Saving and deleting</h2>
 <pre><code class="language-php">$reservation = Reservation::oneOrNew($id);
@@ -601,15 +601,15 @@ names: <code>oneToMany</code> looks for <code>&lt;modelname&gt;_id</code> on the
 <code>manyToMany</code> guesses an associative table of <code>#__&lt;namespace&gt;_&lt;name&gt;_&lt;name&gt;</code>
 with the two names sorted alphabetically, so both sides agree.</p>
 <p>The knowledge base article declares three:</p>
-<pre><code class="language-php">	/**
-	 * Defines a belongs to one relationship between comment and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this-&gt;belongsToOne('Hubzero\User\User', 'created_by');
-	}
+<pre><code class="language-php">    }
+
+    /**
+     * Return a formatted timestamp for modified date
+     *
+     * @param   string  $as  What data to return
+     * @return  string
+     */
+    public function modified($as = '')
 </code></pre>
 <pre><code class="language-php">public function comments()
 {

@@ -11,11 +11,11 @@ Events in the `content` group. A plugin in `core/plugins/content/` receives an e
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:638`](../../../core/components/com_answers/site/controllers/questions.php#L638) with `['Question']`
-- [`core/components/com_blog/site/controllers/entries.php:169`](../../../core/components/com_blog/site/controllers/entries.php#L169) with `['Blog']`
-- [`core/components/com_groups/site/controllers/groups.php:379`](../../../core/components/com_groups/site/controllers/groups.php#L379) with `['Group']`
-- [`core/components/com_projects/site/controllers/projects.php:725`](../../../core/components/com_projects/site/controllers/projects.php#L725) with `['Project']`
-- [`core/components/com_resources/site/controllers/create.php:1604`](../../../core/components/com_resources/site/controllers/create.php#L1604) with `['Resource']`
+- [`core/components/com_answers/site/controllers/questions.php:578`](../../../core/components/com_answers/site/controllers/questions.php#L578) with `['Question']`
+- [`core/components/com_blog/site/controllers/entries.php:155`](../../../core/components/com_blog/site/controllers/entries.php#L155) with `['Blog']`
+- [`core/components/com_groups/site/controllers/groups.php:354`](../../../core/components/com_groups/site/controllers/groups.php#L354) with `['Group']`
+- [`core/components/com_projects/site/controllers/projects.php:648`](../../../core/components/com_projects/site/controllers/projects.php#L648) with `['Project']`
+- [`core/components/com_resources/site/controllers/create.php:1450`](../../../core/components/com_resources/site/controllers/create.php#L1450) with `['Resource']`
 
 No plugin in the source tree listens for this event.
 
@@ -23,10 +23,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:589`](../../../core/components/com_media/admin/controllers/media.php#L589) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:609`](../../../core/components/com_media/admin/controllers/media.php#L609) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:692`](../../../core/components/com_media/admin/controllers/media.php#L692) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:712`](../../../core/components/com_media/admin/controllers/media.php#L712) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:578`](../../../core/components/com_media/admin/controllers/media.php#L578) with `['com_media.file', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:607`](../../../core/components/com_media/admin/controllers/media.php#L607) with `['com_media.folder', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:704`](../../../core/components/com_media/admin/controllers/media.php#L704) with `['com_media.file', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:733`](../../../core/components/com_media/admin/controllers/media.php#L733) with `['com_media.folder', &$object_file],`
 
 No plugin in the source tree listens for this event.
 
@@ -34,22 +34,22 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_content/site/controllers/articles.php:212`](../../../core/components/com_content/site/controllers/articles.php#L212) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:854`](../../../core/components/com_content/site/controllers/articles.php#L854) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1321`](../../../core/components/com_content/site/controllers/articles.php#L1321) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:186`](../../../core/components/com_content/site/controllers/articles.php#L186) with `['com_content.article', &$item, &$params, $offset]`
+- [`core/components/com_content/site/controllers/articles.php:749`](../../../core/components/com_content/site/controllers/articles.php#L749) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1161`](../../../core/components/com_content/site/controllers/articles.php#L1161) with `['com_content.category', &$item, &$item->params, 0]`
 
 Listeners:
 
-- `plg_content_opengraph` — [`onContentAfterDisplay($context, &$article, &$params, $page=0)`](../../../core/plugins/content/opengraph/opengraph.php)
+- `plg_content_opengraph` — [`onContentAfterDisplay($context, &$article, &$params, $page = 0)`](../../../core/plugins/content/opengraph/opengraph.php)
 
 ## `content.onContentAfterSave`
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:154`](../../../core/components/com_media/admin/controllers/media.php#L154) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:225`](../../../core/components/com_media/admin/controllers/media.php#L225) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:351`](../../../core/components/com_media/admin/controllers/media.php#L351) with `['com_media.file', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:510`](../../../core/components/com_media/admin/controllers/media.php#L510) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:151`](../../../core/components/com_media/admin/controllers/media.php#L151) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:219`](../../../core/components/com_media/admin/controllers/media.php#L219) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:337`](../../../core/components/com_media/admin/controllers/media.php#L337) with `['com_media.file', &$object_file, true],`
+- [`core/components/com_media/admin/controllers/media.php:487`](../../../core/components/com_media/admin/controllers/media.php#L487) with `['com_media.file', &$object_file, true]`
 
 No plugin in the source tree listens for this event.
 
@@ -57,9 +57,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_content/site/controllers/articles.php:206`](../../../core/components/com_content/site/controllers/articles.php#L206) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:848`](../../../core/components/com_content/site/controllers/articles.php#L848) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1315`](../../../core/components/com_content/site/controllers/articles.php#L1315) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:180`](../../../core/components/com_content/site/controllers/articles.php#L180) with `['com_content.article', &$item, &$params, $offset]`
+- [`core/components/com_content/site/controllers/articles.php:743`](../../../core/components/com_content/site/controllers/articles.php#L743) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1155`](../../../core/components/com_content/site/controllers/articles.php#L1155) with `['com_content.category', &$item, &$item->params, 0]`
 
 No plugin in the source tree listens for this event.
 
@@ -67,10 +67,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:578`](../../../core/components/com_media/admin/controllers/media.php#L578) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:598`](../../../core/components/com_media/admin/controllers/media.php#L598) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:681`](../../../core/components/com_media/admin/controllers/media.php#L681) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:701`](../../../core/components/com_media/admin/controllers/media.php#L701) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:559`](../../../core/components/com_media/admin/controllers/media.php#L559) with `['com_media.file', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:588`](../../../core/components/com_media/admin/controllers/media.php#L588) with `['com_media.folder', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:685`](../../../core/components/com_media/admin/controllers/media.php#L685) with `['com_media.file', &$object_file],`
+- [`core/components/com_media/admin/controllers/media.php:714`](../../../core/components/com_media/admin/controllers/media.php#L714) with `['com_media.folder', &$object_file],`
 
 Listeners:
 
@@ -80,31 +80,31 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_content/site/controllers/articles.php:209`](../../../core/components/com_content/site/controllers/articles.php#L209) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:851`](../../../core/components/com_content/site/controllers/articles.php#L851) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1318`](../../../core/components/com_content/site/controllers/articles.php#L1318) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:183`](../../../core/components/com_content/site/controllers/articles.php#L183) with `['com_content.article', &$item, &$params, $offset]`
+- [`core/components/com_content/site/controllers/articles.php:746`](../../../core/components/com_content/site/controllers/articles.php#L746) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1158`](../../../core/components/com_content/site/controllers/articles.php#L1158) with `['com_content.category', &$item, &$item->params, 0]`
 
 Listeners:
 
-- `plg_content_pagenavigation` — [`onContentBeforeDisplay($context, &$row, &$params, $page=0)`](../../../core/plugins/content/pagenavigation/pagenavigation.php)
-- `plg_content_vote` — [`onContentBeforeDisplay($context, &$row, &$params, $page=0)`](../../../core/plugins/content/vote/vote.php)
+- `plg_content_pagenavigation` — [`onContentBeforeDisplay($context, &$row, &$params, $page = 0)`](../../../core/plugins/content/pagenavigation/pagenavigation.php)
+- `plg_content_vote` — [`onContentBeforeDisplay($context, &$row, &$params, $page = 0)`](../../../core/plugins/content/vote/vote.php)
 
 ## `content.onContentBeforeSave`
 
 Fired from:
 
-- [`core/components/com_answers/models/comment.php:79`](../../../core/components/com_answers/models/comment.php#L79) with `[ 'com_answers.comment.content', &$this, $this->isNew() ]`
-- [`core/components/com_answers/models/question.php:546`](../../../core/components/com_answers/models/question.php#L546) with `[ 'com_answers.question.question', &$this, $this->isNew() ]`
-- [`core/components/com_answers/models/response.php:466`](../../../core/components/com_answers/models/response.php#L466) with `[ 'com_answers.response.answer', &$this, $this->isNew() ]`
-- [`core/components/com_blog/models/comment.php:355`](../../../core/components/com_blog/models/comment.php#L355) with `[ 'com_blog.comment.content', &$this, $this->isNew() ]`
-- [`core/components/com_blog/models/entry.php:744`](../../../core/components/com_blog/models/entry.php#L744) with `[ 'com_blog.entry.content', &$this, $this->isNew() ]`
-- [`core/components/com_forum/models/category.php:336`](../../../core/components/com_forum/models/category.php#L336) with `[ 'com_forum.category.description', &$this, $this->isNew() ]`
-- [`core/components/com_forum/models/post.php:679`](../../../core/components/com_forum/models/post.php#L679) with `[ 'com_forum.post.comment', &$this, $this->isNew() ]`
-- [`core/components/com_groups/site/controllers/groups.php:692`](../../../core/components/com_groups/site/controllers/groups.php#L692) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->_task == 'new') ]`
-- [`core/components/com_kb/models/comment.php:403`](../../../core/components/com_kb/models/comment.php#L403) with `[ 'com_kb.comment.content', &$this, $this->isNew() ]`
-- [`core/components/com_media/admin/controllers/media.php:140`](../../../core/components/com_media/admin/controllers/media.php#L140) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:208`](../../../core/components/com_media/admin/controllers/media.php#L208) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:334`](../../../core/components/com_media/admin/controllers/media.php#L334) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_answers/models/comment.php:77`](../../../core/components/com_answers/models/comment.php#L77) with `[ 'com_answers.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/question.php:518`](../../../core/components/com_answers/models/question.php#L518) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/response.php:432`](../../../core/components/com_answers/models/response.php#L432) with `[ 'com_answers.response.answer', &$this, $this->isNew(), ]`
+- [`core/components/com_blog/models/comment.php:341`](../../../core/components/com_blog/models/comment.php#L341) with `[ 'com_blog.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_blog/models/entry.php:701`](../../../core/components/com_blog/models/entry.php#L701) with `[ 'com_blog.entry.content', &$this, $this->isNew(), ]`
+- [`core/components/com_forum/models/category.php:327`](../../../core/components/com_forum/models/category.php#L327) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
+- [`core/components/com_forum/models/post.php:645`](../../../core/components/com_forum/models/post.php#L645) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
+- [`core/components/com_groups/site/controllers/groups.php:635`](../../../core/components/com_groups/site/controllers/groups.php#L635) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
+- [`core/components/com_kb/models/comment.php:379`](../../../core/components/com_kb/models/comment.php#L379) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_media/admin/controllers/media.php:136`](../../../core/components/com_media/admin/controllers/media.php#L136) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:201`](../../../core/components/com_media/admin/controllers/media.php#L201) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:319`](../../../core/components/com_media/admin/controllers/media.php#L319) with `['com_media.file', &$object_file, true],`
 - and 4 more call sites
 
 Listeners:
@@ -118,18 +118,18 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_content/site/controllers/articles.php:203`](../../../core/components/com_content/site/controllers/articles.php#L203) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:843`](../../../core/components/com_content/site/controllers/articles.php#L843) with `['com_content.featured', &$item, &$params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1310`](../../../core/components/com_content/site/controllers/articles.php#L1310) with `['com_content.category', &$item, &$item->params, 0]`
-- [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:24`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L24) with `[ 'com_courses.asset.content', &$this->model, &$config ]`
-- [`core/components/com_publications/models/publication.php:1468`](../../../core/components/com_publications/models/publication.php#L1468) with `[ 'com_publications.publication.description', &$this, &$config ]`
-- [`core/components/com_publications/models/publication.php:1542`](../../../core/components/com_publications/models/publication.php#L1542) with `[ 'com_publications.publication.release_notes', &$this, &$config ]`
-- [`core/components/com_publications/models/publication.php:1652`](../../../core/components/com_publications/models/publication.php#L1652) with `[ 'com_publications.publication.' . $field, &$this, &$config ]`
-- [`core/components/com_storefront/site/views/overview/tmpl/default.php:32`](../../../core/components/com_storefront/site/views/overview/tmpl/default.php#L32) with `['com_content.article', &$article, array()]`
+- [`core/components/com_content/site/controllers/articles.php:177`](../../../core/components/com_content/site/controllers/articles.php#L177) with `['com_content.article', &$item, &$params, $offset]`
+- [`core/components/com_content/site/controllers/articles.php:738`](../../../core/components/com_content/site/controllers/articles.php#L738) with `['com_content.featured', &$item, &$params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1150`](../../../core/components/com_content/site/controllers/articles.php#L1150) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:29`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L29) with `[ 'com_courses.asset.content', &$this->model, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1317`](../../../core/components/com_publications/models/publication.php#L1317) with `[ 'com_publications.publication.description', &$this, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1387`](../../../core/components/com_publications/models/publication.php#L1387) with `[ 'com_publications.publication.release_notes', &$this, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1489`](../../../core/components/com_publications/models/publication.php#L1489) with `[ 'com_publications.publication.' . $field, &$this, &$config, ]`
+- [`core/components/com_storefront/site/views/overview/tmpl/default.php:33`](../../../core/components/com_storefront/site/views/overview/tmpl/default.php#L33) with `['com_content.article', &$article, []]`
 - [`core/libraries/Hubzero/Html/Builder/Content.php:35`](../../../core/libraries/Hubzero/Html/Builder/Content.php#L35) with `[$context, &$article, &$params, 0]`
-- [`core/libraries/Hubzero/User/Group.php:1569`](../../../core/libraries/Hubzero/User/Group.php#L1569) with `[ 'com_groups.group.' . $type . '_desc', &$this, &$config ]`
-- [`core/libraries/Hubzero/User/Profile.php:1562`](../../../core/libraries/Hubzero/User/Profile.php#L1562) with `[ 'com_members.profile.bio', &$this, &$config ]`
-- [`core/plugins/members/profile/views/index/tmpl/default.php:256`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L256) with `['com_content.article', &$page, &$params, 0]`
+- [`core/libraries/Hubzero/User/Group.php:1491`](../../../core/libraries/Hubzero/User/Group.php#L1491) with `[ 'com_groups.group.' . $type . '_desc', &$this, &$config, ]`
+- [`core/libraries/Hubzero/User/Profile.php:1462`](../../../core/libraries/Hubzero/User/Profile.php#L1462) with `[ 'com_members.profile.bio', &$this, &$config, ]`
+- [`core/plugins/members/profile/views/index/tmpl/default.php:243`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L243) with `['com_content.article', &$page, &$params, 0]`
 
 Listeners:
 
@@ -146,6 +146,6 @@ Listeners:
 
 Fired from:
 
-- [`core/modules/mod_resourcemenu/helper.php:34`](../../../core/modules/mod_resourcemenu/helper.php#L34) with `[ '', $obj, $this->params ]`
+- [`core/modules/mod_resourcemenu/mod_resourcemenu.php:39`](../../../core/modules/mod_resourcemenu/mod_resourcemenu.php#L39) with `[ '', $obj, $this->params, ],`
 
 No plugin in the source tree listens for this event.

@@ -15,4 +15,4 @@ Endpoints under `/api/users`, from the `com_users` API controllers. Authenticate
 
 Indicates whether current user is authenticated
 
-API version 1.0, task `isAuthenticated` in [`currentuserv1_0.php`](../../../core/components/com_users/api/controllers/currentuserv1_0.php#L15).
+API version 1.0, task `isAuthenticated` in [`currentuserv1r0.php`](../../../core/components/com_users/api/controllers/currentuserv1r0.php#L16).

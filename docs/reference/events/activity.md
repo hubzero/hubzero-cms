@@ -11,7 +11,7 @@ Events in the `activity` group. A plugin in `core/plugins/activity/` receives an
 
 Fired from:
 
-- [`core/libraries/Hubzero/Activity/Log.php:180`](../../../core/libraries/Hubzero/Activity/Log.php#L180) with `[$this]`
+- [`core/libraries/Hubzero/Activity/Log.php:178`](../../../core/libraries/Hubzero/Activity/Log.php#L178) with `[$this]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,6 +19,6 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/libraries/Hubzero/Activity/Log.php:209`](../../../core/libraries/Hubzero/Activity/Log.php#L209) with `[$this, $isNew]`
+- [`core/libraries/Hubzero/Activity/Log.php:203`](../../../core/libraries/Hubzero/Activity/Log.php#L203) with `[$this, $isNew]`
 
 No plugin in the source tree listens for this event.

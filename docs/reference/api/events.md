@@ -16,7 +16,7 @@ Endpoints under `/api/events`, from the `com_events` API controllers. Authentica
 
 List active events
 
-API version 1.0, task `list` in [`eventsv1_0.php`](../../../core/components/com_events/api/controllers/eventsv1_0.php#L19).
+API version 1.0, task `list` in [`eventsv1r0.php`](../../../core/components/com_events/api/controllers/eventsv1r0.php#L21).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -27,7 +27,7 @@ API version 1.0, task `list` in [`eventsv1_0.php`](../../../core/components/com_
 
 Get user profile info
 
-API version 1.0, task `read` in [`eventsv1_0.php`](../../../core/components/com_events/api/controllers/eventsv1_0.php#L66).
+API version 1.0, task `read` in [`eventsv1r0.php`](../../../core/components/com_events/api/controllers/eventsv1r0.php#L68).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -949,6 +949,13 @@
 <td>IP address of DNS to use to get user hostnames to potentially match hosts with authentication participants</td>
 </tr>
 <tr>
+<td><code>behind_proxy</code></td>
+<td>Behind a proxy</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Yes only if a proxy in front of the hub sets X-Forwarded-For: the user's hostname is then looked up from that header's first address. No: from the address the request comes from, which a client cannot choose. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
 <td><code>auto_approve</code></td>
 <td>Auto approve new users</td>
 <td>radio</td>

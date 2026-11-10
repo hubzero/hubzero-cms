@@ -15,7 +15,7 @@ Endpoints under `/api/content`, from the `com_content` API controllers. Authenti
 
 Get a list of resources
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_content/api/controllers/entriesv1_0.php#L24).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_content/api/controllers/entriesv1r0.php#L25).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

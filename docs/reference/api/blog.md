@@ -19,7 +19,7 @@ Endpoints under `/api/blog`, from the `com_blog` API controllers. Authenticate w
 
 Create an entry
 
-API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/com_blog/api/controllers/entriesv1_0.php#L206).
+API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L196).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -41,7 +41,7 @@ API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/c
 
 Display a list of entries
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_blog/api/controllers/entriesv1_0.php#L89).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L83).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -57,7 +57,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/com_blog/api/controllers/entriesv1_0.php#L673).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L647).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com_blog/api/controllers/entriesv1_0.php#L394).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L378).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/com_blog/api/controllers/entriesv1_0.php#L437).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L420).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

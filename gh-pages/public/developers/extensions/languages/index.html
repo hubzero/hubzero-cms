@@ -346,7 +346,7 @@ does not.</p>
 case.</li>
 <li><code>Hubzero\Module\Loader</code> loads a module's file before the module renders.</li>
 <li>A <strong>plugin's file is not loaded automatically.</strong> Set
-<code>protected $_autoloadLanguage = true;</code> on the plugin class, or call
+<code>protected $autoloadLanguage = true;</code> on the plugin class, or call
 <code>$this-&gt;loadLanguage()</code> before you translate anything. Forget it and every
 string the plugin shows renders as its key — the same symptom as a missing
 definition, from an entirely different cause.</li>

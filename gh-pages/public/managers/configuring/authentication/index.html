@@ -276,33 +276,33 @@ the provider to an account they already have, and the third only if you
 enable the plugin for the administrator interface. Some providers want only
 the domain; others, Google among them, want every URI listed exactly.</p>
 <p>The hub builds these itself, so they are not a guess:</p>
-<pre><code class="language-php">	protected static function getRedirectUri($name)
-	{
-		// Get the hub url
-		$service = trim(\Request::base(), '/');
+<pre><code class="language-php">     *
+     * @param   string  $name  The plugin name
+     * @return  string
+     **/
+    protected static function getRedirectUri($name)
+    {
+        // Get the hub url
+        $service = trim(Request::base(), '/');
 
-		$task = 'login';
-		$option = 'login';
+        $task = 'login';
+        $option = 'login';
 
-		if (\App::isSite())
-		{
-			// Legacy support
-			if (\App::has('component') &amp;&amp; \App::get('component')-&gt;isEnabled('com_users'))
-			{
-				// If someone is logged in already, then we're linking an account
-				$task   = (\User::isGuest()) ? 'user.login' : 'user.link';
-				$option = 'users';
-			}
-			else
-			{
-				$task   = (\User::isGuest()) ? 'login' : 'link';
-			}
-		}
+        if (App::isSite()) {
+            // Legacy support
+            if (App::has('component') &amp;&amp; App::get('component')-&gt;isEnabled('com_users')) {
+                // If someone is logged in already, then we're linking an account
+                $task   = (User::isGuest()) ? 'user.login' : 'user.link';
+                $option = 'users';
+            } else {
+                $task   = (User::isGuest()) ? 'login' : 'link';
+            }
+        }
 
-		$scope = '/index.php?option=com_' . $option . '&amp;task=' . $task . '&amp;authenticator=' . $name;
+        $scope = '/index.php?option=com_' . $option . '&amp;task=' . $task . '&amp;authenticator=' . $name;
 
-		return $service . $scope;
-	}
+        return $service . $scope;
+    }
 </code></pre>
 <h2 id="enable-the-plugin">Enable the plugin</h2>
 <ol>

@@ -231,7 +231,7 @@
 <h2 id="support-oncommentprepare"><code>support.onCommentPrepare</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/models/comment.php#L208"><code>core/components/com_support/models/comment.php:208</code></a> with <code>['com_support.comment', &amp;$this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/models/comment.php#L204"><code>core/components/com_support/models/comment.php:204</code></a> with <code>['com_support.comment', &amp;$this]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -241,7 +241,7 @@
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_support_captcha</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/support/captcha/captcha.php"><code>onGetCaptcha($ext='com')</code></a></li>
+<li><code>plg_support_captcha</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/support/captcha/captcha.php"><code>onGetCaptcha($ext = 'com')</code></a></li>
 </ul>
 <h2 id="support-ongetcomponentcaptcha"><code>support.onGetComponentCaptcha</code></h2>
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
@@ -258,13 +258,13 @@
 <h2 id="support-onpreticketsubmission"><code>support.onPreTicketSubmission</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L877"><code>core/components/com_support/site/controllers/tickets.php:877</code></a> with <code>[]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L769"><code>core/components/com_support/site/controllers/tickets.php:769</code></a> with <code>[]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="support-onreportitem"><code>support.onReportItem</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/abuse.php#L199"><code>core/components/com_support/site/controllers/abuse.php:199</code></a> with <code>[ $refid, $cat ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/abuse.php#L195"><code>core/components/com_support/site/controllers/abuse.php:195</code></a> with <code>[ $refid, $cat, ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -280,14 +280,14 @@
 <h2 id="support-onticketcomment"><code>support.onTicketComment</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/admin/views/tickets/tmpl/edit.php#L392"><code>core/components/com_support/admin/views/tickets/tmpl/edit.php:392</code></a> with <code>[$this-&gt;row]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/views/tickets/tmpl/ticket.php#L588"><code>core/components/com_support/site/views/tickets/tmpl/ticket.php:588</code></a> with <code>[$this-&gt;row]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/admin/views/tickets/tmpl/edit.php#L364"><code>core/components/com_support/admin/views/tickets/tmpl/edit.php:364</code></a> with <code>[$this-&gt;row]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/views/tickets/tmpl/ticket.php#L568"><code>core/components/com_support/site/views/tickets/tmpl/ticket.php:568</code></a> with <code>[$this-&gt;row]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="support-onticketsubmission"><code>support.onTicketSubmission</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L1428"><code>core/components/com_support/site/controllers/tickets.php:1428</code></a> with <code>[$row]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L1258"><code>core/components/com_support/site/controllers/tickets.php:1258</code></a> with <code>[$row]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -296,7 +296,7 @@
 <h2 id="support-onticketupdate"><code>support.onTicketUpdate</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/helpers/notifier.php#L74"><code>core/components/com_support/helpers/notifier.php:74</code></a> with <code>[$ticket, $comment]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/helpers/notifier.php#L75"><code>core/components/com_support/helpers/notifier.php:75</code></a> with <code>[$ticket, $comment]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -311,7 +311,7 @@
 <h2 id="support-onvalidateticketsubmission"><code>support.onValidateTicketSubmission</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L926"><code>core/components/com_support/site/controllers/tickets.php:926</code></a> with <code>[$reporter, $problem]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/controllers/tickets.php#L813"><code>core/components/com_support/site/controllers/tickets.php:813</code></a> with <code>[$reporter, $problem]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 

@@ -235,57 +235,56 @@ call, with nothing to say the file exists a directory away.</p>
 <p>The common shape is a class of static methods with no state. <code>com_kb</code>
 resolves the current user's permissions this way, and both administrator views
 call it to decide which toolbar buttons to draw:</p>
-<pre><code class="language-php">namespace Components\Kb\Admin\Helpers;
+<pre><code class="language-php">
+namespace Components\Kb\Admin\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Knowledge Base permissions helper
  */
 class Permissions
 {
-	/**
-	 * Name of the component
-	 *
-	 * @var  string
-	 */
-	public static $extension = 'com_kb';
+    /**
+     * Name of the component
+     *
+     * @var  string
+     */
+    public static $extension = 'com_kb';
 
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @param   string   $extension  The extension.
-	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   Object
-	 */
-	public static function getActions($assetType='component', $assetId = 0)
-	{
-		$assetName  = self::$extension;
-		if ($assetId)
-		{
-			$assetName .= '.' . $assetType;
-			$assetName .= '.' . (int) $assetId;
-		}
+    /**
+     * Gets a list of the actions that can be performed.
+     *
+     * @param   string   $extension  The extension.
+     * @param   integer  $assetId    The asset ID.
+     * @return  object   Object
+     */
+    public static function getActions($assetType = 'component', $assetId = 0)
+    {
+        $assetName  = self::$extension;
+        if ($assetId) {
+            $assetName .= '.' . $assetType;
+            $assetName .= '.' . (int) $assetId;
+        }
 
-		$actions = array(
-			'core.admin',
-			'core.manage',
-			'core.create',
-			'core.edit',
-			'core.edit.state',
-			'core.delete'
-		);
+        $actions = [
+            'core.admin',
+            'core.manage',
+            'core.create',
+            'core.edit',
+            'core.edit.state',
+            'core.delete',
+        ];
 
-		$result = new Obj;
+        $result = new Obj();
 
-		foreach ($actions as $action)
-		{
-			$result-&gt;set($action, User::authorise($action, $assetName));
-		}
+        foreach ($actions as $action) {
+            $result-&gt;set($action, User::authorise($action, $assetName));
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }
 </code></pre>
 <p>Used from a view:</p>

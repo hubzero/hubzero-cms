@@ -11,7 +11,7 @@ Events in the `mail` group. A plugin in `core/plugins/mail/` receives an event b
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/MailerServiceProvider.php:40`](../../../core/bootstrap/Administrator/Providers/MailerServiceProvider.php#L40)
-- [`core/bootstrap/Site/Providers/MailerServiceProvider.php:40`](../../../core/bootstrap/Site/Providers/MailerServiceProvider.php#L40)
+- [`core/bootstrap/Administrator/Providers/MailerServiceProvider.php:39`](../../../core/bootstrap/Administrator/Providers/MailerServiceProvider.php#L39)
+- [`core/bootstrap/Site/Providers/MailerServiceProvider.php:39`](../../../core/bootstrap/Site/Providers/MailerServiceProvider.php#L39)
 
 No plugin in the source tree listens for this event.

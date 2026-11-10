@@ -137,32 +137,31 @@ $rows = Article::all()-&gt;whereEquals('state', 1)-&gt;rows();
 <p>Prefer showing real files to pasting copies. The include directive inserts
 the current contents of a repository file, optionally a line range:</p>
 <pre><code class="language-markdown">```php
-	 * Build the route for the component.
-	 *
-	 * @param   array  &amp;$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 */
-	public function build(&amp;$query)
-	{
-		$segments = array();
+    /**
+     * Build the route for the component.
+     *
+     * @param   array  &amp;$query  An array of URL arguments
+     * @return  array  The URL arguments to use to assemble the subsequent URL.
+     */
+    public function build(&amp;$query)
+    {
+        $segments = [];
 
-		if (isset($query['task']))
-		{
-			if ($query['task'] == 'article')
-			{
-				unset($query['task']);
-			}
-			else if ($query['task'] == 'vote')
-			{
-				$segments[] = $query['task'];
-				unset($query['task']);
-			}
-		}
+        if (isset($query['task'])) {
+            if ($query['task'] == 'article') {
+                unset($query['task']);
+            } elseif ($query['task'] == 'vote') {
+                $segments[] = $query['task'];
+                unset($query['task']);
+            }
+        }
 
-		if (isset($query['section']))
-		{
-			if (!empty($query['section']))
-			{
+        if (isset($query['section'])) {
+            if (!empty($query['section'])) {
+                $segments[] = $query['section'];
+            }
+            unset($query['section']);
+        }
 </code></pre>
 <pre><code>
 ## Notes and warnings

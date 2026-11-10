@@ -11,7 +11,7 @@ Events in the `support` group. A plugin in `core/plugins/support/` receives an e
 
 Fired from:
 
-- [`core/components/com_support/models/comment.php:208`](../../../core/components/com_support/models/comment.php#L208) with `['com_support.comment', &$this]`
+- [`core/components/com_support/models/comment.php:204`](../../../core/components/com_support/models/comment.php#L204) with `['com_support.comment', &$this]`
 
 Listeners:
 
@@ -23,7 +23,7 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_support_captcha` — [`onGetCaptcha($ext='com')`](../../../core/plugins/support/captcha/captcha.php)
+- `plg_support_captcha` — [`onGetCaptcha($ext = 'com')`](../../../core/plugins/support/captcha/captcha.php)
 
 ## `support.onGetComponentCaptcha`
 
@@ -45,7 +45,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:877`](../../../core/components/com_support/site/controllers/tickets.php#L877) with `[]`
+- [`core/components/com_support/site/controllers/tickets.php:769`](../../../core/components/com_support/site/controllers/tickets.php#L769) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -53,7 +53,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/abuse.php:199`](../../../core/components/com_support/site/controllers/abuse.php#L199) with `[ $refid, $cat ]`
+- [`core/components/com_support/site/controllers/abuse.php:195`](../../../core/components/com_support/site/controllers/abuse.php#L195) with `[ $refid, $cat, ]`
 
 Listeners:
 
@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:392`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L392) with `[$this->row]`
-- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:588`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L588) with `[$this->row]`
+- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:364`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L364) with `[$this->row]`
+- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:568`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L568) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:1428`](../../../core/components/com_support/site/controllers/tickets.php#L1428) with `[$row]`
+- [`core/components/com_support/site/controllers/tickets.php:1258`](../../../core/components/com_support/site/controllers/tickets.php#L1258) with `[$row]`
 
 Listeners:
 
@@ -89,7 +89,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/helpers/notifier.php:74`](../../../core/components/com_support/helpers/notifier.php#L74) with `[$ticket, $comment]`
+- [`core/components/com_support/helpers/notifier.php:75`](../../../core/components/com_support/helpers/notifier.php#L75) with `[$ticket, $comment]`
 
 Listeners:
 
@@ -107,6 +107,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:926`](../../../core/components/com_support/site/controllers/tickets.php#L926) with `[$reporter, $problem]`
+- [`core/components/com_support/site/controllers/tickets.php:813`](../../../core/components/com_support/site/controllers/tickets.php#L813) with `[$reporter, $problem]`
 
 No plugin in the source tree listens for this event.

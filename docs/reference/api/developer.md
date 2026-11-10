@@ -15,4 +15,4 @@ Endpoints under `/api/developer`, from the `com_developer` API controllers. Auth
 
 Handle a request for an OAuth2.0 Access Token and send the response to the client
 
-API version 1.0, task `token` in [`oauthv1_0.php`](../../../core/components/com_developer/api/controllers/oauthv1_0.php#L19).
+API version 1.0, task `token` in [`oauthv1r0.php`](../../../core/components/com_developer/api/controllers/oauthv1r0.php#L20).

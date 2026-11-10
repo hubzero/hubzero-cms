@@ -178,10 +178,14 @@ and two plugins carry it to Solr:</p>
 <p><strong>System - HUBzero</strong> (<code>plg_system_content</code>) listens for <code>onContentSave</code>
 and <code>onContentDestroy</code> on any model built on the hub's ORM, and raises
 <code>search.onAddIndex</code> or <code>search.onRemoveIndex</code>.</p>
-<pre><code class="language-php"> public function onContentSave($table, $model)
+<pre><code class="language-php">  * @param   object  $table
+  * @param   object  $model
+  * @return  void
+  */
+ public function onContentSave($table, $model)
  {
- 	//@TODO: Add check for isIndexable
- 	Event::trigger('search.onAddIndex', array($table, $model));
+     //@TODO: Add check for isIndexable
+     Event::trigger('search.onAddIndex', [$table, $model]);
  }
 
  /**
@@ -192,10 +196,6 @@ and <code>onContentDestroy</code> on any model built on the hub's ORM, and raise
   * @return  void
   */
  public function onContentDestroy($table, $model)
- {
- 	//@TODO: Add check for isIndexable
- 	Event::trigger('search.onRemoveIndex', array($table, $model));
- }
 </code></pre>
 </li>
 </ol>

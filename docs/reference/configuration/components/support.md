@@ -35,5 +35,5 @@ Parameters from [`core/components/com_support/config/config.xml`](../../../../co
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
-| `blacklist` | IP Blacklist | textarea | — | A comma-separated list of IPs to be blacklisted |
+| `blacklist` | IP Blacklist | textarea | — | IP addresses or networks (such as 192.0.2.0/24 or 2001:db8::/32) to be blacklisted, separated by commas |
 | `badwords` | Bad words | textarea | `viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting` | A comma-separated list of spam words |

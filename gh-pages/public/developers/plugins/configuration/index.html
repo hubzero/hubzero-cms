@@ -327,7 +327,7 @@ and <code>element</code> columns.</p>
 <pre><code class="language-php">$this-&gt;params = \Hubzero\Plugin\Params::getParams(
 	$member-&gt;get('id'),
 	'members',
-	$this-&gt;_name
+	$this-&gt;pluginName
 );
 </code></pre>
 <p><code>getParams($oid, $folder, $element)</code> reads the plugin's global parameters,

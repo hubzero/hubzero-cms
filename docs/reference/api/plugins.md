@@ -20,7 +20,7 @@ Endpoints under `/api/plugins`, from the `com_plugins` API controllers. Authenti
 
 Create an entry
 
-API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L139).
+API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L147).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -35,7 +35,7 @@ API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/c
 
 Display a list of entries
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L27).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L38).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -52,7 +52,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 
 Trigger a specific event
 
-API version 1.0, task `trigger` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L415).
+API version 1.0, task `trigger` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L408).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -63,7 +63,7 @@ API version 1.0, task `trigger` in [`entriesv1_0.php`](../../../core/components/
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L261).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L264).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -79,7 +79,7 @@ API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/c
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L360).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L359).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -89,7 +89,7 @@ API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com_plugins/api/controllers/entriesv1_0.php#L225).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L230).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

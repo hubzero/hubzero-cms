@@ -218,69 +218,69 @@ $instrument-&gt;save();
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Hubzero\Database\Relational</code></a>.
 The class declares what makes it different from every other model and inherits
 the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
-<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
-{
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'kb';
+<pre><code class="language-php">     *
+     * @var  string
+     */
+    protected $namespace = 'kb';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'title';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'title';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'title'    =&gt; 'notempty',
-		'category' =&gt; 'positive|nonzero',
-		'fulltxt'  =&gt; 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = [
+        'title'    =&gt; 'notempty',
+        'category' =&gt; 'positive|nonzero',
+        'fulltxt'  =&gt; 'notempty',
+    ];
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 **/
-	public $always = array(
-		'alias',
-		'modified',
-		'modified_by'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var  array
+     **/
+    public $always = [
+        'alias',
+        'modified',
+        'modified_by',
+    ];
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = [
+        'created',
+        'created_by',
+    ];
 
-	/**
-	 * Fields to be parsed
-	 *
-	 * @var  array
-	 **/
-	protected $parsed = array(
-		'fulltxt'
-	);
+    /**
+     * Fields to be parsed
+     *
+     * @var  array
+     **/
+    protected $parsed = [
+        'fulltxt',
+    ];
+
+    /**
+     * Base URL
+     *
 </code></pre>
 <table>
 <thead>
@@ -362,25 +362,26 @@ reservation's <code>created</code> and <code>created_by</code>.</p>
 <code>params</code> over the component's, giving <code>$article-&gt;params</code> as one registry.</p>
 <h2 id="relationships">Relationships</h2>
 <p>Relationships are methods that return a relation object:</p>
-<pre><code class="language-php">	/**
-	 * Get parent category
-	 *
-	 * @return  object
-	 */
-	public function parentCategory()
-	{
-		return $this-&gt;belongsToOne('Components\Categories\Models\Category', 'category');
-	}
+<pre><code class="language-php">    public function comments()
+    {
+        return $this-&gt;oneToMany('Comment', 'entry_id');
+    }
 
-	/**
-	 * Get a list of comments
-	 *
-	 * @return  object
-	 */
-	public function comments()
-	{
-		return $this-&gt;oneToMany('Comment', 'entry_id');
-	}
+    /**
+     * Get tags on the entry
+     * Optinal first agument to determine format of tags
+     *
+     * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
+     * @param   integer  $admin  Include amdin tags? (defaults to no)
+     * @return  mixed
+     */
+    public function tags($as = 'cloud', $admin = 0)
+    {
+        if (!$this-&gt;get('id')) {
+            switch (strtolower($as)) {
+                case 'array':
+                    return [];
+                    break;
 </code></pre>
 <p><code>belongsToOne()</code>, <code>oneToMany()</code>, <code>manyToMany()</code>, <code>oneShiftsToMany()</code>, and
 <code>oneToManyThrough()</code> are the ones in common use. For <code>com_bookings</code>, an

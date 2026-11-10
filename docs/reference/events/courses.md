@@ -21,7 +21,7 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_courses_store` — [`onAfterSaveCoupon($model, $isNew=false)`](../../../core/plugins/courses/store/store.php)
+- `plg_courses_store` — [`onAfterSaveCoupon($model, $isNew = false)`](../../../core/plugins/courses/store/store.php)
 
 ## `courses.onAssetgroupDelete`
 
@@ -51,26 +51,26 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:201`](../../../core/components/com_courses/site/controllers/offering.php#L201) with `[ $this->course, $this->course->offering(), true ]`
-- [`core/components/com_courses/site/controllers/offering.php:217`](../../../core/components/com_courses/site/controllers/offering.php#L217) with `[ $this->course, $this->course->offering() ]`
-- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:10`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L10) with `[ $this->course, $this->offering, true ]`
+- [`core/components/com_courses/site/controllers/offering.php:215`](../../../core/components/com_courses/site/controllers/offering.php#L215) with `[ $this->course, $this->course->offering(), true, ]`
+- [`core/components/com_courses/site/controllers/offering.php:234`](../../../core/components/com_courses/site/controllers/offering.php#L234) with `[ $this->course, $this->course->offering(), ]`
+- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:17`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L17) with `[ $this->course, $this->offering, true, ]`
 
 Listeners:
 
-- `plg_courses_announcements` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/announcements/announcements.php)
-- `plg_courses_dashboard` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/dashboard/dashboard.php)
-- `plg_courses_discussions` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/discussions/discussions.php)
-- `plg_courses_guide` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/guide/guide.php)
-- `plg_courses_notes` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/notes/notes.php)
-- `plg_courses_outline` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/outline/outline.php)
+- `plg_courses_announcements` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/announcements/announcements.php)
+- `plg_courses_dashboard` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/dashboard/dashboard.php)
+- `plg_courses_discussions` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/discussions/discussions.php)
+- `plg_courses_guide` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/guide/guide.php)
+- `plg_courses_notes` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/notes/notes.php)
+- `plg_courses_outline` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/outline/outline.php)
 - `plg_courses_pages` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/pages/pages.php)
-- `plg_courses_progress` — [`onCourse($course, $offering, $describe=false)`](../../../core/plugins/courses/progress/progress.php)
+- `plg_courses_progress` — [`onCourse($course, $offering, $describe = false)`](../../../core/plugins/courses/progress/progress.php)
 
 ## `courses.onCourseAfterLecture`
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:284`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L284) with `[ $this->course, $unit, $lecture ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:308`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L308) with `[ $this->course, $unit, $lecture, ]`
 
 Listeners:
 
@@ -97,7 +97,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/default.php:82`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L82) with `[ $course, $offering ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/default.php:96`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L96) with `[ $course, $offering, ]`
 
 Listeners:
 
@@ -107,7 +107,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:133`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L133) with `[$this->course, $this->offering]`
+- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:168`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L168) with `[$this->course, $this->offering]`
 
 Listeners:
 
@@ -118,7 +118,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/models/orm/course.php:407`](../../../core/components/com_courses/models/orm/course.php#L407) with `[$this]`
+- [`core/components/com_courses/models/orm/course.php:387`](../../../core/components/com_courses/models/orm/course.php#L387) with `[$this]`
 
 Listeners:
 
@@ -129,7 +129,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:617`](../../../core/components/com_courses/site/controllers/course.php#L617) with `[$this->course]`
+- [`core/components/com_courses/site/controllers/course.php:552`](../../../core/components/com_courses/site/controllers/course.php#L552) with `[$this->course]`
 
 No plugin in the source tree listens for this event.
 
@@ -145,7 +145,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:364`](../../../core/components/com_courses/site/controllers/offering.php#L364) with `[ $this->course, $offering, $offering->section() ]`
+- [`core/components/com_courses/site/controllers/offering.php:384`](../../../core/components/com_courses/site/controllers/offering.php#L384) with `[ $this->course, $offering, $offering->section(), ]`
 
 Listeners:
 
@@ -155,7 +155,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/models/orm/course.php:394`](../../../core/components/com_courses/models/orm/course.php#L394) with `[$this]`
+- [`core/components/com_courses/models/orm/course.php:374`](../../../core/components/com_courses/models/orm/course.php#L374) with `[$this]`
 
 Listeners:
 
@@ -165,20 +165,20 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:148`](../../../core/components/com_courses/site/controllers/course.php#L148) with `[ $this->course, $this->view->active ]`
+- [`core/components/com_courses/site/controllers/course.php:141`](../../../core/components/com_courses/site/controllers/course.php#L141) with `[ $this->course, $this->view->active, ],`
 
 Listeners:
 
-- `plg_courses_offerings` — [`onCourseView($course, $active=null)`](../../../core/plugins/courses/offerings/offerings.php)
-- `plg_courses_overview` — [`onCourseView($course, $active=null)`](../../../core/plugins/courses/overview/overview.php)
-- `plg_courses_reviews` — [`onCourseView($course, $active=null)`](../../../core/plugins/courses/reviews/reviews.php)
+- `plg_courses_offerings` — [`onCourseView($course, $active = null)`](../../../core/plugins/courses/offerings/offerings.php)
+- `plg_courses_overview` — [`onCourseView($course, $active = null)`](../../../core/plugins/courses/overview/overview.php)
+- `plg_courses_reviews` — [`onCourseView($course, $active = null)`](../../../core/plugins/courses/reviews/reviews.php)
 - `plg_courses_store` — [`onCourseView($course, $active=null)`](../../../core/plugins/courses/store/store.php)
 
 ## `courses.onCourseViewAfter`
 
 Fired from:
 
-- [`core/components/com_courses/site/views/course/tmpl/display.php:721`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L721) with `[$this->course]`
+- [`core/components/com_courses/site/views/course/tmpl/display.php:683`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L683) with `[$this->course]`
 
 Listeners:
 
@@ -232,8 +232,8 @@ No call site in the CMS fires this event; the listener may answer an event fired
 
 Listeners:
 
-- `plg_courses_pec` — [`onSectionSave($model, $isNew=false)`](../../../core/plugins/courses/pec/pec.php)
-- `plg_courses_store` — [`onSectionSave($model, $isNew=false)`](../../../core/plugins/courses/store/store.php)
+- `plg_courses_pec` — [`onSectionSave($model, $isNew = false)`](../../../core/plugins/courses/pec/pec.php)
+- `plg_courses_store` — [`onSectionSave($model, $isNew = false)`](../../../core/plugins/courses/store/store.php)
 
 ## `courses.onUnitDelete`
 

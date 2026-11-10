@@ -190,6 +190,7 @@ Handles user authentication with Shibboleth/InCommon
 | `site_login` | Site login | radio | `1 (Yes)` | Enable this plugin for frontend authentication. Options: `0` No, `1` Yes. |
 | `admin_login` | Admin login | radio | `0 (No)` | Enable this plugin for backend authentication. Options: `0` No, `1` Yes. |
 | `dns` | DNS Address | text | `8.8.8.8` | IP address of DNS to use to get user hostnames to potentially match hosts with authentication participants |
+| `behind_proxy` | Behind a proxy | radio | `0 (No)` | Yes only if a proxy in front of the hub sets X-Forwarded-For: the user's hostname is then looked up from that header's first address. No: from the address the request comes from, which a client cannot choose. Options: `0` No, `1` Yes. |
 | `auto_approve` | Auto approve new users | radio | `0 (No)` | Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: `0` No, `1` Yes. |
 
 ### Debug

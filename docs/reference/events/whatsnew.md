@@ -11,8 +11,8 @@ Events in the `whatsnew` group. A plugin in `core/plugins/whatsnew/` receives an
 
 Fired from:
 
-- [`core/components/com_whatsnew/api/controllers/entriesv1_0.php:79`](../../../core/components/com_whatsnew/api/controllers/entriesv1_0.php#L79)
-- [`core/components/com_whatsnew/helpers/finder.php:32`](../../../core/components/com_whatsnew/helpers/finder.php#L32)
+- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:78`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L78)
+- [`core/components/com_whatsnew/helpers/finder.php:33`](../../../core/components/com_whatsnew/helpers/finder.php#L33)
 
 No plugin in the source tree listens for this event.
 
@@ -20,27 +20,27 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_whatsnew/api/controllers/entriesv1_0.php:105`](../../../core/components/com_whatsnew/api/controllers/entriesv1_0.php#L105) with `[ $p, 999, 0, $areas ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:121`](../../../core/components/com_whatsnew/site/controllers/results.php#L121) with `[ $p, 0, 0, $activeareas ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:134`](../../../core/components/com_whatsnew/site/controllers/results.php#L134) with `[ $p, $limit, $start, $activeareas ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:333`](../../../core/components/com_whatsnew/site/controllers/results.php#L333) with `[ $p, $limit, $start, $activeareas ]`
-- [`core/modules/mod_whatsnew/helper.php:179`](../../../core/modules/mod_whatsnew/helper.php#L179) with `[ $p, $count, 0, $activeareas, array() ]`
+- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:100`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L100) with `[ $p, 999, 0, $areas, ],`
+- [`core/components/com_whatsnew/site/controllers/results.php:113`](../../../core/components/com_whatsnew/site/controllers/results.php#L113) with `[ $p, 0, 0, $activeareas, ],`
+- [`core/components/com_whatsnew/site/controllers/results.php:126`](../../../core/components/com_whatsnew/site/controllers/results.php#L126) with `[ $p, $limit, $start, $activeareas, ],`
+- [`core/components/com_whatsnew/site/controllers/results.php:307`](../../../core/components/com_whatsnew/site/controllers/results.php#L307) with `[ $p, $limit, $start, $activeareas, ],`
+- [`core/modules/mod_whatsnew/mod_whatsnew.php:177`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L177) with `[ $p, $count, 0, $activeareas, [], ]`
 
 Listeners:
 
-- `plg_whatsnew_content` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/content/content.php)
-- `plg_whatsnew_events` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/events/events.php)
-- `plg_whatsnew_kb` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/kb/kb.php)
-- `plg_whatsnew_publications` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/publications/publications.php)
-- `plg_whatsnew_resources` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/resources/resources.php)
-- `plg_whatsnew_wiki` — [`onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()`](../../../core/plugins/whatsnew/wiki/wiki.php)
+- `plg_whatsnew_content` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/content/content.php)
+- `plg_whatsnew_events` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/events/events.php)
+- `plg_whatsnew_kb` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/kb/kb.php)
+- `plg_whatsnew_publications` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/publications/publications.php)
+- `plg_whatsnew_resources` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/resources/resources.php)
+- `plg_whatsnew_wiki` — [`onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])`](../../../core/plugins/whatsnew/wiki/wiki.php)
 
 ## `whatsnew.onWhatsnewAreas`
 
 Fired from:
 
-- [`core/components/com_whatsnew/site/controllers/results.php:480`](../../../core/components/com_whatsnew/site/controllers/results.php#L480)
-- [`core/modules/mod_whatsnew/helper.php:38`](../../../core/modules/mod_whatsnew/helper.php#L38)
+- [`core/components/com_whatsnew/site/controllers/results.php:441`](../../../core/components/com_whatsnew/site/controllers/results.php#L441)
+- [`core/modules/mod_whatsnew/mod_whatsnew.php:49`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L49)
 
 Listeners:
 

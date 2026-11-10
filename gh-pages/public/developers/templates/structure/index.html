@@ -236,9 +236,10 @@ what you like. The rest the CMS looks for by name.</p>
 <h2 id="what-is-actually-required">What is actually required</h2>
 <p>Only two things:</p>
 <ul>
-<li><strong><code>index.php</code>.</strong> If it is missing, <code>Hubzero\Document\Type\Html</code> silently
-falls back to <code>core/templates/system</code> and renders that instead. The symptom
-is a hub that looks unstyled rather than broken.</li>
+<li><strong><code>index.php</code>.</strong> <code>Hubzero\Document\Type\Html</code> looks for the page in the
+template and then in <code>core/templates/system</code>, so a template without one
+renders the system template's instead. The symptom is a hub that looks
+unstyled rather than broken.</li>
 <li><strong>A row in <code>#__extensions</code>, and a style in <code>#__template_styles</code>.</strong> The
 administrator's template list is a query against <code>#__extensions</code>, not a scan
 of the filesystem, so a directory nobody has registered is invisible — and,
@@ -263,8 +264,12 @@ parameters to edit and contributes no module positions. See
 <td>The document, for every normal page. See <a href="../layouts/index.html">Page layout</a>.</td>
 </tr>
 <tr>
+<td><code>home.php</code></td>
+<td><code>index.php</code>, on the front page, where the template ships one. It replaces everything inside <code>main</code> — the gutters, the asides and the component alike — so the front page is the template's to lay out. Optional, and the shipped templates other than <code>mesozoic</code> do not have one.</td>
+</tr>
+<tr>
 <td><code>{tmpl}.php</code></td>
-<td>The document, when the request carries <code>tmpl={name}</code>. <code>tmpl=component</code> gives modal windows and popups their bare frame; <code>com_help</code> sets <code>tmpl=help</code>, <code>com_cpanel</code> sets <code>tmpl=cpanel</code>, <code>com_login</code> sets <code>tmpl=login</code>, and <code>com_groups</code> sets <code>tmpl=group</code> for super group pages.</td>
+<td>The document, when the request carries <code>tmpl={name}</code>. <code>tmpl=component</code> gives modal windows and popups their bare frame; <code>com_help</code> sets <code>tmpl=help</code>, <code>com_cpanel</code> sets <code>tmpl=cpanel</code>, <code>com_login</code> sets <code>tmpl=login</code>, and <code>com_groups</code> sets <code>tmpl=group</code> for super group pages. A name no template and no parent provides is a 404.</td>
 </tr>
 <tr>
 <td><code>error.php</code></td>

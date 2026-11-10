@@ -236,14 +236,14 @@ registration, and <code>com_bookings</code> triggering <code>bookings.onReservat
 what calls it.</p>
 <h2 id="a-real-one">A real one</h2>
 <p><code>plgContentFormatwiki</code> is the same shape with two methods:</p>
-<pre><code class="language-php">// No direct access
-defined('_HZEXEC_') or die;
+<pre><code class="language-php">/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 /**
  * Wiki formatted Content Plugin
- */
-class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
-{
 </code></pre>
 <p>It answers <code>onContentBeforeSave</code> and <code>onContentPrepare</code>, and keeps its two
 helpers, <code>_isWiki()</code> and <code>_key()</code>, private — which is not a style preference.
@@ -270,11 +270,11 @@ See the warning below.</p>
 <td><code>com_</code> plus the group name. Legacy, and wrong for any group that is not a component; do not rely on it.</td>
 </tr>
 <tr>
-<td><code>$_name</code>, <code>$_type</code></td>
+<td><code>$pluginName</code>, <code>$pluginType</code></td>
 <td>The plugin's element and group, both <code>protected</code>.</td>
 </tr>
 <tr>
-<td><code>$_autoloadLanguage</code></td>
+<td><code>$autoloadLanguage</code></td>
 <td>Set <code>true</code> to load the language file in the constructor.</td>
 </tr>
 <tr>
@@ -301,7 +301,7 @@ use them to hand a message back to the component that triggered them. The
 component has to ask: an error set in a plugin goes nowhere on its own.</p>
 <h2 id="the-constructor">The constructor</h2>
 <p>You rarely need one. If you write one, call the parent — it is what populates
-<code>$params</code>, <code>$_name</code>, and <code>$_type</code>, and what loads the language file:</p>
+<code>$params</code>, <code>$pluginName</code>, and <code>$pluginType</code>, and what loads the language file:</p>
 <pre><code class="language-php">public function __construct(&amp;$subject, $config)
 {
 	parent::__construct($subject, $config);

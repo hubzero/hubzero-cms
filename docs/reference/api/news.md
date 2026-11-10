@@ -15,7 +15,7 @@ Endpoints under `/api/news`, from the `com_news` API controllers. Authenticate w
 
 Displays a list of articles
 
-API version 1.0, task `list` in [`articlesv1_0.php`](../../../core/components/com_news/api/controllers/articlesv1_0.php#L23).
+API version 1.0, task `list` in [`articlesv1r0.php`](../../../core/components/com_news/api/controllers/articlesv1r0.php#L24).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

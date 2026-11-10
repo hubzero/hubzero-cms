@@ -204,24 +204,24 @@ plain array:</p>
 </code></pre>
 <p><code>Hubzero\Database\DatabaseServiceProvider</code> reads those values at boot and
 registers the resulting driver in the application container under <code>db</code>:</p>
-<pre><code class="language-php">	public function register()
-	{
-		$this-&gt;app['db'] = function($app)
-		{
-			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql library calls from php
-			$driver = (Config::get('dbtype') == 'mysql') ? 'pdo' : Config::get('dbtype');
+<pre><code class="language-php">     */
+    public function register()
+    {
+        $this-&gt;app['db'] = function ($app) {
+            $driver = \Config::get('dbtype');
 
-			$options = [
-				'driver'   =&gt; $driver,
-				'host'     =&gt; Config::get('host'),
-				'user'     =&gt; Config::get('user'),
-				'password' =&gt; Config::get('password'),
-				'database' =&gt; Config::get('db'),
-				'prefix'   =&gt; Config::get('dbprefix')
-			];
+            $options = [
+                'driver'   =&gt; $driver,
+                'host'     =&gt; \Config::get('host'),
+                'user'     =&gt; \Config::get('user'),
+                'password' =&gt; \Config::get('password'),
+                'database' =&gt; \Config::get('db'),
+                'prefix'   =&gt; \Config::get('dbprefix'),
+            ];
 
-			return Driver::getInstance($options);
-		};
+            return Driver::getInstance($options);
+        };
+    }
 </code></pre>
 <p>Note the shim on the first line of the closure. A <code>dbtype</code> of <code>mysql</code> is
 turned into the <code>pdo</code> driver, and <code>Driver::getInstance()</code> then turns <code>pdo</code>

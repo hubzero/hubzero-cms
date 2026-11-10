@@ -540,6 +540,115 @@ failed update rolls back to the state before it started, and leaves you to
 finish the update by hand.</p>
 <p><a href="../../reference/muse/index.html#muse-repository-clean"><code>muse repository clean</code></a> prunes
 rollback points and stashes, and asks before each.</p>
+<h4 id="flavors">Flavors</h4>
+<p><a href="../../reference/muse/index.html#muse-repository-flavor"><code>muse repository:flavor</code></a>
+shapes a hub from a <strong>flavor</strong>: a JSON description of the switches that make
+one hub differ from another. The CMS ships two in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/flavors/flavors.json"><code>core/flavors/flavors.json</code></a> — <code>default</code>,
+the CMS without simulation tools, and <code>full</code>, with them — and a hub adds its
+own in <code>app/flavors/</code>, or in any directory named with <code>--path</code> or the
+<code>HUBZERO_FLAVORS</code> environment variable. Files are read in that order and the
+first definition of a name wins, so a hub redefines a shipped flavor by
+writing one of the same name.</p>
+<pre><code class="language-bash">php core/bin/muse repository:flavor list             # what there is, and from where
+php core/bin/muse repository:flavor show full        # its levers, resolved
+php core/bin/muse repository:flavor set default      # pull them
+php core/bin/muse repository:flavor status           # which flavor the hub matches
+php core/bin/muse repository:flavor status quiet --path=/srv/flavors
+</code></pre>
+<p>A file holds any number of flavors, an object keyed by name, written as JSON
+(<code>*.json</code>) or YAML (<code>*.yml</code>, <code>*.yaml</code>) — the two read alike, and within a
+directory files are read in name order. YAML can carry a comment, which a
+hub's own file usually wants:</p>
+<pre><code class="language-yaml"># Why this hub is shaped this way, next to what shapes it
+quiet:
+  extends: full
+  description: Full, without the poll
+  components:
+    disable: [com_poll]
+  menu:
+    items:
+      community/poll: 0     # the navigation entry; the poll's own route is left alone
+</code></pre>
+<p>Each flavor is an object of <strong>levers</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Lever</th>
+<th>Shape</th>
+<th>Pulls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>Shown by <code>list</code></td>
+</tr>
+<tr>
+<td><code>extends</code></td>
+<td>string</td>
+<td>The flavor this one starts from</td>
+</tr>
+<tr>
+<td><code>template</code></td>
+<td>string</td>
+<td>The site template made the default style</td>
+</tr>
+<tr>
+<td><code>components</code></td>
+<td><code>{enable, disable}</code></td>
+<td><code>#__extensions.enabled</code> by element</td>
+</tr>
+<tr>
+<td><code>modules</code></td>
+<td><code>{enable, disable, params, items}</code></td>
+<td>The module's enabled flag; <code>params</code> merged into every instance; <code>items</code> publishes or hides site instances — a number names one by id, anything else names every instance with that title</td>
+</tr>
+<tr>
+<td><code>plugins</code></td>
+<td><code>{enable, disable, params}</code></td>
+<td>Named <code>folder/element</code>; <code>params</code> merged into the plugin's</td>
+</tr>
+<tr>
+<td><code>dashboard</code></td>
+<td><code>{tiles: [{module, col}, …]}</code></td>
+<td>The member dashboard's default tiles, two rows high, stacked per column in the order given</td>
+</tr>
+<tr>
+<td><code>kb</code></td>
+<td><code>{categories, articles}</code></td>
+<td>Published state by alias</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td><code>{articles}</code></td>
+<td>Published state by alias</td>
+</tr>
+<tr>
+<td><code>menu</code></td>
+<td><code>{items: {path: state}}</code></td>
+<td>Published state of site menu items by path — the address the router matches. Meant for navigation entries; a generated component route (the <code>components</code> menu) is what <code>muse routes fix</code> republishes, so hide the component instead</td>
+</tr>
+<tr>
+<td><code>resource_types</code></td>
+<td><code>{alias: {column: value}}</code></td>
+<td>Columns of <code>#__resource_types</code> by alias</td>
+</tr>
+</tbody>
+</table>
+<p>Every lever is a switch on rows that exist; nothing is added or removed, so
+applying one flavor after another leaves the hub as the second describes it.
+A key that is not a lever is refused by name, with the list of what is.</p>
+<p>Flavors <strong>cascade</strong>. One that <code>extends</code> another starts from its parent's
+levers and overrides them: a scalar replaces; a name the child enables leaves
+the inherited disable list, and the other way round; <code>params</code> and states
+merge key by key; a <code>dashboard</code> layout replaces the layout. This is how
+<code>full</code> is written — as <code>default</code> with the tool pieces named in <code>enable</code> — and
+a parent may live in any of the directories, so a hub's flavor can start from
+a shipped one. A circle, or a parent defined nowhere, is refused.</p>
+<p><code>muse install</code> applies a flavor after the migrations; see
+<a href="../getting-started/devenvironment/index.html#getting-a-hub-to-develop-against">the development environment</a>.</p>
 <h3 id="scaffolding">Scaffolding</h3>
 <p><a href="../../reference/muse/index.html#muse-scaffolding"><code>muse scaffolding</code></a> writes the files
 you would otherwise copy from an existing extension and rename. It knows how

@@ -200,25 +200,24 @@ key — or do not cache it.</p>
 </aside>
 <h2 id="what-the-facade-resolves-to">What the facade resolves to</h2>
 <p>Two keys are registered, and they are not the same object:</p>
-<pre><code class="language-php">	public function register()
-	{
-		$this-&gt;app['cache'] = function($app)
-		{
-			return new Manager($app);
-		};
+<pre><code class="language-php">     */
+    public function register()
+    {
+        $this-&gt;app['cache'] = function ($app) {
+            return new Manager($app);
+        };
 
-		$this-&gt;app['cache.store'] = function($app)
-		{
-			$handler = !$app['config']-&gt;get('caching') ? 'none' : $app['config']-&gt;get('cache_handler');
+        $this-&gt;app['cache.store'] = function ($app) {
+            $handler = !$app['config']-&gt;get('caching') ? 'none' : $app['config']-&gt;get('cache_handler');
 
-			if ($app-&gt;isAdmin())
-			{
-				$handler = 'none';
-			}
+            if ($app-&gt;isAdmin()) {
+                $handler = 'none';
+            }
 
-			return $app['cache']-&gt;storage($handler);
-		};
-	}
+            return $app['cache']-&gt;storage($handler);
+        };
+    }
+}
 </code></pre>
 <p><code>cache</code> is the <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Cache/Manager.php"><code>Hubzero\Cache\Manager</code></a>,
 which resolves and caches storage instances. <code>cache.store</code> is one storage
@@ -243,17 +242,17 @@ $rendered = Cache::get('wiki.r' . $revision-&gt;get('id'));
 means two and a half <strong>days</strong>, not an hour.</p>
 <p>That is the shape of nearly every use in the tree — write with a TTL, read
 back, recompute on a miss:</p>
-<pre><code class="language-php">		{
-			// Caching
-			if (!($rendered = Cache::get('wiki.r' . $revision-&gt;get('id'))))
-			{
-				$rendered = $revision-&gt;content($this-&gt;page);
+<pre><code class="language-php">
+        //App::get('config')-&gt;get('debug') || App::get('config')-&gt;get('profile') ? App::get('profiler')-&gt;mark('afterWikiParse') : null;
 
-				Cache::put('wiki.r' . $revision-&gt;get('id'), $rendered, intval($this-&gt;book-&gt;config('cache_time', 15)));
-			}
-			$revision-&gt;set('pagehtml', $rendered);
-		}
-		else
+        // Handle display events
+        $event = new \stdClass();
+
+        $results = Event::trigger('wiki.onAfterDisplayTitle', [$this-&gt;page, &amp;$revision, $this-&gt;config]);
+        $event-&gt;afterDisplayTitle = trim(implode(&quot;\n&quot;, $results));
+
+        $results = Event::trigger('wiki.onBeforeDisplayContent', [&amp;$this-&gt;page, &amp;$revision, $this-&gt;config]);
+        $event-&gt;beforeDisplayContent = trim(implode(&quot;\n&quot;, $results));
 </code></pre>
 <table>
 <thead>

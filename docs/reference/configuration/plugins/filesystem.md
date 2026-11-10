@@ -47,7 +47,7 @@ GitHub connectivity plugin
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
-| `repository` | Repository | text | — | Repository to connect to |
+| `repository` | Repository | text | — | The GitHub repository you wish to use (in the format of vendor/repository) |
 
 ## Filesystem - Google Drive (`plg_filesystem_googledrive`)
 

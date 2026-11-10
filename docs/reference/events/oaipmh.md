@@ -11,7 +11,7 @@ Events in the `oaipmh` group. A plugin in `core/plugins/oaipmh/` receives an eve
 
 Fired from:
 
-- [`core/components/com_oaipmh/models/service.php:246`](../../../core/components/com_oaipmh/models/service.php#L246) with `[&$this]`
+- [`core/components/com_oaipmh/models/service.php:240`](../../../core/components/com_oaipmh/models/service.php#L240) with `[&$this]`
 
 Listeners:
 

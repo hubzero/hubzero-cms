@@ -194,34 +194,34 @@ functions will fail there in ways that only appear on that hub. And the
 virus scan is here, not in your controller: everything a member uploads has
 to pass <code>isSafe()</code>, and code that writes the file itself skips it.</p>
 <h2 id="what-the-facade-resolves-to">What the facade resolves to</h2>
-<pre><code class="language-php">	public function register()
-	{
-		$this-&gt;app['filesystem'] = function($app)
-		{
-			if ($app['config']-&gt;get('ftp_enable'))
-			{
-				$adapter = new Ftp(array(
-					'host'     =&gt; $app['config']-&gt;get('ftp_host'),
-					'port'     =&gt; $app['config']-&gt;get('ftp_port'),
-					'username' =&gt; $app['config']-&gt;get('ftp_user'),
-					'password' =&gt; $app['config']-&gt;get('ftp_pass'),
-					'root'     =&gt; $app['config']-&gt;get('ftp_root'),
-				));
-			}
-			else
-			{
-				$adapter = new Local($app['config']-&gt;get('virus_scanner', &quot;clamscan -i --no-summary --block-encrypted&quot;));
-			}
+<pre><code class="language-php">     */
+    public function register()
+    {
+        $this-&gt;app['filesystem'] = function ($app) {
+            if ($app['config']-&gt;get('ftp_enable')) {
+                $adapter = new Ftp([
+                    'host'     =&gt; $app['config']-&gt;get('ftp_host'),
+                    'port'     =&gt; $app['config']-&gt;get('ftp_port'),
+                    'username' =&gt; $app['config']-&gt;get('ftp_user'),
+                    'password' =&gt; $app['config']-&gt;get('ftp_pass'),
+                    'root'     =&gt; $app['config']-&gt;get('ftp_root'),
+                ]);
+            } else {
+                $adapter = new Local($app['config']-&gt;get(
+                    'virus_scanner',
+                    &quot;clamscan -i --no-summary --block-encrypted&quot;,
+                ));
+            }
 
-			$filesystem = new Filesystem($adapter);
-			$filesystem-&gt;addMacro(new EmptyDirectory)
-			           -&gt;addMacro(new Directories)
-			           -&gt;addMacro(new Files)
-			           -&gt;addMacro(new DirectoryTree);
+            $filesystem = new Filesystem($adapter);
+            $filesystem-&gt;addMacro(new EmptyDirectory())
+                       -&gt;addMacro(new Directories())
+                       -&gt;addMacro(new Files())
+                       -&gt;addMacro(new DirectoryTree());
 
-			return $filesystem;
-		};
-	}
+            return $filesystem;
+        };
+    }
 </code></pre>
 <p>With <code>ftp_enable</code> set in the global configuration the adapter is
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Adapter/Ftp.php"><code>Ftp</code></a>,
@@ -439,44 +439,44 @@ characters of Unicode:</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/MacroInterface.php"><code>MacroInterface</code></a>
 — usually by extending <code>Hubzero\Filesystem\Macro\Base</code>, which supplies
 <code>setFilesystem()</code> — and provides <code>getMethod()</code> and <code>handle()</code>:</p>
-<pre><code class="language-php">class Files extends Base
+<pre><code class="language-php"> */
+class Files extends Base
 {
-	/**
-	 * Get the method name.
-	 *
-	 * @return  string
-	 */
-	public function getMethod()
-	{
-		return 'files';
-	}
+    /**
+     * Get the method name.
+     *
+     * @return  string
+     */
+    public function getMethod()
+    {
+        return 'files';
+    }
 
-	/**
-	 * List all files in the directory.
-	 *
-	 * @param   string   $path     The path of the folder to read.
-	 * @param   string   $filter   A filter for file names.
-	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full     True to return the full path to the file.
-	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
-	 * @return  array
-	 */
-	public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		$result = array();
+    /**
+     * List all files in the directory.
+     *
+     * @param   string   $path     The path of the folder to read.
+     * @param   string   $filter   A filter for file names.
+     * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to
+     *                             specify the maximum depth.
+     * @param   boolean  $full     True to return the full path to the file.
+     * @param   array    $exclude  Array with names of files which should not be shown in the result.
+     * @return  array
+     */
+    public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn', '.git',
+        'CVS', '.DS_Store', '__MACOSX'])
+    {
+        $result = [];
 
-		$contents = $this-&gt;filesystem-&gt;listContents($path, $filter, $recursive, $full, $exclude);
+        $contents = $this-&gt;filesystem-&gt;listContents($path, $filter, $recursive, $full, $exclude);
 
-		foreach ($contents as $object)
-		{
-			if ($object['type'] === 'file')
-			{
-				$result[] = $object['path'];
-			}
-		}
+        foreach ($contents as $object) {
+            if ($object['type'] === 'file') {
+                $result[] = $object['path'];
+            }
+        }
 
-		return $result;
-	}
+        return $result;
 </code></pre>
 <p><code>getMethod()</code> names the call; <code>handle()</code> receives whatever arguments the
 call was given, with <code>$this-&gt;filesystem</code> already set. Register it and call

@@ -11,7 +11,7 @@ Events in the `publications` group. A plugin in `core/plugins/publications/` rec
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:868`](../../../core/plugins/projects/publications/publications.php#L868) with `$pub`
+- [`core/plugins/projects/publications/publications.php:837`](../../../core/plugins/projects/publications/publications.php#L837) with `[$pub]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:803`](../../../core/plugins/projects/publications/publications.php#L803) with `$pub`
+- [`core/plugins/projects/publications/publications.php:777`](../../../core/plugins/projects/publications/publications.php#L777) with `[$pub]`
 
 No plugin in the source tree listens for this event.
 
@@ -27,29 +27,29 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:661`](../../../core/components/com_publications/site/controllers/publications.php#L661) with `[ $this->model, $this->_option, array($tab), 'all', $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:612`](../../../core/components/com_publications/site/controllers/publications.php#L612) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended]`
 
 Listeners:
 
-- `plg_publications_citations` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/citations/citations.php)
-- `plg_publications_dublincore` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/dublincore/dublincore.php)
-- `plg_publications_forks` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/forks/forks.php)
-- `plg_publications_googlescholar` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/googlescholar/googlescholar.php)
-- `plg_publications_jsonld` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/jsonld/jsonld.php)
-- `plg_publications_opengraph` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/opengraph/opengraph.php)
-- `plg_publications_questions` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/questions/questions.php)
-- `plg_publications_reviews` — [`onPublication($model, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/reviews/reviews.php)
-- `plg_publications_share` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/share/share.php)
-- `plg_publications_supportingdocs` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = true)`](../../../core/plugins/publications/supportingdocs/supportingdocs.php)
-- `plg_publications_usage` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/usage/usage.php)
-- `plg_publications_versions` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = false)`](../../../core/plugins/publications/versions/versions.php)
-- `plg_publications_wishlist` — [`onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)`](../../../core/plugins/publications/wishlist/wishlist.php)
+- `plg_publications_citations` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/citations/citations.php)
+- `plg_publications_dublincore` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/dublincore/dublincore.php)
+- `plg_publications_forks` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/forks/forks.php)
+- `plg_publications_googlescholar` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/googlescholar/googlescholar.php)
+- `plg_publications_jsonld` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/jsonld/jsonld.php)
+- `plg_publications_opengraph` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/opengraph/opengraph.php)
+- `plg_publications_questions` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/questions/questions.php)
+- `plg_publications_reviews` — [`onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/reviews/reviews.php)
+- `plg_publications_share` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/share/share.php)
+- `plg_publications_supportingdocs` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = true,)`](../../../core/plugins/publications/supportingdocs/supportingdocs.php)
+- `plg_publications_usage` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/usage/usage.php)
+- `plg_publications_versions` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = false,)`](../../../core/plugins/publications/versions/versions.php)
+- `plg_publications_wishlist` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/wishlist/wishlist.php)
 
 ## `publications.onPublicationAreas`
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:654`](../../../core/components/com_publications/site/controllers/publications.php#L654) with `[ $this->model, $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:606`](../../../core/components/com_publications/site/controllers/publications.php#L606) with `[ $this->model, $this->model->versionAlias, $extended]`
 
 No plugin in the source tree listens for this event.
 
@@ -73,21 +73,21 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/views/view/tmpl/default.php:200`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L200) with `[$this->publication, $this->option, 1]`
+- [`core/components/com_publications/site/views/view/tmpl/default.php:240`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L240) with `[$this->publication, $this->option, 1]`
 
 Listeners:
 
-- `plg_publications_forks` — [`onPublicationSub($publication, $option, $miniview=0)`](../../../core/plugins/publications/forks/forks.php)
-- `plg_publications_groups` — [`onPublicationSub($publication, $option, $miniview=0)`](../../../core/plugins/publications/groups/groups.php)
-- `plg_publications_recommendations` — [`onPublicationSub($publication, $option, $miniview=0)`](../../../core/plugins/publications/recommendations/recommendations.php)
-- `plg_publications_related` — [`onPublicationSub($publication, $option, $miniview=0)`](../../../core/plugins/publications/related/related.php)
-- `plg_publications_watch` — [`onPublicationSub($publication, $option, $miniview=0)`](../../../core/plugins/publications/watch/watch.php)
+- `plg_publications_forks` — [`onPublicationSub($publication, $option, $miniview = 0)`](../../../core/plugins/publications/forks/forks.php)
+- `plg_publications_groups` — [`onPublicationSub($publication, $option, $miniview = 0)`](../../../core/plugins/publications/groups/groups.php)
+- `plg_publications_recommendations` — [`onPublicationSub($publication, $option, $miniview = 0)`](../../../core/plugins/publications/recommendations/recommendations.php)
+- `plg_publications_related` — [`onPublicationSub($publication, $option, $miniview = 0)`](../../../core/plugins/publications/related/related.php)
+- `plg_publications_watch` — [`onPublicationSub($publication, $option, $miniview = 0)`](../../../core/plugins/publications/watch/watch.php)
 
 ## `publications.onPublicationsList`
 
 Fired from:
 
-- [`core/components/com_publications/site/views/browse/tmpl/item.php:51`](../../../core/components/com_publications/site/views/browse/tmpl/item.php#L51) with `[$this->line]`
+- [`core/components/com_publications/site/views/browse/tmpl/item.php:57`](../../../core/components/com_publications/site/views/browse/tmpl/item.php#L57) with `[$this->line]`
 
 No plugin in the source tree listens for this event.
 
@@ -95,7 +95,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/curation.php:966`](../../../core/components/com_publications/site/controllers/curation.php#L966) with `[$pub]`
+- [`core/components/com_publications/site/controllers/curation.php:875`](../../../core/components/com_publications/site/controllers/curation.php#L875) with `[$pub]`
 
 Listeners:
 

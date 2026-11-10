@@ -23,7 +23,7 @@ HUBzero Comments
 |---|---|---|---|---|
 | `comments_depth` | Depth | text | `3` | The number of levels comments can be nested. 1 level would be just comments, no replies to comments. |
 | `comments_limit` | Limit | text | `25` | The number of records to display at a time. |
-| `comments_sorting` | Sorting | list | `asc (Oldest first)` | The chronological order the comments are displayed. Options: `asc` Oldest first, `desc` The chronological order the comments are displayed. |
+| `comments_sorting` | Sorting | list | `asc (Oldest first)` | The chronological order the comments are displayed. Options: `asc` Oldest first, `desc` Newest first. |
 | `comments_viewable` | Viewable by | list | `0 (Anyone)` | Set the view access type. Options: `0` Anyone, `1` Logged-in users. |
 | `comments_editable` | Can edit | list | `1 (Yes)` | Users can edit their comments. Options: `0` No, `1` Yes. |
 | `comments_deletable` | Can delete | list | `0 (No)` | Users can delete their comments. Options: `0` No, `1` Yes. |

@@ -372,21 +372,7 @@ block outstanding moves to <strong>changes required</strong> rather than <strong
 assigned to them, split into <strong>Review</strong> and <strong>Pending changes</strong>.</p>
 <h2 id="where-the-counts-come-from">Where the counts come from</h2>
 <p>The <strong>Resources</strong> dashboard panel counts each state directly:</p>
-<pre><code class="language-php">		$queries = array(
-			'unpublished'   =&gt; 0,
-			'published'     =&gt; 1,
-			'draftUser'     =&gt; 2,
-			'pending'       =&gt; 3,
-			'removed'       =&gt; 4,
-			'draftInternal' =&gt; 5
-		);
-
-		foreach ($queries as $key =&gt; $state)
-		{
-			$database-&gt;setQuery(&quot;SELECT count(*) FROM `#__resources` WHERE published=$state AND standalone=1&quot;);
-			$this-&gt;$key = $database-&gt;loadResult();
-		}
-</code></pre>
+<!--include: core/modules/mod_resources/helper.php:32-45-->
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

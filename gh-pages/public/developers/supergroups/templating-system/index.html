@@ -365,12 +365,17 @@ into the group directory. It is a working starting point rather than a
 finished design: a header with the group title and menu, the content, and a
 footer.</p>
 <pre><code class="language-php">&lt;?php
+
 /**
  * Basic Template
  *
  * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  */
+
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 // define base path (without doc root)
 $base = rtrim(str_replace(PATH_ROOT, '', __DIR__), DS);
@@ -388,12 +393,6 @@ Document::addScript($base . DS . 'assets/js/main.js');
 
 &lt;?php if (!$no_html) : ?&gt;
 &lt;group:include type=&quot;content&quot; scope=&quot;before&quot; /&gt;
-
-&lt;div class=&quot;super-group-body-wrap group-&lt;?php echo $this-&gt;group-&gt;get('cn'); ?&gt;&quot;&gt;
-	&lt;div class=&quot;super-group-body&quot;&gt;
-		&lt;?php include_once 'includes/header.php'; ?&gt;
-
-		&lt;div class=&quot;super-group-content-wrap&quot;&gt;
 </code></pre>
 <p>Note the <code>no_html</code> check. When a request carries <code>no_html=1</code> the template
 emits only the content, which is what AJAX requests from group plugins rely

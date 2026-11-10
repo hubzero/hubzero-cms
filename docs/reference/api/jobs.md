@@ -16,7 +16,7 @@ Endpoints under `/api/jobs`, from the `com_jobs` API controllers. Authenticate w
 
 Display a list of jobs
 
-API version 1.0, task `list` in [`jobsv1_0.php`](../../../core/components/com_jobs/api/controllers/jobsv1_0.php#L27).
+API version 1.0, task `list` in [`jobsv1r0.php`](../../../core/components/com_jobs/api/controllers/jobsv1r0.php#L24).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -30,7 +30,7 @@ API version 1.0, task `list` in [`jobsv1_0.php`](../../../core/components/com_jo
 
 Display a job
 
-API version 1.0, task `job` in [`jobsv1_0.php`](../../../core/components/com_jobs/api/controllers/jobsv1_0.php#L95).
+API version 1.0, task `job` in [`jobsv1r0.php`](../../../core/components/com_jobs/api/controllers/jobsv1r0.php#L92).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

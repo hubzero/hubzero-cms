@@ -306,7 +306,7 @@ of new code.</p>
 <p><code>SiteController</code>'s constructor derives the component from the <strong>class
 namespace</strong>, not from the directory or the request: it explodes the class name
 and takes the second segment. <code>Components\Bookings\Site\Controllers\Instruments</code>
-gives <code>$this-&gt;_name = 'bookings'</code> and <code>$this-&gt;_option = 'com_bookings'</code>.</p>
+gives <code>$this-&gt;name = 'bookings'</code> and <code>$this-&gt;option = 'com_bookings'</code>.</p>
 <p>Get the namespace segment and the directory out of step — a class declared
 <code>namespace Components\Booking\...</code> inside <code>com_bookings/</code> — and nothing throws.
 The controller quietly reports itself as <code>com_booking</code>: it loads that
@@ -338,54 +338,12 @@ synthesised for the requested controller.</li>
 </ol>
 <p>Every component in the tree today uses the second form, and it is the one to
 write. Here is the whole of <code>com_kb</code>'s site entry point:</p>
-<pre><code class="language-php">namespace Components\Kb\Site;
-
-require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-require_once __DIR__ . DS . 'controllers' . DS . 'articles.php';
-
-// Instantiate controller
-$controller = new Controllers\Articles();
-$controller-&gt;execute();
-</code></pre>
+<!--include: core/components/com_kb/site/kb.php:8-15-->
 <p>That is the minimum: a namespace, a controller, <code>execute()</code>. (The two
 <code>require_once</code> lines above it in the file are the inherited habit noted above;
 the class loader covers both.) The administrator entry point does more,
 because the administrator needs an authorisation gate and a sub-menu:</p>
-<pre><code class="language-php">namespace Components\Kb\Admin;
-
-if (!\User::authorise('core.manage', 'com_kb'))
-{
-	\App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
-
-// Include scripts
-require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-require_once __DIR__ . DS . 'helpers' . DS . 'html.php';
-require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
-
-$controllerName = \Request::getCmd('controller', 'articles');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'articles';
-}
-
-\Submenu::addEntry(
-	\Lang::txt('COM_KB_ARTICLES'),
-	\Route::url('index.php?option=com_kb&amp;controller=articles', false),
-	$controllerName == 'articles'
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_KB_CATEGORIES'),
-	\Route::url('index.php?option=com_categories&amp;extension=com_kb', false)
-);
-
-require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller-&gt;execute();
-</code></pre>
+<!--include: core/components/com_kb/admin/kb.php:8-41-->
 <p>Three things are worth copying from it. The <code>core.manage</code> check is what keeps
 non-managers out of the whole client — no controller sees the request without
 it, and leaving it out means every logged-in user can reach the administrator

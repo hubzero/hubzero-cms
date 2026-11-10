@@ -223,33 +223,33 @@
 <h2 id="whatsnew-onwhatsnewareas"><code>whatsnew.onWhatsNewAreas</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/api/controllers/entriesv1_0.php#L79"><code>core/components/com_whatsnew/api/controllers/entriesv1_0.php:79</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/helpers/finder.php#L32"><code>core/components/com_whatsnew/helpers/finder.php:32</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/api/controllers/entriesv1r0.php#L78"><code>core/components/com_whatsnew/api/controllers/entriesv1r0.php:78</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/helpers/finder.php#L33"><code>core/components/com_whatsnew/helpers/finder.php:33</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="whatsnew-onwhatsnew"><code>whatsnew.onWhatsnew</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/api/controllers/entriesv1_0.php#L105"><code>core/components/com_whatsnew/api/controllers/entriesv1_0.php:105</code></a> with <code>[ $p, 999, 0, $areas ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L121"><code>core/components/com_whatsnew/site/controllers/results.php:121</code></a> with <code>[ $p, 0, 0, $activeareas ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L134"><code>core/components/com_whatsnew/site/controllers/results.php:134</code></a> with <code>[ $p, $limit, $start, $activeareas ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L333"><code>core/components/com_whatsnew/site/controllers/results.php:333</code></a> with <code>[ $p, $limit, $start, $activeareas ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/modules/mod_whatsnew/helper.php#L179"><code>core/modules/mod_whatsnew/helper.php:179</code></a> with <code>[ $p, $count, 0, $activeareas, array() ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/api/controllers/entriesv1r0.php#L100"><code>core/components/com_whatsnew/api/controllers/entriesv1r0.php:100</code></a> with <code>[ $p, 999, 0, $areas, ],</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L113"><code>core/components/com_whatsnew/site/controllers/results.php:113</code></a> with <code>[ $p, 0, 0, $activeareas, ],</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L126"><code>core/components/com_whatsnew/site/controllers/results.php:126</code></a> with <code>[ $p, $limit, $start, $activeareas, ],</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L307"><code>core/components/com_whatsnew/site/controllers/results.php:307</code></a> with <code>[ $p, $limit, $start, $activeareas, ],</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/modules/mod_whatsnew/mod_whatsnew.php#L177"><code>core/modules/mod_whatsnew/mod_whatsnew.php:177</code></a> with <code>[ $p, $count, 0, $activeareas, [], ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
-<li><code>plg_whatsnew_content</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/content/content.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
-<li><code>plg_whatsnew_events</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/events/events.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
-<li><code>plg_whatsnew_kb</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/kb/kb.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
-<li><code>plg_whatsnew_publications</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/publications/publications.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
-<li><code>plg_whatsnew_resources</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/resources/resources.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
-<li><code>plg_whatsnew_wiki</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/wiki/wiki.php"><code>onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array()</code></a></li>
+<li><code>plg_whatsnew_content</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/content/content.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
+<li><code>plg_whatsnew_events</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/events/events.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
+<li><code>plg_whatsnew_kb</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/kb/kb.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
+<li><code>plg_whatsnew_publications</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/publications/publications.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
+<li><code>plg_whatsnew_resources</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/resources/resources.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
+<li><code>plg_whatsnew_wiki</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/whatsnew/wiki/wiki.php"><code>onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])</code></a></li>
 </ul>
 <h2 id="whatsnew-onwhatsnewareas-2"><code>whatsnew.onWhatsnewAreas</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L480"><code>core/components/com_whatsnew/site/controllers/results.php:480</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/modules/mod_whatsnew/helper.php#L38"><code>core/modules/mod_whatsnew/helper.php:38</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_whatsnew/site/controllers/results.php#L441"><code>core/components/com_whatsnew/site/controllers/results.php:441</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/modules/mod_whatsnew/mod_whatsnew.php#L49"><code>core/modules/mod_whatsnew/mod_whatsnew.php:49</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>

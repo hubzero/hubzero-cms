@@ -16,7 +16,7 @@ Endpoints under `/api/citations`, from the `com_citations` API controllers. Auth
 
 Display a list of citations
 
-API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com_citations/api/controllers/entriesv1_0.php#L23).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_citations/api/controllers/entriesv1r0.php#L22).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -30,7 +30,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 
 Display a list of citations
 
-API version 1.1, task `list` in [`entriesv1_1.php`](../../../core/components/com_citations/api/controllers/entriesv1_1.php#L24).
+API version 1.1, task `list` in [`entriesv1r1.php`](../../../core/components/com_citations/api/controllers/entriesv1r1.php#L23).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

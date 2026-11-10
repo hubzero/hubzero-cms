@@ -17,7 +17,7 @@ Endpoints under `/api/cache`, from the `com_cache` API controllers. Authenticate
 
 Clean one or more cache groups
 
-API version 1.0, task `clean` in [`cachev1_0.php`](../../../core/components/com_cache/api/controllers/cachev1_0.php#L87).
+API version 1.0, task `clean` in [`cachev1r0.php`](../../../core/components/com_cache/api/controllers/cachev1r0.php#L85).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -27,7 +27,7 @@ API version 1.0, task `clean` in [`cachev1_0.php`](../../../core/components/com_
 
 Display a list of entries
 
-API version 1.0, task `list` in [`cachev1_0.php`](../../../core/components/com_cache/api/controllers/cachev1_0.php#L25).
+API version 1.0, task `list` in [`cachev1r0.php`](../../../core/components/com_cache/api/controllers/cachev1r0.php#L24).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -41,4 +41,4 @@ API version 1.0, task `list` in [`cachev1_0.php`](../../../core/components/com_c
 
 Purge expired data
 
-API version 1.0, task `purge` in [`cachev1_0.php`](../../../core/components/com_cache/api/controllers/cachev1_0.php#L128).
+API version 1.0, task `purge` in [`cachev1r0.php`](../../../core/components/com_cache/api/controllers/cachev1r0.php#L123).
