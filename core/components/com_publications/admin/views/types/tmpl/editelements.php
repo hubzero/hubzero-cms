@@ -257,7 +257,7 @@ $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' '
                             ? 'number'
                             : 'text';
                         $minAttr = ($paramname == 'min' || $paramname == 'max')
-                            ? ' min="0"'
+                            ? ' min="0" '
                             : '';
                         ?>
                         <input

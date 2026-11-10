@@ -147,7 +147,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                     $done     = ($complete == 100) ? ' complete' : '';
 
                     $this->css('
-				.unit-fill .unit-fill-inner' . $unit->get('id ') . '{
+				.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
 					height: ' . $complete . '%;
 					margin-top: ' . $margin . '%;
 				}

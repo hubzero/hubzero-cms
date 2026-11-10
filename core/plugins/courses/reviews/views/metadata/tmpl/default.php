@@ -101,7 +101,7 @@ $this->css('
     }
     .review-bar-1star {
         width: ' . ($total ? round($distribution[1] / $total, 2) * 100 : 0) . '%;
-    }
+	}
 ');
 ?>
 <div class="reviews-summary">

@@ -81,8 +81,7 @@ class Questions extends Plugin
         $dbh = App::get('db');
         $dbh->setQuery(
             "SELECT
-				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer,
-				r.created AS r_created, $qweight AS qweight, null AS rweight,
+				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, $qweight AS qweight, null AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = q.created_by)
@@ -104,8 +103,7 @@ class Questions extends Plugin
 			WHERE $qweight > 0 AND q.state != 2
 			UNION
 			SELECT
-				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer,
-				r.created AS r_created, null AS qweight, $rweight AS rweight,
+				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, null AS qweight, $rweight AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = q.created_by)

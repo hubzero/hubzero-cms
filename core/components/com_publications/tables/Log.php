@@ -514,9 +514,8 @@ class Log extends Table
 						AND L.month='$pastMonthNum' AND L.page_views > 0  ";
         }
 
-        $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND P.id=C.project_id "
-            . "AND C.id=V.publication_id AND C.category = t.id AND V.main=1 AND V.state=1 "
-            . "AND V.published_up < '" . Date::toSql() . "'";
+        $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND P.id=C.project_id AND C.id=V.publication_id AND C.category = t.id AND
+					V.main=1 AND V.state=1 AND V.published_up < '" . Date::toSql() . "'";
         $query .= " GROUP BY V.publication_id ";
 
         $query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " : "ORDER BY V.title ASC ";

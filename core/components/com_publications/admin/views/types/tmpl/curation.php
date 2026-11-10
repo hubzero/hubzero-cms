@@ -153,7 +153,7 @@ foreach ($this->blocks as $b) {
                             <?php $isSel = $curParams->default_category == $cat->id; ?>
                             <option
                                 value="<?php echo $cat->id; ?>"
-                                <?php echo $isSel ? 'selected="selected"' : ''; ?>
+                                <?php echo $isSel ? ' selected="selected"' : ''; ?>
                             ><?php echo $cat->name; ?></option>
                         <?php } ?>
                         </select>
@@ -279,10 +279,10 @@ foreach ($this->blocks as $b) {
                     <div class="col span2">
                         <?php
                         $activeChecked = (!isset($block->active) || $block->active == 1)
-                            ? ' checked="checked"'
+                            ? 'checked="checked"'
                             : '';
                         $inactiveChecked = (isset($block->active) && $block->active == 0)
-                            ? ' checked="checked"'
+                            ? 'checked="checked"'
                             : '';
                         $disabled = ($blockMaster->minimum > 0
                             && !in_array($block->name, $blockSelection['active']))

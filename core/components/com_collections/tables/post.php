@@ -259,9 +259,9 @@ class Post extends Table
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchTerm = '%' . strtolower($filters['search']) . '%';
-            $where[] = "(LOWER(i.title) LIKE " . $this->db->quote($searchTerm) . " "
-                . "OR LOWER(i.description) LIKE " . $this->db->quote($searchTerm) . " "
-                . "OR LOWER(p.description) LIKE " . $this->db->quote($searchTerm) . ")";
+            $where[] = "(LOWER(i.title) LIKE " . $this->db->quote($searchTerm) . " OR
+						LOWER(i.description) LIKE " . $this->db->quote($searchTerm) . " OR
+						LOWER(p.description) LIKE " . $this->db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {

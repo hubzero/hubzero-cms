@@ -95,9 +95,9 @@ class Events extends GroupMacro
         //build query
         $sql = "SELECT * FROM `#__events`
 				WHERE publish_up >= UTC_TIMESTAMP()
-				AND scope=" . $database->quote('group
-				') . "AND scope_id=" . $database->Quote($group->get('gidNumber
-				')) . "AND state=1";
+				AND scope=" . $database->quote('group') . "
+				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
+				AND state=1";
 
         //add ordering
         $sql .= " ORDER BY publish_up ASC";

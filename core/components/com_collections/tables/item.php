@@ -267,7 +267,8 @@ class Item extends Table
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchTerm = '%' . strtolower($filters['search']) . '%';
             $where[] = "(LOWER(b.title) LIKE " . $this->db->quote($searchTerm)
-                . " OR LOWER(b.description) LIKE " . $this->db->quote($searchTerm) . ")";
+                . "
+					OR LOWER(b.description) LIKE " . $this->db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {

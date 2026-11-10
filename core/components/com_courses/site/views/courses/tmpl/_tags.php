@@ -61,8 +61,8 @@ foreach ($this->tags as $tag) {
     }
     if ($this->config->get('show_sizes', 0) == 2) {
         $tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '" data-tag="' . $this->escape($tag->get('tag')) . '">'
-            . $this->escape(stripslashes($tag->get('raw_tag ')))
-            . '<span>' . $tag->get('count') . '</span></a></li>';
+            . $this->escape(stripslashes($tag->get('raw_tag')))
+            . ' <span>' . $tag->get('count') . '</span></a></li>';
     } elseif (isset($this->filters)) {
         $append = '&tag=' . $tag->get('tag');
         if (isset($this->filters['sortby']) && $this->filters['sortby']) {

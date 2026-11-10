@@ -54,8 +54,8 @@ class Stats extends AdminController
         if ($filters['group'] || $filters['group'] == '_none_') {
             $query = "SELECT a.username, a.name, a.id
 				FROM `#__users` AS a, `#__xgroups` AS g, `#__xgroups_members` AS gm
-				WHERE g.cn=" . $this->database->quote($filters['group '])
-                . "AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
+				WHERE g.cn=" . $this->database->quote($filters['group'])
+                . " AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
 				ORDER BY a.name";
         } else {
             $query = "SELECT DISTINCT a.username, a.name, a.id
@@ -129,7 +129,7 @@ class Stats extends AdminController
             . "MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
-				AND t.type=" . $this->database->quote($filters['type ']) . "AND t.open=0";
+				AND t.type=" . $this->database->quote($filters['type']) . " AND t.open=0";
         if (!$filters['group'] || $filters['group'] == '_none_') {
             $sql .= " AND t.`group_id`=0";
         } elseif ($filters['group']) {

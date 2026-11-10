@@ -135,11 +135,10 @@ class PdfForm
         $dbh = self::getDbh();
 
         $dbh->setQuery(
-            'SELECT pf.id, title, pf.created, '
-            . '(SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated '
-            . 'FROM `#__courses_forms` pf '
-            . 'WHERE title IS NOT null AND title != \'\' AND active = 1 '
-            . 'ORDER BY title',
+            'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated
+			FROM `#__courses_forms` pf
+			WHERE title IS NOT null AND title != \'\' AND active = 1
+			ORDER BY title',
         );
 
         return $dbh->loadAssocList();
@@ -578,13 +577,11 @@ class PdfForm
             ? (int) $version
             : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
-            'SELECT pfa.id AS answer_id, question_id, page, correct, '
-            . 'pfa.left_dist AS a_left, pfa.top_dist AS a_top, '
-            . 'pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width '
-            . 'FROM `#__courses_form_questions` pfq '
-            . 'LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id '
-            . 'WHERE form_id = ' . $fid . ' AND version = ' . $versionClause . ' '
-            . 'ORDER BY page, question_id',
+            'SELECT pfa.id AS answer_id, question_id, page, correct, pfa.left_dist AS a_left, pfa.top_dist AS a_top, pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width
+			FROM `#__courses_form_questions` pfq
+			LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id
+			WHERE form_id = ' . $fid . ' AND version = ' . $versionClause . '
+			ORDER BY page, question_id',
         );
 
         $rv = [];
@@ -629,10 +626,10 @@ class PdfForm
 
         $maxVersionSubquery = '(SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
-            'SELECT pfq.id, pfa.id AS answer_id '
-            . 'FROM `#__courses_form_questions` pfq '
-            . 'INNER JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id AND pfa.correct '
-            . 'WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery,
+            'SELECT pfq.id, pfa.id AS answer_id
+			FROM `#__courses_form_questions` pfq
+			INNER JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id AND pfa.correct
+			WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery,
         );
 
         $rv = [];
@@ -667,8 +664,9 @@ class PdfForm
         $maxVersionSubquery = '(SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $answersSubquery = '(SELECT 1 FROM `#__courses_form_answers` WHERE question_id = pfq.id LIMIT 1)';
         $dbh->setQuery(
-            'SELECT COUNT(*) FROM `#__courses_form_questions` pfq '
-            . 'WHERE form_id = ' . $fid . ' '
+            'SELECT COUNT(*)
+			FROM `#__courses_form_questions` pfq
+			WHERE form_id = ' . $fid . ' '
             . 'AND version = ' . $maxVersionSubquery . ' '
             . 'AND ' . $answersSubquery,
         );

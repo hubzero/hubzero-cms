@@ -69,25 +69,29 @@ if ($this->resp->getStartTime()) {
                     foreach ($layout[$idx - 1] as $qid => $group) :
                         foreach ($group['answers'] as $aidx => $ans) :
                             $view->css(
-                                '#question-' . $qid . '-' . $aidx . ' {
-                                    top: ' . $ans['top'] . 'px;
-                                    left: ' . $ans['left'] . 'px;
-                                }',
+                                '
+								#question-' . $qid . '-' . $aidx . ' {
+									top: ' . $ans['top'] . 'px;
+									left: ' . $ans['left'] . 'px;
+								}
+							',
                             );
                             echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="' . $ans['id'] . '" ' . (
                                 (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
                                     || (!isset($_POST['question-' . $qid])
                                         && isset($progress[$qid])
-                                        && $progress[$qid]['answer_id'] == $ans['id '])
-                                    ? 'checked="checked" '
+                                        && $progress[$qid]['answer_id'] == $ans['id'])
+                                    ? ' checked="checked" '
                                     : ''
                             ) . 'class="placeholder" type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(
-                                    '#question-' . $qid . '-incomplete-marker {
-                                        top: ' . $ans['top'] . 'px;
-                                        left: ' . ($ans['left'] - 20) . 'px;
-                                    }',
+                                    '
+									#question-' . $qid . '-incomplete-marker {
+										top: ' . $ans['top'] . 'px;
+										left: ' . ($ans['left'] - 20) . 'px;
+									}
+								',
                                 );
                                 echo '<div class="incomplete-marker" id="question-' . $qid . '-incomplete-marker">*</div>';
                             endif;

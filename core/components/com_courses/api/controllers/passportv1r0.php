@@ -185,7 +185,8 @@ class Passportv1r0 extends Base
 
         // Next see if the user is allowed to make this call
         $sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = '
-            . $db->quote($permissions_path) . ' AND (`user_id` = ' . $db->quote($userid)
+            . $db->quote($permissions_path) . ' AND
+				(`user_id` = ' . $db->quote($userid)
             . ' OR `consumer_key` = ' . $db->quote($consumerKey) . ' OR 0';
 
         foreach ($user_groups as $group) {

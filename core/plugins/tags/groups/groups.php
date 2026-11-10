@@ -88,11 +88,11 @@ class Groups extends Plugin
             . "COUNT(DISTINCT t.tagid) AS uniques,
 						a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
         $f_from = " FROM #__xgroups AS a $from
-                        JOIN #__tags_object AS t
-                        WHERE (a.type=1 OR a.type=3) $discoverability
-                        AND a.gidNumber=t.objectid
-                        AND t.tbl='groups'
-                        AND t.tagid IN ($ids)";
+						JOIN #__tags_object AS t
+						WHERE (a.type=1 OR a.type=3) $discoverability
+						AND a.gidNumber=t.objectid
+						AND t.tbl='groups'
+						AND t.tagid IN ($ids)";
         $f_from .= " GROUP BY a.gidNumber HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";
 

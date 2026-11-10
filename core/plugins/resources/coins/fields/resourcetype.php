@@ -117,11 +117,11 @@ class Resourcetype extends Select
             . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
 					<select id="fields_params_genre_0" name="fields[params][type][0][genre]">
 						<option value="article"'
-                . ($value['genre'] == 'article ' ? 'selected="selected"' : '') . '>article</option>
+                . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
 						<option value="book"'
-                . ($value['genre'] == 'book ' ? 'selected="selected"' : '') . '>book</option>
+                . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
 						<option value="bookitem"'
-                . ($value['genre'] == 'bookitem ' ? 'selected="selected"' : '') . '>bookitem</option>
+                . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
 					</select>
 				</div>
 				</fieldset>';

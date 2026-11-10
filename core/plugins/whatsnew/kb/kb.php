@@ -81,9 +81,9 @@ class Kb extends Plugin
 				ON c.id = f.category
 			WHERE f.state=1
 				AND c.published = 1
-				AND f.created > 
-				" . $database->quote($period->cStartDat) . "AND f.created < 
-				" . $database->quote($period->cEndDate) . "AND f.access IN ("
+				AND f.created > " . $database->quote($period->cStartDat) . "
+				AND f.created < " . $database->quote($period->cEndDate) . "
+				AND f.access IN ("
             . implode(',', User::getAuthorisedViewLevels()) . ")";
 
         $order_by = " ORDER BY f.created DESC, f.title";

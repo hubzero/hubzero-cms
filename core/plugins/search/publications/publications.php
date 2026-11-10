@@ -305,8 +305,7 @@ class Publications extends Plugin
 						FROM `#__tags`
 						LEFT JOIN `#__tags_object`
 						ON `#__tags`.id=`#__tags_object`.tagid
-						WHERE `#__tags_object`.objectid = {$row->latestVersion}
-						AND `#__tags_object`.tbl = 'publications';";
+						WHERE `#__tags_object`.objectid = {$row->latestVersion} AND `#__tags_object`.tbl = 'publications';";
                     $tags = $db->setQuery($sql2)->query()->loadColumn();
                 } else {
                     $authors = [];

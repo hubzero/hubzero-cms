@@ -236,11 +236,11 @@ class Pagebreak extends Plugin
             $row->language,
         );
         $row->toc .= '<ul>
-            <li>
-                <a href="' . Route::url($articleRoute . '&showall=&limitstart=') . '" class="'
+			<li>
+				<a href="' . Route::url($articleRoute . '&showall=&limitstart=') . '" class="'
                 . $class . '">' . $heading . '</a>
-            </li>
-            ';
+			</li>
+			';
 
         $i = 2;
 

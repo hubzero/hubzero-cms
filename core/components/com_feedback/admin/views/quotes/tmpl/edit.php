@@ -67,7 +67,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <legend><span><?php echo Lang::txt('COM_FEEDBACK_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <?php $notableChecked = ($this->row->get('notable_quote') == 1) ? ' checked="checked"' : ''; ?>
+                    <?php $notableChecked = ($this->row->get('notable_quote') == 1) ? 'checked="checked"' : ''; ?>
                     <input
                         type="checkbox"
                         name="fields[notable_quote]"
@@ -119,7 +119,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <?php
                     $userIdVal = $this->escape(stripslashes($this->row->get('user_id')));
                     $readonlyAttr = ($this->row->get('id') && $this->row->get('user_id'))
-                        ? ' readonly="readonly"'
+                        ? 'readonly="readonly"'
                         : '';
                     ?>
                     <input

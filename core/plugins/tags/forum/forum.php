@@ -105,10 +105,10 @@ class Forum extends Plugin
             . "params, e.scope AS "
             . "rcount, c.alias AS data1, s.alias AS data2, e.scope_id AS data3 ";
         $e_from  = " FROM #__forum_posts AS e
-                     LEFT JOIN #__forum_categories c ON c.id = e.category_id
-                    LEFT JOIN #__forum_sections s ON s.id = c.section_id
-                    LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
-                    LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
+		 			LEFT JOIN #__forum_categories c ON c.id = e.category_id
+					LEFT JOIN #__forum_sections s ON s.id = c.section_id
+					LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
+					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
         $e_where  = " WHERE e.state=1 AND e.parent=0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '');
         $e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";

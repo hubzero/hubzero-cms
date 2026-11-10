@@ -537,7 +537,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             </td>
                                             <td>
                                                 <?php
-                                                $delCls = $logo ? '' : 'class="hide" ';
+                                                $delCls = $logo ? '' : 'class="hide"';
                                                 $delUrl = Route::url(
                                                     'index.php?option=' . $this->option
                                                     . '&controller=logo&tmpl=component'

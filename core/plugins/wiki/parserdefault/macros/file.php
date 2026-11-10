@@ -525,10 +525,10 @@ class File extends WikiMacro
                 $html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" '
                     . 'data-width="' . intval($attr['width']) . '" '
                     . 'data-height="' . intval($attr['height']) . '" '
-                    . 'data-href="' . $attr['href'] . '">'
-                    . '<div class="missing">'
-                    . '<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">'
-                    . '<img alt="Unity Web Player. Install now!" src="' . $imgSrc . '" '
+                    . 'data-href="' . $attr['href'] . '">
+							<div class="missing">
+								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+									<img alt="Unity Web Player. Install now!" src="' . $imgSrc . '" '
                     . 'width="193" height="63" />'
                     . '</a>'
                     . '</div>'

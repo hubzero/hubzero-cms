@@ -231,8 +231,8 @@ class Record extends Obj
         if ($this->options['titlematch'] == 1 && isset($this->record->type->id)) {
             $quotedTitle = $this->database->quote($this->raw->title);
             $sql = 'SELECT id, title, LEVENSHTEIN( title, ' . $quotedTitle . ' ) as titleDiff
-                    FROM `#__resources`
-                    WHERE `type`=' . $this->record->type->id
+			        FROM `#__resources`
+			        WHERE `type`=' . $this->record->type->id
                     . ' HAVING titleDiff < ' . self::TITLE_MATCH;
             $this->database->setQuery($sql);
             $results = $this->database->loadObjectList('id');
@@ -432,7 +432,7 @@ class Record extends Obj
             // delete all child resources
             $quotedId = $this->database->quote($this->record->resource->id);
             $sql = "DELETE FROM `#__resources` WHERE `id` IN (
-                    SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $quotedId
+						SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $quotedId
                     . ")";
             $this->database->setQuery($sql);
             $this->database->query();

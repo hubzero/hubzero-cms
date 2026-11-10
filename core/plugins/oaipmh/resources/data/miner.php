@@ -141,9 +141,9 @@ class Miner extends Obj implements Provider
         $baseName = $this->database->quote($this->name());
         $query = "SELECT CASE WHEN v.revision THEN CONCAT(r.id, ':', v.revision) "
             . "ELSE r.id END AS id, " . $baseName . " AS `base`
-            FROM `#__resources` AS r
-            LEFT JOIN `#__tool_version` AS v ON v.`toolname`=r.`alias`
-            WHERE r.`standalone`=1 AND r.`published`=1";
+				FROM `#__resources` AS r
+				LEFT JOIN `#__tool_version` AS v ON v.`toolname`=r.`alias`
+				WHERE r.`standalone`=1 AND r.`published`=1";
         if ($type = $this->get('type')) {
             $query .= " AND r.`type`=" . $this->database->quote($type);
         }
@@ -160,12 +160,10 @@ class Miner extends Obj implements Provider
             }
             $fromQuoted = $this->database->quote($filters['from']);
             $query .= " AND (
-                (r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' "
-                . "AND r.`publish_up` >= " . $fromQuoted . ")
-                OR
-                ((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') "
-                . "AND r.`created` >= " . $fromQuoted . ")
-            )";
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $fromQuoted . ")
+				OR
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` >= " . $fromQuoted . ")
+			)";
         }
         if (isset($filters['until']) && $filters['until']) {
             $d = explode('-', $filters['until']);
@@ -179,12 +177,10 @@ class Miner extends Obj implements Provider
             }
             $untilQuoted = $this->database->quote($filters['until']);
             $query .= " AND (
-                (r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' "
-                . "AND r.`publish_up` < " . $untilQuoted . ")
-                OR
-                ((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') "
-                . "AND r.`created` < " . $untilQuoted . ")
-            )";
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $untilQuoted . ")
+				OR
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` < " . $untilQuoted . ")
+			)";
         }
 
         return $query;
@@ -281,9 +277,9 @@ class Miner extends Obj implements Provider
             $revQuoted = $this->database->quote($revision);
             $this->database->setQuery(
                 "SELECT *
-                FROM `#__tool_version`
-                WHERE toolname=" . $aliasQuoted . " AND revision=" . $revQuoted . "
-                LIMIT 1",
+				FROM `#__tool_version`
+				WHERE toolname=" . $aliasQuoted . " AND revision=" . $revQuoted . "
+				LIMIT 1",
             );
             $tool = $this->database->loadObject();
             if ($tool->id) {
@@ -331,17 +327,17 @@ class Miner extends Obj implements Provider
             $revQuoted = $this->database->quote($revision);
             $this->database->setQuery(
                 "SELECT a.*
-                FROM `#__doi_mapping` AS a
-                WHERE a.rid=" . $idQuoted . " AND a.local_revision=" . $revQuoted . "
-                LIMIT 1",
+				FROM `#__doi_mapping` AS a
+				WHERE a.rid=" . $idQuoted . " AND a.local_revision=" . $revQuoted . "
+				LIMIT 1",
             );
         } else {
             $idQuoted = $this->database->quote($id);
             $this->database->setQuery(
                 "SELECT a.*
-                FROM `#__doi_mapping` AS a
-                WHERE a.rid=" . $idQuoted . "
-                ORDER BY `versionid` DESC LIMIT 1",
+				FROM `#__doi_mapping` AS a
+				WHERE a.rid=" . $idQuoted . "
+				ORDER BY `versionid` DESC LIMIT 1",
             );
         }
         $record->identifier = $this->identifier($id, $this->database->loadObject(), $revision);
@@ -349,10 +345,9 @@ class Miner extends Obj implements Provider
         $idQuoted = $this->database->quote($id);
         $this->database->setQuery(
             "SELECT DISTINCT t.raw_tag
-            FROM `#__tags` t, `#__tags_object` tos
-            WHERE t.id = tos.tagid AND tos.objectid=" . $idQuoted . " "
-            . "AND tos.tbl='resources' AND t.admin=0
-            ORDER BY t.raw_tag",
+			FROM `#__tags` t, `#__tags_object` tos
+			WHERE t.id = tos.tagid AND tos.objectid=" . $idQuoted . " AND tos.tbl='resources' AND t.admin=0
+			ORDER BY t.raw_tag",
         );
         $record->subject = $this->database->loadColumn();
 
@@ -406,14 +401,13 @@ class Miner extends Obj implements Provider
                 $revQuoted = $this->database->quote($revision);
                 $this->database->setQuery(
                     "SELECT
-                        CASE WHEN t.name!='' AND t.name IS NOT NULL THEN t.name
-                        ELSE n.name
-                        END AS `name`
-                    FROM `#__tool_authors` AS t, `#__xprofiles` AS n, `#__tool_version` AS v
-                    WHERE n.uidNumber=t.uid AND t.toolname=" . $aliasQuoted . " "
-                    . "AND v.id=t.version_id and v.state<>3
-                    AND t.revision=" . $revQuoted . "
-                    ORDER BY t.ordering",
+						CASE WHEN t.name!='' AND t.name IS NOT NULL THEN t.name
+						ELSE n.name
+						END AS `name`
+					FROM `#__tool_authors` AS t, `#__xprofiles` AS n, `#__tool_version` AS v
+					WHERE n.uidNumber=t.uid AND t.toolname=" . $aliasQuoted . " AND v.id=t.version_id and v.state<>3
+					AND t.revision=" . $revQuoted . "
+					ORDER BY t.ordering",
                 );
                 $record->creator = $this->database->loadColumn();
 
@@ -466,11 +460,10 @@ class Miner extends Obj implements Provider
             $idQuoted = $this->database->quote($id);
             $this->database->setQuery(
                 "SELECT *
-                FROM `#__citations` AS a
-                INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-                WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " "
-                . "AND n.`type`!='references' AND a.`published`=1
-                ORDER BY `year` DESC",
+				FROM `#__citations` AS a
+				INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+				WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " AND n.`type`!='references' AND a.`published`=1
+				ORDER BY `year` DESC",
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
@@ -494,11 +487,10 @@ class Miner extends Obj implements Provider
 
             $this->database->setQuery(
                 "SELECT *
-                FROM `#__citations` AS a
-                INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-                WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " "
-                . "AND n.`type`='references' AND a.`published`=1
-                ORDER BY `year` DESC",
+				FROM `#__citations` AS a
+				INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+				WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " AND n.`type`='references' AND a.`published`=1
+				ORDER BY `year` DESC",
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {

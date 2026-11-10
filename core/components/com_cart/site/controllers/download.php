@@ -113,8 +113,7 @@ class Download extends ComponentController
             && $sku['meta']['downloadLimit']
             && is_numeric($sku['meta']['downloadLimit'])
         ) {
-            $sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads`
-                WHERE `uId` = {$currentUser} AND `sId` = {$sId} AND `dStatus` > 0";
+            $sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads` WHERE `uId` = {$currentUser} AND `sId` = {$sId} AND `dStatus` > 0";
             $db->setQuery($sql);
             $downloadsCount = $db->loadResult();
 

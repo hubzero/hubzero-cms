@@ -116,7 +116,7 @@ class Forum extends Plugin
         }
 
         $sql .= " AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
-            ORDER BY $weight DESC";
+			ORDER BY $weight DESC";
 
         $rows = new \Components\Search\Models\Basic\Result\Sql($sql);
         foreach ($rows->toAssociative() as $row) {
@@ -252,12 +252,10 @@ class Forum extends Plugin
                         $path = '';
                     }
                 } elseif ($scope == 'course') {
-                    $sql = "SELECT #__courses_offerings.alias AS offering,
-                        #__courses.alias AS course
-                        FROM #__courses_offerings
-                        LEFT JOIN #__courses
-                        ON #__courses_offerings.course_id = #__courses.id
-                        WHERE #__courses_offerings.id = {$scope_id};";
+                    $sql = "SELECT #__courses_offerings.alias AS offering, #__courses.alias AS course FROM #__courses_offerings
+					LEFT JOIN #__courses
+					ON #__courses_offerings.course_id = #__courses.id
+					WHERE #__courses_offerings.id = {$scope_id};";
 
                     $course = $db->setQuery($sql)->query()->loadAssoc();
 

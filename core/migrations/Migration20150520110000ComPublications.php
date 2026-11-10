@@ -61,7 +61,7 @@ class Migration20150520110000ComPublications extends Base
                     ->innerJoin('#__publications AS p', 'p.id', 'v.publication_id')
                     ->innerJoin('#__publication_master_types AS t', 't.id', 'p.master_type')
                     ->whereIsNotNull('v.curation')
-                    ->where('v.curation', '!=', '')
+                    ->where('v.curation', '!=', " ")
                     ->whereIsNotNull('v.accepted')
                     ->where('v.accepted', '!=', $this->db->getNullDate())
                     ->order('v.accepted', 'ASC');

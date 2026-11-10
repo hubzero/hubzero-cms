@@ -125,7 +125,7 @@ class RemoteFile extends Table
 
         $query  = "SELECT * FROM $this->tableName";
         $query .= ' WHERE projectid=' . (int) $projectid . '  ';
-        $query .= ' AND service=' . $this->db->quote($service) . '';
+        $query .= ' AND service=' . $this->db->quote($service) . ' ';
         if ($remoteEdit) {
             $query .= " AND remote_editing=1 ";
         }

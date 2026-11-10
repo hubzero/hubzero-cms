@@ -62,7 +62,7 @@ $fields = $form->getFieldset('basic');
                 <div class="grid">
                     <div class="col span9">
                         <?php
-                        echo '<div class="input-wrap" id="input-' . $field->fieldname . '"  ' . ($field->description ? 'data-hint="' . $this->escape($field->description) . '"' : '') . '>';
+                        echo '<div class="input-wrap" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
                         if ($field->hidden) {
                             echo '<label for="profile_' . $field->fieldname . '">' . $field->fieldname . '</label>';
                             echo '<input type="text" name="' . $field->name . '" id="profile_' . $field->fieldname . '" value="' . $this->escape($field->value) . '" />';

@@ -173,7 +173,7 @@ class Memberships
         $sql .= " IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive`";
         $sql .= " FROM `#__cart_memberships` m";
         $sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
-        $sql .= " WHERE m.`pId` = " . $db->quote($pId);
+        $sql .= "WHERE m.`pId` = " . $db->quote($pId);
         $sql .= " AND c.`uidNumber` = " . $db->quote($uId);
         $db->setQuery($sql);
         $membershipInfo = $db->loadAssoc();

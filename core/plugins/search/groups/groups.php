@@ -58,8 +58,7 @@ class Groups extends Plugin
 				'Groups' AS section
 			FROM `#__xgroups` g $from
 			WHERE
-				(g.type = 1 OR g.type = 3) AND g.published=1 AND g.approved=1
-				AND g.discoverability = 0 AND $weight > 0"
+				(g.type = 1 OR g.type = 3) AND g.published=1 AND g.approved=1 AND g.discoverability = 0 AND $weight > 0"
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         ));

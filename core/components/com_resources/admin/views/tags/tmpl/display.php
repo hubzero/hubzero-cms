@@ -58,7 +58,7 @@ $this->js();
             foreach ($this->tags as $tag) {
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
-                    <?php $isChecked = in_array($tag->tag, $this->mytagarray) ? ' checked="checked"' : ''; ?>
+                    <?php $isChecked = in_array($tag->tag, $this->mytagarray) ? 'checked="checked"' : ''; ?>
                     <td><input type="checkbox"
                                name="tgs[]"
                                id="cb<?php echo $i; ?>"<?php echo $isChecked; ?>
