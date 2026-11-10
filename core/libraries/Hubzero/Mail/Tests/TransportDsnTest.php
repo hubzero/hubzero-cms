@@ -95,4 +95,17 @@ class TransportDsnTest extends TestCase
 
         $this->assertSame('mandrill+smtp://key:secret@default', Message::transportDsn());
     }
+
+    /**
+     * The global configuration screen stores the choice labelled
+     * "Mandrill (SMTP)" as mandrill
+     *
+     * @return  void
+     */
+    public function testTheMandrillSettingIsMandrillOverSmtp(): void
+    {
+        $this->configure(['mailer' => 'mandrill', 'smtpuser' => 'key', 'smtppass' => 'secret']);
+
+        $this->assertSame('mandrill+smtp://key:secret@default', Message::transportDsn());
+    }
 }

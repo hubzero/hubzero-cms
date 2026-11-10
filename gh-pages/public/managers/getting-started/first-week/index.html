@@ -334,18 +334,11 @@ account is the usual test, which is why this comes before step 4.</p>
 <p><strong>Mailer</strong> offers three choices: <strong>Sendmail</strong>, <strong>SMTP</strong> and <strong>Mandrill
 (SMTP)</strong>. Set the <strong>Sendmail Path</strong>, or the SMTP host, port, security and
 credentials, to match the machine.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The option stores the value
-<code>mandrill</code>, but the transport builder only recognises <code>mandrill+smtp</code>, so
-the hub builds no transport and every send throws. This is a known defect.</p>
-</aside>
-<pre><code class="language-php">
-                        break;
-
-                    case 'sendmail':
-                    case 'mail':
-                    case 'native':
-                        $dsn = &quot;sendmail://default&quot;;
+<pre><code class="language-php">                case 'sendmail':
+                case 'mail':
+                case 'native':
+                    $dsn = &quot;sendmail://default&quot;;
+                    break;
 </code></pre>
 <p>The value the installer writes into <code>app/config/mail.php</code> is <code>mail</code>, which is
 not one of the three options the drop-down offers. It behaves as <strong>Sendmail</strong>,

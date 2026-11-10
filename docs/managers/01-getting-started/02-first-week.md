@@ -165,11 +165,7 @@ account is the usual test, which is why this comes before step 4.
 (SMTP)**. Set the **Sendmail Path**, or the SMTP host, port, security and
 credentials, to match the machine.
 
-> **Warning:** Do not choose **Mandrill (SMTP)**. The option stores the value
-> `mandrill`, but the transport builder only recognises `mandrill+smtp`, so
-> the hub builds no transport and every send throws. This is a known defect.
-
-<!--include: core/libraries/Hubzero/Mail/Message.php:127-133-->
+<!--include: core/libraries/Hubzero/Mail/Message.php:127-131-->
 
 The value the installer writes into `app/config/mail.php` is `mail`, which is
 not one of the three options the drop-down offers. It behaves as **Sendmail**,

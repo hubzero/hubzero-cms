@@ -130,6 +130,7 @@ class Message extends \Symfony\Component\Mime\Email
                     $dsn = "sendmail://default";
                     break;
 
+                case 'mandrill':
                 case 'mandrill+smtp':
                     $dsn = "mandrill+smtp://";
 

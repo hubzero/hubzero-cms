@@ -569,8 +569,7 @@ addresses to this value. Getting them right is worth doing early: an address
 that does not exist, or one that a receiving mail server will not accept as a
 sender, is the usual reason a hub's registration confirmations quietly stop
 arriving.</p>
-<p><strong>Mailer</strong> chooses how mail leaves the hub. It offers three values, and only
-two of them work.</p>
+<p><strong>Mailer</strong> chooses how mail leaves the hub. It offers three values.</p>
 <table>
 <thead>
 <tr>
@@ -589,34 +588,21 @@ two of them work.</p>
 </tr>
 <tr>
 <td><strong>Mandrill (SMTP)</strong></td>
-<td>Nothing goes anywhere. See the warning below</td>
+<td>Mail goes to Mandrill's SMTP service, with <strong>SMTP Username</strong> and <strong>SMTP Password</strong> as its credentials</td>
 </tr>
 </tbody>
 </table>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The drop-down stores
-<code>mandrill</code>, and the code that turns the setting into a connection string
-recognises <code>smtp</code>, <code>sendmail</code>, <code>mail</code>, <code>native</code> and <code>mandrill+smtp</code> — but
-not <code>mandrill</code>. The result is an empty connection string, which throws
-rather than returning an error, on <em>every</em> mail the hub tries to send:
-registration confirmations, password resets, ticket notifications, group
-invitations. Nothing on this screen warns you, and the failure shows up
-later as members saying they never got the mail.</p>
-</aside>
 <p>Three fields on this panel are stored and then never read. <strong>Sendmail Path</strong>,
 <strong>SMTP Authentication</strong> and <strong>SMTP Security</strong> play no part in building the
 connection — only <strong>Mailer</strong>, <strong>SMTP Host</strong>, <strong>SMTP Port</strong>, <strong>SMTP Username</strong>
 and <strong>SMTP Password</strong> do. Setting <strong>SMTP Security</strong> to TLS does not turn TLS
 on, and blanking <strong>SMTP Authentication</strong> does not turn authentication off;
 filling in a username or password is what turns it on.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <strong>SMTP Username</strong> and <strong>SMTP Password</strong> are lower-cased when
-the connection is built. A relay whose credentials contain a capital letter
-will refuse them, and the symptom is authentication failures with a
-password that is demonstrably correct. Where that bites, put a complete
-connection string in a <code>mailer_dsn</code> key in <code>app/config/mail.php</code> instead —
-if that key has a value, the whole drop-down is bypassed and the string is
-used as it stands. It is also the way to reach Mandrill.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> For anything the drop-down cannot express, put a complete
+connection string in a <code>mailer_dsn</code> key in <code>app/config/mail.php</code>. If that
+key has a value, the whole drop-down is bypassed and the string is used as
+it stands.</p>
 </aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A hub installed by the web installer starts with a <strong>Mailer</strong>
