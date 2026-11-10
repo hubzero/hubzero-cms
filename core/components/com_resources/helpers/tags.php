@@ -554,11 +554,23 @@ class Tags extends Cloud
                     $size = $min_font_size + ($tag->count - $min_qty) * $step;
                     $tll[$tag->tag] = "\t" . '<li' . $class . '><span data-size="' . round($size, 1) . 'em"><a '
                         //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
-                        . 'class="tag' . ($tag->admin ? ' core' : '') . '" rel="nofollow"  href="' . Route::url('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n";
+                        . 'class="tag'
+                        . ($tag->admin ? ' core' : '')
+                        . '" rel="nofollow"  href="'
+                        . Route::url('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst))
+                        . '">'
+                        . stripslashes($tag->raw_tag)
+                        . '</a></li>'
+                        . "\n";
                 } else {
                     $tll[$tag->tag] = "\t" . '<li' . $class . '><a class="tag' . ($tag->admin ? ' core' : '') . '" '
                         //' <span>' . $tag->count . '</span></a></li>' . "\n";
-                        . 'rel="nofollow" href="' . urldecode(Route::url('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n";
+                        . 'rel="nofollow" href="'
+                        . urldecode(Route::url('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst)))
+                        . '">'
+                        . stripslashes($tag->raw_tag)
+                        . '</a></li>'
+                        . "\n";
                 }
             }
             if ($sort == 'alpha') {

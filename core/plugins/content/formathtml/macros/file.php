@@ -550,9 +550,15 @@ class File extends Macro
                 ) {
                     //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref']
                     //    : $attr['href'];
-                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '')
+                        ? $attr['althref']
+                        : $attr['href'];
                     $attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
-                    $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
+                    $attr['alt'] .= '<img src="'
+                        . $this->link($attr['altimage'])
+                        . '" alt="'
+                        . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8')
+                        . '" />';
                     $attr['alt'] .= '</a>';
                 } else {
                     $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF '
