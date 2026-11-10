@@ -31,7 +31,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @var  array
      */
-    private $_description = [];
+    private $description = [];
 
     /**
      * Handlers instances container
@@ -52,11 +52,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
     {
         // store our incoming data
         $this->raw      = $raw;
-        $this->_options = $options;
-        $this->_mode    = strtoupper($mode);
+        $this->options = $options;
+        $this->mode    = strtoupper($mode);
 
         // Core objects
-        $this->_description = [];
+        $this->description = [];
 
         // Create objects
         $this->record = new stdClass();
@@ -105,8 +105,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         $keys = [];
-        if ($this->_mode == 'PATCH') {
-            foreach ($this->_description as $k => $p) {
+        if ($this->mode == 'PATCH') {
+            foreach ($this->description as $k => $p) {
                 if (!$p) {
                     continue;
                 }
@@ -120,8 +120,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         // Validate description data
-        if (!empty($this->_description)) {
-            foreach ($this->_description as $key => $val) {
+        if (!empty($this->description)) {
+            foreach ($this->description as $key => $val) {
                 $field = Field::oneByName($key);
 
                 if (!$field->get('id')) {
@@ -143,7 +143,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                         }
 
                         if ($val == $opt->get('label')) {
-                            $this->_description[$key] = $opt->get('value');
+                            $this->description[$key] = $opt->get('value');
                             $validvalue = true;
                         }
                     }
@@ -154,7 +154,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     }
                 }
 
-                $field->setFormAnswers($this->_description);
+                $field->setFormAnswers($this->description);
                 if (!$field->validate()) {
                     array_push($this->record->errors, (string) $field->getError());
                 }
@@ -185,7 +185,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             foreach ($entry as $field => $value) {
                 $this->record->entry->$field = $value;
             }
-            foreach ($this->_description as $field => $value) {
+            foreach ($this->description as $field => $value) {
                 $this->record->entry->$field = $value;
             }
 
@@ -213,7 +213,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         //$this->record->entry = $this->record->entry->toObject();
-        foreach ($this->_description as $field => $value) {
+        foreach ($this->description as $field => $value) {
             $this->record->entry->$field = $value;
         }
 
@@ -271,17 +271,17 @@ class Record extends \Hubzero\Content\Import\Model\Record
             }
 
             // In PATCH mode, skip fields with no values
-            if ($this->_mode == 'PATCH' && !$val) {
+            if ($this->mode == 'PATCH' && !$val) {
                 continue;
             }
 
             if (isset($columns[$key])) {
                 $this->record->entry->set($key, $val);
                 if (in_array($key, ['public_desc', 'private_desc'])) {
-                    $this->_description[$key] = $val;
+                    $this->description[$key] = $val;
                 }
             } else {
-                $this->_description[$key] = $val;
+                $this->description[$key] = $val;
             }
         }
 
@@ -315,8 +315,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $this->record->entry->set('cn', $this->raw->cn);
         }
 
-        if (isset($this->_options['approved'])) {
-            $this->record->entry->set('approved', (int) $this->_options['approved']);
+        if (isset($this->options['approved'])) {
+            $this->record->entry->set('approved', (int) $this->options['approved']);
         }
     }
 
@@ -382,8 +382,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
             throw new Exception(Lang::txt('Unable to save the entry data.'));
         }
 
-        if (!empty($this->_description)) {
-            foreach ($this->_description as $key => $val) {
+        if (!empty($this->description)) {
+            foreach ($this->description as $key => $val) {
                 $field = Field::oneByName($key);
 
                 if (!$field->get('id')) {
@@ -405,7 +405,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                         }
 
                         if ($val == $opt->get('label')) {
-                            $this->_description[$key] = $opt->get('value');
+                            $this->description[$key] = $opt->get('value');
                             $validvalue = true;
                         }
                     }
@@ -416,7 +416,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     }
                 }
 
-                $field->setFormAnswers($this->_description);
+                $field->setFormAnswers($this->description);
                 if (!$field->saveGroupAnswers($this->record->entry->get('gidNumber'))) {
                     throw new Exception($field->getError());
                 }
@@ -471,7 +471,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function mapExtraData()
     {
         foreach ($this->handlers() as $handler) {
-            $this->record = $handler->bind($this->raw, $this->record, $this->_mode);
+            $this->record = $handler->bind($this->raw, $this->record, $this->mode);
 
             foreach ($handler->getErrors() as $error) {
                 array_push($this->record->notices, $error);
@@ -489,7 +489,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function saveExtraData()
     {
         foreach ($this->handlers() as $handler) {
-            $this->record = $handler->store($this->raw, $this->record, $this->_mode);
+            $this->record = $handler->store($this->raw, $this->record, $this->mode);
 
             foreach ($handler->getErrors() as $error) {
                 array_push($this->record->errors, $error);

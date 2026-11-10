@@ -46,7 +46,7 @@ class Record extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mode;
+    protected $mode;
 
     /**
      * List of options to be applied to record
@@ -54,7 +54,7 @@ class Record extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_options;
+    protected $options;
 
     /**
      * Database
@@ -62,7 +62,7 @@ class Record extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
 
     /**
      * User
@@ -70,7 +70,7 @@ class Record extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_user;
+    protected $user;
 
     /**
      *  Constructor
@@ -84,12 +84,12 @@ class Record extends Obj
     {
         // Store our incoming data
         $this->raw      = $raw;
-        $this->_options = $options;
-        $this->_mode    = strtoupper($mode);
+        $this->options = $options;
+        $this->mode    = strtoupper($mode);
 
         // Create core objects
-        $this->_database = App::get('db');
-        $this->_user     = User::getInstance();
+        $this->database = App::get('db');
+        $this->user     = User::getInstance();
 
         // Create objects
         $this->record = new stdClass();

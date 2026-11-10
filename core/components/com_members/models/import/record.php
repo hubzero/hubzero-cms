@@ -30,7 +30,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @var  array
      */
-    private $_profile = [];
+    private $profile = [];
 
     /**
      * Handlers instances container
@@ -58,12 +58,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
     {
         // store our incoming data
         $this->raw      = $raw;
-        $this->_options = $options;
-        $this->_mode    = strtoupper($mode);
+        $this->options = $options;
+        $this->mode    = strtoupper($mode);
 
         // Core objects
         //$this->_user    = User::getInstance();
-        $this->_profile = [];
+        $this->profile = [];
 
         // Create objects
         $this->record = new stdClass();
@@ -122,7 +122,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
             if (!empty($xregistration->_missing)) {
                 foreach ($xregistration->_missing as $key => $missing) {
-                    if ($this->_mode == 'PATCH') {
+                    if ($this->mode == 'PATCH') {
                         $skip[] = $key;
                         continue;
                     }
@@ -142,8 +142,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         $keys = [];
-        if ($this->_mode == 'PATCH') {
-            foreach ($this->_profile as $k => $p) {
+        if ($this->mode == 'PATCH') {
+            foreach ($this->profile as $k => $p) {
                 if (!$p) {
                     continue;
                 }
@@ -174,9 +174,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
         $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
         $form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
-        $form->bind(new \Hubzero\Config\Registry($this->_profile));
+        $form->bind(new \Hubzero\Config\Registry($this->profile));
 
-        if (!$form->validate($this->_profile)) {
+        if (!$form->validate($this->profile)) {
             foreach ($form->getErrors() as $key => $error) {
                 array_push($this->record->errors, (string) $error);
             }
@@ -202,7 +202,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             foreach ($entry as $field => $value) {
                 $this->record->entry->$field = $value;
             }
-            foreach ($this->_profile as $field => $value) {
+            foreach ($this->profile as $field => $value) {
                 $this->record->entry->$field = $value;
             }
 
@@ -230,7 +230,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         //$this->record->entry = $this->record->entry->toObject();
-        foreach ($this->_profile as $field => $value) {
+        foreach ($this->profile as $field => $value) {
             $this->record->entry->$field = $value;
         }
 
@@ -285,14 +285,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
             }
 
             // In PATCH mode, skip fields with no values
-            if ($this->_mode == 'PATCH' && !$val) {
+            if ($this->mode == 'PATCH' && !$val) {
                 continue;
             }
 
             if (isset($columns[$key])) {
                 $this->record->entry->set($key, $val);
             } else {
-                $this->_profile[$key] = $val;
+                $this->profile[$key] = $val;
             }
         }
 
@@ -303,11 +303,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
         foreach (['disability', 'race', 'hispanic'] as $key) {
             if (isset($this->raw->$key)) {
                 // In PATCH mode, skip fields with no values
-                if ($this->_mode == 'PATCH' && (!isset($this->_profile[$key]) || !$this->_profile[$key])) {
+                if ($this->mode == 'PATCH' && (!isset($this->profile[$key]) || !$this->profile[$key])) {
                     continue;
                 }
 
-                $this->_profile[$key] = $this->multiValueField($this->_profile[$key]);
+                $this->profile[$key] = $this->multiValueField($this->profile[$key]);
             }
         }
 
@@ -501,7 +501,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             throw new Exception(Lang::txt('Unable to save the entry data.'));
         }
 
-        if (!empty($this->_profile)) {
+        if (!empty($this->profile)) {
             // For new accounts, pass each field's configured default access
             // level (mirroring the registration controller). Without it,
             // saveProfile() falls back to its Private (5) default for every new
@@ -510,7 +510,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             // current per-field access on re-import.
             $access = $isNew ? $this->profileFieldAccess() : [];
 
-            if (!$this->record->entry->saveProfile($this->_profile, $access)) {
+            if (!$this->record->entry->saveProfile($this->profile, $access)) {
                 throw new Exception($this->record->entry->getError());
             }
         }
@@ -520,7 +520,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             \Hubzero\User\Password::expirePassword($this->record->entry->get('id'));
         }
 
-        if ($isNew && $this->_options['emailnew'] == 1) {
+        if ($isNew && $this->options['emailnew'] == 1) {
             $eview = new \Hubzero\Component\View([
                 'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                 'name'      => 'emails',
@@ -577,7 +577,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function mapExtraData()
     {
         foreach ($this->handlers() as $handler) {
-            $this->record = $handler->bind($this->raw, $this->record, $this->_mode);
+            $this->record = $handler->bind($this->raw, $this->record, $this->mode);
 
             foreach ($handler->getErrors() as $error) {
                 array_push($this->record->notices, $error);
@@ -595,7 +595,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function saveExtraData()
     {
         foreach ($this->handlers() as $handler) {
-            $this->record = $handler->store($this->raw, $this->record, $this->_mode);
+            $this->record = $handler->store($this->raw, $this->record, $this->mode);
 
             foreach ($handler->getErrors() as $error) {
                 array_push($this->record->notices, $error);
