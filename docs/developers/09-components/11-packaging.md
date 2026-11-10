@@ -68,9 +68,8 @@ a third-party library it will `use`.
 > is deployed by the Extension Manager's git flow, by hand, or by whatever the
 > hub uses to deploy code.
 
-Most shipped `composer.json` files still declare `"php": ">=5.4"` or similar.
-Those constraints are stale and nothing enforces them. Hubzero 2.4 needs PHP
-8.2; write that.
+Every shipped `composer.json` requires `"php": "^8.4"`, as
+[`core/composer.json`](../../../core/composer.json) does; write the same.
 
 ## The manifest
 

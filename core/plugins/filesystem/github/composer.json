@@ -16,7 +16,7 @@
 		"issues": "https://help.hubzero.org"
 	},
 	"require": {
-		"php" : "^8.2",
+		"php" : "^8.4",
 		"league/flysystem": "1.1.*",
 		"knplabs/github-api": "^3.16"
 	},

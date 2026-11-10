@@ -20,12 +20,11 @@ ordinary PHP.
 
 ## The platform
 
-Hubzero 2.4 requires **PHP 8.2 or later**
-([`Hubzero\System\Requirements`](../../../core/libraries/Hubzero/System/Requirements.php)
-holds the minimum and the list of required PHP extensions) and MariaDB or
-MySQL. Write extensions against that, not against the PHP 5.4 constraint
-that most shipped `composer.json` files still carry — those constraints are
-stale, and nothing enforces them.
+Hubzero requires **PHP 8.4**, which is what
+[`core/composer.json`](../../../core/composer.json) asks for, and MariaDB or
+MySQL. [`Hubzero\System\Requirements`](../../../core/libraries/Hubzero/System/Requirements.php)
+holds the list of required PHP extensions. Every shipped extension's
+`composer.json` requires `"php": "^8.4"`; write yours against the same.
 
 ## Naming
 
@@ -143,7 +142,7 @@ runs.
 	"keywords": ["hubzero"],
 	"license": "MIT",
 	"require": {
-		"php": "^8.2"
+		"php": "^8.4"
 	}
 }
 ```

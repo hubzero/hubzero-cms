@@ -130,7 +130,7 @@ Prefer the key.
 	"homepage": "https://example.org",
 	"license": "MIT",
 	"require": {
-		"php": "^5.4",
+		"php": "^8.4",
 		"hubzero/com_bookings": "dev-master"
 	},
 	"extra": {

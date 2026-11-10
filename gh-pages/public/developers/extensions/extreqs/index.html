@@ -198,12 +198,11 @@ missing row is an extension the hub cannot see, an unimported facade is a
 fatal on one branch. Get the shape right first and the rest of the work is
 ordinary PHP.</p>
 <h2 id="the-platform">The platform</h2>
-<p>Hubzero 2.4 requires <strong>PHP 8.2 or later</strong>
-(<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/System/Requirements.php"><code>Hubzero\System\Requirements</code></a>
-holds the minimum and the list of required PHP extensions) and MariaDB or
-MySQL. Write extensions against that, not against the PHP 5.4 constraint
-that most shipped <code>composer.json</code> files still carry — those constraints are
-stale, and nothing enforces them.</p>
+<p>Hubzero requires <strong>PHP 8.4</strong>, which is what
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/composer.json"><code>core/composer.json</code></a> asks for, and MariaDB or
+MySQL. <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/System/Requirements.php"><code>Hubzero\System\Requirements</code></a>
+holds the list of required PHP extensions. Every shipped extension's
+<code>composer.json</code> requires <code>&quot;php&quot;: &quot;^8.4&quot;</code>; write yours against the same.</p>
 <h2 id="naming">Naming</h2>
 <p>The name is not decoration. It determines the directory, the entry file, the
 manifest, the language files, the class namespace and the <code>#__extensions</code>
@@ -410,7 +409,7 @@ as a description of the extension.</p>
 	&quot;keywords&quot;: [&quot;hubzero&quot;],
 	&quot;license&quot;: &quot;MIT&quot;,
 	&quot;require&quot;: {
-		&quot;php&quot;: &quot;^8.2&quot;
+		&quot;php&quot;: &quot;^8.4&quot;
 	}
 }
 </code></pre>

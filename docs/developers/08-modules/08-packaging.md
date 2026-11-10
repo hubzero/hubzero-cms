@@ -44,7 +44,7 @@ Nothing is rearranged on install. Whatever is in the package appears under
 	"homepage": "https://example.org",
 	"license": "MIT",
 	"require": {
-		"php": "^5.4",
+		"php": "^8.4",
 		"myorg/com_bookings": "dev-master"
 	}
 }

@@ -243,7 +243,7 @@ the supported route consumes, and it is how a hub gets updates afterwards.</p>
 		&quot;issues&quot;: &quot;https://help.hubzero.org&quot;
 	},
 	&quot;require&quot;: {
-		&quot;php&quot; : &quot;^5.4&quot;
+		&quot;php&quot; : &quot;^8.4&quot;
 	}
 }
 </code></pre>
@@ -257,9 +257,8 @@ a third-party library it will <code>use</code>.</p>
 is deployed by the Extension Manager's git flow, by hand, or by whatever the
 hub uses to deploy code.</p>
 </aside>
-<p>Most shipped <code>composer.json</code> files still declare <code>&quot;php&quot;: &quot;&gt;=5.4&quot;</code> or similar.
-Those constraints are stale and nothing enforces them. Hubzero 2.4 needs PHP
-8.2; write that.</p>
+<p>Every shipped <code>composer.json</code> requires <code>&quot;php&quot;: &quot;^8.4&quot;</code>, as
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/composer.json"><code>core/composer.json</code></a> does; write the same.</p>
 <h2 id="the-manifest">The manifest</h2>
 <p><code>{componentname}.xml</code> carries the metadata the administrator displays: name,
 author, copyright, licence, description, and version. Its root element is

@@ -217,7 +217,7 @@ This is what makes the template installable as a package. `kimera`'s, whole:
 | `type` | Must be one of `hubzero-component`, `hubzero-module`, `hubzero-plugin`, `hubzero-template`. This is what tells the hub's installer where the package belongs. |
 | `license` | An [SPDX identifier](https://spdx.org/licenses/). The shipped templates say `MIT`. |
 | `extra.install-directory` | Where the files should land, relative to `app/`. |
-| `require` | The shipped templates pin `"php": "^5.4"`, which is long obsolete; set something honest for your own. |
+| `require` | The shipped templates require `"php": "^8.4"`, as core does. |
 
 ## Installing
 

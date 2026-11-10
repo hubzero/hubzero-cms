@@ -16,7 +16,7 @@
 		"issues": "https://help.hubzero.org"
 	},
 	"require": {
-		"php" : "^5.4",
+		"php" : "^8.4",
 		"hubzero/com_whatsnew": "dev-master",
 		"hubzero/com_kb": "dev-master"
 	},
