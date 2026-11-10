@@ -67,7 +67,8 @@ class Migration20260915120000MenuRoute extends Base
 
         // Anything that declared a route is about to go back to being addressed
         // by where it sits, so say which ones and what they will become.
-        $declared = $this->db->getQuery(true)
+        $declared = $this->db
+            ->getQuery(true)
             ->select('path')
             ->from('#__menu')
             ->whereIsNotNull('route')

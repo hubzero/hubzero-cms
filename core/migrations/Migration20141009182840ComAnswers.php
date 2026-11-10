@@ -24,27 +24,31 @@ class Migration20141009182840ComAnswers extends Base
         $schema = $this->db->schema();
 
         $schema->modifyColumn('#__answers_log', 'response_id')->integer()->unsigned()->notNull()->default(0)->execute();
-        $schema->modifyColumn('#__answers_questions', 'anonymous')
+        $schema
+            ->modifyColumn('#__answers_questions', 'anonymous')
             ->tinyInteger()
             ->unsigned()
             ->notNull()
             ->default(0)
             ->execute();
         $schema->modifyColumn('#__answers_questions', 'reward')->tinyInteger()->notNull()->default(0)->execute();
-        $schema->modifyColumn('#__answers_questions_log', 'question_id')
+        $schema
+            ->modifyColumn('#__answers_questions_log', 'question_id')
             ->integer()
             ->unsigned()
             ->notNull()
             ->default(0)
             ->execute();
-        $schema->modifyColumn('#__answers_responses', 'question_id')
+        $schema
+            ->modifyColumn('#__answers_responses', 'question_id')
             ->integer()
             ->unsigned()
             ->notNull()
             ->default(0)
             ->execute();
         $schema->modifyColumn('#__answers_responses', 'answer')->text()->notNull()->execute();
-        $schema->modifyColumn('#__answers_responses', 'anonymous')
+        $schema
+            ->modifyColumn('#__answers_responses', 'anonymous')
             ->tinyInteger()
             ->unsigned()
             ->notNull()

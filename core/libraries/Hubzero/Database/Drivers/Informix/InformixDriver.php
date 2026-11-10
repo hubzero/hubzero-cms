@@ -1072,7 +1072,8 @@ class InformixDriver extends BaseSqlDriver
         $oldTable = $this->replacePrefix($oldTable);
         $newTable = $this->replacePrefix($newTable);
 
-        $this->setQuery('RENAME TABLE ' . $this->quoteName($oldTable) . ' TO ' . $this->quoteName($newTable))
+        $this
+             ->setQuery('RENAME TABLE ' . $this->quoteName($oldTable) . ' TO ' . $this->quoteName($newTable))
              ->execute();
         return true;
     }
@@ -1086,7 +1087,8 @@ class InformixDriver extends BaseSqlDriver
             return $this;
         }
 
-        $this->setQuery($this->getSchemaGrammar()->compileDrop($table, false))
+        $this
+             ->setQuery($this->getSchemaGrammar()->compileDrop($table, false))
              ->execute();
         return $this;
     }
@@ -1512,7 +1514,8 @@ class InformixDriver extends BaseSqlDriver
      */
     public function dropIndex(string $table, string $name): bool
     {
-        $this->setQuery('DROP INDEX ' . $this->quoteName($name))
+        $this
+             ->setQuery('DROP INDEX ' . $this->quoteName($name))
              ->execute();
         return true;
     }
@@ -1585,7 +1588,8 @@ class InformixDriver extends BaseSqlDriver
                 $cols = array_keys($rowArray);
                 $colList = implode(', ', $cols);
                 $placeholders = implode(', ', array_fill(0, count($cols), '?'));
-                $this->prepare("INSERT INTO $table ($colList) VALUES ($placeholders)")
+                $this
+                    ->prepare("INSERT INTO $table ($colList) VALUES ($placeholders)")
                     ->bind(array_values($rowArray))
                     ->execute();
             }
@@ -2060,7 +2064,8 @@ class InformixDriver extends BaseSqlDriver
         $table = strtolower($this->replacePrefix($table));
 
         // Get table ID
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('tabid')
             ->from('systables')
             ->whereEquals('tabname', $table);
@@ -2273,7 +2278,8 @@ class InformixDriver extends BaseSqlDriver
         $table = strtolower($this->replacePrefix($table));
 
         // Get table ID
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('tabid')
             ->from('systables')
             ->whereEquals('tabname', $table);
@@ -2286,7 +2292,8 @@ class InformixDriver extends BaseSqlDriver
         }
 
         // Get primary key index (idxtype = 'U' means unique/primary)
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select(['part1', 'part2', 'part3', 'part4', 'part5', 'part6', 'part7', 'part8'])
             ->from('sysindexes')
             ->whereEquals('tabid', $tabid)
@@ -2307,7 +2314,8 @@ class InformixDriver extends BaseSqlDriver
 
             if ($colno > 0) {
                 // Query syscolumns for column name
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->select('colname')
                     ->from('syscolumns')
                     ->whereEquals('tabid', $tabid)
@@ -2490,7 +2498,8 @@ class InformixDriver extends BaseSqlDriver
         $viewName = strtolower($this->replacePrefix($name));
 
         try {
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->select('COUNT(*)')
                 ->from('systables')
                 ->whereEquals('tabname', $viewName)
@@ -2511,7 +2520,8 @@ class InformixDriver extends BaseSqlDriver
     public function getViews()
     {
         try {
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->select('tabname')
                 ->from('systables')
                 ->whereEquals('tabtype', 'V')
@@ -2537,7 +2547,8 @@ class InformixDriver extends BaseSqlDriver
     public function getSequences()
     {
         try {
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->select('tabname')
                 ->from('systables')
                 ->whereEquals('tabtype', 'Q')  // Q = Sequence
@@ -2623,7 +2634,8 @@ class InformixDriver extends BaseSqlDriver
         $name = strtolower($this->replacePrefix($name));
 
         try {
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->select('COUNT(*)')
                 ->from('systables')
                 ->whereEquals('tabname', $name)

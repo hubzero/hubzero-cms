@@ -373,7 +373,8 @@ class Overrides extends AdminController
         $total = with(clone($query))->total();
 
         // Consider the limitstart according to the 'more' parameter and load the results
-        $query->start($limitstart)
+        $query
+            ->start($limitstart)
             ->limit(10);
 
         $results['results'] = $query->rows()->toObject();

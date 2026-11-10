@@ -27,20 +27,24 @@ class Migration20160208183103ComFeedaggregator extends Base
 
         if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__feedaggregator_posts');
             $rows = $query->loadObjectList();
 
             // Convert the field
-            $this->db->schema()->modifyColumn('#__feedaggregator_posts', 'created')
+            $this->db
+                ->schema()
+                ->modifyColumn('#__feedaggregator_posts', 'created')
                 ->datetime()
                 ->execute();
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = Date::of(date("F j, Y, g:i a", $row->created))->toSql();
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])
                     ->where('id', '=', $row->id)
@@ -58,20 +62,24 @@ class Migration20160208183103ComFeedaggregator extends Base
 
         if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__feedaggregator_posts');
             $rows = $query->loadObjectList();
 
             // Convert the field
-            $this->db->schema()->modifyColumn('#__feedaggregator_posts', 'created')
+            $this->db
+                ->schema()
+                ->modifyColumn('#__feedaggregator_posts', 'created')
                 ->integer(11)
                 ->execute();
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = Date::of($row->created)->toUnix();
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])
                     ->where('id', '=', $row->id)

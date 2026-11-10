@@ -24,7 +24,8 @@ class Migration20151215155336ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_tickets')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_tickets')
                 ->set(['severity' => 'minor'])
                 ->where('severity', '=', 'trivial')

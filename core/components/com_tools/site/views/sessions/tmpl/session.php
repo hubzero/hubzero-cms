@@ -52,7 +52,8 @@ $embedUrl = (isset($this->output->embed_url) && $this->output->embed_url) ? $thi
 $output  = $embedUrl ? [] : Event::trigger('tools.onToolSessionView', [$this->app, $this->output, $readOnly]);
 $plugins = Event::trigger('tools.onToolSessionIdentify');
 
-$this->css('tools.css')
+$this
+     ->css('tools.css')
      ->css('session-frame.css')
      ->js('sessions.js');
 ?>
@@ -202,7 +203,8 @@ if (!$this->app->sess) {
             </div>
             <?php
             if ($this->config->get('show_storage')) {
-                $this->view('diskusage', 'storage')
+                $this
+                     ->view('diskusage', 'storage')
                      ->set('option', $this->option)
                      ->set('amt', $this->app->percent)
                      ->set('du', null)
@@ -214,7 +216,8 @@ if (!$this->app->sess) {
                      ->display();
 
                 if ($this->app->percent >= 100 && isset($this->app->remaining)) {
-                    $this->view('warning', 'storage')
+                    $this
+                         ->view('warning', 'storage')
                          ->set('sec', $this->app->remaining)
                          ->set('padHours', false)
                          ->set('option', $this->option)

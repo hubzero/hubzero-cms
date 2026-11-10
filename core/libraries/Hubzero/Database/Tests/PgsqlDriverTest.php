@@ -977,7 +977,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pg_test_items')
             ->order('id', 'asc')
@@ -995,7 +996,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pg_test_items')
             ->order('id', 'asc')
@@ -1015,11 +1017,13 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pg_test_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('pg_test_categories')
                     ->whereEquals('active', true);
             })
@@ -1036,7 +1040,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pg_test_items')
             ->whereIn('id', [])
@@ -1079,7 +1084,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('pg_ddl_test')
+        $driver
+            ->createTable('pg_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()
@@ -1103,7 +1109,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec("CREATE TABLE pg_ddl_test (id SERIAL PRIMARY KEY, name VARCHAR(100))");
 
-        $driver->alterTable('pg_ddl_test')
+        $driver
+            ->alterTable('pg_ddl_test')
             ->addColumn('email', 'VARCHAR(200)', ['nullable' => true])
             ->execute();
 

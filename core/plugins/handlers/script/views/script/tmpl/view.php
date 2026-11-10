@@ -10,7 +10,8 @@
 defined('_HZEXEC_') or die();
 
 $this->css('script.css');
-$this->js('highlighter/shCore.js')
+$this
+     ->js('highlighter/shCore.js')
      ->js('highlighter/shBrush' . ucfirst($this->ext) . '.js')
      ->js('script.js');
 ?>

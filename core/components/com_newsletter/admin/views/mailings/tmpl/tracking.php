@@ -23,7 +23,8 @@ Toolbar::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', false);
 
 // add css & js to view
 $this->css();
-$this->js()
+$this
+     ->js()
      ->js('jvectormap/jquery.jvectormap.min.js', 'system')
      ->js('jvectormap/maps/jquery.jvectormap.us.js', 'system')
      ->js('jvectormap/maps/jquery.jvectormap.world.js', 'system');

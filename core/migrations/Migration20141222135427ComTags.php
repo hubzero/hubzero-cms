@@ -24,7 +24,8 @@ class Migration20141222135427ComTags extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__tags') && $schema->tableExists('#__tags_log')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__tags', 't')
                 ->innerJoin('#__tags_log AS l', 't.id', 'l.tag_id')
                 ->set(['t.created' => Expression::raw('l.timestamp'), 't.created_by' => Expression::raw('l.user_id')])

@@ -36,7 +36,8 @@ Document::setTitle(
         . strip_tags($this->question->get('subject')),
 );
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">
@@ -93,7 +94,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                     <?php if (!$this->question->isReported()) { ?>
                         <div class="entry-voting voting">
                             <?php
-                            $this->view('_vote')
+                            $this
+                                 ->view('_vote')
                                  ->set('option', $this->option)
                                  ->set('item', $this->question)
                                  ->set('vote', $this->question->ballot())
@@ -602,7 +604,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
             <?php } ?>
 
             <?php
-            $chosen = $this->question->chosen()
+            $chosen = $this->question
+            ->chosen()
             ->including(['creator', function ($creator) {
                 $creator->select('*');
             }])
@@ -617,7 +620,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                 <?php echo Lang::txt('COM_ANSWERS_CHOSEN_ANSWER'); ?>
                         </h3>
                             <?php
-                            $this->view('_list')
+                            $this
+                             ->view('_list')
                              ->set('item_id', 0)
                              ->set('parent', 0)
                              ->set('cls', 'odd')
@@ -643,7 +647,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
             <div class="section-inner hz-layout-with-aside">
                 <div class="subject">
                     <?php
-                    $responses = $this->question->responses()
+                    $responses = $this->question
+                        ->responses()
                         ->including(['creator', function ($creator) {
                             $creator->select('*');
                         }])
@@ -658,7 +663,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                     </h3>
                     <?php if ($responses->count()) { ?>
                         <?php
-                        $this->view('_list')
+                        $this
+                             ->view('_list')
                              ->set('item_id', 0)
                              ->set('parent', 0)
                              ->set('cls', 'odd')

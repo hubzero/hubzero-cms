@@ -503,7 +503,8 @@ class Collections extends Plugin
         $total       = $this->model->following($count);
         $rows        = $this->model->following($filters);
 
-        $view = $this->view('following', 'follow')
+        $view = $this
+            ->view('following', 'follow')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -551,7 +552,8 @@ class Collections extends Plugin
         $total       = $this->model->followers($count);
         $rows        = $this->model->followers($filters);
 
-        $view = $this->view('followers', 'follow')
+        $view = $this
+            ->view('followers', 'follow')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -579,7 +581,8 @@ class Collections extends Plugin
      */
     private function collections()
     {
-        $view = $this->view('collections', 'collection')
+        $view = $this
+            ->view('collections', 'collection')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -644,7 +647,8 @@ class Collections extends Plugin
      */
     private function collection()
     {
-        $view = $this->view('default', 'collection')
+        $view = $this
+            ->view('default', 'collection')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -843,7 +847,8 @@ class Collections extends Plugin
      */
     private function posts()
     {
-        $view = $this->view('default', 'collection')
+        $view = $this
+            ->view('default', 'collection')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -938,7 +943,8 @@ class Collections extends Plugin
 
         $no_html = Request::getInt('no_html', 0);
 
-        $view = $this->view('default', 'post')
+        $view = $this
+            ->view('default', 'post')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
@@ -2304,7 +2310,8 @@ class Collections extends Plugin
             }
 
             // Output HTML
-            $view = $this->view('delete', 'collection')
+            $view = $this
+                ->view('delete', 'collection')
                 ->set('name', $this->pluginName)
                 ->set('option', $this->option)
                 ->set('group', $this->group)
@@ -2379,7 +2386,8 @@ class Collections extends Plugin
         }
 
         // Output HTML
-        $view = $this->view('default', 'settings')
+        $view = $this
+            ->view('default', 'settings')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)

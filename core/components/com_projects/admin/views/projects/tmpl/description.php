@@ -80,7 +80,8 @@ $json = new stdClass();
 $json->fields = $elements;
 $json = json_encode($json);
 
-$this->css('formbuilder.css')
+$this
+     ->css('formbuilder.css')
      ->js('vendor.js')
      ->js('formbuilder.js');
 ?>

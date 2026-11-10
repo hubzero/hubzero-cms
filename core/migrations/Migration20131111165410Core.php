@@ -30,7 +30,8 @@ class Migration20131111165410Core extends Base
         ];
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('folder', '=', 'resources')
@@ -39,7 +40,8 @@ class Migration20131111165410Core extends Base
 
             $params = (array) json_decode($result);
         } else {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__plugins')
                 ->where('folder', '=', 'resources')
@@ -95,7 +97,8 @@ class Migration20131111165410Core extends Base
         if ($schema->tableExists('#__extensions')) {
             $params = json_encode($params);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('folder', '=', 'resources')
@@ -109,7 +112,8 @@ class Migration20131111165410Core extends Base
 
             $params = $p;
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['params' => $params])
                 ->where('folder', '=', 'resources')
@@ -118,7 +122,8 @@ class Migration20131111165410Core extends Base
         }
 
         if (!$schema->tableExists('#__resource_stats_tools_tops')) {
-            $schema->createTable('#__resource_stats_tools_tops')
+            $schema
+                ->createTable('#__resource_stats_tools_tops')
                 ->tinyInteger('top')->default(0)
                 ->string('name', 128)->default('')
                 ->tinyInteger('valfmt')->default(0)
@@ -128,7 +133,8 @@ class Migration20131111165410Core extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__resource_stats_tools_tops')
                 ->columns(['top', 'name', 'valfmt', 'size'])
                 ->values([1, 'Users By Country Of Residence', 1, 5])
@@ -138,7 +144,8 @@ class Migration20131111165410Core extends Base
         }
 
         if (!$schema->tableExists('#__stats_tops')) {
-            $schema->createTable('#__stats_tops')
+            $schema
+                ->createTable('#__stats_tops')
                 ->tinyInteger('id')->default(0)
                 ->string('name', 128)->default('')
                 ->tinyInteger('valfmt')->default(0)
@@ -148,7 +155,8 @@ class Migration20131111165410Core extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__stats_tops')
                 ->columns(['id', 'name', 'valfmt', 'size'])
                 ->values([1, 'Top Tools by Ranking', 1, 5])
@@ -164,7 +172,8 @@ class Migration20131111165410Core extends Base
         }
 
         if (!$schema->tableExists('#__citations_secondary')) {
-            $schema->createTable('#__citations_secondary')
+            $schema
+                ->createTable('#__citations_secondary')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('cid')
                 ->integer('sec_cits_cnt')->nullable()
@@ -176,7 +185,8 @@ class Migration20131111165410Core extends Base
         }
 
         if (!$schema->tableExists('#__session_geo')) {
-            $schema->createTable('#__session_geo')
+            $schema
+                ->createTable('#__session_geo')
                 ->string('session_id', 200)->default('0')
                 ->string('username', 150)->default('')
                 ->string('time', 14)->default('')
@@ -203,7 +213,8 @@ class Migration20131111165410Core extends Base
         }
 
         if (!$schema->tableExists('#__metrics_ipgeo_cache')) {
-            $schema->createTable('#__metrics_ipgeo_cache')
+            $schema
+                ->createTable('#__metrics_ipgeo_cache')
                 ->integer('ip')->default(0)
                 ->char('countrySHORT', 2)->default('')
                 ->string('countryLONG', 64)->default('')

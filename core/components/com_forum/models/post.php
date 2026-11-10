@@ -600,7 +600,8 @@ class Post extends Relational
             ->whereEquals('thread', $this->get('thread'))
             ->whereIn('access', User::getAuthorisedViewLevels());
 
-        return $last->order('created', 'desc')
+        return $last
+            ->order('created', 'desc')
             ->limit(1)
             ->row();
     }
@@ -715,7 +716,8 @@ class Post extends Relational
                 }
 
                 // Shift left values.
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->update($this->getTableName())
                     ->set(['lft' => new Raw('lft + 2')])
                     ->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
@@ -728,7 +730,8 @@ class Post extends Relational
                 }
 
                 // Shift right values.
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->update($this->getTableName())
                     ->set(['rgt' => new Raw('rgt + 2')])
                     ->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
@@ -763,7 +766,8 @@ class Post extends Relational
             if (!$isNew) {
                 // Make sure state and category changes carry through to replies
                 // If it's marked as deleted, skip it
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->update($this->getTableName())
                     ->set([
                         'state'       => $this->get('state'),
@@ -777,7 +781,8 @@ class Post extends Relational
                 }
 
                 // Make sure state changes carry through to attachments
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->update(Attachment::blank()->getTableName())
                     ->set(['state' => $this->get('state')])
                     ->whereEquals('post_id', $this->get('id'))

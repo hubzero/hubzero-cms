@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-    $this->css('like.css')
+    $this
+        ->css('like.css')
         ->js('like.js');
 
     $likeArray = $this->like;
@@ -291,7 +292,8 @@ if ($this->comment->isReported()) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) {
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('option', $this->option)
                  ->set('controller', $this->controller)
                  ->set('comments', $this->comment->get('replies'))

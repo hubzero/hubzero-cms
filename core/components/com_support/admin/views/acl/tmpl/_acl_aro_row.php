@@ -52,7 +52,8 @@ $acos = [
     <?php
     foreach ($acos as $aco => $aroList) :
         foreach ($aroList as $action) :
-            $this->view('_acl_aro_row_toggle_field')
+            $this
+                ->view('_acl_aro_row_toggle_field')
                 ->set('id', $data[$aco]['id'])
                 ->set('isEnabled', $data[$aco][$action])
                 ->set('action', $action)

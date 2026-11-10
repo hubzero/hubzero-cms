@@ -24,7 +24,8 @@ class Migration20140606165053ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_prerequisites')) {
-            $schema->createTable('#__courses_prerequisites')
+            $schema
+                ->createTable('#__courses_prerequisites')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('section_id')->default(0)
                 ->string('item_scope', 255)->default('asset')

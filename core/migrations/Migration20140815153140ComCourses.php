@@ -29,7 +29,8 @@ class Migration20140815153140ComCourses extends Base
             && $schema->hasColumn('#__courses_grade_book', 'override')
             && !$schema->hasColumn('#__courses_grade_book', 'score_recorded')
         ) {
-            $schema->addColumn('#__courses_grade_book', 'score_recorded')
+            $schema
+                ->addColumn('#__courses_grade_book', 'score_recorded')
                 ->datetime()
                 ->nullable()
                 ->execute();
@@ -40,14 +41,16 @@ class Migration20140815153140ComCourses extends Base
             && $schema->hasColumn('#__courses_grade_book', 'score_recorded')
             && !$schema->hasColumn('#__courses_grade_book', 'override_recorded')
         ) {
-            $schema->addColumn('#__courses_grade_book', 'override_recorded')
+            $schema
+                ->addColumn('#__courses_grade_book', 'override_recorded')
                 ->datetime()
                 ->nullable()
                 ->execute();
         }
 
         // Get deployments
-        $deployments = $this->db->getQuery(true)
+        $deployments = $this->db
+            ->getQuery(true)
             ->select(['cfd.id', 'cf.asset_id'])
             ->from('#__courses_form_deployments', 'cfd')
             ->innerJoin('#__courses_forms AS cf', 'cfd.form_id', 'cf.id')
@@ -56,7 +59,8 @@ class Migration20140815153140ComCourses extends Base
         if ($deployments && count($deployments) > 0) {
             foreach ($deployments as $deployment) {
                 // Now set the score recorded dates for all existing forms
-                $results = $this->db->getQuery(true)
+                $results = $this->db
+                    ->getQuery(true)
                     ->select('pfr.member_id')
                     ->select('pfr.finished')
                     ->select(
@@ -70,7 +74,8 @@ class Migration20140815153140ComCourses extends Base
                     ->leftJoin('#__courses_form_latest_responses_view AS pfr2', 'pfr2.respondent_id', 'pfr.id')
                     ->leftJoin('#__courses_form_questions AS pfq', 'pfq.id', 'pfr2.question_id')
                     ->leftJoin('#__courses_form_answers AS pfa', function ($join) {
-                        $join->on('pfa.id', '=', 'pfr2.answer_id')
+                        $join
+                            ->on('pfa.id', '=', 'pfr2.answer_id')
                             ->where('pfa.correct', '=', 1);
                     })
                     ->where('deployment_id', '=', (int) $deployment->id)
@@ -83,7 +88,8 @@ class Migration20140815153140ComCourses extends Base
                 if ($results && count($results) > 0) {
                     foreach ($results as $result) {
                         if (isset($result->finished)) {
-                            $this->db->getQuery(true)
+                            $this->db
+                                ->getQuery(true)
                                 ->update('#__courses_grade_book')
                                 ->set(['score_recorded' => $result->finished])
                                 ->where('member_id', '=', (int) $result->member_id)

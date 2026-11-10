@@ -327,7 +327,8 @@ class Module extends Relational
         if ($result) {
             // Delete the menu assignments
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->delete('#__modules_menu')
                 ->whereEquals('moduleid', (int) $pk);
             $db->setQuery((string) $query);
@@ -401,7 +402,8 @@ class Module extends Relational
         }
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('menuid')
             ->from('#__modules_menu')
             ->whereEquals('moduleid', (int) $pk);
@@ -646,7 +648,8 @@ class Module extends Relational
     public function checkin()
     {
         if (!$this->isNew()) {
-            $this->set('checked_out', 0)
+            $this
+                 ->set('checked_out', 0)
                  ->set('checked_out_time', null)
                  ->save();
         }

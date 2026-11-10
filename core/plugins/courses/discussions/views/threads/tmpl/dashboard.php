@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $database = App::get('db');
@@ -89,7 +90,8 @@ if (count($inst) > 0) {
                         </div><!-- / .category-header -->
                         <div class="category-content">
                             <?php
-                            $this->view('_threads')
+                            $this
+                                ->view('_threads')
                                 ->set('category', 'categoryreplies')
                                 ->set('option', $this->option)
                                 ->set('threads', $threads)
@@ -124,7 +126,8 @@ if (count($inst) > 0) {
                         </div><!-- / .category-header -->
                         <div class="category-content">
                             <?php
-                            $this->view('_threads')
+                            $this
+                                ->view('_threads')
                                 ->set('category', 'categorynew')
                                 ->set('option', $this->option)
                                 ->set('threads', $threads)

@@ -20,7 +20,8 @@ $codeaccess = \Components\Tools\Helpers\Html::getCodeAccess($this->status['code'
 // get wiki access text
 $wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($this->status['wiki']);
 
-$this->css('pipeline.css')
+$this
+     ->css('pipeline.css')
      ->js('pipeline.js');
 ?>
 <header id="content-header">

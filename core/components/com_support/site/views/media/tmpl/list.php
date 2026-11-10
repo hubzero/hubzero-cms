@@ -18,7 +18,8 @@ $assets = $this->model->attachments;
 if ($assets->count() > 0) {
     $i = 0;
     foreach ($assets as $asset) {
-        $this->view('_asset')
+        $this
+             ->view('_asset')
              ->set('i', $i)
              ->set('option', $this->option)
              ->set('controller', $this->controller)

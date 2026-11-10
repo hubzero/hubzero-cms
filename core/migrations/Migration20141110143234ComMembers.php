@@ -24,7 +24,8 @@ class Migration20141110143234ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__xorganization_types')) {
-            $count = $this->db->getQuery(true)
+            $count = $this->db
+                ->getQuery(true)
                 ->from('#__xorganization_types')
                 ->count();
 
@@ -44,7 +45,8 @@ class Migration20141110143234ComMembers extends Base
                 ];
 
                 foreach ($types as $alias => $title) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xorganization_types')
                         ->columns(['type', 'title'])
                         ->values([$alias, $title])

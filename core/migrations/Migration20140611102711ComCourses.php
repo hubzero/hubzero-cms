@@ -24,7 +24,8 @@ class Migration20140611102711ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_certificates')) {
-            $schema->createTable('#__courses_certificates')
+            $schema
+                ->createTable('#__courses_certificates')
                 ->integer('id', ['autoIncrement' => true])
                 ->text('properties')->nullable()
                 ->integer('course_id')->default(0)

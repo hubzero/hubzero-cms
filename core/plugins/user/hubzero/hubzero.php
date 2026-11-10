@@ -124,7 +124,8 @@ class Hubzero extends Plugin
         }
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->delete('#__session')
             ->whereEquals('userid', (int) $user['id']);
         $db->setQuery($query->toString());
@@ -281,7 +282,8 @@ class Hubzero extends Plugin
             if (App::get('config')->get('session_handler') == 'database' && App::has('db')) {
                 $db = App::get('db');
 
-                $query = $db->getQuery()
+                $query = $db
+                    ->getQuery()
                     ->select('session_id')
                     ->from('#__session')
                     ->whereEquals('session_id', $session->getId())
@@ -298,7 +300,8 @@ class Hubzero extends Plugin
                     $ip = Request::ip();
 
                     if ($session->isNew()) {
-                        $query = $db->getQuery()
+                        $query = $db
+                            ->getQuery()
                             ->insert('#__session')
                             ->values([
                                 'session_id' => $session->getId(),
@@ -309,7 +312,8 @@ class Hubzero extends Plugin
 
                         $db->setQuery($query->toString());
                     } else {
-                        $query = $db->getQuery()
+                        $query = $db
+                            ->getQuery()
                             ->insert('#__session')
                             ->values([
                                 'session_id' => $session->getId(),
@@ -341,7 +345,8 @@ class Hubzero extends Plugin
         if (App::get('config')->get('session_handler') == 'database') {
             // Update the user related fields for the sessions table.
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->update('#__session')
                 ->set([
                     'guest'    => $instance->get('guest'),
@@ -431,7 +436,8 @@ class Hubzero extends Plugin
 
         // Force logout all users with that userid
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->delete('#__session')
             ->whereEquals('userid', (int) $user['id'])
             ->whereEquals('client_id', (int) $options['clientid']);
@@ -767,7 +773,8 @@ class Hubzero extends Plugin
         $query = App::get('db')->getQuery();
 
         // Determine whether user's secret is different from null
-        $foundSecret = $query->select('*')
+        $foundSecret = $query
+                    ->select('*')
                     ->from('#__users')
                     ->whereEquals('id', $userId)
                     ->whereIsNotNull('secret')
@@ -809,7 +816,8 @@ class Hubzero extends Plugin
         $query = App::get('db')->getQuery();
 
         // Set the secret generated for this user:
-        $query->update('#__users')
+        $query
+                ->update('#__users')
                 ->set(['secret' => $secret])
                 ->whereEquals('id', $userId)
                 ->execute();
@@ -831,7 +839,8 @@ class Hubzero extends Plugin
         $user = User::oneOrFail($userId);
         if (isset($user)) {
             // NULL out any existing secret for this user:
-            $query->update('#__users')
+            $query
+                ->update('#__users')
                 ->set(['secret' => null])
                 ->whereEquals('id', $userId)
                 ->execute();

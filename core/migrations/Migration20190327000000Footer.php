@@ -25,7 +25,8 @@ class Migration20190327000000Footer extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__modules')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__modules')
                 ->set(['content' => Expression::replace('content', '/about/dmcapolicy', '/aboutus/dmcapolicy')])
                 ->where('title', '=', 'Hub Footer')
@@ -43,7 +44,8 @@ class Migration20190327000000Footer extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__modules')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__modules')
                 ->set(['content' => Expression::replace('content', '/aboutus/dmcapolicy', '/about/dmcapolicy')])
                 ->where('title', '=', 'Hub Footer')

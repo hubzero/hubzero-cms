@@ -449,7 +449,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     $newUsertype = (int) $this->raw->usertype;
                 } else {
                     $db = App::get('db');
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('id')
                         ->from('#__usergroups')
                         ->whereEquals('title', $this->raw->usertype);
@@ -463,7 +464,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 $newUsertype = $usersConfig->get('new_usertype');
                 if (!$newUsertype) {
                     $db = App::get('db');
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('id')
                         ->from('#__usergroups')
                         ->whereEquals('title', 'Registered');
@@ -537,7 +539,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $eview->email        = $this->record->entry->get('email');
 
             $msg = new \Hubzero\Mail\Message();
-            $msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
+            $msg
+                ->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
                 ->addTo($this->record->entry->get('email'))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
                 ->addHeader('X-Component', 'com_members');

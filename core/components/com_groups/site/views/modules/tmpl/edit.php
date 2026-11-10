@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // add styles & scripts
-$this->css()
+$this
+     ->css()
      ->js()
      ->css('jquery.fancyselect.css', 'system')
      ->js('jquery.fancyselect', 'system');

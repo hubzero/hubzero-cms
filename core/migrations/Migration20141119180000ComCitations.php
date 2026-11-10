@@ -28,32 +28,38 @@ class Migration20141119180000ComCitations extends Base
             $schema->tableExists('#__citations_secondary')
             && !$schema->hasColumn('#__citations_secondary', 'link1_url')
         ) {
-            $schema->addColumn('#__citations_secondary', 'link1_url')
+            $schema
+                ->addColumn('#__citations_secondary', 'link1_url')
                 ->tinyText()
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations_secondary', 'link1_title')
+            $schema
+                ->addColumn('#__citations_secondary', 'link1_title')
                 ->string(60)
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations_secondary', 'link2_url')
+            $schema
+                ->addColumn('#__citations_secondary', 'link2_url')
                 ->tinyText()
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations_secondary', 'link2_title')
+            $schema
+                ->addColumn('#__citations_secondary', 'link2_title')
                 ->string(60)
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations_secondary', 'link3_url')
+            $schema
+                ->addColumn('#__citations_secondary', 'link3_url')
                 ->tinyText()
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations_secondary', 'link3_title')
+            $schema
+                ->addColumn('#__citations_secondary', 'link3_title')
                 ->string(60)
                 ->nullable()
                 ->default(null)

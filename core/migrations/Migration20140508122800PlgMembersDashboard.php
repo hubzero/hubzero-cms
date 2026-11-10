@@ -29,7 +29,8 @@ class Migration20140508122800PlgMembersDashboard extends Base
         ) {
             // Adding auto-increment primary key to existing table requires multiple steps:
             // Step 1: Add the column without auto_increment
-            $schema->addColumn('#__xprofiles_dashboard_preferences', 'id')
+            $schema
+                ->addColumn('#__xprofiles_dashboard_preferences', 'id')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -42,7 +43,8 @@ class Migration20140508122800PlgMembersDashboard extends Base
             $schema->addPrimaryKey('#__xprofiles_dashboard_preferences', 'id');
 
             // Step 4: Enable auto_increment
-            $schema->modifyColumn('#__xprofiles_dashboard_preferences', 'id')
+            $schema
+                ->modifyColumn('#__xprofiles_dashboard_preferences', 'id')
                 ->integer()
                 ->notNull()
                 ->autoIncrement()

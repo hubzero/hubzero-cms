@@ -9,7 +9,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js');
 ?>
 <header id="content-header">

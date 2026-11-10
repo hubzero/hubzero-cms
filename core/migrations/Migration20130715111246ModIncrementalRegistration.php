@@ -24,20 +24,23 @@ class Migration20130715111246ModIncrementalRegistration extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__profile_completion_awards', 'mailPreferenceOption')) {
-            $schema->addColumn('#__profile_completion_awards', 'mailPreferenceOption')
+            $schema
+                ->addColumn('#__profile_completion_awards', 'mailPreferenceOption')
                 ->integer()
                 ->notNull()
                 ->default(0);
         }
 
         if (
-            !$this->db->getQuery(true)
+            !$this->db
+            ->getQuery(true)
             ->select('*')
             ->from('#__incremental_registration_labels')
             ->where('field', '=', 'mailPreferenceOption')
             ->exists()
         ) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__incremental_registration_labels')
                 ->columns(['field', 'label'])
                 ->values(['mailPreferenceOption', 'E-Mail Updates'])
@@ -56,7 +59,8 @@ class Migration20130715111246ModIncrementalRegistration extends Base
             $schema->dropColumn('#__profile_completion_awards', 'mailPreferenceOption');
         }
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->delete('#__incremental_registration_labels')
             ->where('field', '=', 'mailPreferenceOption')
             ->execute();

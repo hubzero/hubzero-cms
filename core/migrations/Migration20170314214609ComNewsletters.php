@@ -25,7 +25,8 @@ class Migration20170314214609ComNewsletters extends Base
 
         if ($schema->tableExists('#__newsletters')) {
             if ($schema->hasColumn('#__newsletters', 'template')) {
-                $schema->renameColumn('#__newsletters', 'template', 'template_id')
+                $schema
+                    ->renameColumn('#__newsletters', 'template', 'template_id')
                     ->integer()
                     ->notNull()
                     ->default(0)
@@ -43,7 +44,8 @@ class Migration20170314214609ComNewsletters extends Base
 
         if ($schema->tableExists('#__newsletters')) {
             if ($schema->hasColumn('#__newsletters', 'template_id')) {
-                $schema->renameColumn('#__newsletters', 'template_id', 'template')
+                $schema
+                    ->renameColumn('#__newsletters', 'template_id', 'template')
                     ->integer()
                     ->notNull()
                     ->default(0)

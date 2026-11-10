@@ -1119,7 +1119,8 @@ class Offering extends Base
             }
         }
 
-        $this->importPlugin('courses')
+        $this
+             ->importPlugin('courses')
              ->trigger('onOfferingSave', [$this]);
 
         if ($isNew) {
@@ -1167,7 +1168,8 @@ class Offering extends Base
 
         $value = parent::delete();
 
-        $this->importPlugin('courses')
+        $this
+             ->importPlugin('courses')
              ->trigger('onOfferingDelete', [$this]);
 
         return $value;

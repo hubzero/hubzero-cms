@@ -22,7 +22,8 @@ class Migration20140110135511ComFinder extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -34,19 +35,22 @@ class Migration20140110135511ComFinder extends Base
 
             $this->deleteModuleEntry('mod_finder');
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__modules')
                 ->where('module', '=', 'mod_finder')
                 ->loadColumn();
 
             if (!empty($results)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules_menu')
                     ->whereIn('moduleid', $results)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules')
                     ->where('module', '=', 'mod_finder')
                     ->execute();
@@ -88,7 +92,8 @@ class Migration20140110135511ComFinder extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -107,7 +112,8 @@ class Migration20140110135511ComFinder extends Base
             $this->addPluginEntry('finder', 'weblinks', 0);
 
             if (!$schema->tableExists('#__finder_filters')) {
-                $schema->createTable('#__finder_filters')
+                $schema
+                    ->createTable('#__finder_filters')
                     ->unsignedInteger('filter_id', ['autoIncrement' => true])
                     ->string('title', 255)
                     ->string('alias', 255)
@@ -129,7 +135,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_links')) {
-                $schema->createTable('#__finder_links')
+                $schema
+                    ->createTable('#__finder_links')
                     ->unsignedInteger('link_id', ['autoIncrement' => true])
                     ->string('url', 255)
                     ->string('route', 255)
@@ -179,7 +186,8 @@ class Migration20140110135511ComFinder extends Base
 
             foreach ($suffixes as $suffix) {
                 if (!$schema->tableExists('#__finder_links_terms' . $suffix)) {
-                    $schema->createTable('#__finder_links_terms' . $suffix)
+                    $schema
+                        ->createTable('#__finder_links_terms' . $suffix)
                         ->unsignedInteger('link_id')
                         ->unsignedInteger('term_id')
                         ->float('weight')
@@ -193,7 +201,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_taxonomy')) {
-                $schema->createTable('#__finder_taxonomy')
+                $schema
+                    ->createTable('#__finder_taxonomy')
                     ->unsignedInteger('id', ['autoIncrement' => true])
                     ->unsignedInteger('parent_id')->default(0)
                     ->string('title', 255)
@@ -212,7 +221,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_taxonomy_map')) {
-                $schema->createTable('#__finder_taxonomy_map')
+                $schema
+                    ->createTable('#__finder_taxonomy_map')
                     ->unsignedInteger('link_id')
                     ->unsignedInteger('node_id')
                     ->primaryKey(['link_id', 'node_id'])
@@ -224,7 +234,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_terms')) {
-                $schema->createTable('#__finder_terms')
+                $schema
+                    ->createTable('#__finder_terms')
                     ->unsignedInteger('term_id', ['autoIncrement' => true])
                     ->string('term', 75)
                     ->string('stem', 75)
@@ -244,7 +255,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_terms_common')) {
-                $schema->createTable('#__finder_terms_common')
+                $schema
+                    ->createTable('#__finder_terms_common')
                     ->string('term', 75)
                     ->string('language', 3)
                     ->index('idx_word_lang', ['term', 'language'])
@@ -255,7 +267,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_tokens')) {
-                $schema->createTable('#__finder_tokens')
+                $schema
+                    ->createTable('#__finder_tokens')
                     ->string('term', 75)
                     ->string('stem', 75)
                     ->unsignedTinyInteger('common')->default(0)
@@ -270,7 +283,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_tokens_aggregate')) {
-                $schema->createTable('#__finder_tokens_aggregate')
+                $schema
+                    ->createTable('#__finder_tokens_aggregate')
                     ->unsignedInteger('term_id')
                     ->char('map_suffix', 1)
                     ->string('term', 75)
@@ -289,7 +303,8 @@ class Migration20140110135511ComFinder extends Base
             }
 
             if (!$schema->tableExists('#__finder_types')) {
-                $schema->createTable('#__finder_types')
+                $schema
+                    ->createTable('#__finder_types')
                     ->unsignedInteger('id', ['autoIncrement' => true])
                     ->string('title', 100)
                     ->string('mime', 100)

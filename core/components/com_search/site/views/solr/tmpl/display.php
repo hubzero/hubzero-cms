@@ -13,9 +13,11 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('search-enhanced')
+$this
+    ->css('search-enhanced')
     ->css('jquery.datetimepicker.css', 'system');
-$this->js('solr')
+$this
+    ->js('solr')
     ->js('jquery.datetimepicker', 'system');
 
 $terms = isset($this->terms) ? $this->terms : '';
@@ -193,7 +195,8 @@ endif;
                                     $overrideView = new \Hubzero\View\View(
                                         $this->viewOverrides[$hubType],
                                     );
-                                    $overrideView->set('result', $result)
+                                    $overrideView
+                                        ->set('result', $result)
                                         ->set('terms', $this->terms)
                                         ->set('tagSearch', $tagSearchEnabled)
                                         ->display();
@@ -201,7 +204,8 @@ endif;
                                     $resultData = is_array($result)
                                         ? $result
                                         : $result->result;
-                                    $this->setLayout('_result')
+                                    $this
+                                        ->setLayout('_result')
                                         ->setName('solr')
                                         ->set('result', $resultData)
                                         ->set('terms', $terms)

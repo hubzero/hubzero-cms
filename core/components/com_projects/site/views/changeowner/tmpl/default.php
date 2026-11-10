@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 <div id="project-wrap">
     <section class="main section">
         <?php
-        $this->view('_header', 'projects')
+        $this
+             ->view('_header', 'projects')
              ->set('model', $this->model)
              ->set('showPic', 0)
              ->set('showPrivacy', 0)

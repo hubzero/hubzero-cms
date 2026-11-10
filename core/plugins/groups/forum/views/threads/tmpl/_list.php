@@ -43,7 +43,8 @@ if (isset($this->likes)) {
         $postId = $comment->get('id');
         $likesByPostId = isset($hash_map[$postId]) ? $hash_map[$postId] : [];
 
-        $this->view('_comment')
+        $this
+             ->view('_comment')
              ->set('option', $this->option)
              ->set('group', $this->group)
              ->set('comment', $comment)

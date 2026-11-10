@@ -21,7 +21,8 @@ $option = $this->option;
 $header = clone($this->blacklist);
 $header = $header->toArray();
 
-$this->view('_submenu', 'shared')
+$this
+    ->view('_submenu', 'shared')
     ->display();
 ?>
 

@@ -25,14 +25,16 @@ class Migration20151026173235ComKb extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__faq')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__faq')
                 ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
                 ->execute();
         }
 
         if ($schema->tableExists('#__kb_articles')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__kb_articles')
                 ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
                 ->execute();

@@ -113,7 +113,8 @@ class Supportingdocs extends Plugin
 
             // Pass the view some info
 
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('option', $option)
                 ->set('publication', $publication)
                 ->set('config', $config)

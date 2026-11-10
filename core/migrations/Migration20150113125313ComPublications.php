@@ -24,7 +24,8 @@ class Migration20150113125313ComPublications extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__publication_handler_assoc')) {
-            $schema->createTable('#__publication_handler_assoc')
+            $schema
+                ->createTable('#__publication_handler_assoc')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('publication_version_id')
                 ->integer('element_id')

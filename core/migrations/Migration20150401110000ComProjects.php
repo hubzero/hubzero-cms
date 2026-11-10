@@ -24,7 +24,8 @@ class Migration20150401110000ComProjects extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__project_tools')) {
-            $schema->createTable('#__project_tools')
+            $schema
+                ->createTable('#__project_tools')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('name', 64)->default('')
                 ->string('title', 127)->default('')
@@ -47,7 +48,8 @@ class Migration20150401110000ComProjects extends Base
                 ->execute();
         }
         if (!$schema->tableExists('#__project_tool_instances')) {
-            $schema->createTable('#__project_tool_instances')
+            $schema
+                ->createTable('#__project_tool_instances')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('parent_id')->default(0)
                 ->string('parent_name', 64)->default('')
@@ -69,7 +71,8 @@ class Migration20150401110000ComProjects extends Base
                 ->execute();
         }
         if (!$schema->tableExists('#__project_tool_logs')) {
-            $schema->createTable('#__project_tool_logs')
+            $schema
+                ->createTable('#__project_tool_logs')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('parent_id')->default(0)
                 ->string('parent_name', 64)->default('')
@@ -88,7 +91,8 @@ class Migration20150401110000ComProjects extends Base
                 ->execute();
         }
         if (!$schema->tableExists('#__project_tool_views')) {
-            $schema->createTable('#__project_tool_views')
+            $schema
+                ->createTable('#__project_tool_views')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('parent_id')->default(0)
                 ->integer('userid')
@@ -99,7 +103,8 @@ class Migration20150401110000ComProjects extends Base
                 ->execute();
         }
         if (!$schema->tableExists('#__project_tool_statuses')) {
-            $schema->createTable('#__project_tool_statuses')
+            $schema
+                ->createTable('#__project_tool_statuses')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('status', 100)->default('')
                 ->text('status_about')->nullable()
@@ -114,7 +119,8 @@ class Migration20150401110000ComProjects extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__project_tool_statuses')
                 ->columns([
                     'id',

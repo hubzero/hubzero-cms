@@ -29,7 +29,8 @@ class Migration20130827143717Core extends Base
             !$schema->tableExists('metrics_author_cluster')
             && !$schema->tableExists('#__metrics_author_cluster')
         ) {
-            $schema->createTable('#__metrics_author_cluster')
+            $schema
+                ->createTable('#__metrics_author_cluster')
                 ->string('authorid', 60)->default('0')
                 ->integer('classes')->nullable()->default(0)
                 ->integer('users')->nullable()->default(0)

@@ -44,10 +44,12 @@ if ($month = $this->filters['month']) {
 
 Document::setTitle($title);
 
-$this->css()
+$this
+     ->css()
      ->js();
 
-$first = $this->archive->entries([
+$first = $this->archive
+    ->entries([
         'state'      => 1,
         'authorized' => $this->filters['authorized'],
         'scope'      => $this->filters['scope'],
@@ -57,7 +59,8 @@ $first = $this->archive->entries([
     ->limit(1)
     ->row();
 
-$rows = $this->archive->entries($this->filters)
+$rows = $this->archive
+    ->entries($this->filters)
     ->ordered()
     ->paginated()
     ->rows();
@@ -381,7 +384,8 @@ $rows = $this->archive->entries($this->filters)
             <div class="container blog-popular-entries">
                 <h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
                 <?php
-                $popular = $this->archive->entries([
+                $popular = $this->archive
+                    ->entries([
                         'state'  => $this->filters['state'],
                         'access' => $this->filters['access'],
                     ])

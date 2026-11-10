@@ -53,7 +53,8 @@ class Menutype extends Obj
 
         // Get the list of components.
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('name')
             ->select('protected')
             ->select('element', '`option`')

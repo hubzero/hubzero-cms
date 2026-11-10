@@ -21,7 +21,8 @@ class Migration20130404000000ComCitations extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__citations_sponsors', 'image')) {
-            $schema->addColumn('#__citations_sponsors', 'image')
+            $schema
+                ->addColumn('#__citations_sponsors', 'image')
                 ->string(200)
                 ->execute();
         }

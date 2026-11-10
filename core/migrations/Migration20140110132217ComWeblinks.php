@@ -21,7 +21,8 @@ class Migration20140110132217ComWeblinks extends Base
      **/
     public function up()
     {
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -35,19 +36,22 @@ class Migration20140110132217ComWeblinks extends Base
 
             $this->deleteModuleEntry('mod_weblinks');
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__modules')
                 ->where('module', '=', 'mod_weblinks')
                 ->loadColumn();
 
             if ($results) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules_menu')
                     ->whereIn('moduleid', $results)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules')
                     ->where('module', '=', 'mod_weblinks')
                     ->execute();
@@ -64,7 +68,8 @@ class Migration20140110132217ComWeblinks extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -77,7 +82,8 @@ class Migration20140110132217ComWeblinks extends Base
             $this->addPluginEntry('weblinks', 'contacts', 0);
 
             if (!$schema->tableExists('#__weblinks')) {
-                $schema->createTable('#__weblinks')
+                $schema
+                    ->createTable('#__weblinks')
                     ->unsignedInteger('id', ['autoIncrement' => true])
                     ->integer('catid')->default(0)
                     ->integer('sid')->default(0)

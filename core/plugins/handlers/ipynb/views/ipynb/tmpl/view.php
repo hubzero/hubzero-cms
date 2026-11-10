@@ -10,7 +10,8 @@
 defined('_HZEXEC_') or die();
 
 $this->css('ipynb.css');
-$this->js('highlighter/shCore.js')
+$this
+     ->js('highlighter/shCore.js')
      ->js('highlighter/shBrushPython.js')
      ->js('ipynb.js');
 ?>
@@ -27,7 +28,8 @@ $this->js('highlighter/shCore.js')
             if (isset($contents->worksheets)) :
                 foreach ($contents->worksheets as $worksheet) :
                     foreach ($worksheet->cells as $cell) :
-                        $output[] = $this->view('cell')
+                        $output[] = $this
+                                    ->view('cell')
                                     ->set('cell', $cell)
                                     ->set('parser', $parser)
                                     ->loadTemplate();
@@ -35,7 +37,8 @@ $this->js('highlighter/shCore.js')
                 endforeach;
             elseif (isset($contents->cells)) :
                 foreach ($contents->cells as $cell) :
-                    $output[] = $this->view('cell')
+                    $output[] = $this
+                    ->view('cell')
                     ->set('cell', $cell)
                     ->set('parser', $parser)
                     ->loadTemplate();

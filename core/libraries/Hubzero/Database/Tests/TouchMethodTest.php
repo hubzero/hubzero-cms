@@ -39,7 +39,8 @@ class TouchMethodTest extends AbstractDriverTestCase
         $driver->dropTable('touch_test_items', true);
 
         $schema = $driver->schema();
-        $schema->createTable('touch_test_items')
+        $schema
+            ->createTable('touch_test_items')
             ->id()
             ->string('title', 255)
             ->string('content', 500)->nullable()
@@ -313,7 +314,8 @@ class TouchMethodTest extends AbstractDriverTestCase
         $driver->dropTable('touch_test_items', true);
 
         $schema = $driver->schema();
-        $schema->createTable('touch_test_items')
+        $schema
+            ->createTable('touch_test_items')
             ->id()
             ->string('title', 255)
             ->string('content', 500)->nullable()
@@ -331,7 +333,8 @@ class TouchMethodTest extends AbstractDriverTestCase
         $modified = '2020-01-01 00:00:00';
 
         $query = new Query($driver);
-        $query->insert('touch_test_items')
+        $query
+              ->insert('touch_test_items')
               ->values([
                   'title' => $title,
                   'content' => 'Test content',

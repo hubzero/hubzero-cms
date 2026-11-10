@@ -41,7 +41,8 @@ class CustomCastsTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('cast_test', true);
-        $driver->createTable('cast_test')
+        $driver
+            ->createTable('cast_test')
             ->id()
             ->text('options')->nullable()
             ->string('expires', 50)->nullable()

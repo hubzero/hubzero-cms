@@ -24,7 +24,8 @@ class Migration20140212162812ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_asset_unity')) {
-            $schema->createTable('#__courses_asset_unity')
+            $schema
+                ->createTable('#__courses_asset_unity')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('member_id')
                 ->integer('asset_id')

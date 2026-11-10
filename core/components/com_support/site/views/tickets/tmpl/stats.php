@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->js('flot/jquery.flot.min.js', 'system')
+$this
+     ->js('flot/jquery.flot.min.js', 'system')
      ->js('flot/jquery.flot.time.min.js', 'system')
      ->js('flot/jquery.flot.pie.min.js', 'system')
      ->js('flot/jquery.flot.resize.js', 'system');

@@ -96,7 +96,8 @@ class Citations extends Plugin
             $config = Component::params($option);
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('option', $option)
                 ->set('publication', $publication)
                 ->set('citations', $citations)
@@ -110,7 +111,8 @@ class Citations extends Plugin
 
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $view = $this->view('default', 'metadata')
+            $view = $this
+                ->view('default', 'metadata')
                 ->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias='
                 . $publication->alias : 'id=' . $publication->id) . '&active=citations&v='
                 . $publication->version_number))

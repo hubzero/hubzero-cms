@@ -24,7 +24,8 @@ class Migration20130826150814ComResources extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__media_tracking_detailed')) {
-            $schema->createTable('#__media_tracking_detailed')
+            $schema
+                ->createTable('#__media_tracking_detailed')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->nullable()
                 ->string('session_id', 200)->nullable()

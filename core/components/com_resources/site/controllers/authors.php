@@ -420,7 +420,8 @@ class Authors extends SiteController
         // Get all contributors of this resource
         $resource = Entry::oneOrFail($id);
 
-        $authors = $resource->authors()
+        $authors = $resource
+            ->authors()
             ->ordered()
             ->rows();
 

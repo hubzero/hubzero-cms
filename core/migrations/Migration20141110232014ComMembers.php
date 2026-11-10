@@ -22,7 +22,8 @@ class Migration20141110232014ComMembers extends Base
     public function up()
     {
         // load all members without given name or surname filled in
-        $result = $this->db->getQuery(true)
+        $result = $this->db
+            ->getQuery(true)
             ->select(['uidNumber', 'username', 'name', 'surname', 'givenName', 'middleName'])
             ->from('#__xprofiles')
             ->beginOrGroup()
@@ -49,7 +50,8 @@ class Migration20141110232014ComMembers extends Base
             }
 
             if (empty($firstname) && empty($middlename) && empty($surname) && empty($name)) {
-                $name = $this->db->getQuery(true)
+                $name = $this->db
+                    ->getQuery(true)
                     ->select('name')
                     ->from('#__users')
                     ->where('id', '=', $profile->uidNumber)
@@ -92,7 +94,8 @@ class Migration20141110232014ComMembers extends Base
             $lastname   = trim($lastname);
 
             // update name
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set([
                     'name'       => $name,

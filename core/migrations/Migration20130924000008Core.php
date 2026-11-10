@@ -23,7 +23,8 @@ class Migration20130924000008Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__languages')) {
-            $schema->createTable('#__languages')
+            $schema
+                ->createTable('#__languages')
                 ->unsignedInteger('lang_id', ['autoIncrement' => true])
                 ->char('lang_code', 7)
                 ->string('title', 50)
@@ -46,7 +47,8 @@ class Migration20130924000008Core extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__languages')
                 ->columns([
                     'lang_id',

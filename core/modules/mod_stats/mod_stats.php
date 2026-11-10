@@ -88,20 +88,23 @@ class Stats extends Module
         }
 
         if ($siteinfo) {
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('COUNT(id)', 'count_users')
                 ->from('#__users');
             $db->setQuery($query->toString());
             $users = $db->loadResult();
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('COUNT(id)', 'count_items')
                 ->from('#__content')
                 ->whereEquals('state', '1');
             $db->setQuery($query->toString());
             $items = $db->loadResult();
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('COUNT(id)', 'count_links')
                 ->from('#__weblinks')
                 ->whereEquals('state', '1');
@@ -131,7 +134,8 @@ class Stats extends Module
         }
 
         if ($counter) {
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('SUM(hits)', 'count_hits')
                 ->from('#__content')
                 ->whereEquals('state', '1');

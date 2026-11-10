@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js()
      ->js('jquery.ui.widget.js', 'system')
      ->js('jquery.iframe-transport.js', 'system')

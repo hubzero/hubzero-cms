@@ -26,7 +26,8 @@ class Migration20150126193709ComWishlist extends Base
 
         if ($schema->tableExists('#__wishlist')) {
             $query = $this->db->getQuery(true);
-            $query->update('#__wishlist')
+            $query
+                ->update('#__wishlist')
                 ->set(['title' => Expression::replace('title', 'WISHLIST_NAME_GROUP', 'Group')])
                 ->execute();
         }

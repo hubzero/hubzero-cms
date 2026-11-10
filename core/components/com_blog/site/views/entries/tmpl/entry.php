@@ -39,10 +39,12 @@ Pathway::append(
 
 Document::setTitle(Lang::txt('COM_BLOG') . ': ' . stripslashes($this->row->get('title')));
 
-$this->css()
+$this
+     ->css()
      ->js();
 
-$first = $this->archive->entries([
+$first = $this->archive
+    ->entries([
         'state'      => $this->filters['state'],
         'authorized' => $this->filters['authorized'],
     ])
@@ -106,7 +108,8 @@ $first = $this->archive->entries([
                         </time>
                     </dd>
                 <?php if ($this->row->get('allow_comments')) {
-                    $comments = $this->row->comments()
+                    $comments = $this->row
+                        ->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -257,7 +260,8 @@ $first = $this->archive->entries([
             <div class="container blog-popular-entries">
                 <h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
                 <?php
-                $popular = $this->archive->entries()
+                $popular = $this->archive
+                        ->entries()
                         ->order('hits', 'desc')
                         ->limit(5)
                         ->rows();
@@ -288,7 +292,8 @@ $first = $this->archive->entries([
             </h3>
 
         <?php
-        $comments = $this->row->comments()
+        $comments = $this->row
+            ->comments()
             ->whereIn('state', [
                 Components\Blog\Models\Comment::STATE_PUBLISHED,
                 Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -298,7 +303,8 @@ $first = $this->archive->entries([
             ->rows();
 
         if ($comments->count() > 0) {
-            $this->view('_list')
+            $this
+                ->view('_list')
                 ->set('parent', 0)
                 ->set('option', $this->option)
                 ->set('comments', $comments)
@@ -325,7 +331,8 @@ $first = $this->archive->entries([
                 <fieldset>
                     <legend class="sr-only"><?php echo Lang::txt('COM_BLOG_POST_COMMENT'); ?></legend>
                     <?php
-                    $replyto = $this->row->comments()
+                    $replyto = $this->row
+                        ->comments()
                         ->whereEquals('id', Request::getInt('reply', 0))
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,

@@ -18,7 +18,8 @@ defined('_HZEXEC_') or die();
 Html::behavior('modal');
 
 // push scripts and styles
-$this->css()
+$this
+     ->css()
      ->css('media.css')
      ->js()
      ->js('groups.mediabrowser')

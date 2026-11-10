@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getString('tag', '');

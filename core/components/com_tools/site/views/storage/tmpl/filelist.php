@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 
-$this->css('storage.css')
+$this
+    ->css('storage.css')
     ->js('media.js');
 ?>
     <div id="small-page">

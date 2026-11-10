@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('hubpresenter.css')
+$this
+     ->css('hubpresenter.css')
      ->js('hubpresenter.js')
      ->js('hubpresenter.plugins.js')
      ->css('jquery.colpick.css', 'system')
@@ -52,7 +53,8 @@ $rr = \Components\Resources\Models\Entry::oneOrFail($this->resid);
 $this->doc->setTitle(stripslashes($rr->title));
 
 //get the parent resource
-$parent = $rr->parents()
+$parent = $rr
+    ->parents()
     ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
     ->rows()
     ->first();
@@ -60,13 +62,15 @@ $parent = $rr->parents()
 //check to see if parent type is series
 if ($parent && $parent->id && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses')) {
     //if we have a series get children
-    $children = $parent->children()
+    $children = $parent
+        ->children()
         ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
         ->rows();
 
     //remove any children without a HUBpresenter
     foreach ($children as $k => $c) {
-        $sub_child = $c->children()
+        $sub_child = $c
+            ->children()
             ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
             ->rows();
 

@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js');
 ?>
 <header id="content-header">
@@ -29,7 +30,8 @@ $this->css('create.css')
 
 <section class="main section">
     <?php
-        $this->view('steps')
+        $this
+             ->view('steps')
              ->set('option', $this->option)
              ->set('step', $this->step)
              ->set('steps', $this->steps)

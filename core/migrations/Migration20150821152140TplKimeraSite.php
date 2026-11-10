@@ -23,7 +23,8 @@ class Migration20150821152140TplKimeraSite extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('element', '=', 'kimera')
@@ -33,7 +34,8 @@ class Migration20150821152140TplKimeraSite extends Base
             if (!$id) {
                 $this->addTemplateEntry('kimera', 'Kimera (site)', 0);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['protected' => 1])
                     ->where('element', '=', 'kimera')

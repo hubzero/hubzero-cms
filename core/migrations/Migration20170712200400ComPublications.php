@@ -27,7 +27,8 @@ class Migration20170712200400ComPublications extends Base
             if (!$schema->hasColumn('#__publication_licenses', 'derivatives')) {
                 $schema->addColumn('#__publication_licenses', 'derivatives')->tinyInteger(2)->notNull()->default(0);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__publication_licenses')
                     ->set(['derivatives' => 1])
                     ->whereIn('name', ['cc', 'standard', 'cc0', 'cc40-by-nc-sa', 'cc40-by-sa'])

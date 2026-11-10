@@ -53,7 +53,8 @@ class Migration20150827120311Core extends Base
             && $schema->hasColumn('#__migrations', 'file')
         ) {
             foreach ($this->files as $old => $renamed) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__migrations')
                     ->set(['file' => $renamed])
                     ->where('file', '=', $old)
@@ -74,7 +75,8 @@ class Migration20150827120311Core extends Base
             && $schema->hasColumn('#__migrations', 'file')
         ) {
             foreach ($this->files as $old => $renamed) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__migrations')
                     ->set(['file' => $old])
                     ->where('file', '=', $renamed)

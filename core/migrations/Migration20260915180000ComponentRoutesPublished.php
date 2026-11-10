@@ -42,7 +42,8 @@ class Migration20260915180000ComponentRoutesPublished extends Base
             return;
         }
 
-        $rows = $this->db->getQuery(true)
+        $rows = $this->db
+            ->getQuery(true)
             ->select('m.id')
             ->select('m.path')
             ->from('#__menu', 'm')

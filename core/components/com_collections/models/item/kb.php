@@ -108,7 +108,8 @@ class Kb extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $article->get('id'))
              ->set('created', $article->get('created'))
              ->set('created_by', $article->get('created_by'))

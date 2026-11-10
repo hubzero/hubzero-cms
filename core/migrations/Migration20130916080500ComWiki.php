@@ -28,13 +28,15 @@ class Migration20130916080500ComWiki extends Base
             $schema->tableExists('#__wiki_page')
             && !$schema->hasColumn('#__wiki_page', 'created')
         ) {
-            $schema->addColumn('#__wiki_page', 'created')
+            $schema
+                ->addColumn('#__wiki_page', 'created')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
                 ->execute();
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__wiki_page');
 
@@ -42,7 +44,8 @@ class Migration20130916080500ComWiki extends Base
 
             if ($pages) {
                 foreach ($pages as $page) {
-                    $created = $this->db->getQuery(true)
+                    $created = $this->db
+                         ->getQuery(true)
                          ->select('created')
                          ->from('#__wiki_version')
                          ->where('pageid', '=', $page->id)
@@ -50,7 +53,8 @@ class Migration20130916080500ComWiki extends Base
                          ->value('created');
 
                     if ($created) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__wiki_page')
                             ->set(['created' => $created])
                             ->where('id', '=', $page->id)

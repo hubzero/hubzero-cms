@@ -21,7 +21,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEM
 ?>
 
 <?php
-    $this->view('_submenu', 'registration')
+    $this
+         ->view('_submenu', 'registration')
          ->display();
 ?>
 

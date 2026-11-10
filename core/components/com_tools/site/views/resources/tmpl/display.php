@@ -37,7 +37,8 @@ $formAction = Route::url('index.php?option=' . $this->option);
 $prevLabel = '&lt; ' . ucfirst(Lang::txt('COM_TOOLS_PREVIOUS'));
 $nextLabel = ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT'));
 
-$this->css('resource.css')
+$this
+     ->css('resource.css')
      ->js('resource.js');
 ?>
 <header id="content-header">
@@ -57,7 +58,8 @@ $this->css('resource.css')
 
 <section class="section steps-section">
     <?php
-    $this->view('stage')
+    $this
+         ->view('stage')
          ->set('stage', $this->step)
          ->set('option', $this->option)
          ->set('controller', $this->controller)
@@ -102,7 +104,8 @@ $this->css('resource.css')
                 $layout = 'tags';
                 break;
         }
-            $this->view($layout)
+            $this
+                 ->view($layout)
                  ->set('step', $this->step)
                  ->set('option', $this->option)
                  ->set('controller', $this->controller)

@@ -43,7 +43,8 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->css('overrider.css')
+$this
+    ->css('overrider.css')
     ->js('overrider.js')
     ->js();
 ?>

@@ -24,7 +24,8 @@ class Migration20160624123301ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $objs = $this->db->getQuery(true)
+            $objs = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->whereIn('element', ['com_users', 'com_members'])
@@ -66,7 +67,8 @@ class Migration20160624123301ComMembers extends Base
                     $members->set($param, $users->get('param', $dflt));
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $members->toString()])
                     ->where('element', '=', 'com_members')

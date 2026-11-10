@@ -332,7 +332,8 @@ class IdPBindingTest extends Basic
 
         $context = (new MessageContext())->setMessage($request);
 
-        return $this->idp->bindingFactory()
+        return $this->idp
+            ->bindingFactory()
             ->create(SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
             ->send($context)
             ->getHeaderLine('Location');

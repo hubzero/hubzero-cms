@@ -101,7 +101,8 @@ class Connection extends Relational
      **/
     public function thatICanView()
     {
-        return $this->whereEquals('owner_id', User::get('id'), 1)
+        return $this
+            ->whereEquals('owner_id', User::get('id'), 1)
             ->orWhereEquals('owner_id', 0, 1)
             ->orWhereRaw('owner_id IS NULL', [], 1);
     }

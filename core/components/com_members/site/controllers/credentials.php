@@ -160,7 +160,8 @@ class Credentials extends SiteController
 
         // Build message
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_REMIND_SUBJECT', Config::get('sitename')))
+        $message
+                ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_REMIND_SUBJECT', Config::get('sitename')))
                 ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
                 ->addTo($email, $users->first()->name)
                 ->addHeader('X-Component', $this->option)
@@ -637,7 +638,8 @@ class Credentials extends SiteController
         $html = str_replace("\n", "\r\n", $html);
 
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
+        $message
+                ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
                 ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
                 ->addTo($user->get('email'), $user->get('name'))
                 ->addHeader('X-Component', $this->option)

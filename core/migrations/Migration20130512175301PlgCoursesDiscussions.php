@@ -24,14 +24,16 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__plugins')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['element' => 'discussions'])
                 ->where('element', '=', 'forum')
                 ->where('folder', '=', 'courses')
                 ->execute();
         } else {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['element' => 'discussions'])
                 ->where('element', '=', 'forum')
@@ -48,14 +50,16 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__plugins')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['element' => 'forum'])
                 ->where('element', '=', 'discussions')
                 ->where('folder', '=', 'courses')
                 ->execute();
         } else {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['element' => 'forum'])
                 ->where('element', '=', 'discussions')

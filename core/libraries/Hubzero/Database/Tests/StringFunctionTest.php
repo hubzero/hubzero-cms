@@ -53,7 +53,8 @@ class StringFunctionTest extends AbstractDriverTestCase
         $driver->dropTable('string_func_test', true);
 
         // Create table
-        $driver->createTable('string_func_test')
+        $driver
+            ->createTable('string_func_test')
             ->id()
             ->string('first_name', 50)
             ->string('last_name', 50)
@@ -64,7 +65,8 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('string_func_test')
+        $query
+            ->insert('string_func_test')
             ->values([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -75,7 +77,8 @@ class StringFunctionTest extends AbstractDriverTestCase
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('string_func_test')
+        $query
+            ->insert('string_func_test')
             ->values([
                 'first_name' => 'Jane',
                 'last_name' => 'Smith',
@@ -101,13 +104,15 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Update using CONCAT to combine first and last name
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('username', $query->concat(['first_name', "' '", 'last_name']))
             ->execute();
 
         // Verify the concatenation worked
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('string_func_test')
             ->order('id', 'asc')
             ->fetch();
@@ -130,14 +135,16 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Replace "World" with "Universe" in text column
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('description', $query->replace('description', "'World'", "'Universe'"))
             ->where('id', '=', 1)
             ->execute();
 
         // Verify the replacement worked
         $query = new Query($driver);
-        $result = $query->select('description')
+        $result = $query
+            ->select('description')
             ->from('string_func_test')
             ->where('id', '=', 1)
             ->fetch('row');
@@ -159,13 +166,15 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Convert username to lowercase
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('username', $query->lower('username'))
             ->execute();
 
         // Verify conversion
         $query = new Query($driver);
-        $results = $query->select('username')
+        $results = $query
+            ->select('username')
             ->from('string_func_test')
             ->order('id', 'asc')
             ->fetch();
@@ -188,13 +197,15 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Convert code to uppercase
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('code', $query->upper('code'))
             ->execute();
 
         // Verify conversion
         $query = new Query($driver);
-        $results = $query->select('code')
+        $results = $query
+            ->select('code')
             ->from('string_func_test')
             ->order('id', 'asc')
             ->fetch();
@@ -217,7 +228,8 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Update multiple columns with different string functions
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('username', $query->lower('username'))
             ->setRaw('code', $query->upper('code'))
             ->where('id', '=', 1)
@@ -225,7 +237,8 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Verify both transformations worked
         $query = new Query($driver);
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('string_func_test')
             ->where('id', '=', 1)
             ->fetch('row');
@@ -248,14 +261,16 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // Concatenate multiple parts: "last_name, first_name (username)"
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('description', $query->concat(['last_name', "', '", 'first_name', "' ('", 'username', "')'"]))
             ->where('id', '=', 1)
             ->execute();
 
         // Verify the complex concatenation
         $query = new Query($driver);
-        $result = $query->select('description')
+        $result = $query
+            ->select('description')
             ->from('string_func_test')
             ->where('id', '=', 1)
             ->fetch('row');
@@ -277,21 +292,24 @@ class StringFunctionTest extends AbstractDriverTestCase
 
         // First replace "Hello" with "Goodbye"
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('description', $query->replace('description', "'Hello'", "'Goodbye'"))
             ->where('id', '=', 1)
             ->execute();
 
         // Then replace "World" with "Everyone"
         $query = new Query($driver);
-        $query->update('string_func_test')
+        $query
+            ->update('string_func_test')
             ->setRaw('description', $query->replace('description', "'World'", "'Everyone'"))
             ->where('id', '=', 1)
             ->execute();
 
         // Verify both replacements
         $query = new Query($driver);
-        $result = $query->select('description')
+        $result = $query
+            ->select('description')
             ->from('string_func_test')
             ->where('id', '=', 1)
             ->fetch('row');
@@ -314,7 +332,8 @@ class StringFunctionTest extends AbstractDriverTestCase
         // Select with string function transformations
         $query = new Query($driver);
         $query2 = new Query($driver);
-        $result = $query->select($query2->concat(['first_name', "' '", 'last_name']), 'full_name')
+        $result = $query
+            ->select($query2->concat(['first_name', "' '", 'last_name']), 'full_name')
             ->select($query2->upper('code'), 'upper_code')
             ->select($query2->lower('username'), 'lower_username')
             ->from('string_func_test')

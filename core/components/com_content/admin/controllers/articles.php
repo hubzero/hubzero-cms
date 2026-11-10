@@ -228,7 +228,8 @@ class Articles extends AdminController
             }
         }
 
-        $articles->including('accessLevel')
+        $articles
+                 ->including('accessLevel')
                  ->including('category')
                  ->including('author');
         if (strtolower($filters['sort']) == 'ordering') {
@@ -361,7 +362,8 @@ class Articles extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $query->whereEquals($a . '.id', (int) substr($filters['search'], 3));
             } else {
-                $query->whereLike($a . '.title', $filters['search'], 1)
+                $query
+                    ->whereLike($a . '.title', $filters['search'], 1)
                     ->orWhereLike($a . '.alias', $filters['search'], 1)
                     ->resetDepth();
             }
@@ -375,7 +377,8 @@ class Articles extends AdminController
             }
         }
 
-        $query->including('accessLevel')
+        $query
+            ->including('accessLevel')
             ->including('category')
             ->including('author');
         if (strtolower($filters['sort']) == 'ordering') {

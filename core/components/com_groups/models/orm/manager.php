@@ -143,7 +143,9 @@ class Manager extends Relational
      **/
     protected function modifyWithNoPk()
     {
-        $query = $this->getQuery()->update($this->getTableName())
+        $query = $this
+            ->getQuery()
+            ->update($this->getTableName())
             ->set($this->getAttributes());
 
         foreach ($this->getAttributes() as $key => $val) {

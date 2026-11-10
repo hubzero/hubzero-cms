@@ -25,7 +25,8 @@ class Migration20140714201025ComTime extends Base
         $schema->dropTable('#__time_auth_tokens');
 
         if (!$schema->tableExists('#__time_hub_contacts')) {
-            $schema->createTable('#__time_hub_contacts')
+            $schema
+                ->createTable('#__time_hub_contacts')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->string('phone', 255)->default('000-000-0000')
@@ -39,7 +40,8 @@ class Migration20140714201025ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_hubs')) {
-            $schema->createTable('#__time_hubs')
+            $schema
+                ->createTable('#__time_hubs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->string('name_normalized', 255)->default('')
@@ -55,7 +57,8 @@ class Migration20140714201025ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_records')) {
-            $schema->createTable('#__time_records')
+            $schema
+                ->createTable('#__time_records')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('task_id')
                 ->integer('user_id')
@@ -78,7 +81,8 @@ class Migration20140714201025ComTime extends Base
         $schema->dropTable('#__time_reports_records_assoc');
 
         if (!$schema->tableExists('#__time_tasks')) {
-            $schema->createTable('#__time_tasks')
+            $schema
+                ->createTable('#__time_tasks')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->integer('hub_id')
@@ -96,7 +100,8 @@ class Migration20140714201025ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_users')) {
-            $schema->createTable('#__time_users')
+            $schema
+                ->createTable('#__time_users')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->integer('manager_id')

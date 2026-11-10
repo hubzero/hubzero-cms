@@ -43,11 +43,13 @@ class Facet extends Relational
     public function toplevel()
     {
         if (!$this->isNew()) {
-            $tops = $this->all()
+            $tops = $this
+                ->all()
                 ->where('id', '!=', $this->id)
                 ->rows();
         } else {
-            $tops = $this->all()
+            $tops = $this
+                ->all()
                 ->rows();
         }
 

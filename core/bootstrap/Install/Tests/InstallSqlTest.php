@@ -53,7 +53,8 @@ class InstallSqlTest extends Basic
 
         if (!isset(self::$read[$key])) {
             $sql = new Sql();
-            $sql->read($this->file('schema.sql'))
+            $sql
+                ->read($this->file('schema.sql'))
                 ->read($this->file('data.sql'));
 
             if ($sample) {

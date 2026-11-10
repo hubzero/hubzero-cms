@@ -72,10 +72,11 @@ class Threadsv1r0 extends ApiController
         $response = new stdClass();
         $response->sections = [];
 
-        $sections = $model->sections([
-            'state'  => $filters['state'],
-            'access' => User::getAuthorisedViewLevels(),
-        ])
+        $sections = $model
+            ->sections([
+                'state'  => $filters['state'],
+                'access' => User::getAuthorisedViewLevels(),
+            ])
             ->ordered()
             ->rows();
 
@@ -93,7 +94,8 @@ class Threadsv1r0 extends ApiController
                 $obj->scope      = $section->get('scope');
                 $obj->scope_id   = $section->get('scope_id');
 
-                $obj->categories = $section->categories()
+                $obj->categories = $section
+                    ->categories()
                     ->whereEquals('state', $filters['state'])
                     ->whereIn('access', $filters['access'])
                     ->total();
@@ -240,7 +242,8 @@ class Threadsv1r0 extends ApiController
         }
 
         if ($filters['search']) {
-            $entries->whereLike('description', $filters['search'], 1)
+            $entries
+                ->whereLike('description', $filters['search'], 1)
                 ->orWhereLike('title', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -267,12 +270,14 @@ class Threadsv1r0 extends ApiController
                 $obj->scope_id    = (int) $category->get('scope_id');
                 $obj->section_id  = (int) $category->get('section_id');
 
-                $obj->threads     = $category->threads()
+                $obj->threads     = $category
+                    ->threads()
                     ->whereEquals('state', $filters['state'])
                     ->whereIn('access', $filters['access'])
                     ->total();
 
-                $obj->posts       = $category->posts()
+                $obj->posts       = $category
+                    ->posts()
                     ->whereEquals('state', $filters['state'])
                     ->whereIn('access', $filters['access'])
                     ->total();
@@ -422,7 +427,8 @@ class Threadsv1r0 extends ApiController
             }
 
             if (!$filters['category_id']) {
-                $categories = $section->categories()
+                $categories = $section
+                    ->categories()
                     ->whereEquals('state', $filters['state'])
                     ->whereIn('access', $filters['access'])
                     ->rows();
@@ -457,7 +463,8 @@ class Threadsv1r0 extends ApiController
         }
 
         if ($filters['search']) {
-            $entries->whereLike('comment', $filters['search'], 1)
+            $entries
+                ->whereLike('comment', $filters['search'], 1)
                 ->orWhereLike('title', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -499,7 +506,8 @@ class Threadsv1r0 extends ApiController
                     $obj->creator->name = $thread->creator->get('name');
                 }
 
-                $obj->posts       = $thread->thread()
+                $obj->posts       = $thread
+                    ->thread()
                     ->whereEquals('state', $filters['state'])
                     ->whereIn('access', $filters['access'])
                     ->total();

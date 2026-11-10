@@ -107,7 +107,8 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
             $numlevels = 4,
         );
 
-        $this->view('_audience', 'view')
+        $this
+                    ->view('_audience', 'view')
                     ->set('audience', $audience)
                     ->set('showtips', true)
                     ->set('numlevels', 4)

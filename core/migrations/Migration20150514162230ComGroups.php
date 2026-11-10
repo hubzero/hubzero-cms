@@ -28,7 +28,8 @@ class Migration20150514162230ComGroups extends Base
                 . '"core.create":{"2":1},"core.delete":[],"core.edit":{"2":1},'
                 . '"core.edit.state":[],"core.edit.own":[]}';
 
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_groups')
@@ -46,7 +47,8 @@ class Migration20150514162230ComGroups extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)
@@ -67,7 +69,8 @@ class Migration20150514162230ComGroups extends Base
                 . '"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],'
                 . '"core.edit.own":[]}';
 
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_groups')
@@ -85,7 +88,8 @@ class Migration20150514162230ComGroups extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)

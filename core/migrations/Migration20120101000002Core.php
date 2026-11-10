@@ -37,7 +37,9 @@ class Migration20120101000002Core extends Base
             && $mwSchema->hasColumn('host', 'hostname')
             && !$mwSchema->hasPrimaryKey('host')
         ) {
-            $mwSchema->table('host')->alter()
+            $mwSchema
+                ->table('host')
+                ->alter()
                 ->addPrimaryKey('hostname')
                 ->execute();
         }
@@ -57,7 +59,8 @@ class Migration20120101000002Core extends Base
 
         if ($mwSchema->tableExists('joblog')) {
             if ($mwSchema->hasColumn('joblog', 'walltime')) {
-                $mwSchema->modifyColumn('joblog', 'walltime')
+                $mwSchema
+                    ->modifyColumn('joblog', 'walltime')
                     ->double()
                     ->unsigned()
                     ->nullable()
@@ -66,7 +69,8 @@ class Migration20120101000002Core extends Base
             }
 
             if ($mwSchema->hasColumn('joblog', 'cputime')) {
-                $mwSchema->modifyColumn('joblog', 'cputime')
+                $mwSchema
+                    ->modifyColumn('joblog', 'cputime')
                     ->double()
                     ->unsigned()
                     ->nullable()
@@ -75,19 +79,24 @@ class Migration20120101000002Core extends Base
             }
 
             if ($mwSchema->hasPrimaryKey('joblog')) {
-                $mwSchema->table('joblog')->alter()
+                $mwSchema
+                    ->table('joblog')
+                    ->alter()
                     ->dropPrimaryKey()
                     ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
                     ->execute();
             } else {
-                $mwSchema->table('joblog')->alter()
+                $mwSchema
+                    ->table('joblog')
+                    ->alter()
                     ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
                     ->execute();
             }
         }
 
         if ($mwSchema->tableExists('session') && $mwSchema->hasColumn('session', 'sessname')) {
-            $mwSchema->modifyColumn('session', 'sessname')
+            $mwSchema
+                ->modifyColumn('session', 'sessname')
                 ->string(100)
                 ->notNull()
                 ->default('')
@@ -96,7 +105,8 @@ class Migration20120101000002Core extends Base
 
         if ($mwSchema->tableExists('sessionlog')) {
             if ($mwSchema->hasColumn('sessionlog', 'sessnum')) {
-                $mwSchema->modifyColumn('sessionlog', 'sessnum')
+                $mwSchema
+                    ->modifyColumn('sessionlog', 'sessnum')
                     ->bigInteger()
                     ->unsigned()
                     ->notNull()
@@ -105,7 +115,8 @@ class Migration20120101000002Core extends Base
             }
 
             if ($mwSchema->hasColumn('sessionlog', 'walltime')) {
-                $mwSchema->modifyColumn('sessionlog', 'walltime')
+                $mwSchema
+                    ->modifyColumn('sessionlog', 'walltime')
                     ->double()
                     ->unsigned()
                     ->nullable()
@@ -114,7 +125,8 @@ class Migration20120101000002Core extends Base
             }
 
             if ($mwSchema->hasColumn('sessionlog', 'viewtime')) {
-                $mwSchema->modifyColumn('sessionlog', 'viewtime')
+                $mwSchema
+                    ->modifyColumn('sessionlog', 'viewtime')
                     ->double()
                     ->unsigned()
                     ->nullable()
@@ -123,7 +135,8 @@ class Migration20120101000002Core extends Base
             }
 
             if ($mwSchema->hasColumn('sessionlog', 'cputime')) {
-                $mwSchema->modifyColumn('sessionlog', 'cputime')
+                $mwSchema
+                    ->modifyColumn('sessionlog', 'cputime')
                     ->double()
                     ->unsigned()
                     ->nullable()

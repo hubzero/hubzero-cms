@@ -24,7 +24,8 @@ class Migration20130426074801ComSupport extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__support_watching')) {
-            $schema->createTable('#__support_watching')
+            $schema
+                ->createTable('#__support_watching')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('ticket_id')->default(0)
                 ->integer('user_id')->default(0)

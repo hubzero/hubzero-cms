@@ -25,21 +25,24 @@ class Migration20130924000010ComMessages extends Base
         $schema->setTableEngine('#__messages_cfg', 'MYISAM');
 
         if ($schema->hasColumn('#__messages', 'subject')) {
-            $schema->modifyColumn('#__messages', 'subject')
+            $schema
+                ->modifyColumn('#__messages', 'subject')
                 ->string(255)
                 ->notNull()
                 ->default('')
                 ->execute();
         }
         if ($schema->hasColumn('#__messages', 'state')) {
-            $schema->modifyColumn('#__messages', 'state')
+            $schema
+                ->modifyColumn('#__messages', 'state')
                 ->tinyInteger(1)
                 ->notNull()
                 ->default(0)
                 ->execute();
         }
         if ($schema->hasColumn('#__messages', 'priority')) {
-            $schema->modifyColumn('#__messages', 'priority')
+            $schema
+                ->modifyColumn('#__messages', 'priority')
                 ->tinyInteger(1)
                 ->unsigned()
                 ->notNull()
@@ -47,7 +50,8 @@ class Migration20130924000010ComMessages extends Base
                 ->execute();
         }
         if ($schema->hasColumn('#__messages', 'folder_id')) {
-            $schema->modifyColumn('#__messages', 'folder_id')
+            $schema
+                ->modifyColumn('#__messages', 'folder_id')
                 ->tinyInteger(3)
                 ->unsigned()
                 ->notNull()

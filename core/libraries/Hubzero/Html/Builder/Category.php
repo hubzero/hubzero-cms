@@ -40,7 +40,8 @@ class Category
             $config = (array) $config;
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('a.id')
                 ->select('a.title')
                 ->select('a.level')
@@ -94,7 +95,8 @@ class Category
             $config = (array) $config;
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('a.id, a.title, a.level, a.parent_id')
                 ->select('a.title')
                 ->select('a.level')

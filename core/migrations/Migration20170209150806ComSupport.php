@@ -29,7 +29,8 @@ class Migration20170209150806ComSupport extends Base
             && $schema->tableExists('#__xgroups') && $schema->hasColumn('#__xgroups', 'cn')
         ) {
             // Update group aliases to IDs
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_tickets', 'u')
                 ->leftJoin('#__xgroups AS x', 'x.cn', 'u.group')
                 ->set(['u.group' => Expression::column('x.gidNumber')])
@@ -38,7 +39,8 @@ class Migration20170209150806ComSupport extends Base
             // Remove the old index
             $schema->dropIndex('#__support_tickets', 'idx_group');
 
-            $schema->renameColumn('#__support_tickets', 'group', 'group_id')
+            $schema
+                ->renameColumn('#__support_tickets', 'group', 'group_id')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -62,11 +64,13 @@ class Migration20170209150806ComSupport extends Base
         ) {
             $schema->dropIndex('#__support_tickets', 'idx_group_id');
 
-            $schema->renameColumn('#__support_tickets', 'group_id', 'group')
+            $schema
+                ->renameColumn('#__support_tickets', 'group_id', 'group')
                 ->string(250)
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_tickets AS u')
                 ->leftJoin('#__xgroups AS x', 'x.gidNumber', 'u.group')
                 ->set(['u.group' => Expression::column('x.cn')])

@@ -25,7 +25,8 @@ class Migration20170306114718ComMembers extends Base
 
         if ($schema->tableExists('#__user_profile_fields')) {
             if (!$schema->hasColumn('#__user_profile_fields', 'min')) {
-                $schema->addColumn('#__user_profile_fields', 'min')
+                $schema
+                    ->addColumn('#__user_profile_fields', 'min')
                     ->integer()
                     ->notNull()
                     ->default(0)
@@ -33,7 +34,8 @@ class Migration20170306114718ComMembers extends Base
             }
 
             if (!$schema->hasColumn('#__user_profile_fields', 'max')) {
-                $schema->addColumn('#__user_profile_fields', 'max')
+                $schema
+                    ->addColumn('#__user_profile_fields', 'max')
                     ->integer()
                     ->notNull()
                     ->default(0)

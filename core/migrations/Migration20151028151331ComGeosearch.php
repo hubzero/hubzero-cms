@@ -28,7 +28,9 @@ class Migration20151028151331ComGeosearch extends Base
         }
 
         if (!$schema->hasPrimaryKey('#__geosearch_markers')) {
-            $schema->table('#__geosearch_markers')->alter()
+            $schema
+                ->table('#__geosearch_markers')
+                ->alter()
                 ->modifyColumn('id')
                 ->integer()
                 ->notNull()
@@ -50,7 +52,9 @@ class Migration20151028151331ComGeosearch extends Base
         }
 
         if ($schema->hasPrimaryKey('#__geosearch_markers')) {
-            $schema->table('#__geosearch_markers')->alter()
+            $schema
+                ->table('#__geosearch_markers')
+                ->alter()
                 ->modifyColumn('id')
                 ->integer()
                 ->notNull()

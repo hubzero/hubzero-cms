@@ -28,7 +28,8 @@ foreach ($stylesheets as $stylesheet) {
 }
 
 // add styles & scripts
-$this->css()
+$this
+     ->css()
      ->js()
      ->js('jquery.cycle2', 'system');
 ?>

@@ -24,7 +24,8 @@ class Migration20160620172827ComStorefront extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__storefront_images')) {
-            $schema->createTable('#__storefront_images')
+            $schema
+                ->createTable('#__storefront_images')
                 ->unsignedInteger('imgId', ['autoIncrement' => true])
                 ->char('imgName', 255)->nullable()
                 ->char('imgObject', 25)->nullable()
@@ -40,7 +41,8 @@ class Migration20160620172827ComStorefront extends Base
             $schema->tableExists('#__storefront_option_groups')
             && !$schema->hasColumn('#__storefront_option_groups', 'ogActive')
         ) {
-            $schema->addColumn('#__storefront_option_groups', 'ogActive')
+            $schema
+                ->addColumn('#__storefront_option_groups', 'ogActive')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)

@@ -166,7 +166,8 @@ trait Orderable
         }
 
         // Build query for adjacent record
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select($this->getPrimaryKey())
             ->select($orderingCol)
             ->from($this->getTableName());
@@ -176,11 +177,13 @@ trait Orderable
 
         if ($delta < 0) {
             // Moving up: find record with ordering just below target
-            $query->where($orderingCol, '<', $currentOrdering)
+            $query
+                  ->where($orderingCol, '<', $currentOrdering)
                   ->order($orderingCol, 'desc');
         } else {
             // Moving down: find record with ordering just above target
-            $query->where($orderingCol, '>', $currentOrdering)
+            $query
+                  ->where($orderingCol, '>', $currentOrdering)
                   ->order($orderingCol, 'asc');
         }
 
@@ -198,7 +201,8 @@ trait Orderable
         $swapId = $swapRecord->{$this->getPrimaryKey()};
 
         // Update adjacent record
-        $this->getQuery()
+        $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$orderingCol => $currentOrdering])
             ->whereEquals($this->getPrimaryKey(), $swapId)
@@ -206,7 +210,8 @@ trait Orderable
 
         // Update this record
         $this->set($orderingCol, $swapOrdering);
-        $this->getQuery()
+        $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$orderingCol => $swapOrdering])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -280,7 +285,8 @@ trait Orderable
         // Shift other records
         if ($position < $currentOrdering) {
             // Moving up: shift records down
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->setRaw($orderingCol, $orderingCol . ' + 1')
                 ->where($orderingCol, '>=', $position)
@@ -290,7 +296,8 @@ trait Orderable
             $query->execute();
         } else {
             // Moving down: shift records up
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->setRaw($orderingCol, $orderingCol . ' - 1')
                 ->where($orderingCol, '>', $currentOrdering)
@@ -302,7 +309,8 @@ trait Orderable
 
         // Update this record
         $this->set($orderingCol, $position);
-        $this->getQuery()
+        $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$orderingCol => $position])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -336,7 +344,8 @@ trait Orderable
     {
         $orderingCol = $this->getOrderingColumn();
 
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('MAX(' . $orderingCol . ') as max_ordering')
             ->from($this->getTableName());
 
@@ -363,7 +372,8 @@ trait Orderable
         $table = $instance->getTableName();
 
         // Get all records in current order
-        $query = $instance->getQuery()
+        $query = $instance
+            ->getQuery()
             ->select($pk)
             ->from($table)
             ->order($orderingCol, 'asc');
@@ -383,7 +393,8 @@ trait Orderable
         foreach ($records as $i => $record) {
             $newOrdering = $i + 1;
 
-            $instance->getQuery()
+            $instance
+                ->getQuery()
                 ->update($table)
                 ->set([$orderingCol => $newOrdering])
                 ->whereEquals($pk, $record->{$pk})
@@ -417,7 +428,8 @@ trait Orderable
         foreach ($ids as $i => $id) {
             $newOrdering = $i + 1;
 
-            $query = $instance->getQuery()
+            $query = $instance
+                ->getQuery()
                 ->update($table)
                 ->set([$orderingCol => $newOrdering])
                 ->whereEquals($pk, $id);

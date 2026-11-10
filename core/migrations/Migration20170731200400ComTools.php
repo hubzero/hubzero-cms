@@ -36,7 +36,8 @@ class Migration20170731200400ComTools extends Base
             $prefix = 'app-';
 
             if ($schema->tableExists('#__extensions')) {
-                $params = $this->db->getQuery(true)
+                $params = $this->db
+                    ->getQuery(true)
                     ->select('params')
                     ->from('#__extensions')
                     ->where('element', '=', 'com_tools')
@@ -48,7 +49,8 @@ class Migration20170731200400ComTools extends Base
                 }
             }
 
-            $tools = $this->db->getQuery(true)
+            $tools = $this->db
+                ->getQuery(true)
                 ->select(['t.toolname', 't.ticketid'])
                 ->from('#__tool', 't')
                 ->innerJoin('#__support_tickets AS st', 'st.id', 't.ticketid')
@@ -56,14 +58,16 @@ class Migration20170731200400ComTools extends Base
                 ->loadObjectList();
 
             foreach ($tools as $tool) {
-                $gidNumber = $this->db->getQuery(true)
+                $gidNumber = $this->db
+                    ->getQuery(true)
                     ->select('gidNumber')
                     ->from('#__xgroups')
                     ->where('cn', '=', $prefix . $tool->toolname)
                     ->value('gidNumber');
 
                 if ($gidNumber) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_tickets')
                         ->set(['group_id' => $gidNumber])
                         ->where('id', '=', $tool->ticketid)

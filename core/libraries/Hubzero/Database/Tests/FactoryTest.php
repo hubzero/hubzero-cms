@@ -35,7 +35,8 @@ class FactoryTest extends AbstractDriverTestCase
     {
         $driver->dropTable('factory_users', true);
 
-        $driver->createTable('factory_users')
+        $driver
+            ->createTable('factory_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)

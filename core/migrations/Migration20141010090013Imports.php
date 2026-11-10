@@ -24,7 +24,8 @@ class Migration20141010090013Imports extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__imports')) {
-            $schema->createTable('#__imports')
+            $schema
+                ->createTable('#__imports')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 150)
                 ->string('name', 150)->nullable()
@@ -45,7 +46,8 @@ class Migration20141010090013Imports extends Base
         }
 
         if (!$schema->tableExists('#__import_hooks')) {
-            $schema->createTable('#__import_hooks')
+            $schema
+                ->createTable('#__import_hooks')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('event', 25)->nullable()
                 ->string('type', 150)
@@ -62,7 +64,8 @@ class Migration20141010090013Imports extends Base
         }
 
         if (!$schema->tableExists('#__import_runs')) {
-            $schema->createTable('#__import_runs')
+            $schema
+                ->createTable('#__import_runs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('import_id')->nullable()
                 ->integer('processed')->nullable()

@@ -147,7 +147,8 @@ class Role extends Relational
         // Get an array of all the previous types
         $old = [];
 
-        $types = $this->types()
+        $types = $this
+            ->types()
             ->rows()
             ->raw();
 

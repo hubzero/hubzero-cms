@@ -27,7 +27,8 @@ class Migration20140515130000ComPublications extends Base
             $schema->tableExists('#__publication_licenses')
             && !$schema->hasColumn('#__publication_licenses', 'opensource')
         ) {
-            $schema->addColumn('#__publication_licenses', 'opensource')
+            $schema
+                ->addColumn('#__publication_licenses', 'opensource')
                 ->tinyInteger(1)
                 ->notNull()
                 ->default(0)
@@ -38,7 +39,8 @@ class Migration20140515130000ComPublications extends Base
             $schema->tableExists('#__publication_licenses')
             && !$schema->hasColumn('#__publication_licenses', 'restriction')
         ) {
-            $schema->addColumn('#__publication_licenses', 'restriction')
+            $schema
+                ->addColumn('#__publication_licenses', 'restriction')
                 ->string(100)
                 ->execute();
         }

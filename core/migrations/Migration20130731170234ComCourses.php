@@ -28,7 +28,8 @@ class Migration20130731170234ComCourses extends Base
             && !$schema->hasColumn('#__courses_grade_book', 'override')
             && $schema->hasColumn('#__courses_grade_book', 'scope_id')
         ) {
-            $schema->addColumn('#__courses_grade_book', 'override')
+            $schema
+                ->addColumn('#__courses_grade_book', 'override')
                 ->decimal(5, 2)
                 ->nullable()
                 ->default(null)

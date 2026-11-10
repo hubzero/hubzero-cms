@@ -37,7 +37,8 @@ if ($itemMimeType && preg_match('/^application\/vnd\.google\-apps\.([^.]+)/', $i
 
 echo \Components\Projects\Models\File::drawIcon($itemExtension);
 if ($this->itemIsFile) {
-    $this->view('_item_link_file')
+    $this
+        ->view('_item_link_file')
         ->set('connectionId', $connectionId)
         ->set('handlerBase', $this->handlerBase)
         ->set('itemFileName', $item->getFileName())
@@ -48,7 +49,8 @@ if ($this->itemIsFile) {
         ->set('subdirPath', $this->subdirPath)
         ->display();
 } else {
-    $this->view('_item_link_directory')
+    $this
+        ->view('_item_link_directory')
         ->set('connectionId', $connectionId)
         ->set('itemDisplayName', $item->getDisplayName())
         ->set('itemName', $itemName)

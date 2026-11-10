@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('jquery.datepicker.css', 'system')
+$this
+    ->css('jquery.datepicker.css', 'system')
     ->css('jquery.timepicker.css', 'system')
     ->css()
     ->css('todo.css', 'plg_projects_todo')

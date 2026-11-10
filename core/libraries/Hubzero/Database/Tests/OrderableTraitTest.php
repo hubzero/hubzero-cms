@@ -34,14 +34,16 @@ class OrderableTraitTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('orderable_items', true);
-        $driver->createTable('orderable_items')
+        $driver
+            ->createTable('orderable_items')
             ->id()
             ->string('title', 255)
             ->integer('ordering')->default(0)
             ->execute();
 
         $driver->dropTable('orderable_menu_items', true);
-        $driver->createTable('orderable_menu_items')
+        $driver
+            ->createTable('orderable_menu_items')
             ->id()
             ->string('title', 255)
             ->integer('menu_id')
@@ -49,7 +51,8 @@ class OrderableTraitTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->dropTable('orderable_custom_items', true);
-        $driver->createTable('orderable_custom_items')
+        $driver
+            ->createTable('orderable_custom_items')
             ->id()
             ->string('title', 255)
             ->integer('sort_order')->default(0)

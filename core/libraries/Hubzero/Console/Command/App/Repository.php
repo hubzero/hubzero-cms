@@ -76,7 +76,8 @@ class Repository extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output->addOverview('Add, remove, and update repositories for packages')
+        $this->output
+            ->addOverview('Add, remove, and update repositories for packages')
             ->addTasks($this);
     }
 }

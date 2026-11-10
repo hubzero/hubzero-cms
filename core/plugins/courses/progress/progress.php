@@ -75,7 +75,8 @@ class Progress extends Plugin
                 'layout' => '_not_enrolled',
             ]);
 
-            $view->set('course', $course)
+            $view
+                ->set('course', $course)
                 ->set('option', 'com_courses')
                 ->set('message', 'You must be enrolled to utilize the progress feature.');
 

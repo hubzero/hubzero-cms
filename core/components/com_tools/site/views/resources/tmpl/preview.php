@@ -38,7 +38,8 @@ $previewSrc = Route::url(
     . '&tmpl=component&mode=preview&rev=' . $this->version,
 );
 
-$this->css('resource.css')
+$this
+     ->css('resource.css')
      ->css('resources', 'com_resources')
      ->js('resource.js');
 ?>
@@ -59,7 +60,8 @@ $this->css('resource.css')
 
 <section class="section steps-section">
     <?php
-    $this->view('stage')
+    $this
+         ->view('stage')
          ->set('stage', $this->step)
          ->set('option', $this->option)
          ->set('controller', $this->controller)

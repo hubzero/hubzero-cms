@@ -10,7 +10,8 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $i = 1;
@@ -27,7 +28,8 @@ $sharing = ['facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious
 foreach ($sharing as $shared) {
     if ($this->_params->get('share_' . $shared, 1)) {
         // Show activity
-        $link = $this->view('_item')
+        $link = $this
+             ->view('_item')
              ->set('option', $this->option)
              ->set('resource', $this->resource)
              ->set('name', $shared)

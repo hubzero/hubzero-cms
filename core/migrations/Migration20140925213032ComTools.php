@@ -32,7 +32,8 @@ class Migration20140925213032ComTools extends Base
             && $mwSchema->hasColumn('job', 'active')
             && !$mwSchema->hasColumn('job', 'jobtoken')
         ) {
-            $mwSchema->addColumn('job', 'jobtoken')
+            $mwSchema
+                ->addColumn('job', 'jobtoken')
                 ->string(32)
                 ->nullable()
                 ->default(null)

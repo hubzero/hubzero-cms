@@ -27,7 +27,8 @@ class Migration20130512175201ComForum extends Base
             $schema->tableExists('#__forum_posts')
             && !$schema->hasColumn('#__forum_posts', 'thread')
         ) {
-            $schema->addColumn('#__forum_posts', 'thread')
+            $schema
+                ->addColumn('#__forum_posts', 'thread')
                 ->integer()
                 ->notNull()
                 ->default(0)

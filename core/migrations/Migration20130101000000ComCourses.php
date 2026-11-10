@@ -21,7 +21,8 @@ class Migration20130101000000ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses')) {
-            $schema->createTable('#__courses')
+            $schema
+                ->createTable('#__courses')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('alias', 255)->default('')
                 ->integer('group_id')->default(0)
@@ -42,7 +43,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_announcements')) {
-            $schema->createTable('#__courses_announcements')
+            $schema
+                ->createTable('#__courses_announcements')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->text('content')->nullable()
@@ -63,7 +65,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_asset_associations')) {
-            $schema->createTable('#__courses_asset_associations')
+            $schema
+                ->createTable('#__courses_asset_associations')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('asset_id')->default(0)
                 ->integer('scope_id')->default(0)
@@ -79,7 +82,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_asset_group_types')) {
-            $schema->createTable('#__courses_asset_group_types')
+            $schema
+                ->createTable('#__courses_asset_group_types')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 200)->default('')
                 ->string('type', 255)->default('')
@@ -90,7 +94,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_asset_groups')) {
-            $schema->createTable('#__courses_asset_groups')
+            $schema
+                ->createTable('#__courses_asset_groups')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('unit_id')->default(0)
                 ->string('alias', 250)
@@ -110,7 +115,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_asset_views')) {
-            $schema->createTable('#__courses_asset_views')
+            $schema
+                ->createTable('#__courses_asset_views')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('asset_id')
                 ->datetime('viewed')
@@ -122,7 +128,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_assets')) {
-            $schema->createTable('#__courses_assets')
+            $schema
+                ->createTable('#__courses_assets')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->mediumText('content')->nullable()
@@ -141,7 +148,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_answers')) {
-            $schema->createTable('#__courses_form_answers')
+            $schema
+                ->createTable('#__courses_form_answers')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->tinyInteger('correct')
                 ->integer('left_dist')
@@ -155,7 +163,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_deployments')) {
-            $schema->createTable('#__courses_form_deployments')
+            $schema
+                ->createTable('#__courses_form_deployments')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('form_id')
                 ->timestamp('start_time')->nullable()
@@ -173,7 +182,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_questions')) {
-            $schema->createTable('#__courses_form_questions')
+            $schema
+                ->createTable('#__courses_form_questions')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('page')
                 ->integer('version')
@@ -191,7 +201,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_respondent_progress')) {
-            $schema->createTable('#__courses_form_respondent_progress')
+            $schema
+                ->createTable('#__courses_form_respondent_progress')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('respondent_id')
                 ->integer('question_id')
@@ -208,7 +219,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_respondents')) {
-            $schema->createTable('#__courses_form_respondents')
+            $schema
+                ->createTable('#__courses_form_respondents')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('deployment_id')
                 ->integer('user_id')
@@ -222,7 +234,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_form_responses')) {
-            $schema->createTable('#__courses_form_responses')
+            $schema
+                ->createTable('#__courses_form_responses')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('respondent_id')
                 ->integer('question_id')
@@ -236,7 +249,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_forms')) {
-            $schema->createTable('#__courses_forms')
+            $schema
+                ->createTable('#__courses_forms')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->text('title')->nullable()
                 ->tinyInteger('active')->default(1)
@@ -249,7 +263,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_log')) {
-            $schema->createTable('#__courses_log')
+            $schema
+                ->createTable('#__courses_log')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('scope_id')->default(0)
                 ->string('scope', 100)->default('')
@@ -265,7 +280,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_members')) {
-            $schema->createTable('#__courses_members')
+            $schema
+                ->createTable('#__courses_members')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->default(0)
                 ->integer('course_id')->default(0)
@@ -286,7 +302,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_offering_section_dates')) {
-            $schema->createTable('#__courses_offering_section_dates')
+            $schema
+                ->createTable('#__courses_offering_section_dates')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('section_id')->default(0)
                 ->string('scope', 150)->default('')
@@ -302,7 +319,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_offering_sections')) {
-            $schema->createTable('#__courses_offering_sections')
+            $schema
+                ->createTable('#__courses_offering_sections')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->string('alias', 255)->default('')
@@ -324,7 +342,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_offerings')) {
-            $schema->createTable('#__courses_offerings')
+            $schema
+                ->createTable('#__courses_offerings')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('course_id')->default(0)
                 ->string('alias', 255)->default('')
@@ -345,7 +364,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_page_hits')) {
-            $schema->createTable('#__courses_page_hits')
+            $schema
+                ->createTable('#__courses_page_hits')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->integer('page_id')->default(0)
@@ -362,7 +382,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_pages')) {
-            $schema->createTable('#__courses_pages')
+            $schema
+                ->createTable('#__courses_pages')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('offering_id', 100)->default('0')
                 ->string('url', 100)->default('')
@@ -379,7 +400,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_reviews')) {
-            $schema->createTable('#__courses_reviews')
+            $schema
+                ->createTable('#__courses_reviews')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('course_id')->default(0)
                 ->integer('offering_id')->default(0)
@@ -402,7 +424,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_roles')) {
-            $schema->createTable('#__courses_roles')
+            $schema
+                ->createTable('#__courses_roles')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->string('alias', 150)
@@ -416,7 +439,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_units')) {
-            $schema->createTable('#__courses_units')
+            $schema
+                ->createTable('#__courses_units')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->string('alias', 250)
@@ -434,7 +458,8 @@ class Migration20130101000000ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_offering_section_codes')) {
-            $schema->createTable('#__courses_offering_section_codes')
+            $schema
+                ->createTable('#__courses_offering_section_codes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('section_id')->default(0)
                 ->string('code', 10)->default('')
@@ -450,23 +475,27 @@ class Migration20130101000000ComCourses extends Base
         }
 
         // Create the view using query builder
-        $sub1 = $this->db->getQuery(true)
+        $sub1 = $this->db
+            ->getQuery(true)
             ->select(Expression::count(0))
             ->from('#__courses_form_responses', 'frei')
             ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'))
             ->where('frei.id', '>', Expression::column('fre.id'));
 
-        $sub2 = $this->db->getQuery(true)
+        $sub2 = $this->db
+            ->getQuery(true)
             ->select(Expression::countDistinct('frei.question_id'))
             ->from('#__courses_form_responses', 'frei')
             ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'));
 
-        $selectSql = $this->db->getQuery(true)
+        $selectSql = $this->db
+            ->getQuery(true)
             ->select(['fre.id', 'fre.respondent_id', 'fre.question_id', 'fre.answer_id'])
             ->from('#__courses_form_responses', 'fre')
             ->where(Expression::subquery($sub1), '<', Expression::subquery($sub2));
 
-        $schema->createView('#__courses_form_latest_responses_view')
+        $schema
+            ->createView('#__courses_form_latest_responses_view')
             ->algorithm('UNDEFINED')
             ->definer('CURRENT_USER')
             ->security('DEFINER')

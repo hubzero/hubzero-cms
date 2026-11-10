@@ -11,7 +11,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('status.css')
+$this
+     ->css('status.css')
      ->js('status.js');
 
 ?>

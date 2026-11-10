@@ -13,10 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('form.css')
+$this
+     ->css('form.css')
      ->js('layout.js');
 
-$this->css('jquery.ui.css', 'system')
+$this
+     ->css('jquery.ui.css', 'system')
      ->js('jquery.iframe-transport', 'system')
      ->js('jquery.fileupload', 'system');
 

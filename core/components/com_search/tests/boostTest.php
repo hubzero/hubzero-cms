@@ -49,7 +49,8 @@ class BoostTest extends Basic
 
         $boost->set('field_value', 'citation');
 
-        $mapMock->expects($this->once())
+        $mapMock
+            ->expects($this->once())
             ->method('getFormattedFieldValue');
 
         $boost->getFormattedFieldValue();
@@ -109,7 +110,8 @@ class BoostTest extends Basic
         $boost = new Boost(['user' => $userMock]);
         $boost->set('created_by', $userId);
 
-        $userMock->expects($this->once())
+        $userMock
+            ->expects($this->once())
             ->method('one')
             ->with($userId);
 

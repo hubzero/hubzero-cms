@@ -12,7 +12,8 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('basicForm')
+$this
+     ->css('basicForm')
      ->css('page2');
 
 $code = $this->code;
@@ -24,7 +25,8 @@ $campaignId = $this->campaign;
 $submitText = Lang::txt('INPUT_SUBMIT');
 $breadcrumbs = ['Reply' => ''];
 
-$this->view('_breadcrumbs', 'shared')
+$this
+    ->view('_breadcrumbs', 'shared')
     ->set('breadcrumbs', $breadcrumbs)
     ->set('pageTitle', '')
     ->display();

@@ -24,7 +24,8 @@ class Migration20140829131400PlgMembersMessages extends Base
 
         if ($schema->tableExists('#__xmessage')) {
             // Standardize column types to INT UNSIGNED
-            $schema->alterTable('#__xmessage')
+            $schema
+                ->alterTable('#__xmessage')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('group_id', true)->notNull()->default(0)
                 ->modifyInteger('created_by', true)->notNull()->default(0)
@@ -39,7 +40,8 @@ class Migration20140829131400PlgMembersMessages extends Base
 
         if ($schema->tableExists('#__xmessage_notify')) {
             // Standardize column types to INT UNSIGNED
-            $schema->alterTable('#__xmessage_notify')
+            $schema
+                ->alterTable('#__xmessage_notify')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('uid', true)->notNull()->default(0)
                 ->addIndex('idx_uid', 'uid')
@@ -48,7 +50,8 @@ class Migration20140829131400PlgMembersMessages extends Base
         }
 
         if ($schema->tableExists('#__xmessage_seen')) {
-            $schema->alterTable('#__xmessage_seen')
+            $schema
+                ->alterTable('#__xmessage_seen')
                 ->dropIndex('uid')
                 ->addIndex('idx_uid', 'uid')
                 ->dropIndex('mid')

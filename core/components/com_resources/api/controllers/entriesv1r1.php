@@ -104,7 +104,8 @@ class Entriesv1r1 extends ApiController
         if ($filters['search']) {
             $filters['search'] = strtolower((string) $filters['search']);
 
-            $query->whereLike($r . '.title', $filters['search'], 1)
+            $query
+                    ->whereLike($r . '.title', $filters['search'], 1)
                     ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
                     ->resetDepth();
         }
@@ -123,12 +124,14 @@ class Entriesv1r1 extends ApiController
             $query->whereEquals($r . '.type', (int) $filters['type']);
         }
 
-        $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
             ->orWhere($r . '.publish_up', 'IS', null, 1)
             ->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
             ->resetDepth();
 
-        $query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
             ->orWhere($r . '.publish_down', 'IS', null, 1)
             ->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
             ->resetDepth();
@@ -407,12 +410,14 @@ class Entriesv1r1 extends ApiController
         // window, and at an access level the caller may see
         $query->whereEquals('published', Entry::STATE_PUBLISHED);
 
-        $query->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
             ->orWhere('publish_up', 'IS', null, 1)
             ->orWhere('publish_up', '<=', Date::toSql(), 1)
             ->resetDepth();
 
-        $query->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
             ->orWhere('publish_down', 'IS', null, 1)
             ->orWhere('publish_down', '>=', Date::toSql(), 1)
             ->resetDepth();

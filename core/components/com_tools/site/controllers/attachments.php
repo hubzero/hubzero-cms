@@ -354,7 +354,8 @@ class Attachments extends SiteController
         // get config
         $cparams = Component::params('com_resources');
         $path = '';
-        $children = $resource->children()
+        $children = $resource
+            ->children()
             ->ordered()
             ->rows();
 

@@ -9,7 +9,8 @@
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
-$this->css()
+$this
+     ->css()
      ->js()
      ->js('jquery.fileuploader.js', 'system');
 
@@ -283,7 +284,8 @@ $legacy = [
                         $name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="' . $this->escape($this->profile->get('surname')) . '" /></label>';
 
                     if (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) {
-                        $this->view('default', 'edit')
+                        $this
+                         ->view('default', 'edit')
                          ->set('registration_field', 'name')
                          ->set('profile_field', 'name')
                          ->set('registration', $this->profile->get('name'))
@@ -465,7 +467,8 @@ $legacy = [
                                 $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>';
                             }
 
-                                $this->view('default', 'edit')
+                                $this
+                                     ->view('default', 'edit')
                                      ->set('registration_field', 'email')
                                      ->set('profile_field', 'email')
                                      ->set('registration', 1)
@@ -751,7 +754,8 @@ $legacy = [
                                     $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $value == '' ? $field->get('access') : $profile->get('access', $field->get('access')), 'input-select');
                                 }
 
-                                $this->view('default', 'edit')
+                                $this
+                                    ->view('default', 'edit')
                                     ->set('registration_field', $field->get('name'))
                                     ->set('profile_field', $field->get('name'))
                                     ->set('registration', $field->get('action_edit'))
@@ -847,7 +851,8 @@ $legacy = [
                             // setting for it has nothing to control
                             $access = '';
 
-                            $this->view('default', 'edit')
+                            $this
+                                 ->view('default', 'edit')
                                  ->set('registration_field', 'sendEmail')
                                  ->set('profile_field', 'sendEmail')
                                  ->set('registration', $this->profile->get('sendEmail'))

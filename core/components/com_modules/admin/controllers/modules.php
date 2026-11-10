@@ -141,7 +141,8 @@ class Modules extends AdminController
         $e = '#__extensions';
         $l = '#__languages';
 
-        $query->select($p . '.*')
+        $query
+            ->select($p . '.*')
             ->whereEquals('client_id', $filters['client_id']);
 
         // Join over the language
@@ -222,7 +223,8 @@ class Modules extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $query->whereEquals($p . '.id', (int) substr($filters['search'], 3));
             } else {
-                $query->whereLike($p . '.title', $filters['search'], 1)
+                $query
+                    ->whereLike($p . '.title', $filters['search'], 1)
                     ->orWhereLike($p . '.note', $filters['search'], 1)
                     ->resetDepth();
             }
@@ -319,7 +321,8 @@ class Modules extends AdminController
 
         if ($eid = Request::getInt('eid', 0)) {
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('element')
                 ->select('client_id')
                 ->from('#__extensions')
@@ -477,7 +480,8 @@ class Modules extends AdminController
         $db = App::get('db');
 
         // Select the required fields from the table.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.extension_id')
             ->select('a.name')
             ->select('a.element', 'module')
@@ -1231,7 +1235,8 @@ class Modules extends AdminController
 
                 // Now we need to handle the module assignments
                 $db = App::get('db');
-                $query = $db->getQuery()
+                $query = $db
+                    ->getQuery()
                     ->select('menuid')
                     ->from('#__modules_menu')
                     ->whereEquals('moduleid', $pk);
@@ -1241,7 +1246,8 @@ class Modules extends AdminController
 
                 // Insert the new records into the table
                 foreach ($menus as $menu) {
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->insert('#__modules_menu')
                         ->values([
                             'moduleid' => $newId,

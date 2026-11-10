@@ -24,14 +24,16 @@ class Migration20150901115230ComResources extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__resource_licenses')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__resource_licenses')
                 ->where('name', '=', 'cc40-by-nc-sa');
             $id = $query->value('id');
 
             if (!$id) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('ordering')
                     ->from('#__resource_licenses')
                     ->order('ordering', 'desc');
@@ -62,7 +64,8 @@ class Migration20150901115230ComResources extends Base
                     . "privacy, or moral rights may limit how you use the material.\n\n"
                     . "For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.";
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__resource_licenses')
                     ->set([
                         'ordering' => $ordering + 1,
@@ -84,7 +87,8 @@ class Migration20150901115230ComResources extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__resource_licenses')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__resource_licenses')
                 ->where('name', '=', 'cc40-by-nc-sa');
@@ -92,7 +96,8 @@ class Migration20150901115230ComResources extends Base
 
             if ($id) {
                 // Set the first zone as default
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__resource_licenses')
                     ->where('name', '=', 'cc40-by-nc-sa')
                     ->execute();

@@ -22,7 +22,8 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
 $base = $this->member->link() . '&active=blog';
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 
@@ -81,7 +82,8 @@ $this->css()
                     </time>
                 </dd>
             <?php if ($this->row->get('allow_comments')) {
-                    $comments = $this->row->comments()
+                    $comments = $this->row
+                        ->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -133,7 +135,8 @@ $this->css()
                 $filters['state'][] = Components\Blog\Models\Entry::STATE_UNPUBLISHED;
                 unset($filters['access']);
             }
-            $popular = $this->archive->entries($filters)
+            $popular = $this->archive
+                    ->entries($filters)
                     ->order('hits', 'desc')
                     ->limit(5)
                     ->rows();
@@ -161,7 +164,8 @@ $this->css()
                 <?php echo Lang::txt('PLG_MEMBERS_BLOG_COMMENTS_HEADER'); ?>
             </h3>
             <?php
-            $comments = $this->row->comments()
+            $comments = $this->row
+                ->comments()
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
@@ -174,7 +178,8 @@ $this->css()
                 ->rows();
 
             if ($comments->count() > 0) {
-                $this->view('_list', 'comments')
+                $this
+                     ->view('_list', 'comments')
                      ->set('parent', 0)
                      ->set('cls', 'odd')
                      ->set('depth', 0)
@@ -204,7 +209,8 @@ $this->css()
                 </p>
                 <fieldset>
                     <?php
-                        $replyto = $this->row->comments()
+                        $replyto = $this->row
+                            ->comments()
                             ->whereEquals('id', Request::getInt('reply', 0))
                             ->whereIn('state', [
                                 Components\Blog\Models\Comment::STATE_PUBLISHED,

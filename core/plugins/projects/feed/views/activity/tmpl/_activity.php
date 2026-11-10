@@ -239,7 +239,8 @@ if (!$this->activity->log->get('anonymous')) {
 
                         if (count($selected)) {
                             // Show preview
-                            $this->view('files', 'preview')
+                            $this
+                                ->view('files', 'preview')
                                 ->set('maxHeight', $maxHeight)
                                 ->set('maxWidth', $maxWidth)
                                 ->set('minHeight', $minHeight)
@@ -365,7 +366,8 @@ if (!$this->activity->log->get('anonymous')) {
         <?php
         // Add comment
         if ($edit && $this->model->access('content')) {
-            $this->view('_addcomment')
+            $this
+                ->view('_addcomment')
                 ->set('option', $this->option)
                 ->set('model', $this->model)
                 ->set('activity', $this->activity)
@@ -397,7 +399,8 @@ if (!$this->activity->log->get('anonymous')) {
         <ul class="activity-comments" id="comments_<?php echo $this->activity->log->get('id'); ?>">
             <?php
             foreach ($rows as $row) {
-                $this->view('_activity')
+                $this
+                    ->view('_activity')
                     ->set('option', $this->option)
                     ->set('model', $this->model)
                     ->set('activity', $row)

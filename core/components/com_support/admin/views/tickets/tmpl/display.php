@@ -28,7 +28,8 @@ Toolbar::help('tickets');
 
 Html::behavior('tooltip');
 
-$this->css()
+$this
+    ->css()
     ->js('tickets.js');
 ?>
 
@@ -217,7 +218,8 @@ $this->css()
                                 continue;
                             }
 
-                            $lastcomment = $row->comments()
+                            $lastcomment = $row
+                            ->comments()
                             ->order('created', 'desc')
                             ->row()
                             ->get('created');

@@ -33,13 +33,15 @@ class Migration20130717140704PlgCronNewsletter extends Base
         //add newsletter cron jobs
         $params1 = 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n';
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db
+            ->getQuery(true)
             ->select('title')
             ->from('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Mailings');
 
         if ($query->doesntExist()) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertOrIgnore('#__cron_jobs')
                 ->set([
                     'title'      => 'Process Newsletter Mailings',
@@ -60,13 +62,15 @@ class Migration20130717140704PlgCronNewsletter extends Base
                 ->execute();
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db
+            ->getQuery(true)
             ->select('title')
             ->from('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
 
         if ($query->doesntExist()) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertOrIgnore('#__cron_jobs')
                 ->set([
                     'title'      => 'Process Newsletter Opens & Click IP Addresses',
@@ -94,7 +98,8 @@ class Migration20130717140704PlgCronNewsletter extends Base
     public function down()
     {
         //remove newsletter cron jobs
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->delete('#__cron_jobs')
             ->whereIn('title', ['Process Newsletter Mailings', 'Process Newsletter Opens & Click IP Addresses'])
             ->execute();

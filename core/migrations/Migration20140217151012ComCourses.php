@@ -27,7 +27,8 @@ class Migration20140217151012ComCourses extends Base
             if (!$schema->hasColumn('#__courses_offering_sections', 'is_default')) {
                 $schema->addColumn('#__courses_offering_sections', 'is_default')->tinyInteger(2)->notNull()->default(0);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__courses_offering_sections')
                     ->set(['is_default' => 1])
                     ->where('alias', '=', '__default')

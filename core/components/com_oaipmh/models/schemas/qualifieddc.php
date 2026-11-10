@@ -206,7 +206,8 @@ class QualifiedDC extends DublinCore
                 }
             }
 
-            $this->response->end() // End oai_dc:dc
+            $this->response
+                        ->end() // End oai_dc:dc
                         ->end(); // End metadata
 
             $this->response->end(); // End record

@@ -101,7 +101,8 @@ $pubconfig = Component::params('com_publications');
     </div>
     <div class="col span8 omega">
         <?php if (User::isGuest()) {
-            $this->view('intro')
+            $this
+                 ->view('intro')
                  ->set('project', $this->project)
                  ->set('pub', $this->pub)
                  ->display();
@@ -130,7 +131,8 @@ $pubconfig = Component::params('com_publications');
                 <?php
 
                 foreach ($mypubs as $row) {
-                    $this->view('_item')
+                    $this
+                         ->view('_item')
                          ->set('row', $row)
                          ->set('project', $this->project)
                          ->set('pub', $this->pub)

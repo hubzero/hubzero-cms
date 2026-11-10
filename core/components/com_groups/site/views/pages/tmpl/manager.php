@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // add styles & scripts
-$this->css()
+$this
+     ->css()
      ->js()
      ->css('jquery.fancyselect.css', 'system')
      ->js('jquery.fancyselect', 'system')
@@ -90,7 +91,8 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
 
             <fieldset data-tab-content="pages">
                 <?php
-                    $this->view('display')
+                    $this
+                         ->view('display')
                          ->set('group', $this->group)
                          ->set('categories', $this->categories)
                          ->set('pages', $this->pages)
@@ -102,7 +104,8 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
 
             <fieldset data-tab-content="categories">
                 <?php
-                    $this->view('display', 'categories')
+                    $this
+                         ->view('display', 'categories')
                          ->set('group', $this->group)
                          ->set('categories', $this->categories)
                          ->display();
@@ -112,7 +115,8 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
             <?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
                 <fieldset data-tab-content="modules">
                     <?php
-                        $this->view('display', 'modules')
+                        $this
+                             ->view('display', 'modules')
                              ->set('group', $this->group)
                              ->set('modules', $this->modules)
                              ->display();

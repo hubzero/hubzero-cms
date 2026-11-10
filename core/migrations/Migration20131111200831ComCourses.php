@@ -43,7 +43,8 @@ class Migration20131111200831ComCourses extends Base
             $schema->hasColumn('#__courses_offering_section_badges', 'offering_id')
             && !$schema->hasColumn('#__courses_offering_section_badges', 'section_id')
         ) {
-            $schema->renameColumn('#__courses_offering_section_badges', 'offering_id', 'section_id')
+            $schema
+                ->renameColumn('#__courses_offering_section_badges', 'offering_id', 'section_id')
                 ->integer()
                 ->notNull()
                 ->execute();
@@ -53,7 +54,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_offering_section_badges', 'provider_name')
             && $schema->hasColumn('#__courses_offering_section_badges', 'section_id')
         ) {
-            $schema->addColumn('#__courses_offering_section_badges', 'provider_name')
+            $schema
+                ->addColumn('#__courses_offering_section_badges', 'provider_name')
                 ->string(255)
                 ->notNull()
                 ->default('passport')
@@ -64,7 +66,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_offering_section_badges', 'provider_badge_id')
             && $schema->hasColumn('#__courses_offering_section_badges', 'badge_id')
         ) {
-            $schema->renameColumn('#__courses_offering_section_badges', 'badge_id', 'provider_badge_id')
+            $schema
+                ->renameColumn('#__courses_offering_section_badges', 'badge_id', 'provider_badge_id')
                 ->integer()
                 ->notNull()
                 ->execute();
@@ -74,7 +77,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_offering_section_badges', 'criteria_id')
             && $schema->hasColumn('#__courses_offering_section_badges', 'img_url')
         ) {
-            $schema->addColumn('#__courses_offering_section_badges', 'criteria_id')
+            $schema
+                ->addColumn('#__courses_offering_section_badges', 'criteria_id')
                 ->integer()
                 ->notNull()
                 ->execute();
@@ -84,7 +88,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_offering_section_badges', 'published')
             && $schema->hasColumn('#__courses_offering_section_badges', 'section_id')
         ) {
-            $schema->addColumn('#__courses_offering_section_badges', 'published')
+            $schema
+                ->addColumn('#__courses_offering_section_badges', 'published')
                 ->integer(1)
                 ->notNull()
                 ->default(0)
@@ -95,7 +100,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_member_badges', 'section_badge_id')
             && $schema->hasColumn('#__courses_member_badges', 'member_id')
         ) {
-            $schema->addColumn('#__courses_member_badges', 'section_badge_id')
+            $schema
+                ->addColumn('#__courses_member_badges', 'section_badge_id')
                 ->integer()
                 ->notNull()
                 ->execute();
@@ -109,7 +115,8 @@ class Migration20131111200831ComCourses extends Base
             !$schema->hasColumn('#__courses_member_badges', 'validation_token')
             && $schema->hasColumn('#__courses_member_badges', 'action_on')
         ) {
-            $schema->addColumn('#__courses_member_badges', 'validation_token')
+            $schema
+                ->addColumn('#__courses_member_badges', 'validation_token')
                 ->string(20)
                 ->nullable()
                 ->execute();
@@ -123,7 +130,8 @@ class Migration20131111200831ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_offering_section_badge_criteria')) {
-            $schema->createTable('#__courses_offering_section_badge_criteria')
+            $schema
+                ->createTable('#__courses_offering_section_badge_criteria')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->text('text')
                 ->integer('section_badge_id')

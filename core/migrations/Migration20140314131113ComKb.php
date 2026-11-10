@@ -26,7 +26,8 @@ class Migration20140314131113ComKb extends Base
         if (!$schema->hasColumn('#__faq_comments', 'state')) {
             $schema->addColumn('#__faq_comments', 'state')->tinyInteger(2)->notNull()->default(0);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__faq_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', '0')

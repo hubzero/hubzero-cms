@@ -116,7 +116,8 @@ class Styles extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $model->whereEquals($s . '.id', (int) substr($filters['search'], 3));
             } else {
-                $model->whereLike($s . '.title', $filters['search'], 1)
+                $model
+                    ->whereLike($s . '.title', $filters['search'], 1)
                     ->orWhereLike($s . '.template', $filters['search'], 1)
                     ->resetDepth();
             }
@@ -286,7 +287,8 @@ class Styles extends AdminController
                 \Hubzero\Utility\Arr::toInteger($assigned);
 
                 // Update the mapping for menu items that this style IS assigned to.
-                $query = $db->getQuery()
+                $query = $db
+                    ->getQuery()
                     ->update('#__menu')
                     ->set(['template_style_id' => (int) $style->get('id')])
                     ->whereIn('id', $assigned)
@@ -300,7 +302,8 @@ class Styles extends AdminController
 
             // Remove style mappings for menu items this style is NOT assigned to.
             // If unassigned then all existing maps will be removed.
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->update('#__menu')
                 ->set(['template_style_id' => 0]);
             if (!empty($assigned)) {

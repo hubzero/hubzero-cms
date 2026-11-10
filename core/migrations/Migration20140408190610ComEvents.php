@@ -43,7 +43,8 @@ class Migration20140408190610ComEvents extends Base
 
         // add new repeating rule
         if (!$schema->hasColumn('#__events', 'repeating_rule')) {
-            $schema->addColumn('#__events', 'repeating_rule')
+            $schema
+                ->addColumn('#__events', 'repeating_rule')
                 ->string(150)
                 ->after('time_zone')
                 ->execute();
@@ -60,51 +61,59 @@ class Migration20140408190610ComEvents extends Base
         // add bad fields
         if (!$schema->hasColumn('#__events', 'sid')) {
             $schema->addColumn('#__events', 'sid')->integer(11)->notNull()->default(0)->after('id')->execute();
-            $schema->addColumn('#__events', 'color_bar')
+            $schema
+                ->addColumn('#__events', 'color_bar')
                 ->string(8)
                 ->notNull()
                 ->default('')
                 ->after('extra_info')
                 ->execute();
-            $schema->addColumn('#__events', 'useCatColor')
+            $schema
+                ->addColumn('#__events', 'useCatColor')
                 ->tinyInteger(1)
                 ->notNull()
                 ->default(0)
                 ->after('color_bar')
                 ->execute();
-            $schema->addColumn('#__events', 'mask')
+            $schema
+                ->addColumn('#__events', 'mask')
                 ->integer(11)
                 ->unsigned()
                 ->notNull()
                 ->default(0)
                 ->after('state')
                 ->execute();
-            $schema->addColumn('#__events', 'created_by_alias')
+            $schema
+                ->addColumn('#__events', 'created_by_alias')
                 ->string(100)
                 ->notNull()
                 ->default('')
                 ->after('created_by')
                 ->execute();
             $schema->addColumn('#__events', 'images')->text()->notNull()->after('time_zone');
-            $schema->addColumn('#__events', 'reccurtype')
+            $schema
+                ->addColumn('#__events', 'reccurtype')
                 ->tinyInteger(1)
                 ->notNull()
                 ->default(0)
                 ->after('images')
                 ->execute();
-            $schema->addColumn('#__events', 'reccurday')
+            $schema
+                ->addColumn('#__events', 'reccurday')
                 ->string(4)
                 ->notNull()
                 ->default('')
                 ->after('reccurtype')
                 ->execute();
-            $schema->addColumn('#__events', 'reccurweekdays')
+            $schema
+                ->addColumn('#__events', 'reccurweekdays')
                 ->string(20)
                 ->notNull()
                 ->default('')
                 ->after('reccurday')
                 ->execute();
-            $schema->addColumn('#__events', 'reccurweeks')
+            $schema
+                ->addColumn('#__events', 'reccurweeks')
                 ->string(10)
                 ->notNull()
                 ->default('')
@@ -113,7 +122,8 @@ class Migration20140408190610ComEvents extends Base
             $schema->addColumn('#__events', 'announcement')->tinyInteger(1)->notNull()->default(0)->after('approved');
             $schema->addColumn('#__events', 'ordering')->integer(11)->notNull()->default(0)->after('announcement');
             $schema->addColumn('#__events', 'archived')->tinyInteger(1)->notNull()->default(0)->after('ordering');
-            $schema->addColumn('#__events', 'access')
+            $schema
+                ->addColumn('#__events', 'access')
                 ->integer(11)
                 ->unsigned()
                 ->notNull()

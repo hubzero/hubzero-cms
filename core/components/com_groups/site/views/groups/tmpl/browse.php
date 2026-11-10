@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js('browse');
 ?>
 
@@ -96,7 +97,8 @@ foreach ($this->notifications as $notification) {
                         <?php
                         if ($this->groups) {
                             foreach ($this->groups as $group) {
-                                $this->view('_group')
+                                $this
+                                    ->view('_group')
                                     ->set('group', $group)
                                     ->display();
                             } // for loop

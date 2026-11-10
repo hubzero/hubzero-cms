@@ -37,7 +37,8 @@ class Migration extends Scaffolding
                     $this->output->error('Table does not exist');
                 }
 
-                $this->addReplacement('description', "creating table {$table}")
+                $this
+                     ->addReplacement('description', "creating table {$table}")
                      ->addReplacement('table_name', str_replace($prefix, '#__', $table))
                      ->addReplacement('up', '$^create.table^$')
                      ->addReplacement('down', '$^drop.table^$')
@@ -45,7 +46,8 @@ class Migration extends Scaffolding
                 break;
 
             default:
-                $this->addReplacement('description', '...')
+                $this
+                     ->addReplacement('description', '...')
                      ->addReplacement('up', '')
                      ->addReplacement('down', '');
                 break;
@@ -97,7 +99,8 @@ class Migration extends Scaffolding
         $classname   = 'Migration' . with(new Date('now'))->format("YmdHis") . $ext;
         $destination = $installDir . DS . $classname . '.php';
 
-        $this->addTemplateFile("{$this->getType()}.tmpl", $destination)
+        $this
+             ->addTemplateFile("{$this->getType()}.tmpl", $destination)
              ->addReplacement('class_name', $classname)
              ->make();
 

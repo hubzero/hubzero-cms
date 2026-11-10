@@ -58,7 +58,8 @@ class ModuleOrder extends Field
         $data->attr = $attr;
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('position')
             ->select('ordering')
             ->select('title')

@@ -1051,7 +1051,8 @@ class Db2DriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('d2_items')
             ->order('id', 'asc')
@@ -1069,7 +1070,8 @@ class Db2DriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('d2_items')
             ->order('id', 'asc')
@@ -1089,11 +1091,13 @@ class Db2DriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('d2_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('d2_categories')
                     ->whereEquals('active', 1);
             })
@@ -1115,7 +1119,8 @@ class Db2DriverTest extends AbstractDriverTestCase
         // processing, even though the query returns 0 rows. This is a known limitation.
         // Workaround: catch the error and verify the intent (return empty result set).
         try {
-            $items = $driver->getQuery()
+            $items = $driver
+                ->getQuery()
                 ->select('*')
                 ->from('d2_items')
                 ->whereIn('id', [])

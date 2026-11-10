@@ -30,7 +30,8 @@ class Migration20160516000001ComStorefront extends Base
             $schema->addColumn('#__storefront_skus', 'sRestricted')->tinyInteger()->default(0)->execute();
         }
         if (!$schema->tableExists('#__storefront_permissions')) {
-            $schema->createTable('#__storefront_permissions')
+            $schema
+                ->createTable('#__storefront_permissions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 15)->nullable()
                 ->integer('scope_id')->nullable()

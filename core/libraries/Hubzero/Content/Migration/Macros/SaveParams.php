@@ -28,7 +28,8 @@ class SaveParams extends Macro
         if ($this->db->tableExists('#__extensions')) {
             $element = strtolower($element);
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions');
 
@@ -57,7 +58,8 @@ class SaveParams extends Macro
                 return false;
             }
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'params' => $params,

@@ -355,7 +355,8 @@ class Newsletter extends Relational
 
             //get and format primary stories
             $campaignPrimaryStories = '';
-            $primaryStories = $campaign->primary()
+            $primaryStories = $campaign
+                ->primary()
                 ->whereEquals('deleted', 0)
                 ->ordered()
                 ->rows();
@@ -380,7 +381,8 @@ class Newsletter extends Relational
 
             //get secondary stories
             $campaignSecondaryStories = '<br /><br />';
-            $secondaryStories = $campaign->secondary()
+            $secondaryStories = $campaign
+                ->secondary()
                 ->whereEquals('deleted', 0)
                 ->ordered()
                 ->rows();

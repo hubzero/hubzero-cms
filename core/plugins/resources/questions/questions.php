@@ -180,7 +180,8 @@ class Questions extends Plugin
         if ($this->filters['search']) {
             $this->filters['search'] = strtolower((string) $this->filters['search']);
 
-            $records->whereLike('subject', $this->filters['search'], 1)
+            $records
+                    ->whereLike('subject', $this->filters['search'], 1)
                     ->orWhereLike('question', $this->filters['search'], 1)
                     ->resetDepth();
         }
@@ -219,13 +220,15 @@ class Questions extends Plugin
         }
 
         // Get results
-        $results = $this->find()
+        $results = $this
+            ->find()
             ->limit($this->params->get('display_limit', 10))
             ->order($order, $this->filters['sort_Dir'])
             ->paginated()
             ->rows();
 
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->setError($this->getErrors())
             ->set('option', $this->option)
             ->set('resource', $this->model)
@@ -288,7 +291,8 @@ class Questions extends Plugin
             $funds = $funds > 0 ?: 0;
         }
 
-        $view = $this->view('new', 'question')
+        $view = $this
+            ->view('new', 'question')
             ->set('option', $this->option)
             ->set('resource', $this->model)
             ->set('row', $row)

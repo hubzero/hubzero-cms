@@ -46,7 +46,8 @@ class FilesystemServiceProvider extends ServiceProvider
             }
 
             $filesystem = new Filesystem($adapter);
-            $filesystem->addMacro(new EmptyDirectory())
+            $filesystem
+                       ->addMacro(new EmptyDirectory())
                        ->addMacro(new Directories())
                        ->addMacro(new Files())
                        ->addMacro(new DirectoryTree());

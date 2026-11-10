@@ -85,7 +85,8 @@ class Wishlist extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $wish->get('id'))
              ->set('created', $wish->get('proposed'))
              ->set('created_by', $wish->get('proposed_by'))

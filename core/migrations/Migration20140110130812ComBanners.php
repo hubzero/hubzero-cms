@@ -21,7 +21,8 @@ class Migration20140110130812ComBanners extends Base
      **/
     public function up()
     {
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -33,19 +34,22 @@ class Migration20140110130812ComBanners extends Base
 
             $this->deleteModuleEntry('mod_banners');
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__modules')
                 ->where('module', '=', 'mod_banners')
                 ->loadColumn();
 
             if ($results) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules_menu')
                     ->whereIn('moduleid', $results)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__modules')
                     ->where('module', '=', 'mod_banners')
                     ->execute();
@@ -65,7 +69,8 @@ class Migration20140110130812ComBanners extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -76,7 +81,8 @@ class Migration20140110130812ComBanners extends Base
             $this->addComponentEntry('banners');
 
             if (!$schema->tableExists('#__banner_clients')) {
-                $schema->createTable('#__banner_clients')
+                $schema
+                    ->createTable('#__banner_clients')
                     ->integer('id', ['autoIncrement' => true])
                     ->string('name', 255)->default('')
                     ->string('contact', 255)->default('')
@@ -100,7 +106,8 @@ class Migration20140110130812ComBanners extends Base
             }
 
             if (!$schema->tableExists('#__banner_tracks')) {
-                $schema->createTable('#__banner_tracks')
+                $schema
+                    ->createTable('#__banner_tracks')
                     ->datetime('track_date')
                     ->unsignedInteger('track_type')
                     ->unsignedInteger('banner_id')
@@ -115,7 +122,8 @@ class Migration20140110130812ComBanners extends Base
             }
 
             if (!$schema->tableExists('#__banners')) {
-                $schema->createTable('#__banners')
+                $schema
+                    ->createTable('#__banners')
                     ->integer('id', ['autoIncrement' => true])
                     ->integer('cid')->default(0)
                     ->integer('type')->default(0)

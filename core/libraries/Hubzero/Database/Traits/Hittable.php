@@ -131,7 +131,8 @@ trait Hittable
         $newHits = $currentHits + $amount;
 
         // Use atomic increment in database
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->setRaw($hitsCol, $hitsCol . ' + ' . (int) $amount)
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -263,7 +264,8 @@ trait Hittable
 
         $hitsCol = $this->getHitsColumn();
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$hitsCol => $hits])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -289,7 +291,8 @@ trait Hittable
         $instance = new static();
         $hitsCol = $instance->getHitsColumn();
 
-        return (bool) $instance->getQuery()
+        return (bool) $instance
+            ->getQuery()
             ->update($instance->getTableName())
             ->setRaw($hitsCol, $hitsCol . ' + ' . (int) $amount)
             ->whereEquals($instance->getPrimaryKey(), $id)
@@ -328,7 +331,8 @@ trait Hittable
         $instance = new static();
         $hitsCol = $instance->getHitsColumn();
 
-        $query = $instance->getQuery()
+        $query = $instance
+            ->getQuery()
             ->select('SUM(' . $hitsCol . ') as total_hits')
             ->from($instance->getTableName());
 

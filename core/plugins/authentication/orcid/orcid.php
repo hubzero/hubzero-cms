@@ -124,14 +124,17 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         }
 
         if ($this->params->get('use_member_api', false)) {
-            $oauth->useMembersApi()
+            $oauth
+                  ->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-            $oauth->usePublicApi()
+            $oauth
+                  ->usePublicApi()
                   ->setScope('/authenticate');
         }
 
-        $oauth->setClientId($this->params->get('client_id'))
+        $oauth
+              ->setClientId($this->params->get('client_id'))
               ->setState($view->return)
               ->showLogin()
               ->setRedirectUri(self::getRedirectUri('orcid'));
@@ -165,14 +168,17 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             $oauth->useSandboxEnvironment();
         }
         if ($this->params->get('use_member_api', false)) {
-            $oauth->useMembersApi()
+            $oauth
+                  ->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-            $oauth->usePublicApi()
+            $oauth
+                  ->usePublicApi()
                   ->setScope('/authenticate');
         }
 
-        $oauth->setClientId($this->params->get('client_id'))
+        $oauth
+              ->setClientId($this->params->get('client_id'))
               ->setClientSecret($this->params->get('client_secret'))
               ->setRedirectUri(self::getRedirectUri('orcid'));
 
@@ -314,14 +320,17 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         }
 
         if ($this->params->get('use_member_api', false)) {
-            $oauth->useMembersApi()
+            $oauth
+                  ->useMembersApi()
                   ->setScope('/authenticate%20/read-limited');
         } else {
-            $oauth->usePublicApi()
+            $oauth
+                  ->usePublicApi()
                   ->setScope('/authenticate');
         }
 
-        $oauth->setClientId($this->params->get('client_id'))
+        $oauth
+              ->setClientId($this->params->get('client_id'))
               ->setClientSecret($this->params->get('client_secret'))
               ->setRedirectUri(self::getRedirectUri('orcid'));
 

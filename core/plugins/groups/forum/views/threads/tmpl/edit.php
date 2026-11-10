@@ -26,7 +26,8 @@ if ($this->post->get('id')) {
     $this->post->set('access', 0);
 }
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <ul id="page_options">
@@ -116,7 +117,8 @@ $this->css()
                                 $filters['access'][] = 5;
                             }
                             foreach ($this->forum->sections($filters)->rows() as $section) {
-                                $categories = $section->categories()
+                                $categories = $section
+                                    ->categories()
                                     ->whereEquals('state', $filters['state'])
                                     ->whereIn('access', $filters['access'])
                                     ->rows();

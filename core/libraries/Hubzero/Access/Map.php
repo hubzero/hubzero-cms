@@ -84,7 +84,8 @@ class Map extends Relational
      */
     public function destroy()
     {
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->delete($this->getTableName())
             ->whereEquals('group_id', $this->get('group_id'))
             ->whereEquals('user_id', $this->get('user_id'));
@@ -109,7 +110,8 @@ class Map extends Relational
 
         $blank = self::blank();
 
-        $query = $blank->getQuery()
+        $query = $blank
+            ->getQuery()
             ->delete($blank->getTableName())
             ->whereIn('group_id', $group_id);
 
@@ -132,7 +134,8 @@ class Map extends Relational
 
         $blank = self::blank();
 
-        $query = $blank->getQuery()
+        $query = $blank
+            ->getQuery()
             ->delete($blank->getTableName())
             ->whereIn('user_id', $user_id);
 
@@ -176,7 +179,8 @@ class Map extends Relational
                 continue;
             }
 
-            $query = $blank->getQuery()
+            $query = $blank
+                ->getQuery()
                 ->insert($blank->getTableName())
                 ->values([
                     'user_id'  => $user_id,
@@ -204,7 +208,8 @@ class Map extends Relational
 
         $blank = self::blank();
 
-        $query = $blank->getQuery()
+        $query = $blank
+            ->getQuery()
             ->delete($blank->getTableName())
             ->whereEquals('user_id', $user_id)
             ->whereIn('group_id', $group_id);

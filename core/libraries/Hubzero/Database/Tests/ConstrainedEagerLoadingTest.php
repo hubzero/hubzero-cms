@@ -388,14 +388,16 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $driver->dropTable('eager_posts', true);
 
         $schema = $driver->schema();
-        $schema->createTable('eager_posts')
+        $schema
+            ->createTable('eager_posts')
             ->id()
             ->string('title', 255)
             ->integer('author_id')
             ->integer('status')->default(1)
             ->execute();
 
-        $schema->createTable('eager_comments')
+        $schema
+            ->createTable('eager_comments')
             ->id()
             ->integer('post_id')
             ->string('content', 255)
@@ -429,7 +431,8 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     public function testEagerLoadingWithConditionsConstraint(string $dbName, Driver $driver)
     {
         $query = new \Hubzero\Database\Query($driver);
-        $posts = $query->from('eager_posts')
+        $posts = $query
+            ->from('eager_posts')
             ->select('*')
             ->whereEquals('status', 1)
             ->fetch('rows');

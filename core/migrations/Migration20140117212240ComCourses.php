@@ -29,14 +29,16 @@ class Migration20140117212240ComCourses extends Base
             && $schema->hasColumn('#__courses_assets', 'course_id')
             && !$schema->hasColumn('#__courses_assets', 'graded')
         ) {
-            $schema->addColumn('#__courses_assets', 'graded')
+            $schema
+                ->addColumn('#__courses_assets', 'graded')
                 ->tinyInteger(2)
                 ->nullable()
                 ->default(null)
                 ->after('course_id');
 
             // Mark all assets of type form as graded
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__courses_assets')
                 ->set(['graded' => 1])
                 ->where('type', '=', 'form')
@@ -48,7 +50,8 @@ class Migration20140117212240ComCourses extends Base
             && $schema->hasColumn('#__courses_assets', 'graded')
             && !$schema->hasColumn('#__courses_assets', 'grade_weight')
         ) {
-            $schema->addColumn('#__courses_assets', 'grade_weight')
+            $schema
+                ->addColumn('#__courses_assets', 'grade_weight')
                 ->string(255)
                 ->notNull()
                 ->default('')
@@ -56,7 +59,8 @@ class Migration20140117212240ComCourses extends Base
                 ->execute();
 
             // Mark all assets of type form as graded
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__courses_assets')
                 ->set(['grade_weight' => Expression::column('subtype')])
                 ->where('type', '=', 'form')

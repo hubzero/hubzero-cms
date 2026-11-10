@@ -519,7 +519,8 @@ class PerconaDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pc_items')
             ->order('id', 'asc')
@@ -539,11 +540,13 @@ class PerconaDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('pc_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('pc_categories')
                     ->whereEquals('active', 1);
             })
@@ -588,7 +591,8 @@ class PerconaDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('pc_ddl_test')
+        $driver
+            ->createTable('pc_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()

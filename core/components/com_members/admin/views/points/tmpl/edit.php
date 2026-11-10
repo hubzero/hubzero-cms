@@ -22,7 +22,8 @@ Html::behavior('keepalive');
 
 $this->js();
 
-$this->view('_submenu')
+$this
+     ->view('_submenu')
      ->display();
 ?>
 

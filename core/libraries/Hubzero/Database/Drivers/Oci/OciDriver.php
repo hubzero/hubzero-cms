@@ -1430,7 +1430,8 @@ class OciDriver extends BaseSqlDriver
                 $this->connection->beginTransaction();
             }
         } else {
-            $this->setQuery('SAVEPOINT SP_' . $this->transactionDepth)
+            $this
+                ->setQuery('SAVEPOINT SP_' . $this->transactionDepth)
                 ->execute();
         }
 

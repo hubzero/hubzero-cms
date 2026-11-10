@@ -38,7 +38,8 @@ class Access
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->from('#__viewlevels', 'a')
@@ -89,7 +90,8 @@ class Access
     public static function usergroup($name, $selected, $attribs = '', $allowAll = true)
     {
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('COUNT(DISTINCT b.id)', 'level')
@@ -138,7 +140,8 @@ class Access
         $isSuperAdmin = \User::authorise('core.admin');
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.*')
             ->select('COUNT(DISTINCT b.id)', 'level')
             ->from('#__usergroups', 'a')
@@ -271,7 +274,8 @@ class Access
         if (empty(self::$asset_groups)) {
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('a.id', 'value')
                 ->select('a.title', 'text')
                 ->from('#__viewlevels', 'a')

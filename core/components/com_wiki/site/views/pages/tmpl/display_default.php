@@ -20,7 +20,8 @@ $this->js();
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
-    $this->view('crumbs')
+    $this
+        ->view('crumbs')
         ->set('parents', $this->parents)
         ->display();
     ?>
@@ -29,7 +30,8 @@ $this->js();
 
     <?php
     if (!$this->page->isStatic()) {
-        $this->view('authors')
+        $this
+            ->view('authors')
             //->setBasePath($this->base_path)
             ->set('page', $this->page)
             ->display();
@@ -43,7 +45,8 @@ $this->js();
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu')
+        $this
+            ->view('wikimenu')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -62,7 +65,8 @@ $this->js();
         <?php
         echo $this->page->event->beforeDisplayContent;
 
-        $this->view('submenu')
+        $this
+            ->view('submenu')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)

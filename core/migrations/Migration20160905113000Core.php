@@ -24,7 +24,8 @@ class Migration20160905113000Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__user_roles')) {
-            $schema->createTable('#__user_roles')
+            $schema
+                ->createTable('#__user_roles')
                 ->integer('user_id')
                 ->string('role', 20)
                 ->integer('group_id')->nullable()

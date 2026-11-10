@@ -65,7 +65,8 @@ defined('_HZEXEC_') or die();
 
     <?php
     // Display project image upload
-    $this->view('_picture')
+    $this
+        ->view('_picture')
         ->set('model', $this->model)
         ->set('option', $this->option)
         ->display();
@@ -244,7 +245,8 @@ defined('_HZEXEC_') or die();
 </fieldset>
 <?php
 if ($this->config->get('grantinfo', 0)) :
-    $this->view('_edit_grant_info')
+    $this
+        ->view('_edit_grant_info')
         ->set('model', $this->model)
         ->display();
 endif;

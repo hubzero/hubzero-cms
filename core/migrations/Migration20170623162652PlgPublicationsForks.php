@@ -27,7 +27,8 @@ class Migration20170623162652PlgPublicationsForks extends Base
 
         if ($schema->tableExists('#__publication_versions')) {
             if (!$schema->hasColumn('#__publication_versions', 'forked_from')) {
-                $schema->addColumn('#__publication_versions', 'forked_from')
+                $schema
+                    ->addColumn('#__publication_versions', 'forked_from')
                     ->integer()
                     ->notNull()
                     ->default(0)

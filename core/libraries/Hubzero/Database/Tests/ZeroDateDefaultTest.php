@@ -140,7 +140,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('published')->notNull()->default('0000-00-00 00:00:00')
             ->execute();
@@ -155,7 +156,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');
@@ -176,7 +178,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->date('event_date')->notNull()->default('0000-00-00')
             ->execute();
@@ -191,7 +194,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');
@@ -212,7 +216,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->integer('status')->notNull()->default(0)
             ->string('label', 50)->default('pending')
@@ -223,7 +228,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');
@@ -251,7 +257,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $driver->dropTable('zerodate_test', true);
 
         // Column already nullable + zero-date default
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('expires')->nullable()->default('0000-00-00 00:00:00')
             ->execute();
@@ -266,7 +273,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $driver->execute();
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->fetch('row');
 
@@ -291,13 +299,17 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $driver->dropTable('zerodate_test', true);
 
         // Create table without datetime column first
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->string('title', 255)
             ->execute();
 
         // Add column with zero-date default via ALTER TABLE
-        $driver->schema()->table('zerodate_test')->alter()
+        $driver
+            ->schema()
+            ->table('zerodate_test')
+            ->alter()
             ->addDatetime('modified')
             ->notNull()
             ->default('0000-00-00 00:00:00')
@@ -313,7 +325,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['title' => 'Test']);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->fetch('row');
 
@@ -338,7 +351,9 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $driver->dropTable('zerodate_test', true);
 
         // Use schema()->createTable() path
-        $driver->schema()->createTable('zerodate_test')
+        $driver
+            ->schema()
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('publish_up')->default('0000-00-00 00:00:00')
             ->datetime('publish_down')->default('0000-00-00 00:00:00')
@@ -349,7 +364,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');
@@ -378,7 +394,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('created')->notNull()->default('0000-00-00 00:00:00')
             ->datetime('modified')->notNull()->default('0000-00-00 00:00:00')
@@ -390,7 +407,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');
@@ -411,7 +429,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('created')->notNull()->default('0000-00-00 00:00:00')
             ->execute();
@@ -423,7 +442,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         ]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->fetch('row');
 
@@ -444,7 +464,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     ): void {
         $driver->dropTable('zerodate_test', true);
 
-        $driver->createTable('zerodate_test')
+        $driver
+            ->createTable('zerodate_test')
             ->id()
             ->datetime('created')->notNull()->default('0000-00-00 00:00:00')
             ->integer('status')->notNull()->default(1)
@@ -455,7 +476,8 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $query->push('zerodate_test', ['id' => 1]);
 
         $query2 = new Query($driver);
-        $row = $query2->from('zerodate_test')
+        $row = $query2
+            ->from('zerodate_test')
             ->select('*')
             ->whereEquals('id', 1)
             ->fetch('row');

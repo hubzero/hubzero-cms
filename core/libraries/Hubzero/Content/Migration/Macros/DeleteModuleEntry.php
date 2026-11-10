@@ -26,7 +26,8 @@ class DeleteModuleEntry extends Macro
     {
         if ($this->db->tableExists('#__extensions')) {
             // Delete module entry
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete('#__extensions')
                 ->whereEquals('element', $element);
             if (isset($client)) {
@@ -40,7 +41,8 @@ class DeleteModuleEntry extends Macro
         }
 
         // See if entries are present in #__modules table as well
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->select('id')
             ->from('#__modules')
             ->whereEquals('module', $element);
@@ -53,14 +55,16 @@ class DeleteModuleEntry extends Macro
 
         if ($ids && count($ids) > 0) {
             // Delete modules and module menu entries
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete('#__modules')
                 ->whereIn('id', $ids)
                 ->toString();
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete('#__modules_menu')
                 ->whereIn('moduleid', $ids)
                 ->toString();

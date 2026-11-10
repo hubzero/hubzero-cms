@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->js('jquery.masonry.js', 'com_collections')
+$this
+     ->js('jquery.masonry.js', 'com_collections')
      ->js('jquery.infinitescroll.js', 'com_collections')
      ->js();
 
@@ -40,7 +41,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
 
 <form method="get" action="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias', 'posts')); ?>" id="collections">
     <?php
-    $this->view('_submenu', 'collection')
+    $this
+         ->view('_submenu', 'collection')
          ->set('option', $this->option)
          ->set('group', $this->group)
          ->set('params', $this->params)
@@ -117,7 +119,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
                 <div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $row->get('id')); ?>">
                     <div class="content">
                         <?php
-                            $this->view('default_' . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'), 'post')
+                            $this
+                                 ->view('default_' . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'), 'post')
                                  ->set('name', $this->name)
                                  ->set('option', $this->option)
                                  ->set('group', $this->group)

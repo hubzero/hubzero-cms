@@ -23,7 +23,8 @@ if (User::authorise('core.edit', $this->option . '.component')) {
     Toolbar::custom('edit', 'edit.png', '', 'Edit', false);
 }
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

@@ -60,7 +60,8 @@ class CategoryEdit extends Select
         $db = App::get('db');
         $query = $db->getQuery();
 
-        $query->select('a.id', 'value')
+        $query
+            ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('a.level')
             ->select('a.published')
@@ -69,7 +70,8 @@ class CategoryEdit extends Select
 
         // Filter by the extension type
         if ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories') {
-            $query->whereEquals('a.extension', $extension, 1)
+            $query
+                ->whereEquals('a.extension', $extension, 1)
                 ->orWhereEquals('a.parent_id', '0', 1)
                 ->resetDepth();
         } else {
@@ -84,7 +86,8 @@ class CategoryEdit extends Select
             $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
             $rowQuery = $db->getQuery();
-            $rowQuery->select('a.id', 'value')
+            $rowQuery
+                ->select('a.id', 'value')
                 ->select('a.title', 'text')
                 ->select('a.level')
                 ->select('a.parent_id')
@@ -102,7 +105,8 @@ class CategoryEdit extends Select
             $query->whereIn('a.published', $published);
         }
 
-        $query->group('a.id')
+        $query
+            ->group('a.id')
             ->group('a.title')
             ->group('a.level')
             ->group('a.lft')

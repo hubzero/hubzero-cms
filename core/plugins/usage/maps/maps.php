@@ -320,7 +320,8 @@ class Maps extends Plugin
                 $mappath = $config->get('maps_path');
 
                 if (is_file(__DIR__ . '/views/maps/tmpl/' . $type . '.php')) {
-                    $html = $this->view($type, 'maps')
+                    $html = $this
+                        ->view($type, 'maps')
                         ->set('mappath', $mappath)
                         ->set('option', $option)
                         ->set('task', $task)

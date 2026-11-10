@@ -110,7 +110,8 @@ class Installer
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(type)', 'value')
             ->select('type', 'text')
             ->from('#__extension_types')
@@ -135,7 +136,8 @@ class Installer
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(folder)', 'value')
             ->select('folder', 'text')
             ->from('#__extensions')

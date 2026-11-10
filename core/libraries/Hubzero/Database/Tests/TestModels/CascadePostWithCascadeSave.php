@@ -21,7 +21,8 @@ class CascadePostWithCascadeSave extends Relational
 
     public function comments()
     {
-        return $this->oneToMany(CascadeComment::class, 'post_id')
+        return $this
+            ->oneToMany(CascadeComment::class, 'post_id')
             ->cascadeOnSave();
     }
 }

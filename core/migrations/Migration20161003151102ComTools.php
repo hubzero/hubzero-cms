@@ -26,7 +26,9 @@ class Migration20161003151102ComTools extends Base
 
         // ADD COLUMN end
         if ($schema->tableExists('joblog') && !$schema->hasColumn('joblog', 'end')) {
-            $schema->table('joblog')->alter()
+            $schema
+                ->table('joblog')
+                ->alter()
                 ->addTimestamp('end')
                 ->defaultExpression(Expression::currentTimestamp())
                 ->execute();

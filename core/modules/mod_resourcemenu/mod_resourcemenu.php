@@ -48,7 +48,8 @@ class Resourcemenu extends Module
         $this->html = $obj->text;
 
         // Push some CSS to the tmeplate
-        $this->css()
+        $this
+             ->css()
              ->js();
 
         require $this->getLayoutPath();

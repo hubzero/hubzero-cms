@@ -24,7 +24,8 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

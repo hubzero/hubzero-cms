@@ -24,7 +24,8 @@ class Migration20160217014424ComTools extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__tool_handlers')) {
-            $schema->createTable('#__tool_handlers')
+            $schema
+                ->createTable('#__tool_handlers')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('tool_id')
                 ->string('prompt', 255)->default('')
@@ -35,7 +36,8 @@ class Migration20160217014424ComTools extends Base
         }
 
         if (!$schema->tableExists('#__tool_handler_rules')) {
-            $schema->createTable('#__tool_handler_rules')
+            $schema
+                ->createTable('#__tool_handler_rules')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('handler_id')
                 ->string('extension', 10)->default('')

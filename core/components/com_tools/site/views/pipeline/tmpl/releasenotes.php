@@ -35,7 +35,8 @@ if ($this->licenses) {
     }
 }
 
-$this->css('pipeline.css')
+$this
+     ->css('pipeline.css')
      ->js('pipeline.js');
 ?>
 <header id="content-header">

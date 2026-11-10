@@ -11,7 +11,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->css('jquery.fancybox.css', 'system')
     ->js();
 
@@ -103,7 +104,8 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                 <?php
                 if ($this->publication->state == 1 && $this->publication->main == 1) {
                     // Show metadata
-                    $this->view('_metadata')
+                    $this
+                         ->view('_metadata')
                          ->set('option', $this->option)
                          ->set('publication', $this->publication)
                          ->set('config', $this->config)

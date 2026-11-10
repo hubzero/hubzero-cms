@@ -137,7 +137,8 @@ class Polls extends AdminController
 
         $poll = Poll::oneOrFail($id);
 
-        $options = $poll->options()
+        $options = $poll
+            ->options()
             ->ordered()
             ->rows();
 
@@ -185,7 +186,8 @@ class Polls extends AdminController
             $poll->checkout(User::get('id'));
         }
 
-        $options = $poll->options()
+        $options = $poll
+            ->options()
             ->ordered()
             ->rows();
 

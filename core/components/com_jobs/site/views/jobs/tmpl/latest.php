@@ -25,7 +25,8 @@ defined('_HZEXEC_') or die();
                     'name'      => 'jobs',
                     'layout'    => '_list',
                 ]);
-                $view->set('option', $this->option)
+                $view
+                    ->set('option', $this->option)
                     ->set('filters', $this->filters)
                     ->set('config', $this->config)
                     ->set('task', $this->task)

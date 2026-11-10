@@ -3161,7 +3161,8 @@ class Query
     public function exists(): bool
     {
         $query = clone($this);
-        $query->deselect()
+        $query
+            ->deselect()
             ->selectRaw('1')
             ->limit(1);
 
@@ -4299,7 +4300,8 @@ class Query
     public function push($table, $data, $ignore = false)
     {
         // Add insert statement
-        $this->insert($table, $ignore)
+        $this
+             ->insert($table, $ignore)
              ->values($data);
 
         $result = $this->execute();
@@ -4578,7 +4580,8 @@ class Query
     public function alter($table, $pkField, $pkValue, $data)
     {
         // Add insert statement
-        $this->update($table)
+        $this
+             ->update($table)
              ->set($data);
 
         // Where primary key is...
@@ -4663,7 +4666,8 @@ class Query
         }
 
         // Add delete statement
-        $this->delete($table)
+        $this
+             ->delete($table)
              ->whereEquals($pkField, $pkValue);
 
         // Return result of the query
@@ -4930,7 +4934,8 @@ class Query
     {
         $query = clone($this);
         if ($column !== null) {
-            $query->deselect()
+            $query
+                ->deselect()
                 ->select($column);
         }
         $query->limit(1);

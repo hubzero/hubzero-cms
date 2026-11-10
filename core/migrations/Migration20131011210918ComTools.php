@@ -963,20 +963,23 @@ class Migration20131011210918ComTools extends Base
         ];
 
         foreach ($licenses as $license) {
-            $existing = $this->db->getQuery(true)
+            $existing = $this->db
+                ->getQuery(true)
                 ->select('name', 'text')
                 ->from('#__tool_licenses')
                 ->whereEquals('name', $license['name'])
                 ->first();
 
             if (!$existing) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__tool_licenses')
                     ->columns(array_keys($license))
                     ->values(array_values($license))
                     ->execute();
             } elseif (empty($existing->text)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__tool_licenses')
                     ->set($license)
                     ->whereEquals('name', $license['name'])

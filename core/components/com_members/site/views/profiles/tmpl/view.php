@@ -61,7 +61,8 @@ if (User::isGuest() || substr($this->profile->get('email'), -8) == '@invalid') {
 }
 
 if (!$no_html) {
-    $this->css()
+    $this
+         ->css()
          ->js();
     ?>
 <div class="innerwrap">

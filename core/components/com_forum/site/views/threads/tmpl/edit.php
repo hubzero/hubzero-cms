@@ -102,7 +102,8 @@ if ($this->post->get('id')) {
                                     'access' => User::getAuthorisedViewLevels(),
                                 ];
                                 foreach ($this->forum->sections($filters)->rows() as $section) {
-                                    $categories = $section->categories()
+                                    $categories = $section
+                                        ->categories()
                                         ->whereEquals('state', $filters['state'])
                                         ->whereIn('access', $filters['access'])
                                         ->rows();

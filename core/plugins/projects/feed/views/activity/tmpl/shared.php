@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->css('icons', 'com_projects')
     ->css('emocons', 'com_projects');
 
@@ -42,7 +43,8 @@ if (count($this->activities) > 0) {
                 }
 
                 // Show activity
-                $this->view('_activity')
+                $this
+                    ->view('_activity')
                     ->set('model', $projects[$activity->get('scope_id')])
                     ->set('activity', $activity)
                     ->set('uid', $this->uid)

@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('resources.css', 'com_resources')
      ->js('resources.js', 'com_resources');
 
@@ -401,7 +402,8 @@ if ($this->cats) {
                         $html .= '<ol class="resources results">' . "\n";
                         foreach ($category as $row) {
                             $k++;
-                            $html .= $this->view('_item')
+                            $html .= $this
+                                        ->view('_item')
                                         ->set('row', $row)
                                         ->set('authorized', $this->authorized)
                                         ->loadTemplate();

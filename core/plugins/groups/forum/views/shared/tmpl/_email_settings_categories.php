@@ -27,7 +27,8 @@ $currentUserId = User::get('id');
 
         <?php foreach ($this->categories as $category) : ?>
             <?php
-            $usersSubscription = $category->usersCategories()
+            $usersSubscription = $category
+                ->usersCategories()
                 ->whereEquals('user_id', $currentUserId)
                 ->row();
 

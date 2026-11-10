@@ -31,7 +31,8 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('posts', true);
-        $driver->createTable('posts')
+        $driver
+            ->createTable('posts')
             ->id()
             ->string('title', 255)
             ->text('content')

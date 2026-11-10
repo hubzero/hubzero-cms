@@ -229,7 +229,8 @@ class Activity extends Plugin
         $digests = $this->params->get('email_digests');
 
         // Build view
-        $view = $this->view('default', 'activity')
+        $view = $this
+            ->view('default', 'activity')
             ->set('digests', $digests)
             ->set('member', $this->member)
             ->set('categories', $categories)
@@ -470,7 +471,8 @@ class Activity extends Plugin
             'user',
         );
 
-        $view = $this->view('settings', 'activity')
+        $view = $this
+            ->view('settings', 'activity')
             ->set('member', $this->member)
             ->set('settings', $settings);
 

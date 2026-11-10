@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $mylistIds = [];
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 

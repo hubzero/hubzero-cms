@@ -20,7 +20,8 @@ class Migration20131209221353ComUsers extends Base
      **/
     public function up()
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db
+            ->getQuery(true)
             ->select(['id', 'content'])
             ->from('#__modules')
             ->where('position', '=', 'footer')
@@ -34,7 +35,8 @@ class Migration20131209221353ComUsers extends Base
                 $new_content  = str_replace($look_for, $replace_with, $r->content);
 
                 if ($new_content != $r->content) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__modules')
                         ->set(['content' => $new_content])
                         ->where('id', '=', $r->id)

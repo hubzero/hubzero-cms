@@ -132,7 +132,8 @@ class OneToOneThrough extends Relationship
     {
         // We do a left outer join here because we're not trying to limit the primary table's results
         // This function is primarily used when needing to sort by a field in the joined table
-        $this->model->select($this->model->getQualifiedFieldName('*'))
+        $this->model
+                    ->select($this->model->getQualifiedFieldName('*'))
                     ->select($this->related->getQualifiedFieldName('*'))
                     ->join(
                         $this->throughTable,
@@ -160,7 +161,8 @@ class OneToOneThrough extends Relationship
      **/
     public function mediate()
     {
-        $this->related->select($this->related->getQualifiedFieldName('*'))
+        $this->related
+                      ->select($this->related->getQualifiedFieldName('*'))
                       ->select($this->throughLocalKey)
                       ->join(
                           $this->throughTable,

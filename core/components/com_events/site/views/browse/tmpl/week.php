@@ -81,7 +81,8 @@ $this->css();
 
                         //$checkprint = new \Components\Events\Helpers\EventsRepeat($row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']);
                         //if ($checkprint->viewable == true) {
-                            $view = $this->view('item')
+                            $view = $this
+                                     ->view('item')
                                      ->set('option', $this->option)
                                      ->set('task', $this->task)
                                      ->set('row', $row)
@@ -186,7 +187,8 @@ $this->css();
 
             <div class="calendarwrap">
                 <?php
-                $this->view('calendar')
+                $this
+                     ->view('calendar')
                      ->set('option', $this->option)
                      ->set('task', 'month')
                      ->set('year', $this->year)

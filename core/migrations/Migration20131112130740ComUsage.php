@@ -62,7 +62,8 @@ class Migration20131112130740ComUsage extends Base
         $options['driver'] = $originalDriver;
 
         if ($schema->tableExists('#__extensions')) {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('element', '=', 'com_usage')
@@ -70,7 +71,8 @@ class Migration20131112130740ComUsage extends Base
 
             $params = (array) json_decode($result);
         } else {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__plugins')
                 ->where('element', '=', 'com_usage')
@@ -102,7 +104,8 @@ class Migration20131112130740ComUsage extends Base
         if ($schema->tableExists('#__extensions')) {
             $params = json_encode($params);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('element', '=', 'com_usage')
@@ -115,7 +118,8 @@ class Migration20131112130740ComUsage extends Base
 
             $params = $p;
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['params' => $params])
                 ->where('element', '=', 'com_usage')
@@ -124,7 +128,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('countries')) {
             try {
-                $statsDb->schema()->createTable('countries')
+                $statsDb
+                    ->schema()
+                    ->createTable('countries')
                     ->string('code', 4)->default('')
                     ->string('name', 128)->default('')
                     ->primaryKey('code')
@@ -1363,7 +1369,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('sessionlog_metrics')) {
             try {
-                $statsDb->schema()->createTable('sessionlog_metrics')
+                $statsDb
+                    ->schema()
+                    ->createTable('sessionlog_metrics')
                     ->unsignedBigInteger('id', ['autoIncrement' => true])
                     ->unsignedBigInteger('sessnum')
                     ->string('user', 150)->default('')
@@ -1395,7 +1403,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('#__xprofiles_metrics')) {
             try {
-                $statsDb->schema()->createTable('#__xprofiles_metrics')
+                $statsDb
+                    ->schema()
+                    ->createTable('#__xprofiles_metrics')
                     ->integer('uidNumber')
                     ->string('name', 255)->default('')
                     ->string('username', 150)->default('')
@@ -1452,7 +1462,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_andmore_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_andmore_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_andmore_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
@@ -1471,7 +1483,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_misc_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_misc_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_misc_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
@@ -1490,7 +1504,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_simusage_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_simusage_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_simusage_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
@@ -1509,7 +1525,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('toolstart')) {
             try {
-                $statsDb->schema()->createTable('toolstart')
+                $statsDb
+                    ->schema()
+                    ->createTable('toolstart')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->bigInteger('sessionid')->nullable()
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
@@ -1550,7 +1568,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('userlogin')) {
             try {
-                $statsDb->schema()->createTable('userlogin')
+                $statsDb
+                    ->schema()
+                    ->createTable('userlogin')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
                     ->string('user', 255)->default('-')
@@ -1571,7 +1591,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('web')) {
             try {
-                $statsDb->schema()->createTable('web')
+                $statsDb
+                    ->schema()
+                    ->createTable('web')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->bigInteger('elementid')->nullable()
                     ->bigInteger('sessionid')->nullable()
@@ -1612,7 +1634,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('webhits')) {
             try {
-                $statsDb->schema()->createTable('webhits')
+                $statsDb
+                    ->schema()
+                    ->createTable('webhits')
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
                     ->bigInteger('hits')->default(0)
                     ->engine('MyISAM')
@@ -1627,7 +1651,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('websessions')) {
             try {
-                $statsDb->schema()->createTable('websessions')
+                $statsDb
+                    ->schema()
+                    ->createTable('websessions')
                     ->bigInteger('id')->default(0)
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
                     ->char('ipcountry', 2)->default('')
@@ -1653,7 +1679,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('domainclass')) {
             try {
-                $statsDb->schema()->createTable('domainclass')
+                $statsDb
+                    ->schema()
+                    ->createTable('domainclass')
                     ->string('domain', 64)->default('')
                     ->tinyInteger('class')->default(0)
                     ->string('country', 4)->default('')
@@ -16845,7 +16873,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('domainclasses')) {
             try {
-                $statsDb->schema()->createTable('domainclasses')
+                $statsDb
+                    ->schema()
+                    ->createTable('domainclasses')
                     ->tinyInteger('class')->default(0)
                     ->string('name', 64)->default('')
                     ->primaryKey('class')
@@ -16900,7 +16930,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_user')) {
             try {
-                $statsDb->schema()->createTable('summary_user')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_user')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -16962,7 +16994,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_user_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_user_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_user_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->datetime('datetime')->default('0000-00-00 00:00:00')
@@ -16981,7 +17015,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_andmore')) {
             try {
-                $statsDb->schema()->createTable('summary_andmore')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_andmore')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -17073,7 +17109,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_misc')) {
             try {
-                $statsDb->schema()->createTable('summary_misc')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_misc')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -17141,7 +17179,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_simusage')) {
             try {
-                $statsDb->schema()->createTable('summary_simusage')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_simusage')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -17221,7 +17261,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('continents')) {
             try {
-                $statsDb->schema()->createTable('continents')
+                $statsDb
+                    ->schema()
+                    ->createTable('continents')
                     ->char('continentSHORT', 2)->default('')
                     ->string('continentLONG', 45)->default('')
                     ->uniqueIndex('continentSHORT_continentLONG', ['continentSHORT', 'continentLONG'])
@@ -17275,7 +17317,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('country_continent')) {
             try {
-                $statsDb->schema()->createTable('country_continent')
+                $statsDb
+                    ->schema()
+                    ->createTable('country_continent')
                     ->char('country', 2)->default('')
                     ->char('continent', 2)->default('')
                     ->primaryKey(['country', 'continent'])
@@ -18519,7 +18563,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('exclude_list')) {
             try {
-                $statsDb->schema()->createTable('exclude_list')
+                $statsDb
+                    ->schema()
+                    ->createTable('exclude_list')
                     ->string('filter', 65)
                     ->string('type', 65)->default('domain')
                     ->string('notes', 120)->nullable()
@@ -19277,7 +19323,9 @@ class Migration20131112130740ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('bot_useragents')) {
             try {
-                $statsDb->schema()->createTable('bot_useragents')
+                $statsDb
+                    ->schema()
+                    ->createTable('bot_useragents')
                     ->string('useragent', 255)
                     ->primaryKey('useragent')
                     ->engine('MyISAM')

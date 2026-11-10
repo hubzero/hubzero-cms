@@ -57,7 +57,8 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         // Create table using schema builder for database-agnostic DDL
         $schema = $driver->schema();
-        $schema->createTable(self::$testTable)
+        $schema
+            ->createTable(self::$testTable)
             ->id()
             ->string('title', 255)
             ->integer('is_active')->default(1)

@@ -75,7 +75,8 @@ class Subscriptions extends AdminController
 
         switch ($filters['status']) {
             case 'pending':
-                $query->whereEquals('status', 0)
+                $query
+                    ->whereEquals('status', 0)
                     ->orWhere('pendingpayment', '>', 0)
                     ->orWhere('pendingunits', '>', 0);
                 break;

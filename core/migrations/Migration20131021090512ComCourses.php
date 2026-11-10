@@ -43,7 +43,8 @@ class Migration20131021090512ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_email')) {
-            $schema->createTable('#__courses_email')
+            $schema
+                ->createTable('#__courses_email')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->string('name', 255)->default('')
@@ -54,7 +55,8 @@ class Migration20131021090512ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_email_log')) {
-            $schema->createTable('#__courses_email_log')
+            $schema
+                ->createTable('#__courses_email_log')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('email_id')->default(0)
                 ->integer('version_id')->default(0)
@@ -68,7 +70,8 @@ class Migration20131021090512ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_email_version')) {
-            $schema->createTable('#__courses_email_version')
+            $schema
+                ->createTable('#__courses_email_version')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('email_id')->default(0)
                 ->string('subject', 255)->default('')
@@ -82,7 +85,8 @@ class Migration20131021090512ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_enrollments')) {
-            $schema->createTable('#__courses_enrollments')
+            $schema
+                ->createTable('#__courses_enrollments')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')->default(0)
                 ->integer('user_id')->default(0)
@@ -101,7 +105,8 @@ class Migration20131021090512ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_events')) {
-            $schema->createTable('#__courses_events')
+            $schema
+                ->createTable('#__courses_events')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('gidNumber')
                 ->integer('actorid')
@@ -119,7 +124,8 @@ class Migration20131021090512ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_inviteemails')) {
-            $schema->createTable('#__courses_inviteemails')
+            $schema
+                ->createTable('#__courses_inviteemails')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('email', 150)
                 ->integer('gidNumber')

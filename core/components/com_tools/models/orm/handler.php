@@ -78,7 +78,8 @@ class Handler extends Relational
 
         // Now, make sure that rule is for this file extension and only has a quantity of 1
         $rows = $handlers->whereRelatedHas('rules', function ($rules) use ($extension) {
-            $rules->whereEquals('extension', $extension)
+            $rules
+                  ->whereEquals('extension', $extension)
                   ->whereEquals('quantity', 1);
         })->rows();
 

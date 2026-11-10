@@ -83,7 +83,8 @@ class Tinymce extends Plugin
 
         // Lets get the default template for the site application
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('template')
             ->from('#__template_styles')
             ->whereEquals('client_id', 0)

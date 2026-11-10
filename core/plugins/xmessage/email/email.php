@@ -66,7 +66,8 @@ class Email extends Plugin
         }
 
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
+        $message
+                ->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
                 ->addFrom($from['email'], $from['name'])
                 ->addTo($user->get('email'), $name);
 
@@ -90,7 +91,8 @@ class Email extends Plugin
         }
 
         //set mail additional args (mail return path - used for bounces)
-        $message->addHeader('X-Component', $xmessage->component)
+        $message
+                ->addHeader('X-Component', $xmessage->component)
                 ->addHeader('X-Component-Object', $xmessage->type);
 
         // Want to add some extra headers? We put them into the from array
@@ -124,7 +126,8 @@ class Email extends Plugin
                 }
             }
 
-            $message->addPart($m['plaintext'], 'text/plain')
+            $message
+                    ->addPart($m['plaintext'], 'text/plain')
                     ->addPart($m['multipart'], 'text/html');
         } else {
             $message->setBody($m);

@@ -36,7 +36,8 @@ class Migration20150414183059ComTools extends Base
             $mwSchema->addColumn('zones', 'is_default')->tinyInteger(2)->notNull()->default(0);
 
             // Set the first zone as default
-            $mwdb->getQuery(true)
+            $mwdb
+                ->getQuery(true)
                 ->update('zones')
                 ->set(['is_default' => 1])
                 ->where('type', '=', 'local')

@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">
@@ -216,7 +217,8 @@ $this->css()
         <div class="aside">
         <div class="calendarwrap">
             <?php
-            $this->view('calendar', 'browse')
+            $this
+                 ->view('calendar', 'browse')
                  ->set('option', $this->option)
                  ->set('task', $this->task)
                  ->set('year', $this->year)

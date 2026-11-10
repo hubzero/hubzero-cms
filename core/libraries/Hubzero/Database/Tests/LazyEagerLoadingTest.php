@@ -46,14 +46,16 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('lazy_users', true);
-        $driver->createTable('lazy_users')
+        $driver
+            ->createTable('lazy_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)->nullable()
             ->execute();
 
         $driver->dropTable('lazy_posts', true);
-        $driver->createTable('lazy_posts')
+        $driver
+            ->createTable('lazy_posts')
             ->id()
             ->integer('user_id')
             ->string('title', 255)
@@ -62,7 +64,8 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->dropTable('lazy_comments', true);
-        $driver->createTable('lazy_comments')
+        $driver
+            ->createTable('lazy_comments')
             ->id()
             ->integer('post_id')
             ->integer('user_id')->nullable()
@@ -70,7 +73,8 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->dropTable('lazy_profiles', true);
-        $driver->createTable('lazy_profiles')
+        $driver
+            ->createTable('lazy_profiles')
             ->id()
             ->integer('user_id')
             ->string('bio', 500)->nullable()

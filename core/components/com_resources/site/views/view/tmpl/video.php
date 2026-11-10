@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('video.css')
+$this
+     ->css('video.css')
      ->js('video.js')
      ->js('hubpresenter.plugins.js')
      ->css('jquery.colpick.css', 'system')

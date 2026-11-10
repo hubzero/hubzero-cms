@@ -186,14 +186,16 @@ class Ldap extends AdminController
         $response->errors    = [];
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('COUNT(id)')
             ->from('#__users');
         $db->setQuery($query->toString());
 
         $response->total = $db->loadResult();
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('id')
             ->from('#__users')
             ->order('id', 'desc')

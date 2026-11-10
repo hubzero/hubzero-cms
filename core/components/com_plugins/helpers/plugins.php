@@ -71,7 +71,8 @@ class Plugins
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(folder)', 'value')
             ->select('folder', 'text')
             ->from('#__extensions')

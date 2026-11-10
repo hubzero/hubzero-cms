@@ -21,7 +21,8 @@ class Migration20140311150000ComFeedaggregator extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__feedaggregator_feeds')) {
-            $schema->createTable('#__feedaggregator_feeds')
+            $schema
+                ->createTable('#__feedaggregator_feeds')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('url', 255)->nullable()
                 ->date('created')->nullable()
@@ -36,7 +37,8 @@ class Migration20140311150000ComFeedaggregator extends Base
         }
 
         if (!$schema->tableExists('#__feedaggregator_posts')) {
-            $schema->createTable('#__feedaggregator_posts')
+            $schema
+                ->createTable('#__feedaggregator_posts')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('title', 255)->nullable()
                 ->integer('created')->nullable()

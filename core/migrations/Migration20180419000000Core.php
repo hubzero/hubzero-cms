@@ -24,7 +24,8 @@ class Migration20180419000000Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__auth_link_data')) {
-            $schema->createTable('#__auth_link_data')
+            $schema
+                ->createTable('#__auth_link_data')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('link_id')->default(0)
                 ->datetime('modified')->nullable()

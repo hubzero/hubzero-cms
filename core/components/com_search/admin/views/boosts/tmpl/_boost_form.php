@@ -25,7 +25,8 @@ $typeOptions = $this->typeOptions;
     <div class="grid">
         <div class="col span7">
             <?php
-                $this->view('_boost_details_fieldset')
+                $this
+                    ->view('_boost_details_fieldset')
                     ->set('boost', $boost)
                     ->set('typeOptions', $typeOptions)
                     ->display();

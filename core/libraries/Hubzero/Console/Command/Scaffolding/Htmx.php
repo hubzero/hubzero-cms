@@ -93,12 +93,14 @@ class Htmx extends Scaffolding
             }
         }
 
-        $this->addReplacement('component_name', $component)
+        $this
+            ->addReplacement('component_name', $component)
             ->addReplacement('option', 'com_' . $component)
             ->addReplacement('view', $view)
             ->addReplacement('controller', $controller);
 
-        $this->addTemplateFile('htmx.controller.tmpl', $controllerPath)
+        $this
+            ->addTemplateFile('htmx.controller.tmpl', $controllerPath)
             ->addTemplateFile('htmx.default.tmpl', $defaultViewPath)
             ->addTemplateFile('htmx.fragment.tmpl', $fragmentViewPath);
 

@@ -24,7 +24,8 @@ class Migration20130809151809ComTags extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__tags_log')) {
-            $schema->createTable('#__tags_log')
+            $schema
+                ->createTable('#__tags_log')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('tag_id')->default(0)
                 ->datetime('timestamp')->default('0000-00-00 00:00:00')

@@ -140,7 +140,8 @@ class Package extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output->addOverview('Add, remove, and update packages')
+        $this->output
+            ->addOverview('Add, remove, and update packages')
             ->addTasks($this);
     }
 }

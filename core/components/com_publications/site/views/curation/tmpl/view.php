@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
 \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->css('jquery.fancybox.css', 'system')
     ->css('curation.css')

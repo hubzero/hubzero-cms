@@ -20,7 +20,8 @@ class Migration20130311000000PlgHubzeroComments extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__item_comments')) {
-            $schema->createTable('#__item_comments')
+            $schema
+                ->createTable('#__item_comments')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('item_id')->default(0)
                 ->string('item_type', 150)
@@ -44,7 +45,8 @@ class Migration20130311000000PlgHubzeroComments extends Base
         }
 
         if (!$schema->tableExists('#__item_comment_files')) {
-            $schema->createTable('#__item_comment_files')
+            $schema
+                ->createTable('#__item_comment_files')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('comment_id')->default(0)
                 ->string('filename', 100)->nullable()
@@ -55,7 +57,8 @@ class Migration20130311000000PlgHubzeroComments extends Base
         }
 
         if (!$schema->tableExists('#__item_votes')) {
-            $schema->createTable('#__item_votes')
+            $schema
+                ->createTable('#__item_votes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('item_id')->default(0)
                 ->string('item_type', 255)->nullable()

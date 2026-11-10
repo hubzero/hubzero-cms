@@ -224,7 +224,8 @@ class Groups extends Plugin
                 $groups = $g;
             }
 
-            $view = $this->view('default', 'summary')
+            $view = $this
+                ->view('default', 'summary')
                 ->set('total', $total)
                 ->set('filter', $filter)
                 ->set('state', $state)

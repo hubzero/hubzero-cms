@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->js('jquery.masonry.js', 'com_collections')
+$this
+     ->js('jquery.masonry.js', 'com_collections')
      ->js('jquery.infinitescroll.js', 'com_collections')
      ->js();
 
@@ -31,7 +32,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <form method="get" action="<?php echo Route::url($base); ?>" id="collections">
     <?php
-    $this->view('_submenu', 'collection')
+    $this
+         ->view('_submenu', 'collection')
          ->set('option', $this->option)
          ->set('group', $this->group)
          ->set('params', $this->params)
@@ -79,7 +81,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 <div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
                     <div class="content">
                         <?php
-                            $this->view('default_collection', 'post')
+                            $this
+                                 ->view('default_collection', 'post')
                                  ->set('row', $row)
                                  ->set('collection', $row)
                                  ->display();

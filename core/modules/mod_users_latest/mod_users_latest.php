@@ -46,7 +46,8 @@ class UsersLatest extends Module
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id')
             ->select('a.name')
             ->select('a.username')

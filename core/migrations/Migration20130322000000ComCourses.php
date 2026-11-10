@@ -24,7 +24,8 @@ class Migration20130322000000ComCourses extends Base
             $schema->tableExists('#__courses_form_respondent_progress')
             && !$schema->hasColumn('#__courses_form_respondent_progress', 'submitted')
         ) {
-            $schema->addColumn('#__courses_form_respondent_progress', 'submitted')
+            $schema
+                ->addColumn('#__courses_form_respondent_progress', 'submitted')
                 ->datetime()
                 ->nullable()
                 ->execute();

@@ -72,12 +72,16 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create initial tables using schema builder
-        $schema->table('dbdiff_users')->create()
+        $schema
+            ->table('dbdiff_users')
+            ->create()
             ->increments('id')
             ->string('name', 255)
             ->execute();
 
-        $schema->table('dbdiff_posts')->create()
+        $schema
+            ->table('dbdiff_posts')
+            ->create()
             ->increments('id')
             ->string('title', 255)->nullable()
             ->execute();
@@ -92,13 +96,17 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         ]);
 
         // Add a new table
-        $schema->table('dbdiff_comments')->create()
+        $schema
+            ->table('dbdiff_comments')
+            ->create()
             ->increments('id')
             ->string('content', 255)->nullable()
             ->execute();
 
         // Modify existing table
-        $schema->table('dbdiff_users')->alter()
+        $schema
+            ->table('dbdiff_users')
+            ->alter()
             ->addColumn('email', 'string', ['length' => 255, 'nullable' => true])
             ->execute();
 
@@ -195,7 +203,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create current state
-        $schema->table('dbdiff_users')->create()
+        $schema
+            ->table('dbdiff_users')
+            ->create()
             ->increments('id')
             ->string('name', 255)
             ->execute();
@@ -678,7 +688,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         $comparator->addColumnRenameHint('dbdiff_rename_test', 'old_name', 'new_name');
 
         // Create table
-        $schema->table('dbdiff_rename_test')->create()
+        $schema
+            ->table('dbdiff_rename_test')
+            ->create()
             ->id('id')
             ->string('old_name', 255)->nullable()
             ->execute();

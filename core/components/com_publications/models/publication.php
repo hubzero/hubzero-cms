@@ -1638,7 +1638,8 @@ class Publication extends Obj
             $assocTbl = \Components\Citations\Models\Association::blank()->getTableName();
             $pubVerTbl = $this->version->getTableName();
 
-            $this->citationsForMetadataSet = $citations->select('jca.type', 'relationType')
+            $this->citationsForMetadataSet = $citations
+            ->select('jca.type', 'relationType')
             ->select('jct.type_desc', 'resourceTypeGeneral')
             ->select($citations->getQualifiedFieldName('doi'), 'relatedIdentifier')
             ->select($citations->getQualifiedFieldName('url'))

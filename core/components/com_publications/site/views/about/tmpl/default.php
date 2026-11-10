@@ -238,7 +238,8 @@ if ($this->publication->params->get('show_metadata')) {
 <?php
 if ($this->publication->params->get('show_series')) :
     if ($series = $this->publication->getSeries()) :
-        $this->view('_series_list')
+        $this
+            ->view('_series_list')
             ->set('series', $series)
             ->display();
     endif;

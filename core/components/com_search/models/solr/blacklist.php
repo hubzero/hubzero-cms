@@ -64,7 +64,8 @@ class Blacklist extends Relational
      **/
     public static function getDocIdsByScope($scope)
     {
-        $blackListIds = self::all()->select('doc_id')
+        $blackListIds = self::all()
+            ->select('doc_id')
             ->where('doc_id', 'LIKE', $scope . '%')
             ->rows()
             ->fieldsByKey('doc_id');

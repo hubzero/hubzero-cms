@@ -158,7 +158,8 @@ class Group extends Relational
 
         // we've got the left value, and now that we've processed
         // the children of this node we also know the right value
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft' => (int) $left,
@@ -215,7 +216,8 @@ class Group extends Relational
             $ids[] = $child->get('id');
         }
 
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->delete($this->getTableName())
             ->whereIn('id', $ids);
 

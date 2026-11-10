@@ -54,7 +54,8 @@ Submenu::addEntry(
     </fieldset>
 
     <?php
-    $this->view('_recordtable')
+    $this
+        ->view('_recordtable')
         ->set('documents', $this->documents)
         ->set('blacklist', $this->blacklist)
         ->set('pagination', $this->pagination)

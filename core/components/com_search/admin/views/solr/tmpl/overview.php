@@ -28,7 +28,8 @@ Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
 
-$this->view('_submenu', 'shared')
+$this
+    ->view('_submenu', 'shared')
     ->display();
 ?>
 <div id="widget-container" class="com_search">

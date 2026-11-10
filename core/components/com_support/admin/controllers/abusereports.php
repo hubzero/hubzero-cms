@@ -332,7 +332,8 @@ class Abusereports extends AdminController
 
                 // Build message
                 $message = new Message();
-                $message->setSubject($subject)
+                $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->addTo($user->get('email'), $user->get('name'))
                     ->addHeader('X-Component', 'com_support')

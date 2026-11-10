@@ -33,7 +33,8 @@ if (count($this->activities) > 0) { ?>
         // Loop through activities
         foreach ($this->activities as $activity) {
             // Show activity
-            $this->view('_activity')
+            $this
+                ->view('_activity')
                 ->set('option', $this->option)
                 ->set('model', $this->model)
                 ->set('activity', $activity)

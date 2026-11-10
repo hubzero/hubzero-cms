@@ -26,14 +26,16 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
         $this->addPluginEntry('filesystem', 'dropbox');
 
         if ($schema->tableExists('#__projects_connection_providers')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'dropbox')
                 ->value('id');
 
             if (!$id) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__projects_connection_providers')
                     ->set([
                         'alias' => 'dropbox',
@@ -54,21 +56,24 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
         $this->deletePluginEntry('filesystem', 'dropbox');
 
         if ($schema->tableExists('#__projects_connection_providers')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'dropbox')
                 ->loadObjectList();
 
             foreach ($results as $result) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__projects_connections')
                     ->where('provider_id', '=', $result->id)
                     ->execute();
             }
 
             if (count($results) > 0) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__projects_connection_providers')
                     ->where('alias', '=', 'dropbox')
                     ->execute();

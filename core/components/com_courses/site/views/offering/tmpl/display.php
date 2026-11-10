@@ -73,7 +73,8 @@ if (!$no_html && $tmpl != 'component') :
         'layout'  => '_not_enrolled',
     ]);
 
-    $view->set('course', $this->course)
+    $view
+         ->set('course', $this->course)
          ->set('option', 'com_courses')
          ->set('message', Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED'));
 

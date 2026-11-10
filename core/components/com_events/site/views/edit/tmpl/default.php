@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('calendar.css')
      ->css('jquery.ui.css', 'system')
      ->js();

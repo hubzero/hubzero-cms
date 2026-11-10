@@ -24,7 +24,8 @@ class Migration20130829211856ComPublications extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__publications')) {
-            $schema->createTable('#__publications')
+            $schema
+                ->createTable('#__publications')
                 ->id()
                 ->integer('category')->default(0)
                 ->integer('master_type')->default(1)
@@ -42,7 +43,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_access')) {
-            $schema->createTable('#__publication_access')
+            $schema
+                ->createTable('#__publication_access')
                 ->id()
                 ->integer('publication_version_id')->default(0)
                 ->integer('group_id')->default(0)
@@ -50,7 +52,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_attachments')) {
-            $schema->createTable('#__publication_attachments')
+            $schema
+                ->createTable('#__publication_attachments')
                 ->id()
                 ->integer('publication_version_id')->default(0)
                 ->integer('publication_id')->default(0)
@@ -76,7 +79,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_audience')) {
-            $schema->createTable('#__publication_audience')
+            $schema
+                ->createTable('#__publication_audience')
                 ->id()
                 ->integer('publication_id')->default(0)
                 ->integer('publication_version_id')->default(0)
@@ -93,7 +97,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_audience_levels')) {
-            $schema->createTable('#__publication_audience_levels')
+            $schema
+                ->createTable('#__publication_audience_levels')
                 ->id()
                 ->string('label', 11)->default('0')
                 ->string('title', 100)->default('')
@@ -112,7 +117,8 @@ class Migration20130829211856ComPublications extends Base
             ];
 
             foreach ($levels as $level) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_audience_levels')
                     ->set([
                         'label'       => $level[0],
@@ -124,7 +130,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_authors')) {
-            $schema->createTable('#__publication_authors')
+            $schema
+                ->createTable('#__publication_authors')
                 ->id()
                 ->integer('publication_version_id')->default(0)
                 ->integer('user_id')->default(0)
@@ -145,7 +152,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_categories')) {
-            $schema->createTable('#__publication_categories')
+            $schema
+                ->createTable('#__publication_categories')
                 ->id()
                 ->string('name', 200)->default('')
                 ->string('dc_type', 200)->default('Dataset')
@@ -300,7 +308,8 @@ class Migration20130829211856ComPublications extends Base
             ];
 
             foreach ($categories as $category) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_categories')
                     ->set([
                         'name'          => $category[0],
@@ -318,7 +327,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_master_types')) {
-            $schema->createTable('#__publication_master_types')
+            $schema
+                ->createTable('#__publication_master_types')
                 ->id()
                 ->string('type', 200)->default('')
                 ->string('alias', 200)->default('')
@@ -341,7 +351,8 @@ class Migration20130829211856ComPublications extends Base
             ];
 
             foreach ($types as $type) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_master_types')
                     ->set([
                         'type'          => $type[0],
@@ -357,7 +368,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_ratings')) {
-            $schema->createTable('#__publication_ratings')
+            $schema
+                ->createTable('#__publication_ratings')
                 ->id()
                 ->integer('publication_id')->default(0)
                 ->integer('publication_version_id')->default(0)
@@ -370,7 +382,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_screenshots')) {
-            $schema->createTable('#__publication_screenshots')
+            $schema
+                ->createTable('#__publication_screenshots')
                 ->id()
                 ->integer('publication_version_id')->default(0)
                 ->integer('publication_id')->default(0)
@@ -386,7 +399,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_stats')) {
-            $schema->createTable('#__publication_stats')
+            $schema
+                ->createTable('#__publication_stats')
                 ->id('id', 'bigIncrements')
                 ->bigInteger('publication_id')
                 ->tinyInteger('publication_version')->nullable()
@@ -400,7 +414,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_versions')) {
-            $schema->createTable('#__publication_versions')
+            $schema
+                ->createTable('#__publication_versions')
                 ->id()
                 ->integer('publication_id')->default(0)
                 ->integer('main')->default(0)
@@ -434,7 +449,8 @@ class Migration20130829211856ComPublications extends Base
         }
 
         if (!$schema->tableExists('#__publication_licenses')) {
-            $schema->createTable('#__publication_licenses')
+            $schema
+                ->createTable('#__publication_licenses')
                 ->id()
                 ->string('name', 100)
                 ->text('text')->nullable()
@@ -508,7 +524,8 @@ class Migration20130829211856ComPublications extends Base
             ];
 
             foreach ($licenses as $lic) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_licenses')
                     ->set([
                         'name'         => $lic[0],

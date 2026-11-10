@@ -27,7 +27,8 @@ class Migration20240502154413ComPublications extends Base
             $schema->tableExists('#__publication_authors')
             && !$schema->hasColumn('#__publication_authors', 'orcid_work_put_code')
         ) {
-            $schema->addColumn('#__publication_authors', 'orcid_work_put_code')
+            $schema
+                ->addColumn('#__publication_authors', 'orcid_work_put_code')
                 ->string(50)
                 ->nullable()
                 ->default(null)

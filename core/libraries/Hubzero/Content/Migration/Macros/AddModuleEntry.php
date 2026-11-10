@@ -30,7 +30,8 @@ class AddModuleEntry extends Macro
             $name = $element;
 
             // First, make sure it isn't already there
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->whereEquals('name', $name)
@@ -47,7 +48,8 @@ class AddModuleEntry extends Macro
                 $params = json_encode($params);
             }
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->insert('#__extensions')
                 ->values([
                     'name'           => $name,

@@ -17,7 +17,8 @@ $sortDirection = $this->sortDirection;
 <table class="adminlist">
 
     <?php
-        $this->view('_boosts_list_header')
+        $this
+            ->view('_boosts_list_header')
             ->set('sortField', $sortField)
             ->set('sortDirection', $sortDirection)
             ->display();
@@ -27,7 +28,8 @@ $sortDirection = $this->sortDirection;
         <?php
             $i = 0;
         foreach ($boosts as $boost) :
-            $this->view('_boost_item')
+            $this
+                ->view('_boost_item')
                 ->set('boost', $boost)
                 ->set('order', $i)
                 ->display();

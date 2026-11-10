@@ -37,7 +37,8 @@ class Migration20161128165818Core extends Base
 
         if ($schema->tableExists('#__activity_recipients')) {
             if (!$schema->hasColumn('#__activity_recipients', 'starred')) {
-                $schema->addColumn('#__activity_recipients', 'starred')
+                $schema
+                    ->addColumn('#__activity_recipients', 'starred')
                     ->tinyInteger()
                     ->notNull()
                     ->default(0)
@@ -63,7 +64,8 @@ class Migration20161128165818Core extends Base
             }
 
             if ($schema->hasColumn('#__activity_logs', 'description')) {
-                $schema->modifyColumn('#__activity_logs', 'description')
+                $schema
+                    ->modifyColumn('#__activity_logs', 'description')
                     ->string(250)
                     ->nullable()
                     ->default(null)

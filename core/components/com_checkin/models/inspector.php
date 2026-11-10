@@ -185,7 +185,8 @@ class Inspector extends Obj
             // stock schema is #__citations.editor, the bibliographic editor of a
             // citation, which check-in has no business emptying.
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->update($tn)
                 ->set($values)
                 ->where('checked_out', '>', 0);
@@ -246,7 +247,8 @@ class Inspector extends Obj
             }
 
             foreach ($tables as $tn) {
-                $query = $db->getQuery()
+                $query = $db
+                    ->getQuery()
                     ->select('COUNT(*)')
                     ->from($tn)
                     ->where('checked_out', '>', 0);

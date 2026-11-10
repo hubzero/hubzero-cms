@@ -96,7 +96,8 @@ class Blog extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $post->get('id'))
              ->set('created', $post->get('created'))
              ->set('created_by', $post->get('created_by'))

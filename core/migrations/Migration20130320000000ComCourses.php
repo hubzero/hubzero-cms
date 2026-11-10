@@ -21,7 +21,8 @@ class Migration20130320000000ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_grade_book')) {
-            $schema->createTable('#__courses_grade_book')
+            $schema
+                ->createTable('#__courses_grade_book')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->decimal('score', 5, 2)->default('0.00')

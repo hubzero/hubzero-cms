@@ -22,13 +22,15 @@ class Migration20141112191247ComCourses extends Base
     public function up()
     {
         // Get all of the course form deployments
-        $deployments = $this->db->getQuery(true)
+        $deployments = $this->db
+            ->getQuery(true)
             ->select(['cfd.*', 'cf.asset_id', 'cu.offering_id'])
             ->from('#__courses_form_deployments', 'cfd')
             ->leftJoin('#__courses_forms AS cf', 'cfd.form_id', 'cf.id')
             ->leftJoin('#__courses_assets AS ca', 'cf.asset_id', 'ca.id')
             ->join('#__courses_asset_associations AS caa', function ($join) {
-                $join->on('ca.id', '=', 'caa.asset_id')
+                $join
+                     ->on('ca.id', '=', 'caa.asset_id')
                      ->where('caa.scope', '=', 'asset_group');
             }, 'left')
             ->leftJoin('#__courses_asset_groups AS cag', 'caa.scope_id', 'cag.id')
@@ -42,7 +44,8 @@ class Migration20141112191247ComCourses extends Base
 
             foreach ($deployments as $deployment) {
                 // Get all of the sections that this deployment is in (based on offering_id from deployment query)
-                $sections = $this->db->getQuery(true)
+                $sections = $this->db
+                    ->getQuery(true)
                     ->select('id')
                     ->from('#__courses_offering_sections')
                     ->where('offering_id', '=', $deployment->offering_id)
@@ -51,7 +54,8 @@ class Migration20141112191247ComCourses extends Base
                 // Now, each section must have a section date entry
                 if ($sections && count($sections) > 0) {
                     foreach ($sections as $section) {
-                        $found = $this->db->getQuery(true)
+                        $found = $this->db
+                            ->getQuery(true)
                             ->select('*')
                             ->from('#__courses_offering_section_dates')
                             ->where('section_id', '=', $section->id)
@@ -61,7 +65,8 @@ class Migration20141112191247ComCourses extends Base
 
                         if (!$found) {
                             // No date exists...so add it
-                            $this->db->getQuery(true)
+                            $this->db
+                                ->getQuery(true)
                                 ->insert('#__courses_offering_section_dates')
                                 ->columns(['section_id', 'scope', 'scope_id', 'publish_up', 'publish_down', 'created'])
                                 ->values([
@@ -81,7 +86,8 @@ class Migration20141112191247ComCourses extends Base
                                 ? $found->publish_down
                                 : $deployment->end_time;
 
-                            $this->db->getQuery(true)
+                            $this->db
+                                ->getQuery(true)
                                 ->update('#__courses_offering_section_dates')
                                 ->set([
                                     'publish_up' => $start,

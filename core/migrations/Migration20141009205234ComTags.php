@@ -21,7 +21,9 @@ class Migration20141009205234ComTags extends Base
      **/
     public function up()
     {
-        $this->db->schema()->modifyColumn('#__tags', 'tag')
+        $this->db
+            ->schema()
+            ->modifyColumn('#__tags', 'tag')
             ->string(100)
             ->notNull()
             ->default('')

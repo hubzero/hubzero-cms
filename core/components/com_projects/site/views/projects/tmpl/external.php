@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js()
      ->css('external')
      ->css('extended.css');
@@ -42,14 +43,16 @@ $this->css('theme' . $theme . '.css');
 
     <?php
     // Draw top header
-    $this->view('_topheader')
+    $this
+         ->view('_topheader')
          ->set('model', $this->model)
          ->set('publicView', true)
          ->set('option', $this->option)
          ->display();
 
     // Draw top menu
-    $this->view('_topmenu', 'projects')
+    $this
+         ->view('_topmenu', 'projects')
          ->set('model', $this->model)
          ->set('active', $this->active)
          ->set('tabs', $this->tabs)

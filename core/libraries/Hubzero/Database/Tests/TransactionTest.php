@@ -191,7 +191,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Verify the data was committed
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('COUNT(*) as cnt')
                        ->fetch('row');
 
@@ -223,7 +224,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Verify the data was rolled back
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('COUNT(*) as cnt')
                        ->fetch('row');
 
@@ -345,7 +347,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Both should be committed
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('COUNT(*) as cnt')
                        ->fetch('row');
 
@@ -378,7 +381,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Only outer should be committed
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('COUNT(*) as cnt')
                        ->fetch('row');
 
@@ -386,7 +390,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Verify it's the outer value
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('value')
                        ->fetch('row');
 
@@ -419,7 +424,8 @@ class TransactionTest extends AbstractDriverTestCase
 
         // Nothing should be committed
         $query = new Query($driver);
-        $result = $query->from('test_transactions')
+        $result = $query
+                       ->from('test_transactions')
                        ->select('COUNT(*) as cnt')
                        ->fetch('row');
 
@@ -565,7 +571,8 @@ class TransactionTest extends AbstractDriverTestCase
         $driver->dropTable('test_transactions', true);
 
         $schema = $driver->schema();
-        $schema->createTable('test_transactions')
+        $schema
+            ->createTable('test_transactions')
             ->id()
             ->string('value', 100)
             ->execute();

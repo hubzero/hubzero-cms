@@ -23,7 +23,8 @@ $canRun = \User::authorise('core.admin', 'com_system');
 Toolbar::title(Lang::txt('COM_SYSTEM_LDAP_CONFIGURATION'), 'config');
 Toolbar::preferences($this->option, '550');
 
-$this->css('ldap')
+$this
+    ->css('ldap')
     ->js('ldap');
 ?>
 

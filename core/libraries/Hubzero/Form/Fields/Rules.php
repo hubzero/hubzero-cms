@@ -69,7 +69,8 @@ class Rules extends Field
             // Need to find the asset id by the name of the component.
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->whereEquals('name', $component);
@@ -298,7 +299,8 @@ class Rules extends Field
     {
         // Initialise variables.
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('COUNT(DISTINCT b.id)', 'level')

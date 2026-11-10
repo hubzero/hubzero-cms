@@ -507,7 +507,8 @@ class Ticket extends Relational
      */
     public function open()
     {
-        $this->set('open', 1)
+        $this
+             ->set('open', 1)
              ->set('status', 1)
              ->set('resolved', '');
 
@@ -522,7 +523,8 @@ class Ticket extends Relational
      */
     public function close($resolution = '')
     {
-        $this->set('open', 0)
+        $this
+             ->set('open', 0)
              ->set('status', 0)
              ->set('resolved', $resolution);
 

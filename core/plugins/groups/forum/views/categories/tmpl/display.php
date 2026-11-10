@@ -41,7 +41,8 @@ if (!empty($sortingValues->sortby) || !empty($sortingValues->start || !empty($so
 
 $this->category->set('section_alias', $this->filters['section']);
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 
@@ -175,7 +176,8 @@ $this->css()
                                 </td>
                                 <td class="priority-4">
                                     <span><?php
-                                    echo $row->thread()
+                                    echo $row
+                                        ->thread()
                                         ->whereEquals('state', $row->get('state'))
                                         ->whereIn('access', $this->filters['access'])
                                         ->total();

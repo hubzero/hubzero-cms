@@ -148,7 +148,8 @@ class Assetgroupv1r0 extends Base
             $db    = App::get('db');
             $query = $db->getQuery();
 
-            $query->select('folder AS type, element AS name, params')
+            $query
+                  ->select('folder AS type, element AS name, params')
                   ->from('#__extensions')
                   ->where('enabled', '>=', 1)
                   ->where('type', '=', $db->quote('plugin'))

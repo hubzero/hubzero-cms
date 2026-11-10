@@ -33,13 +33,15 @@ class MigrationSquasherTest extends AbstractDriverTestCase
 
         $schema = $driver->schema();
 
-        $schema->createTable('squash_users')
+        $schema
+            ->createTable('squash_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
             ->execute();
 
-        $schema->createTable('squash_posts')
+        $schema
+            ->createTable('squash_posts')
             ->id()
             ->unsignedInteger('user_id')
             ->string('title', 255)

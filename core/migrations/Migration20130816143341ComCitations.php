@@ -25,7 +25,8 @@ class Migration20130816143341ComCitations extends Base
 
         //create new format table
         if (!$schema->tableExists('#__citations_format')) {
-            $schema->createTable('#__citations_format')
+            $schema
+                ->createTable('#__citations_format')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('typeid')->nullable()
                 ->string('style', 50)->nullable()
@@ -38,14 +39,16 @@ class Migration20130816143341ComCitations extends Base
 
         // get citation params
         if ($schema->tableExists('#__extensions')) {
-            $rawCitationParams = $this->db->getQuery(true)
+            $rawCitationParams = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_citations')
                 ->value('params');
         } else {
-            $rawCitationParams = $this->db->getQuery(true)
+            $rawCitationParams = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__components')
                 ->where('option', '=', 'com_citations')
@@ -55,14 +58,16 @@ class Migration20130816143341ComCitations extends Base
         $citationParams = new \Hubzero\Config\Registry($rawCitationParams);
 
         //insert default format
-        $hasNullType = $this->db->getQuery(true)
+        $hasNullType = $this->db
+            ->getQuery(true)
             ->select('typeid')
             ->from('#__citations_format')
             ->whereIsNull('typeid')
             ->value('typeid');
 
         if (!$hasNullType) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__citations_format')
                 ->set([
                     'typeid' => null,

@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // add styles & scripts
-$this->css()
+$this
+     ->css()
      ->js()
      ->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick', 'system');

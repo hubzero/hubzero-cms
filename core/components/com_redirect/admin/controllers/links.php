@@ -99,7 +99,8 @@ class Links extends AdminController
         if ($filters['search']) {
             $filters['search'] = strtolower((string) $filters['search']);
 
-            $entries->whereLike('old_url', $filters['search'], 1)
+            $entries
+                    ->whereLike('old_url', $filters['search'], 1)
                     ->orWhereLike('new_url', $filters['search'], 1)
                     ->orWhereLike('comment', $filters['search'], 1)
                     ->orWhereLike('referer', $filters['search'], 1)

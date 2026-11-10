@@ -28,7 +28,8 @@ class Migration20130423204715ComCourses extends Base
             ];
 
             foreach ($roles as $role) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__courses_roles')
                     ->set($role)
                     ->execute();

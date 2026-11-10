@@ -102,7 +102,8 @@ class Archive extends Obj
             }]);
 
         if ($filters['scope']) {
-            $results->whereEquals('scope', $filters['scope'])
+            $results
+                ->whereEquals('scope', $filters['scope'])
                 ->whereEquals('scope_id', $filters['scope_id']);
         }
 
@@ -134,23 +135,27 @@ class Archive extends Obj
                 $enddate   = ($filters['year'] + 1) . '-01-01 00:00:00';
             }
 
-            $results->where('publish_up', '>=', $startdate)
+            $results
+                    ->where('publish_up', '>=', $startdate)
                     ->where('publish_up', '<', $enddate);
         } else {
-            $results->where('publish_up', 'IS', null, 'and', 1)
+            $results
+                        ->where('publish_up', 'IS', null, 'and', 1)
                         ->orWhere('publish_up', '<=', Date::toSql(), 1)
                         ->resetDepth();
         }
 
         if (!isset($filters['authorized']) || !$filters['authorized']) {
-            $results->where('publish_down', 'IS', null, 'and', 1)
+            $results
+                        ->where('publish_down', 'IS', null, 'and', 1)
                         ->orWhere('publish_down', '>=', Date::toSql(), 1)
                         ->resetDepth();
         }
 
         if (isset($filters['search']) && $filters['search']) {
             $filters['search'] = '%' . strtolower(stripslashes($filters['search'])) . '%';
-            $results->whereLike('title', $filters['search'], 1)
+            $results
+                ->whereLike('title', $filters['search'], 1)
                 ->orWhereLike('content', $filters['search'], 1)
                 ->resetDepth();
         }

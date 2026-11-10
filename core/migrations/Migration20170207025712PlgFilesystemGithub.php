@@ -26,14 +26,16 @@ class Migration20170207025712PlgFilesystemGithub extends Base
         $this->addPluginEntry('filesystem', 'github');
 
         if ($schema->tableExists('#__projects_connection_providers')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'github')
                 ->loadObjectList();
 
             if (count($results) < 1) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__projects_connection_providers')
                     ->columns(['alias', 'name'])
                     ->values("'github', 'Github'")
@@ -52,21 +54,24 @@ class Migration20170207025712PlgFilesystemGithub extends Base
         $this->deletePluginEntry('filesystem', 'github');
 
         if ($schema->tableExists('#__projects_connection_providers')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'github')
                 ->loadObjectList();
 
             foreach ($results as $result) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__projects_connections')
                     ->where('provider_id', '=', $result->id)
                     ->execute();
             }
 
             if (count($results) > 0) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__projects_connection_providers')
                     ->where('alias', '=', 'github')
                     ->execute();

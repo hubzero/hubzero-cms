@@ -25,7 +25,8 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
         if ($schema->tableExists('#__wishlist')) {
             // Get records
-            $lists = $this->db->getQuery(true)
+            $lists = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__wishlist')
                 ->where('category', '=', 'group')
@@ -43,7 +44,8 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                 // if group doesnt exist we need to remove the list and wishes
                 if (!$group || !is_object($group)) {
                     if ($schema->tableExists('#__wishlist_item')) {
-                        $wishes = $this->db->getQuery(true)
+                        $wishes = $this->db
+                            ->getQuery(true)
                             ->select('*')
                             ->from('#__wishlist_item')
                             ->where('wishlist', '=', $list->id)
@@ -51,48 +53,55 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                         foreach ($wishes as $wish) {
                             if ($schema->tableExists('#__wishlist_implementation')) {
-                                $this->db->getQuery(true)
+                                $this->db
+                                    ->getQuery(true)
                                     ->delete('#__wishlist_implementation')
                                     ->where('wishid', '=', $wish->id)
                                     ->execute();
                             }
 
                             if ($schema->tableExists('#__wish_attachments')) {
-                                $this->db->getQuery(true)
+                                $this->db
+                                    ->getQuery(true)
                                     ->delete('#__wish_attachments')
                                     ->where('wish', '=', $wish->id)
                                     ->execute();
                             }
 
                             if ($schema->tableExists('#__wishlist_vote')) {
-                                $this->db->getQuery(true)
+                                $this->db
+                                    ->getQuery(true)
                                     ->delete('#__wishlist_vote')
                                     ->where('wishid', '=', $wish->id)
                                     ->execute();
                             }
                         }
 
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->delete('#__wishlist_item')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
                     }
 
                     if ($schema->tableExists('#__wishlist_owners')) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->delete('#__wishlist_owners')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
                     }
 
                     if ($schema->tableExists('#__wishlist_ownergroups')) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->delete('#__wishlist_ownergroups')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->delete('#__wishlist')
                         ->where('id', '=', $list->id)
                         ->execute();

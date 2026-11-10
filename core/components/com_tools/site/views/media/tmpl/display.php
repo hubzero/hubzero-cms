@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 
-$this->css('component.css')
+$this
+    ->css('component.css')
     ->js('media.js');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">

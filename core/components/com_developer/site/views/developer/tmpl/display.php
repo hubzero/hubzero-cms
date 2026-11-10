@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // include css
-$this->css('introduction', 'system')
+$this
+     ->css('introduction', 'system')
      ->css('intro')
      ->css();
 

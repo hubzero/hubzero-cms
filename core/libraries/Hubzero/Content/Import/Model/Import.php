@@ -107,7 +107,8 @@ class Import extends Relational
     public function currentRun()
     {
         if (!$this->currentRun) {
-            $this->currentRun = $this->runs()
+            $this->currentRun = $this
+                ->runs()
                 ->whereEquals('import_id', $this->get('id'))
                 ->ordered()
                 ->row();
@@ -185,7 +186,8 @@ class Import extends Relational
     public function markRun($dryRun = 1)
     {
         $run = Run::blank();
-        $run->set('import_id', $this->get('id'))
+        $run
+            ->set('import_id', $this->get('id'))
             ->set('count', $this->get('count'))
             ->set('ran_by', User::get('id'))
             ->set('ran_at', Date::toSql())

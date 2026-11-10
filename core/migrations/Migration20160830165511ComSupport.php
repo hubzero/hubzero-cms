@@ -24,7 +24,8 @@ class Migration20160830165511ComSupport extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__support_tickets', 'target_date')) {
-            $schema->addColumn('#__support_tickets', 'target_date')
+            $schema
+                ->addColumn('#__support_tickets', 'target_date')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

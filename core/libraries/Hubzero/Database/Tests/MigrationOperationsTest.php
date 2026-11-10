@@ -62,7 +62,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_idempotent', true);
 
         // Create table WITH id from start (safe on all databases)
-        $driver->createTable('temp_idempotent')
+        $driver
+            ->createTable('temp_idempotent')
             ->id()
             ->string('name', 50)
             ->execute();
@@ -102,7 +103,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_migrate_pattern', true);
 
         // Create WITH id from start (safe pattern)
-        $driver->createTable('temp_migrate_pattern')
+        $driver
+            ->createTable('temp_migrate_pattern')
             ->id()
             ->string('name', 50)
             ->string('email', 100)
@@ -143,7 +145,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_pk_safe', true);
 
         // Best practice: Create table WITH primary key from the beginning
-        $driver->createTable('temp_pk_safe')
+        $driver
+            ->createTable('temp_pk_safe')
             ->id()  // Auto-increment primary key
             ->string('gid_number', 20)
             ->string('uid_number', 20)
@@ -155,18 +158,21 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('temp_pk_safe')
+        $query
+            ->insert('temp_pk_safe')
             ->values(['gid_number' => '1', 'uid_number' => '100', 'role' => 'member'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_pk_safe')
+        $query
+            ->insert('temp_pk_safe')
             ->values(['gid_number' => '1', 'uid_number' => '101', 'role' => 'admin'])
             ->execute();
 
         // Verify auto-increment works
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('temp_pk_safe')
             ->order('id', 'asc')
             ->fetch();
@@ -193,7 +199,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_pk_change', true);
 
         // Create table with composite primary key
-        $driver->createTable('temp_pk_change')
+        $driver
+            ->createTable('temp_pk_change')
             ->string('gid_number', 20)
             ->string('uid_number', 20)
             ->string('role', 50)
@@ -207,18 +214,21 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Insert test data - composite key should enforce uniqueness
         $query = new Query($driver);
-        $query->insert('temp_pk_change')
+        $query
+            ->insert('temp_pk_change')
             ->values(['gid_number' => '1', 'uid_number' => '100', 'role' => 'member'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_pk_change')
+        $query
+            ->insert('temp_pk_change')
             ->values(['gid_number' => '1', 'uid_number' => '101', 'role' => 'admin'])
             ->execute();
 
         // Verify data
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('temp_pk_change')
             ->fetch('row');
         $this->assertEquals(2, $count->cnt);
@@ -244,7 +254,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_complex_migrate', true);
 
         // Best practice: Create WITH id from start
-        $driver->createTable('temp_complex_migrate')
+        $driver
+            ->createTable('temp_complex_migrate')
             ->id()
             ->integer('author_id')
             ->integer('resource_id')
@@ -253,12 +264,14 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('temp_complex_migrate')
+        $query
+            ->insert('temp_complex_migrate')
             ->values(['author_id' => 1, 'resource_id' => 100, 'ordering' => 1])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_complex_migrate')
+        $query
+            ->insert('temp_complex_migrate')
             ->values(['author_id' => 2, 'resource_id' => 100, 'ordering' => 2])
             ->execute();
 
@@ -270,7 +283,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
             // Add unique index (safe operation)
             if (!$driver->tableHasKey('temp_complex_migrate', 'uidx_author_resource')) {
-                $driver->alterTable('temp_complex_migrate')
+                $driver
+                    ->alterTable('temp_complex_migrate')
                     ->addUniqueIndex('uidx_author_resource', ['author_id', 'resource_id'])
                     ->execute();
             }
@@ -285,7 +299,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Verify data preserved
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('temp_complex_migrate')
             ->fetch('row');
         $this->assertEquals(2, $count->cnt, 'Data should be preserved');
@@ -307,7 +322,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_resource_assoc', true);
 
         // Simulate #__resource_assoc table WITH id from the start
-        $driver->createTable('temp_resource_assoc')
+        $driver
+            ->createTable('temp_resource_assoc')
             ->id()
             ->integer('parent_id')
             ->integer('child_id')
@@ -316,12 +332,14 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('temp_resource_assoc')
+        $query
+            ->insert('temp_resource_assoc')
             ->values(['parent_id' => 1, 'child_id' => 10, 'ordering' => 1])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_resource_assoc')
+        $query
+            ->insert('temp_resource_assoc')
             ->values(['parent_id' => 1, 'child_id' => 11, 'ordering' => 2])
             ->execute();
 
@@ -336,7 +354,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Verify data integrity
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('temp_resource_assoc')
             ->order('ordering', 'asc')
             ->fetch();
@@ -363,7 +382,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable('temp_conditional', true);
 
         // Create WITH id from start (safe)
-        $driver->createTable('temp_conditional')
+        $driver
+            ->createTable('temp_conditional')
             ->id()
             ->string('name', 100)
             ->execute();
@@ -381,7 +401,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         }
 
         if ($needsEmail) {
-            $driver->alterTable('temp_conditional')
+            $driver
+                ->alterTable('temp_conditional')
                 ->addColumn('email')->string(255)->nullable()
                 ->execute();
         }
@@ -414,7 +435,8 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $driver->dropTable($tableName, true);
 
         // Best practice: Create table WITH id from the beginning
-        $driver->createTable($tableName)
+        $driver
+            ->createTable($tableName)
             ->id()
             ->string('name', 100)
             ->timestamps()
@@ -428,18 +450,21 @@ class MigrationOperationsTest extends AbstractDriverTestCase
 
         // Insert data
         $query = new Query($driver);
-        $query->insert($tableName)
+        $query
+            ->insert($tableName)
             ->values(['name' => 'Test Item 1'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert($tableName)
+        $query
+            ->insert($tableName)
             ->values(['name' => 'Test Item 2'])
             ->execute();
 
         // Verify auto-increment works
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from($tableName)
             ->order('id', 'asc')
             ->fetch();

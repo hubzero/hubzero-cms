@@ -17,7 +17,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (Pathway::count() <= 0) {
@@ -68,7 +69,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
                     <div class="entry-voting voting">
                         <?php
-                            $this->view('_vote')
+                            $this
+                                 ->view('_vote')
                                  ->set('option', $this->option)
                                  ->set('item', $this->article)
                                  ->set('type', 'entry')
@@ -154,7 +156,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
             </h3>
 
             <?php
-            $comments = $this->article->comments()
+            $comments = $this->article
+                ->comments()
                 ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
                     Components\Kb\Models\Comment::STATE_FLAGGED,
@@ -162,7 +165,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                 ->rows();
 
             if ($comments->count() > 0) {
-                $this->view('_list')
+                $this
+                     ->view('_list')
                      ->set('parent', 0)
                      ->set('cls', 'odd')
                      ->set('depth', 0)

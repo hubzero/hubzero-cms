@@ -58,7 +58,8 @@ $this->css();
                         <ul class="events">
                         <?php
                         foreach ($this->rows as $row) {
-                            $this->view('item')
+                            $this
+                                 ->view('item')
                                  ->set('option', $this->option)
                                  ->set('task', $this->task)
                                  ->set('row', $row)
@@ -148,7 +149,8 @@ $this->css();
 
         <div class="calendarwrap">
             <?php
-            $this->view('calendar')
+            $this
+                 ->view('calendar')
                  ->set('option', $this->option)
                  ->set('task', 'month')
                  ->set('year', $this->year)

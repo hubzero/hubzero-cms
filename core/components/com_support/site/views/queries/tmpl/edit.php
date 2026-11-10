@@ -73,7 +73,8 @@ if (!$tmpl && !$no_html) {
                                         $condition = json_decode($this->row->conditions);
                                         //foreach ($conditions as $condition)
                                         //{
-                                            $this->view('condition')
+                                            $this
+                                                 ->view('condition')
                                                  ->set('option', $this->option)
                                                  ->set('controller', $this->controller)
                                                  ->set('condition', $condition)
@@ -188,7 +189,8 @@ if (!$tmpl && !$no_html) {
                 $condition = json_decode($this->row->conditions);
                 //foreach ($conditions as $condition)
                 //{
-                    $this->view('condition')
+                    $this
+                         ->view('condition')
                          ->set('option', $this->option)
                          ->set('controller', $this->controller)
                          ->set('condition', $condition)

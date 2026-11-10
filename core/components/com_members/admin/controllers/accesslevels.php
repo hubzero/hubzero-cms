@@ -217,7 +217,8 @@ class Accesslevels extends AdminController
                 // Also make sure the table prefix matches the live db prefix (eg, it is not a "bak_" table)
                 if ((strpos($table, $prefix) === 0) && (isset($fields['access']))) {
                     // Lookup the distinct values of the field.
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('DISTINCT access')
                         ->from($table);
 

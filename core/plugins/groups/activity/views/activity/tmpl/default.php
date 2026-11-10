@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js('jquery.infinitescroll', 'com_collections')
      ->js();
 
@@ -172,7 +173,8 @@ if (!$no_html) {
             <ul class="activity-feed" data-url="<?php echo $feedUrl; ?>">
                 <?php
                 foreach ($this->rows as $row) {
-                    $this->view('default_item')
+                    $this
+                        ->view('default_item')
                         ->set('group', $this->group)
                         ->set('canModerate', $this->canModerate)
                         ->set('canStar', $this->canStar)

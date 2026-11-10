@@ -44,7 +44,8 @@ Html::behavior('switcher', 'submenu');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->css()
+$this
+     ->css()
      ->js('jquery.fileuploader.js', 'system')
      ->js();
 
@@ -256,7 +257,8 @@ $validationMsg = $this->escape(
                                 if ($assets->count() > 0) {
                                     $i = 0;
                                     foreach ($assets as $asset) {
-                                        $this->view('_asset', 'media')
+                                        $this
+                                             ->view('_asset', 'media')
                                              ->set('i', $i)
                                              ->set('option', $this->option)
                                              ->set('controller', $this->controller)

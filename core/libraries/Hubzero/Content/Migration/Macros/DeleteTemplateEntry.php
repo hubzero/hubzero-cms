@@ -25,7 +25,8 @@ class DeleteTemplateEntry extends Macro
     public function __invoke($element, $client = 1)
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete('#__extensions')
                 ->whereEquals('type', 'template')
                 ->whereEquals('element', $element)
@@ -37,7 +38,8 @@ class DeleteTemplateEntry extends Macro
             $this->log(sprintf('Removed extension entry for template "%s"', $element));
 
             if ($this->db->tableExists('#__template_styles')) {
-                $query = $this->db->getQuery()
+                $query = $this->db
+                    ->getQuery()
                     ->delete('#__template_styles')
                     ->whereEquals('template', $element)
                     ->whereEquals('client_id', $client)
@@ -48,7 +50,8 @@ class DeleteTemplateEntry extends Macro
                 $this->log(sprintf('Removed style entry for template "%s"', $element));
 
                 // Now make sure we have an enabled template (don't really care which one it is)
-                $query = $this->db->getQuery()
+                $query = $this->db
+                    ->getQuery()
                     ->select('id')
                     ->from('#__template_styles')
                     ->whereEquals('home', 1)
@@ -56,7 +59,8 @@ class DeleteTemplateEntry extends Macro
                     ->toString();
                 $this->db->setQuery($query);
                 if (!$this->db->loadResult()) {
-                    $query = $this->db->getQuery()
+                    $query = $this->db
+                        ->getQuery()
                         ->select('id')
                         ->from('#__template_styles')
                         ->whereEquals('client_id', $client)
@@ -65,7 +69,8 @@ class DeleteTemplateEntry extends Macro
                         ->toString();
                     $this->db->setQuery($query);
                     if ($id = $this->db->loadResult()) {
-                        $query = $this->db->getQuery()
+                        $query = $this->db
+                            ->getQuery()
                             ->update('#__template_styles')
                             ->set([
                                 'home' => 1,

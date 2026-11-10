@@ -26,7 +26,8 @@ $route  = 'index.php?option=' . $this->option . '&controller=curation';
 
 $pa = new \Components\Publications\Tables\Author($this->database);
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->css('jquery.fancybox.css', 'system')
     ->css('curation.css')

@@ -25,7 +25,8 @@ class Migration20171115112800ComSupportCriteria extends Base
         $tableName = self::$tableName;
 
         if (!$schema->tableExists($tableName)) {
-            $schema->createTable($tableName)
+            $schema
+                ->createTable($tableName)
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('description', 255)->nullable()
                 ->string('query', 255)->nullable()

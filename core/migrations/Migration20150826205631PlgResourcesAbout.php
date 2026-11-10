@@ -24,7 +24,8 @@ class Migration20150826205631PlgResourcesAbout extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__resource_types')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select(['id', 'params'])
                 ->from('#__resource_types')
                 ->where('category', '=', 27)
@@ -50,7 +51,8 @@ class Migration20150826205631PlgResourcesAbout extends Base
                 }
 
                 if ($params != $record->params) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__resource_types')
                         ->set(['params' => $params])
                         ->where('id', '=', (int) $record->id)

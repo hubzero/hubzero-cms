@@ -65,7 +65,8 @@ class Respondents extends AdminController
 
         $event = Event::oneOrFail($id);
 
-        $rows = $event->respondents()
+        $rows = $event
+            ->respondents()
             ->order($filters['sort'], $filters['sort_Dir'])
             ->paginated('limitstart', 'limit')
             ->rows();
@@ -130,7 +131,8 @@ class Respondents extends AdminController
         $query = Respondent::all();
 
         if ($filters['search']) {
-            $query->whereLike('first_name', strtolower((string) $filters['search']), 1)
+            $query
+                ->whereLike('first_name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('last_name', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }

@@ -20,7 +20,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
-$this->css()
+$this
+     ->css()
      ->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system')
      ->js('jquery.timepicker', 'system')

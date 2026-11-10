@@ -30,7 +30,8 @@ if (property_exists($this, "userSubs")) {
 }
 
 
-$this->view('_breadcrumbs', 'shared')
+$this
+    ->view('_breadcrumbs', 'shared')
     ->set('breadcrumbs', $breadcrumbs)
     ->set('pageTitle', '')
     ->display();
@@ -42,7 +43,8 @@ $this->view('_breadcrumbs', 'shared')
             <form id="hubForm" class="full" method="POST"
                         action="/newsletter/email-subscriptions/update">
 
-                <?php $this->view('_email_subscriptions_selects')
+                <?php $this
+                           ->view('_email_subscriptions_selects')
                            ->set('userId', $userId)
                            ->set('userSubs', $userSubs)
                            ->set('subs', $subs)

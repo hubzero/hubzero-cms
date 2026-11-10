@@ -22,14 +22,16 @@ class Migration20130521160001ComForum extends Base
      **/
     public function up()
     {
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__forum_posts')
             ->set(['thread' => Expression::column('id')])
             ->whereIn('scope', ['site', 'group'])
             ->where('parent', '=', 0)
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__forum_posts')
             ->set(['thread' => Expression::column('parent')])
             ->whereIn('scope', ['site', 'group'])

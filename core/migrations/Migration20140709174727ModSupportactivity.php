@@ -31,7 +31,8 @@ class Migration20140709174727ModSupportactivity extends Base
             $name = $element;
 
             // First, make sure it isn't already there
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('name', '=', $name)
@@ -47,7 +48,8 @@ class Migration20140709174727ModSupportactivity extends Base
                 $params = json_encode($params);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__extensions')
                 ->set([
                     'name'              => $name,
@@ -82,7 +84,8 @@ class Migration20140709174727ModSupportactivity extends Base
 
         if ($schema->tableExists('#__extensions')) {
             // Delete module entry
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__extensions')
                 ->where('element', '=', $element)
                 ->execute();

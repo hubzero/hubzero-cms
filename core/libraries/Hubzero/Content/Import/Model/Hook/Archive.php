@@ -98,7 +98,8 @@ class Archive extends Obj
             return $model->total();
         }
 
-        return $model->ordered()
+        return $model
+            ->ordered()
             ->paginated()
             ->rows();
     }

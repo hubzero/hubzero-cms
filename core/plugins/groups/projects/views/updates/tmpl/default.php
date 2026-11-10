@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$this->view('submenu', 'partials')
+$this
+    ->view('submenu', 'partials')
     ->set('group', $this->group)
     ->set('projectcount', $this->projectcount)
     ->set('newcount', $this->newcount)

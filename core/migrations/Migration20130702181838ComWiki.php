@@ -28,7 +28,8 @@ class Migration20130702181838ComWiki extends Base
             && $schema->tableExists('#__wiki_version')
             && $schema->hasColumn('#__wiki_version', 'pageid')
         ) {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('wv.*')
                 ->from('#__wiki_page', 'wp')
                 ->join('#__wiki_version AS wv', 'wp.id', 'wv.pageid')
@@ -40,7 +41,8 @@ class Migration20130702181838ComWiki extends Base
                 $pagetext = preg_replace('/(nanoHUB)/', 'This site', $result->pagetext);
                 $pagehtml = preg_replace('/(nanoHUB)/', 'This site', $result->pagehtml);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wiki_version')
                     ->set(['pagetext' => $pagetext, 'pagehtml' => $pagehtml])
                     ->where('id', '=', $result->id)

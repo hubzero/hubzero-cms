@@ -45,27 +45,31 @@ class Migration20130924000003ComBanners extends Base
 
         // Rename columns if needed
         if ($schema->hasColumn('#__banners', 'bid') && !$schema->hasColumn('#__banners', 'id')) {
-            $schema->renameColumn('#__banners', 'bid', 'id')
+            $schema
+                ->renameColumn('#__banners', 'bid', 'id')
                 ->integer()
                 ->notNull()
                 ->autoIncrement()
                 ->execute();
         }
         if ($schema->hasColumn('#__banners', 'showBanner') && !$schema->hasColumn('#__banners', 'state')) {
-            $schema->renameColumn('#__banners', 'showBanner', 'state')
+            $schema
+                ->renameColumn('#__banners', 'showBanner', 'state')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)
                 ->execute();
         }
         if ($schema->hasColumn('#__banners', 'tags') && !$schema->hasColumn('#__banners', 'metakey')) {
-            $schema->renameColumn('#__banners', 'tags', 'metakey')
+            $schema
+                ->renameColumn('#__banners', 'tags', 'metakey')
                 ->text()
                 ->notNull()
                 ->execute();
         }
         if ($schema->hasColumn('#__banners', 'date') && !$schema->hasColumn('#__banners', 'created')) {
-            $schema->renameColumn('#__banners', 'date', 'created')
+            $schema
+                ->renameColumn('#__banners', 'date', 'created')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -73,7 +77,9 @@ class Migration20130924000003ComBanners extends Base
         }
 
         // Batch column modifications
-        $schema->table('#__banners')->alter()
+        $schema
+            ->table('#__banners')
+            ->alter()
             ->modifyColumn('alias', function ($column) {
                 $column->string(255)->notNull()->default('');
             })
@@ -113,7 +119,8 @@ class Migration20130924000003ComBanners extends Base
 
         // Add new columns (with position - MySQL-specific)
         if (!$schema->hasColumn('#__banners', 'own_prefix') && $schema->hasColumn('#__banners', 'params')) {
-            $schema->addColumn('#__banners', 'own_prefix')
+            $schema
+                ->addColumn('#__banners', 'own_prefix')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)
@@ -121,7 +128,8 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banners', 'metakey_prefix') && $schema->hasColumn('#__banners', 'own_prefix')) {
-            $schema->addColumn('#__banners', 'metakey_prefix')
+            $schema
+                ->addColumn('#__banners', 'metakey_prefix')
                 ->string(255)
                 ->notNull()
                 ->default('')
@@ -129,7 +137,8 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banners', 'purchase_type') && $schema->hasColumn('#__banners', 'metakey_prefix')) {
-            $schema->addColumn('#__banners', 'purchase_type')
+            $schema
+                ->addColumn('#__banners', 'purchase_type')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
@@ -137,7 +146,8 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banners', 'track_clicks') && $schema->hasColumn('#__banners', 'purchase_type')) {
-            $schema->addColumn('#__banners', 'track_clicks')
+            $schema
+                ->addColumn('#__banners', 'track_clicks')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
@@ -148,7 +158,8 @@ class Migration20130924000003ComBanners extends Base
             !$schema->hasColumn('#__banners', 'track_impressions')
             && $schema->hasColumn('#__banners', 'track_clicks')
         ) {
-            $schema->addColumn('#__banners', 'track_impressions')
+            $schema
+                ->addColumn('#__banners', 'track_impressions')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
@@ -156,7 +167,8 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banners', 'reset') && $schema->hasColumn('#__banners', 'publish_down')) {
-            $schema->addColumn('#__banners', 'reset')
+            $schema
+                ->addColumn('#__banners', 'reset')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -164,7 +176,8 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banners', 'language') && $schema->hasColumn('#__banners', 'created')) {
-            $schema->addColumn('#__banners', 'language')
+            $schema
+                ->addColumn('#__banners', 'language')
                 ->char(7)
                 ->notNull()
                 ->default('')
@@ -174,7 +187,8 @@ class Migration20130924000003ComBanners extends Base
 
         // Update type based on custombannercode
         if ($schema->hasColumn('#__banners', 'type') && $schema->hasColumn('#__banners', 'custombannercode')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__banners')
                 ->set(['type' => 1])
                 ->where(Expression::trim('custombannercode'), '!=', '')
@@ -182,7 +196,9 @@ class Migration20130924000003ComBanners extends Base
         }
 
         // Batch index operations
-        $schema->table('#__banners')->alter()
+        $schema
+            ->table('#__banners')
+            ->alter()
             ->dropIndex('viewbanner')
             ->addIndex('idx_own_prefix', 'own_prefix')
             ->addIndex('idx_metakey_prefix', 'metakey_prefix')
@@ -210,7 +226,8 @@ class Migration20130924000003ComBanners extends Base
 
         // Rename column if needed
         if ($schema->hasColumn('#__banner_clients', 'cid') && !$schema->hasColumn('#__banner_clients', 'id')) {
-            $schema->renameColumn('#__banner_clients', 'cid', 'id')
+            $schema
+                ->renameColumn('#__banner_clients', 'cid', 'id')
                 ->integer()
                 ->notNull()
                 ->autoIncrement()
@@ -218,7 +235,9 @@ class Migration20130924000003ComBanners extends Base
         }
 
         // Batch column modifications
-        $schema->table('#__banner_clients')->alter()
+        $schema
+            ->table('#__banner_clients')
+            ->alter()
             ->modifyColumn('checked_out', function ($column) {
                 $column->integer()->unsigned()->notNull()->default(0);
             })
@@ -234,7 +253,8 @@ class Migration20130924000003ComBanners extends Base
 
         // Add new columns
         if (!$schema->hasColumn('#__banner_clients', 'state')) {
-            $schema->addColumn('#__banner_clients', 'state')
+            $schema
+                ->addColumn('#__banner_clients', 'state')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)
@@ -242,41 +262,47 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'metakey')) {
-            $schema->addColumn('#__banner_clients', 'metakey')
+            $schema
+                ->addColumn('#__banner_clients', 'metakey')
                 ->text()
                 ->notNull()
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'own_prefix')) {
-            $schema->addColumn('#__banner_clients', 'own_prefix')
+            $schema
+                ->addColumn('#__banner_clients', 'own_prefix')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'metakey_prefix')) {
-            $schema->addColumn('#__banner_clients', 'metakey_prefix')
+            $schema
+                ->addColumn('#__banner_clients', 'metakey_prefix')
                 ->string(255)
                 ->notNull()
                 ->default('')
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'purchase_type')) {
-            $schema->addColumn('#__banner_clients', 'purchase_type')
+            $schema
+                ->addColumn('#__banner_clients', 'purchase_type')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'track_clicks')) {
-            $schema->addColumn('#__banner_clients', 'track_clicks')
+            $schema
+                ->addColumn('#__banner_clients', 'track_clicks')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
                 ->execute();
         }
         if (!$schema->hasColumn('#__banner_clients', 'track_impressions')) {
-            $schema->addColumn('#__banner_clients', 'track_impressions')
+            $schema
+                ->addColumn('#__banner_clients', 'track_impressions')
                 ->tinyInteger()
                 ->notNull()
                 ->default(-1)
@@ -284,14 +310,17 @@ class Migration20130924000003ComBanners extends Base
         }
 
         // Batch index operations
-        $schema->table('#__banner_clients')->alter()
+        $schema
+            ->table('#__banner_clients')
+            ->alter()
             ->addIndex('idx_own_prefix', 'own_prefix')
             ->addIndex('idx_metakey_prefix', 'metakey_prefix')
             ->execute();
 
         // Update state
         if ($schema->hasColumn('#__banner_clients', 'state')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__banner_clients')
                 ->set(['state' => 1])
                 ->execute();
@@ -317,7 +346,8 @@ class Migration20130924000003ComBanners extends Base
 
         // Add count column
         if (!$schema->hasColumn('#__banner_tracks', 'count')) {
-            $schema->addColumn('#__banner_tracks', 'count')
+            $schema
+                ->addColumn('#__banner_tracks', 'count')
                 ->integer()
                 ->unsigned()
                 ->notNull()
@@ -326,11 +356,13 @@ class Migration20130924000003ComBanners extends Base
 
             // Populate count from existing data
             // Populate count from existing data
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__banner_tracks')
                 ->columns(['track_date', 'track_type', 'banner_id', 'count'])
                 ->fromSelect(
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->select('track_date, track_type, banner_id')
                         ->select('count(*)', 'count')
                         ->from('#__banner_tracks')
@@ -340,7 +372,8 @@ class Migration20130924000003ComBanners extends Base
                 )
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__banner_tracks')
                 ->where('count', '=', 0)
                 ->execute();
@@ -348,7 +381,9 @@ class Migration20130924000003ComBanners extends Base
 
         // Modify column and add primary key
         if (!$schema->hasPrimaryKey('#__banner_tracks')) {
-            $schema->table('#__banner_tracks')->alter()
+            $schema
+                ->table('#__banner_tracks')
+                ->alter()
                 ->modifyColumn('track_date', function ($column) {
                     $column->datetime()->notNull();
                 })
@@ -358,7 +393,9 @@ class Migration20130924000003ComBanners extends Base
                 ->addIndex('idx_banner_id', 'banner_id')
                 ->execute();
         } else {
-            $schema->table('#__banner_tracks')->alter()
+            $schema
+                ->table('#__banner_tracks')
+                ->alter()
                 ->modifyColumn('track_date', function ($column) {
                     $column->datetime()->notNull();
                 })

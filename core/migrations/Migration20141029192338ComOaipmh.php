@@ -23,7 +23,8 @@ class Migration20141029192338ComOaipmh extends Base
     public function up()
     {
         $query = $this->db->getQuery(true);
-        $query->update('#__oaipmh_dcspecs')
+        $query
+            ->update('#__oaipmh_dcspecs')
             ->set(['query' => Expression::replace('query', 'jos_', '#__')])
             ->execute();
 
@@ -31,20 +32,23 @@ class Migration20141029192338ComOaipmh extends Base
 
         if ($this->db->tableExists('#__oaipmh_records')) {
             // Cleanup duplicates
-            $subquery = $this->db->getQuery()
+            $subquery = $this->db
+                ->getQuery()
                 ->select('id')
                 ->from('#__oaipmh_records')
                 ->group('record_id')
                 ->group('metadata_prefix');
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete('#__oaipmh_records')
                 ->where('id', 'NOT IN', $subquery);
             $query->execute();
 
             // Add unique index
             if (!$schema->hasKey('#__oaipmh_records', 'idx_record_prefix')) {
-                $schema->alterTable('#__oaipmh_records')
+                $schema
+                    ->alterTable('#__oaipmh_records')
                     ->addUniqueIndex('idx_record_prefix', ['record_id', 'metadata_prefix'])
                     ->execute();
             }

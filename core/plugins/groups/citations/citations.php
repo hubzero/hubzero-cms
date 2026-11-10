@@ -683,7 +683,8 @@ class Citations extends Plugin
             }
         }
 
-        $authors = $citation->relatedAuthors()
+        $authors = $citation
+            ->relatedAuthors()
             ->order('ordering', 'asc')
             ->rows();
 

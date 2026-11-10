@@ -16,7 +16,8 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js('media.js');
 ?>
 

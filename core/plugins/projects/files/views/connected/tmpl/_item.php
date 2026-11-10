@@ -59,7 +59,8 @@ if ($itemIsFile) {
     <?php endif; ?>
     <td class="middle_valign nobsp is-relative">
         <?php
-            $this->view('_item_link')
+            $this
+                ->view('_item_link')
                 ->set('connectionId', $this->connection->id)
                 ->set('handlerBase', $this->handlerBase)
                 ->set('item', $item)

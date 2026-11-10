@@ -35,7 +35,8 @@ $this->css();
     </section>
     <section class="below section">
         <?php
-        $this->view('results_graph')
+        $this
+            ->view('results_graph')
             ->set('first_vote', $this->first_vote)
             ->set('last_vote', $this->last_vote)
             ->set('lists', $this->lists)

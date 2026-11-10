@@ -30,7 +30,8 @@ class OnCondPost extends Relational
      */
     public function activeComments()
     {
-        return $this->oneToMany(OnCondComment::class, 'post_id')
+        return $this
+            ->oneToMany(OnCondComment::class, 'post_id')
             ->onCondition('status', 1);
     }
 
@@ -39,7 +40,8 @@ class OnCondPost extends Relational
      */
     public function activeFeatured()
     {
-        return $this->oneToMany(OnCondComment::class, 'post_id')
+        return $this
+            ->oneToMany(OnCondComment::class, 'post_id')
             ->onCondition('status', 1)
             ->onCondition('type', 'featured');
     }
@@ -49,9 +51,11 @@ class OnCondPost extends Relational
      */
     public function complexComments()
     {
-        return $this->oneToMany(OnCondComment::class, 'post_id')
+        return $this
+            ->oneToMany(OnCondComment::class, 'post_id')
             ->onCondition(function ($query) {
-                $query->whereEquals('status', 1)
+                $query
+                      ->whereEquals('status', 1)
                       ->whereEquals('type', 'general');
             });
     }

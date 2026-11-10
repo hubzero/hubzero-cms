@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
-$this->css('form.css')
+$this
+     ->css('form.css')
      ->js('complete.js');
 
 $pdf = $this->pdf;

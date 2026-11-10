@@ -482,7 +482,8 @@ class Forum extends Plugin
 
         $edit = Request::getString('section', '');
 
-        $sections = $this->forum->sections($filters)
+        $sections = $this->forum
+            ->sections($filters)
             ->ordered()
             ->rows();
 
@@ -501,7 +502,8 @@ class Forum extends Plugin
             if (!$this->forum->setup($access)) {
                 $this->setError($this->forum->getError());
             }
-            $sections = $this->forum->sections($filters)
+            $sections = $this->forum
+                ->sections($filters)
                 ->purgeCache() // Previous query cached 'no results'
                 ->ordered()
                 ->rows();
@@ -842,7 +844,8 @@ class Forum extends Plugin
             App::abort(403, Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
         }
 
-        $threads = $category->threads()
+        $threads = $category
+            ->threads()
             ->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access'])
@@ -852,7 +855,8 @@ class Forum extends Plugin
             ->rows();
 
         // Output view
-        return $this->view('display', 'categories')
+        return $this
+            ->view('display', 'categories')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)
@@ -930,7 +934,8 @@ class Forum extends Plugin
         $this->authorize('category');
         $this->authorize('thread');
 
-        return $this->view('search', 'categories')
+        return $this
+            ->view('search', 'categories')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)
@@ -996,7 +1001,8 @@ class Forum extends Plugin
             );
         }
 
-        return $this->view('edit', 'categories')
+        return $this
+            ->view('edit', 'categories')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)
@@ -1324,7 +1330,8 @@ class Forum extends Plugin
             $this->params->get('access-manage-thread', false);
         }
 
-        return $this->view('display', 'threads')
+        return $this
+            ->view('display', 'threads')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)
@@ -1423,7 +1430,8 @@ class Forum extends Plugin
             return;
         }
 
-        return $this->view('edit', 'threads')
+        return $this
+            ->view('edit', 'threads')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)
@@ -1917,7 +1925,8 @@ class Forum extends Plugin
 
         // Create NEW message object and send
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject($subject)
+        $message
+            ->setSubject($subject)
             ->addFrom($from['email'], $from['name'])
             ->setTo($from['email'])
             ->setBcc($emails)
@@ -2036,7 +2045,8 @@ class Forum extends Plugin
         $sendEmail = 0;
 
         if ($categorySubscriptionsEnabled) {
-            $usersCategory = $category->usersCategories()
+            $usersCategory = $category
+                ->usersCategories()
                 ->whereEquals('category_id', $categoryId)
                 ->whereEquals('user_id', $userId)
                 ->row();
@@ -2422,7 +2432,8 @@ class Forum extends Plugin
         }
 
         // Output HTML
-        $view = $this->view('default', 'settings')
+        $view = $this
+            ->view('default', 'settings')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('model', $this->forum)

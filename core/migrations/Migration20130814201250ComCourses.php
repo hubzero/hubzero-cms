@@ -27,7 +27,8 @@ class Migration20130814201250ComCourses extends Base
             $schema->hasColumn('#__courses_member_badges', 'claimed')
             && !$schema->hasColumn('#__courses_member_badges', 'action')
         ) {
-            $schema->renameColumn('#__courses_member_badges', 'claimed', 'action')
+            $schema
+                ->renameColumn('#__courses_member_badges', 'claimed', 'action')
                 ->string(255)
                 ->nullable()
                 ->default(null)
@@ -37,7 +38,8 @@ class Migration20130814201250ComCourses extends Base
             $schema->hasColumn('#__courses_member_badges', 'claimed_on')
             && !$schema->hasColumn('#__courses_member_badges', 'action_on')
         ) {
-            $schema->renameColumn('#__courses_member_badges', 'claimed_on', 'action_on')
+            $schema
+                ->renameColumn('#__courses_member_badges', 'claimed_on', 'action_on')
                 ->datetime()
                 ->nullable()
                 ->default(null)
@@ -56,7 +58,8 @@ class Migration20130814201250ComCourses extends Base
             !$schema->hasColumn('#__courses_member_badges', 'claimed')
             && $schema->hasColumn('#__courses_member_badges', 'action')
         ) {
-            $schema->renameColumn('#__courses_member_badges', 'action', 'claimed')
+            $schema
+                ->renameColumn('#__courses_member_badges', 'action', 'claimed')
                 ->integer(1)
                 ->nullable()
                 ->default(null)
@@ -66,7 +69,8 @@ class Migration20130814201250ComCourses extends Base
             !$schema->hasColumn('#__courses_member_badges', 'claimed_on')
             && $schema->hasColumn('#__courses_member_badges', 'action_on')
         ) {
-            $schema->renameColumn('#__courses_member_badges', 'action_on', 'claimed_on')
+            $schema
+                ->renameColumn('#__courses_member_badges', 'action_on', 'claimed_on')
                 ->datetime()
                 ->nullable()
                 ->default(null)

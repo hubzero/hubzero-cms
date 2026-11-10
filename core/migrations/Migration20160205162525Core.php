@@ -24,7 +24,8 @@ class Migration20160205162525Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__audit_results')) {
-            $schema->createTable('#__audit_results')
+            $schema
+                ->createTable('#__audit_results')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 100)->default('')
                 ->unsignedInteger('scope_id')->default(0)

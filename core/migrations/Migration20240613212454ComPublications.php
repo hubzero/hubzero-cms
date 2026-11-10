@@ -24,7 +24,8 @@ class Migration20240613212454ComPublications extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__publication_collaborators')) {
-            $schema->createTable('#__publication_collaborators')
+            $schema
+                ->createTable('#__publication_collaborators')
                 ->id()
                 ->string('name', 100)->nullable()
                 ->string('orcid', 100)->nullable()

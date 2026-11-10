@@ -100,7 +100,8 @@ class Imports extends AdminController
             $model->whereEquals('type', $filters['type']);
         }
 
-        $imports = $model->ordered()
+        $imports = $model
+            ->ordered()
             ->paginated('limitstart', 'limit')
             ->rows();
 
@@ -439,7 +440,8 @@ class Imports extends AdminController
         $import = Import::oneOrFail($id);
 
         // get the lastest run
-        $run = $import->runs()
+        $run = $import
+            ->runs()
             ->whereEquals('import_id', $import->get('id'))
             ->ordered()
             ->row();

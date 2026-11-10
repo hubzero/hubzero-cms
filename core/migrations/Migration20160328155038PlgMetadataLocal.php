@@ -26,7 +26,8 @@ class Migration20160328155038PlgMetadataLocal extends Base
         $this->addPluginEntry('metadata', 'local', 0);
 
         if (!$schema->tableExists('#__file_metadata')) {
-            $schema->createTable('#__file_metadata')
+            $schema
+                ->createTable('#__file_metadata')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('path', 255)->default('')
                 ->string('key', 255)->default('')
@@ -48,7 +49,8 @@ class Migration20160328155038PlgMetadataLocal extends Base
         $this->deletePluginEntry('metadata', 'local');
 
         if (!$schema->tableExists('#__file_metadata')) {
-            $schema->createTable('#__file_metadata')
+            $schema
+                ->createTable('#__file_metadata')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('path', 255)->default('')
                 ->string('key', 255)->default('')

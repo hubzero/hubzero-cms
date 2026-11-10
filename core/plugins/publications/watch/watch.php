@@ -111,7 +111,8 @@ class Watch extends Plugin
             ->total();
 
         // Instantiate a view
-        $view = $this->view('default', 'index')
+        $view = $this
+            ->view('default', 'index')
             ->set('publication', $this->publication)
             ->set('watching', $watching)
             ->set('watched', \Hubzero\Item\Watch::isWatching(
@@ -150,7 +151,8 @@ class Watch extends Plugin
         // A link followed from an email, or the return from logging in,
         // arrives as a GET: ask for the change to be confirmed with a POST
         if (Request::method() !== 'POST') {
-            $view = $this->view('confirm', 'index')
+            $view = $this
+                ->view('confirm', 'index')
                 ->set('publication', $this->publication)
                 ->set('action', $this->action)
                 ->set('email', $email);
@@ -307,7 +309,8 @@ class Watch extends Plugin
 
         // Build message
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
                 ->addTo($email, $name)
                 ->addHeader('X-Component', 'com_publications')

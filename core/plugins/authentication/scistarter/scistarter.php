@@ -68,7 +68,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
         if ($this->params->get('environment') == 'sandbox') {
             $client->useSandboxEnvironment();
         }
-        $client->setClientId($this->params->get('app_id'))
+        $client
+               ->setClientId($this->params->get('app_id'))
                ->setClientSecret($this->params->get('app_secret'))
                ->setRedirectUri(self::getRedirectUri('scistarter'));
 
@@ -113,7 +114,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
         if ($this->params->get('environment') == 'sandbox') {
             $client->useSandboxEnvironment();
         }
-        $client->setClientId($this->params->get('app_id'))
+        $client
+               ->setClientId($this->params->get('app_id'))
                ->setRedirectUri(self::getRedirectUri('scistarter'));
 
         // Redirect to the login URL
@@ -147,7 +149,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
         if ($this->params->get('environment') == 'sandbox') {
             $client->useSandboxEnvironment();
         }
-        $client->setClientId($this->params->get('app_id'))
+        $client
+               ->setClientId($this->params->get('app_id'))
                ->setClientSecret($this->params->get('app_secret'))
                ->setRedirectUri(self::getRedirectUri('scistarter'));
 
@@ -252,7 +255,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
         if ($this->params->get('environment') == 'sandbox') {
             $client->useSandboxEnvironment();
         }
-        $client->setClientId($this->params->get('app_id'))
+        $client
+               ->setClientId($this->params->get('app_id'))
                ->setClientSecret($this->params->get('app_secret'))
                ->setRedirectUri(self::getRedirectUri('scistarter'));
 

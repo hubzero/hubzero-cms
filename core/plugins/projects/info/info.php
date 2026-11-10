@@ -103,7 +103,8 @@ class Info extends Plugin
             }
 
             // Set vars
-            $view = $this->view('default', 'view')
+            $view = $this
+                ->view('default', 'view')
                 ->set('option', 'com_projects')
                 ->set('info', $info)
                 ->set('model', $model);
@@ -148,7 +149,8 @@ class Info extends Plugin
         }
 
         // Set vars
-        $view = $this->view('public', 'view')
+        $view = $this
+            ->view('public', 'view')
             ->set('option', 'com_projects')
             ->set('info', $info)
             ->set('model', $model);

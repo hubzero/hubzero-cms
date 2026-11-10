@@ -27,7 +27,8 @@ class Migration20170921161800ComRedirect extends Base
             if (!$schema->hasColumn('#__redirect_links', 'status_code')) {
                 $schema->addColumn('#__redirect_links', 'status_code')->integer(3)->notNull()->default('404');
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__redirect_links')
                     ->set(['status_code' => 301])
                     ->where('new_url', '!=', '')

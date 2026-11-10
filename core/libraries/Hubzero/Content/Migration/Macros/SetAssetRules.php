@@ -37,7 +37,8 @@ class SetAssetRules extends Macro
             foreach ($rules as $idx => $rule) {
                 foreach ($rule as $group => $value) {
                     if (!is_numeric($group)) {
-                        $query = $this->db->getQuery()
+                        $query = $this->db
+                            ->getQuery()
                             ->select('id')
                             ->from('#__usergroups')
                             ->whereEquals('title', $group)

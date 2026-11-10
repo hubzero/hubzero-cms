@@ -26,14 +26,16 @@ class Migration20130918132946ComForum extends Base
         $this->addComponentEntry('Forum');
 
         if ($schema->tableExists('#__components')) {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__components')
                 ->where('name', '=', 'Forum')
                 ->first();
 
             if ($result && empty($result->admin_menu_link)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__components')
                     ->set(['admin_menu_link' => 'option=com_forum'])
                     ->where('id', '=', $result->id)

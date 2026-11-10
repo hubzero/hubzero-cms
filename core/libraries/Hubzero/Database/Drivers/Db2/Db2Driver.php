@@ -1322,7 +1322,8 @@ class Db2Driver extends BaseSqlDriver
         $grammar = $this->getSchemaGrammar();
 
         try {
-            $this->setQuery($grammar->compileDrop($tableName, $ifExists))
+            $this
+                 ->setQuery($grammar->compileDrop($tableName, $ifExists))
                  ->execute();
         } catch (\Exception $e) {
             if (

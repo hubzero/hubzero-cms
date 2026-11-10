@@ -24,7 +24,8 @@ class Migration20140605155804ComPublications extends Base
 
         // Set up curation
         if (!$schema->tableExists('#__publication_logs')) {
-            $schema->createTable('#__publication_logs')
+            $schema
+                ->createTable('#__publication_logs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('publication_id')
                 ->integer('publication_version_id')

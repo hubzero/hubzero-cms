@@ -39,7 +39,8 @@ if (!$this->app->sess) {
         $this->js('jquery.editable.min.js', 'system');
 
     // Invlude NoVNC
-        $this->css('./novnc/base.css')
+        $this
+         ->css('./novnc/base.css')
          // Touch events to be translated to click events on mobile
          ->js('./novnc/jquery.ui.touch-punch.min.js')
          ->js('./novnc/util.js')

@@ -40,7 +40,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <form method="get" action="<?php echo Route::url($base . '&scope=following'); ?>" id="collections">
     <?php
-    $this->view('_submenu', 'collection')
+    $this
+         ->view('_submenu', 'collection')
          ->set('option', $this->option)
          ->set('group', $this->group)
          ->set('params', $this->params)

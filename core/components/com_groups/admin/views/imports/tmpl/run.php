@@ -18,7 +18,8 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('COM_GROUPS_IMPORT_TITLE_RUN'), 'import');
 
 // add import styles and scripts
-$this->js('import')
+$this
+     ->js('import')
      ->js('handlebars', 'system')
      ->css('import');
 ?>

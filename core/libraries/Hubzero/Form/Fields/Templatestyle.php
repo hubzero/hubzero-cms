@@ -49,7 +49,8 @@ class Templatestyle extends Groupedlist
         $db = App::get('db');
 
         // Build the query.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('s.id')
             ->select('s.title')
             ->select('e.name', 'name')

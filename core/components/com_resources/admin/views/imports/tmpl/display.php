@@ -101,7 +101,8 @@ $this->css('import');
                         </td>
                         <td class="priority-3">
                             <?php
-                            $runs = $import->runs()
+                            $runs = $import
+                                ->runs()
                                 ->whereEquals('dry_run', 0)
                                 ->order('id', 'desc')
                                 ->rows();

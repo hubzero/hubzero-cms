@@ -25,7 +25,8 @@ class Migration20150305100000ComPublications extends Base
 
         if ($schema->tableExists('#__publications')) {
             if (!$schema->hasColumn('#__publications', 'master_doi')) {
-                $schema->addColumn('#__publications', 'master_doi')
+                $schema
+                    ->addColumn('#__publications', 'master_doi')
                     ->string(255)
                     ->default('')
                     ->execute();

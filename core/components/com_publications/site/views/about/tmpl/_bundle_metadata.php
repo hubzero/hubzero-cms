@@ -35,7 +35,8 @@ defined('_HZEXEC_') or die();
     <div class="bundle-files">
         <ul class="filelist">
             <?php
-            $this->view('_bundle_contents')
+            $this
+                ->view('_bundle_contents')
                 ->set('contents', $this->bundle->getContents())
                 ->display();
             ?>

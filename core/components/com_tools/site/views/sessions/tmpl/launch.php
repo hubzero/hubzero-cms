@@ -12,7 +12,8 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
-$this->css('launch.css')
+$this
+     ->css('launch.css')
      ->js('launch.js');
 
 $base = rtrim(Request::root(), '/');

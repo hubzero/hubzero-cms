@@ -24,14 +24,16 @@ class Migration20130924000007Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__user_usergroup_map')) {
-            $schema->createTable('#__user_usergroup_map')
+            $schema
+                ->createTable('#__user_usergroup_map')
                 ->unsignedInteger('user_id')->default(0)
                 ->unsignedInteger('group_id')->default(0)
                 ->primaryKey(['user_id', 'group_id'])
                 ->execute();
         }
         if (!$schema->tableExists('#__usergroups')) {
-            $schema->createTable('#__usergroups')
+            $schema
+                ->createTable('#__usergroups')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('parent_id')->default(0)
                 ->integer('lft')->default(0)
@@ -57,7 +59,8 @@ class Migration20130924000007Core extends Base
             ];
 
             foreach ($usergroups as $group) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__usergroups')
                     ->values([
                         'id'        => $group[0],
@@ -70,7 +73,8 @@ class Migration20130924000007Core extends Base
             }
         }
         if (!$schema->tableExists('#__viewlevels')) {
-            $schema->createTable('#__viewlevels')
+            $schema
+                ->createTable('#__viewlevels')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 100)->default('')
                 ->integer('ordering')->default(0)
@@ -87,7 +91,8 @@ class Migration20130924000007Core extends Base
             ];
 
             foreach ($viewlevels as $level) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__viewlevels')
                     ->values([
                         'id'       => $level[0],
@@ -101,14 +106,16 @@ class Migration20130924000007Core extends Base
             // Update access levels on a few Joomla things as needed
             $tables = ['#__categories', '#__contact_details', '#__content', '#__menu', '#__modules'];
             foreach ($tables as $table) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update($table)
                     ->set(['access' => Expression::column('access')->plus(1)])
                     ->execute();
             }
 
             // Add rows to usergroup map table for existing users
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'usertype'])
                 ->from('#__users')
                 ->loadObjectList();
@@ -140,7 +147,8 @@ class Migration20130924000007Core extends Base
                             $group_id = 2;
                             break;
                     }
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__user_usergroup_map')
                         ->values([
                             'user_id'  => $r->id,
@@ -151,7 +159,8 @@ class Migration20130924000007Core extends Base
             }
 
             // Update user params (specifically to remove timezone)
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'params'])
                 ->from('#__users')
                 ->loadObjectList();
@@ -179,7 +188,8 @@ class Migration20130924000007Core extends Base
                         $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__users')
                         ->set(['params' => json_encode($array)])
                         ->where('id', '=', $r->id)
@@ -189,7 +199,8 @@ class Migration20130924000007Core extends Base
         }
 
         if (!$schema->tableExists('#__user_profiles')) {
-            $schema->createTable('#__user_profiles')
+            $schema
+                ->createTable('#__user_profiles')
                 ->integer('user_id')
                 ->string('profile_key', 100)
                 ->string('profile_value', 255)
@@ -199,7 +210,8 @@ class Migration20130924000007Core extends Base
         }
 
         if (!$schema->hasColumn('#__users', 'lastResetTime') && $schema->hasColumn('#__users', 'params')) {
-            $schema->addColumn('#__users', 'lastResetTime')
+            $schema
+                ->addColumn('#__users', 'lastResetTime')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

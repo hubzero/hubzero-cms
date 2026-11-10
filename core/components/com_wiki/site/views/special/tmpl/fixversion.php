@@ -62,7 +62,8 @@ $rows = $pages->rows();
             <?php
             if ($rows->count()) {
                 foreach ($rows as $row) {
-                    $version = $row->versions()
+                    $version = $row
+                        ->versions()
                         ->whereEquals('approved', 1)
                         ->order('version', 'desc')
                         ->row();

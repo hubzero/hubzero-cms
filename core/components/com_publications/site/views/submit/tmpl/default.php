@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('jquery.fancybox.css', 'system')
      ->js();
 

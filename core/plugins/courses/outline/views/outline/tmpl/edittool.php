@@ -129,7 +129,8 @@ $tool_path = $config->get('tool_path');
         <?php if ($asset->get('id')) : ?>
             <div class="prerequisites">
                 <?php
-                    $this->view('_prerequisites')
+                    $this
+                         ->view('_prerequisites')
                          ->set('scope', 'asset')
                          ->set('scope_id', $asset->get('id'))
                          ->set('section_id', $this->course->offering()->section()->get('id'))

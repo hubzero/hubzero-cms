@@ -245,7 +245,8 @@ class Application extends Obj
             $db = App::get('db');
 
             $past = time() + 1;
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->delete('#__sessions')
                 ->where('time', '<', (int) $past);
 

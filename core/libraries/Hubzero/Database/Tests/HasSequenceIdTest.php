@@ -57,7 +57,8 @@ class HasSequenceIdTest extends AbstractDriverTestCase
 
         // Create table WITHOUT auto-increment since the sequence will
         // provide the ID. Use a simple integer primary key.
-        $driver->createTable('seq_items')
+        $driver
+            ->createTable('seq_items')
             ->integer('id')->primaryKey('id')
             ->string('name', 255)->nullable()
             ->execute();

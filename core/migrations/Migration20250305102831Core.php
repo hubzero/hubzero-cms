@@ -24,7 +24,8 @@ class Migration20250305102831Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__ratelimit')) {
-            $schema->createTable('#__ratelimit')
+            $schema
+                ->createTable('#__ratelimit')
                 ->increments('ratelimit_id')
                 ->binary('ip', 16)
                 ->unsignedInteger('rule_id')->default(0)

@@ -300,14 +300,16 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->wish->config()->get('comments_depth', 3)) {
-            $comments = $this->comment->replies()
+            $comments = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     Components\Wishlist\Models\Comment::STATE_PUBLISHED,
                     Components\Wishlist\Models\Comment::STATE_FLAGGED,
                 ])
                 ->rows();
 
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('parent', $this->comment->get('id'))
                  ->set('cls', $cls)
                  ->set('depth', $this->depth)

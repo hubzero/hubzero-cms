@@ -128,7 +128,8 @@ class Items extends AdminController
             } else {
                 $filters['search'] = strtolower((string) $filters['search']);
 
-                $query->whereLike('title', $filters['search'], 1)
+                $query
+                        ->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
                         ->resetDepth();
             }
@@ -230,7 +231,8 @@ class Items extends AdminController
             } else {
                 $filters['search'] = strtolower((string) $filters['search']);
 
-                $query->whereLike('title', $filters['search'], 1)
+                $query
+                        ->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
                         ->resetDepth();
             }
@@ -301,7 +303,8 @@ class Items extends AdminController
             } else {
                 $filters['search'] = strtolower((string) $filters['search']);
 
-                $query->whereLike('title', $filters['search'], 1)
+                $query
+                        ->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
                         ->resetDepth();
             }
@@ -677,7 +680,8 @@ class Items extends AdminController
                         ORDER BY a.ordering";
                 $this->database->setQuery($sql);
                 $authnames = $this->database->loadObjectList();*/
-                $authnames = $row->authors()
+                $authnames = $row
+                    ->authors()
                     ->ordered()
                     ->rows();
 

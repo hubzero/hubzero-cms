@@ -24,13 +24,15 @@ class Migration20151118164723ComAnswers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__answers_questions_log')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__answers_questions_log');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__item_votes')
                     ->set([
                         'id'        => null,
@@ -48,13 +50,15 @@ class Migration20151118164723ComAnswers extends Base
         }
 
         if ($schema->tableExists('#__answers_log')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__answers_log');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__item_votes')
                     ->set([
                         'id'        => null,
@@ -86,7 +90,8 @@ class Migration20151118164723ComAnswers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__answers_questions_log')) {
-            $schema->createTable('#__answers_questions_log')
+            $schema
+                ->createTable('#__answers_questions_log')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('question_id')->default(0)
                 ->datetime('expires')->default('0000-00-00 00:00:00')
@@ -99,14 +104,16 @@ class Migration20151118164723ComAnswers extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'question');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__answers_questions_log')
                     ->set([
                         'id'          => null,
@@ -120,7 +127,8 @@ class Migration20151118164723ComAnswers extends Base
         }
 
         if (!$schema->tableExists('#__answers_log')) {
-            $schema->createTable('#__answers_log')
+            $schema
+                ->createTable('#__answers_log')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('response_id')->default(0)
                 ->string('ip', 15)->default('')
@@ -131,14 +139,16 @@ class Migration20151118164723ComAnswers extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'response');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__answers_log')
                     ->set([
                         'id'          => null,

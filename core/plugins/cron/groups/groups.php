@@ -163,7 +163,8 @@ class Groups extends Plugin
 
                 try {
                     $message = new \Hubzero\Mail\Message();
-                    $message->setSubject($subject)
+                    $message
+                            ->setSubject($subject)
                             ->addFrom($from, $site)
                             ->addTo($user->get('email'), $user->get('name'))
                             ->addPart($body, 'text/plain')

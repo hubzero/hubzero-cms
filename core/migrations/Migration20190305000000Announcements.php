@@ -43,13 +43,15 @@ class Migration20190305000000Announcements extends Base
 
             foreach ($fields as $field) {
                 if ($schema->hasColumn($tableName, $field)) {
-                    $schema->modifyColumn($tableName, $field)
+                    $schema
+                        ->modifyColumn($tableName, $field)
                         ->datetime()
                         ->nullable()
                         ->default(null)
                         ->execute();
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update($tableName)
                         ->set([$field => null])
                         ->where($field, '=', '0000-00-00 00:00:00')
@@ -73,7 +75,8 @@ class Migration20190305000000Announcements extends Base
 
             foreach ($fields as $field) {
                 if ($schema->hasColumn($tableName, $field)) {
-                    $schema->modifyColumn($tableName, $field)
+                    $schema
+                        ->modifyColumn($tableName, $field)
                         ->datetime()
                         ->notNull()
                         ->default('0000-00-00 00:00:00')

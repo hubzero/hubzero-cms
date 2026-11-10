@@ -205,7 +205,8 @@ switch ($this->level) {
 
             $html .= '<p class="warning">' . Lang::txt('You must be logged in and a member of one of the following groups to access the full resource:') . ' ' . implode(', ', $ghtml) . '</p>' . "\n";
         } else {
-            $firstChild = $resource->children()
+            $firstChild = $resource
+                ->children()
                 ->whereEquals('standalone', 0)
                 ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')
@@ -228,7 +229,8 @@ switch ($this->level) {
                 ->whereEquals('rid', $resource->id)
                 ->row();
 
-            $view = $this->view('_audience', 'view')
+            $view = $this
+                ->view('_audience', 'view')
                 ->set('audience', $audience)
                 ->set('showtips', 0)
                 ->set('numlevels', 4)

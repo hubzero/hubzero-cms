@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Push the module CSS to the template
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 <?php $divClass = $this->module->module . ($this->moduleclass ? ' ' . $this->moduleclass : ''); ?>

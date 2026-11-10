@@ -69,7 +69,8 @@ class BoostDocumentTypeMapTest extends Basic
         $langMock = $this->mock(['class' => 'Lang', 'methods' => ['txt']]);
         $map = new Map(['lang' => $langMock]);
 
-        $langMock->expects($this->once())
+        $langMock
+            ->expects($this->once())
             ->method('txt')
             ->with('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
 

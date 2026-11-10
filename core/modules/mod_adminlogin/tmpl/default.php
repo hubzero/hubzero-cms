@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die;
 
-$this->css('login')
+$this
+     ->css('login')
      ->css('providers', 'com_login')
      ->js('login');
 

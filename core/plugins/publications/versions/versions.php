@@ -93,7 +93,8 @@ class Versions extends Plugin
             $contributable = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('option', $option)
                 ->set('publication', $publication)
                 ->set('versions', $versions)

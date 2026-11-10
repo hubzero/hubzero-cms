@@ -32,7 +32,8 @@ Html::behavior('framework');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->js()
+$this
+    ->js()
     ->js('api')
     ->js('tagActivityLog')
     ->js('tagLogListItem')
@@ -197,7 +198,8 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <ul class="entry-log" id="entry-log">
                         <?php
                         foreach ($this->tag->logs()->ordered()->limit(100)->rows() as $log) {
-                            $this->view('_activity_log_item')
+                            $this
+                                ->view('_activity_log_item')
                                 ->set('log', $log)
                                 ->display();
                         }

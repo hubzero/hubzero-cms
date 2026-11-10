@@ -1408,7 +1408,8 @@ abstract class Table extends \stdClass
 
         // Determine if there is checkin support for the table.
         if (property_exists($this, 'checked_out') || property_exists($this, 'checked_out_time')) {
-            $query->whereEquals('checked_out', 0, 1)
+            $query
+                ->whereEquals('checked_out', 0, 1)
                 ->orWhereEquals('checked_out', (int) $userId, 1)
                 ->resetDepth();
             $checkin = true;

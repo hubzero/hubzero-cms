@@ -484,7 +484,8 @@ class Member extends User implements \Hubzero\Search\Searchable
     {
         $tbl = self::blank();
 
-        $query = $tbl->getQuery()
+        $query = $tbl
+            ->getQuery()
             ->update($tbl->getTableName())
             ->set(['usageAgreement' => 0]);
 
@@ -563,7 +564,8 @@ class Member extends User implements \Hubzero\Search\Searchable
         $obj->url = $baseUrl . $memberUrl;
 
         // @TODO: Add more fields to the SOLR core.
-        $fields = $this->profiles()
+        $fields = $this
+          ->profiles()
           ->whereIn('profile_key', ['organization', 'bio'])
           ->rows()
           ->toObject();

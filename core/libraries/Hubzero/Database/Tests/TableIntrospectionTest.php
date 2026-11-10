@@ -618,7 +618,8 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $tableName = 'introspect_test';
 
         $schema = $driver->schema();
-        $schema->createTable($tableName)
+        $schema
+            ->createTable($tableName)
             ->id()
             ->string('name', 100)
             ->string('email', 255)->nullable()

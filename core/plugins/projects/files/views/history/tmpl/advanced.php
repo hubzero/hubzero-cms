@@ -13,7 +13,8 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $v = count($this->versions) + 1;
@@ -74,7 +75,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     $extras =  ($allowDiff && !$this->getError()) ? '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />' : '';
 
                     // Display list item with file data
-                    $this->view('default', 'selected')
+                    $this
+                         ->view('default', 'selected')
                          ->set('skip', false)
                          ->set('file', $this->file)
                          ->set('action', 'history')

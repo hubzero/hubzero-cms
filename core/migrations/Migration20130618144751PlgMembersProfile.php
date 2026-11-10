@@ -30,7 +30,8 @@ class Migration20130618144751PlgMembersProfile extends Base
             $schema->modifyColumn('#__xprofiles', 'mailPreferenceOption')->tinyInteger(4)->default(-1);
 
             // Update existing data
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set(['mailPreferenceOption' => 1])
                 ->where('mailPreferenceOption', '=', 2)

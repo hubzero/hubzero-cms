@@ -24,7 +24,8 @@ class Migration20140703163627PlgXmessageHandler extends Base
 
         if ($schema->tableExists('#__xmessage_component')) {
             // Old flagged state was 1. Change it to 3.
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xmessage_component')
                 ->set(['component' => 'com_tools'])
                 ->where('component', '=', 'com_contribtool')
@@ -41,7 +42,8 @@ class Migration20140703163627PlgXmessageHandler extends Base
 
         if ($schema->tableExists('#__xmessage_component')) {
             // Old flagged state was 1. Change it to 3.
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xmessage_component')
                 ->set(['component' => 'com_contribtool'])
                 ->where('component', '=', 'com_tools')

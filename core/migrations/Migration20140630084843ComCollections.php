@@ -28,7 +28,8 @@ class Migration20140630084843ComCollections extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__collections')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__collections')
                 ->set(['access' => 4])
                 ->where('is_default', '=', 1)
@@ -45,7 +46,8 @@ class Migration20140630084843ComCollections extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__collections')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__collections')
                 ->set(['access' => 0])
                 ->where('is_default', '=', 1)

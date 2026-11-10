@@ -82,7 +82,8 @@ class Calendar extends Relational
             }
 
             // get calendar events
-            $rawEvents = $eventsCalendar->events()
+            $rawEvents = $eventsCalendar
+                ->events()
                 ->whereEquals('scope', $scope)
                 ->whereEquals('scope_id', $scope_id)
                 ->whereIn('state', [1])

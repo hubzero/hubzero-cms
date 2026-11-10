@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 
@@ -182,7 +183,8 @@ $this->css()
                 <?php endif; ?>
 
                 <?php if ($this->comments->count()) {
-                    $this->view('list')
+                    $this
+                         ->view('list')
                          ->set('option', $this->option)
                          ->set('comments', $this->comments)
                          ->set('obj_type', $this->obj_type)

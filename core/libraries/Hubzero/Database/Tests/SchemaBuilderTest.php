@@ -50,7 +50,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
     {
         $column = new Column('email', 'string', ['length' => 255]);
 
-        $column->nullable()
+        $column
+               ->nullable()
                ->unique()
                ->default('test@example.com');
 
@@ -181,7 +182,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_types', true);
 
         // Create table with various column types
-        $driver->createTable('test_schema_types')
+        $driver
+            ->createTable('test_schema_types')
             ->id()
             ->string('name', 100)
             ->string('email', 255)->nullable()
@@ -220,7 +222,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_indexes', true);
 
         // Create table with indexes
-        $driver->createTable('test_schema_indexes')
+        $driver
+            ->createTable('test_schema_indexes')
             ->id()
             ->string('username', 50)
             ->string('email', 100)
@@ -251,7 +254,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_integration', true);
 
         // Create table
-        $driver->createTable('test_schema_integration')
+        $driver
+            ->createTable('test_schema_integration')
             ->id()
             ->string('name', 100)
             ->string('email', 100)
@@ -260,18 +264,21 @@ class SchemaBuilderTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('test_schema_integration')
+        $query
+            ->insert('test_schema_integration')
             ->values(['name' => 'Alice', 'email' => 'alice@example.com', 'score' => 95])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('test_schema_integration')
+        $query
+            ->insert('test_schema_integration')
             ->values(['name' => 'Bob', 'email' => 'bob@example.com', 'score' => 87])
             ->execute();
 
         // Query data back
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('test_schema_integration')
             ->order('score', 'desc')
             ->fetch();
@@ -299,7 +306,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_modify', true);
 
         // Create initial table
-        $driver->createTable('test_schema_modify')
+        $driver
+            ->createTable('test_schema_modify')
             ->id()
             ->string('name', 100)
             ->execute();
@@ -309,7 +317,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $this->assertFalse($driver->tableHasField('test_schema_modify', 'email'), "[$dbName]");
 
         // Add new column
-        $schema->alterTable('test_schema_modify')
+        $schema
+            ->alterTable('test_schema_modify')
             ->addColumn('email', 'VARCHAR(255)')
             ->nullable()
             ->execute();
@@ -319,13 +328,15 @@ class SchemaBuilderTest extends AbstractDriverTestCase
 
         // Insert data with new column
         $query = new Query($driver);
-        $query->insert('test_schema_modify')
+        $query
+            ->insert('test_schema_modify')
             ->values(['name' => 'Test User', 'email' => 'test@example.com'])
             ->execute();
 
         // Query it back
         $query = new Query($driver);
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('test_schema_modify')
             ->fetch('row');
 
@@ -347,7 +358,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_timestamps', true);
 
         // Create table with timestamps
-        $driver->createTable('test_schema_timestamps')
+        $driver
+            ->createTable('test_schema_timestamps')
             ->id()
             ->string('title', 100)
             ->timestamp('created_at')->nullable()
@@ -360,13 +372,15 @@ class SchemaBuilderTest extends AbstractDriverTestCase
 
         // Insert record (timestamps should be nullable, so no need to provide them)
         $query = new Query($driver);
-        $query->insert('test_schema_timestamps')
+        $query
+            ->insert('test_schema_timestamps')
             ->values(['title' => 'Test Post'])
             ->execute();
 
         // Verify insertion succeeded
         $query = new Query($driver);
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('test_schema_timestamps')
             ->fetch('row');
 
@@ -387,7 +401,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('nonexistent_table_xyz', true);
 
         // Create then drop
-        $driver->createTable('test_drop_integration')
+        $driver
+            ->createTable('test_drop_integration')
             ->id()
             ->string('name', 50)
             ->execute();
@@ -410,7 +425,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_introspect', true);
 
         // Create table
-        $driver->createTable('test_introspect')
+        $driver
+            ->createTable('test_introspect')
             ->id()
             ->string('username', 50)
             ->string('email', 100)
@@ -453,7 +469,8 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_schema_builder', true);
 
         // Create the table
-        $driver->createTable('test_schema_builder')
+        $driver
+            ->createTable('test_schema_builder')
             ->id()
             ->string('name', 100)
             ->string('email', 100)
@@ -495,13 +512,15 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $driver->dropTable('test_modify', true);
 
         // Create initial table
-        $driver->createTable('test_modify')
+        $driver
+            ->createTable('test_modify')
             ->id()
             ->string('name', 100)
             ->execute();
 
         // Add column using schema
-        $schema->alterTable('test_modify')
+        $schema
+            ->alterTable('test_modify')
             ->addColumn('email', 'VARCHAR(255)')
             ->nullable()
             ->execute();

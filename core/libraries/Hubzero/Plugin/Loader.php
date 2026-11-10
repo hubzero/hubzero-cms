@@ -281,7 +281,8 @@ class Loader implements LoaderInterface
         if (!(self::$plugins = $cache->get('com_plugins.' . $levels))) {
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('folder', 'type')
                 ->select('element', 'name')
                 ->select('protected')

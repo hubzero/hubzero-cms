@@ -19,7 +19,8 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
-$this->css('register')
+$this
+     ->css('register')
      ->js('register');
 
 // get return url

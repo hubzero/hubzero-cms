@@ -44,7 +44,9 @@ class UpsertTest extends AbstractDriverTestCase
     {
         $driver->dropTable('upsert_items', true);
 
-        $driver->schema()->createTable('upsert_items')
+        $driver
+            ->schema()
+            ->createTable('upsert_items')
             ->id()
             ->string('code', 50)
             ->string('name', 255)->nullable()

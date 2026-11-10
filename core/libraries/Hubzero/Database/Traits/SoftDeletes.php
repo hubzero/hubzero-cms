@@ -241,7 +241,8 @@ trait SoftDeletes
         Event::trigger('system.onContentSoftDelete', [$this->getTableName(), $this]);
 
         // Perform the update using getQuery() which always returns a fresh query
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$column => $now])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -345,7 +346,8 @@ trait SoftDeletes
         $this->set($column, null);
 
         // Perform the update using getQuery() for a fresh query
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$column => null])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())

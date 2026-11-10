@@ -22,7 +22,8 @@ class Migration20140110132511ComContact extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -46,7 +47,8 @@ class Migration20140110132511ComContact extends Base
     {
         $schema = $this->db->schema();
 
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -60,7 +62,8 @@ class Migration20140110132511ComContact extends Base
             $this->addPluginEntry('user', 'contactcreator');
 
             if (!$schema->tableExists('#__contact_details')) {
-                $schema->createTable('#__contact_details')
+                $schema
+                    ->createTable('#__contact_details')
                     ->integer('id', ['autoIncrement' => true])
                     ->string('name', 255)->default('')
                     ->string('alias', 255)->default('')

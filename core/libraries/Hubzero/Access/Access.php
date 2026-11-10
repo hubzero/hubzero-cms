@@ -192,7 +192,8 @@ class Access
         $model = Asset::blank();
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select($recursive ? 'b.rules' : 'a.rules');
 
         $query->from($model->getTableName(), 'a');
@@ -260,10 +261,12 @@ class Access
                 $query->select($recursive ? 'b.id, b.title' : 'a.id, a.title');
 
                 if (empty($userId)) {
-                    $query->from('#__usergroups', 'a')
+                    $query
+                        ->from('#__usergroups', 'a')
                         ->whereEquals('a.id', (int) Component::params('com_members')->get('guest_usergroup', 1));
                 } else {
-                    $query->from('#__user_usergroup_map', 'map')
+                    $query
+                        ->from('#__user_usergroup_map', 'map')
                         ->whereEquals('map.user_id', (int) $userId)
                         ->join('#__usergroups AS a', 'a.id', 'map.group_id', 'left');
                 }
@@ -315,7 +318,8 @@ class Access
 
         // First find the users contained in the group
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(user_id)')
             ->from('#__usergroups', 'ug1')
             ->joinRaw('#__usergroups AS ug2', 'ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt', 'inner')

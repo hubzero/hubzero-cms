@@ -28,7 +28,8 @@ class Migration20141004111111ComCitations extends Base
             $schema->tableExists('#__citations_secondary')
             && !$schema->hasColumn('#__citations_secondary', 'scope')
         ) {
-            $schema->alterTable('#__citations_secondary')
+            $schema
+                ->alterTable('#__citations_secondary')
                 ->addColumn('scope')->string(250)->nullable()->default(null)
                 ->addColumn('scope_id')->integer()->nullable()->default(null)
                 ->execute();

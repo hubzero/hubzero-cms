@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 $base = rtrim(Request::base(true), '/');
 
 // Push scripts to document
-$this->css()
+$this
+     ->css()
      ->js('flot/jquery.flot.min.js', 'system')
      ->js('flot/jquery.flot.time.js', 'system')
      ->js('flot/jquery.flot.selection.min.js', 'system')

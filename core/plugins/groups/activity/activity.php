@@ -228,7 +228,8 @@ class Activity extends Plugin
             ->start($filters['start'])
             ->rows();
 
-        $view = $this->view('default', 'activity')
+        $view = $this
+            ->view('default', 'activity')
             ->set('name', $this->pluginName)
             ->set('group', $this->group)
             ->set('canModerate', $this->canModerate)

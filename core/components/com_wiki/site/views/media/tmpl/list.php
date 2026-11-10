@@ -20,7 +20,8 @@ $base = Request::base(true);
 if (!$no_html) {
     Html::behavior('framework', true);
 
-    $this->css()
+    $this
+        ->css()
         ->js('media.js');
     ?>
 <?php } ?>

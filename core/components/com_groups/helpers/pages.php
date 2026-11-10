@@ -42,7 +42,8 @@ class Pages
 
         // create page object
         $home = new Page(0);
-        $home->set('id', 0)
+        $home
+             ->set('id', 0)
              ->set('gidNumber', $group->get('gidNumber'))
              ->set('title', 'Home')
              ->set('alias', 'overview')
@@ -54,7 +55,8 @@ class Pages
 
         // create page version object
         $homeVersion = new Page\Version(0);
-        $homeVersion->set('pageid', 0)
+        $homeVersion
+                    ->set('pageid', 0)
                     ->set('version', 1)
                     ->set('approved', 1)
                     ->set('content', self::getDefaultHomePage($group));
@@ -309,7 +311,8 @@ class Pages
         $message = new \Hubzero\Mail\Message();
 
         // build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($from['email'], $from['name'])
                 ->setBcc($approvers)
@@ -377,7 +380,8 @@ class Pages
         $message = new \Hubzero\Mail\Message();
 
         // build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($from['email'], $from['name'])
                 ->setBcc($managers)
@@ -749,7 +753,8 @@ class Pages
 
         // set group doc needed props
         // parse and render content
-        $groupDocument->set('group', $group)
+        $groupDocument
+                      ->set('group', $group)
                       ->set('page', $page)
                       ->set('document', $document)
                       ->parse()
@@ -816,7 +821,8 @@ class Pages
 
         // set group doc needed props
         // parse and render content
-        $groupDocument->set('group', $group)
+        $groupDocument
+                      ->set('group', $group)
                       ->set('page', $page)
                       ->set('document', $content)
                       ->parse()

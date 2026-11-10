@@ -42,7 +42,8 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('assetgroups');
 
-$this->css()
+$this
+    ->css()
     ->css('duplicateAssets');
 
 Html::behavior('tooltip');

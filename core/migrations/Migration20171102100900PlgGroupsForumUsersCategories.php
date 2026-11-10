@@ -25,7 +25,8 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
         $tableName = self::$tableName;
 
         if (!$schema->tableExists($tableName)) {
-            $schema->createTable($tableName)
+            $schema
+                ->createTable($tableName)
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')
                 ->unsignedInteger('category_id')

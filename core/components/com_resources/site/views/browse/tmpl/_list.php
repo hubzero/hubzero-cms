@@ -13,7 +13,8 @@ defined('_HZEXEC_') or die();
     <?php
     foreach ($this->lines as $line) {
         // Instantiate a new view
-        $this->view('item', 'browse')
+        $this
+            ->view('item', 'browse')
             ->set('line', $line)
             ->set('supported', isset($this->supported) ? $this->supported : [])
             ->display();

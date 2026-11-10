@@ -23,7 +23,8 @@ class Migration20160629215021ComSearch extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__search_indexqueue')) {
-            $schema->createTable('#__search_indexqueue')
+            $schema
+                ->createTable('#__search_indexqueue')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('hubtype', 12)->default('')
                 ->string('action', 12)->nullable()

@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes';
@@ -101,7 +102,8 @@ $listed = $publicStamp ? $publicStamp->listed : false;
             <div id="scope" class="hidden"><?php echo $this->scope; ?></div>
         </div>
         <?php if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
-            $this->view('sharelink')
+            $this
+                 ->view('sharelink')
                  ->set('option', $this->option)
                  ->set('page', $this->page)
                  ->set('task', $this->task)
@@ -113,7 +115,8 @@ $listed = $publicStamp ? $publicStamp->listed : false;
     <?php if ($showSidePanel) { ?>
         <div class="col span3 omega">
             <div>
-                <?php $this->view('list')
+                <?php $this
+                     ->view('list')
                      ->set('option', $this->option)
                      ->set('page', $this->page)
                      ->set('scope', $this->scope)

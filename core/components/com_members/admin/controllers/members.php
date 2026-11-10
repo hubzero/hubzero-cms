@@ -163,7 +163,8 @@ class Members extends AdminController
             if (is_numeric($filters['search'])) {
                 $entries->whereEquals($a . '.id', (int) $filters['search']);
             } else {
-                $entries->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
+                $entries
+                    ->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
                     ->orWhereLike($a . '.username', strtolower((string) $filters['search']), 1)
                     ->orWhereLike($a . '.email', strtolower((string) $filters['search']), 1)
                     ->resetDepth();
@@ -1303,7 +1304,8 @@ class Members extends AdminController
             ->whereEquals('block', 0);
 
         if ($filters['search']) {
-            $entries->whereLike('name', strtolower((string) $filters['search']), 1)
+            $entries
+                ->whereLike('name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('username', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('email', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
@@ -1428,7 +1430,8 @@ class Members extends AdminController
         $entries = \Hubzero\Access\Asset::all();
 
         if ($filters['search']) {
-            $entries->whereLike('name', $filters['search'], 1)
+            $entries
+                ->whereLike('name', $filters['search'], 1)
                 ->orWhereLike('title', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -1442,7 +1445,8 @@ class Members extends AdminController
 
         // Filter the items over the component if set.
         if ($filters['component']) {
-            $entries->whereEquals('name', $filters['component'], 1)
+            $entries
+                ->whereEquals('name', $filters['component'], 1)
                 ->orWhereLike('name', $filters['component'], 1)
                 ->resetDepth();
         }

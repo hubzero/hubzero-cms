@@ -73,7 +73,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_integers', true);
 
-        $driver->schema()->createTable('coltest_integers')
+        $driver
+            ->schema()
+            ->createTable('coltest_integers')
             ->id()
             ->integer('regular_int')
             ->bigInteger('big_int')
@@ -101,7 +103,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_integers', true);
 
-        $driver->schema()->createTable('coltest_integers')
+        $driver
+            ->schema()
+            ->createTable('coltest_integers')
             ->id()
             ->string('name', 50)
             ->execute();
@@ -114,7 +118,8 @@ class ColumnBuilderTest extends AbstractDriverTestCase
         ]);
 
         $query2 = new Query($driver);
-        $rows = $query2->from('coltest_integers')
+        $rows = $query2
+                       ->from('coltest_integers')
                        ->select('*')
                        ->order('id', 'asc')
                        ->fetch('rows');
@@ -133,7 +138,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_strings', true);
 
-        $driver->schema()->createTable('coltest_strings')
+        $driver
+            ->schema()
+            ->createTable('coltest_strings')
             ->id()
             ->string('short_str', 100)
             ->string('default_str')
@@ -173,7 +180,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_booleans', true);
 
-        $driver->schema()->createTable('coltest_booleans')
+        $driver
+            ->schema()
+            ->createTable('coltest_booleans')
             ->id()
             ->boolean('is_active')
             ->boolean('is_admin')
@@ -199,7 +208,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_decimals', true);
 
-        $driver->schema()->createTable('coltest_decimals')
+        $driver
+            ->schema()
+            ->createTable('coltest_decimals')
             ->id()
             ->decimal('price', 8, 4)
             ->decimal('default_decimal')
@@ -225,7 +236,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_dates', true);
 
-        $driver->schema()->createTable('coltest_dates')
+        $driver
+            ->schema()
+            ->createTable('coltest_dates')
             ->id()
             ->date('birth_date')
             ->datetime('created_at')
@@ -252,7 +265,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_dates', true);
 
-        $driver->schema()->createTable('coltest_dates')
+        $driver
+            ->schema()
+            ->createTable('coltest_dates')
             ->id()
             ->string('label', 50)
             ->timestamp('created_at')->default('CURRENT_TIMESTAMP')
@@ -278,7 +293,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_special', true);
 
-        $driver->schema()->createTable('coltest_special')
+        $driver
+            ->schema()
+            ->createTable('coltest_special')
             ->id()
             ->uuid('unique_id')
             ->ipAddress('ip')
@@ -317,7 +334,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_notnull', true);
 
-        $driver->schema()->createTable('coltest_notnull')
+        $driver
+            ->schema()
+            ->createTable('coltest_notnull')
             ->id()
             ->string('required_name', 100)->notNull()
             ->execute();
@@ -352,7 +371,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_defaults', true);
 
-        $driver->schema()->createTable('coltest_defaults')
+        $driver
+            ->schema()
+            ->createTable('coltest_defaults')
             ->id()
             ->string('label', 100)
             ->integer('score')->default(100)
@@ -380,7 +401,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_nullable', true);
 
-        $driver->schema()->createTable('coltest_nullable')
+        $driver
+            ->schema()
+            ->createTable('coltest_nullable')
             ->id()
             ->string('name', 100)
             ->string('bio', 500)->nullable()
@@ -406,7 +429,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_unique', true);
 
-        $driver->schema()->createTable('coltest_unique')
+        $driver
+            ->schema()
+            ->createTable('coltest_unique')
             ->id()
             ->string('email', 255)
             ->uniqueIndex('idx_coltest_email', 'email')
@@ -447,7 +472,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_booleans', true);
 
-        $driver->schema()->createTable('coltest_booleans')
+        $driver
+            ->schema()
+            ->createTable('coltest_booleans')
             ->id()
             ->string('name', 50)
             ->boolean('is_active')->default(true)
@@ -475,7 +502,9 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('coltest_combined', true);
 
-        $driver->schema()->createTable('coltest_combined')
+        $driver
+            ->schema()
+            ->createTable('coltest_combined')
             ->id()
             ->string('label', 50)
             ->integer('score')->notNull()->default(0)
@@ -496,7 +525,8 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
         // Verify Row 1
         $q1 = new Query($driver);
-        $row1 = $q1->from('coltest_combined')
+        $row1 = $q1
+                    ->from('coltest_combined')
                     ->select('*')
                     ->whereEquals('label', 'Row1')
                     ->fetch('row');
@@ -505,7 +535,8 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
         // Verify Row 2 (defaults applied)
         $q2 = new Query($driver);
-        $row2 = $q2->from('coltest_combined')
+        $row2 = $q2
+                    ->from('coltest_combined')
                     ->select('*')
                     ->whereEquals('label', 'Row2')
                     ->fetch('row');

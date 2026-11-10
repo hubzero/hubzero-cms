@@ -39,7 +39,8 @@ class Upay extends Plugin
      */
     public function onRenderPaymentOptions($cart, $user)
     {
-        $view = $this->view('default', 'payment')
+        $view = $this
+            ->view('default', 'payment')
             ->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
 
         $payment = [];
@@ -143,7 +144,8 @@ class Upay extends Plugin
         // Payment selected mark transaction as awaiting payment
         Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
 
-        $view = $this->view('code', 'payment')
+        $view = $this
+            ->view('code', 'payment')
             ->set('user', $user)
             ->set('postUrl', $this->getPostURL())
             ->set('transaction', $transaction)

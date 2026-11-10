@@ -22,7 +22,8 @@ $drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
-    $this->view('crumbs', 'pages')
+    $this
+        ->view('crumbs', 'pages')
         ->set('parents', $this->parents)
         ->display();
     ?>
@@ -30,7 +31,8 @@ $drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
     <h2><?php echo $this->escape($this->page->title); ?></h2>
     <?php
     if (!$this->page->isStatic()) {
-        $this->view('authors', 'pages')
+        $this
+            ->view('authors', 'pages')
             //->setBasePath($this->base_path)
             ->set('page', $this->page)
             ->display();
@@ -42,7 +44,8 @@ $drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu', 'pages')
+        $this
+            ->view('wikimenu', 'pages')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -59,7 +62,8 @@ $drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
         <?php } ?>
 
         <?php
-        $this->view('submenu', 'pages')
+        $this
+            ->view('submenu', 'pages')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)

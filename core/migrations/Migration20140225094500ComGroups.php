@@ -22,7 +22,8 @@ class Migration20140225094500ComGroups extends Base
     {
         // get groups who dont have a created value
         // get groups who dont have a created value
-        $groups = $this->db->getQuery(true)
+        $groups = $this->db
+            ->getQuery(true)
             ->select('*')
             ->from('#__xgroups')
             ->whereIsNull('created')
@@ -30,7 +31,8 @@ class Migration20140225094500ComGroups extends Base
 
         // get created logs
         // get created logs
-        $logs = $this->db->getQuery(true)
+        $logs = $this->db
+            ->getQuery(true)
             ->select(['gidNumber', 'timestamp', 'actorid'])
             ->from('#__xgroups_log')
             ->where('action', '=', 'group_created')

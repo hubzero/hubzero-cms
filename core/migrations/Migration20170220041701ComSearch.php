@@ -24,7 +24,8 @@ class Migration20170220041701ComSearch extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__solr_search_facets')) {
-            $schema->createTable('#__solr_search_facets')
+            $schema
+                ->createTable('#__solr_search_facets')
                 ->id()
                 ->string('name', 255)
                 ->longText('facet')->nullable()
@@ -36,7 +37,8 @@ class Migration20170220041701ComSearch extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__solr_search_facets')
                 ->columns(['id', 'name', 'facet', 'state', 'protected', 'ordering', 'parent_id'])
                 ->values([

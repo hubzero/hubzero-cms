@@ -13,11 +13,13 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) {
-    $this->css('reviewers')
+    $this
+         ->css('reviewers')
          ->css('jquery.fancybox.css', 'system');
 }
 
@@ -91,7 +93,8 @@ $total = $this->model->entries('count', $this->filters);
 
             if (count($rows)) {
                 // Display List of items
-                $this->view('_list')
+                $this
+                     ->view('_list')
                      ->set('rows', $rows)
                      ->set('filters', $this->filters)
                      ->set('model', $this->model)

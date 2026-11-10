@@ -99,7 +99,8 @@ class Hubzero extends Plugin
         // Remove old records
         if ($duration = Component::params('com_members')->get('login_log_timeframe')) {
             $authlog = \Hubzero\User\Log\Auth::blank();
-            $authlog->delete($authlog->getTableName())
+            $authlog
+                ->delete($authlog->getTableName())
                 ->where('logged', '<', Date::of('now')->modify('-' . $duration)->toSql())
                 ->execute();
         }
@@ -196,7 +197,8 @@ class Hubzero extends Plugin
         $threshold = date("Y-m-d H:i:s", strtotime(Date::toSql() . " {$timeframe} hours ago"));
         $auths     = new \Hubzero\User\Log\Auth();
 
-        $auths->whereEquals('username', $user->username)
+        $auths
+              ->whereEquals('username', $user->username)
               ->whereEquals('status', 'failure')
               ->where('logged', '>=', $threshold);
 
@@ -237,7 +239,8 @@ class Hubzero extends Plugin
             $auths     = new \Hubzero\User\Log\Auth();
 
             // Select all usernames which are blocked
-            $auths = $auths->whereEquals('status', 'blocked')
+            $auths = $auths
+                        ->whereEquals('status', 'blocked')
                         ->select('username')
                         ->whereEquals('ip', $ip)
                         ->where('logged', '>=', $threshold)

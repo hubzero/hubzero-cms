@@ -24,7 +24,8 @@ class Migration20140508120000PlgMembersDashboard extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xprofiles_dashboard_preferences') && $schema->tableExists('#__myhub')) {
-            $dashboardPlugin = $this->db->getQuery(true)
+            $dashboardPlugin = $this->db
+                ->getQuery(true)
                 ->select(['extension_id', 'params'])
                 ->from('#__extensions')
                 ->where('folder', '=', 'members')
@@ -67,14 +68,16 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 }
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => json_encode($params)])
                 ->where('extension_id', '=', $dashboardPlugin->extension_id)
                 ->execute();
 
             // create dashboard prefs table
-            $schema->createTable('#__xprofiles_dashboard_preferences')
+            $schema
+                ->createTable('#__xprofiles_dashboard_preferences')
                 ->unsignedInteger('uidNumber')
                 ->text('preferences')->nullable()
                 ->datetime('modified')->nullable()
@@ -84,7 +87,8 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->execute();
 
             // move over exxisting preferences
-            $preferences = $this->db->getQuery(true)
+            $preferences = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__myhub')
                 ->group('uid')
@@ -120,7 +124,8 @@ class Migration20140508120000PlgMembersDashboard extends Base
             // if we have some prefs to move over
             if (count($newpreferences) > 0) {
                 foreach ($newpreferences as $pref) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xprofiles_dashboard_preferences')
                         ->columns(['uidNumber', 'preferences', 'modified'])
                         ->values([
@@ -152,7 +157,8 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
         // create myhub table
         if (!$schema->tableExists('#__myhub')) {
-            $schema->createTable('#__myhub')
+            $schema
+                ->createTable('#__myhub')
                 ->integer('uid')
                 ->string('prefs', 200)->nullable()
                 ->datetime('modified')->default('0000-00-00 00:00:00')
@@ -163,7 +169,8 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
         // create myhub params table
         if (!$schema->tableExists('#__myhub_params')) {
-            $schema->createTable('#__myhub_params')
+            $schema
+                ->createTable('#__myhub_params')
                 ->integer('uid')
                 ->integer('mid')
                 ->text('params')->nullable()

@@ -33,7 +33,8 @@ class DisableTemplate extends Macro
         }
 
         if ($this->db->tableExists('#__template_styles')) {
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('id')
                 ->from('#__template_styles')
                 ->whereEquals('template', $element)
@@ -52,7 +53,8 @@ class DisableTemplate extends Macro
 
         $enabled = 0;
 
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'enabled' => $enabled,

@@ -106,7 +106,8 @@ class Wiki extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $page->get('id'))
              ->set('created', $page->get('created'))
              ->set('created_by', $page->get('created_by'))

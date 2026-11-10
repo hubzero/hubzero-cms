@@ -56,7 +56,8 @@ class Adminmenu extends Module
     public static function getMenus()
     {
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.*')
             ->select('SUM(b.home)', 'home')
             ->from('#__menu_types', 'a')
@@ -101,7 +102,8 @@ class Adminmenu extends Module
         $langs  = [];
 
         // Prepare the query.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('m.id')
             ->select('m.title')
             ->select('m.alias')
@@ -113,7 +115,8 @@ class Adminmenu extends Module
             ->from('#__menu', 'm');
 
         // Filter on the enabled states.
-        $query->join('#__extensions AS e', 'm.component_id', 'e.extension_id', 'left')
+        $query
+            ->join('#__extensions AS e', 'm.component_id', 'e.extension_id', 'left')
             ->whereEquals('m.client_id', '1')
             ->whereEquals('e.enabled', '1')
             ->where('m.id', '>', '1');

@@ -167,7 +167,8 @@ class Entriesv1r0 extends ApiController
         if ($response->total) {
             $base = rtrim(Request::base(), '/');
 
-            $rows = $model->entries($filters)
+            $rows = $model
+                ->entries($filters)
                 ->ordered('sort', 'sort_Dir')
                 ->paginated()
                 ->rows();

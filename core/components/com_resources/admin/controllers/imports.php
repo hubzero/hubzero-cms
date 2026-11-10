@@ -429,7 +429,8 @@ class Imports extends AdminController
         $import = Import::oneOrFail($id);
 
         // get the lastest run
-        $run = $import->runs()
+        $run = $import
+            ->runs()
             ->order('id', 'desc')
             ->rows()
             ->first();

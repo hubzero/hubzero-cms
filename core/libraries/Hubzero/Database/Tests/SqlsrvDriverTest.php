@@ -1034,7 +1034,8 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ss_items')
             ->order('id', 'asc')
@@ -1054,7 +1055,8 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ss_items')
             ->order('id', 'asc')
@@ -1076,11 +1078,13 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ss_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('ss_categories')
                     ->whereEquals('active', 1);
             })
@@ -1099,7 +1103,8 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ss_items')
             ->whereIn('id', [])
@@ -1145,7 +1150,8 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('ss_ddl_test')
+        $driver
+            ->createTable('ss_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()

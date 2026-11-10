@@ -25,7 +25,8 @@ class Migration20141112142733ComCourses extends Base
 
         if ($schema->tableExists('#__courses')) {
             if (!$schema->hasColumn('#__courses', 'length')) {
-                $schema->addColumn('#__courses', 'length')
+                $schema
+                    ->addColumn('#__courses', 'length')
                     ->string(255)
                     ->nullable()
                     ->default(null)
@@ -33,7 +34,8 @@ class Migration20141112142733ComCourses extends Base
             }
 
             if (!$schema->hasColumn('#__courses', 'effort')) {
-                $schema->addColumn('#__courses', 'effort')
+                $schema
+                    ->addColumn('#__courses', 'effort')
                     ->string(255)
                     ->nullable()
                     ->default(null)

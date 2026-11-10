@@ -518,7 +518,8 @@ class Loader
         try {
             $db = $this->app->get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('extension_id', 'id')
                 ->select('element', '"option"')
                 ->select('params')

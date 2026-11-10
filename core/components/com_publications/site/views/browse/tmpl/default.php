@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $database = App::get('db');
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">
@@ -118,7 +119,8 @@ $this->css()
                     <?php
                     if ($this->results && $this->results->count() > 0) {
                         // Display List of items
-                        $this->view('_list')
+                        $this
+                             ->view('_list')
                              ->set('results', $this->results)
                              ->set('filters', $this->filters)
                              ->set('config', $this->config)

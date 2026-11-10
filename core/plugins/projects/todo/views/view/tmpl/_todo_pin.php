@@ -42,7 +42,8 @@ $commentsLinkTitle = Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT');
         <span class="todo-content" id="td-content-<?php echo $id; ?>"><?php echo $truncatedContent; ?></span>
         <span class="todo-options" id="td-options-<?php echo $id; ?>">
             <?php
-            $this->view('_todo_pin_assignment_info')
+            $this
+                ->view('_todo_pin_assignment_info')
                 ->set('id', $id)
                 ->set('isComplete', $isComplete)
                 ->set('todo', $todo)

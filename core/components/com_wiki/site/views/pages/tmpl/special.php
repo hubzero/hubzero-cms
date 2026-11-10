@@ -22,7 +22,8 @@ $this->js();
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu', 'pages')
+        $this
+            ->view('wikimenu', 'pages')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -39,7 +40,8 @@ $this->js();
         <?php } ?>
 
         <?php
-        $this->view('submenu', 'pages')
+        $this
+            ->view('submenu', 'pages')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)
@@ -56,7 +58,8 @@ $this->js();
 
         <article>
             <?php
-            $this->view(strtolower($this->layout), 'special')
+            $this
+                ->view(strtolower($this->layout), 'special')
                 //->setBasePath($this->base_path)
                 ->set('option', $this->option)
                 ->set('controller', $this->controller)

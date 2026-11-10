@@ -33,7 +33,8 @@ class LockableTraitTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('lockable_articles', true);
-        $driver->createTable('lockable_articles')
+        $driver
+            ->createTable('lockable_articles')
             ->id()
             ->string('title', 255)
             ->string('content', 500)->nullable()
@@ -42,7 +43,8 @@ class LockableTraitTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->dropTable('lockable_custom_articles', true);
-        $driver->createTable('lockable_custom_articles')
+        $driver
+            ->createTable('lockable_custom_articles')
             ->id()
             ->string('title', 255)
             ->integer('locked_by')->nullable()

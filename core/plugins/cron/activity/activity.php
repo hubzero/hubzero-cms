@@ -186,7 +186,8 @@ class Activity extends Plugin
 
         // Build message
         $message = App::get('mailer');
-        $message->setSubject(Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_SUBJECT'))
+        $message
+                ->setSubject(Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_SUBJECT'))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
                 ->addTo($user->get('email'), $user->get('name'))
                 ->addHeader('X-Component', 'com_members')

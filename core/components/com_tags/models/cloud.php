@@ -238,10 +238,12 @@ class Cloud extends \Hubzero\Base\Obj
 
             $tbl = Substitute::blank()->getTableName();
 
-            $results->select($results->getTableName() . '.*')
+            $results
+                ->select($results->getTableName() . '.*')
                 ->join($tbl, $tbl . '.tag_id', $results->getTableName() . '.id', 'left');
 
-            $results->whereLike($results->getTableName() . '.raw_tag', $filters['search'], 1)
+            $results
+                ->whereLike($results->getTableName() . '.raw_tag', $filters['search'], 1)
                 ->orWhereLike($results->getTableName() . '.tag', $filters['search'], 1)
                 ->orWhereLike($tbl . '.raw_tag', $filters['search'], 1)
                 ->resetDepth();
@@ -410,7 +412,8 @@ class Cloud extends \Hubzero\Base\Obj
 
         foreach ($tags as $tag_id) {
             $tag = Tag::oneOrFail($tag_id);
-            $tag->set('objects', $tag->objects()->total())
+            $tag
+                ->set('objects', $tag->objects()->total())
                 ->save();
         }
 
@@ -474,7 +477,8 @@ class Cloud extends \Hubzero\Base\Obj
                         'name'      => 'tags',
                         'layout'    => '_cloud',
                     ]);
-                    $view->set('config', Component::params('com_tags'))
+                    $view
+                         ->set('config', Component::params('com_tags'))
                          ->set('tags', $this->tags('list', $filters, $clear));
 
                     $this->cache['tags.cloud'] = $view->loadTemplate();

@@ -24,7 +24,9 @@ class Migration20131108091700ComBlog extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__blog_entries')) {
-            $schema->table('#__blog_entries')->alter()
+            $schema
+                ->table('#__blog_entries')
+                ->alter()
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('created_by', true)->notNull()->default(0)
                 ->modifyTinyInteger('state')->notNull()->default(0)
@@ -42,7 +44,9 @@ class Migration20131108091700ComBlog extends Base
                 ->execute();
 
             if ($schema->hasColumn('#__blog_entries', 'group_id')) {
-                $schema->table('#__blog_entries')->alter()
+                $schema
+                    ->table('#__blog_entries')
+                    ->alter()
                     ->modifyInteger('group_id')->notNull()->default(0)
                     ->addIndex('idx_group_id', 'group_id')
                     ->execute();
@@ -50,7 +54,9 @@ class Migration20131108091700ComBlog extends Base
         }
 
         if ($schema->tableExists('#__blog_comments')) {
-            $schema->table('#__blog_comments')->alter()
+            $schema
+                ->table('#__blog_comments')
+                ->alter()
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('parent', true)->notNull()->default(0)
                 ->modifyInteger('created_by', true)->notNull()->default(0)
@@ -71,7 +77,9 @@ class Migration20131108091700ComBlog extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__blog_entries')) {
-            $schema->table('#__blog_entries')->alter()
+            $schema
+                ->table('#__blog_entries')
+                ->alter()
                 ->dropIndex('idx_created_by')
                 ->dropIndex('idx_group_id')
                 ->dropIndex('idx_alias')
@@ -79,7 +87,9 @@ class Migration20131108091700ComBlog extends Base
         }
 
         if ($schema->tableExists('#__blog_comments')) {
-            $schema->table('#__blog_comments')->alter()
+            $schema
+                ->table('#__blog_comments')
+                ->alter()
                 ->dropIndex('idx_created_by')
                 ->dropIndex('idx_parent')
                 ->execute();

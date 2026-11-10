@@ -106,7 +106,8 @@ class Editor extends Field
                 // Iterate over teh types looking for an existing editor.
                 foreach ($types as $element) {
                     // Build the query.
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('element')
                         ->from('#__extensions')
                         ->whereEquals('element', $element)

@@ -24,7 +24,8 @@ class Migration20160817174610PlgResourcesWindowstools extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__resource_pages')) {
-            $schema->createTable('#__resource_pages')
+            $schema
+                ->createTable('#__resource_pages')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->string('alias', 255)->default('')

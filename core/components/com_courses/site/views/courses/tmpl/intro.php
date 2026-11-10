@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('introduction', 'system')
+$this
+     ->css('introduction', 'system')
      ->css('intro.css');
 ?>
 <header id="content-header">
@@ -98,7 +99,8 @@ if (count($this->notifications) > 0) {
                     if ($count == 0) {
                         echo '<div class="grid">';
                     }
-                    $this->view('_course')
+                    $this
+                         ->view('_course')
                          ->set('count', $count)
                          ->set('columns', 2)
                          ->set('course', $course)

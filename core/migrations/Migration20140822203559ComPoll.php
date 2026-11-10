@@ -29,7 +29,8 @@ class Migration20140822203559ComPoll extends Base
         ) {
             $schema->addColumn('#__polls', 'alias')->string(255)->notNull()->default('')->execute();
 
-            $polls = $this->db->getQuery(true)
+            $polls = $this->db
+                ->getQuery(true)
                 ->select(['id', 'title'])
                 ->from('#__polls')
                 ->loadObjectList();
@@ -39,7 +40,8 @@ class Migration20140822203559ComPoll extends Base
                     $alias = preg_replace("/[^a-zA-Z0-9]/", '', $poll->title);
                     $alias = strtolower($alias);
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__polls')
                         ->set(['alias' => $alias])
                         ->where('id', '=', $poll->id)

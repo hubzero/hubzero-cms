@@ -24,7 +24,8 @@ class Migration20150224205200PlgContent extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $plugin = $this->db->getQuery(true)
+            $plugin = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -42,14 +43,16 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('activateSite', 1);
                 $params->set('noconflictSite', 0);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)
                     ->execute();
             }
 
-            $plugin = $this->db->getQuery(true)
+            $plugin = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -62,14 +65,16 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('applyFormat', 1);
                 $params->set('convertFormat', 1);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)
                     ->execute();
             }
 
-            $plugin = $this->db->getQuery(true)
+            $plugin = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -83,7 +88,8 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('convertFormat', 0);
                 $params->set('sanitizeBefore', 0);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)

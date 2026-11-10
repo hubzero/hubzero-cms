@@ -23,7 +23,8 @@ class Migration20170329190610ComActivity extends Base
     {
         $this->addComponentEntry('activity');
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set(['protected' => 1])
             ->where('element', '=', 'com_activity')

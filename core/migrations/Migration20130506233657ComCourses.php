@@ -29,7 +29,8 @@ class Migration20130506233657ComCourses extends Base
 
             // Now create the new one
             if (!$schema->hasTable('#__courses_grade_policies')) {
-                $schema->createTable('#__courses_grade_policies')
+                $schema
+                    ->createTable('#__courses_grade_policies')
                     ->integer('id')->unsigned()->autoIncrement()
                     ->mediumText('description')->nullable()
                     ->decimal('threshold', 3, 2)->nullable()
@@ -46,7 +47,8 @@ class Migration20130506233657ComCourses extends Base
             $description = 'An average exam score of 70% or greater is required to pass the class.  '
                 . 'Quizzes and homeworks do not count toward the final score.';
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__courses_grade_policies')
                 ->set([
                     'id'              => 1,

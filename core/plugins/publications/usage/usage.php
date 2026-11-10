@@ -119,7 +119,8 @@ class Usage extends Plugin
             $helper = new \Components\Publications\Helpers\Usage($database, $publication->id, $publication->base);
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('helper', $helper)
                 ->set('option', $option)
                 ->set('publication', $publication)
@@ -132,7 +133,8 @@ class Usage extends Plugin
             $arr['html'] = $view->loadTemplate();
         }
 
-        $view = $this->view('default', 'metadata')
+        $view = $this
+            ->view('default', 'metadata')
             ->set('publication', $publication)
             ->set('views', $views)
             ->set('downloads', $downloads);

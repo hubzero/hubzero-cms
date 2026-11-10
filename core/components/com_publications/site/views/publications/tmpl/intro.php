@@ -13,7 +13,8 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css()
      ->js();
 ?>
@@ -48,7 +49,8 @@ $this->css('introduction.css', 'system')
             <?php
             if ($this->results && count($this->results) > 0) {
                 // Display List of items
-                $this->view('_list')
+                $this
+                     ->view('_list')
                      ->set('results', $this->results)
                      ->set('config', $this->config)
                      ->display();
@@ -62,7 +64,8 @@ $this->css('introduction.css', 'system')
             <?php
             if ($this->best && count($this->best) > 0) {
                     // Display List of items
-                    $this->view('_list')
+                    $this
+                         ->view('_list')
                          ->set('results', $this->best)
                          ->set('config', $this->config)
                          ->display();

@@ -191,7 +191,8 @@ class OciDriverTest extends AbstractDriverTestCase
         };
 
         $delegated = new TableBuilder($driver, 'parity_oracle_items');
-        $delegated->id()
+        $delegated
+            ->id()
             ->string('name', 80)
             ->integer('status')->default(1)
             ->index('idx_name', 'name')
@@ -217,7 +218,8 @@ class OciDriverTest extends AbstractDriverTestCase
             }
         };
 
-        $fallback->id()
+        $fallback
+            ->id()
             ->string('name', 80)
             ->integer('status')->default(1)
             ->index('idx_name', 'name')
@@ -922,7 +924,8 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ora_items')
             ->order('id', 'asc')
@@ -942,7 +945,8 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ora_items')
             ->order('id', 'asc')
@@ -964,11 +968,13 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ora_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('ora_categories')
                     ->whereEquals('active', 1);
             })
@@ -987,7 +993,8 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ora_items')
             ->whereIn('id', [])
@@ -1034,7 +1041,8 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('ora_ddl_test')
+        $driver
+            ->createTable('ora_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()

@@ -34,12 +34,14 @@ class OnConditionTest extends AbstractDriverTestCase
     {
         // Create tables
         $driver->dropTable('oncond_posts', true);
-        $driver->createTable('oncond_posts')
+        $driver
+            ->createTable('oncond_posts')
             ->id()
             ->string('title', 255)
             ->execute();
         $driver->dropTable('oncond_comments', true);
-        $driver->createTable('oncond_comments')
+        $driver
+            ->createTable('oncond_comments')
             ->id()
             ->integer('post_id')
             ->string('content', 500)
@@ -399,7 +401,8 @@ class OnConditionTest extends AbstractDriverTestCase
         $post = OnCondPost::one(1);
 
         // Start with activeComments (status=1), then add more conditions
-        $comments = $post->activeComments()
+        $comments = $post
+            ->activeComments()
             ->whereEquals('type', 'featured')
             ->rows();
 

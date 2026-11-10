@@ -91,7 +91,8 @@ class ImportHooks extends AdminController
             $model->whereEquals('event', $filters['event']);
         }
 
-        $hooks = $model->ordered()
+        $hooks = $model
+            ->ordered()
             ->paginated()
             ->rows();
 

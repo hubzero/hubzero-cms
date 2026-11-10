@@ -486,7 +486,8 @@ class Entries extends SiteController
         $doc->category    = Lang::txt('COM_BLOG_RSS_CATEGORY');
 
         // Get the records
-        $rows = $this->model->entries($filters)
+        $rows = $this->model
+            ->entries($filters)
             ->ordered()
             ->paginated()
             ->rows();
@@ -750,7 +751,8 @@ class Entries extends SiteController
         $doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->entry->get('title')));
         $doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
-        $rows = $this->entry->comments()
+        $rows = $this->entry
+            ->comments()
             ->whereIn('state', [1, 3])
             ->ordered()
             ->rows();

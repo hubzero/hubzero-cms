@@ -33,7 +33,8 @@ class Migration20140505141538ComTools extends Base
             && $mwSchema->hasColumn('host', 'venue_id')
             && !$mwSchema->hasColumn('host', 'zone_id')
         ) {
-            $mwSchema->renameColumn('host', 'venue_id', 'zone_id')
+            $mwSchema
+                ->renameColumn('host', 'venue_id', 'zone_id')
                 ->integer()
                 ->nullable()
                 ->execute();
@@ -57,7 +58,8 @@ class Migration20140505141538ComTools extends Base
             && !$mwSchema->hasColumn('host', 'venue_id')
             && $mwSchema->hasColumn('host', 'zone_id')
         ) {
-            $mwSchema->renameColumn('host', 'zone_id', 'venue_id')
+            $mwSchema
+                ->renameColumn('host', 'zone_id', 'venue_id')
                 ->integer()
                 ->nullable()
                 ->execute();

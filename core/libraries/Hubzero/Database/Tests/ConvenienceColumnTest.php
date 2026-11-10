@@ -288,7 +288,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         $driver->dropTable('convtest_users', true);
 
         $builder = new TableBuilder($driver, 'convtest_users');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('email', 255)
                 ->rememberToken()
                 ->softDeletes()
@@ -321,7 +322,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_users', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_users')
+        $schema
+            ->createTable('altertest_users')
             ->id()
             ->string('name', 255)
             ->execute();
@@ -352,7 +354,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_posts', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_posts')
+        $schema
+            ->createTable('altertest_posts')
             ->id()
             ->string('title', 255)
             ->execute();
@@ -377,7 +380,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_accounts', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_accounts')
+        $schema
+            ->createTable('altertest_accounts')
             ->id()
             ->string('email', 255)
             ->execute();
@@ -402,7 +406,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_items', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_items')
+        $schema
+            ->createTable('altertest_items')
             ->id()
             ->string('name', 255)
             ->execute();
@@ -430,14 +435,17 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_sessions', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_sessions')
+        $schema
+            ->createTable('altertest_sessions')
             ->id()
             ->integer('user_id')
             ->execute();
 
         // Add network address columns using addColumn() + string()
         $builder = new AlterTableBuilder($driver, 'altertest_sessions');
-        $builder->addColumn('client_ip')->string(45)
+        $builder
+                ->addColumn('client_ip')
+                ->string(45)
                 ->addColumn('device_mac')->string(17);
 
         $builder->execute();
@@ -458,7 +466,8 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Create a table first using schema builder
         $driver->dropTable('altertest_comments', true);
         $schema = $driver->schema();
-        $schema->createTable('altertest_comments')
+        $schema
+            ->createTable('altertest_comments')
             ->id()
             ->text('body')
             ->execute();

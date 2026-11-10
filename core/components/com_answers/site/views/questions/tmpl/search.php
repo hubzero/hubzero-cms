@@ -25,7 +25,8 @@ if (Pathway::count() <= 0) {
 
 Document::setTitle(Lang::txt('COM_ANSWERS'));
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (!$this->filters['filterby'] || $this->filters['filterby'] == 'none') {
@@ -438,7 +439,8 @@ $area = urlencode($this->filters['area']);
                                 <?php } ?>
                                 <td class="priority-4 voting">
                                     <?php
-                                    $this->view('_vote')
+                                    $this
+                                        ->view('_vote')
                                         ->set('option', $this->option)
                                         ->set('item', $row)
                                         ->set('vote', $row->ballot())

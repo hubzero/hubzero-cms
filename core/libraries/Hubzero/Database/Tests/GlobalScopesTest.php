@@ -42,7 +42,8 @@ class GlobalScopesTest extends AbstractDriverTestCase
     {
         $driver->dropTable('scoped_articles', true);
 
-        $driver->createTable('scoped_articles')
+        $driver
+            ->createTable('scoped_articles')
             ->id()
             ->string('title', 255)->notNull()
             ->integer('active')->default(1)

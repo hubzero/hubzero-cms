@@ -3704,7 +3704,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // We also reset the 'select' clause to avoid pulling unnecessary records and reset
         // the 'order by' clause to avoid referenced fields in the aforementioned 'select' clauses
         // that mgiht have been removed. Neither of these should have any effect on a count.
-        $first = $this->deselect()
+        $first = $this
+                              ->deselect()
                               ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', $count)
                       ->unordered()
                       ->rows(false)
@@ -4507,7 +4508,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $this->set($column, $now);
 
         // Perform direct update without full save cycle
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([$column => $now])
             ->whereEquals($this->getPrimaryKey(), $this->getPkValue())
@@ -4548,7 +4550,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $id = $this->getPkValue();
 
         // Fetch fresh data from database, bypassing query cache
-        $fresh = static::blank()->disableCaching()
+        $fresh = static::blank()
+            ->disableCaching()
             ->whereEquals($pk, $id)->rows()->seek($id);
 
         if ($fresh === false) {
@@ -4927,7 +4930,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             // We build a simple update query as calling save()
             // can have unintended consequences when all we want
             // is to update two columns
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->set($data)
                 ->whereEquals($this->getPrimaryKey(), $this->get($this->getPrimaryKey()));
@@ -4978,7 +4982,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             // We build a simple update query as calling save()
             // can have unintended consequences when all we want
             // is to update two columns
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->set($data)
                 ->whereEquals($this->getPrimaryKey(), $this->get($this->getPrimaryKey()));
@@ -6838,7 +6843,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Build and execute bulk DELETE query
         $query = $relatedModel->getQuery();
-        $query->delete($relatedModel->getTableName())
+        $query
+              ->delete($relatedModel->getTableName())
               ->whereEquals($relatedKey, $localValue);
 
         $query->execute();

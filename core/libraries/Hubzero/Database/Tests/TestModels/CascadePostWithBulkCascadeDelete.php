@@ -21,7 +21,8 @@ class CascadePostWithBulkCascadeDelete extends Relational
 
     public function comments()
     {
-        return $this->oneToMany(CascadeComment::class, 'post_id')
+        return $this
+            ->oneToMany(CascadeComment::class, 'post_id')
             ->cascadeOnDelete(true, true);  // bulk: true
     }
 }

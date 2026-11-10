@@ -34,7 +34,8 @@ class Migration20160920144401ComSupport extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__support_sections')) {
-            $schema->createTable('#__support_sections')
+            $schema
+                ->createTable('#__support_sections')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('section', 50)->nullable()
                 ->primaryKey('id')

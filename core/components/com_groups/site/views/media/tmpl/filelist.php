@@ -20,7 +20,8 @@ defined('_HZEXEC_') or die();
 Html::behavior('modal');
 
 // push scripts and styles
-$this->css()
+$this
+     ->css()
      ->css('jquery.fancybox.css', 'system')
      ->css('media.css')
      ->js()

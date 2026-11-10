@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=groups';
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 <h3 class="section-header">

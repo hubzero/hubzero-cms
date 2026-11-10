@@ -24,7 +24,8 @@ $this->js();
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
-    $this->view('crumbs')
+    $this
+        ->view('crumbs')
         ->set('parents', $this->parents)
         ->display();
     ?>
@@ -32,7 +33,8 @@ $this->js();
     <h2><?php echo $this->escape($this->page->title); ?></h2>
     <?php
     if (!$this->page->isStatic()) {
-        $this->view('authors')
+        $this
+            ->view('authors')
             //->setBasePath($this->base_path)
             ->set('page', $this->page)
             ->display();
@@ -59,7 +61,8 @@ $this->js();
 echo $this->page->event->beforeDisplayContent;
 
 if (!$this->page->isStatic()) {
-    $this->view('submenu')
+    $this
+        ->view('submenu')
         //->setBasePath($this->base_path)
         ->set('option', $this->option)
         ->set('controller', $this->controller)

@@ -201,7 +201,8 @@ class Forum extends Plugin
 
         // Build message
         $message = App::get('mailer');
-        $message->setSubject(Lang::txt('PLG_GROUPS_FORUM') . ': ' . Lang::txt('PLG_GROUPS_FORUM_SUBJECT_EMAIL_DIGEST'))
+        $message
+                ->setSubject(Lang::txt('PLG_GROUPS_FORUM') . ': ' . Lang::txt('PLG_GROUPS_FORUM_SUBJECT_EMAIL_DIGEST'))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
                 ->addTo($user->get('email'), $user->get('name'))
                 ->addHeader('X-Component', 'com_forum')

@@ -222,7 +222,8 @@ class Application extends AdminController
 
             // Reset the Hub secret:
             $query = App::get('db')->getQuery();
-            $result = $query->update($tableName)
+            $result = $query
+                ->update($tableName)
                 ->set(['value' => $secret,
                     'updated' => $updated])
                 ->whereEquals('scope', 'hub')

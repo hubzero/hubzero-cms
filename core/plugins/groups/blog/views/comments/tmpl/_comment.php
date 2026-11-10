@@ -182,7 +182,8 @@ if ($this->comment->isReported()) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $replies = $this->comment->replies()
+            $replies = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
                     Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -190,7 +191,8 @@ if ($this->comment->isReported()) {
                 ->ordered()
                 ->rows();
 
-            $this->view('_list', 'comments')
+            $this
+                ->view('_list', 'comments')
                 ->set('group', $this->group)
                 ->set('parent', $this->comment->get('id'))
                 ->set('cls', $cls)

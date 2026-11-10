@@ -64,7 +64,8 @@ switch ($this->comment->get('rating')) {
             <div class="comment-content">
                 <?php
                 if ($this->params->get('comments_votable', 1)) {
-                    $this->view('vote')
+                    $this
+                         ->view('vote')
                          ->set('option', $this->option)
                          ->set('item', $this->comment)
                          ->set('url', $this->url)
@@ -181,7 +182,8 @@ switch ($this->comment->get('rating')) {
             <?php } ?>
             </div><!-- / .comment-content -->
             <?php
-            $replies = $this->comment->replies()
+            $replies = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     Components\Courses\Models\Comment::STATE_PUBLISHED,
                     Components\Courses\Models\Comment::STATE_FLAGGED,
@@ -189,7 +191,8 @@ switch ($this->comment->get('rating')) {
                 ->ordered()
                 ->rows();
 
-            $this->view('list')
+            $this
+                 ->view('list')
                  ->set('option', $this->option)
                  ->set('comments', $replies)
                  ->set('obj_type', $this->obj_type)

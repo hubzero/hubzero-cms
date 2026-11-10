@@ -97,7 +97,8 @@ $panels = [
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
                     <?php
                     // Draw category list
-                    $this->view('_selectcategory')
+                    $this
+                         ->view('_selectcategory')
                          ->set('categories', $this->model->category()->getContribCategories())
                          ->set('value', $this->model->get('category'))
                          ->set('name', 'category')
@@ -140,7 +141,8 @@ $panels = [
                 <div class="input-wrap" id="publiction-authors">
                     <?php
                     // Draw author list
-                    $this->view('_selectauthors')
+                    $this
+                         ->view('_selectauthors')
                          ->set('authNames', $this->model->authors())
                          ->set('option', $this->option)
                          ->display();
@@ -167,7 +169,8 @@ $panels = [
                 <div class="input-wrap">
                     <label for="license_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
                     <?php // Draw license selector
-                    $this->view('_selectlicense')
+                    $this
+                         ->view('_selectlicense')
                          ->set('licenses', $this->licenses)
                          ->set('selected', $this->model->license())
                          ->display();
@@ -308,7 +311,8 @@ $panels = [
                     <label for="access"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
                     <?php
                     // Draw access select list
-                    $this->view('_selectaccess')
+                    $this
+                         ->view('_selectaccess')
                          ->set('as', 'Public,Registered,Private')
                          ->set('value', $this->model->get('master_access'))
                          ->display();
@@ -320,7 +324,8 @@ $panels = [
                         <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
                         <?php
                         // Draw group selector
-                        $this->view('_selectgroup')
+                        $this
+                            ->view('_selectgroup')
                             ->set('groups', $this->groups)
                             ->set('groupOwner', $this->model->project()->groupOwner())
                             ->set('value', ($this->model->groupOwner() ? $this->model->groupOwner()->gidNumber : 0))
@@ -439,7 +444,8 @@ $panels = [
                     <div class="input-wrap">
                         <?php
                         // Draw content
-                        $this->view('_selectcontent')
+                        $this
+                             ->view('_selectcontent')
                              ->set('pub', $this->model)
                              ->set('option', $this->option)
                              ->display();

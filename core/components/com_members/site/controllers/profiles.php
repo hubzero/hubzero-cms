@@ -1240,7 +1240,8 @@ class Profiles extends SiteController
             $message .= $url . "\r\n";
 
             $msg = new \Hubzero\Mail\Message();
-            $msg->setSubject($subject)
+            $msg
+                ->setSubject($subject)
                 ->addTo(Config::get('mailfrom'))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
                 ->addHeader('X-Component', $this->option)
@@ -1670,7 +1671,8 @@ class Profiles extends SiteController
             'layout' => 'confirm',
         ]);
 
-        $eview->set('option', $this->option)
+        $eview
+            ->set('option', $this->option)
             ->set('sitename', Config::get('sitename'))
             ->set('login', $login)
             ->set('email', $email)
@@ -1683,7 +1685,8 @@ class Profiles extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         $msg = new \Hubzero\Mail\Message();
-        $msg->setSubject($subject)
+        $msg
+            ->setSubject($subject)
             ->addTo($email)
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
             ->addHeader('X-Component', $this->option)

@@ -34,7 +34,8 @@ Toolbar::help('certificates');
 
 Html::behavior('framework');
 
-$this->css('certificates.css')
+$this
+    ->css('certificates.css')
     ->js('certificates.js');
 ?>
 <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>

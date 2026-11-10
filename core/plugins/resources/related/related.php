@@ -150,7 +150,8 @@ class Related extends Plugin
         }
 
         // Instantiate a view
-        $view = $this->view(($miniview ? 'mini' : 'default'), 'browse')
+        $view = $this
+            ->view(($miniview ? 'mini' : 'default'), 'browse')
             ->set('option', $option)
             ->set('resource', $resource)
             ->set('related', $rows)

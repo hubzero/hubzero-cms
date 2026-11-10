@@ -23,7 +23,8 @@ class Migration20160111200400ComCitations extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__citations_links')) {
-            $schema->createTable('#__citations_links')
+            $schema
+                ->createTable('#__citations_links')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->text('url')->nullable()

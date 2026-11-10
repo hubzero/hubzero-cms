@@ -206,7 +206,8 @@ class Utility
         $eview->new           = $new;
 
         $msg = new \Hubzero\Mail\Message();
-        $msg->setSubject($subject)
+        $msg
+            ->setSubject($subject)
             ->addTo($user->get('email'), $user->get('name'))
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
             ->addHeader('X-Component', 'com_members');

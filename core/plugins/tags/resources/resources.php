@@ -263,7 +263,8 @@ class Resources extends Plugin
             'layout'    => 'item',
         ]);
 
-        $view->set('line', $row)
+        $view
+            ->set('line', $row)
             ->set('option', 'com_resources')
             ->set('config', $config)
             ->set('supported', []);

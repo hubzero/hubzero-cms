@@ -25,7 +25,8 @@ class Migration20140512120000ComPublications extends Base
 
         // Set up curation
         if (!$schema->tableExists('#__publication_curation')) {
-            $schema->createTable('#__publication_curation')
+            $schema
+                ->createTable('#__publication_curation')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('publication_id')->default(0)
                 ->integer('publication_version_id')->default(0)
@@ -47,7 +48,8 @@ class Migration20140512120000ComPublications extends Base
 
         // Set up curation blocks
         if (!$schema->tableExists('#__publication_blocks')) {
-            $schema->createTable('#__publication_blocks')
+            $schema
+                ->createTable('#__publication_blocks')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('block', 100)->default('')
                 ->string('label', 100)->default('')
@@ -165,7 +167,8 @@ class Migration20140512120000ComPublications extends Base
             ];
 
             foreach ($blocks as $block) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_blocks')
                     ->set($block)
                     ->execute();
@@ -174,7 +177,8 @@ class Migration20140512120000ComPublications extends Base
 
         // Set up handlers
         if (!$schema->tableExists('#__publication_handlers')) {
-            $schema->createTable('#__publication_handlers')
+            $schema
+                ->createTable('#__publication_handlers')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('name', 100)->default('')
                 ->string('label', 100)->default('')
@@ -187,7 +191,8 @@ class Migration20140512120000ComPublications extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__publication_handlers')
                 ->set([
                     'id'     => 1,
@@ -223,7 +228,8 @@ class Migration20140512120000ComPublications extends Base
         }
         // Add element field
         if (!$schema->hasColumn('#__publication_attachments', 'element_id')) {
-            $schema->addColumn('#__publication_attachments', 'element_id')
+            $schema
+                ->addColumn('#__publication_attachments', 'element_id')
                 ->integer()
                 ->notNull()
                 ->default(0)

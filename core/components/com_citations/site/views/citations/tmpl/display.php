@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css('usage.css', 'com_usage')
      ->css();
 ?>

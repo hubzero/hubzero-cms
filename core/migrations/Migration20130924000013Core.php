@@ -45,7 +45,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__redirect_links')) {
-            $schema->createTable('#__redirect_links')
+            $schema
+                ->createTable('#__redirect_links')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('old_url', 255)
                 ->string('new_url', 255)
@@ -64,7 +65,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__user_notes')) {
-            $schema->createTable('#__user_notes')
+            $schema
+                ->createTable('#__user_notes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->unsignedInteger('catid')->default(0)
@@ -89,7 +91,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__associations')) {
-            $schema->createTable('#__associations')
+            $schema
+                ->createTable('#__associations')
                 ->string('id', 50)
                 ->string('context', 50)
                 ->char('key', 32)
@@ -100,7 +103,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__overrider')) {
-            $schema->createTable('#__overrider')
+            $schema
+                ->createTable('#__overrider')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('constant', 255)
                 ->text('string')
@@ -124,7 +128,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__schemas')) {
-            $schema->createTable('#__schemas')
+            $schema
+                ->createTable('#__schemas')
                 ->integer('extension_id')
                 ->string('version_id', 20)
                 ->primaryKey(['extension_id', 'version_id'])
@@ -132,7 +137,8 @@ class Migration20130924000013Core extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__schemas')
                 ->values([
                     'extension_id' => 700,
@@ -145,7 +151,9 @@ class Migration20130924000013Core extends Base
 
         // Modify session_id column and set as primary key
         if ($schema->hasColumn('#__session', 'session_id')) {
-            $schema->table('#__session')->alter()
+            $schema
+                ->table('#__session')
+                ->alter()
                 ->modifyColumn('session_id')
                 ->string(200)
                 ->notNull()
@@ -164,7 +172,8 @@ class Migration20130924000013Core extends Base
             $schema->modifyColumn('#__session', 'guest')->tinyInteger(4)->unsigned()->nullable()->default(1);
         }
         if ($schema->hasColumn('#__session', 'username') && $schema->hasColumn('#__session', 'userid')) {
-            $schema->modifyColumn('#__session', 'username')
+            $schema
+                ->modifyColumn('#__session', 'username')
                 ->string(150)
                 ->default('')
                 ->execute();
@@ -177,7 +186,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__template_styles')) {
-            $schema->createTable('#__template_styles')
+            $schema
+                ->createTable('#__template_styles')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('template', 50)->default('')
                 ->unsignedTinyInteger('client_id')->default(0)
@@ -216,7 +226,8 @@ class Migration20130924000013Core extends Base
                 ];
 
                 foreach ($styles as $style) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insertOrIgnore('#__template_styles')
                         ->values([
                             'id'        => $style[0],
@@ -230,14 +241,16 @@ class Migration20130924000013Core extends Base
                 }
 
                 // Insert all templates from extensions
-                $result = $this->db->getQuery(true)
+                $result = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__extensions')
                     ->where('type', '=', 'template')
                     ->loadObjectList();
 
                 foreach ($result as $r) {
-                    $query = $this->db->getQuery(true)
+                    $query = $this->db
+                        ->getQuery(true)
                         ->select('id')
                         ->from('#__template_styles')
                         ->where('template', '=', $r->element)
@@ -247,7 +260,8 @@ class Migration20130924000013Core extends Base
                         continue;
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__template_styles')
                         ->values([
                             'template'  => $r->element,
@@ -260,13 +274,15 @@ class Migration20130924000013Core extends Base
                 }
 
                 // Update current templates to have home = 1 (one for site and one for admin)
-                $result = $this->db->getQuery(true)
+                $result = $this->db
+                    ->getQuery(true)
                     ->select(['template', 'client_id'])
                     ->from('#__templates_menu')
                     ->loadObjectList();
 
                 foreach ($result as $r) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__template_styles')
                         ->set(['home' => '1'])
                         ->where('template', '=', $r->template)
@@ -274,7 +290,8 @@ class Migration20130924000013Core extends Base
                 }
 
                 // Now make sure something is set for the admin template
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('id')
                     ->from('#__template_styles')
                     ->where('client_id', '=', 1)
@@ -282,7 +299,8 @@ class Migration20130924000013Core extends Base
                 ;
 
                 if ($query->doesntExist()) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__template_styles')
                         ->set(['home' => '1'])
                         ->where('template', '=', 'hubbasicadmin')
@@ -296,7 +314,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__updates')) {
-            $schema->createTable('#__updates')
+            $schema
+                ->createTable('#__updates')
                 ->integer('update_id', ['autoIncrement' => true])
                 ->integer('update_site_id')->default(0)
                 ->integer('extension_id')->default(0)
@@ -318,7 +337,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__update_sites')) {
-            $schema->createTable('#__update_sites')
+            $schema
+                ->createTable('#__update_sites')
                 ->integer('update_site_id', ['autoIncrement' => true])
                 ->string('name', 100)->default('')
                 ->string('type', 20)->default('')
@@ -344,7 +364,8 @@ class Migration20130924000013Core extends Base
             ];
 
             foreach ($updateSites as $site) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__update_sites')
                     ->values([
                         'update_site_id'       => $site[0],
@@ -359,7 +380,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__update_sites_extensions')) {
-            $schema->createTable('#__update_sites_extensions')
+            $schema
+                ->createTable('#__update_sites_extensions')
                 ->integer('update_site_id')->default(0)
                 ->integer('extension_id')->default(0)
                 ->primaryKey(['update_site_id', 'extension_id'])
@@ -370,7 +392,8 @@ class Migration20130924000013Core extends Base
             $updateSitesExtensions = [[1, 700], [2, 700], [3, 600]];
 
             foreach ($updateSitesExtensions as $ext) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__update_sites_extensions')
                     ->values([
                         'update_site_id' => $ext[0],
@@ -381,7 +404,8 @@ class Migration20130924000013Core extends Base
         }
 
         if (!$schema->tableExists('#__update_categories')) {
-            $schema->createTable('#__update_categories')
+            $schema
+                ->createTable('#__update_categories')
                 ->integer('categoryid', ['autoIncrement' => true])
                 ->string('name', 20)->default('')
                 ->text('description')

@@ -56,7 +56,8 @@ class Quotes extends Module
     public function display()
     {
         // Push the module CSS to the template
-        $this->css()
+        $this
+             ->css()
              ->js();
 
         if ($content = $this->getCacheContent()) {

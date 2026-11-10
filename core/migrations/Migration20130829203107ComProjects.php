@@ -24,7 +24,8 @@ class Migration20130829203107ComProjects extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__projects')) {
-            $schema->createTable('#__projects')
+            $schema
+                ->createTable('#__projects')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('alias', 30)->default('')
                 ->string('title', 255)->default('')
@@ -50,7 +51,8 @@ class Migration20130829203107ComProjects extends Base
                 ->execute();
 
             // Make entries to enable HUB messaging
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -59,7 +61,8 @@ class Migration20130829203107ComProjects extends Base
                 ])
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -68,7 +71,8 @@ class Migration20130829203107ComProjects extends Base
                 ])
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -79,7 +83,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_activity')) {
-            $schema->createTable('#__project_activity')
+            $schema
+                ->createTable('#__project_activity')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('projectid')->default(0)
                 ->integer('userid')->default(0)
@@ -100,7 +105,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_comments')) {
-            $schema->createTable('#__project_comments')
+            $schema
+                ->createTable('#__project_comments')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('itemid')->default(0)
                 ->text('comment')
@@ -119,7 +125,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_microblog')) {
-            $schema->createTable('#__project_microblog')
+            $schema
+                ->createTable('#__project_microblog')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('blogentry', 255)->nullable()
                 ->datetime('posted')->default('0000-00-00 00:00:00')
@@ -136,7 +143,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_owners')) {
-            $schema->createTable('#__project_owners')
+            $schema
+                ->createTable('#__project_owners')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('projectid')->default(0)
                 ->integer('userid')->default(0)
@@ -159,7 +167,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_todo')) {
-            $schema->createTable('#__project_todo')
+            $schema
+                ->createTable('#__project_todo')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('projectid')->default(0)
                 ->string('todolist', 255)->nullable()
@@ -184,7 +193,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_types')) {
-            $schema->createTable('#__project_types')
+            $schema
+                ->createTable('#__project_types')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('type', 150)->default('')
                 ->string('description', 255)->default('')
@@ -198,13 +208,15 @@ class Migration20130829203107ComProjects extends Base
             $params2 = 'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0';
 
             if (
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'General')
                     ->doesntExist()
             ) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'General',
@@ -217,13 +229,15 @@ class Migration20130829203107ComProjects extends Base
             $desc2 = 'Projects created with the purpose to publish data as a resource '
                 . 'or a collection of related resources';
             if (
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'Content publication')
                     ->doesntExist()
             ) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'Content publication',
@@ -235,13 +249,15 @@ class Migration20130829203107ComProjects extends Base
 
             $desc3 = 'Projects created with the purpose to develop and publish a simulation tool or a code library';
             if (
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'Application development')
                     ->doesntExist()
             ) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'Application development',
@@ -253,7 +269,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_logs')) {
-            $schema->createTable('#__project_logs')
+            $schema
+                ->createTable('#__project_logs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('projectid')->default(0)
                 ->integer('userid')->default(0)
@@ -273,7 +290,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_stats')) {
-            $schema->createTable('#__project_stats')
+            $schema
+                ->createTable('#__project_stats')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('month')->nullable()
                 ->integer('year')->nullable()
@@ -287,7 +305,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_public_stamps')) {
-            $schema->createTable('#__project_public_stamps')
+            $schema
+                ->createTable('#__project_public_stamps')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('stamp', 30)->default('0')
                 ->integer('projectid')->default(0)
@@ -305,7 +324,8 @@ class Migration20130829203107ComProjects extends Base
         }
 
         if (!$schema->tableExists('#__project_remote_files')) {
-            $schema->createTable('#__project_remote_files')
+            $schema
+                ->createTable('#__project_remote_files')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('projectid')->default(0)
                 ->integer('created_by')->default(0)
@@ -431,7 +451,8 @@ class Migration20130829203107ComProjects extends Base
         $schema->dropTable('#__project_public_stamps');
         $schema->dropTable('#__project_remote_files');
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->delete('#__xmessage_component')
             ->where('component', '=', 'com_projects')
             ->execute();

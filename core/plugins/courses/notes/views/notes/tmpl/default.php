@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $results = [];
@@ -159,7 +160,8 @@ $base = $this->offering->link();
         'layout'  => '_not_enrolled',
     ]);
 
-    $view->set('course', $this->course)
+    $view
+         ->set('course', $this->course)
          ->set('option', $this->option)
          ->set('message', Lang::txt('PLG_COURSES_NOTES_ENROLLMENT_REQUIRED'))
          ->display();

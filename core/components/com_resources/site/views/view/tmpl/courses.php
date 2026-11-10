@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $txt  = '';
@@ -64,7 +65,8 @@ if ($mode != 'preview') {
                         <div id="authorslist">
                             <?php
                             // Display authors
-                            $this->view('_contributors')
+                            $this
+                                ->view('_contributors')
                                 ->set('option', $this->option)
                                 ->set('contributors', $this->model->contributors('!submitter'))
                                 ->display();
@@ -93,7 +95,8 @@ if ($mode != 'preview') {
                             </p>
                         <?php
                     } else {
-                        $schildren = $this->model->children()
+                        $schildren = $this->model
+                            ->children()
                             ->whereEquals('standalone', 1)
                             ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')
@@ -104,7 +107,8 @@ if ($mode != 'preview') {
                         if ($ccount > 0) {
                             $mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
 
-                            $this->view('_primary')
+                            $this
+                                ->view('_primary')
                                 ->set('option', $this->option)
                                 ->set('class', 'download')
                                 ->set('href', Route::url($this->model->link()) . '#series')
@@ -128,7 +132,8 @@ if ($mode != 'preview') {
                         }
 
                         // Display some supporting documents
-                        $children = $this->model->children()
+                        $children = $this->model
+                            ->children()
                             ->whereEquals('standalone', 0)
                             ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')
@@ -152,7 +157,8 @@ if ($mode != 'preview') {
                         </p>
                         <?php
                         if ($this->tab != 'play') {
-                            $this->view('_license')
+                            $this
+                                ->view('_license')
                                 ->set('license', $this->model->license())
                                 ->display();
                         }
@@ -163,7 +169,8 @@ if ($mode != 'preview') {
 
             <?php
             // Display canonical
-            $this->view('_canonical')
+            $this
+                ->view('_canonical')
                 ->set('option', $this->option)
                 ->set('model', $this->model)
                 ->display();
@@ -173,7 +180,8 @@ if ($mode != 'preview') {
         <?php
         // Show metadata
         if ($this->model->params->get('show_metadata', 1)) {
-            $this->view('_metadata')
+            $this
+                ->view('_metadata')
                 ->set('option', $this->option)
                 ->set('sections', $this->sections)
                 ->set('model', $this->model)
@@ -189,14 +197,16 @@ if ($mode != 'preview') {
         <div class="section-inner hz-layout-with-aside">
             <div class="subject tabbed">
                 <?php
-                $this->view('_tabs')
+                $this
+                    ->view('_tabs')
                     ->set('option', $this->option)
                     ->set('cats', $this->cats)
                     ->set('resource', $this->model)
                     ->set('active', $this->tab)
                     ->display();
 
-                $this->view('_sections')
+                $this
+                    ->view('_sections')
                     ->set('option', $this->option)
                     ->set('sections', $this->sections)
                     ->set('resource', $this->model)
@@ -265,7 +275,8 @@ if ($mode != 'preview') {
                             $titleLinkHtml = '<a ' . $linkAttrs . ' aria-label="' . Lang::txt('Open lecture page:') . ' ' . $title . '">' . Lang::txt('Open lecture page') . ' &raquo;</a>';
                         }
 
-                        $grandchildren = $child->children()
+                        $grandchildren = $child
+                            ->children()
                             ->whereEquals('standalone', 0)
                             ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')

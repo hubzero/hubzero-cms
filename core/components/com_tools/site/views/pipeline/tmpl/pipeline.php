@@ -20,7 +20,8 @@ $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#',
 $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
-$this->css('pipeline.css')
+$this
+     ->css('pipeline.css')
      ->js('pipeline.js');
 
 // Initiate paging

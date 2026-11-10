@@ -159,7 +159,8 @@ class Help extends Output
             }
         }
         if (isset($example)) {
-            $this->addLine(
+            $this
+            ->addLine(
                 $example,
                 [
                     'color'       => 'green',

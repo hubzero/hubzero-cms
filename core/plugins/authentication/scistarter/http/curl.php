@@ -150,7 +150,8 @@ class Curl
      **/
     public function reset()
     {
-        $this->close()
+        $this
+             ->close()
              ->initialize();
 
         return $this;

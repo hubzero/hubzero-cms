@@ -22,7 +22,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 $no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) {
-    $this->css()
+    $this
+         ->css()
          ->js('post.js');
     ?>
 <header id="content-header">
@@ -75,7 +76,8 @@ if (!$no_html) {
                         <?php } ?>
                     </div><!-- / .attribution -->
                     <?php
-                    $this->view('display_' . $item->layout(__DIR__, 'display_'), 'posts')
+                    $this
+                         ->view('display_' . $item->layout(__DIR__, 'display_'), 'posts')
                          ->set('actual', true)
                          ->set('option', $this->option)
                          ->set('params', $this->config)
@@ -241,7 +243,8 @@ if (!$no_html) {
             <div class="post full collection" id="b<?php echo $this->collection->get('id'); ?>" data-id="<?php echo $this->collection->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&controller=posts&collection=' . $this->collection->get('id')); ?>">
                 <div class="content">
                     <?php
-                        $this->view('display_collection', 'posts')
+                        $this
+                             ->view('display_collection', 'posts')
                              ->set('option', $this->option)
                              ->set('params', $this->config)
                              ->set('row', $this->collection)
@@ -343,7 +346,8 @@ if (!$no_html) {
                 <div class="post collection" id="b<?php echo $collection->get('id'); ?>" data-id="<?php echo $collection->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&controller=collection&id=' . $collection->get('id')); ?>" data-width="600" data-height="350">
                     <div class="content">
                         <?php
-                        $this->view('display_collection', 'posts')
+                        $this
+                             ->view('display_collection', 'posts')
                              ->set('option', $this->option)
                              ->set('params', $this->config)
                              ->set('row', $collection)

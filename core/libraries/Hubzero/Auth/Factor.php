@@ -33,7 +33,8 @@ class Factor extends Relational
      */
     public static function currentOrFailByDomain($domain)
     {
-        $factor = static::all()->whereEquals('user_id', User::get('id'))
+        $factor = static::all()
+                               ->whereEquals('user_id', User::get('id'))
                                ->whereEquals('domain', $domain)
                                ->row();
 
@@ -47,7 +48,8 @@ class Factor extends Relational
      */
     public static function currentOrFailByEnrolled()
     {
-        $enrolled = static::all()->whereEquals('user_id', User::get('id'))
+        $enrolled = static::all()
+                               ->whereEquals('user_id', User::get('id'))
                                ->whereEquals('enrolled', '1')
                                ->row();
 
@@ -61,7 +63,8 @@ class Factor extends Relational
      */
     public static function registerUserAsEnrolled()
     {
-        $factor = static::all()->whereEquals('user_id', User::get('id'))
+        $factor = static::all()
+                               ->whereEquals('user_id', User::get('id'))
                                ->row();
 
         $factor->set('enrolled', '1');

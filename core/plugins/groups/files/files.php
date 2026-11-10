@@ -182,7 +182,8 @@ class Files extends Plugin
      */
     private function browse()
     {
-        $view = $this->view('filebrowser')
+        $view = $this
+            ->view('filebrowser')
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('config', $this->params)

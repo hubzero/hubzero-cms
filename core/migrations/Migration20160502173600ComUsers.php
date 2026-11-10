@@ -29,7 +29,8 @@ class Migration20160502173600ComUsers extends Base
         ) {
             $schema->addColumn('#__users', 'homeDirectory')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->set(['u.homeDirectory' => \Hubzero\Database\Expression::column('x.homeDirectory')])
@@ -42,7 +43,8 @@ class Migration20160502173600ComUsers extends Base
         ) {
             $schema->addColumn('#__users', 'loginShell')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->set(['u.loginShell' => \Hubzero\Database\Expression::column('x.loginShell')])
@@ -52,7 +54,8 @@ class Migration20160502173600ComUsers extends Base
         if (!$schema->hasColumn('#__users', 'ftpShell') && $schema->hasColumn('#__xprofiles', 'ftpShell')) {
             $schema->addColumn('#__users', 'ftpShell')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->set(['u.ftpShell' => \Hubzero\Database\Expression::column('x.ftpShell')])

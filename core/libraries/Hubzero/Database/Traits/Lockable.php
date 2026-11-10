@@ -161,7 +161,8 @@ trait Lockable
         $this->set($checkedOutCol, $userId);
         $this->set($checkedOutTimeCol, $now);
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 $checkedOutCol => $userId,
@@ -198,7 +199,8 @@ trait Lockable
         $this->set($checkedOutCol, null);
         $this->set($checkedOutTimeCol, null);
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 $checkedOutCol => null,
@@ -352,7 +354,8 @@ trait Lockable
         $checkedOutCol = $instance->getCheckedOutColumn();
         $checkedOutTimeCol = $instance->getCheckedOutTimeColumn();
 
-        $instance->getQuery()
+        $instance
+            ->getQuery()
             ->update($instance->getTableName())
             ->set([
                 $checkedOutCol => null,
@@ -385,7 +388,8 @@ trait Lockable
         // Calculate expiration cutoff
         $cutoff = date('Y-m-d H:i:s', time() - $timeout);
 
-        $instance->getQuery()
+        $instance
+            ->getQuery()
             ->update($instance->getTableName())
             ->set([
                 $checkedOutCol => null,

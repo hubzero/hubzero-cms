@@ -92,7 +92,8 @@ class Type extends Relational
                 $publishState = empty($filters['published']) ? [1] : $filters['published'];
                 $publishState = !is_array($publishState) ? [$publishState] : $publishState;
                 $scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
-                $citation->select('*, count(type) as totalcite')
+                $citation
+                         ->select('*, count(type) as totalcite')
                          ->whereIn('published', $publishState)
                          ->group('type')
                          ->group('id');

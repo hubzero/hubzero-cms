@@ -163,7 +163,8 @@ class Doi extends Plugin
 
         if (!empty($citation['type'])) {
             $types = \Components\Citations\Models\Type::all();
-            $typeRecord = $types->select($types->getQualifiedFieldName('type_desc'))
+            $typeRecord = $types
+                ->select($types->getQualifiedFieldName('type_desc'))
                 ->whereEquals($types->getQualifiedFieldName('id'), $citation['type'])
                 ->row();
 

@@ -51,7 +51,8 @@ class CategoryParent extends Select
         $db    = App::get('db');
         $query = $db->getQuery();
 
-        $query->select('a.id', 'value')
+        $query
+            ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('a.level')
             ->from('#__categories', 'a')
@@ -59,7 +60,8 @@ class CategoryParent extends Select
 
         // Filter by the type
         if ($extension = $this->form->getValue('extension')) {
-            $query->whereEquals('a.extension', $extension, 1)
+            $query
+                ->whereEquals('a.extension', $extension, 1)
                 ->orWhereEquals('a.parent_id', '0', 1)
                 ->resetDepth();
         }
@@ -71,7 +73,8 @@ class CategoryParent extends Select
                 $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
                 $rowQuery = $db->getQuery();
-                $rowQuery->select('a.id', 'value')
+                $rowQuery
+                    ->select('a.id', 'value')
                     ->select('a.title', 'text')
                     ->select('a.level')
                     ->select('a.parent_id')
@@ -81,7 +84,8 @@ class CategoryParent extends Select
                 $row = $db->loadObject();
             }
         }
-        $query->whereIn('a.published', [0, 1])
+        $query
+            ->whereIn('a.published', [0, 1])
             ->group('a.id')
             ->group('a.title')
             ->group('a.level')

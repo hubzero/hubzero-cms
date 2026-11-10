@@ -186,7 +186,8 @@ class Profile extends Plugin
             }
         }
 
-        $view = $this->view('default', 'index')
+        $view = $this
+            ->view('default', 'index')
             ->set('params', $params)
             ->set('option', 'com_members')
             ->set('profile', $this->member)
@@ -314,7 +315,8 @@ class Profile extends Plugin
         }
 
         //set vars for view
-        $view = $this->view('edit', 'address')
+        $view = $this
+            ->view('edit', 'address')
             ->set('member', $this->member)
             ->set('address', $address)
             ->set('addressId', $address->get('id'))

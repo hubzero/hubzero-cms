@@ -41,7 +41,9 @@ class Migration20140421112851ComTools extends Base
         }
 
         if (!$mwdb->schema()->tableExists('zones')) {
-            $mwdb->schema()->createTable('zones')
+            $mwdb
+                ->schema()
+                ->createTable('zones')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('zone', 40)->nullable()
                 ->string('title', 255)->nullable()
@@ -60,7 +62,8 @@ class Migration20140421112851ComTools extends Base
         $mwSchema = $mwdb->schema();
 
         if (!$mwSchema->hasColumn('zones', 'title')) {
-            $mwSchema->addColumn('zones', 'title')
+            $mwSchema
+                ->addColumn('zones', 'title')
                 ->string(255)
                 ->nullable()
                 ->default(null)
@@ -68,7 +71,9 @@ class Migration20140421112851ComTools extends Base
         }
 
         if (!$mwdb->schema()->tableExists('zone_locations')) {
-            $mwdb->schema()->createTable('zone_locations')
+            $mwdb
+                ->schema()
+                ->createTable('zone_locations')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('zone_id')
                 ->unsignedInteger('ipFROM')->default(0)

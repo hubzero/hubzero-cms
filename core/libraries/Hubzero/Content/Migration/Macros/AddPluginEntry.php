@@ -36,7 +36,8 @@ class AddPluginEntry extends Macro
         $name    = 'plg_' . $folder . '_' . $element;
 
         // First, make sure it isn't already there
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->whereEquals('folder', $folder)
@@ -49,7 +50,8 @@ class AddPluginEntry extends Macro
         }
 
         // Get ordering
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->select('ordering')
             ->from('#__extensions')
             ->whereEquals('folder', $folder)
@@ -63,7 +65,8 @@ class AddPluginEntry extends Macro
             $params = json_encode($params);
         }
 
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->insert('#__extensions')
             ->values([
                 'name'           => $name,

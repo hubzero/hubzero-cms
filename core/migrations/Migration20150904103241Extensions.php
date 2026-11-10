@@ -24,14 +24,16 @@ class Migration20150904103241Extensions extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['client_id' => 0])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_feedaggregator')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['client_id' => 1])
                 ->where('type', '=', 'module')
@@ -48,14 +50,16 @@ class Migration20150904103241Extensions extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['client_id' => 1])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_feedaggregator')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['client_id' => 0])
                 ->where('type', '=', 'module')

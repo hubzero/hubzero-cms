@@ -24,7 +24,8 @@ class Migration20140408121756ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__courses_members', 'token')) {
-            $schema->addColumn('#__courses_members', 'token')
+            $schema
+                ->addColumn('#__courses_members', 'token')
                 ->string(23)
                 ->notNull()
                 ->default('')

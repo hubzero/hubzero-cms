@@ -35,7 +35,8 @@ class RenamePluginEntry extends Macro
         $folder  = strtolower($folder);
         $element = strtolower($element);
 
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->select($pk)
             ->from($table)
             ->whereEquals('folder', $folder)
@@ -46,7 +47,8 @@ class RenamePluginEntry extends Macro
         $this->db->setQuery($query);
 
         if ($id = $this->db->loadResult()) {
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->update($table)
                 ->set([
                     'name' => $name,

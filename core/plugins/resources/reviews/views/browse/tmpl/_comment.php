@@ -93,7 +93,8 @@ if ($this->comment->get('resource_id')) {
                     $this->comment->set('vote', $this->comment->ballot(User::get('id'), Request::ip())->get('vote'));
                 }
 
-                $this->view('_rateitem')
+                $this
+                    ->view('_rateitem')
                     ->set('option', $this->option)
                     ->set('item', $this->comment)
                     ->set('type', 'review')
@@ -242,7 +243,8 @@ if ($this->comment->get('resource_id')) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $replies = $this->comment->replies()
+            $replies = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     \Components\Resources\Models\Reviewcomment::STATE_PUBLISHED,
                     \Components\Resources\Models\Reviewcomment::STATE_FLAGGED,
@@ -250,7 +252,8 @@ if ($this->comment->get('resource_id')) {
                 ->ordered()
                 ->rows();
 
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('parent', $this->comment->get('id'))
                  ->set('resource', $this->resource)
                  ->set('option', $this->option)

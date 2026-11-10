@@ -120,7 +120,8 @@ class Mypublications extends Module
         }*/
 
         if (isset($filters['search'])) {
-            $query->whereLike($r . '.title', $filters['search'], 1)
+            $query
+                ->whereLike($r . '.title', $filters['search'], 1)
                 ->orWhereLike($r . '.description', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -135,7 +136,8 @@ class Mypublications extends Module
                 ->whereEquals($a . '.user_id', $filters['author']);
 
             if (isset($filters['notauthorrole'])) {
-                $query->where($a . '.role', 'IS', null, 'and', 1)
+                $query
+                    ->where($a . '.role', 'IS', null, 'and', 1)
                     ->orWhere($a . '.role', '!=', $filters['notauthorrole'], 1)
                     ->resetDepth();
             }
@@ -161,7 +163,8 @@ class Mypublications extends Module
             }
 
             if (isset($filters['usergroups']) && !empty($filters['usergroups'])) {
-                $query->whereIn($r . '.access', (array) $filters['access'], 1)
+                $query
+                    ->whereIn($r . '.access', (array) $filters['access'], 1)
                     ->orWhereIn($p . '.group_owner', (array) $filters['usergroups'], 1)
                     ->resetDepth();
             } else {
@@ -172,7 +175,8 @@ class Mypublications extends Module
         }
 
         if (isset($filters['now'])) {
-            $query->whereEquals($r . '.published_up', '0000-00-00 00:00:00', 1)
+            $query
+                ->whereEquals($r . '.published_up', '0000-00-00 00:00:00', 1)
                 ->orWhere($r . '.published_up', 'IS', null, 1)
                 ->orWhere($r . '.published_up', '<=', $filters['now'], 1)
                 ->resetDepth()

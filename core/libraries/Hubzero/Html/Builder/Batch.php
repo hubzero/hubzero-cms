@@ -118,7 +118,8 @@ class Batch
         $db = \App::get('db');
 
         // Build the query.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id', 'value')
             ->select('a.name', 'text')
             ->from('#__users', 'a')

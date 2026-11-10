@@ -87,7 +87,8 @@ abstract class Modules
     public static function getPositions($clientId)
     {
         $db    = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(position)')
             ->from('#__modules')
             ->whereEquals('client_id', (int) $clientId)
@@ -131,7 +132,8 @@ abstract class Modules
     {
         $db = App::get('db');
         // Get the database object and a new query object.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('element')
             ->select('name')
             ->select('enabled')
@@ -160,7 +162,8 @@ abstract class Modules
     public static function getModules($clientId)
     {
         $db    = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('element', 'value')
             ->select('name', 'text')
             ->select('protected')
@@ -349,7 +352,8 @@ abstract class Modules
     public static function positionList($clientId = 0)
     {
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('DISTINCT(position)', 'value')
             ->select('position', 'text')
             ->from('#__modules')

@@ -169,7 +169,8 @@ class RapidContact extends Module
                 $myMessage .= "\n\n" . Sanitize::clean($this->posted['message']);
 
                 $mailSender = new Message();
-                $mailSender->setSubject($mySubject)
+                $mailSender
+                           ->setSubject($mySubject)
                            ->addFrom($this->from_email, $this->from_name)
                            ->addTo($this->recipient)
                            ->addReplyTo($this->posted['email'], $this->posted['name'])

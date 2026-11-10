@@ -23,7 +23,8 @@ defined('_HZEXEC_') or die();
     foreach ($this->comments as $comment) {
         $comment->set('entry_id', $this->article->get('id'));
 
-        $this->view('_comment')
+        $this
+             ->view('_comment')
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('depth', $this->depth)

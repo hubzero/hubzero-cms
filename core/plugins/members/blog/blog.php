@@ -307,7 +307,8 @@ class Blog extends Plugin
             $filters['authorized'] = $this->member->get('id');
         }
 
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('task', $this->task)
@@ -376,7 +377,8 @@ class Blog extends Plugin
         $doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category    = Lang::txt('PLG_MEMBERS_BLOG_RSS_CATEGORY');
 
-        $rows = $this->model->entries($filters)
+        $rows = $this->model
+            ->entries($filters)
             ->ordered()
             ->paginated()
             ->rows();
@@ -467,7 +469,8 @@ class Blog extends Plugin
 
         Event::trigger('blog.onBlogView', [$row]);
 
-        $view = $this->view('default', 'entry')
+        $view = $this
+            ->view('default', 'entry')
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('task', $this->task)
@@ -540,7 +543,8 @@ class Blog extends Plugin
         }
 
         // Render view
-        $view = $this->view('default', 'edit')
+        $view = $this
+            ->view('default', 'edit')
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('task', $this->task)
@@ -682,7 +686,8 @@ class Blog extends Plugin
             }
 
             // Output HTML
-            $view = $this->view('default', 'delete')
+            $view = $this
+                ->view('default', 'delete')
                 ->set('option', $this->option)
                 ->set('member', $this->member)
                 ->set('task', $this->task)
@@ -918,7 +923,8 @@ class Blog extends Plugin
         }
 
         // Output HTML
-        $view = $this->view('default', 'settings')
+        $view = $this
+            ->view('default', 'settings')
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('task', $this->task)

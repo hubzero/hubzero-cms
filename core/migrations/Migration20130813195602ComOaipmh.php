@@ -23,7 +23,8 @@ class Migration20130813195602ComOaipmh extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__oaipmh_dcspecs')) {
-            $schema->createTable('#__oaipmh_dcspecs')
+            $schema
+                ->createTable('#__oaipmh_dcspecs')
                 ->id()
                 ->string('name', 255)
                 ->text('query')
@@ -76,7 +77,8 @@ SELECT DISTINCT path FROM #__publication_attachments pa
 WHERE publication_id = \$id AND role = 1 ORDER BY path
 SQL;
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__oaipmh_dcspecs')
                 ->columns(['id', 'name', 'query', 'display'])
                 ->values([

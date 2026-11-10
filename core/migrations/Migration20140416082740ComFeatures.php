@@ -38,7 +38,8 @@ class Migration20140416082740ComFeatures extends Base
         $this->addComponentEntry('features');
 
         if (!$schema->tableExists('#__feature_history')) {
-            $schema->createTable('#__feature_history')
+            $schema
+                ->createTable('#__feature_history')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('objectid')->nullable()
                 ->datetime('featured')->default('0000-00-00 00:00:00')

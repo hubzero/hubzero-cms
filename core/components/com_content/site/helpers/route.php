@@ -136,7 +136,8 @@ abstract class Route
     {
         if (count(self::$lang_lookup) == 0) {
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('a.sef', 'sef')
                 ->select('a.lang_code', 'lang_code')
                 ->from('#__languages', 'a')

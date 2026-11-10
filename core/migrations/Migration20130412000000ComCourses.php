@@ -21,7 +21,8 @@ class Migration20130412000000ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__courses_offering_sections', 'grade_policy_id')) {
-            $schema->addColumn('#__courses_offering_sections', 'grade_policy_id')
+            $schema
+                ->addColumn('#__courses_offering_sections', 'grade_policy_id')
                 ->integer()
                 ->notNull()
                 ->default(1)

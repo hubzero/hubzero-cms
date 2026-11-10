@@ -262,7 +262,8 @@ class Helper
         $message = new \Hubzero\Mail\Message();
 
         // build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setReplyTo($replyto['email'], $replyto['name'])
                 ->setTo($emailAddress)

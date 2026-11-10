@@ -95,7 +95,8 @@ class Courses extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $course->get('id'))
              ->set('created', $course->get('created'))
              ->set('created_by', $course->get('created_by'))

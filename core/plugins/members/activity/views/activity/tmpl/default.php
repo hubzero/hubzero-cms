@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js('jquery.infinitescroll', 'com_collections')
     ->js();
 
@@ -174,7 +175,8 @@ if (!$no_html) { ?>
                 <?php
 
                 foreach ($this->rows as $row) {
-                    $this->view('default_item')
+                    $this
+                        ->view('default_item')
                         ->set('member', $this->member)
                         ->set('row', $row)
                         ->set('online', $online)

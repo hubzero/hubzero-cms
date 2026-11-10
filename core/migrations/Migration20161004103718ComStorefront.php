@@ -27,7 +27,8 @@ class Migration20161004103718ComStorefront extends Base
             $schema->tableExists('#__storefront_product_access_groups')
             && !$schema->hasColumn('#__storefront_product_access_groups', 'exclude')
         ) {
-            $schema->addColumn('#__storefront_product_access_groups', 'exclude')
+            $schema
+                ->addColumn('#__storefront_product_access_groups', 'exclude')
                 ->tinyInteger(2)
                 ->notNull()
                 ->default('0');

@@ -60,7 +60,8 @@ $time = strtotime($time) === false ? null : $time;
 ?>
 
 <?php
-$this->view('_edit_script')
+$this
+    ->view('_edit_script')
     ->set('rconfig', $this->rconfig)
     ->set('row', $this->row)
     ->display();
@@ -73,11 +74,13 @@ $this->view('_edit_script')
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
                 <?php
                 if ($this->row->type->isForTools()) {
-                    $this->view('_edit_tool_fields')
+                    $this
+                        ->view('_edit_tool_fields')
                         ->set('row', $this->row)
                         ->display();
                 } else {
-                    $this->view('_edit_non_tool_fields')
+                    $this
+                        ->view('_edit_non_tool_fields')
                         ->set('licenses', $this->licenses)
                         ->set('lists', $this->lists)
                         ->set('row', $this->row)

@@ -38,7 +38,8 @@ $versions = \Components\Wiki\Models\Version::blank()->getTableName();
 $weight = '(match(' . $pages . '.title) against (' . $database->Quote($term) . ')'
     . ' + match(' . $versions . '.pagetext) against (' . $database->Quote($term) . '))';
 
-$rows = $this->book->pages($filters)
+$rows = $this->book
+    ->pages($filters)
     ->select($pages . '.*')
     ->select($versions . '.created_by')
     ->select($versions . '.summary')

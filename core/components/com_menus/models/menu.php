@@ -163,7 +163,8 @@ class Menu extends Relational
                 $userId = User::get('id');
 
                 // Verify that no items are checked out
-                $checked_out = $prev->items()
+                $checked_out = $prev
+                    ->items()
                     ->where('checked_out', '!=', (int) $userId)
                     ->where('checked_out', '!=', 0)
                     ->total();
@@ -177,7 +178,8 @@ class Menu extends Relational
                 }
 
                 // Verify that no module for this menu are checked out
-                $checked_out = $prev->modules()
+                $checked_out = $prev
+                    ->modules()
                     ->where('checked_out', '!=', (int) $userId)
                     ->where('checked_out', '!=', 0)
                     ->total();
@@ -245,7 +247,8 @@ class Menu extends Relational
         $userId = User::get('id');
 
         // Verify that no items are checked out
-        $checked_out = $this->items()
+        $checked_out = $this
+            ->items()
             ->where('checked_out', '!=', (int) $userId)
             ->where('checked_out', '!=', 0)
             ->total();
@@ -259,7 +262,8 @@ class Menu extends Relational
         }
 
         // Verify that no module for this menu are checked out
-        $checked_out = $this->modules()
+        $checked_out = $this
+            ->modules()
             ->where('checked_out', '!=', (int) $userId)
             ->where('checked_out', '!=', 0)
             ->total();
@@ -299,7 +303,8 @@ class Menu extends Relational
      */
     public function countPublishedItems()
     {
-        $total = $this->items()
+        $total = $this
+            ->items()
             ->whereEquals('published', self::STATE_PUBLISHED)
             ->total();
 
@@ -313,7 +318,8 @@ class Menu extends Relational
      */
     public function countUnpublishedItems()
     {
-        $total = $this->items()
+        $total = $this
+            ->items()
             ->whereEquals('published', self::STATE_UNPUBLISHED)
             ->total();
 
@@ -327,7 +333,8 @@ class Menu extends Relational
      */
     public function countTrashedItems()
     {
-        $total = $this->items()
+        $total = $this
+            ->items()
             ->whereEquals('published', -2)
             ->total();
 

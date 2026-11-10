@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 // Import share CSS to style share features on right side of trifold
 \Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
 
-$this->css()
+$this
+     ->css()
      ->js()
      ->js('tagbrowser');
 ?>
@@ -112,7 +113,8 @@ $this->css()
                     $supported = $rt->getTagUsage($this->supportedtag, 'id');
                 }
 
-                $this->view('_list', 'browse')
+                $this
+                     ->view('_list', 'browse')
                      ->set('lines', $this->results)
                      ->set('show_edit', $this->authorized)
                      ->set('supported', $supported)

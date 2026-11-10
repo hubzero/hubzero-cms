@@ -36,7 +36,8 @@ if (count($inst) > 0) {
             'layout'  => '_not_enrolled',
         ]);
 
-        $view->set('course', $this->course)
+        $view
+             ->set('course', $this->course)
              ->set('option', $this->option)
              ->set('message', 'You must be enrolled to utilize the discussion feature.')
              ->display();
@@ -110,7 +111,8 @@ if (count($inst) > 0) {
                         </div><!-- / .category-header -->
                         <div class="category-content">
                             <?php
-                            $this->view('_threads', 'threads')
+                            $this
+                                 ->view('_threads', 'threads')
                                  ->set('category', 'categorymine')
                                  ->set('option', $this->option)
                                  ->set('threads', $threads)
@@ -172,7 +174,8 @@ if (count($inst) > 0) {
                                                 </div><!-- / .thread-header -->
                                                 <div class="thread-content">
                                                     <?php
-                                                        $this->view('_threads', 'threads')
+                                                        $this
+                                                             ->view('_threads', 'threads')
                                                              ->set('category', 'category' . $row->get('id'))
                                                              ->set('option', $this->option)
                                                              ->set('threads', isset($threads[$row->get('id')]) ? $threads[$row->get('id')] : null)

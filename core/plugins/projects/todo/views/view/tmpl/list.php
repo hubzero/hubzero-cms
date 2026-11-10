@@ -13,7 +13,8 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('jquery.datepicker.css', 'system')
+$this
+     ->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system')
      ->css()
      ->js('jquery.timepicker', 'system')
@@ -33,7 +34,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 ?>
 <form action="<?php echo Route::url($url); ?>" method="post" id="plg-form" >
     <?php // View header
-    $this->view('_header')
+    $this
+         ->view('_header')
          ->set('option', $this->option)
          ->set('model', $this->model)
          ->set('todo', $this->todo)
@@ -54,7 +56,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     <div class="container">
     <?php
         // View menu
-        $this->view('_menu')
+        $this
+             ->view('_menu')
              ->set('option', $this->option)
              ->set('model', $this->model)
              ->set('todo', $this->todo)
@@ -103,7 +106,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     </table>
     <?php
         // View footer
-        $this->view('_footer')
+        $this
+             ->view('_footer')
              ->set('option', $this->option)
              ->set('model', $this->model)
              ->set('todo', $this->todo)

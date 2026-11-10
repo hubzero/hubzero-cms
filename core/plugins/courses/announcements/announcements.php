@@ -127,7 +127,8 @@ class Announcements extends Plugin
      */
     public function onCourseBeforeOutline($course, $offering)
     {
-        return $this->view('default', 'latest')
+        return $this
+            ->view('default', 'latest')
             ->set('course', $course)
             ->set('offering', $offering)
             ->set('params', $this->params)

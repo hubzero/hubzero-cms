@@ -30,7 +30,8 @@ class Migration20140627062357ComSupport extends Base
 
         // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
         if (stripos($ownerType, 'int') === false) {
-            $owners = $this->db->getQuery(true)
+            $owners = $this->db
+                ->getQuery(true)
                 ->select('t.owner', 'username')
                 ->select('u.id')
                 ->from('#__support_tickets', 't')
@@ -41,7 +42,8 @@ class Migration20140627062357ComSupport extends Base
 
             if ($owners) {
                 foreach ($owners as $owner) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_tickets')
                         ->set(['owner' => $owner->id])
                         ->where('owner', '=', $owner->username)
@@ -64,7 +66,8 @@ class Migration20140627062357ComSupport extends Base
 
         // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
         if (stripos($createdByType, 'int') === false) {
-            $creators = $this->db->getQuery(true)
+            $creators = $this->db
+                ->getQuery(true)
                 ->select('t.created_by', 'username')
                 ->select('u.id')
                 ->from('#__support_comments', 't')
@@ -75,7 +78,8 @@ class Migration20140627062357ComSupport extends Base
 
             if ($creators) {
                 foreach ($creators as $creator) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_comments')
                         ->set(['created_by' => $creator->id])
                         ->where('created_by', '=', $creator->username)
@@ -106,7 +110,8 @@ class Migration20140627062357ComSupport extends Base
 
         // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
         if (stripos($ownerType, 'int') !== false) {
-            $owners = $this->db->getQuery(true)
+            $owners = $this->db
+                ->getQuery(true)
                 ->select('u.username')
                 ->select('t.owner', 'id')
                 ->from('#__support_tickets', 't')
@@ -116,7 +121,8 @@ class Migration20140627062357ComSupport extends Base
 
             if ($owners) {
                 foreach ($owners as $owner) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_tickets')
                         ->set(['owner' => $owner->username])
                         ->where('owner', '=', $owner->id)
@@ -139,7 +145,8 @@ class Migration20140627062357ComSupport extends Base
 
         // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
         if (stripos($createdByType, 'int') !== false) {
-            $creators = $this->db->getQuery(true)
+            $creators = $this->db
+                ->getQuery(true)
                 ->select('t.created_by', 'id')
                 ->select('u.username')
                 ->from('#__support_comments', 't')
@@ -149,7 +156,8 @@ class Migration20140627062357ComSupport extends Base
 
             if ($creators) {
                 foreach ($creators as $creator) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_comments')
                         ->set(['created_by' => $creator->username])
                         ->where('created_by', '=', $creator->id)

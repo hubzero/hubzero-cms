@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <ul id="page_options">

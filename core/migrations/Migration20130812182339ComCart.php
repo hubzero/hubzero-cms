@@ -25,7 +25,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart
         if (!$schema->tableExists('#__cart')) {
-            $schema->createTable('#__cart')
+            $schema
+                ->createTable('#__cart')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('uid')->default(0)
                 ->integer('itemid')->default(0)
@@ -41,7 +42,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_cart_items
         if (!$schema->tableExists('#__cart_cart_items')) {
-            $schema->createTable('#__cart_cart_items')
+            $schema
+                ->createTable('#__cart_cart_items')
                 ->integer('crtId')
                 ->integer('sId')
                 ->integer('crtiQty')->nullable()
@@ -58,7 +60,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_carts
         if (!$schema->tableExists('#__cart_carts')) {
-            $schema->createTable('#__cart_carts')
+            $schema
+                ->createTable('#__cart_carts')
                 ->integer('crtId', ['autoIncrement' => true])
                 ->datetime('crtCreated')->nullable()
                 ->datetime('crtLastUpdated')->nullable()
@@ -72,7 +75,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_coupons
         if (!$schema->tableExists('#__cart_coupons')) {
-            $schema->createTable('#__cart_coupons')
+            $schema
+                ->createTable('#__cart_coupons')
                 ->integer('crtId')
                 ->integer('cnId')
                 ->datetime('crtCnAdded')->nullable()
@@ -84,7 +88,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_memberships
         if (!$schema->tableExists('#__cart_memberships')) {
-            $schema->createTable('#__cart_memberships')
+            $schema
+                ->createTable('#__cart_memberships')
                 ->integer('crtmId', ['autoIncrement' => true])
                 ->integer('pId')->nullable()
                 ->integer('crtId')->nullable()
@@ -98,7 +103,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_saved_addresses
         if (!$schema->tableExists('#__cart_saved_addresses')) {
-            $schema->createTable('#__cart_saved_addresses')
+            $schema
+                ->createTable('#__cart_saved_addresses')
                 ->integer('saId', ['autoIncrement' => true])
                 ->integer('uidNumber')
                 ->char('saToFirst', 100)
@@ -116,7 +122,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_transaction_info
         if (!$schema->tableExists('#__cart_transaction_info')) {
-            $schema->createTable('#__cart_transaction_info')
+            $schema
+                ->createTable('#__cart_transaction_info')
                 ->integer('tId')
                 ->char('tiShippingToFirst', 100)->nullable()
                 ->char('tiShippingToLast', 100)->nullable()
@@ -142,7 +149,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_transaction_items
         if (!$schema->tableExists('#__cart_transaction_items')) {
-            $schema->createTable('#__cart_transaction_items')
+            $schema
+                ->createTable('#__cart_transaction_items')
                 ->integer('tId')
                 ->integer('sId')
                 ->integer('tiQty')->nullable()
@@ -155,7 +163,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_transaction_steps
         if (!$schema->tableExists('#__cart_transaction_steps')) {
-            $schema->createTable('#__cart_transaction_steps')
+            $schema
+                ->createTable('#__cart_transaction_steps')
                 ->integer('tsId', ['autoIncrement' => true])
                 ->integer('tId')
                 ->char('tsStep', 16)
@@ -169,7 +178,8 @@ class Migration20130812182339ComCart extends Base
 
         // Table structure for table #__cart_transactions
         if (!$schema->tableExists('#__cart_transactions')) {
-            $schema->createTable('#__cart_transactions')
+            $schema
+                ->createTable('#__cart_transactions')
                 ->integer('tId', ['autoIncrement' => true])
                 ->integer('crtId')->nullable()
                 ->datetime('tCreated')->nullable()

@@ -46,7 +46,8 @@ class HasUuidTest extends AbstractDriverTestCase
     {
         // Create test table with uuid column
         $driver->dropTable('uuid_articles', true);
-        $driver->createTable('uuid_articles')
+        $driver
+            ->createTable('uuid_articles')
             ->id()
             ->string('uuid', 36)->nullable()
             ->string('title', 255)
@@ -55,7 +56,8 @@ class HasUuidTest extends AbstractDriverTestCase
 
         // Create table with custom uuid column name
         $driver->dropTable('uuid_custom_articles', true);
-        $driver->createTable('uuid_custom_articles')
+        $driver
+            ->createTable('uuid_custom_articles')
             ->id()
             ->string('public_id', 36)->nullable()
             ->string('title', 255)
@@ -65,7 +67,8 @@ class HasUuidTest extends AbstractDriverTestCase
         // Note: Schema builder doesn't support string as PK, so uuid is just a regular column
         // The model will treat it as PK via $pk property
         $driver->dropTable('uuid_tokens', true);
-        $driver->createTable('uuid_tokens')
+        $driver
+            ->createTable('uuid_tokens')
             ->string('uuid', 36)
             ->string('name', 255)
             ->string('created_at', 50)->nullable()

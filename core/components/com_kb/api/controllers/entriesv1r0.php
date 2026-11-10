@@ -175,7 +175,8 @@ class Entriesv1r0 extends ApiController
                 $query->whereEquals('state', (int) $state);
             }
         } else {
-            $query->whereEquals('state', Article::STATE_PUBLISHED)
+            $query
+                  ->whereEquals('state', Article::STATE_PUBLISHED)
                   ->whereIn('access', User::getAuthorisedViewLevels());
         }
 
@@ -195,7 +196,8 @@ class Entriesv1r0 extends ApiController
         }
 
         if ($search = Request::getString('search', '')) {
-            $query->whereLike('title', $search, 1)
+            $query
+                  ->whereLike('title', $search, 1)
                   ->orWhereLike('fulltxt', $search, 1)
                   ->resetDepth();
         }
@@ -613,7 +615,8 @@ class Entriesv1r0 extends ApiController
                 $query->whereEquals('published', (int) $published);
             }
         } else {
-            $query->whereEquals('published', 1)
+            $query
+                  ->whereEquals('published', 1)
                   ->whereIn('access', User::getAuthorisedViewLevels());
         }
 

@@ -17,10 +17,12 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
-$this->css()
+$this
+     ->css()
      ->js();
 
-$first = $this->archive->entries([
+$first = $this->archive
+    ->entries([
         'state'      => $this->filters['state'],
         'authorized' => $this->filters['authorized'],
     ])
@@ -84,7 +86,8 @@ $first = $this->archive->entries([
                     </time>
                 </dd>
             <?php if ($this->row->get('allow_comments')) {
-                    $comments = $this->row->comments()
+                    $comments = $this->row
+                        ->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -162,7 +165,8 @@ $first = $this->archive->entries([
         <div class="container blog-popular-entries">
             <h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
             <?php
-                $popular = $this->archive->entries([
+                $popular = $this->archive
+                    ->entries([
                         'state'  => $this->filters['state'],
                         'access' => $this->filters['access'],
                     ])
@@ -198,7 +202,8 @@ $first = $this->archive->entries([
                 <?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
             </h3>
             <?php
-            $comments = $this->row->comments()
+            $comments = $this->row
+                ->comments()
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
@@ -211,7 +216,8 @@ $first = $this->archive->entries([
                 ->rows();
             if ($comments->count() > 0) { ?>
                 <?php
-                    $this->view('_list', 'comments')
+                    $this
+                         ->view('_list', 'comments')
                          ->set('group', $this->group)
                          ->set('parent', 0)
                          ->set('cls', 'odd')
@@ -239,7 +245,8 @@ $first = $this->archive->entries([
                     </p>
                     <fieldset>
                         <?php
-                            $replyto = $this->row->comments()
+                            $replyto = $this->row
+                                ->comments()
                                 ->whereEquals('id', Request::getInt('reply', 0))
                                 ->whereIn('state', [
                                     Components\Blog\Models\Comment::STATE_PUBLISHED,

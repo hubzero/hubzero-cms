@@ -73,7 +73,8 @@ class Popular extends Module
         }
 
         // Set the Start and Limit
-        $query->start(0)
+        $query
+            ->start(0)
             ->limit($params->get('count', 5))
             ->order('hits', 'desc');
 

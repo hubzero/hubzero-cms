@@ -28,7 +28,8 @@ Pathway::append(
 
 Document::setTitle(Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE'));
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">

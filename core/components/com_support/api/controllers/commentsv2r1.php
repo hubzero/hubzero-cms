@@ -165,7 +165,8 @@ class Commentsv2r1 extends ApiController
         $created = $this->toTimestamp(Request::getString('created', ''));
         if ($created) {
             if (is_array($created) && count($created) > 1) {
-                $comments->where('created', '>=', $created[0], 1)
+                $comments
+                    ->where('created', '>=', $created[0], 1)
                     ->orWhere('created', '<', $created[1], 1)
                     ->resetDepth();
             } else {
@@ -195,7 +196,8 @@ class Commentsv2r1 extends ApiController
             $sort_dir = 'desc';
         }
 
-        $rows = $comments->order($sort, $sort_dir)
+        $rows = $comments
+            ->order($sort, $sort_dir)
             ->limit(Request::getInt('limit', 25))
             ->start(Request::getInt('start', 0))
             ->rows();

@@ -33,7 +33,8 @@ class Migration20171106183501ComMembers extends Base
             }
 
             if (!$schema->hasColumn('#__profile_completion_awards', 'disability')) {
-                $schema->addColumn('#__profile_completion_awards', 'disability')
+                $schema
+                    ->addColumn('#__profile_completion_awards', 'disability')
                     ->tinyInteger(4)
                     ->notNull()
                     ->default('0');

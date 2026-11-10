@@ -53,7 +53,8 @@ if ($this->getError()) {
         <ul class="sample">
         <?php foreach ($this->items as $file) {
             // Display list item with file data
-            $this->view('default', 'selected')
+            $this
+                 ->view('default', 'selected')
                  ->set('skip', false)
                  ->set('file', $file)
                  ->set('action', 'move')

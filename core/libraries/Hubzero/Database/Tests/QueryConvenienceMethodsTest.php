@@ -45,7 +45,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $driver->dropTable('conv_products', true);
         $driver->dropTable('conv_users', true);
 
-        $driver->createTable('conv_users')
+        $driver
+            ->createTable('conv_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -60,14 +61,16 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $driver->addFulltextIndex('conv_users', 'conv_users_ft_name', ['name']);
         $driver->addFulltextIndex('conv_users', 'conv_users_ft_email', ['email']);
 
-        $driver->createTable('conv_products')
+        $driver
+            ->createTable('conv_products')
             ->id()
             ->string('name', 255)
             ->integer('stock')->default(0)
             ->integer('price')->default(0)
             ->execute();
 
-        $driver->createTable('conv_orders')
+        $driver
+            ->createTable('conv_orders')
             ->id()
             ->integer('user_id')
             ->integer('total')->default(0)
@@ -206,7 +209,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_users')
             ->exists();
 
@@ -223,7 +227,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'NonExistent')
             ->exists();
@@ -241,7 +246,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'NonExistent')
             ->doesntExist();
@@ -259,7 +265,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_users')
             ->doesntExist();
 
@@ -276,7 +283,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'Alice')
             ->exists();
@@ -298,7 +306,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->select('*')
+        $result = $query
+            ->select('*')
             ->from('conv_products')
             ->doesntExist();
 
@@ -360,7 +369,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where created_at equals updated_at (never updated)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereColumn('created_at', 'updated_at')
             ->fetch('rows');
@@ -380,7 +390,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where updated_at is different from created_at (has been updated)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereColumn('created_at', '!=', 'updated_at')
             ->fetch('rows');
@@ -400,7 +411,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where login_count > score (none should match with our test data)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereColumn('login_count', '>', 'score')
             ->fetch('rows');
@@ -419,7 +431,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where login_count < score (all users)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereColumn('login_count', '<', 'score')
             ->fetch('rows');
@@ -438,7 +451,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where login_count > 4 OR login_count < score
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->where('login_count', '>', 4)
             ->orWhereColumn('login_count', '<', 'score')
@@ -459,7 +473,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Orders where created_at != shipped_at AND total >= 75
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_orders')
             ->whereColumn('created_at', '!=', 'shipped_at')
             ->where('total', '>=', 75)
@@ -479,7 +494,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereColumn('created_at', '!=', 'updated_at')
             ->fetch('rows');
@@ -534,7 +550,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->assertEquals(5, $initial);
 
         // Increment login_count for user 1
-        $affected = $query->from('conv_users')
+        $affected = $query
+            ->from('conv_users')
             ->whereEquals('id', 1)
             ->increment('login_count');
 
@@ -559,7 +576,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Increment score by 25 for user 2
-        $affected = $query->from('conv_users')
+        $affected = $query
+            ->from('conv_users')
             ->whereEquals('id', 2)
             ->increment('score', 25);
 
@@ -586,7 +604,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $newTimestamp = '2024-02-01 12:00:00';
 
         // Increment login_count and update timestamp
-        $affected = $query->from('conv_users')
+        $affected = $query
+            ->from('conv_users')
             ->whereEquals('id', 1)
             ->increment('login_count', 1, ['updated_at' => $newTimestamp]);
 
@@ -613,7 +632,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Increment score for all users
-        $affected = $query->from('conv_users')
+        $affected = $query
+            ->from('conv_users')
             ->increment('score', 10);
 
         $this->assertEquals(3, $affected);
@@ -637,7 +657,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Decrement stock for product 1
-        $affected = $query->from('conv_products')
+        $affected = $query
+            ->from('conv_products')
             ->whereEquals('id', 1)
             ->decrement('stock');
 
@@ -662,7 +683,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Decrement stock by 25 for product 2
-        $affected = $query->from('conv_products')
+        $affected = $query
+            ->from('conv_products')
             ->whereEquals('id', 2)
             ->decrement('stock', 25);
 
@@ -687,7 +709,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Decrement stock and update name
-        $affected = $query->from('conv_products')
+        $affected = $query
+            ->from('conv_products')
             ->whereEquals('id', 1)
             ->decrement('stock', 5, ['name' => 'Widget (Low Stock)']);
 
@@ -714,7 +737,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Try to decrement for non-existent product
-        $affected = $query->from('conv_products')
+        $affected = $query
+            ->from('conv_products')
             ->whereEquals('id', 9999)
             ->decrement('stock');
 
@@ -761,7 +785,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->from('conv_users')
+        $result = $query
+            ->from('conv_users')
             ->whereEquals('id', 1)
             ->increment('login_count');
 
@@ -778,7 +803,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $result = $query->from('conv_products')
+        $result = $query
+            ->from('conv_products')
             ->whereEquals('id', 1)
             ->decrement('stock');
 
@@ -824,7 +850,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users with login_count between 3 and 5 (Bob=3, Alice=5)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereBetween('login_count', [3, 5])
             ->fetch('rows');
@@ -843,7 +870,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Products with stock between 25 and 75
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_products')
             ->whereBetween('stock', [25, 75])
             ->fetch('rows');
@@ -863,7 +891,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users created between Jan 1 and Jan 2
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereBetween('created_at', ['2024-01-01', '2024-01-02'])
             ->fetch('rows');
@@ -883,7 +912,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users with login_count = 0 OR login_count between 4 and 6
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('login_count', 0)
             ->orWhereBetween('login_count', [4, 6])
@@ -904,7 +934,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users with login_count NOT between 1 and 4 (excludes Bob=3)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNotBetween('login_count', [1, 4])
             ->fetch('rows');
@@ -924,7 +955,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where name = 'Alice' OR login_count NOT between 1 and 10
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'Alice')
             ->orWhereNotBetween('login_count', [1, 10])
@@ -946,7 +978,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->expectExceptionMessage('whereBetween requires exactly 2 values');
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('conv_users')
             ->whereBetween('login_count', [1, 2, 3])
             ->fetch('rows');
@@ -962,7 +995,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereBetween('score', [50, 100])
             ->fetch('rows');
@@ -980,7 +1014,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNotBetween('score', [50, 100])
             ->fetch('rows');
@@ -1028,7 +1063,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users whose name does NOT contain 'li' (excludes Alice and Charlie)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNotLike('name', 'li')
             ->fetch('rows');
@@ -1048,7 +1084,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where name = 'Alice' OR name does NOT contain 'o'
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'Alice')
             ->orWhereNotLike('name', 'o')
@@ -1068,7 +1105,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNotLike('email', 'spam')
             ->fetch('rows');
@@ -1087,7 +1125,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users with score between 25 and 75 AND login_count > 0
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereBetween('score', [25, 75])
             ->where('login_count', '>', 0)
@@ -1135,7 +1174,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_orders')
             ->whereBetweenColumns('total', ['id', 'user_id'])
             ->fetch('rows');
@@ -1153,7 +1193,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_orders')
             ->whereNotBetweenColumns('total', ['id', 'user_id'])
             ->fetch('rows');
@@ -1180,7 +1221,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Find products where stock is between id and price
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_products')
             ->whereBetweenColumns('stock', ['id', 'price'])
             ->fetch('rows');
@@ -1199,7 +1241,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_products')
             ->whereEquals('id', 1)
             ->orWhereBetweenColumns('stock', ['id', 'price'])
@@ -1218,7 +1261,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_products')
             ->whereEquals('id', 1)
             ->orWhereNotBetweenColumns('stock', ['id', 'price'])
@@ -1239,7 +1283,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->expectExceptionMessage('whereBetweenColumns requires exactly 2 column names');
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('conv_products')
             ->whereBetweenColumns('stock', ['col1', 'col2', 'col3'])
             ->fetch('rows');
@@ -1299,7 +1344,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNot(function ($q) {
                 $q->whereEquals('name', 'Alice');
@@ -1320,7 +1366,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where NOT (name = 'Alice')
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNot(function ($q) {
                 $q->whereEquals('name', 'Alice');
@@ -1342,10 +1389,12 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where NOT (login_count = 0 OR login_count = 3)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereNot(function ($q) {
-                $q->whereEquals('login_count', 0)
+                $q
+                  ->whereEquals('login_count', 0)
                   ->orWhereEquals('login_count', 3);
             })
             ->fetch('rows');
@@ -1365,7 +1414,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where name = 'Alice' OR NOT (login_count = 3)
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('name', 'Alice')
             ->orWhereNot(function ($q) {
@@ -1407,7 +1457,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Users where score > 30 AND NOT (name = 'Alice')
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->where('score', '>', 30)
             ->whereNot(function ($q) {
@@ -1456,7 +1507,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereFullText('name', 'Alice')
             ->fetch('rows');
@@ -1474,7 +1526,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereFullText(['name', 'email'], 'alice')
             ->fetch('rows');
@@ -1491,7 +1544,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereFullText('name', 'Alice', ['mode' => 'boolean'])
             ->fetch('rows');
@@ -1508,7 +1562,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereFullText('name', 'Alice', ['mode' => 'expansion'])
             ->fetch('rows');
@@ -1525,7 +1580,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereFullText('name', 'Alice', ['mode' => 'natural'])
             ->fetch('rows');
@@ -1542,7 +1598,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('conv_users')
             ->whereEquals('id', 999)
             ->orWhereFullText('name', 'Alice')

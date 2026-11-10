@@ -31,11 +31,13 @@ Toolbar::cancel();
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->js()
+$this
+     ->js()
      ->js('jquery.formwatcher', 'system');
 
 // Primary and secondary stories
-$primaries = $this->newsletter->primary()
+$primaries = $this->newsletter
+    ->primary()
     ->whereEquals('deleted', 0)
     ->ordered()
     ->rows();
@@ -48,7 +50,8 @@ if ($primaries->count() > 0) {
     $primaries->rewind();
 }
 
-$secondaries = $this->newsletter->secondary()
+$secondaries = $this->newsletter
+    ->secondary()
     ->whereEquals('deleted', 0)
     ->ordered()
     ->rows();

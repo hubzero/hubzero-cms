@@ -131,7 +131,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function tableBuilderCreateDefinitionShape(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_users');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('name', 100)
                 ->string('email', 255)->nullable()
                 ->integer('status')->default(1)
@@ -178,7 +179,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function tableBuilderCreateDefinitionCompositePrimaryKey(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_composite');
-        $builder->unsignedInteger('left_id')
+        $builder
+                ->unsignedInteger('left_id')
                 ->unsignedInteger('right_id')
                 ->string('label', 64)
                 ->primaryKey(['left_id', 'right_id']);
@@ -198,7 +200,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function tableBuilderCreateDefinitionMultipleForeignKeys(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_memberships');
-        $builder->unsignedInteger('user_id')
+        $builder
+                ->unsignedInteger('user_id')
                 ->unsignedInteger('group_id')
                 ->foreign('user_id', 'tdf_users', 'id', 'CASCADE', 'CASCADE')
                 ->foreign('group_id', 'tdf_groups', 'id', 'RESTRICT', 'CASCADE');
@@ -240,7 +243,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function tableBuilderCreateDefinitionFluentForeignIdConstrained(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_posts');
-        $builder->id()
+        $builder
+                ->id()
                 ->foreignId('user_id')->constrained('tdf_users')
                 ->foreignId('team_id')->constrained()
                 ->string('title', 150);
@@ -364,7 +368,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('test_create_exec', true);
 
-        $driver->createTable('test_create_exec')
+        $driver
+               ->createTable('test_create_exec')
                ->id()
                ->string('name', 100)
                ->string('email', 255)->nullable()
@@ -399,13 +404,15 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         // Clean up leftovers from previous failed runs
         $driver->dropTable('test_alter_add', true);
-        $driver->createTable('test_alter_add')
+        $driver
+               ->createTable('test_alter_add')
                ->id()
                ->string('name')
                ->execute();
 
         // Now alter it
-        $driver->alterTable('test_alter_add')
+        $driver
+               ->alterTable('test_alter_add')
                ->addColumn('email', 'VARCHAR(255)')
                ->nullable()
                ->execute();
@@ -425,12 +432,14 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function alterTableAddMultipleColumns(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_alter_multi', true);
-        $driver->createTable('test_alter_multi')
+        $driver
+               ->createTable('test_alter_multi')
                ->id()
                ->execute();
 
         // Add multiple columns
-        $driver->alterTable('test_alter_multi')
+        $driver
+               ->alterTable('test_alter_multi')
                ->addColumn('name', 'VARCHAR(100)')
                ->addColumn('email', 'VARCHAR(255)')->nullable()
                ->addColumn('active', 'BOOLEAN')
@@ -453,13 +462,15 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function alterTableAddIndex(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_alter_idx', true);
-        $driver->createTable('test_alter_idx')
+        $driver
+               ->createTable('test_alter_idx')
                ->id()
                ->string('email')
                ->execute();
 
         // Add index
-        $driver->alterTable('test_alter_idx')
+        $driver
+               ->alterTable('test_alter_idx')
                ->addIndex('idx_email', 'email')
                ->execute();
 
@@ -479,13 +490,15 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $tableName = 'test_alter_uidx';
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->string('username')
                ->execute();
 
         // Add unique index
-        $driver->alterTable($tableName)
+        $driver
+               ->alterTable($tableName)
                ->addUniqueIndex('uidx_username', 'username')
                ->execute();
 
@@ -505,7 +518,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $tableName = 'test_drop_idx';
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->string('email')
                ->index('idx_email', 'email')
@@ -515,7 +529,8 @@ class TableBuilderTest extends AbstractDriverTestCase
         $this->assertTrue($driver->tableHasKey($tableName, 'idx_email'));
 
         // Drop the index
-        $driver->alterTable($tableName)
+        $driver
+               ->alterTable($tableName)
                ->dropIndex('idx_email')
                ->execute();
 
@@ -536,13 +551,16 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function schemaAddColumn(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_schema_add', true);
-        $driver->createTable('test_schema_add')
+        $driver
+               ->createTable('test_schema_add')
                ->id()
                ->string('name')
                ->execute();
 
         // Use Schema class to add a column (use schema builder for database compatibility)
-        $driver->schema()->alterTable('test_schema_add')
+        $driver
+               ->schema()
+               ->alterTable('test_schema_add')
                ->addColumn('email', 'VARCHAR(255)')
                ->nullable()
                ->execute();
@@ -563,7 +581,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $tableName = 'test_schema_drop';
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->string('name')
                ->string('to_remove')
@@ -590,7 +609,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $driver->dropTable('test_schema_rename_old', true);
         $driver->dropTable('test_schema_rename_new', true);
-        $driver->createTable('test_schema_rename_old')
+        $driver
+               ->createTable('test_schema_rename_old')
                ->id()
                ->string('name')
                ->execute();
@@ -617,7 +637,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     {
         $tableName = 'test_schema_idx';
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->string('email')
                ->execute();
@@ -640,7 +661,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function schemaDropIndex(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_schema_drop_idx', true);
-        $driver->createTable('test_schema_drop_idx')
+        $driver
+               ->createTable('test_schema_drop_idx')
                ->id()
                ->string('email')
                ->index('idx_email', 'email')
@@ -666,7 +688,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function schemaAddUniqueIndex(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_schema_uidx', true);
-        $driver->createTable('test_schema_uidx')
+        $driver
+               ->createTable('test_schema_uidx')
                ->id()
                ->string('username')
                ->execute();
@@ -693,7 +716,8 @@ class TableBuilderTest extends AbstractDriverTestCase
         $this->assertTrue($driver->schema()->tableNotExists('test_schema_exists'));
 
         // Create table
-        $driver->createTable('test_schema_exists')
+        $driver
+               ->createTable('test_schema_exists')
                ->id()
                ->execute();
 
@@ -715,7 +739,8 @@ class TableBuilderTest extends AbstractDriverTestCase
         $tableName = 'test_schema_has_col';
 
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->string('name')
                ->execute();
@@ -736,7 +761,8 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function schemaDropTable(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_schema_drop_tbl', true);
-        $driver->createTable('test_schema_drop_tbl')
+        $driver
+               ->createTable('test_schema_drop_tbl')
                ->id()
                ->execute();
 
@@ -759,7 +785,8 @@ class TableBuilderTest extends AbstractDriverTestCase
         $tableName = 'test_schema_col_types';
 
         $driver->dropTable($tableName, true);
-        $driver->createTable($tableName)
+        $driver
+               ->createTable($tableName)
                ->id()
                ->execute();
 
@@ -774,7 +801,9 @@ class TableBuilderTest extends AbstractDriverTestCase
         }
 
         // Add various column types using abstract type methods for database compatibility
-        $driver->schema()->alterTable($tableName)
+        $driver
+               ->schema()
+               ->alterTable($tableName)
                ->addColumn('int_col')->integer()->default(0)
                ->addColumn('text_col')->text()->nullable()
                ->addColumn('varchar_col')->string(255)->nullable()
@@ -799,13 +828,16 @@ class TableBuilderTest extends AbstractDriverTestCase
     public function schemaAlterTableFluent(string $dbName, Driver $driver)
     {
         $driver->dropTable('test_schema_alter_fluent', true);
-        $driver->createTable('test_schema_alter_fluent')
+        $driver
+               ->createTable('test_schema_alter_fluent')
                ->id()
                ->string('name')
                ->execute();
 
         // Use Schema class alterTable fluent builder
-        $driver->schema()->alterTable('test_schema_alter_fluent')
+        $driver
+               ->schema()
+               ->alterTable('test_schema_alter_fluent')
                ->addColumn('email', 'VARCHAR(255)')
                ->nullable()
                ->addColumn('status', 'INT(11)')

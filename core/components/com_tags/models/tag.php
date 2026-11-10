@@ -775,7 +775,8 @@ class Tag extends Relational
 
         // Update new tag's counts
         $tag = self::one($tag_id);
-        $tag->set('objects', $tag->objects()->total())
+        $tag
+            ->set('objects', $tag->objects()->total())
             ->save();
 
         return true;

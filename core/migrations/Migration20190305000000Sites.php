@@ -36,7 +36,8 @@ class Migration20190305000000Sites extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__sites')) {
-            $schema->createTable('#__sites')
+            $schema
+                ->createTable('#__sites')
                 ->id()
                 ->string('title', 100)->nullable()
                 ->string('category', 100)->nullable()

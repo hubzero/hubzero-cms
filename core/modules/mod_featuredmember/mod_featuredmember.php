@@ -47,7 +47,8 @@ class Featuredmember extends Module
             $filters['contributions'] = $min;
         }
 
-        $userId = (int) $database->getQuery()
+        $userId = (int) $database
+            ->getQuery()
             ->select('id')
             ->from('#__users')
             ->whereEquals('block', 0)

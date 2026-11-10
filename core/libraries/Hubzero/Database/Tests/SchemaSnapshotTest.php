@@ -69,7 +69,8 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         $driver->dropTable('snapshot_comments', true);
 
         // Create test tables with various column types
-        $driver->createTable('snapshot_users')
+        $driver
+            ->createTable('snapshot_users')
             ->id()
             ->string('username', 50)
             ->string('email', 100)
@@ -77,7 +78,8 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
             ->timestamp('created_at')
             ->execute();
 
-        $driver->createTable('snapshot_posts')
+        $driver
+            ->createTable('snapshot_posts')
             ->id()
             ->integer('user_id')
             ->string('title', 200)
@@ -86,7 +88,8 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
             ->timestamp('created_at')
             ->execute();
 
-        $driver->createTable('snapshot_comments')
+        $driver
+            ->createTable('snapshot_comments')
             ->id()
             ->integer('post_id')
             ->integer('user_id')
@@ -612,7 +615,8 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         $driver->dropTable($newTable, true);
 
         // Create a base table for our snapshot
-        $driver->createTable($baseTable)
+        $driver
+            ->createTable($baseTable)
             ->id()
             ->string('name', 100)
             ->execute();
@@ -625,7 +629,8 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         $snapshot->save('baseline', 'Before changes');
 
         // Make a change - add a new table with the same prefix
-        $driver->createTable($newTable)
+        $driver
+            ->createTable($newTable)
             ->id()
             ->string('value', 50)
             ->execute();

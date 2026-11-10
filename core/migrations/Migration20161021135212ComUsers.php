@@ -30,7 +30,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__users', 'password')
             && $schema->hasColumn('#__users_password', 'passhash')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('u.id')
                 ->select('up.passhash')
                 ->from('#__users', 'u')
@@ -46,7 +47,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users')
                     ->set(['password' => $row->passhash])
                     ->where('id', '=', $row->id)
@@ -61,7 +63,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__users', 'password')
             && $schema->hasColumn('#__xprofiles', 'userPassword')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('u.id')
                 ->select('xp.userPassword')
                 ->from('#__users', 'u')
@@ -77,7 +80,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users')
                     ->set(['password' => $row->userPassword])
                     ->where('id', '=', $row->id)
@@ -92,7 +96,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__xprofiles', 'userPassword')
             && $schema->hasColumn('#__users_password', 'passhash')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('xp.uidNumber')
                 ->select('up.passhash')
                 ->from('#__xprofiles', 'xp')
@@ -108,7 +113,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__xprofiles')
                     ->set(['userPassword' => $row->passhash])
                     ->where('uidNumber', '=', $row->uidNumber)
@@ -123,7 +129,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__xprofiles', 'userPassword')
             && $schema->hasColumn('#__users', 'password')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('xp.uidNumber')
                 ->select('u.password')
                 ->from('#__xprofiles', 'xp')
@@ -139,7 +146,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__xprofiles')
                     ->set(['userPassword' => $row->password])
                     ->where('uidNumber', '=', $row->uidNumber)
@@ -154,7 +162,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__users_password', 'passhash')
             && $schema->hasColumn('#__xprofiles', 'userPassword')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('up.user_id')
                 ->select('xp.userPassword')
                 ->from('#__users_password', 'up')
@@ -170,7 +179,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users_password')
                     ->set(['passhash' => $row->userPassword])
                     ->where('user_id', '=', $row->user_id)
@@ -185,7 +195,8 @@ class Migration20161021135212ComUsers extends Base
             && $schema->hasColumn('#__users_password', 'passhash')
             && $schema->hasColumn('#__users', 'password')
         ) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('up.user_id')
                 ->select('u.password')
                 ->from('#__users_password', 'up')
@@ -201,7 +212,8 @@ class Migration20161021135212ComUsers extends Base
                 ->loadObjectList();
 
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users_password')
                     ->set(['passhash' => $row->password])
                     ->where('user_id', '=', $row->user_id)

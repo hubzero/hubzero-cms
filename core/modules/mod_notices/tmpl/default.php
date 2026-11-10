@@ -13,7 +13,8 @@ use Hubzero\Facades\Request;
 defined('_HZEXEC_') or die();
 
 if ($this->publish) {
-    $this->css()
+    $this
+         ->css()
          ->js();
     ?>
     <div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">

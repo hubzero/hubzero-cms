@@ -253,7 +253,8 @@ class Substitute extends Relational
             $entries = [];
 
             foreach ($rows as $row) {
-                $row->set('id', null)
+                $row
+                    ->set('id', null)
                     ->set('tag_id', $newtagid)
                     ->save();
 

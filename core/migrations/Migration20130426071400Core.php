@@ -21,7 +21,8 @@ class Migration20130426071400Core extends Base
      **/
     public function up()
     {
-        $result = $this->db->getQuery(true)
+        $result = $this->db
+            ->getQuery(true)
             ->select('introtext')
             ->from('#__content')
             ->where('alias', '=', 'licensing')
@@ -31,14 +32,16 @@ class Migration20130426071400Core extends Base
         $search = '<a href="http://www.hubzero.org/topics/middleware">unique middleware</a>';
         $result = str_replace($search, 'unique middleware', $result);
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__content')
             ->set(['introtext' => $result])
             ->where('alias', '=', 'licensing')
             ->where('title', '=', 'Intellectual Property Considerations')
             ->execute();
 
-        $introtext = $this->db->getQuery(true)
+        $introtext = $this->db
+            ->getQuery(true)
             ->select('introtext')
             ->from('#__content')
             ->where('alias', '=', 'licensing')
@@ -47,7 +50,8 @@ class Migration20130426071400Core extends Base
 
         if ($introtext) {
             $introtext = str_replace('/feedback/report_problems/', '/support/ticket/new', $introtext);
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__content')
                 ->set(['introtext' => $introtext])
                 ->where('alias', '=', 'licensing')

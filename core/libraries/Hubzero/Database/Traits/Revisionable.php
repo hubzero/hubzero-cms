@@ -219,7 +219,8 @@ trait Revisionable
 
         $revisionNumber = $this->getNextRevisionNumber();
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->push($this->getRevisionTable(), [
                 $this->getRevisionForeignKey() => $this->getPkValue(),
                 'revision_number' => $revisionNumber,
@@ -252,7 +253,8 @@ trait Revisionable
             return [];
         }
 
-        $rows = $this->getQuery()
+        $rows = $this
+            ->getQuery()
             ->select('*')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -286,7 +288,8 @@ trait Revisionable
             return null;
         }
 
-        $revision = $this->getQuery()
+        $revision = $this
+            ->getQuery()
             ->select('*')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -311,7 +314,8 @@ trait Revisionable
             return null;
         }
 
-        $revision = $this->getQuery()
+        $revision = $this
+            ->getQuery()
             ->select('*')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -372,7 +376,8 @@ trait Revisionable
             return 0;
         }
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->select('COUNT(*) as cnt')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -388,7 +393,8 @@ trait Revisionable
      */
     protected function getNextRevisionNumber(): int
     {
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->select('MAX(revision_number) as max_num')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -518,7 +524,8 @@ trait Revisionable
             return false;
         }
 
-        $result = $this->getQuery()
+        $result = $this
+            ->getQuery()
             ->delete($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
             ->execute();
@@ -549,7 +556,8 @@ trait Revisionable
         // Get revision IDs to delete (oldest first, limit to count - keep)
         $toDelete = $count - $keep;
 
-        $revisions = $this->getQuery()
+        $revisions = $this
+            ->getQuery()
             ->select('id')
             ->from($this->getRevisionTable())
             ->whereEquals($this->getRevisionForeignKey(), $this->getPkValue())
@@ -596,7 +604,8 @@ trait Revisionable
         $fk = $instance->getRevisionForeignKey();
 
         // Get all distinct foreign keys
-        $query = $instance->getQuery()
+        $query = $instance
+            ->getQuery()
             ->select($fk, 'fk_id')
             ->distinct()
             ->from($revisionTable);
@@ -615,7 +624,8 @@ trait Revisionable
 
         foreach ($records as $record) {
             // Count revisions for this record
-            $countResult = $instance->getQuery()
+            $countResult = $instance
+                ->getQuery()
                 ->select('COUNT(*) as cnt')
                 ->from($revisionTable)
                 ->whereEquals($fk, $record->fk_id)
@@ -630,7 +640,8 @@ trait Revisionable
             // Get oldest revision IDs to delete
             $toDelete = $count - $keep;
 
-            $revisions = $instance->getQuery()
+            $revisions = $instance
+                ->getQuery()
                 ->select('id')
                 ->from($revisionTable)
                 ->whereEquals($fk, $record->fk_id)

@@ -102,7 +102,8 @@ class SolrQueryAdapter implements QueryInterface
     {
         // Get morelikethis settings
         $mltQuery = $this->connection->createSelect();
-        $mltQuery->setQuery($terms)
+        $mltQuery
+            ->setQuery($terms)
             ->getMoreLikeThis()
             ->setFields('text');
 
@@ -124,7 +125,8 @@ class SolrQueryAdapter implements QueryInterface
     {
         // Set the spellCheck Query
         $scQuery = $this->connection->createSelect();
-        $scQuery->setRows(0)
+        $scQuery
+            ->setRows(0)
             ->getSpellcheck()
             ->setQuery($terms)
             ->setCount('5');

@@ -68,7 +68,8 @@ $this->js();
             <?php if ($this->rows->count() > 0) : ?>
                 <?php foreach ($this->rows as $row) : ?>
                     <?php
-                        $this->view('item')
+                        $this
+                             ->view('item')
                              ->set('option', $this->option)
                              ->set('group', $this->group)
                              ->set('authorized', $this->authorized)

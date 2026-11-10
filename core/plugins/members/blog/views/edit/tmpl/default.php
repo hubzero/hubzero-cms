@@ -24,7 +24,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
     $this->entry->set('publish_down', '');
 }
 
-$this->css('jquery.datepicker.css', 'system')
+$this
+     ->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system')
      ->css()
      ->js('jquery.timepicker', 'system')

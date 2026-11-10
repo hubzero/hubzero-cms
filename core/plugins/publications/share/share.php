@@ -109,7 +109,8 @@ class Share extends Plugin
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             // Instantiate a view
-            $view = $this->view('default', 'options')
+            $view = $this
+                ->view('default', 'options')
                 ->set('option', $option)
                 ->set('publication', $publication)
                 ->set('version', $version)

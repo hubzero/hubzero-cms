@@ -14,7 +14,8 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js('curation.js');
 
 $label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');

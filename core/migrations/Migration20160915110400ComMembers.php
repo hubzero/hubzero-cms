@@ -26,7 +26,8 @@ class Migration20160915110400ComMembers extends Base
         if ($schema->tableExists('#__users')) {
             $config = null;
             if ($schema->tableExists('#__extensions')) {
-                $config = $this->db->getQuery(true)
+                $config = $this->db
+                    ->getQuery(true)
                     ->select('params')
                     ->from('#__extensions')
                     ->where('element', '=', 'com_members')
@@ -42,7 +43,8 @@ class Migration20160915110400ComMembers extends Base
                 }
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users')
                 ->set(['access' => (int) $access])
                 ->where('access', '=', 0)

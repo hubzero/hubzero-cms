@@ -29,7 +29,8 @@ class Migration20170322093811ComResources extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__resource_types')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'type'])
                 ->from('#__resource_types')
                 ->where('alias', '=', '')
@@ -38,7 +39,8 @@ class Migration20170322093811ComResources extends Base
 
             foreach ($results as $result) {
                 $alias = $this->normalize($result->type);
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__resource_types')
                     ->set(['alias' => $alias])
                     ->where('id', '=', (int) $result->id)

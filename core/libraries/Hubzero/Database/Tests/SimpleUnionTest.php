@@ -33,12 +33,14 @@ class SimpleUnionTest extends AbstractDriverTestCase
         // Setup - create tables
         $schema = $driver->schema();
 
-        $schema->createTable('TEST_USERS')
+        $schema
+            ->createTable('TEST_USERS')
             ->id()
             ->string('name', 100)
             ->execute();
 
-        $schema->createTable('TEST_ADMINS')
+        $schema
+            ->createTable('TEST_ADMINS')
             ->id()
             ->string('name', 100)
             ->execute();
@@ -56,7 +58,8 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
         // Test union query
         $query = new Query($driver);
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('TEST_USERS')
             ->union(function ($q) {
                 $q->select('name')->from('TEST_ADMINS');
@@ -80,7 +83,8 @@ class SimpleUnionTest extends AbstractDriverTestCase
         // Setup - create table
         $schema = $driver->schema();
 
-        $schema->createTable('TEST_USERS')
+        $schema
+            ->createTable('TEST_USERS')
             ->id()
             ->string('name', 100)
             ->string('email', 255)
@@ -96,7 +100,8 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
         // Test basic fetch with WHERE clause
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('TEST_USERS')
                       ->whereEquals('id', '1')
                       ->fetch();

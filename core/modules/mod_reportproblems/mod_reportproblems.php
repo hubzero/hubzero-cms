@@ -63,7 +63,8 @@ class Reportproblems extends Module
         $trigger = $this->params->get('trigger', '#tab');
         $jsInit = 'jQuery(document).ready(function(jq) { '
             . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
-        $this->css()
+        $this
+             ->css()
              ->js()
              ->js($jsInit);
 

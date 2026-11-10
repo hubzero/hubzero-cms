@@ -23,7 +23,8 @@ class Migration20140702130951ComAnswers extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__answers_questions', 'state')) {
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -31,7 +32,8 @@ class Migration20140702130951ComAnswers extends Base
                 ->loadColumn();
 
             if (!empty($ids)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__answers_questions')
                     ->set(['state' => 3])
                     ->whereIn('id', array_map('intval', $ids))
@@ -40,7 +42,8 @@ class Migration20140702130951ComAnswers extends Base
         }
 
         if ($schema->hasColumn('#__answers_responses', 'state')) {
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -48,7 +51,8 @@ class Migration20140702130951ComAnswers extends Base
                 ->loadColumn();
 
             if (!empty($ids)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__answers_responses')
                     ->set(['state' => 3])
                     ->whereIn('id', array_map('intval', $ids))
@@ -57,7 +61,8 @@ class Migration20140702130951ComAnswers extends Base
         }
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -65,7 +70,8 @@ class Migration20140702130951ComAnswers extends Base
                 ->loadColumn();
 
             if (!empty($ids)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__item_comments')
                     ->set(['state' => 3])
                     ->whereIn('id', array_map('intval', $ids))
@@ -82,7 +88,8 @@ class Migration20140702130951ComAnswers extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__answers_questions', 'state')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__answers_questions')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)
@@ -90,7 +97,8 @@ class Migration20140702130951ComAnswers extends Base
         }
 
         if ($schema->hasColumn('#__answers_responses', 'state')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__answers_responses')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)
@@ -98,7 +106,8 @@ class Migration20140702130951ComAnswers extends Base
         }
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__item_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)

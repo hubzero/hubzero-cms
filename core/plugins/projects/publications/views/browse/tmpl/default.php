@@ -185,7 +185,8 @@ if (count($this->rows) > 0) {
                         if ($row->isPublished()) {
                             $showStats = true;
                         }
-                        $this->view('_row')
+                        $this
+                             ->view('_row')
                              ->set('project', $this->project)
                              ->set('pub', $this->pub)
                              ->set('row', $row)
@@ -227,7 +228,8 @@ if (count($this->rows) > 0) {
         . '</a></span></p>';
 
     // Show intro banner with publication steps
-    $this->view('intro')
+    $this
+         ->view('intro')
          ->set('option', $this->option)
          ->set('project', $this->project)
          ->set('pub', $this->pub)

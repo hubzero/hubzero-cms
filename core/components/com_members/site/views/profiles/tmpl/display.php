@@ -13,7 +13,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css();
 ?>
 <header id="content-header">

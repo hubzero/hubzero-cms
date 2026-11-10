@@ -18,7 +18,8 @@ list($base) = explode('.', $host);
 $url = 'https://' . $host . '/api';
 
 // include needed css
-$this->css('docs')
+$this
+    ->css('docs')
     ->js('api-docs')
     ->css();
 
@@ -56,7 +57,8 @@ $activeVersion = Request::getString('version', reset($versions));
     <div class="section-inner hz-layout-with-aside">
         <aside class="aside">
             <?php
-            $this->view('_menu')
+            $this
+                ->view('_menu')
                 ->set('documentation', $this->documentation)
                 ->set('active', '')
                 ->set('version', $activeVersion)
@@ -67,17 +69,20 @@ $activeVersion = Request::getString('version', reset($versions));
             <?php
             // Display active tokens if available
             if (isset($this->tokens) && !empty($this->tokens)) {
-                $this->view('_active_tokens')
+                $this
+                    ->view('_active_tokens')
                     ->set('tokens', $this->tokens)
                     ->display();
             }
 
-            $this->view('_docs_overview')
+            $this
+                ->view('_docs_overview')
                 ->set('url', $url)
                 ->set('base', $base)
                 ->display();
 
-            $this->view('_docs_oauth')
+            $this
+                ->view('_docs_oauth')
                 ->set('url', $url)
                 ->display();
             ?>

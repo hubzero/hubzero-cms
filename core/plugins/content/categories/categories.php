@@ -103,7 +103,8 @@ class Categories extends Plugin
         $db = App::get('db');
 
         // Count the items in this category
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('COUNT(id)')
             ->from($table)
             ->whereEquals('catid', $catid);
@@ -143,7 +144,8 @@ class Categories extends Plugin
         // Make sure we only do the query if we have some categories to look in
         if (count($childCategoryIds)) {
             // Count the items in this category
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('COUNT(id)')
                 ->from($table)
                 ->whereIn('catid', $childCategoryIds);

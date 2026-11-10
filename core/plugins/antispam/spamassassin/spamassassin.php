@@ -26,7 +26,8 @@ class Spamassassin extends Plugin
 
         $service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 
-        $service->set('client', $this->params->get('client', 'local'))
+        $service
+            ->set('client', $this->params->get('client', 'local'))
             ->set('hostname', $this->params->get('hostname', 'localhost'))
             ->set('port', $this->params->get('port', 783))
             ->set('protocolVersion', $this->params->get('protocolVersion', '1.5'))
@@ -58,7 +59,8 @@ class Spamassassin extends Plugin
 
         $service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 
-        $service->set('client', $this->params->get('client', 'local'))
+        $service
+            ->set('client', $this->params->get('client', 'local'))
             ->set('hostname', $this->params->get('hostname', 'localhost'))
             ->set('port', $this->params->get('port', 783))
             ->set('protocolVersion', $this->params->get('protocolVersion', '1.5'))

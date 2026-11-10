@@ -11,7 +11,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('register')
+$this
+     ->css('register')
      ->js('register');
 ?>
 <header id="content-header">

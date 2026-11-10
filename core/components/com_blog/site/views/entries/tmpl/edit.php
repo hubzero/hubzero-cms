@@ -34,7 +34,8 @@ Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang:
 } else {
     $lid = time().rand(0,10000);
 }*/
-$this->css()
+$this
+     ->css()
      ->css('jquery.ui.css', 'system')
      ->js('jquery.timepicker.js', 'system')
      ->js();

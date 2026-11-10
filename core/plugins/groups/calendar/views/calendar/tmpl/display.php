@@ -128,7 +128,8 @@ $timezone = $userLocalizer->getTimezone();
 
 <?php
 if ($this->params->get('allow_subscriptions', 1)) {
-    $this->view('subscribe')
+    $this
+        ->view('subscribe')
         ->set('calendar', $this->calendar)
         ->set('calendars', $this->calendars)
         ->set('group', $this->group)

@@ -24,7 +24,8 @@ class Migration20140603164434ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_progress_factors')) {
-            $schema->createTable('#__courses_progress_factors')
+            $schema
+                ->createTable('#__courses_progress_factors')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('section_id')
                 ->integer('asset_id')

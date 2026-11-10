@@ -20,7 +20,8 @@ class Migration20120101000001Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__author_role_types')) {
-            $schema->createTable('#__author_role_types')
+            $schema
+                ->createTable('#__author_role_types')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('role_id')->default(0)
                 ->integer('type_id')->default(0)
@@ -31,7 +32,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__author_roles')) {
-            $schema->createTable('#__author_roles')
+            $schema
+                ->createTable('#__author_roles')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->nullable()
                 ->string('alias', 255)->nullable()
@@ -47,7 +49,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__billboard_collection')) {
-            $schema->createTable('#__billboard_collection')
+            $schema
+                ->createTable('#__billboard_collection')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->nullable()
                 ->primaryKey('id')
@@ -57,7 +60,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__billboards')) {
-            $schema->createTable('#__billboards')
+            $schema
+                ->createTable('#__billboards')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('collection_id')->nullable()
                 ->string('name', 255)->nullable()
@@ -82,7 +86,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__citations_sponsors')) {
-            $schema->createTable('#__citations_sponsors')
+            $schema
+                ->createTable('#__citations_sponsors')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('sponsor', 150)->nullable()
                 ->string('link', 200)->nullable()
@@ -93,7 +98,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__citations_sponsors_assoc')) {
-            $schema->createTable('#__citations_sponsors_assoc')
+            $schema
+                ->createTable('#__citations_sponsors_assoc')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('cid')->nullable()
                 ->integer('sid')->nullable()
@@ -104,7 +110,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__citations_types')) {
-            $schema->createTable('#__citations_types')
+            $schema
+                ->createTable('#__citations_types')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 255)->nullable()
                 ->string('type_title', 255)->nullable()
@@ -118,7 +125,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__document_resource_rel')) {
-            $schema->createTable('#__document_resource_rel')
+            $schema
+                ->createTable('#__document_resource_rel')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('document_id')
                 ->integer('resource_id')
@@ -131,7 +139,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__document_text_data')) {
-            $schema->createTable('#__document_text_data')
+            $schema
+                ->createTable('#__document_text_data')
                 ->integer('id', ['autoIncrement' => true])
                 ->text('body')->nullable()
                 ->char('hash', 40)
@@ -146,7 +155,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__focus_area_resource_type_rel')) {
-            $schema->createTable('#__focus_area_resource_type_rel')
+            $schema
+                ->createTable('#__focus_area_resource_type_rel')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('focus_area_id')
                 ->integer('resource_type_id')
@@ -158,7 +168,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__focus_areas')) {
-            $schema->createTable('#__focus_areas')
+            $schema
+                ->createTable('#__focus_areas')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('tag_id')
                 ->integer('mandatory_depth')->nullable()
@@ -171,7 +182,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__forum_attachments')) {
-            $schema->createTable('#__forum_attachments')
+            $schema
+                ->createTable('#__forum_attachments')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('parent')->default(0)
                 ->integer('post_id')->default(0)
@@ -184,7 +196,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__forum_categories')) {
-            $schema->createTable('#__forum_categories')
+            $schema
+                ->createTable('#__forum_categories')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->nullable()
                 ->string('alias', 255)->nullable()
@@ -206,7 +219,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__forum_posts')) {
-            $schema->createTable('#__forum_posts')
+            $schema
+                ->createTable('#__forum_posts')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('category_id')->default(0)
                 ->string('title', 255)->nullable()
@@ -235,7 +249,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__forum_sections')) {
-            $schema->createTable('#__forum_sections')
+            $schema
+                ->createTable('#__forum_sections')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->nullable()
                 ->string('alias', 255)->nullable()
@@ -252,7 +267,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__incremental_registration_group_label_rel')) {
-            $schema->createTable('#__incremental_registration_group_label_rel')
+            $schema
+                ->createTable('#__incremental_registration_group_label_rel')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('group_id')
                 ->integer('label_id')
@@ -264,7 +280,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__incremental_registration_groups')) {
-            $schema->createTable('#__incremental_registration_groups')
+            $schema
+                ->createTable('#__incremental_registration_groups')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->integer('hours')
                 ->primaryKey('id')
@@ -275,7 +292,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__incremental_registration_labels')) {
-            $schema->createTable('#__incremental_registration_labels')
+            $schema
+                ->createTable('#__incremental_registration_labels')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->string('field', 50)
                 ->string('label', 100)
@@ -287,7 +305,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__incremental_registration_options')) {
-            $schema->createTable('#__incremental_registration_options')
+            $schema
+                ->createTable('#__incremental_registration_options')
                 ->timestamp('added')
                 ->text('popover_text')
                 ->integer('award_per')
@@ -298,7 +317,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__incremental_registration_popover_recurrence')) {
-            $schema->createTable('#__incremental_registration_popover_recurrence')
+            $schema
+                ->createTable('#__incremental_registration_popover_recurrence')
                 ->integer('idx')
                 ->integer('hours')
                 ->engine('MyISAM')
@@ -307,7 +327,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__metrics_ipgeo_cache')) {
-            $schema->createTable('#__metrics_ipgeo_cache')
+            $schema
+                ->createTable('#__metrics_ipgeo_cache')
                 ->integer('ip')->default(0)
                 ->char('countrySHORT')->length(2)->default('')
                 ->string('countryLONG')->length(64)->default('')
@@ -324,7 +345,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__oauthp_consumers')) {
-            $schema->createTable('#__oauthp_consumers')
+            $schema
+                ->createTable('#__oauthp_consumers')
                 ->integer('id', ['autoIncrement' => true])
                 ->tinyInteger('state')
                 ->string('token', 250)
@@ -339,7 +361,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__oauthp_nonces')) {
-            $schema->createTable('#__oauthp_nonces')
+            $schema
+                ->createTable('#__oauthp_nonces')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('nonce', 250)
                 ->integer('stamp')
@@ -352,7 +375,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__oauthp_tokens')) {
-            $schema->createTable('#__oauthp_tokens')
+            $schema
+                ->createTable('#__oauthp_tokens')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('consumer_id')
                 ->integer('user_id')
@@ -369,7 +393,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__profile_completion_awards')) {
-            $schema->createTable('#__profile_completion_awards')
+            $schema
+                ->createTable('#__profile_completion_awards')
                 ->integer('user_id')
                 ->tinyInteger('name')->default(0)
                 ->tinyInteger('orgtype')->default(0)
@@ -395,7 +420,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__recommendation')) {
-            $schema->createTable('#__recommendation')
+            $schema
+                ->createTable('#__recommendation')
                 ->integer('fromID')
                 ->integer('toID')
                 ->float('contentScore')->nullable()
@@ -409,7 +435,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__resource_licenses')) {
-            $schema->createTable('#__resource_licenses')
+            $schema
+                ->createTable('#__resource_licenses')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('name', 100)->nullable()
                 ->text('text')->nullable()
@@ -428,7 +455,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__resource_sponsors')) {
-            $schema->createTable('#__resource_sponsors')
+            $schema
+                ->createTable('#__resource_sponsors')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 255)->nullable()
                 ->string('title', 255)->nullable()
@@ -445,7 +473,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__resource_stats_clusters')) {
-            $schema->createTable('#__resource_stats_clusters')
+            $schema
+                ->createTable('#__resource_stats_clusters')
                 ->unsignedBigInteger('id', ['autoIncrement' => true])
                 ->string('cluster', 255)->default('')
                 ->string('username', 32)->default('')
@@ -473,7 +502,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__session_geo')) {
-            $schema->createTable('#__session_geo')
+            $schema
+                ->createTable('#__session_geo')
                 ->string('session_id', 200)->default('0')
                 ->string('username', 150)->default('')
                 ->string('time', 14)->default('')
@@ -500,7 +530,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__session_log')) {
-            $schema->createTable('#__session_log')
+            $schema
+                ->createTable('#__session_log')
                 ->integer('id', ['autoIncrement' => true])
                 ->tinyInteger('clientid')->nullable()
                 ->char('session_id', 64)->nullable()
@@ -519,7 +550,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__support_queries')) {
-            $schema->createTable('#__support_queries')
+            $schema
+                ->createTable('#__support_queries')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('title', 250)->nullable()
                 ->text('conditions')->nullable()
@@ -536,7 +568,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__tags_log')) {
-            $schema->createTable('#__tags_log')
+            $schema
+                ->createTable('#__tags_log')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('tag_id')->default(0)
                 ->datetime('timestamp')->default('0000-00-00 00:00:00')
@@ -551,7 +584,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__tags_substitute')) {
-            $schema->createTable('#__tags_substitute')
+            $schema
+                ->createTable('#__tags_substitute')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('tag_id')->default(0)
                 ->string('tag', 100)->nullable()
@@ -565,7 +599,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__user_roles')) {
-            $schema->createTable('#__user_roles')
+            $schema
+                ->createTable('#__user_roles')
                 ->integer('user_id')
                 ->string('role', 20)
                 ->integer('group_id')->nullable()
@@ -578,7 +613,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__wiki_page_author')) {
-            $schema->createTable('#__wiki_page_author')
+            $schema
+                ->createTable('#__wiki_page_author')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->default(0)
                 ->integer('page_id')->default(0)
@@ -589,7 +625,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__wiki_page_metrics')) {
-            $schema->createTable('#__wiki_page_metrics')
+            $schema
+                ->createTable('#__wiki_page_metrics')
                 ->integer('pageid')->default(0)
                 ->string('pagename', 100)->nullable()
                 ->integer('hits')->default(0)
@@ -602,7 +639,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__xgroups_memberoption')) {
-            $schema->createTable('#__xgroups_memberoption')
+            $schema
+                ->createTable('#__xgroups_memberoption')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('gidNumber')->nullable()
                 ->integer('userid')->nullable()
@@ -615,7 +653,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__xgroups_pages_hits')) {
-            $schema->createTable('#__xgroups_pages_hits')
+            $schema
+                ->createTable('#__xgroups_pages_hits')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('gid')->nullable()
                 ->integer('pid')->nullable()
@@ -629,7 +668,8 @@ class Migration20120101000001Core extends Base
         }
 
         if (!$schema->tableExists('#__xorganization_types')) {
-            $schema->createTable('#__xorganization_types')
+            $schema
+                ->createTable('#__xorganization_types')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 150)->nullable()
                 ->string('title', 255)->nullable()

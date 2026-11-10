@@ -136,7 +136,8 @@ class Versions extends AdminController
 
         if ($row->isNew()) {
             // Creating new
-            $current = $page->versions()
+            $current = $page
+                ->versions()
                 ->ordered()
                 ->row();
 
@@ -220,7 +221,8 @@ class Versions extends AdminController
 
         // Get the most recent revision and compare to the set "current" version
         if ($before != 1 && $version->get('approved') == 1) {
-            $current = $page->versions()
+            $current = $page
+                ->versions()
                 ->whereEquals('approved', 1)
                 ->ordered()
                 ->row();

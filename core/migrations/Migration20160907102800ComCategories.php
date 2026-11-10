@@ -18,7 +18,9 @@ class Migration20160907102800ComCategories extends Base
 {
     public function up()
     {
-        $this->db->schema()->modifyColumn('#__categories', 'title')
+        $this->db
+            ->schema()
+            ->modifyColumn('#__categories', 'title')
             ->string(255)
             ->notNull()
             ->default('')

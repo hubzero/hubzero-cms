@@ -34,7 +34,8 @@ class Migration20140305081320ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xprofiles_tags')) {
-            $schema->createTable('#__xprofiles_tags')
+            $schema
+                ->createTable('#__xprofiles_tags')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('uidNumber')->nullable()
                 ->integer('tagid')->nullable()

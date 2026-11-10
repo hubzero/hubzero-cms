@@ -29,7 +29,8 @@ class Migration20140829131016PlgMembersDashboard extends Base
         }
 
         // update all modules positions currently set to myhub
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__modules')
             ->set(['position' => 'memberDashboard'])
             ->where('position', '=', 'myhub')
@@ -49,7 +50,8 @@ class Migration20140829131016PlgMembersDashboard extends Base
         }
 
         // update all modules positions currently set to myhub
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__modules')
             ->set(['position' => 'myhub'])
             ->where('position', '=', 'memberDashboard')

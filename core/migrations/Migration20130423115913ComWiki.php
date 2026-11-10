@@ -24,7 +24,8 @@ class Migration20130423115913ComWiki extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__wiki_page_links')) {
-            $schema->createTable('#__wiki_page_links')
+            $schema
+                ->createTable('#__wiki_page_links')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('page_id')->default(0)
                 ->datetime('timestamp')->default('0000-00-00 00:00:00')

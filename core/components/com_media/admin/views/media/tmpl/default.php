@@ -123,7 +123,8 @@ $this->js();
                         <?php
                         $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
 
-                        $this->view('default', 'medialist')
+                        $this
+                            ->view('default', 'medialist')
                             ->set('folder', $this->folder)
                             ->set('children', $children)
                             ->set('layout', $this->layout)

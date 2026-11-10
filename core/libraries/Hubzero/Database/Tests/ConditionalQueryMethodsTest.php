@@ -35,7 +35,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('conditional_test_users', true);
-        $driver->createTable('conditional_test_users')
+        $driver
+            ->createTable('conditional_test_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -103,7 +104,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->orderWhen(true, 'id', 'desc')
             ->fetch('rows');
@@ -123,7 +125,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->orderWhen(false, 'id', 'desc')
@@ -145,7 +148,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $sortField = 'name';
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->orderWhen($sortField, $sortField, 'asc')
             ->fetch('rows');
@@ -165,7 +169,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->orderUnless(false, 'id', 'desc')
             ->fetch('rows');
@@ -185,7 +190,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->orderUnless(true, 'id', 'desc')
@@ -206,7 +212,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->limitWhen(true, 2)
             ->fetch('rows');
@@ -226,7 +233,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->limitWhen(false, 2)
             ->fetch('rows');
@@ -247,7 +255,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $unlimited = false;
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->limitUnless($unlimited, 2)
             ->fetch('rows');
@@ -268,7 +277,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $unlimited = true;
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->limitUnless($unlimited, 2)
             ->fetch('rows');
@@ -289,7 +299,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $page = 2;
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->limit(2)
@@ -312,7 +323,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $page = 1;
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->limit(2)
@@ -334,7 +346,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('id')
+        $rows = $query
+            ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->limit(2)
@@ -356,7 +369,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->groupWhen(true, 'name')
             ->fetch('rows');
@@ -376,7 +390,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->groupWhen(false, 'name')
             ->fetch('rows');
@@ -396,7 +411,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->groupUnless(false, 'name')
             ->fetch('rows');
@@ -419,7 +435,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $includeRelated = true;
-        $rows = $query->select('u1.id')
+        $rows = $query
+            ->select('u1.id')
             ->from('conditional_test_users', 'u1')
             ->joinWhen($includeRelated, 'conditional_test_users AS u2', 'u1.name', 'u2.name')
             ->fetch('rows');
@@ -440,7 +457,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $includeRelated = false;
-        $rows = $query->select('u1.id')
+        $rows = $query
+            ->select('u1.id')
             ->from('conditional_test_users', 'u1')
             ->joinWhen($includeRelated, 'conditional_test_users AS u2', 'u1.name', 'u2.name')
             ->fetch('rows');
@@ -460,7 +478,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('u1.id')
+        $rows = $query
+            ->select('u1.id')
             ->from('conditional_test_users', 'u1')
             ->joinWhen(true, 'conditional_test_users AS u2', 'u1.name', 'u2.name', 'left')
             ->fetch('rows');
@@ -480,7 +499,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('u1.id')
+        $rows = $query
+            ->select('u1.id')
             ->from('conditional_test_users', 'u1')
             ->joinUnless(false, 'conditional_test_users AS u2', 'u1.name', 'u2.name')
             ->fetch('rows');
@@ -501,7 +521,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $isAdmin = true;
-        $row = $query->selectWhen($isAdmin, ['id', 'name', 'email'], ['id', 'name'])
+        $row = $query
+            ->selectWhen($isAdmin, ['id', 'name', 'email'], ['id', 'name'])
             ->from('conditional_test_users')
             ->fetch('row');
 
@@ -521,7 +542,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $isAdmin = false;
-        $row = $query->selectWhen($isAdmin, ['email'], ['id', 'name'])
+        $row = $query
+            ->selectWhen($isAdmin, ['email'], ['id', 'name'])
             ->from('conditional_test_users')
             ->fetch('row');
 
@@ -541,7 +563,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $nameFilter = 'Bob';
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereWhen($nameFilter, 'name', '=', $nameFilter)
             ->fetch('rows');
@@ -562,7 +585,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $nameFilter = null;
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereWhen($nameFilter, 'name', '=', $nameFilter)
             ->fetch('rows');
@@ -583,7 +607,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $isAdmin = false;
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereUnless($isAdmin, 'id', '>', 2)
             ->fetch('rows');
@@ -604,7 +629,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $isAdmin = true;
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereUnless($isAdmin, 'id', '>', 2)
             ->fetch('rows');
@@ -625,7 +651,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $ids = [1, 2, 3];
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereInWhen($ids, 'id', $ids)
             ->fetch('rows');
@@ -646,7 +673,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $ids = [];
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereInWhen($ids, 'id', [1, 2, 3])
             ->fetch('rows');
@@ -666,7 +694,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereInUnless(false, 'id', [1, 2])
             ->fetch('rows');
@@ -687,7 +716,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $excludeIds = [1];
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereNotInWhen($excludeIds, 'id', $excludeIds)
             ->fetch('rows');
@@ -707,7 +737,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereNotInWhen(false, 'id', [1])
             ->fetch('rows');
@@ -727,7 +758,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereNotInUnless(false, 'id', [1, 2])
             ->fetch('rows');
@@ -748,7 +780,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $minCount = 1;
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->group('name')
             ->havingWhen($minCount, 'COUNT(*)', '>', 1)
@@ -771,7 +804,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $minCount = 0;
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->group('name')
             ->havingWhen($minCount, 'COUNT(*)', '>', 1)
@@ -792,7 +826,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $rows = $query->select('name')
+        $rows = $query
+            ->select('name')
             ->from('conditional_test_users')
             ->group('name')
             ->havingUnless(false, 'COUNT(*)', '>', 1)
@@ -821,7 +856,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
             'page' => 2,
         ];
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereWhen($filters['name'], 'name', '=', $filters['name'])
             ->whereWhen($filters['email'], 'email', '=', $filters['email'])
@@ -956,7 +992,8 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $page = 1;
         $perPage = 25;
 
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('conditional_test_users')
             ->whereWhen($search, 'name', 'LIKE', "%{$search}%")
             ->whereWhen($emailFilter, 'email', '=', $emailFilter)

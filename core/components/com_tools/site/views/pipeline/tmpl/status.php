@@ -25,7 +25,8 @@ $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 \Components\Tools\Helpers\Html::getStatusName($this->status['state'], $state);
 \Components\Tools\Helpers\Html::getStatusClass($this->status['state'], $this->statusClass);
 
-$this->css('pipeline.css')
+$this
+     ->css('pipeline.css')
      ->js('pipeline.js');
 ?>
 <header id="content-header">

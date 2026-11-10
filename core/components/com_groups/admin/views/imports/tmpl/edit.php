@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('import')
+$this
+     ->css('import')
      ->js('import');
 
 $canDo = Components\Groups\Helpers\Permissions::getActions('component');
@@ -228,7 +229,8 @@ $this->js();
             </fieldset>
 
             <?php
-            $this->view('_fieldmap')
+            $this
+                ->view('_fieldmap')
                 ->set('import', $this->import)
                 ->display();
             ?>

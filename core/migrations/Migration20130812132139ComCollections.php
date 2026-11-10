@@ -24,7 +24,8 @@ class Migration20130812132139ComCollections extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__collections')) {
-            $schema->createTable('#__collections')
+            $schema
+                ->createTable('#__collections')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->string('alias', 255)
@@ -49,7 +50,8 @@ class Migration20130812132139ComCollections extends Base
         }
 
         if (!$schema->tableExists('#__collections_assets')) {
-            $schema->createTable('#__collections_assets')
+            $schema
+                ->createTable('#__collections_assets')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('item_id')->default(0)
                 ->datetime('created')->default('0000-00-00 00:00:00')
@@ -69,7 +71,8 @@ class Migration20130812132139ComCollections extends Base
         }
 
         if (!$schema->tableExists('#__collections_following')) {
-            $schema->createTable('#__collections_following')
+            $schema
+                ->createTable('#__collections_following')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('follower_type', 150)
                 ->integer('follower_id')->default(0)
@@ -83,7 +86,8 @@ class Migration20130812132139ComCollections extends Base
         }
 
         if (!$schema->tableExists('#__collections_items')) {
-            $schema->createTable('#__collections_items')
+            $schema
+                ->createTable('#__collections_items')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->mediumText('description')
@@ -107,7 +111,8 @@ class Migration20130812132139ComCollections extends Base
         }
 
         if (!$schema->tableExists('#__collections_posts')) {
-            $schema->createTable('#__collections_posts')
+            $schema
+                ->createTable('#__collections_posts')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->datetime('created')->default('0000-00-00 00:00:00')
                 ->integer('created_by')->default(0)
@@ -125,7 +130,8 @@ class Migration20130812132139ComCollections extends Base
         }
 
         if (!$schema->tableExists('#__collections_votes')) {
-            $schema->createTable('#__collections_votes')
+            $schema
+                ->createTable('#__collections_votes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->default(0)
                 ->integer('item_id')->default(0)

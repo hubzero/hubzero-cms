@@ -57,14 +57,16 @@ class SchemaTest extends AbstractDriverTestCase
         $driver->dropTable('posts', true);
 
         // Create users table
-        $driver->createTable('users')
+        $driver
+            ->createTable('users')
             ->id()
             ->string('name', 100)
             ->string('email', 255)
             ->execute();
 
         // Create posts table
-        $driver->createTable('posts')
+        $driver
+            ->createTable('posts')
             ->id()
             ->string('title', 255)
             ->text('content')
@@ -422,7 +424,8 @@ class SchemaTest extends AbstractDriverTestCase
 
         $schema = $driver->schema();
 
-        $driver->createTable('temp_pk_cols')
+        $driver
+            ->createTable('temp_pk_cols')
             ->string('col_a', 50)
             ->string('col_b', 50)
             ->primaryKey(['col_a', 'col_b'])
@@ -450,7 +453,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_drop_test')
+        $driver
+            ->createTable('temp_drop_test')
             ->id()
             ->execute();
 
@@ -491,7 +495,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_rename_source')
+        $driver
+            ->createTable('temp_rename_source')
             ->id()
             ->execute();
 
@@ -523,7 +528,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_index_test')
+        $driver
+            ->createTable('temp_index_test')
             ->id()
             ->string('name', 100)
             ->string('email', 255)
@@ -552,7 +558,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_multi_idx')
+        $driver
+            ->createTable('temp_multi_idx')
             ->id()
             ->string('first_name', 100)
             ->string('last_name', 100)
@@ -581,7 +588,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_unique_idx')
+        $driver
+            ->createTable('temp_unique_idx')
             ->id()
             ->string('email', 255)
             ->execute();
@@ -609,7 +617,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table with an index
-        $driver->createTable('temp_drop_idx')
+        $driver
+            ->createTable('temp_drop_idx')
             ->id()
             ->string('name', 100)
             ->index('idx_drop_name', 'name')
@@ -643,7 +652,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_add_col')
+        $driver
+            ->createTable('temp_add_col')
             ->id()
             ->execute();
 
@@ -670,7 +680,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table with a column to drop
-        $driver->createTable('temp_drop_col')
+        $driver
+            ->createTable('temp_drop_col')
             ->id()
             ->string('to_drop', 100)
             ->string('keep_me', 100)
@@ -701,14 +712,16 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a temporary table
-        $driver->createTable('temp_rename_col')
+        $driver
+            ->createTable('temp_rename_col')
             ->id()
             ->string('old_name', 100)
             ->execute();
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('temp_rename_col')
+        $query
+            ->insert('temp_rename_col')
             ->values(['old_name' => 'test value'])
             ->execute();
 
@@ -722,7 +735,8 @@ class SchemaTest extends AbstractDriverTestCase
 
         // Verify data is preserved
         $query = new Query($driver);
-        $value = $query->select('new_name')
+        $value = $query
+            ->select('new_name')
             ->from('temp_rename_col')
             ->fetch('row');
         $this->assertEquals('test value', $value->new_name);
@@ -747,7 +761,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table
-        $driver->createTable('temp_auto_test')
+        $driver
+            ->createTable('temp_auto_test')
             ->id()
             ->string('name', 100)
             ->execute();
@@ -779,7 +794,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table
-        $driver->createTable('temp_setauto_test')
+        $driver
+            ->createTable('temp_setauto_test')
             ->id()
             ->string('name', 100)
             ->execute();
@@ -798,7 +814,8 @@ class SchemaTest extends AbstractDriverTestCase
 
         // Verify the new row has id >= 100
         $query = new Query($driver);
-        $id = $query->select('id')
+        $id = $query
+            ->select('id')
             ->from('temp_setauto_test')
             ->where('name', '=', 'After set')
             ->fetch('row');
@@ -824,7 +841,8 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table with composite primary key
-        $driver->createTable('temp_drop_pk')
+        $driver
+            ->createTable('temp_drop_pk')
             ->string('col_a', 50)
             ->string('col_b', 50)
             ->primaryKey(['col_a', 'col_b'])

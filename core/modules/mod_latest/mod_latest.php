@@ -262,7 +262,8 @@ class Latest extends Module
         // Filter by language
         $query->whereEquals('language', App::get('language.filter'));
 
-        $query->start(0)
+        $query
+            ->start(0)
             ->limit((int) $params->get('count', 5));
 
         $items = $query->rows();

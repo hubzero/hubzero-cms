@@ -95,7 +95,8 @@ class Content extends GenericItem
         $url = str_replace('no_html=1', '', $url);
         $url = trim($url, '&');
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $article->id)
              ->set('created', $article->created)
              ->set('created_by', $article->created_by)

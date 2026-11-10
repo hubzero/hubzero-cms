@@ -264,7 +264,8 @@ class History extends SiteController
         }
 
         // Get a count of all approved revisions
-        $total = $this->page->versions()
+        $total = $this->page
+            ->versions()
             ->whereEquals('approved', 1)
             ->count();
 
@@ -288,7 +289,8 @@ class History extends SiteController
 
         // If we're deleting the current revision, set the current
         // revision number to the previous available revision
-        $last = $this->page->versions()
+        $last = $this->page
+            ->versions()
             ->whereEquals('approved', 1)
             ->order('version', 'desc')
             ->row();
@@ -367,7 +369,8 @@ class History extends SiteController
         }
 
         // Get the most recent revision and compare to the set "current" version
-        $last = $this->page->versions()
+        $last = $this->page
+            ->versions()
             ->whereEquals('approved', 1)
             ->order('version', 'desc')
             ->row();

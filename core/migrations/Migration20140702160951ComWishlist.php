@@ -24,7 +24,8 @@ class Migration20140702160951ComWishlist extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__wishlist_item', 'status')) {
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -34,7 +35,8 @@ class Migration20140702160951ComWishlist extends Base
             if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wishlist_item')
                     ->set(['status' => 7])
                     ->whereIn('id', $ids)
@@ -43,7 +45,8 @@ class Migration20140702160951ComWishlist extends Base
         }
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -53,7 +56,8 @@ class Migration20140702160951ComWishlist extends Base
             if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__item_comments')
                     ->set(['state' => 3])
                     ->whereIn('id', $ids)
@@ -70,7 +74,8 @@ class Migration20140702160951ComWishlist extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__wishlist_item', 'status')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__wishlist_item')
                 ->set(['status' => 0])
                 ->where('status', '=', 7)
@@ -78,7 +83,8 @@ class Migration20140702160951ComWishlist extends Base
         }
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__item_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)

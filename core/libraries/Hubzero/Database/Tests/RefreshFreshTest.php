@@ -44,7 +44,8 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $driver->dropTable('refresh_test_comments', true);
         $driver->dropTable('refresh_test_items', true);
 
-        $driver->createTable('refresh_test_items')
+        $driver
+            ->createTable('refresh_test_items')
             ->id()
             ->string('title', 255)
             ->string('content', 1000)->nullable()
@@ -54,7 +55,8 @@ class RefreshFreshTest extends AbstractDriverTestCase
             ->string('modified', 50)->nullable()
             ->execute();
 
-        $driver->createTable('refresh_test_comments')
+        $driver
+            ->createTable('refresh_test_comments')
             ->id()
             ->integer('item_id')
             ->string('body', 1000)

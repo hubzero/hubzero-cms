@@ -118,7 +118,8 @@ class Customexts extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $entries->whereEquals($e . '.extension_id', (int) substr($filters['search'], 3));
             } else {
-                $entries->whereLike($e . '.name', $filters['search'], 1)
+                $entries
+                    ->whereLike($e . '.name', $filters['search'], 1)
                     ->orWhereLike($e . '.folder', $filters['search'], 1)
                     ->resetDepth();
             }

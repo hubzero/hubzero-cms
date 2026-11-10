@@ -202,7 +202,8 @@ class Entriesv1r1 extends ApiController
                 if ($i > 0) {
                     $where = 'or';
                 }
-                $query->where($r . '.scope', '=', $recipient['scope'], $where, 1)
+                $query
+                    ->where($r . '.scope', '=', $recipient['scope'], $where, 1)
                     ->whereEquals($r . '.scope_id', $recipient['scope_id'], 1)
                     ->resetDepth();
             }

@@ -27,12 +27,14 @@ class Migration20150108140000ComCitations extends Base
         if ($schema->tableExists('#__citations') && !$schema->hasColumn('#__citations', 'custom1')) {
             $schema->addColumn('#__citations', 'custom1')->text()->nullable()->default(null)->execute();
             $schema->addColumn('#__citations', 'custom2')->text()->nullable()->default(null)->execute();
-            $schema->addColumn('#__citations', 'custom3')
+            $schema
+                ->addColumn('#__citations', 'custom3')
                 ->string(45)
                 ->nullable()
                 ->default(null)
                 ->execute();
-            $schema->addColumn('#__citations', 'custom4')
+            $schema
+                ->addColumn('#__citations', 'custom4')
                 ->string(45)
                 ->nullable()
                 ->default(null)

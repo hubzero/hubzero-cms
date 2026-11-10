@@ -24,7 +24,8 @@ class Migration20150518181100ComPublications extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__item_watch')) {
-            $schema->createTable('#__item_watch')
+            $schema
+                ->createTable('#__item_watch')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('item_id')->default(0)
                 ->string('item_type', 150)

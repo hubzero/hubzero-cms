@@ -136,7 +136,8 @@ class Filters extends Field
         $db = App::get('db');
         // Get the user groups from the database.
         $query = $db->getQuery();
-        $query->select('a.id', 'value')
+        $query
+            ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('COUNT(DISTINCT b.id)', 'level')
             ->from('#__usergroups', 'a')

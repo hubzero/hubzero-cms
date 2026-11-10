@@ -19,7 +19,8 @@ $filters = [
     'limit' => Request::getInt('limit', 25),
     'start' => Request::getInt('limitstart', Request::getInt('start', 0)),
 ];
-$tokens = $this->application->accessTokens()
+$tokens = $this->application
+    ->accessTokens()
     ->limit($filters['limit'], $filters['start'])
     ->ordered()
     ->paginated()

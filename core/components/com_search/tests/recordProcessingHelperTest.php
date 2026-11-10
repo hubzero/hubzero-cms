@@ -34,7 +34,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('success')
             ->with($message);
 
@@ -58,7 +59,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $appMock->expects($this->once())
+        $appMock
+            ->expects($this->once())
             ->method('redirect')
             ->with($url);
 
@@ -91,7 +93,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('error')
             ->with($message);
 
@@ -124,11 +127,13 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $controllerMock->expects($this->once())
+        $controllerMock
+            ->expects($this->once())
             ->method('setView')
             ->with($name, 'new');
 
-        $controllerMock->expects($this->once())
+        $controllerMock
+            ->expects($this->once())
             ->method('newTask')
             ->with($recordMock);
 
@@ -152,7 +157,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('success')
             ->with($message);
 
@@ -176,7 +182,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $appMock->expects($this->once())
+        $appMock
+            ->expects($this->once())
             ->method('redirect')
             ->with($url);
 
@@ -209,7 +216,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('error')
             ->with($message);
 
@@ -242,11 +250,13 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $controllerMock->expects($this->once())
+        $controllerMock
+            ->expects($this->once())
             ->method('setView')
             ->with($name, 'edit');
 
-        $controllerMock->expects($this->once())
+        $controllerMock
+            ->expects($this->once())
             ->method('editTask')
             ->with($recordMock);
 
@@ -270,7 +280,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('success')
             ->with($message);
 
@@ -294,7 +305,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $appMock->expects($this->once())
+        $appMock
+            ->expects($this->once())
             ->method('redirect')
             ->with($url);
 
@@ -318,7 +330,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $notifyMock->expects($this->once())
+        $notifyMock
+            ->expects($this->once())
             ->method('error')
             ->with($message);
 
@@ -342,7 +355,8 @@ class RecordProcessingHelperTest extends Basic
             'notify' => $notifyMock,
         ]);
 
-        $appMock->expects($this->once())
+        $appMock
+            ->expects($this->once())
             ->method('redirect')
             ->with($url);
 

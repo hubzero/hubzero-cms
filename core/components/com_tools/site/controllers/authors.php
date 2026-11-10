@@ -398,7 +398,8 @@ class Authors extends SiteController
         $resource = Entry::oneOrFail($id);
 
         if ($version == 'dev') {
-            $authors = $resource->authors()
+            $authors = $resource
+                ->authors()
                 ->ordered()
                 ->rows();
         } else {

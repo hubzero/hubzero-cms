@@ -25,7 +25,9 @@ class Migration20170920165818ComStorefront extends Base
 
         if ($schema->tableExists('#__storefront_permissions')) {
             if (!$schema->hasColumn('#__storefront_permissions', 'username')) {
-                $schema->table('#__storefront_permissions')->alter()
+                $schema
+                    ->table('#__storefront_permissions')
+                    ->alter()
                     ->addString('username', 255)->nullable()
                     ->execute();
             }
@@ -53,7 +55,9 @@ class Migration20170920165818ComStorefront extends Base
             $schema->dropIndex('#__storefront_permissions', 'idx_scope_scope_id');
 
             if ($schema->hasColumn('#__storefront_permissions', 'username')) {
-                $schema->table('#__storefront_permissions')->alter()
+                $schema
+                    ->table('#__storefront_permissions')
+                    ->alter()
                     ->dropColumn('username')
                     ->execute();
             }

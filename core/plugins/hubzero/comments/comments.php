@@ -325,7 +325,8 @@ class Comments extends Plugin
 
         $comments = \Plugins\Hubzero\Comments\Models\Comment::all();
         $comments->orderDir = $defaultSorting;
-        $comments->whereEquals('item_type', $this->obj_type)
+        $comments
+            ->whereEquals('item_type', $this->obj_type)
             ->whereEquals('item_id', $this->obj_id)
             ->whereEquals('parent', 0)
             ->whereIn('state', [

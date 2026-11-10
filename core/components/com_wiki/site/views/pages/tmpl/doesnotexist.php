@@ -18,7 +18,8 @@ if (!$this->sub) {
 }
 $this->js();
 
-$templates = $this->book->templates()
+$templates = $this->book
+    ->templates()
     ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
     ->rows();
 
@@ -37,7 +38,8 @@ if (User::isGuest()) {
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu')
+        $this
+            ->view('wikimenu')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -50,7 +52,8 @@ if (User::isGuest()) {
 <?php } ?>
 
         <?php
-        $this->view('submenu', 'pages')
+        $this
+            ->view('submenu', 'pages')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)

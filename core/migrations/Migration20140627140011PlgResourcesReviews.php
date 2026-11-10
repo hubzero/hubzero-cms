@@ -26,7 +26,8 @@ class Migration20140627140011PlgResourcesReviews extends Base
         if (!$schema->hasColumn('#__resource_ratings', 'state')) {
             $schema->addColumn('#__resource_ratings', 'state')->tinyInteger(2)->notNull()->default(0);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__resource_ratings')
                 ->set(['state' => 1])
                 ->where('resource_id', '!=', 0)

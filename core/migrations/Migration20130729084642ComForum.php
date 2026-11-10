@@ -24,7 +24,8 @@ class Migration20130729084642ComForum extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__forum_sections', 'ordering')) {
-            $schema->addColumn('#__forum_sections', 'ordering')
+            $schema
+                ->addColumn('#__forum_sections', 'ordering')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -33,7 +34,8 @@ class Migration20130729084642ComForum extends Base
         }
 
         if (!$schema->hasColumn('#__forum_categories', 'ordering')) {
-            $schema->addColumn('#__forum_categories', 'ordering')
+            $schema
+                ->addColumn('#__forum_categories', 'ordering')
                 ->integer()
                 ->notNull()
                 ->default(0)

@@ -62,7 +62,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
         $driver->dropTable('soft_delete_custom_posts', true);
 
         // Create main test table
-        $driver->createTable('soft_delete_posts')
+        $driver
+            ->createTable('soft_delete_posts')
             ->id()
             ->string('title', 255)
             ->text('content')
@@ -70,7 +71,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
             ->timestamp('deleted_at')->nullable()
             ->execute();
         // Create table with custom deleted column name
-        $driver->createTable('soft_delete_custom_posts')
+        $driver
+            ->createTable('soft_delete_custom_posts')
             ->id()
             ->string('title', 255)
             ->timestamp('removed_at')->nullable()
@@ -121,7 +123,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
             $values['deleted_at'] = $deletedAt;
         }
 
-        $query->insert('soft_delete_posts')
+        $query
+            ->insert('soft_delete_posts')
             ->values($values)
             ->execute();
 
@@ -152,7 +155,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify timestamp was set in database
         $query = new Query($driver);
-        $row = $query->select('deleted_at')
+        $row = $query
+            ->select('deleted_at')
             ->from('soft_delete_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -192,7 +196,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test Post', '2020-01-01 00:00:00');
 
         // Need to use withTrashed to get the soft deleted record
-        $post = SoftDeletePost::blank()->withTrashed()
+        $post = SoftDeletePost::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
 
@@ -217,7 +222,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test Post', '2020-01-01 00:00:00');
 
         // Get the soft deleted record
-        $post = SoftDeletePost::blank()->withTrashed()
+        $post = SoftDeletePost::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
 
@@ -229,7 +235,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify in database
         $query = new Query($driver);
-        $row = $query->select('deleted_at')
+        $row = $query
+            ->select('deleted_at')
             ->from('soft_delete_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -278,7 +285,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify record is completely gone
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('soft_delete_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -298,7 +306,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post', '2020-01-01 00:00:00');
 
-        $post = SoftDeletePost::blank()->withTrashed()
+        $post = SoftDeletePost::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
 
@@ -307,7 +316,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify record is completely gone
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('soft_delete_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -422,7 +432,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
         Relational::setDefaultConnection($driver);
 
         $query = new Query($driver);
-        $query->insert('soft_delete_custom_posts')
+        $query
+            ->insert('soft_delete_custom_posts')
             ->values(['title' => 'Custom Post'])
             ->execute();
 
@@ -436,7 +447,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify custom column was set
         $query = new Query($driver);
-        $row = $query->select('removed_at')
+        $row = $query
+            ->select('removed_at')
             ->from('soft_delete_custom_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -476,7 +488,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
         Relational::setDefaultConnection($driver);
 
         $query = new Query($driver);
-        $query->insert('soft_delete_posts')
+        $query
+            ->insert('soft_delete_posts')
             ->values([
                 'title' => 'Non-Soft Post',
                 'content' => 'Test',
@@ -494,7 +507,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Verify record is completely gone (not soft deleted)
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('soft_delete_posts')
             ->where('id', '=', $id)
             ->fetch('row');
@@ -533,7 +547,8 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         // Purge cache and verify from fresh query
         Query::purgeCache();
-        $freshPost = SoftDeletePost::blank()->withTrashed()
+        $freshPost = SoftDeletePost::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
         $this->assertTrue($freshPost->trashed());

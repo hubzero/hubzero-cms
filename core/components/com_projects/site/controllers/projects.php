@@ -201,7 +201,8 @@ class Projects extends Base
             $this->view->setError($this->getError());
         }
 
-        $this->view->setLayout('intro')
+        $this->view
+                    ->setLayout('intro')
                     ->display();
     }
 

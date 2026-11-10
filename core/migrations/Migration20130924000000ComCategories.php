@@ -25,7 +25,9 @@ class Migration20130924000000ComCategories extends Base
         // $schema->setTableEngine('#__categories', 'MYISAM');
 
         // Batch column modifications
-        $schema->table('#__categories')->alter()
+        $schema
+            ->table('#__categories')
+            ->alter()
             ->modifyColumn('parent_id')->integer()->unsigned()->notNull()->default(0)
             ->modifyColumn('alias')->string(255)->notNull()->default('')
             ->modifyColumn('access')->integer()->unsigned()->notNull()->default(0)
@@ -34,7 +36,8 @@ class Migration20130924000000ComCategories extends Base
             ->execute();
 
         // Add new columns with position (MySQL-specific)
-        $schema->alterTable('#__categories')
+        $schema
+            ->alterTable('#__categories')
             ->addColumnIfNotExists('lft')
                 ->integer()
                 ->notNull()
@@ -90,7 +93,9 @@ class Migration20130924000000ComCategories extends Base
             ->execute();
 
         // Batch index operations
-        $schema->table('#__categories')->alter()
+        $schema
+            ->table('#__categories')
+            ->alter()
             ->dropIndex('cat_idx')
             ->addIndex('idx_extension_published_access', ['extension', 'published', 'access'])
             ->addIndex('idx_alias', 'alias')
@@ -104,7 +109,9 @@ class Migration20130924000000ComCategories extends Base
             $this->migrateDataFromSections();
 
             // Drop obsolete columns
-            $schema->table('#__categories')->alter()
+            $schema
+                ->table('#__categories')
+                ->alter()
                 ->dropColumn('ordering')
                 ->dropColumn('image')
                 ->dropColumn('image_position')
@@ -144,31 +151,36 @@ class Migration20130924000000ComCategories extends Base
         // @FIXME: should we fix up references in the data to com_banner(s) here?
 
         // @FIXME: should we fix up references in the data to com_banner(s) here?
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['extension' => Expression::column('section')])
             ->where(Expression::substring('section', 1, 3), '=', 'com')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['extension' => 'com_content'])
             ->where(Expression::substring('section', 1, 3), '!=', 'com')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['parent_id' => 0])
             ->where(Expression::substring('section', 1, 3), '=', 'com')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['parent_id' => Expression::column('section')])
             ->where(Expression::substring('section', 1, 3), '!=', 'com')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['alias' => Expression::lower('title')])
             ->beginOrGroup()
@@ -178,7 +190,8 @@ class Migration20130924000000ComCategories extends Base
             ->execute();
 
         // UPDATE #__categories SET level=1
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__categories')
             ->set(['level' => 1])
             ->execute();
@@ -195,7 +208,8 @@ class Migration20130924000000ComCategories extends Base
         ];
 
         foreach ($defaults as $default) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__categories')
                 ->columns([
                     'parent_id',
@@ -254,7 +268,8 @@ class Migration20130924000000ComCategories extends Base
 
         // Grab sections and insert them into categories
         $query = $this->db->getQuery(true);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('#__sections');
         $results = $query->loadObjectList();
 
@@ -262,14 +277,16 @@ class Migration20130924000000ComCategories extends Base
             foreach ($results as $r) {
                 // Collapse duplicate section/categories down into one level
                 $query = $this->db->getQuery(true);
-                $query->select('id')
+                $query
+                    ->select('id')
                     ->from('#__categories')
                     ->where('alias', '=', $r->alias);
                 if ($$query->exists()) {
                     // Set any categories that were in recently added section
                     // to have that new category id as parent_id
                     $query = $this->db->getQuery(true);
-                    $query->update('#__categories')
+                    $query
+                        ->update('#__categories')
                         ->set(['parent_id' => 0])
                         ->where('section', '=', $r->id);
                     $query->execute();
@@ -278,7 +295,8 @@ class Migration20130924000000ComCategories extends Base
                 }
 
                 $query = $this->db->getQuery(true);
-                $query->insert('#__categories')
+                $query
+                    ->insert('#__categories')
                     ->columns([
                         'parent_id',
                         'lft',
@@ -338,7 +356,8 @@ class Migration20130924000000ComCategories extends Base
 
                 // Set any categories that were in recently added section to have that new category id as parent_id
                 $query = $this->db->getQuery(true);
-                $query->update('#__categories')
+                $query
+                    ->update('#__categories')
                     ->set(['parent_id' => $id, 'level' => 2])
                     ->where('section', '=', $r->id);
                 $query->execute();
@@ -346,7 +365,8 @@ class Migration20130924000000ComCategories extends Base
         }
 
         // Insert root category and set all 1st level categories to point to it
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->insert('#__categories')
             ->columns([
                 'asset_id',
@@ -407,7 +427,8 @@ class Migration20130924000000ComCategories extends Base
         $rootId = $this->db->insertid();
 
         $query = $this->db->getQuery(true);
-        $query->update('#__categories')
+        $query
+            ->update('#__categories')
             ->set(['parent_id' => $rootId])
             ->where('parent_id', '=', 0)
             ->where('id', '!=', $rootId);
@@ -415,7 +436,8 @@ class Migration20130924000000ComCategories extends Base
 
         // Fix up "path" field
         $query = $this->db->getQuery(true);
-        $query->update('#__categories')
+        $query
+            ->update('#__categories')
             ->set(['path' => 'alias'], true)
             ->beginOrGroup()
                 ->whereIsNull('path')
@@ -425,7 +447,8 @@ class Migration20130924000000ComCategories extends Base
         $query->execute();
 
         $query = $this->db->getQuery(true);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('#__categories')
             ->beginOrGroup()
                 ->whereIsNull('path')
@@ -435,7 +458,8 @@ class Migration20130924000000ComCategories extends Base
         $results = $query->loadObjectList();
 
         if (count($results) > 0) {
-            $aliases = $this->db->getQuery(true)
+            $aliases = $this->db
+                ->getQuery(true)
                 ->select(['id', 'alias'])
                 ->from('#__categories')
                 ->pluck('alias', 'id');
@@ -449,7 +473,8 @@ class Migration20130924000000ComCategories extends Base
 
                 // Save the sub-category path
                 $query = $this->db->getQuery(true);
-                $query->update('#__categories')
+                $query
+                    ->update('#__categories')
                     ->set(['path' => $this->db->quote($path)])
                     ->where('id', '=', $r->id);
                 $query->execute();

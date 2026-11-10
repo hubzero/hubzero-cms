@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('applications')
+$this
+     ->css('applications')
      ->css()
      ->js();
 
@@ -110,7 +111,8 @@ $requiredLabel = Lang::txt('JREQUIRED');
                             <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_CURRENT_TEAM'); ?>:
                             <?php
                                 $team = $this->application->team()->rows();
-                                echo $this->view('_team')
+                                echo $this
+                                          ->view('_team')
                                           ->set('members', $team)
                                           ->display();
                             ?>

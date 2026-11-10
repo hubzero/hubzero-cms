@@ -183,7 +183,8 @@ foreach ($this->rows as $row) {
         $data[$line->aco_model]['delete'] = $line->action_delete;
     }
 
-    $this->view('_acl_aro_row')
+    $this
+        ->view('_acl_aro_row')
         ->set('i', $i)
         ->set('data', $data)
         ->set('row', $row)

@@ -79,7 +79,8 @@ class Groups extends Plugin
         }
 
         // Pass the view some info
-        $view = $this->view('default', 'display')
+        $view = $this
+            ->view('default', 'display')
             ->set('option', $option)
             ->set('resource', $resource)
             ->set('params', $this->params)

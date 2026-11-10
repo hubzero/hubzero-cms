@@ -54,7 +54,8 @@ class Recommendations extends Plugin
         $results = $r->limit($this->params->get('display_limit', 10))->rows();
 
         // Pass the view some info
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('option', $option)
             ->set('publication', $publication)
             ->set('results', $results)

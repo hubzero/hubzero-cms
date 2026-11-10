@@ -37,7 +37,8 @@ Html::behavior('calendar');
 
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
-$this->js('jquery.fileuploader.js', 'system')
+$this
+    ->js('jquery.fileuploader.js', 'system')
     ->js();
 $this->css(); //->css('classic');
 

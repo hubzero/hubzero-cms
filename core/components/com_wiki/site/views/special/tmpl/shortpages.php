@@ -28,7 +28,8 @@ $filters = ['state' => [0, 1]];
 $pages    = \Components\Wiki\Models\Page::blank()->getTableName();
 $versions = \Components\Wiki\Models\Version::blank()->getTableName();
 
-$rows = $this->book->pages($filters)
+$rows = $this->book
+    ->pages($filters)
     ->select($pages . '.*')
     ->select($versions . '.created_by')
     ->select($versions . '.length')

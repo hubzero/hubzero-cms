@@ -12,7 +12,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (!function_exists('sortDir')) {
@@ -146,7 +147,8 @@ $this->category->set('section_alias', $this->filters['section']);
                                         </td>
                                         <td class="priority-4">
                                             <span><?php
-                                            echo $row->thread()
+                                            echo $row
+                                                ->thread()
                                                 ->whereEquals('state', $row->get('state'))
                                                 ->whereIn('access', $this->filters['access'])
                                                 ->total();

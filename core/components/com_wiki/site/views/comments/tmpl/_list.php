@@ -32,7 +32,8 @@ if ($hasComments) :
     <?php foreach ($this->comments as $comment) : ?>
         <?php
         $comment->set('page_id', $this->page->get('id'));
-        $this->view('_comment', 'comments')
+        $this
+            ->view('_comment', 'comments')
             ->set('option', $this->option)
             ->set('comment', $comment)
             ->set('config', $this->config)

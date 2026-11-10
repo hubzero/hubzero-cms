@@ -18,7 +18,8 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=' . $this->name;
 
-$this->css()
+$this
+     ->css()
      ->js('jquery.masonry', 'com_collections')
      ->js('jquery.infinitescroll', 'com_collections')
      ->js();
@@ -34,7 +35,8 @@ $this->css()
 
 <form method="get" action="<?php echo Route::url($base . '&task=all'); ?>" id="collections">
     <?php
-    $this->view('_submenu', 'collection')
+    $this
+         ->view('_submenu', 'collection')
          ->set('option', $this->option)
          ->set('member', $this->member)
          ->set('params', $this->params)
@@ -105,7 +107,8 @@ $this->css()
         ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
             <div class="content">
                 <?php
-                $this->view('default_collection', 'post')
+                $this
+                     ->view('default_collection', 'post')
                      ->set('row', $row)
                      ->set('collection', $row)
                      ->display();

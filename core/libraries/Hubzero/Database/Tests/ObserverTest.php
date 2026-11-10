@@ -36,7 +36,8 @@ class ObserverTest extends AbstractDriverTestCase
     {
         $driver->dropTable('observer_test_items', true);
 
-        $driver->createTable('observer_test_items')
+        $driver
+            ->createTable('observer_test_items')
             ->id()
             ->string('title', 255)
             ->string('slug', 255)->nullable()

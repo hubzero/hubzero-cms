@@ -24,13 +24,15 @@ class Migration20121009000000ComWiki extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__plugins')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['element' => 'wiki'])
                 ->where('element', '=', 'topics')
                 ->execute();
         } elseif ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['element' => 'wiki'])
                 ->where('element', '=', 'topics')

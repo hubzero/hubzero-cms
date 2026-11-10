@@ -43,7 +43,8 @@ class Announcements extends Module
         $catSlug = 'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN '
             . $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END';
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.*')
             ->select('cc.alias', 'catname')
             ->select('cc.path', 'catpath')

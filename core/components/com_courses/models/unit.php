@@ -436,7 +436,8 @@ class Unit extends Base
         }
 
         if ($value) {
-            $this->importPlugin('courses')
+            $this
+                 ->importPlugin('courses')
                  ->trigger('onUnitSave', [$this]);
         }
 
@@ -473,7 +474,8 @@ class Unit extends Base
             }
         }
 
-        $this->importPlugin('courses')
+        $this
+             ->importPlugin('courses')
              ->trigger('onUnitDelete', [$this]);
 
         // Remove this record from the database and log the event

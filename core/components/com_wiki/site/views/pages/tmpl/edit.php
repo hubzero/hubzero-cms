@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 if (!$this->sub) {
     $this->css();
 }
-$this->js('wiki.js', 'com_wiki')
+$this
+    ->js('wiki.js', 'com_wiki')
     ->js('jquery.fileuploader.js', 'system');
 
 $tags = $this->page->tags('string');
@@ -39,11 +40,13 @@ if ($this->page->exists()) {
 }
 
 $macros = \Components\Wiki\Models\Page::oneByPath('Help:WikiMacros', 'site', 0);
-$macros->set('scope', $this->book->get('scope'))
+$macros
+    ->set('scope', $this->book->get('scope'))
     ->set('scope_id', $this->book->get('scope_id'));
 
 $formatting = \Components\Wiki\Models\Page::oneByPath('Help:WikiFormatting', 'site', 0);
-$formatting->set('scope', $this->book->get('scope'))
+$formatting
+    ->set('scope', $this->book->get('scope'))
     ->set('scope_id', $this->book->get('scope_id'));
 
 $authors = [];
@@ -54,7 +57,8 @@ $authors = implode(', ', $authors);
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
-    $this->view('crumbs')
+    $this
+        ->view('crumbs')
         ->set('parents', $this->parents)
         ->display();
     ?>
@@ -63,7 +67,8 @@ $authors = implode(', ', $authors);
     <?php
     //if ($this->page->exists())
     //{
-    $this->view('authors')
+    $this
+        ->view('authors')
         //->setBasePath($this->base_path)
         ->set('page', $this->page)
         ->display();
@@ -75,7 +80,8 @@ $authors = implode(', ', $authors);
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu')
+        $this
+            ->view('wikimenu')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -88,7 +94,8 @@ $authors = implode(', ', $authors);
 <?php } ?>
 
         <?php
-        $this->view('submenu')
+        $this
+            ->view('submenu')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)

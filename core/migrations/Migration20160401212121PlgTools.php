@@ -23,7 +23,8 @@ class Migration20160401212121PlgTools extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('element', '=', 'novnc')
@@ -42,14 +43,16 @@ iOS, safari 1.0
 Windows, msie 10.0
 Windows, ie 10.0');
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', (int) $result->extension_id)
                     ->execute();
             }
 
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('element', '=', 'java')
@@ -67,7 +70,8 @@ Windows, ie 10.0');
 *, mozilla 5.0
 iOS, Safari 9999.9');
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', (int) $result->extension_id)

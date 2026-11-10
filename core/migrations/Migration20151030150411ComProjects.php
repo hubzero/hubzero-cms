@@ -24,7 +24,8 @@ class Migration20151030150411ComProjects extends Base
 
         // Add connections table
         if (!$schema->tableExists('#__projects_connections')) {
-            $schema->createTable('#__projects_connections')
+            $schema
+                ->createTable('#__projects_connections')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->nullable()
                 ->integer('project_id')
@@ -38,7 +39,8 @@ class Migration20151030150411ComProjects extends Base
 
         // Add providers table
         if (!$schema->tableExists('#__projects_connection_providers')) {
-            $schema->createTable('#__projects_connection_providers')
+            $schema
+                ->createTable('#__projects_connection_providers')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 255)->default('')
                 ->string('name', 255)->default('')

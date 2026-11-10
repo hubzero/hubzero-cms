@@ -27,7 +27,8 @@ Toolbar::help('focusareas');
 Html::behavior('framework');
 
 $this->css('tag_graph.css');
-$this->js('d3.js', 'system')
+$this
+    ->js('d3.js', 'system')
     ->js('tag_graph.js');
 
 $dbh = App::get('db');

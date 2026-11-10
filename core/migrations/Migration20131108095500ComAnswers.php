@@ -38,7 +38,9 @@ class Migration20131108095500ComAnswers extends Base
             return;
         }
 
-        $schema->table('#__answers_questions')->alter()
+        $schema
+            ->table('#__answers_questions')
+            ->alter()
             ->modifyInteger('id', true)->notNull()->autoIncrement()
             ->modifyString('subject', 250)->notNull()->default('')
             ->modifyText('question')->notNull()
@@ -61,7 +63,9 @@ class Migration20131108095500ComAnswers extends Base
             return;
         }
 
-        $schema->table('#__answers_responses')->alter()
+        $schema
+            ->table('#__answers_responses')
+            ->alter()
             ->modifyInteger('id', true)->notNull()->autoIncrement()
             ->modifyInteger('qid', true)->notNull()->default(0)
             ->modifyString('created_by', 50)->notNull()->default('')
@@ -85,7 +89,9 @@ class Migration20131108095500ComAnswers extends Base
             return;
         }
 
-        $schema->table('#__answers_questions_log')->alter()
+        $schema
+            ->table('#__answers_questions_log')
+            ->alter()
             ->modifyInteger('id', true)->notNull()->autoIncrement()
             ->modifyInteger('voter')->notNull()->default(0)
             ->modifyString('ip', 15)->notNull()->default('')
@@ -106,7 +112,9 @@ class Migration20131108095500ComAnswers extends Base
             return;
         }
 
-        $schema->table('#__answers_log')->alter()
+        $schema
+            ->table('#__answers_log')
+            ->alter()
             ->modifyInteger('id', true)->notNull()->autoIncrement()
             ->modifyString('ip', 15)->notNull()->default('')
             ->modifyInteger('rid', true)->notNull()->default(0)
@@ -123,14 +131,18 @@ class Migration20131108095500ComAnswers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__answers_questions')) {
-            $schema->table('#__answers_questions')->alter()
+            $schema
+                ->table('#__answers_questions')
+                ->alter()
                 ->dropIndex('idx_created_by')
                 ->dropIndex('idx_state')
                 ->execute();
         }
 
         if ($schema->tableExists('#__answers_responses')) {
-            $schema->table('#__answers_responses')->alter()
+            $schema
+                ->table('#__answers_responses')
+                ->alter()
                 ->dropIndex('idx_created_by')
                 ->dropIndex('idx_qid')
                 ->dropIndex('idx_state')
@@ -138,7 +150,9 @@ class Migration20131108095500ComAnswers extends Base
         }
 
         if ($schema->tableExists('#__answers_questions_log')) {
-            $schema->table('#__answers_questions_log')->alter()
+            $schema
+                ->table('#__answers_questions_log')
+                ->alter()
                 ->dropIndex('idx_qid')
                 ->dropIndex('idx_voter')
                 ->execute();

@@ -26,7 +26,8 @@ class Migration20150109200952ComUsers extends Base
         if ($this->db->tableExists('#__users') && $schema->hasColumn('#__users', 'username')) {
             // Check if the key already exists before adding it
             if (!$schema->hasKey('#__users', 'uidx_username')) {
-                $schema->alterTable('#__users')
+                $schema
+                    ->alterTable('#__users')
                     ->addUniqueIndex('uidx_username', 'username')
                     ->execute();
             }

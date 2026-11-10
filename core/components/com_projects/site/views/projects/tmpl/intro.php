@@ -13,7 +13,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css()
      ->js();
 
@@ -36,7 +37,8 @@ $rows = $this->model->entries('list', $this->filters);
 
 <?php
     // Display status message
-    $this->view('_statusmsg', 'projects')
+    $this
+         ->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
          ->set('msg', $this->msg)
          ->display();
@@ -94,7 +96,8 @@ $rows = $this->model->entries('list', $this->filters);
         <div class="col span10 omega">
             <?php if (count($rows) > 0) :
                 // Display List of items
-                $this->view('_list')
+                $this
+                     ->view('_list')
                      ->set('rows', $rows)
                      ->set('filters', [])
                      ->set('option', $this->option)

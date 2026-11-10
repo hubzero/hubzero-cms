@@ -30,7 +30,8 @@ switch ($this->type) {
         break;
     case 'publication':
         $active = 'publications';
-        $this->js('jquery.hideseek.min.js')
+        $this
+             ->js('jquery.hideseek.min.js')
              ->js('jQuery(document).on("afterShowinboxLoad", function(e){
 		     $("#pub-search").hideseek({
 				highlight: true

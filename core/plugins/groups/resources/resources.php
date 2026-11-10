@@ -599,7 +599,8 @@ class Resources extends Plugin
                     foreach ($val as $a => $t) {
                         if ($limitstart == -1) {
                             if ($i == 0) {
-                                $counts[] = self::allWithFilters($filters)->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                                $counts[] = self::allWithFilters($filters)
+                                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                                 ->total(true);
                             } else {
                                 $counts[] = 0;
@@ -608,7 +609,8 @@ class Resources extends Plugin
                             $filters['type'] = $cats[$a]['id'];
 
                             // Execute a count query for each area/category
-                            $counts[] = self::allWithFilters($filters)->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                            $counts[] = self::allWithFilters($filters)
+                            ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                             ->total(true);
                         }
                         $i++;
@@ -675,7 +677,8 @@ class Resources extends Plugin
         }
 
         if (isset($filters['search'])) {
-            $query->whereLike($r . '.title', $filters['search'], 1)
+            $query
+                ->whereLike($r . '.title', $filters['search'], 1)
                 ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -715,7 +718,8 @@ class Resources extends Plugin
             }
 
             if (isset($filters['usergroups']) && !empty($filters['usergroups'])) {
-                $query->whereIn($r . '.access', (array) $filters['access'], 1)
+                $query
+                    ->whereIn($r . '.access', (array) $filters['access'], 1)
                     ->orWhereIn($r . '.group_owner', (array) $filters['usergroups'], 1)
                     ->resetDepth();
             } else {
@@ -726,7 +730,8 @@ class Resources extends Plugin
         }
 
         if (isset($filters['now'])) {
-            $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+            $query
+                ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
                 ->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
                 ->resetDepth()
                 ->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)

@@ -44,7 +44,8 @@ if ($mark = $this->params->get('onCommentMark')) {
             <div class="comment-content">
                 <?php
                 if ($this->params->get('comments_votable', 1)) {
-                    $this->view('vote')
+                    $this
+                         ->view('vote')
                          ->set('option', $this->option)
                          ->set('item', $this->comment)
                          ->set('params', $this->params)
@@ -205,7 +206,8 @@ if ($mark = $this->params->get('onCommentMark')) {
 
             <?php
             if ($this->depth < $this->params->get('comments_depth', 3)) {
-                $replies = $this->comment->replies()
+                $replies = $this->comment
+                    ->replies()
                     ->whereIn('state', [
                         Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
                         Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED,
@@ -215,7 +217,8 @@ if ($mark = $this->params->get('onCommentMark')) {
                     ->rows();
 
                 if ($replies->count()) {
-                    $this->view('list')
+                    $this
+                         ->view('list')
                          ->set('option', $this->option)
                          ->set('comments', $replies)
                          ->set('obj_type', $this->obj_type)

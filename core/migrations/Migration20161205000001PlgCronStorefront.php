@@ -24,7 +24,8 @@ class Migration20161205000001PlgCronStorefront extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'cron')
@@ -46,7 +47,8 @@ class Migration20161205000001PlgCronStorefront extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'cron')

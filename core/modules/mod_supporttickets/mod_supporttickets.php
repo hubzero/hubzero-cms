@@ -92,7 +92,8 @@ class Supporttickets extends Module
         $this->closed = [];
 
         // First ticket
-        $first = (int) $database->getQuery()
+        $first = (int) $database
+            ->getQuery()
             ->select($database->sqlYear('created'))
             ->from('#__support_tickets')
             ->whereRaw("report != ''")
@@ -102,7 +103,8 @@ class Supporttickets extends Module
             ->value();
 
         // Opened tickets
-        $openTickets = $database->getQuery()
+        $openTickets = $database
+            ->getQuery()
             ->select('id')
             ->select('created')
             ->select($database->sqlYear('created'), 'year')
@@ -139,7 +141,8 @@ class Supporttickets extends Module
         }
 
         // Closed tickets
-        $clsd = $database->getQuery()
+        $clsd = $database
+            ->getQuery()
             ->select('t.id', 'ticket')
             ->select('t.closed')
             ->select($database->sqlYear('t.closed'), 'year')

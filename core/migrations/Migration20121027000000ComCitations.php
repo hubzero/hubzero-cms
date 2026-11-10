@@ -26,7 +26,8 @@ class Migration20121027000000ComCitations extends Base
         if ($schema->tableExists('#__citations')) {
             // MODIFY with AFTER clause is MySQL-specific; column position change skipped for SQLite
             if ($schema->hasColumn('#__citations', 'type')) {
-                $schema->modifyColumn('#__citations', 'type')
+                $schema
+                    ->modifyColumn('#__citations', 'type')
                     ->string(30)
                     ->nullable()
                     ->default(null)
@@ -34,62 +35,72 @@ class Migration20121027000000ComCitations extends Base
             }
 
             if (!$schema->hasColumn('#__citations', 'language')) {
-                $schema->addColumn('#__citations', 'language')
+                $schema
+                    ->addColumn('#__citations', 'language')
                     ->string(100)
                     ->nullable()
                     ->default(null)
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'accession_number')) {
-                $schema->addColumn('#__citations', 'accession_number')
+                $schema
+                    ->addColumn('#__citations', 'accession_number')
                     ->string(100)
                     ->nullable()
                     ->default(null)
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'short_title')) {
-                $schema->addColumn('#__citations', 'short_title')
+                $schema
+                    ->addColumn('#__citations', 'short_title')
                     ->string(250)
                     ->nullable()
                     ->default(null)
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'author_address')) {
-                $schema->addColumn('#__citations', 'author_address')
+                $schema
+                    ->addColumn('#__citations', 'author_address')
                     ->text()
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'keywords')) {
-                $schema->addColumn('#__citations', 'keywords')
+                $schema
+                    ->addColumn('#__citations', 'keywords')
                     ->text()
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'abstract')) {
-                $schema->addColumn('#__citations', 'abstract')
+                $schema
+                    ->addColumn('#__citations', 'abstract')
                     ->text()
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'call_number')) {
-                $schema->addColumn('#__citations', 'call_number')
+                $schema
+                    ->addColumn('#__citations', 'call_number')
                     ->string(100)
                     ->nullable()
                     ->default(null)
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'label')) {
-                $schema->addColumn('#__citations', 'label')
+                $schema
+                    ->addColumn('#__citations', 'label')
                     ->string(100)
                     ->nullable()
                     ->default(null)
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'research_notes')) {
-                $schema->addColumn('#__citations', 'research_notes')
+                $schema
+                    ->addColumn('#__citations', 'research_notes')
                     ->text()
                     ->execute();
             }
             if (!$schema->hasColumn('#__citations', 'params')) {
-                $schema->addColumn('#__citations', 'params')
+                $schema
+                    ->addColumn('#__citations', 'params')
                     ->text()
                     ->execute();
             }

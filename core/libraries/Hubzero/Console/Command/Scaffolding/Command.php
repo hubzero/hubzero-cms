@@ -56,7 +56,8 @@ class Command extends Scaffolding
             . '.php';
 
         // Make command
-        $this->addTemplateFile("{$this->getType()}.tmpl", $dest)
+        $this
+             ->addTemplateFile("{$this->getType()}.tmpl", $dest)
              ->addReplacement('command_name', $name)
              ->make();
     }

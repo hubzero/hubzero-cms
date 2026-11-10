@@ -236,7 +236,8 @@ class Manager extends Obj
         }
 
         if (isset($filters['search'])) {
-            $model->whereLike('comment', $filters['search'], 1)
+            $model
+                ->whereLike('comment', $filters['search'], 1)
                 ->orWhereLike('title', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -373,7 +374,8 @@ class Manager extends Obj
             ->whereEquals('state', Post::STATE_PUBLISHED)
             ->whereIn('access', User::getAuthorisedViewLevels());
 
-        return $last->order('id', 'desc')
+        return $last
+            ->order('id', 'desc')
             ->limit(1)
             ->row();
     }

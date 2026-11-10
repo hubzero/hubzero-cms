@@ -33,7 +33,8 @@ if (!User::isGuest()) {
     $submissions = $database->loadObjectList();
 }
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css('create.css');
 ?>
 <header id="content-header">

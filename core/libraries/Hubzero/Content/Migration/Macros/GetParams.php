@@ -28,7 +28,8 @@ class GetParams extends Macro
         $params = null;
 
         if ($this->db->tableExists('#__extensions')) {
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions');
 

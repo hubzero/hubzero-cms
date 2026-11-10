@@ -23,7 +23,8 @@ class Migration20150826208413ComContent extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__content')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select(['id', 'attribs'])
                 ->from('#__content');
             $results = $query->loadObjectList();
@@ -47,7 +48,8 @@ class Migration20150826208413ComContent extends Base
 
                     if (json_last_error() === JSON_ERROR_NONE) {
                         $attribs = json_encode($attribs);
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__content')
                             ->set(['attribs' => $attribs])
                             ->where('id', '=', $r->id)

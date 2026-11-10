@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('uploader')
      ->css('diskspace')
      ->js('diskspace')
@@ -99,7 +100,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
     <?php
     if ($versionTracking == 1) {
         // Connections to external services
-        $this->view('link', 'connect')
+        $this
+            ->view('link', 'connect')
             ->set('option', $this->option)
             ->set('model', $this->model)
             ->set('uid', $this->uid)
@@ -294,7 +296,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
             <?php }
                 // Display contents
             if (count($this->items) > 0) {
-                $this->view('_items')
+                $this
+                     ->view('_items')
                      ->set('option', $this->option)
                      ->set('model', $this->model)
                      ->set('subdir', $this->subdir)
@@ -351,7 +354,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
             );
 
             // Disc space indicator
-            $this->view('_mini', 'diskspace')
+            $this
+                 ->view('_mini', 'diskspace')
                  ->set('quota', $quota)
                  ->set('dirsize', $dirsize)
                  ->set('config', $this->model->config())

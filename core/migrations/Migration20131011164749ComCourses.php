@@ -41,7 +41,8 @@ class Migration20131011164749ComCourses extends Base
             $schema->tableExists('#__courses_asset_groups')
             && $schema->hasColumn('#__courses_asset_groups', 'description')
         ) {
-            $schema->modifyColumn('#__courses_asset_groups', 'description')
+            $schema
+                ->modifyColumn('#__courses_asset_groups', 'description')
                 ->string(255)
                 ->notNull()
                 ->default('')

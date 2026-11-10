@@ -24,14 +24,16 @@ class Migration20150427221158ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_tickets') && $schema->tableExists('#__support_statuses')) {
-            $open = $this->db->getQuery(true)
+            $open = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__support_statuses')
                 ->where('open', '=', 1)
                 ->loadColumn();
 
             if (count($open)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__support_tickets')
                     ->set(['status' => 0])
                     ->where('open', '=', 0)

@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=' . $this->name;
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 
@@ -30,7 +31,8 @@ $this->css()
 
 <form method="get" action="<?php echo Route::url($base . '&task=followers'); ?>" id="collections">
     <?php
-    $this->view('_submenu', 'collection')
+    $this
+         ->view('_submenu', 'collection')
          ->set('option', $this->option)
          ->set('member', $this->member)
          ->set('params', $this->params)

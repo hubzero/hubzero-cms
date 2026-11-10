@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('applications')
+$this
+     ->css('applications')
      ->css()
      ->js();
 
@@ -35,7 +36,8 @@ $active = isset($this->active) ? $this->active : Request::getCmd('active');
 </header>
 
 <?php
-    echo $this->view('_menu')
+    echo $this
+              ->view('_menu')
               ->set('active', $active)
               ->set('application', $this->application)
               ->display();
@@ -44,12 +46,14 @@ $active = isset($this->active) ? $this->active : Request::getCmd('active');
 <section class="main section">
     <div class="section-inner">
         <?php
-        echo $this->view($active)
+        echo $this
+                    ->view($active)
                     ->set('application', $this->application)
                     ->set('accesstoken', isset($this->accesstoken) ? $this->accesstoken : null)
                   ->display();
 
-        echo $this->view('_sidebar')
+        echo $this
+                  ->view('_sidebar')
                   ->set('active', $active)
                   ->display();
         ?>

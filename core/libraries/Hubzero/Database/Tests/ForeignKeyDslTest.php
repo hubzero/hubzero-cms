@@ -29,7 +29,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
         $driver->dropTable('fkdsl_categories', true);
         $driver->dropTable('fkdsl_users', true);
 
-        $driver->createTable('fkdsl_users')
+        $driver
+            ->createTable('fkdsl_users')
             ->id()
             ->string('name', 255)
             ->execute();
@@ -132,7 +133,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
         $fk = new ForeignKeyBuilder($builder, 'user_id');
-        $fk->constrained()
+        $fk
+           ->constrained()
            ->cascadeOnDelete()
            ->cascadeOnUpdate();
 
@@ -197,7 +199,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
         $fk = new ForeignKeyBuilder($builder, 'user_id');
-        $fk->constrained()
+        $fk
+           ->constrained()
            ->onDelete('cascade')
            ->onUpdate('set null');
 
@@ -244,7 +247,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     public function testTableBuilderCreateWithFluentFk(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('title', 255)
                 ->integer('user_id', true)
                 ->foreign('user_id')
@@ -265,7 +269,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     public function testTableBuilderCreateWithConstrained(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('title', 255)
                 ->foreignId('user_id')->constrained('fkdsl_users');
 
@@ -283,7 +288,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     public function testTableBuilderCreateWithCustomFkName(string $dbName, Driver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
-        $builder->id()
+        $builder
+                ->id()
                 ->integer('user_id', true)
                 ->foreign('user_id')
                     ->references('id')
@@ -302,7 +308,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
         $this->cleanUpChildTables($driver);
 
         $builder = new TableBuilder($driver, 'fkdsl_posts');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('title', 255)
                 ->integer('user_id', true)
                 ->foreign('user_id')
@@ -374,14 +381,16 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $this->cleanUpChildTables($driver);
 
-        $driver->createTable('fkdsl_comments')
+        $driver
+            ->createTable('fkdsl_comments')
             ->id()
             ->text('content')
             ->integer('user_id')
             ->execute();
 
         $builder = new AlterTableBuilder($driver, 'fkdsl_comments');
-        $builder->foreign('user_id')
+        $builder
+                ->foreign('user_id')
                 ->references('id')
                 ->on('fkdsl_users')
                 ->cascadeOnDelete();
@@ -402,7 +411,8 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $builder = new TableBuilder($driver, 'fkdsl_orders');
 
-        $builder->id()
+        $builder
+                ->id()
                 ->integer('user_id', true)
                 ->foreign('user_id')
                     ->references('id')
@@ -422,13 +432,15 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $this->cleanUpChildTables($driver);
 
-        $driver->createTable('fkdsl_categories')
+        $driver
+            ->createTable('fkdsl_categories')
             ->id()
             ->string('name', 255)
             ->execute();
 
         $builder = new TableBuilder($driver, 'fkdsl_products');
-        $builder->id()
+        $builder
+                ->id()
                 ->string('name', 255)
                 ->integer('user_id', true)
                 ->integer('category_id', true)

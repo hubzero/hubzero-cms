@@ -2007,7 +2007,8 @@ class Calendar extends Plugin
         $message = new \Hubzero\Mail\Message();
 
         // set message details and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($to)
                 ->addPart($body, 'text/plain')

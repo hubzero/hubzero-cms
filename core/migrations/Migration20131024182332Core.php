@@ -34,7 +34,8 @@ class Migration20131024182332Core extends Base
         $new .= "If you're already logged in, and simply wish to change your password, go to your ";
         $new .= "<a href=\"/members/myaccount/account\">account page</a> for a quick password change form.</p>";
 
-        $results = $this->db->getQuery(true)
+        $results = $this->db
+            ->getQuery(true)
             ->select('*')
             ->from('#__faq')
             ->where('alias', '=', 'pwchange')
@@ -47,7 +48,8 @@ class Migration20131024182332Core extends Base
                 $distance = levenshtein($sub1, $sub2);
 
                 if ($distance < 50) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__faq')
                         ->set(['fulltxt' => $new])
                         ->where('id', '=', $r->id)

@@ -22,7 +22,8 @@ $directory = $this->directory;
     <?php if (isset($directory['contents']) && $directory['contents']) : ?>
         <ul>
             <?php
-            $this->view('_bundle_contents')
+            $this
+                ->view('_bundle_contents')
                 ->set('contents', $directory['contents'])
                 ->display();
             ?>

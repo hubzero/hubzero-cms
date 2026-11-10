@@ -248,7 +248,8 @@ class Storefront extends Plugin
 
         // Build message
         $message = App::get('mailer');
-        $message->setSubject(Lang::txt('Storefront') . ': ' . Lang::txt('Publish down notifications'))
+        $message
+            ->setSubject(Lang::txt('Storefront') . ': ' . Lang::txt('Publish down notifications'))
             ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
             ->setTo(Config::get('mailfrom'), Config::get('sitename'))
             ->addHeader('X-Component', 'com_storefront')

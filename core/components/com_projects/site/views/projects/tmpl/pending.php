@@ -11,14 +11,16 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js();
 
 ?>
 <div id="project-wrap">
     <section class="main section">
         <?php
-            $this->view('_header')
+            $this
+                 ->view('_header')
                  ->set('model', $this->model)
                  ->set('showPic', 1)
                  ->set('showPrivacy', 0)

@@ -24,7 +24,8 @@ class Migration20150428103217ComCategories extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__categories')) {
-            $root = $this->db->getQuery(true)
+            $root = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__categories')
                 ->where('alias', '=', 'root')
@@ -33,7 +34,8 @@ class Migration20150428103217ComCategories extends Base
 
             if ($root && $root->id != 1) {
                 // Get the item that has the node's destined ID
-                $first = $this->db->getQuery(true)
+                $first = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__categories')
                     ->where('id', '=', 1)
@@ -41,7 +43,8 @@ class Migration20150428103217ComCategories extends Base
 
                 if ($first && $first->id) {
                     // Get the last item in the list
-                    $last = $this->db->getQuery(true)
+                    $last = $this->db
+                        ->getQuery(true)
                         ->select('*')
                         ->from('#__categories')
                         ->order('id', 'DESC')
@@ -50,7 +53,8 @@ class Migration20150428103217ComCategories extends Base
                     // Push the first to the last.
                     // This shouldn't cause issues as the nested set maintains the
                     // proper order. ID should be irrelevant except for ROOT.
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__categories')
                         ->set(['id' => $last->id + 1])
                         ->where('id', '=', $first->id)
@@ -58,14 +62,16 @@ class Migration20150428103217ComCategories extends Base
                 }
 
                 // Update the root node's position
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__categories')
                     ->set(['id' => 1])
                     ->where('id', '=', $root->id)
                     ->execute();
 
                 // Update the parent ID on all the node's immediate children
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__categories')
                     ->set(['parent_id' => 1])
                     ->where('parent_id', '=', $root->id)
@@ -73,7 +79,8 @@ class Migration20150428103217ComCategories extends Base
             }
 
             // Make sure the root node is public
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__categories')
                 ->set(['access' => 1])
                 ->where('id', '=', 1)

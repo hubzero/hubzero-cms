@@ -37,7 +37,8 @@ class Nested extends Relational
         $query->set([
             $pos => new Value\Raw($pos . ($add ? '+' : '-') . '2'),
         ]);
-        $query->where($pos, '>=', $base)
+        $query
+              ->where($pos, '>=', $base)
               ->where('id', '!=', $this->id)
               ->execute();
 
@@ -52,7 +53,8 @@ class Nested extends Relational
      **/
     private function resolveTrailing($base, $add = true)
     {
-        return $this->updateTrailing('lft', $base, $add)
+        return $this
+                    ->updateTrailing('lft', $base, $add)
                     ->updateTrailing('rgt', $base, $add);
     }
 
@@ -122,7 +124,8 @@ class Nested extends Relational
      **/
     public function saveAsChildOf($parent)
     {
-        $this->establishIsModel($parent)
+        $this
+             ->establishIsModel($parent)
              ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
@@ -148,7 +151,8 @@ class Nested extends Relational
      **/
     public function saveAsFirstChildOf($parent)
     {
-        $this->establishIsModel($parent)
+        $this
+             ->establishIsModel($parent)
              ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
@@ -250,14 +254,16 @@ class Nested extends Relational
     public function descendants($level = null)
     {
         $instance = self::blank();
-        $instance->where('level', '>', $this->level)
+        $instance
+                 ->where('level', '>', $this->level)
                  ->order('lft', 'asc');
 
         if (isset($level)) {
             $instance->where('level', '<=', $this->level + $level);
         }
 
-        return $instance->where('lft', '>', $this->lft)
+        return $instance
+                        ->where('lft', '>', $this->lft)
                         ->where('rgt', '<', $this->rgt)
                         ->applyScopesWhere($this);
     }

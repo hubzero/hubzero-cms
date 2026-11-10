@@ -17,7 +17,8 @@ if (!strstr($handlerBase, '{')) {
 
 <?php foreach ($this->items as $item) : ?>
     <?php
-        $this->view('_item')
+        $this
+            ->view('_item')
             ->set('connection', $this->connection)
             ->set('handlerBase', $handlerBase)
             ->set('item', $item)

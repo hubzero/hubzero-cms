@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_HELP'), 'help');
 
-$this->css()
+$this
+    ->css()
     ->js();
 
 $baseUrl = 'index.php?option=' . $this->option;

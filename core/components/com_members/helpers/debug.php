@@ -27,7 +27,8 @@ class Debug
     {
         // Initialise variable.
         $db    = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('name', 'text')
             ->select('element', 'value')
             ->from('#__extensions')

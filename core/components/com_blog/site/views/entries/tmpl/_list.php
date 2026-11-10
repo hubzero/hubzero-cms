@@ -21,7 +21,8 @@ if (isset($this->comments) && count($this->comments)) {
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
     <?php
     foreach ($this->comments as $comment) {
-        $this->view('_comment')
+        $this
+             ->view('_comment')
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('config', $this->config)

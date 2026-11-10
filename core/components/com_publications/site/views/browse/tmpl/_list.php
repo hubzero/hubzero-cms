@@ -70,7 +70,8 @@ $authorsByVersion = $pa->getAuthorsForVersions($_versionIds);
             : [];
 
         // Display List of items
-        $this->view('item')
+        $this
+             ->view('item')
              ->set('option', 'com_publications')
              ->set('filters', $this->filters)
              ->set('config', $this->config)

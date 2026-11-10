@@ -169,7 +169,8 @@ class Reviews extends Plugin
             $this->banking  = Component::params('com_members')->get('bankAccounts');
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('voting', $this->params->get('voting', 1))
                 ->set('option', $option)
                 ->set('resource', $model)
@@ -189,7 +190,8 @@ class Reviews extends Plugin
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $url  = $model->link() . '&active=' . $this->pluginName;
 
-            $view = $this->view('default', 'metadata')
+            $view = $this
+                ->view('default', 'metadata')
                 ->set('reviews', $reviews)
                 ->set('isAuthor', $isAuthor)
                 ->set('url', Route::url($url))

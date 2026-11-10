@@ -20,7 +20,8 @@ class Migration20140114091331PlgGeocode extends Base
      **/
     public function up()
     {
-        $count = $this->db->getQuery(true)
+        $count = $this->db
+            ->getQuery(true)
             ->from('#__extensions')
             ->where('type', '=', 'plugin')
             ->where('folder', '=', 'geocode')
@@ -72,7 +73,8 @@ class Migration20140114091331PlgGeocode extends Base
      **/
     public function down()
     {
-        $count = $this->db->getQuery(true)
+        $count = $this->db
+            ->getQuery(true)
             ->from('#__extensions')
             ->where('type', '=', 'plugin')
             ->where('folder', '=', 'geocode')

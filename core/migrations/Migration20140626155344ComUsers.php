@@ -23,7 +23,8 @@ class Migration20140626155344ComUsers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__users_merge_log')) {
-            $schema->createTable('#__users_merge_log')
+            $schema
+                ->createTable('#__users_merge_log')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('source', 150)->default('')
                 ->string('destination', 150)->default('')

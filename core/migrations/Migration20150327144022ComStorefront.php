@@ -26,7 +26,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_collections` */
             $schema->dropTable('#__storefront_collections');
 
-            $schema->createTable('#__storefront_collections')
+            $schema
+                ->createTable('#__storefront_collections')
                 ->char('cId', 50)
                 ->string('cName', 64)->nullable()
                 ->integer('cParent')->nullable()
@@ -42,7 +43,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_coupon_actions` */
             $schema->dropTable('#__storefront_coupon_actions');
 
-            $schema->createTable('#__storefront_coupon_actions')
+            $schema
+                ->createTable('#__storefront_coupon_actions')
                 ->integer('cnId')
                 ->char('cnaAction', 25)->nullable()
                 ->char('cnaVal', 255)->nullable()
@@ -54,7 +56,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_coupon_conditions` */
             $schema->dropTable('#__storefront_coupon_conditions');
 
-            $schema->createTable('#__storefront_coupon_conditions')
+            $schema
+                ->createTable('#__storefront_coupon_conditions')
                 ->integer('cnId')
                 ->char('cncRule', 100)->nullable()
                 ->char('cncVal', 255)->nullable()
@@ -65,7 +68,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_coupon_objects` */
             $schema->dropTable('#__storefront_coupon_objects');
 
-            $schema->createTable('#__storefront_coupon_objects')
+            $schema
+                ->createTable('#__storefront_coupon_objects')
                 ->integer('cnId')
                 ->integer('cnoObjectId')->nullable()
                 ->integer('cnoObjectsLimit')->default(0)
@@ -77,7 +81,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_coupons` */
             $schema->dropTable('#__storefront_coupons');
 
-            $schema->createTable('#__storefront_coupons')
+            $schema
+                ->createTable('#__storefront_coupons')
                 ->integer('cnId', ['autoIncrement' => true])
                 ->char('cnCode', 25)->nullable()
                 ->char('cnDescription', 255)->nullable()
@@ -94,7 +99,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_option_groups` */
             $schema->dropTable('#__storefront_option_groups');
 
-            $schema->createTable('#__storefront_option_groups')
+            $schema
+                ->createTable('#__storefront_option_groups')
                 ->integer('ogId', ['autoIncrement' => true])
                 ->char('ogName', 16)->nullable()
                 ->primaryKey('ogId')
@@ -105,7 +111,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_options` */
             $schema->dropTable('#__storefront_options');
 
-            $schema->createTable('#__storefront_options')
+            $schema
+                ->createTable('#__storefront_options')
                 ->integer('oId', ['autoIncrement' => true])
                 ->integer('ogId')->nullable()
                 ->char('oName', 255)->nullable()
@@ -118,7 +125,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_product_collections` */
             $schema->dropTable('#__storefront_product_collections');
 
-            $schema->createTable('#__storefront_product_collections')
+            $schema
+                ->createTable('#__storefront_product_collections')
                 ->integer('cllId', ['autoIncrement' => true])
                 ->integer('pId')
                 ->char('cId', 50)
@@ -129,7 +137,8 @@ class Migration20150327144022ComStorefront extends Base
                 ->execute();
 
             /*Table structure for table `#__storefront_product_meta` */
-            $schema->createTable('#__storefront_product_meta')
+            $schema
+                ->createTable('#__storefront_product_meta')
                 ->unsignedInteger('pmId', ['autoIncrement' => true])
                 ->integer('pId')
                 ->string('pmKey', 100)->default('')
@@ -142,7 +151,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_product_option_groups` */
             $schema->dropTable('#__storefront_product_option_groups');
 
-            $schema->createTable('#__storefront_product_option_groups')
+            $schema
+                ->createTable('#__storefront_product_option_groups')
                 ->integer('pId')
                 ->integer('ogId')
                 ->primaryKey(['pId', 'ogId'])
@@ -153,7 +163,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_product_types` */
             $schema->dropTable('#__storefront_product_types');
 
-            $schema->createTable('#__storefront_product_types')
+            $schema
+                ->createTable('#__storefront_product_types')
                 ->integer('ptId', ['autoIncrement' => true])
                 ->char('ptName', 128)->nullable()
                 ->char('ptModel', 25)->default('normal')
@@ -163,7 +174,8 @@ class Migration20150327144022ComStorefront extends Base
                 ->execute();
 
             // Data for table `#__storefront_product_types` */
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__storefront_product_types')
                 ->columns(['ptId', 'ptName', 'ptModel'])
                 ->values("1, 'Shippable merchandise', 'normal'")
@@ -175,7 +187,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_products` */
             $schema->dropTable('#__storefront_products');
 
-            $schema->createTable('#__storefront_products')
+            $schema
+                ->createTable('#__storefront_products')
                 ->integer('pId', ['autoIncrement' => true])
                 ->char('pAlias', 255)->nullable()
                 ->integer('ptId')
@@ -194,7 +207,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_sku_meta` */
             $schema->dropTable('#__storefront_sku_meta');
 
-            $schema->createTable('#__storefront_sku_meta')
+            $schema
+                ->createTable('#__storefront_sku_meta')
                 ->integer('smId', ['autoIncrement' => true])
                 ->integer('sId')
                 ->string('smKey', 100)->nullable()
@@ -208,7 +222,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_sku_options` */
             $schema->dropTable('#__storefront_sku_options');
 
-            $schema->createTable('#__storefront_sku_options')
+            $schema
+                ->createTable('#__storefront_sku_options')
                 ->integer('sId')
                 ->integer('oId')
                 ->primaryKey(['sId', 'oId'])
@@ -219,7 +234,8 @@ class Migration20150327144022ComStorefront extends Base
             /* `#__storefront_skus` */
             $schema->dropTable('#__storefront_skus');
 
-            $schema->createTable('#__storefront_skus')
+            $schema
+                ->createTable('#__storefront_skus')
                 ->integer('sId', ['autoIncrement' => true])
                 ->integer('pId')->nullable()
                 ->char('sSku', 16)->nullable()

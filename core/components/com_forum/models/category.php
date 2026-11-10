@@ -419,11 +419,13 @@ class Category extends Relational
      */
     public function lastActivity()
     {
-        $last = $this->posts()
+        $last = $this
+            ->posts()
             ->whereEquals('state', self::STATE_PUBLISHED)
             ->whereIn('access', User::getAuthorisedViewLevels());
 
-        return $last->order('created', 'desc')
+        return $last
+            ->order('created', 'desc')
             ->limit(1)
             ->row();
     }

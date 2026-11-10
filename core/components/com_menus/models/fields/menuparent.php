@@ -36,7 +36,8 @@ class MenuParent extends Select
         $db = App::get('db');
         $query = $db->getQuery();
 
-        $query->select('a.id', 'value')
+        $query
+            ->select('a.id', 'value')
             ->select('a.title', 'text')
             ->select('a.level')
             ->from('#__menu', 'a')
@@ -55,7 +56,8 @@ class MenuParent extends Select
         }
 
         $query->where('a.published', '!=', '-2');
-        $query->group('a.id')
+        $query
+            ->group('a.id')
             ->group('a.title')
             ->group('a.level')
             ->group('a.lft')

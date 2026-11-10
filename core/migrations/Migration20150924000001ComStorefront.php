@@ -22,7 +22,9 @@ class Migration20150924000001ComStorefront extends Base
     public function up()
     {
         // modifyColumn handles AUTO_INCREMENT appropriately for each database
-        $this->db->schema()->modifyColumn('#__storefront_collections', 'cId')
+        $this->db
+            ->schema()
+            ->modifyColumn('#__storefront_collections', 'cId')
             ->integer(16)
             ->unsigned()
             ->notNull()

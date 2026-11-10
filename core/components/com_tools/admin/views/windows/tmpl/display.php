@@ -24,7 +24,8 @@ Html::behavior('tooltip');
 ?>
 
 <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

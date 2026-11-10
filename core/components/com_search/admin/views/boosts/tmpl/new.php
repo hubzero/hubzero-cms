@@ -19,14 +19,16 @@ $toolbarElements = [
     'help' => ['boost'],
 ];
 
-$this->view('_toolbar', 'shared')
+$this
+    ->view('_toolbar', 'shared')
     ->set('elements', $toolbarElements)
     ->display();
 
 $boost = $this->boost;
 $typeOptions = $this->typeOptions;
 
-$this->view('_boost_form')
+$this
+    ->view('_boost_form')
     ->set('boost', $boost)
     ->set('task', 'new')
     ->set('typeOptions', $typeOptions)

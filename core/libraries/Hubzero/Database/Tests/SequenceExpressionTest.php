@@ -59,7 +59,8 @@ class SequenceExpressionTest extends AbstractDriverTestCase
             // Ignore if table doesn't exist
         }
 
-        $driver->createTable(self::$testTable)
+        $driver
+            ->createTable(self::$testTable)
             ->integer('id')->autoIncrement()->primaryKey('id')
             ->string('name', 255)->nullable()
             ->execute();

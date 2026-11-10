@@ -24,7 +24,8 @@ class Migration20170124151456ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $params = $this->db->getQuery(true)
+            $params = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('name', '=', 'com_support')
@@ -42,7 +43,8 @@ class Migration20170124151456ComSupport extends Base
                 $params->file_ext = implode(",", $fileExt);
                 $params = json_encode($params);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params])
                     ->where('name', '=', 'com_support')
@@ -56,7 +58,8 @@ class Migration20170124151456ComSupport extends Base
      **/
     public function down()
     {
-        $params = $this->db->getQuery(true)
+        $params = $this->db
+            ->getQuery(true)
             ->select('params')
             ->from('#__extensions')
             ->where('name', '=', 'com_support')
@@ -76,7 +79,8 @@ class Migration20170124151456ComSupport extends Base
             $params->file_ext = implode(",", $fileExt);
             $params = json_encode($params);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('name', '=', 'com_support')

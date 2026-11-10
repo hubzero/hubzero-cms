@@ -45,7 +45,8 @@ class MenuOrdering extends Select
         $db = App::get('db');
         $query = $db->getQuery();
 
-        $query->select('a.id', 'value')
+        $query
+            ->select('a.id', 'value')
             ->select('a.title', 'text');
         $query->from('#__menu', 'a');
 

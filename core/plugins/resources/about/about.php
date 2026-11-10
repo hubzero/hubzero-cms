@@ -84,7 +84,8 @@ class About extends Plugin
             $t = $query->getTableName();
             $o = Objct::blank()->getTableName();
 
-            $query->select($t . '.*')
+            $query
+                ->select($t . '.*')
                 ->join($o, $t . '.id', $o . '.tagid')
                 ->where($o . '.label', '!=', 'badge')
                 ->whereEquals($o . '.tbl', 'resources')

@@ -24,7 +24,8 @@ class Migration20180828000000ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__user_profiles')) {
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select(['user_id', 'profile_key', 'profile_value'])
                 ->select('count(*)', 'no_of_records')
                 ->select('group_concat(id)', 'duplicates')
@@ -62,7 +63,8 @@ class Migration20180828000000ComMembers extends Base
             }
 
             if (!empty($delete)) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__user_profiles')
                     ->whereIn('id', $delete)
                     ->execute();

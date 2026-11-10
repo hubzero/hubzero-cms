@@ -40,7 +40,8 @@ class Migration20180412000000ComNewsfeeds extends Base
         $this->addComponentEntry('newsfeeds');
 
         if (!$schema->tableExists('#__newsfeeds')) {
-            $schema->createTable('#__newsfeeds')
+            $schema
+                ->createTable('#__newsfeeds')
                 ->integer('catid')->default(0)
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 100)->default('')

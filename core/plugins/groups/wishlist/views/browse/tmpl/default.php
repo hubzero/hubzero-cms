@@ -142,7 +142,8 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                     'name'      => 'wishlists',
                                     'layout'    => '_vote',
                                 ]);
-                                $view->set('option', 'com_wishlist')
+                                $view
+                                     ->set('option', 'com_wishlist')
                                      ->set('item', $item)
                                      ->set('listid', $this->wishlist->id)
                                      ->set('plugin', 0)

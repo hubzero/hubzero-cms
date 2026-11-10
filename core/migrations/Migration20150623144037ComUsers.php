@@ -23,7 +23,8 @@ class Migration20150623144037ComUsers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__user_reputation')) {
-            $schema->createTable('#__user_reputation')
+            $schema
+                ->createTable('#__user_reputation')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->nullable()
                 ->integer('spam_count')->default(0)

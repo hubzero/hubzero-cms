@@ -25,7 +25,8 @@ class Migration20160222153539PlgCaptcha extends Base
         $params = '';
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -36,7 +37,8 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->where('element', '=', 'mathcaptcha')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -50,7 +52,8 @@ class Migration20160222153539PlgCaptcha extends Base
             // Remove the old recaptcha and move the hubzero recaptcha.
             // This will preserve existing settings.
             $this->deletePluginEntry('captcha', 'recaptcha');
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -71,7 +74,8 @@ class Migration20160222153539PlgCaptcha extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',
@@ -82,7 +86,8 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->where('element', '=', 'math')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',
@@ -93,7 +98,8 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->where('element', '=', 'image')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',

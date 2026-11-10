@@ -34,7 +34,8 @@ if (!function_exists('stem')) {
     }
 }
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js')
      ->js('tags.js');
 ?>
@@ -53,7 +54,8 @@ $this->css('create.css')
 
 <section class="main section">
     <?php
-        $this->view('steps')
+        $this
+             ->view('steps')
              ->set('option', $this->option)
              ->set('step', $this->step)
              ->set('steps', $this->steps)

@@ -24,7 +24,8 @@ class Migration20141111193301ComCollections extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__collections')) {
-            $schema->alterTable('#__collections')
+            $schema
+                ->alterTable('#__collections')
                 ->addString('sort', 50)->notNull()->default('created')
                 ->addString('layout', 50)->notNull()->default('grid')
                 ->execute();

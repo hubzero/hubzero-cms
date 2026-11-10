@@ -24,7 +24,8 @@ class Migration20141201151300ComCitations extends Base
 
         // Checks whether table exists and if the 'scope' field already exists
         if ($schema->tableExists('#__citations') && !$schema->hasColumn('#__citations', 'scope_id')) {
-            $schema->addColumn('#__citations', 'scope_id')
+            $schema
+                ->addColumn('#__citations', 'scope_id')
                 ->string(45)
                 ->nullable()
                 ->default(null)

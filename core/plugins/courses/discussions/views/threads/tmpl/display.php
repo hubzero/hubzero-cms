@@ -43,7 +43,8 @@ $this->thread->set('category', $this->category->get('alias'));
         <?php
         $threading = $this->config->get('threading', 'list');
 
-        $posts = $this->thread->thread()
+        $posts = $this->thread
+            ->thread()
             ->whereIn('state', $this->filters['state'])
             ->whereIn('access', $this->filters['access'])
             ->order(($threading == 'tree' ? 'lft' : 'created'), 'asc')
@@ -55,7 +56,8 @@ $this->thread->set('category', $this->category->get('alias'));
                 $posts = $this->thread->toTree($posts);
             }
 
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('option', $this->option)
                  ->set('group', $this->group)
                  ->set('comments', $posts)
@@ -103,7 +105,8 @@ $this->thread->set('category', $this->category->get('alias'));
         </div><!-- / .container -->
 
         <?php
-        $participants = $this->thread->participants()
+        $participants = $this->thread
+            ->participants()
             ->whereIn('state', $this->filters['state'])
             ->whereIn('access', $this->filters['access'])
             ->rows();

@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 Html::behavior('framework');
 
 // Push some styles to the template
-$this->css('conditions.css')
+$this
+     ->css('conditions.css')
      ->js('json2.js')
      ->js('condition.builder.js');
 
@@ -114,7 +115,8 @@ if (!$tmpl) :
                                     if ($this->row->conditions) :
                                         $condition = json_decode($this->row->conditions);
 
-                                        $this->view('condition')
+                                        $this
+                                             ->view('condition')
                                              ->set('option', $this->option)
                                              ->set('controller', $this->controller)
                                              ->set('condition', $condition)
@@ -262,7 +264,8 @@ if (!$tmpl) :
             if ($this->row->conditions) :
                 $condition = json_decode($this->row->conditions);
 
-                $this->view('condition')
+                $this
+                     ->view('condition')
                      ->set('option', $this->option)
                      ->set('controller', $this->controller)
                      ->set('condition', $condition)

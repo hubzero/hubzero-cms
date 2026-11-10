@@ -40,7 +40,8 @@ if ($this->level == 0) {
             ?>
             <li id="<?php echo $page->get('id'); ?>" class="<?php echo $cls; ?>">
                 <?php
-                    $this->view('item')
+                    $this
+                         ->view('item')
                          ->set('page', $page)
                          ->set('category', $category)
                          ->set('group', $this->group)
@@ -50,7 +51,8 @@ if ($this->level == 0) {
 
                     // display page children
                 if ($children = $page->get('children')) {
-                    $this->view('list')
+                    $this
+                         ->view('list')
                          ->set('level', 10)
                          ->set('pages', $children)
                          ->set('categories', $this->categories)

@@ -365,7 +365,8 @@ class Groups extends Base
             // Load super group template
             // parse & render
             $superGroupTemplate = new Helpers\Template();
-            $superGroupTemplate->set('group', $this->view->group)
+            $superGroupTemplate
+                               ->set('group', $this->view->group)
                                ->set('tab', $this->view->trueTab)
                                ->set('content', $this->view->content)
                                ->set('page', $this->view->activePage)
@@ -842,7 +843,8 @@ class Groups extends Base
                     $message = new \Hubzero\Mail\Message();
 
                     // Build message object and send
-                    $message->setSubject($subject)
+                    $message
+                        ->setSubject($subject)
                         ->addFrom($from['email'], $from['name'])
                         ->setTo($reviewer)
                         ->addHeader('X-Mailer', 'PHP/' . phpversion())
@@ -1121,7 +1123,8 @@ class Groups extends Base
         $message = new \Hubzero\Mail\Message();
 
         // Build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($from['email'], $from['name'])
                 ->setBcc($groupMembers)

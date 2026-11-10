@@ -24,7 +24,8 @@ class Migration20130828201526ComPublications extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__publication_categories')) {
-            $schema->createTable('#__publication_categories')
+            $schema
+                ->createTable('#__publication_categories')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('name', 200)->default('')
                 ->string('dc_type', 200)->default('Dataset')
@@ -113,7 +114,8 @@ class Migration20130828201526ComPublications extends Base
             ];
 
             foreach ($categories as $category) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__publication_categories')
                     ->set([
                         'id'            => $category[0],

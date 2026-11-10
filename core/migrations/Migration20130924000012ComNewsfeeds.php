@@ -24,7 +24,9 @@ class Migration20130924000012ComNewsfeeds extends Base
 
         $schema->setTableEngine('#__newsfeeds', 'MYISAM');
 
-        $schema->table('#__newsfeeds')->alter()
+        $schema
+            ->table('#__newsfeeds')
+            ->alter()
             // Modify existing columns
             ->modifyColumnIfExists('id', function ($column) {
                 $column->integer()->unsigned()->notNull()->autoIncrement();

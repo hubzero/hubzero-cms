@@ -39,7 +39,8 @@ defined('_HZEXEC_') or die();
 </ul>
 
 <?php
-    $this->view('list')
+    $this
+         ->view('list')
          ->set('level', 0)
          ->set('pages', $this->pages)
          ->set('categories', $this->categories)

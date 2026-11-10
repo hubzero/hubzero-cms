@@ -375,7 +375,8 @@ class Accessgroups extends AdminController
         $entries = \Hubzero\Access\Asset::all();
 
         if ($filters['search']) {
-            $entries->whereLike('name', $filters['search'], 1)
+            $entries
+                ->whereLike('name', $filters['search'], 1)
                 ->orWhereLike('title', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -389,7 +390,8 @@ class Accessgroups extends AdminController
 
         // Filter the items over the component if set.
         if ($filters['component']) {
-            $entries->whereEquals('name', $filters['component'], 1)
+            $entries
+                ->whereEquals('name', $filters['component'], 1)
                 ->orWhereLike('name', $filters['component'], 1)
                 ->resetDepth();
         }

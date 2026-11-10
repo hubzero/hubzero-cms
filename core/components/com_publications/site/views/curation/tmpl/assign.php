@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 if (!$this->ajax) {
-    $this->css('curation.css')
+    $this
+        ->css('curation.css')
         ->js('curation.js');
 }
 ?>

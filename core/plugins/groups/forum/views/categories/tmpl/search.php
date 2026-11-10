@@ -14,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <ul id="page_options">
@@ -41,7 +42,8 @@ $this->css()
                 </caption>
                 <tbody>
                     <?php
-                    $rows = $this->forum->posts($this->filters)
+                    $rows = $this->forum
+                        ->posts($this->filters)
                         ->paginated()
                         ->rows();
 

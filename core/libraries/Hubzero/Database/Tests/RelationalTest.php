@@ -91,25 +91,29 @@ class RelationalTest extends AbstractDriverTestCase
         }
 
         // Create tables using schema builder
-        $driver->createTable($usersTable)
+        $driver
+            ->createTable($usersTable)
             ->id()
             ->string('name', 255)
             ->string('email', 255)
             ->execute();
 
-        $driver->createTable($postsTable)
+        $driver
+            ->createTable($postsTable)
             ->id()
             ->integer('user_id')
             ->string('title', 255)
             ->text('content')
             ->execute();
 
-        $driver->createTable($tagsTable)
+        $driver
+            ->createTable($tagsTable)
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable($postTagsTable)
+        $driver
+            ->createTable($postTagsTable)
             ->integer('post_id')
             ->integer('tag_id')
             ->execute();

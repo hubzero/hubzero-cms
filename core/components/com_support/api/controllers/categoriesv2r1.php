@@ -149,7 +149,8 @@ class Categoriesv2r1 extends ApiController
         $created = $this->toTimestamp(Request::getString('created', ''));
         if ($created) {
             if (is_array($created) && count($created) > 1) {
-                $rows->where('created', '>=', $created[0], 1)
+                $rows
+                    ->where('created', '>=', $created[0], 1)
                     ->orWhere('created', '<', $created[1], 1)
                     ->resetDepth();
             } else {
@@ -163,7 +164,8 @@ class Categoriesv2r1 extends ApiController
         $modified = $this->toTimestamp(Request::getString('modified', ''));
         if ($modified) {
             if (is_array($modified) && count($modified) > 1) {
-                $rows->where('modified', '>=', $modified[0], 1)
+                $rows
+                    ->where('modified', '>=', $modified[0], 1)
                     ->orWhere('modified', '<', $modified[1], 1)
                     ->resetDepth();
             } else {
@@ -185,7 +187,8 @@ class Categoriesv2r1 extends ApiController
             $sort_dir = 'asc';
         }
 
-        $rows = $rows->order($sort, $sort_dir)
+        $rows = $rows
+            ->order($sort, $sort_dir)
             ->limit(Request::getInt('limit', 25))
             ->start(Request::getInt('start', 0))
             ->rows();

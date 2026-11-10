@@ -23,7 +23,8 @@ class Migration20150216135336LibJoomla extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__viewlevels')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('ordering')
                 ->from('#__viewlevels')
                 ->order('ordering', 'DESC');
@@ -34,7 +35,8 @@ class Migration20150216135336LibJoomla extends Base
                 foreach (['Protected' => '[1]', 'Private' => '[8]'] as $title => $usergroups) {
                     $i++;
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__viewlevels')
                         ->set([
                             'id'       => null,
@@ -56,7 +58,8 @@ class Migration20150216135336LibJoomla extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__viewlevels')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__viewlevels')
                 ->whereIn('title', ['Protected', 'Private'])
                 ->execute();

@@ -16,7 +16,8 @@ use Hubzero\Facades\Session;
 defined('_HZEXEC_') or die();
 
 // push scripts and styles
-$this->css()
+$this
+     ->css()
      ->js('groups.mediabrowser.js', 'com_groups')
      ->js('jquery.fileuploader', 'system')
      ->js('jquery.contextMenu', 'system')

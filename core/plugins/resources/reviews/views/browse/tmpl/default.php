@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <h3 class="section-header">
@@ -39,7 +40,8 @@ $this->css()
 
 <?php
 if ($this->reviews->count() > 0) {
-    $this->view('_list')
+    $this
+         ->view('_list')
          ->set('parent', 0)
          ->set('cls', 'odd')
          ->set('depth', 0)
@@ -56,7 +58,8 @@ if ($this->reviews->count() > 0) {
 // Display the review form if needed
 if (!User::isGuest()) {
     if (isset($this->h->myreview) && is_object($this->h->myreview)) {
-        $this->view('default', 'review')
+        $this
+             ->view('default', 'review')
              ->set('option', $this->option)
              ->set('review', $this->h->myreview)
              ->set('banking', $this->banking)

@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('diskspace')
+$this
+     ->css('diskspace')
      ->js('diskspace');
 
 $minGitSize = 61440;

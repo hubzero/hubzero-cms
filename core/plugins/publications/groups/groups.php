@@ -62,7 +62,8 @@ class Groups extends Plugin
         }
 
         // Instantiate a view
-        $view = $this->view('default', 'display')
+        $view = $this
+            ->view('default', 'display')
             ->set('option', $option)
             ->set('publication', $publication)
             ->set('params', $this->params)

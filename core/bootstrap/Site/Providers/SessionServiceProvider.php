@@ -73,7 +73,8 @@ class SessionServiceProvider extends ServiceProvider
             if ($this->app['config']->get('session_handler') == 'database' && $this->app->has('db')) {
                 $db = $this->app['db'];
 
-                $query = $db->getQuery()
+                $query = $db
+                    ->getQuery()
                     ->select('session_id')
                     ->from('#__session')
                     ->whereEquals('session_id', $this->app['session']->getId())
@@ -90,7 +91,8 @@ class SessionServiceProvider extends ServiceProvider
                     $ip = $this->app['request']->ip();
 
                     if ($this->app['session']->isNew()) {
-                        $query = $db->getQuery()
+                        $query = $db
+                            ->getQuery()
                             ->insert('#__session')
                             ->values([
                                 'session_id' => $this->app['session']->getId(),
@@ -101,7 +103,8 @@ class SessionServiceProvider extends ServiceProvider
 
                         $db->setQuery($query->toString());
                     } else {
-                        $query = $db->getQuery()
+                        $query = $db
+                            ->getQuery()
                             ->insert('#__session')
                             ->values([
                                 'session_id' => $this->app['session']->getId(),

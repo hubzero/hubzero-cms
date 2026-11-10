@@ -38,7 +38,8 @@ class Systemplate extends Plugin
 
         // Get the active site template
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('s.id')
             ->select('s.home')
             ->select('s.template')

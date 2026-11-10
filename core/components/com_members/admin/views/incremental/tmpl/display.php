@@ -167,7 +167,8 @@ $groupDefs = $groups->getAllGroups();
 </script>
 
 <?php
-    $this->view('_submenu', 'registration')
+    $this
+         ->view('_submenu', 'registration')
          ->display();
 ?>
 

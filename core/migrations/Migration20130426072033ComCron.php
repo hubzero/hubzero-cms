@@ -24,7 +24,8 @@ class Migration20130426072033ComCron extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__cron_jobs')) {
-            $schema->createTable('#__cron_jobs')
+            $schema
+                ->createTable('#__cron_jobs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->tinyInteger('state')->default(0)

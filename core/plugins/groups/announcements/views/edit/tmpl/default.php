@@ -15,11 +15,13 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 //add styles and scripts
-$this->css()
+$this
+     ->css()
      ->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system');
 
-$this->js()
+$this
+     ->js()
      ->js('jquery.timepicker', 'system');
 ?>
 

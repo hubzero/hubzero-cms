@@ -19,21 +19,24 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=blog';
 
-$first = $this->archive->entries([
-    'state'    => 1,
-    'scope'    => $this->filters['scope'],
-    'scope_id' => $this->filters['scope_id'],
-])
+$first = $this->archive
+    ->entries([
+        'state'    => 1,
+        'scope'    => $this->filters['scope'],
+        'scope_id' => $this->filters['scope_id'],
+    ])
     ->order('publish_up', 'asc')
     ->limit(1)
     ->row();
 
-$rows = $this->archive->entries($this->filters)
+$rows = $this->archive
+    ->entries($this->filters)
     ->ordered()
     ->paginated()
     ->rows();
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 
@@ -202,7 +205,8 @@ $noEntries = !$rows->count();
                                             <a href="<?php echo Route::url($row->link('comments')); ?>">
                                                 <?php
 
-                                                $comments = $row->comments()
+                                                $comments = $row
+                                                    ->comments()
                                                     ->whereIn(
                                                         'state',
                                                         [
@@ -367,10 +371,11 @@ $noEntries = !$rows->count();
                     <h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
                     <?php
 
-                    $popular = $this->archive->entries([
-                        'state'  => $this->filters['state'],
-                        'access' => $this->filters['access'],
-                    ])
+                    $popular = $this->archive
+                        ->entries([
+                            'state'  => $this->filters['state'],
+                            'access' => $this->filters['access'],
+                        ])
                         ->order('hits', 'desc')
                         ->limit(5)
                         ->rows();

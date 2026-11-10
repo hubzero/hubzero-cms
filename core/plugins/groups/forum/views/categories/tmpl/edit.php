@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if ($this->category->get('section_id') == 0) {

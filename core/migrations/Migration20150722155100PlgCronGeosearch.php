@@ -24,7 +24,8 @@ class Migration20150722155100PlgCronGeosearch extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'cron')
@@ -46,7 +47,8 @@ class Migration20150722155100PlgCronGeosearch extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'cron')

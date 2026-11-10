@@ -159,7 +159,8 @@ class Courses extends Plugin
                     break;
             }
 
-            $view = $this->view('default', 'display')
+            $view = $this
+                ->view('default', 'display')
                 ->set('filters', $filters)
                 ->set('option', $option)
                 ->set('group', $group)

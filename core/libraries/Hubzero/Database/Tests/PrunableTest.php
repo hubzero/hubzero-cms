@@ -65,7 +65,8 @@ class PrunableTest extends AbstractDriverTestCase
     {
         // Create test table for prunable records
         $driver->dropTable('prunable_logs', true);
-        $driver->createTable('prunable_logs')
+        $driver
+            ->createTable('prunable_logs')
             ->id()
             ->string('message', 255)
             ->string('level', 50)->default('info')
@@ -74,7 +75,8 @@ class PrunableTest extends AbstractDriverTestCase
 
         // Create test table for mass prunable records
         $driver->dropTable('prunable_sessions', true);
-        $driver->createTable('prunable_sessions')
+        $driver
+            ->createTable('prunable_sessions')
             ->id()
             ->integer('user_id')
             ->string('token', 100)
@@ -83,7 +85,8 @@ class PrunableTest extends AbstractDriverTestCase
 
         // Create test table for prunable with cleanup
         $driver->dropTable('prunable_orders', true);
-        $driver->createTable('prunable_orders')
+        $driver
+            ->createTable('prunable_orders')
             ->id()
             ->string('order_number', 50)
             ->string('status', 50)->default('pending')

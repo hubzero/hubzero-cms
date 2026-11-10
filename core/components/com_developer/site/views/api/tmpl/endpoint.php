@@ -18,7 +18,8 @@ list($base) = explode('.', $host);
 $url = 'https://' . $host;
 
 // include needed css and js
-$this->css('docs')
+$this
+    ->css('docs')
     ->css()
     ->js('api-docs');
 
@@ -120,7 +121,8 @@ $docsVersionUrl = Route::url(
     <div class="section-inner hz-layout-with-aside">
         <aside class="aside">
             <?php
-            $this->view('_menu')
+            $this
+                ->view('_menu')
                 ->set('documentation', $this->documentation)
                 ->set('active', $this->active)
                 ->set('version', $activeVersion)
@@ -131,7 +133,8 @@ $docsVersionUrl = Route::url(
             <?php
             // Display active tokens if available
             if (isset($this->tokens) && !empty($this->tokens)) {
-                $this->view('_active_tokens')
+                $this
+                    ->view('_active_tokens')
                     ->set('tokens', $this->tokens)
                     ->display();
             }

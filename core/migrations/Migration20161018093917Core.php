@@ -22,7 +22,8 @@ class Migration20161018093917Core extends Base
     public function up()
     {
         /* Future migration should drop the table */
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->delete('#__session_log')
             ->execute();
     }

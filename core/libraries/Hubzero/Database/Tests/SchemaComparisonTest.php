@@ -60,14 +60,16 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create v1 table
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('name', 100)->notNull()
             ->string('old_field', 100)
             ->execute();
 
         // Create v2 table (with changes)
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->string('name', 100)  // Made nullable
             ->string('email', 100)->notNull()
@@ -108,13 +110,15 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create v1 table
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('name', 100)->notNull()
             ->execute();
 
         // Create v2 table with additional column
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->string('name', 100)->notNull()
             ->string('email', 100)
@@ -145,12 +149,14 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create identical tables
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('name', 100)->notNull()
             ->execute();
 
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->string('name', 100)->notNull()
             ->execute();
@@ -174,7 +180,8 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('name', 100)->notNull()
             ->execute();
@@ -241,13 +248,15 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create v1 table
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('name', 100)->notNull()
             ->execute();
 
         // Create v2 table with additional column
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->string('name', 100)->notNull()
             ->string('email', 100)
@@ -284,13 +293,15 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create v1 without index
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('email', 100)->notNull()
             ->execute();
 
         // Create v2 with index
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->string('email', 100)->notNull()
             ->index('idx_email', 'email')
@@ -316,13 +327,15 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create v1 with important_data column
-        $driver->createTable('cmp_test_v1')
+        $driver
+            ->createTable('cmp_test_v1')
             ->id()
             ->string('important_data', 255)->notNull()
             ->execute();
 
         // Create v2 without important_data column
-        $driver->createTable('cmp_test_v2')
+        $driver
+            ->createTable('cmp_test_v2')
             ->id()
             ->execute();
 

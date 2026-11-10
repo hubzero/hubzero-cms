@@ -164,7 +164,8 @@ $bdcolor = '#e1e1e1';
                 <td colspan="2" style="padding: 0 2em;">
                     <div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;"><?php echo $this->post->comment; ?></div>
                     <?php
-                    $attachments = $this->post->attachments()
+                    $attachments = $this->post
+                        ->attachments()
                         ->whereIn('state', [Components\Forum\Models\Post::STATE_PUBLISHED])
                         ->rows();
 

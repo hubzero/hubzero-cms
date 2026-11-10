@@ -23,7 +23,8 @@ class Migration20131113143500ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_acl_acos')) {
-            $schema->alterTable('#__support_acl_acos')
+            $schema
+                ->alterTable('#__support_acl_acos')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyString('model', 100)->notNull()->default('')
                 ->modifyInteger('foreign_key')->notNull()->default(0)
@@ -31,7 +32,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_acl_aros')) {
-            $schema->alterTable('#__support_acl_aros')
+            $schema
+                ->alterTable('#__support_acl_aros')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('foreign_key')->notNull()->default(0)
                 ->modifyString('alias', 255)->notNull()->default('')
@@ -41,7 +43,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_acl_aros_acos')) {
-            $schema->alterTable('#__support_acl_aros_acos')
+            $schema
+                ->alterTable('#__support_acl_aros_acos')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('aro_id', true)->notNull()->default(0)
                 ->modifyInteger('aco_id', true)->notNull()->default(0)
@@ -55,7 +58,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_attachments')) {
-            $schema->alterTable('#__support_attachments')
+            $schema
+                ->alterTable('#__support_attachments')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('ticket', true)->notNull()->default(0)
                 ->modifyString('filename', 255)->default('')
@@ -65,7 +69,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_comments')) {
-            $schema->alterTable('#__support_comments')
+            $schema
+                ->alterTable('#__support_comments')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('ticket', true)->notNull()->default(0)
                 ->modifyString('created_by', 50)->notNull()->default('')
@@ -77,7 +82,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_messages')) {
-            $schema->alterTable('#__support_messages')
+            $schema
+                ->alterTable('#__support_messages')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyString('title', 250)->notNull()->default('')
                 ->modifyText('message')->notNull()
@@ -85,7 +91,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_queries')) {
-            $schema->alterTable('#__support_queries')
+            $schema
+                ->alterTable('#__support_queries')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyString('title', 250)->notNull()->default('')
                 ->modifyText('conditions')->notNull()
@@ -99,7 +106,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_resolutions')) {
-            $schema->alterTable('#__support_resolutions')
+            $schema
+                ->alterTable('#__support_resolutions')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyString('title', 100)->notNull()->default('')
                 ->modifyString('alias', 100)->notNull()->default('')
@@ -107,7 +115,8 @@ class Migration20131113143500ComSupport extends Base
         }
 
         if ($schema->tableExists('#__support_tickets')) {
-            $schema->alterTable('#__support_tickets')
+            $schema
+                ->alterTable('#__support_tickets')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->addIndex('idx_owner', 'owner')
                 ->execute();
@@ -122,40 +131,52 @@ class Migration20131113143500ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_acl_aros')) {
-            $schema->table('#__support_acl_aros')->alter()
+            $schema
+                ->table('#__support_acl_aros')
+                ->alter()
                 ->dropIndex('idx_model_foreign_key')
                 ->execute();
         }
 
         if ($schema->tableExists('#__support_acl_aros_acos')) {
-            $schema->table('#__support_acl_aros_acos')->alter()
+            $schema
+                ->table('#__support_acl_aros_acos')
+                ->alter()
                 ->dropIndex('idx_aco_id')
                 ->dropIndex('idx_aro_id')
                 ->execute();
         }
 
         if ($schema->tableExists('#__support_attachments')) {
-            $schema->table('#__support_attachments')->alter()
+            $schema
+                ->table('#__support_attachments')
+                ->alter()
                 ->dropIndex('idx_ticket')
                 ->execute();
         }
 
         if ($schema->tableExists('#__support_comments')) {
-            $schema->table('#__support_comments')->alter()
+            $schema
+                ->table('#__support_comments')
+                ->alter()
                 ->dropIndex('idx_ticket')
                 ->dropIndex('idx_created_by')
                 ->execute();
         }
 
         if ($schema->tableExists('#__support_queries')) {
-            $schema->table('#__support_queries')->alter()
+            $schema
+                ->table('#__support_queries')
+                ->alter()
                 ->dropIndex('idx_user_id')
                 ->dropIndex('idx_iscore')
                 ->execute();
         }
 
         if ($schema->tableExists('#__support_tickets')) {
-            $schema->table('#__support_tickets')->alter()
+            $schema
+                ->table('#__support_tickets')
+                ->alter()
                 ->dropIndex('idx_owner')
                 ->execute();
         }

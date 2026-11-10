@@ -23,7 +23,8 @@ class Migration20160620151602ComCart extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__cart_downloads')) {
-            $schema->createTable('#__cart_downloads')
+            $schema
+                ->createTable('#__cart_downloads')
                 ->unsignedInteger('dId', ['autoIncrement' => true])
                 ->integer('uId')->nullable()
                 ->integer('sId')->nullable()

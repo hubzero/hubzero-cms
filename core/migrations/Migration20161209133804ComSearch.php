@@ -30,7 +30,8 @@ class Migration20161209133804ComSearch extends Base
 
         if (!$schema->tableExists('#__search_queue')) {
             // Build the new table
-            $schema->createTable('#__search_queue')
+            $schema
+                ->createTable('#__search_queue')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 20)->default('')
                 ->integer('type_id')
@@ -60,7 +61,8 @@ class Migration20161209133804ComSearch extends Base
 
         if (!$schema->tableExists('#__search_indexqueue')) {
             // Build the older table
-            $schema->createTable('#__search_indexqueue')
+            $schema
+                ->createTable('#__search_indexqueue')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('hubtype', 12)->default('')
                 ->string('action', 12)->nullable()

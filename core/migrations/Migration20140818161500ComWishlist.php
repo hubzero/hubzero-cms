@@ -24,7 +24,8 @@ class Migration20140818161500ComWishlist extends Base
 
         if ($schema->tableExists('#__wishlist_vote')) {
             // Standardize column types
-            $schema->alterTable('#__wishlist_vote')
+            $schema
+                ->alterTable('#__wishlist_vote')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('wishid', true)->notNull()->default(0)
                 ->modifyInteger('userid', true)->notNull()->default(0)
@@ -38,7 +39,8 @@ class Migration20140818161500ComWishlist extends Base
 
         if ($schema->tableExists('#__wishlist_owners')) {
             // Standardize column types
-            $schema->alterTable('#__wishlist_owners')
+            $schema
+                ->alterTable('#__wishlist_owners')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('wishlist', true)->notNull()->default(0)
                 ->modifyInteger('userid', true)->notNull()->default(0)
@@ -51,7 +53,8 @@ class Migration20140818161500ComWishlist extends Base
 
         if ($schema->tableExists('#__wishlist_ownergroups')) {
             // Standardize column types
-            $schema->alterTable('#__wishlist_ownergroups')
+            $schema
+                ->alterTable('#__wishlist_ownergroups')
                 ->modifyInteger('id', true)->notNull()->autoIncrement()
                 ->modifyInteger('wishlist', true)->notNull()->default(0)
                 ->modifyInteger('groupid', true)->notNull()->default(0)
@@ -61,7 +64,8 @@ class Migration20140818161500ComWishlist extends Base
         }
 
         if ($schema->tableExists('#__wishlist_implementation')) {
-            $schema->alterTable('#__wishlist_implementation')
+            $schema
+                ->alterTable('#__wishlist_implementation')
                 ->addIndex('idx_wishid', 'wishid')
                 ->addIndex('idx_created_by', 'created_by')
                 ->addIndex('idx_approved', 'approved')
@@ -69,7 +73,8 @@ class Migration20140818161500ComWishlist extends Base
         }
 
         if ($schema->tableExists('#__wishlist')) {
-            $schema->alterTable('#__wishlist')
+            $schema
+                ->alterTable('#__wishlist')
                 ->addIndex('idx_category_referenceid', ['category', 'referenceid'])
                 ->addIndex('idx_created_by', 'created_by')
                 ->addIndex('idx_state', 'state')

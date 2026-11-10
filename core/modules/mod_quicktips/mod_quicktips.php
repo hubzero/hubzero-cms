@@ -50,7 +50,8 @@ class Quicktips extends Module
 
         $now = Date::toSql();
 
-        $query = $database->getQuery()
+        $query = $database
+            ->getQuery()
             ->select('a.id')
             ->select('a.title')
             ->select('a.introtext')

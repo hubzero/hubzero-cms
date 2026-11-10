@@ -32,7 +32,8 @@ class Supportactivity extends Module
 
         $database = \Hubzero\Facades\App::get('db');
         $limit = (int) $this->params->get('limit', 25);
-        $query = $database->getQuery()
+        $query = $database
+            ->getQuery()
             ->select('a.*')
             ->fromSub(function ($sub) use ($database) {
                 $this->buildActivityUnionQuery($sub, $database);
@@ -80,13 +81,15 @@ class Supportactivity extends Module
             $database->quoteName('c.comment'),
         );
 
-        $query->select('c.id')
+        $query
+            ->select('c.id')
             ->select('c.ticket')
             ->select('c.created')
             ->select($commentCategoryExpr, 'category')
             ->from('#__support_comments', 'c')
             ->union(function ($union) {
-                $union->select("'0'", 'id')
+                $union
+                    ->select("'0'", 'id')
                     ->select('t.id', 'ticket')
                     ->select('t.created')
                     ->select("'ticket'", 'category')

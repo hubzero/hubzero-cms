@@ -42,20 +42,23 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         $noAction  = 'NO ACTION';
 
         // Grandparent table (no foreign keys)
-        $driver->createTable('fki_grandparent')
+        $driver
+            ->createTable('fki_grandparent')
             ->id()
             ->string('name', 255)->nullable()
             ->execute();
         // Parent table (FK to grandparent with ON DELETE SET NULL)
         // Use unsignedInteger to match id() column type for FK compatibility
-        $driver->createTable('fki_parent')
+        $driver
+            ->createTable('fki_parent')
             ->id()
             ->unsignedInteger('grandparent_id')->nullable()
             ->string('name', 255)->nullable()
             ->foreign('grandparent_id', 'fki_grandparent', 'id', $setNull, $noAction)
             ->execute();
         // Child table (FK to parent with ON DELETE CASCADE ON UPDATE CASCADE)
-        $driver->createTable('fki_child')
+        $driver
+            ->createTable('fki_child')
             ->id()
             ->unsignedInteger('parent_id')->nullable()
             ->string('description', 255)->nullable()

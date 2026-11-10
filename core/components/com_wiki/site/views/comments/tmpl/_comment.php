@@ -193,7 +193,8 @@ $this->comment->set('category', 'answercomment');
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $model = $this->comment->replies()
+            $model = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     Components\Wiki\Models\Comment::STATE_PUBLISHED,
                     Components\Wiki\Models\Comment::STATE_FLAGGED,
@@ -205,7 +206,8 @@ $this->comment->set('category', 'answercomment');
                 ->ordered()
                 ->rows();
 
-            $this->view('_list', 'comments')
+            $this
+                ->view('_list', 'comments')
                 ->set('parent', $this->comment->get('id'))
                 ->set('page', $this->page)
                 ->set('option', $this->option)

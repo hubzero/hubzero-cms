@@ -23,14 +23,16 @@ class Migration20130415000000ComSupport extends Base
             $schema->tableExists('#__support_tickets')
             && !$schema->hasColumn('#__support_tickets', 'closed')
         ) {
-            $schema->addColumn('#__support_tickets', 'closed')
+            $schema
+                ->addColumn('#__support_tickets', 'closed')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
                 ->execute();
 
             // Closed tickets
-            $clsd = $this->db->getQuery(true)
+            $clsd = $this->db
+                ->getQuery(true)
                 ->select(['c.ticket', 'c.created'])
                 ->from('#__support_comments', 'c')
                 ->leftJoin('#__support_tickets AS t', 'c.ticket', 't.id')
@@ -51,7 +53,8 @@ class Migration20130415000000ComSupport extends Base
             }
 
             foreach ($closedTickets as $ticket => $closed) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__support_tickets')
                     ->set(['closed' => $closed])
                     ->where('id', '=', $ticket)

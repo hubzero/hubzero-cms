@@ -143,7 +143,8 @@ class Scaffolding extends Base implements CommandInterface
                 ->error("Error: failed to retrieve author name and/or email.");
         }
 
-        $obj->addReplacement('author_name', $user_name)
+        $obj
+            ->addReplacement('author_name', $user_name)
             ->addReplacement('author_email', $user_email);
 
         // Call the construct method

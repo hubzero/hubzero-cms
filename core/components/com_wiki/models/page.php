@@ -1056,7 +1056,8 @@ class Page extends Relational
      */
     public function calculateRating()
     {
-        $ratings = $this->comments()
+        $ratings = $this
+            ->comments()
             ->where('rating', '!=', 0)
             ->rows();
 

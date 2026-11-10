@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 
-$this->css('media.css')
+$this
+    ->css('media.css')
     ->js('media.js');
 ?>
 

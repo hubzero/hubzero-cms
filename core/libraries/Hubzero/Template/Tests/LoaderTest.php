@@ -449,12 +449,14 @@ class LoaderTest extends TestCase
         }
 
         /** @var SqliteDriver $driver */
-        $driver = $this->getMockBuilder(SqliteDriver::class)
+        $driver = $this
+            ->getMockBuilder(SqliteDriver::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
             ->getMock();
 
-        $driver->setConnection($pdo)
+        $driver
+            ->setConnection($pdo)
             ->setPrefix('');
 
         return $driver;

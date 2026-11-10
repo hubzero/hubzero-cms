@@ -172,7 +172,8 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('ix_items')
             ->whereFullText('title', 'Laptop');
 
@@ -192,7 +193,8 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('ix_items')
             ->whereFullText(['title', 'status'], 'active');
 
@@ -213,7 +215,8 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('ix_items')
             ->whereEquals('id', 999)
             ->orWhereFullText('title', 'Laptop');
@@ -234,7 +237,8 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('ix_items')
             ->whereFullText('title', 'Laptop', ['informix_mode' => 'bts']);
 
@@ -254,7 +258,8 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('ix_items')
             ->whereFullText('title', 'Laptop', ['strategy' => 'native']);
 
@@ -1091,7 +1096,8 @@ class InformixDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ix_items')
             ->order('id', 'asc')
@@ -1109,7 +1115,8 @@ class InformixDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ix_items')
             ->order('id', 'asc')
@@ -1129,11 +1136,13 @@ class InformixDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ix_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('ix_categories')
                     ->whereEquals('active', 1);
             })
@@ -1150,7 +1159,8 @@ class InformixDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('ix_items')
             ->whereIn('id', [])

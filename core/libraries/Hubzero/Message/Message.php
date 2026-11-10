@@ -140,7 +140,8 @@ class Message extends Relational
         $entries->order($entries->getTableName() . '.created', 'desc');
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
-            $entries->limit($filters['limit'])
+            $entries
+                ->limit($filters['limit'])
                 ->start($filters['start']);
         }
 

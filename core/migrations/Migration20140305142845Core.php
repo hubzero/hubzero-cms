@@ -25,7 +25,8 @@ class Migration20140305142845Core extends Base
         $tz = date_default_timezone_get();
 
         // Now do our best guess as to whether or not this has already been run
-        $results = $this->db->getQuery(true)
+        $results = $this->db
+            ->getQuery(true)
             ->select(['alias', 'created'])
             ->from('#__faq')
             ->whereIn('alias', ['login', 'login2', 'login3'])
@@ -100,7 +101,8 @@ class Migration20140305142845Core extends Base
         }
 
         // Get distinct values
-        $query = $this->db->getQuery(true)
+        $query = $this->db
+            ->getQuery(true)
             ->select($column)
             ->distinct()
             ->from($table)
@@ -123,7 +125,8 @@ class Migration20140305142845Core extends Base
                 $newDate = $dt->format('Y-m-d H:i:s');
 
                 if ($newDate != $date) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update($table)
                         ->set([$column => $newDate])
                         ->where($column, '=', $date)

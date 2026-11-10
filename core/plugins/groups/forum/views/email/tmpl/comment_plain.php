@@ -60,7 +60,8 @@ $output = preg_replace_callback(
 
 $message .= $output;
 
-$attachments = $this->post->attachments()
+$attachments = $this->post
+    ->attachments()
     ->whereIn('state', [Components\Forum\Models\Post::STATE_PUBLISHED])
     ->rows();
 if ($attachments->count() > 0) {

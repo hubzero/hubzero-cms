@@ -526,7 +526,8 @@ class Discussions extends Plugin
                 'name'    => 'shared',
                 'layout'  => '_not_enrolled',
             ]);
-            $view->set('course', $course)
+            $view
+                ->set('course', $course)
                 ->set('option', 'com_courses')
                 ->set('message', Lang::txt('You must be enrolled to utilize the discussion feature.'));
 
@@ -775,7 +776,8 @@ class Discussions extends Plugin
             $threads = [];
         }
 
-        $view = $this->view('lecture', 'threads')
+        $view = $this
+            ->view('lecture', 'threads')
             ->set('course', $course)
             ->set('unit', $unit)
             ->set('lecture', $lecture)
@@ -828,7 +830,8 @@ class Discussions extends Plugin
 
         $comments = null;
 
-        $entries = $post->thread()
+        $entries = $post
+            ->thread()
             ->whereIn('state', (array) $filters['state'])
             ->whereIn('access', $filters['access']);
 
@@ -852,7 +855,8 @@ class Discussions extends Plugin
             $comments = $post->toTree($rows);
         }
 
-        $view = $this->view('list', 'threads')
+        $view = $this
+            ->view('list', 'threads')
             ->set('parent', $post->get('parent'))
             ->set('thread', $post->get('id'))
             ->set('option', Request::getCmd('option'))
@@ -917,7 +921,8 @@ class Discussions extends Plugin
             $filters['search'] = null;
             $filters['parent'] = $post->get('id');
 
-            $cview = $this->view('_threads', 'threads')
+            $cview = $this
+                ->view('_threads', 'threads')
                 ->set('category', 'categorysearch')
                 ->set('option', $this->option)
                 ->set('threads', (isset($filters['id']) && count($filters['id']) > 0) ? $post->find($filters) : null)
@@ -989,7 +994,8 @@ class Discussions extends Plugin
                                      ? $row->get('created')
                                      : $threads->lastchange;
 
-                $cview = $this->view('_thread', 'threads')
+                $cview = $this
+                    ->view('_thread', 'threads')
                     ->set('option', $this->option)
                     ->set('thread', $row)
                     ->set('unit', '')
@@ -1059,7 +1065,8 @@ class Discussions extends Plugin
                 $res[$i] = new \stdClass();
                 $res[$i]->replies = null;
 
-                $cview = $this->view('comment', 'threads')
+                $cview = $this
+                    ->view('comment', 'threads')
                     ->set('option', $this->option)
                     ->set('comment', $row)
                     ->set('post', $post)
@@ -1372,7 +1379,8 @@ class Discussions extends Plugin
             $stats->categories += count($section->get('categories'));
 
             foreach ($section->get('categories') as $c) {
-                $entries = $c->posts()
+                $entries = $c
+                    ->posts()
                     ->whereEquals('parent', 0)
                     ->whereEquals('state', $filters['state'])
                     ->whereEquals('scope', $filters['scope'])
@@ -1382,7 +1390,8 @@ class Discussions extends Plugin
                 }
                 $threads = $entries->total();
 
-                $entries = $c->posts()
+                $entries = $c
+                    ->posts()
                     ->whereEquals('state', $filters['state'])
                     ->whereEquals('scope', $filters['scope'])
                     ->whereEquals('scope_id', $filters['scope_id']);
@@ -1416,7 +1425,8 @@ class Discussions extends Plugin
             $data = $this->thread($post, $filters);
         }
 
-        $view = $this->view('display', 'panel')
+        $view = $this
+            ->view('display', 'panel')
             ->set('option', $this->option)
             ->set('name', 'courses')
             ->set('course', $this->course)
@@ -1473,7 +1483,8 @@ class Discussions extends Plugin
 
         $sections = [];
         foreach ($sects as $section) {
-            $categories = $section->categories()
+            $categories = $section
+                ->categories()
                 ->whereEquals('state', $filters['state'])
                 ->limit($filters['limit'])
                 ->rows();
@@ -1485,12 +1496,14 @@ class Discussions extends Plugin
 
             if ($categories->count()) {
                 foreach ($categories as $category) {
-                    $threads = $category->threads()
+                    $threads = $category
+                        ->threads()
                         ->whereEquals('scope_sub_id', $filters['scope_sub_id'])
                         ->whereEquals('state', $filters['state'])
                         ->total();
 
-                    $posts = $category->posts()
+                    $posts = $category
+                        ->posts()
                         ->whereEquals('scope_sub_id', $filters['scope_sub_id'])
                         ->whereEquals('state', $filters['state'])
                         ->total();
@@ -1508,7 +1521,8 @@ class Discussions extends Plugin
             $sections[] = $section;
         }
 
-        $view = $this->view('dashboard', 'threads')
+        $view = $this
+            ->view('dashboard', 'threads')
             ->set('option', 'com_courses')
             ->set('name', 'courses')
             ->set('course', $course)
@@ -1555,7 +1569,8 @@ class Discussions extends Plugin
         $sections = $this->forum->sections($filters);
 
         // Output view
-        $view = $this->view('display', 'sections')
+        $view = $this
+            ->view('display', 'sections')
             ->set('filters', $filters)
             ->set('config', $this->params)
             ->set('option', $this->option)
@@ -1804,7 +1819,8 @@ class Discussions extends Plugin
         $this->authorize('category');
         $this->authorize('thread');
 
-        $threads = $category->threads()
+        $threads = $category
+            ->threads()
             ->select("*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access'])
@@ -1813,7 +1829,8 @@ class Discussions extends Plugin
             ->paginated()
             ->rows();
 
-        return $this->view('display', 'categories')
+        return $this
+            ->view('display', 'categories')
             ->set('option', $this->option)
             ->set('course', $this->course)
             ->set('offering', $this->offering)
@@ -1875,7 +1892,8 @@ class Discussions extends Plugin
             return;
         }
 
-        return $this->view('edit', 'categories')
+        return $this
+            ->view('edit', 'categories')
             ->set('option', $this->option)
             ->set('course', $this->course)
             ->set('offering', $this->offering)
@@ -2184,7 +2202,8 @@ class Discussions extends Plugin
         $unit = $this->offering->unit($filters['category']);
         $lecture = $unit->assetgroup($filters['object_id']);
 
-        $view = $this->view('display', 'threads')
+        $view = $this
+            ->view('display', 'threads')
             ->set('option', $this->option)
             ->set('course', $this->course)
             ->set('offering', $this->offering)
@@ -2288,7 +2307,8 @@ class Discussions extends Plugin
             App::redirect(Route::url($this->base . '&unit=manage&b=' . $section . '&c=' . $category));
         }
 
-        return $this->view('edit', 'threads')
+        return $this
+            ->view('edit', 'threads')
             ->set('option', $this->option)
             ->set('course', $this->course)
             ->set('offering', $this->offering)

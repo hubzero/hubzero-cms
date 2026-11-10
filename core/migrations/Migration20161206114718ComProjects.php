@@ -28,7 +28,9 @@ class Migration20161206114718ComProjects extends Base
         }
 
         if (!$schema->hasColumn('#__projects', 'sync_group')) {
-            $schema->table('#__projects')->alter()
+            $schema
+                ->table('#__projects')
+                ->alter()
                 ->addColumn('sync_group')->tinyInteger(2)->notNull()->default('1')
                 ->addIndex('idx_sync_group', 'sync_group')
                 ->execute();

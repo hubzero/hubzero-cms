@@ -171,7 +171,8 @@ if ($this->comment->isReported()) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $replies = $this->comment->replies()
+            $replies = $this->comment
+                ->replies()
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
@@ -182,7 +183,8 @@ if ($this->comment->isReported()) {
                 ->ordered()
                 ->rows();
 
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('parent', $this->comment->get('id'))
                  ->set('option', $this->option)
                  ->set('comments', $replies)

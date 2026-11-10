@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 $route = 'index.php?option=com_publications&task=submit';
 $url   = Route::url($route . '&pid=' . $this->pub->id);
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->css('provisioned')
     ->js('setup');
@@ -31,7 +32,8 @@ $this->css()
 
         <?php
             // Display status message
-            $this->view('_statusmsg', 'projects')
+            $this
+                 ->view('_statusmsg', 'projects')
                  ->set('error', $this->getError())
                  ->set('msg', $this->msg)
                  ->display();

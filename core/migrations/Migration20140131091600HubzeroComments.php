@@ -23,7 +23,8 @@ class Migration20140131091600HubzeroComments extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__comments')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__comments')
                 ->loadObjectList();
@@ -111,7 +112,8 @@ class Migration20140131091600HubzeroComments extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__comments')) {
-            $schema->createTable('#__comments')
+            $schema
+                ->createTable('#__comments')
                 ->unsignedInteger('filter_id', ['autoIncrement' => true])
                 ->string('title', 255)
                 ->string('alias', 255)

@@ -12,7 +12,8 @@ use Hubzero\Facades\Lang;
 defined('_HZEXEC_') or die();
 
 if (count($this->citations) > 0) :
-    $this->css('citations.css')
+    $this
+         ->css('citations.css')
          ->js();
 
     $formatter = new \Components\Citations\Helpers\Format();

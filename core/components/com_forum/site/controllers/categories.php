@@ -171,7 +171,8 @@ class Categories extends SiteController
             );
         }
 
-        $threads = $category->threads()
+        $threads = $category
+            ->threads()
             ->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access'])

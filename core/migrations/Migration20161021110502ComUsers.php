@@ -25,14 +25,16 @@ class Migration20161021110502ComUsers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__users') && $schema->tableExists('#__xprofiles')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users', 'u')
                 ->innerJoin('#__xprofiles AS x', 'x.uidNumber', 'u.id')
                 ->set(['u.loginShell' => Expression::column('x.loginShell')])
                 ->whereColumn('u.loginShell', '!=', 'x.loginShell')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users', 'u')
                 ->innerJoin('#__xprofiles AS x', 'x.uidNumber', 'u.id')
                 ->set(['u.ftpShell' => Expression::column('x.ftpShell')])

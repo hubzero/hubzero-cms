@@ -73,7 +73,8 @@ class Findthistext extends Plugin
 
         if ($rtrn == 'all' || $rtrn == 'html') {
             // Instantiate a view
-            $view = $this->view('default', 'index')
+            $view = $this
+                ->view('default', 'index')
                 ->set('option', $option)
                 ->set('model', $model)
                 ->set('plugin', $this->params)

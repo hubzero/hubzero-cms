@@ -24,14 +24,16 @@ class Migration20161220173600PlgResourcesReviews extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
-            $votes = $this->db->getQuery(true)
+            $votes = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__vote_log')
                 ->where('category', '=', 'review')
                 ->loadObjectList();
 
             foreach ($votes as $vote) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__item_votes')
                     ->set([
                         'id'         => null,
@@ -45,7 +47,8 @@ class Migration20161220173600PlgResourcesReviews extends Base
                     ->execute();
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__vote_log')
                 ->where('category', '=', 'review')
                 ->execute();
@@ -60,14 +63,16 @@ class Migration20161220173600PlgResourcesReviews extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
-            $votes = $this->db->getQuery(true)
+            $votes = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'review')
                 ->loadObjectList();
 
             foreach ($votes as $vote) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__vote_log')
                     ->set([
                         'id'          => null,
@@ -81,7 +86,8 @@ class Migration20161220173600PlgResourcesReviews extends Base
                     ->execute();
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__item_votes')
                 ->where('item_type', '=', 'review')
                 ->execute();

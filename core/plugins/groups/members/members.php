@@ -169,7 +169,8 @@ class Members extends Plugin
             // Set the page title
             //Document::setTitle(Lang::txt(strtoupper($this->_option)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
-            $this->css('members.css')
+            $this
+                 ->css('members.css')
                  ->js('members.js');
 
             $gparams = new \Hubzero\Config\Registry($group->get('params'));
@@ -1642,7 +1643,8 @@ class Members extends Plugin
         }
 
         // pass vars to view
-        $view = $this->view('add', 'role')
+        $view = $this
+            ->view('add', 'role')
             ->set('role', $role)
             ->set('option', $this->componentOption)
             ->set('group', $this->group)
@@ -2057,7 +2059,8 @@ class Members extends Plugin
         $message = new \Hubzero\Mail\Message();
 
         // set message details and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($targetuser->get('email'))
                 ->addPart($plain, 'text/plain')
@@ -2105,7 +2108,8 @@ class Members extends Plugin
             $message = new \Hubzero\Mail\Message();
 
             // set message details and send
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->setTo($email)
                     ->addPart($plain, 'text/plain')
@@ -2151,7 +2155,8 @@ class Members extends Plugin
         $params->merge(new \Hubzero\Config\Registry($profile->get('params')));
 
         // Display form asking for a reason to deny membership
-        $view = $this->view('default', 'profile')
+        $view = $this
+            ->view('default', 'profile')
             ->set('params', $params)
             ->set('option', $this->componentOption)
             ->set('profile', $profile)

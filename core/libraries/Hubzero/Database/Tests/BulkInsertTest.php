@@ -39,7 +39,8 @@ class BulkInsertTest extends AbstractDriverTestCase
     {
         $driver->dropTable('bulk_test_users', true);
 
-        $driver->createTable('bulk_test_users')
+        $driver
+            ->createTable('bulk_test_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)->nullable()
@@ -103,7 +104,8 @@ class BulkInsertTest extends AbstractDriverTestCase
         $this->assertEquals(3, $count);
 
         // Verify data was inserted
-        $result = $driver->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
+        $result = $driver
+            ->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
             ->loadObject();
         $this->assertEquals(3, $result->cnt);
     }
@@ -176,7 +178,8 @@ class BulkInsertTest extends AbstractDriverTestCase
         $this->assertEquals(25, $count);
 
         // Verify all data was inserted
-        $result = $driver->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
+        $result = $driver
+            ->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
             ->loadObject();
         $this->assertEquals(25, $result->cnt);
     }
@@ -201,19 +204,21 @@ class BulkInsertTest extends AbstractDriverTestCase
         $query->insertMany(self::$testTable, $rows);
 
         // Verify Alice
-        $alice = $driver->setQuery(
-            'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE email = ' . $driver->quote('alice@example.com'),
-        )
+        $alice = $driver
+            ->setQuery(
+                'SELECT * FROM ' . $driver->quoteName(self::$testTable)
+                . ' WHERE email = ' . $driver->quote('alice@example.com'),
+            )
             ->loadObject();
         $this->assertEquals('Alice', $alice->name);
         $this->assertEquals(1, $alice->status);
 
         // Verify Bob
-        $bob = $driver->setQuery(
-            'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE email = ' . $driver->quote('bob@example.com'),
-        )
+        $bob = $driver
+            ->setQuery(
+                'SELECT * FROM ' . $driver->quoteName(self::$testTable)
+                . ' WHERE email = ' . $driver->quote('bob@example.com'),
+            )
             ->loadObject();
         $this->assertEquals('Bob', $bob->name);
         $this->assertEquals(0, $bob->status);
@@ -240,10 +245,11 @@ class BulkInsertTest extends AbstractDriverTestCase
         $this->assertEquals(1, $count);
 
         // Verify null was preserved
-        $alice = $driver->setQuery(
-            'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE name = ' . $driver->quote('Alice'),
-        )
+        $alice = $driver
+            ->setQuery(
+                'SELECT * FROM ' . $driver->quoteName(self::$testTable)
+                . ' WHERE name = ' . $driver->quote('Alice'),
+            )
             ->loadObject();
         $this->assertNull($alice->email);
     }

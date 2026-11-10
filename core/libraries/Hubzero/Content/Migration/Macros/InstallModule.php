@@ -38,7 +38,8 @@ class InstallModule extends Macro
         $params = is_string($params) ? $params : json_encode($params);
 
         if (!$always) {
-            $existing = $this->db->getQuery(true)
+            $existing = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__modules')
                 ->whereEquals('module', $module)
@@ -49,7 +50,8 @@ class InstallModule extends Macro
             }
         }
 
-        $last = $this->db->getQuery(true)
+        $last = $this->db
+            ->getQuery(true)
             ->select('ordering')
             ->from('#__modules')
             ->whereEquals('position', $position)
@@ -57,7 +59,8 @@ class InstallModule extends Macro
             ->limit(1)
             ->value('ordering');
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->insert('#__modules')
             ->set([
                 'title'     => $title,
@@ -77,7 +80,8 @@ class InstallModule extends Macro
         $id = $this->db->insertid();
 
         foreach ((array) $menus as $menu) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__modules_menu')
                 ->set([
                     'moduleid' => $id,

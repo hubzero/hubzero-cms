@@ -33,7 +33,8 @@ Toolbar::help('status');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->css('jquery.colpick.css', 'system')
+$this
+    ->css('jquery.colpick.css', 'system')
     ->js('jquery.colpick.js', 'system')
     ->js('edit.js');
 ?>

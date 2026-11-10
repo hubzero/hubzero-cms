@@ -247,7 +247,8 @@ class License extends Relational
         }
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->update($this->getTableName())
             ->set(['main' => 1])
             ->where('id', '=', $this->get('id'))
@@ -257,7 +258,8 @@ class License extends Relational
             return false;
         }
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->update($this->getTableName())
             ->set(['main' => 0])
             ->where('id', '!=', $this->get('id'))

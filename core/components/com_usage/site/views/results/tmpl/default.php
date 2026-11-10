@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 if (!$this->no_html) {
-    $this->css()
+    $this
+         ->css()
          ->js();
     ?>
 <header id="content-header">

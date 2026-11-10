@@ -42,7 +42,8 @@ class ModuleLayouts extends Select
 
         // Load template entries for each menuid
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('template')
             ->from('#__template_styles')
             ->whereEquals('client_id', (int) $clientId)

@@ -41,7 +41,8 @@ $base = $this->offering->alias() . '&active=forum';
                     </caption>
                     <tbody>
                         <?php
-                        $rows = $this->forum->posts($this->filters)
+                        $rows = $this->forum
+                            ->posts($this->filters)
                             ->paginated()
                             ->rows();
 

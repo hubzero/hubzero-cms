@@ -33,7 +33,8 @@ foreach ($this->results as $row) {
         . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
 
     // Display List of items
-    $this->view('_item')
+    $this
+         ->view('_item')
          ->set('option', 'com_publications')
          ->set('row', $row)
          ->set('info', $info)

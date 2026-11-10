@@ -53,7 +53,8 @@ foreach ($units as $unit) :
             if ($ag->assets()->total()) :
                 foreach ($ag->assets() as $a) :
                     if ($a->isDeleted()) :
-                        $this->view('asset_partial')
+                        $this
+                             ->view('asset_partial')
                              ->set('base', $base)
                              ->set('course', $course)
                              ->set('unit', $unit)
@@ -97,7 +98,8 @@ endforeach;
                     </div>
                     <div class="unit-prerequisites">
                         <?php
-                            $this->view('_prerequisites')
+                            $this
+                                 ->view('_prerequisites')
                                  ->set('scope', 'unit')
                                  ->set('scope_id', $unit->get('id'))
                                  ->set('section_id', $sectionId)
@@ -151,7 +153,8 @@ endforeach;
                 <?php
                 // Loop through our asset groups
                 foreach ($agt->children() as $ag) {
-                    $this->view('asset_group_partial')
+                    $this
+                         ->view('asset_group_partial')
                          ->set('base', $base)
                          ->set('course', $course)
                          ->set('unit', $unit)
@@ -161,7 +164,8 @@ endforeach;
 
                 // Now display assets directly attached to the asset group type
                 if ($agt->assets()->total()) {
-                    $this->view('asset_group_partial')
+                    $this
+                         ->view('asset_group_partial')
                          ->set('base', $base)
                          ->set('course', $course)
                          ->set('unit', $unit)

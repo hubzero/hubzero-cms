@@ -52,7 +52,8 @@ class Migration20130413000000ComCourses extends Base
 
         if ($runExtra) {
             // Get the form id from the asset content fields
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select(['id', 'content'])
                 ->from('#__courses_assets')
                 ->where('type', '=', 'exam')
@@ -60,7 +61,8 @@ class Migration20130413000000ComCourses extends Base
 
             // Now insert those into the new forms asset_id field
             foreach ($rows as $row) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__courses_forms')
                     ->set(['asset_id' => $row->id])
                     ->where('id', '=', json_decode($row->content)->form_id)
@@ -69,7 +71,8 @@ class Migration20130413000000ComCourses extends Base
             }
 
             // Delete the content field for asset type of exam
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__courses_assets')
                 ->set(['content' => ''])
                 ->where('type', '=', 'exam')

@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->css('jquery.fancybox.css', 'system')
     ->js();
 
@@ -25,7 +26,8 @@ $this->publication->license();
 
 // New launcher layout?
 if ($this->config->get('launcher_layout', 0)) {
-    $this->view('launcher')
+    $this
+         ->view('launcher')
          ->set('option', $this->option)
          ->set('publication', $this->publication)
          ->set('config', $this->config)
@@ -188,7 +190,8 @@ if ($this->config->get('launcher_layout', 0)) {
         <div class="aside rankarea">
                 <?php
                 // Show metadata
-                $this->view('_metadata')
+                $this
+                     ->view('_metadata')
                      ->set('option', $this->option)
                      ->set('publication', $this->publication)
                      ->set('config', $this->config)

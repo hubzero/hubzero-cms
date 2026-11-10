@@ -63,36 +63,42 @@ class OneToOneThroughTest extends AbstractDriverTestCase
         $driver->dropTable('through_mechanics', true);
         $driver->dropTable('through_owners', true);
 
-        $driver->createTable('through_countries')
+        $driver
+            ->createTable('through_countries')
             ->id()
             ->string('name', 255)
             ->string('code', 10)
             ->execute();
 
-        $driver->createTable('through_users')
+        $driver
+            ->createTable('through_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
             ->execute();
 
-        $driver->createTable('through_profiles')
+        $driver
+            ->createTable('through_profiles')
             ->id()
             ->integer('user_id')
             ->integer('country_id')->nullable()
             ->string('bio', 500)->nullable()
             ->execute();
 
-        $driver->createTable('through_owners')
+        $driver
+            ->createTable('through_owners')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable('through_mechanics')
+        $driver
+            ->createTable('through_mechanics')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable('through_cars')
+        $driver
+            ->createTable('through_cars')
             ->id()
             ->integer('mechanic_id')
             ->integer('owner_id')->nullable()

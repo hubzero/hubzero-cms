@@ -39,7 +39,8 @@ class TypeOptionsHelper
 
     public function getAll()
     {
-        $resourceTypes = $this->typeHelper->all()
+        $resourceTypes = $this->typeHelper
+            ->all()
             ->rows()
             ->fieldsByKey('type');
 

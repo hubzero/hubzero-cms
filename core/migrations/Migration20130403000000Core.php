@@ -22,7 +22,8 @@ class Migration20130403000000Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__auth_link', 'linked_on')) {
-            $schema->addColumn('#__auth_link', 'linked_on')
+            $schema
+                ->addColumn('#__auth_link', 'linked_on')
                 ->timestamp()
                 ->notNull()
                 ->defaultExpression(Expression::currentTimestamp())

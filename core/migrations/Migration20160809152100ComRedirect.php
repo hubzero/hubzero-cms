@@ -31,7 +31,8 @@ class Migration20160809152100ComRedirect extends Base
         }
 
         if (!$schema->hasColumn('#__redirect_links', 'modified_date')) {
-            $schema->addColumn('#__redirect_links', 'modified_date')
+            $schema
+                ->addColumn('#__redirect_links', 'modified_date')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -55,7 +56,8 @@ class Migration20160809152100ComRedirect extends Base
         }
 
         if (!$schema->hasColumn('#__redirect_links', 'updated_date')) {
-            $schema->addColumn('#__redirect_links', 'updated_date')
+            $schema
+                ->addColumn('#__redirect_links', 'updated_date')
                 ->timestamp()
                 ->notNull()
                 ->defaultExpression(Expression::currentTimestamp())

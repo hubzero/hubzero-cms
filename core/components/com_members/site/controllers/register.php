@@ -174,7 +174,8 @@ class Register extends SiteController
                 $message = str_replace("\n", "\r\n", $message);
 
                 $msg = new \Hubzero\Mail\Message();
-                $msg->setSubject($subject)
+                $msg
+                    ->setSubject($subject)
                     ->addTo($xprofile->get('email'))
                     ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
                     ->addHeader('X-Component', $this->option)
@@ -236,7 +237,8 @@ class Register extends SiteController
                 $message = str_replace("\n", "\r\n", $message);
 
                 $msg = new \Hubzero\Mail\Message();
-                $msg->setSubject($subject)
+                $msg
+                    ->setSubject($subject)
                     ->addTo($xprofile->get('email'))
                     ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
                     ->addHeader('X-Component', $this->option)
@@ -798,7 +800,8 @@ class Register extends SiteController
                 $newUsertype = $usersConfig->get('new_usertype');
                 if (!$newUsertype) {
                     $db = App::get('db');
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('id')
                         ->from('#__usergroups')
                         ->whereEquals('title', 'Registered');
@@ -1328,7 +1331,8 @@ class Register extends SiteController
         $eview->email        = $profile->get('email');
 
         $msg = new \Hubzero\Mail\Message();
-        $msg->setSubject($subject)
+        $msg
+            ->setSubject($subject)
             ->addTo($profile->get('email'))
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
             ->addHeader('X-Component', $this->option);
@@ -1440,7 +1444,8 @@ class Register extends SiteController
                             $eview->email      = $email;
 
                             $msg = new \Hubzero\Mail\Message();
-                            $msg->setSubject($subject)
+                            $msg
+                                ->setSubject($subject)
                                 ->addTo($pemail)
                                 ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
                                 ->addHeader('X-Component', $this->option);

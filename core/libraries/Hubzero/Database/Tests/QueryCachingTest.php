@@ -38,7 +38,8 @@ class QueryCachingTest extends AbstractDriverTestCase
     {
         $driver->dropTable('users', true);
 
-        $driver->createTable('users')
+        $driver
+            ->createTable('users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -193,7 +194,8 @@ class QueryCachingTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Execute query with remember
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('users')
                       ->remember(60)
                       ->fetch();
@@ -217,7 +219,8 @@ class QueryCachingTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Execute query with rememberForever
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('users')
                       ->rememberForever()
                       ->fetch();
@@ -240,7 +243,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // First query - should hit database
         $query1 = new Query($driver);
-        $rows1 = $query1->select('*')
+        $rows1 = $query1
+                        ->select('*')
                         ->from('users')
                         ->remember(60)
                         ->fetch();
@@ -250,7 +254,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Second query (same) - should hit cache
         $query2 = new Query($driver);
-        $rows2 = $query2->select('*')
+        $rows2 = $query2
+                        ->select('*')
                         ->from('users')
                         ->remember(60)
                         ->fetch();
@@ -276,7 +281,8 @@ class QueryCachingTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Execute query with custom prefix
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('users')
                       ->remember(60, 'custom_prefix_')
                       ->fetch();
@@ -326,14 +332,16 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // First query
         $query1 = new Query($driver);
-        $rows1 = $query1->select('*')
+        $rows1 = $query1
+                        ->select('*')
                         ->from('users')
                         ->whereEquals('id', '1')
                         ->fetch();
 
         // Second identical query should use in-memory cache
         $query2 = new Query($driver);
-        $rows2 = $query2->select('*')
+        $rows2 = $query2
+                        ->select('*')
                         ->from('users')
                         ->whereEquals('id', '1')
                         ->fetch();
@@ -355,7 +363,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // First query with cache
         $query1 = new Query($driver);
-        $rows1 = $query1->select('*')
+        $rows1 = $query1
+                        ->select('*')
                         ->from('users')
                         ->remember(60)
                         ->fetch();
@@ -364,7 +373,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Second query with noCache=true
         $query2 = new Query($driver);
-        $rows2 = $query2->select('*')
+        $rows2 = $query2
+                        ->select('*')
                         ->from('users')
                         ->remember(60)
                         ->fetch('rows', true);  // noCache = true
@@ -390,7 +400,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // First query
         $query1 = new Query($driver);
-        $query1->select('*')
+        $query1
+               ->select('*')
                ->from('users')
                ->whereEquals('id', '1')
                ->remember(60)
@@ -400,7 +411,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Different query
         $query2 = new Query($driver);
-        $query2->select('*')
+        $query2
+               ->select('*')
                ->from('users')
                ->whereEquals('id', '2')
                ->remember(60)
@@ -428,7 +440,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Build schema/data on first instance
         $driverA->dropTable('users', true);
-        $driverA->createTable('users')
+        $driverA
+            ->createTable('users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -461,7 +474,8 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Recreate minimal schema/data for query execution on recreated in-memory driver
         $driverARecreated->dropTable('users', true);
-        $driverARecreated->createTable('users')
+        $driverARecreated
+            ->createTable('users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)

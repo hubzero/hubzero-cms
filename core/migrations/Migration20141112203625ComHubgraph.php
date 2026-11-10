@@ -24,7 +24,8 @@ class Migration20141112203625ComHubgraph extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('hg_update_queue')) {
-            $schema->createTable('hg_update_queue')
+            $schema
+                ->createTable('hg_update_queue')
                 ->enum('action', ['INSERT', 'UPDATE', 'DELETE'])
                 ->string('table_name', 50)
                 ->integer('id')

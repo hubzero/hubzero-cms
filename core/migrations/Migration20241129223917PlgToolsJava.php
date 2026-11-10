@@ -25,7 +25,8 @@ class Migration20241129223917PlgToolsJava extends Base
         $this->deletePluginEntry('tools', 'java');
 
         $query = $this->db->getQuery(true);
-        $query->update('#__users_tool_preferences')
+        $query
+            ->update('#__users_tool_preferences')
             ->set(['params' => Expression::replace('params', 'java', 'novnc')])
             ->execute();
     }

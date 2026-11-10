@@ -827,7 +827,8 @@ class User extends \Hubzero\Database\Relational
     {
         $timestamp = new Date($timestamp);
 
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set(['lastvisitDate' => $timestamp->toSql()])
             ->whereEquals('id', $this->get('id'));
@@ -900,7 +901,8 @@ class User extends \Hubzero\Database\Relational
         // Brute force method: get all published category rows for the component and check each one
         // TODO: Move to ORM-based models
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('c.id', 'id')
             ->select('a.name', 'asset_name')
             ->from('#__categories', 'c')

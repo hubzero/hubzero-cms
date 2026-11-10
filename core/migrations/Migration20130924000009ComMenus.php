@@ -58,7 +58,8 @@ class Migration20130924000009ComMenus extends Base
             $schema->modifyColumn('#__menu', 'published')->tinyInteger()->notNull()->default(0)->execute();
         }
         if ($schema->hasColumn('#__menu', 'parent') && !$schema->hasColumn('#__menu', 'parent_id')) {
-            $schema->renameColumn('#__menu', 'parent', 'parent_id')
+            $schema
+                ->renameColumn('#__menu', 'parent', 'parent_id')
                 ->integer()
                 ->unsigned()
                 ->notNull()
@@ -70,7 +71,8 @@ class Migration20130924000009ComMenus extends Base
             && $schema->hasColumn('#__menu', 'parent_id')
             && $schema->hasColumn('#__menu', 'sublevel')
         ) {
-            $schema->renameColumn('#__menu', 'sublevel', 'level')
+            $schema
+                ->renameColumn('#__menu', 'sublevel', 'level')
                 ->integer()
                 ->unsigned()
                 ->notNull()
@@ -81,7 +83,8 @@ class Migration20130924000009ComMenus extends Base
             $schema->hasColumn('#__menu', 'componentid')
             && !$schema->hasColumn('#__menu', 'component_id')
         ) {
-            $schema->renameColumn('#__menu', 'componentid', 'component_id')
+            $schema
+                ->renameColumn('#__menu', 'componentid', 'component_id')
                 ->integer()
                 ->unsigned()
                 ->notNull()
@@ -95,7 +98,8 @@ class Migration20130924000009ComMenus extends Base
             $schema->modifyColumn('#__menu', 'checked_out')->integer()->unsigned()->notNull()->default(0)->execute();
         }
         if ($schema->hasColumn('#__menu', 'checked_out_time')) {
-            $schema->modifyColumn('#__menu', 'checked_out_time')
+            $schema
+                ->modifyColumn('#__menu', 'checked_out_time')
                 ->timestamp()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -127,7 +131,8 @@ class Migration20130924000009ComMenus extends Base
             $schema->addColumn('#__menu', 'img')->string()->notNull()->execute();
         }
         if (!$schema->hasColumn('#__menu', 'template_style_id') && $schema->hasColumn('#__menu', 'img')) {
-            $schema->addColumn('#__menu', 'template_style_id')
+            $schema
+                ->addColumn('#__menu', 'template_style_id')
                 ->integer(10)
                 ->unsigned()
                 ->notNull()
@@ -172,7 +177,8 @@ class Migration20130924000009ComMenus extends Base
         if ($first) {
             // Joomla seems to expect the root item to be 1...blah!
             // So, if id 1 is taken, we need to clear it out
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__menu')
                 ->where('id', '=', 1)
@@ -183,26 +189,30 @@ class Migration20130924000009ComMenus extends Base
                 $this->db->queryBuilder()->pushObject('#__menu', $result);
                 $id = $this->db->insertid();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__menu')
                     ->set(['parent_id' => $id])
                     ->where('parent_id', '=', 1)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__modules_menu')
                     ->set(['menuid' => $id])
                     ->where('menuid', '=', 1)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__menu')
                     ->where('id', '=', 1)
                     ->execute();
             }
 
             // Insert new root menu item
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__menu')
                 ->set([
                     'id'               => 1,
@@ -234,14 +244,16 @@ class Migration20130924000009ComMenus extends Base
                 ->execute();
 
             // Get the id of the new root menu item
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__menu')
                 ->where('alias', '=', 'root')
                 ->value('id');
 
             // Update parent_id's of existing menus to relate to the new root
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set(['parent_id' => $id])
                 ->where('parent_id', '=', 0)
@@ -249,33 +261,38 @@ class Migration20130924000009ComMenus extends Base
                 ->execute();
 
             // Also increment the level 1
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set(['level' => Expression::column('level')->plus(1)])
                 ->where('alias', '!=', 'root')
                 ->execute();
 
             // Build paths
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set(['path' => Expression::column('alias')])
                 ->where('alias', '!=', 'root')
                 ->execute();
 
             // Get max depth
-            $maxlevel = $this->db->getQuery(true)
+            $maxlevel = $this->db
+                ->getQuery(true)
                 ->select(['level'])
                 ->from('#__menu')
                 ->order('level', 'desc')
                 ->value('level');
 
-            $aliases = $this->db->getQuery(true)
+            $aliases = $this->db
+                ->getQuery(true)
                 ->select(['id', 'alias'])
                 ->from('#__menu')
                 ->pluck('alias', 'id');
 
             for ($i = 2; $i <= $maxlevel; $i++) {
-                $results = $this->db->getQuery(true)
+                $results = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__menu')
                     ->where('level', '>=', $i)
@@ -287,7 +304,8 @@ class Migration20130924000009ComMenus extends Base
 
                         $path = $alias . '/' . $r->path;
 
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__menu')
                             ->set(['path' => $path])
                             ->where('id', '=', $r->id)
@@ -297,7 +315,8 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Add entries for components menu on backend
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__components')
                 ->where('parent', '=', 0)
@@ -312,7 +331,8 @@ class Migration20130924000009ComMenus extends Base
                     $alias = substr($r->option, 4);
                     $link  = 'index.php?' . $r->admin_menu_link;
                     // Insert item
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__menu')
                         ->set([
                             'menutype'     => 'main',
@@ -342,7 +362,8 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Update menu params (specifically to fix menu_image)
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'params', 'link'])
                 ->from('#__menu')
                 ->loadObjectList();
@@ -376,7 +397,8 @@ class Migration20130924000009ComMenus extends Base
 
                     // Need to merge in content params (if applicable), as menu item params now take precidence
                     if (isset($matches[1]) && !empty($matches[1])) {
-                        $art_params = $this->db->getQuery(true)
+                        $art_params = $this->db
+                            ->getQuery(true)
                             ->select('attribs')
                             ->from('#__content')
                             ->where('id', '=', $matches[1])
@@ -390,7 +412,8 @@ class Migration20130924000009ComMenus extends Base
                         }
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__menu')
                         ->set(['params' => json_encode($array)])
                         ->where('id', '=', $r->id)
@@ -399,7 +422,8 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Update component_id -> extension_id
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'link', 'component_id'])
                 ->from('#__menu')
                 ->where('component_id', '!=', 0)
@@ -410,7 +434,8 @@ class Migration20130924000009ComMenus extends Base
                     preg_match('/index\.php\?option=([a-z0-9_]+)/', $r->link, $matches);
 
                     if (isset($matches[1]) && !empty($matches[1])) {
-                        $id = $this->db->getQuery(true)
+                        $id = $this->db
+                            ->getQuery(true)
                             ->select('extension_id')
                             ->from('#__extensions')
                             ->where('element', '=', $matches[1])
@@ -420,7 +445,8 @@ class Migration20130924000009ComMenus extends Base
 
                         $id = (!is_null($id)) ? $id : 0;
 
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__menu')
                             ->set(['component_id' => $id])
                             ->where('id', '=', $r->id)
@@ -430,19 +456,22 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Set language for all menu items
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set(['language' => '*'])
                 ->execute();
 
             // Fix com_user->com_users in menu items
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('element', '=', 'com_users')
                 ->value('extension_id');
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__menu')
                 ->where('menutype', '=', 'default')
@@ -459,7 +488,8 @@ class Migration20130924000009ComMenus extends Base
                         unset($params->login);
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__menu')
                         ->set([
                             'link'         => $link,
@@ -472,7 +502,8 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Fix menu link type menu items to be alias type
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set([
                     'type'   => 'alias',

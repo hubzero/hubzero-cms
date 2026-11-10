@@ -32,7 +32,8 @@ Toolbar::cancel();
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->css()
+$this
+    ->css()
     ->js('jquery.fileuploader.js', 'system')
     ->js();
 

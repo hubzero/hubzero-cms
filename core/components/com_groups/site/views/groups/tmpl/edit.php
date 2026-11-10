@@ -16,7 +16,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js()
      ->js('jquery.cycle2', 'system');
 
@@ -124,7 +125,8 @@ endif;
                     </div>
 
                     <?php
-                    $this->view('_customfields')
+                    $this
+                        ->view('_customfields')
                         ->set('customFields', $this->customFields)
                         ->set('customAnswers', $this->customAnswers)
                         ->display();

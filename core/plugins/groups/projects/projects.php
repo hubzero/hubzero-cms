@@ -334,7 +334,8 @@ class Projects extends Plugin
         }
 
         // Build view
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('rows', $rows)
             ->set('owned', $owned)
             ->set('projectcount', count($this->projects))
@@ -380,7 +381,8 @@ class Projects extends Plugin
         $content = !empty($results) && isset($results[0]) ? $results[0] : null;
 
         // Build the final HTML
-        $view = $this->view('default', 'updates')
+        $view = $this
+            ->view('default', 'updates')
             ->set('filters', $filters)
             ->set('content', $content)
             ->set('newcount', $this->model->table()->getUpdateCount(

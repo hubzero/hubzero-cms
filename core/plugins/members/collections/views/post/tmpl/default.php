@@ -21,7 +21,8 @@ defined('_HZEXEC_') or die();
 $item = $this->post->item();
 $base = $this->member->link() . '&active=' . $this->name;
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 // Get the comments config value
@@ -63,7 +64,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
             <?php } ?>
         </div><!-- / .attribution -->
         <?php
-        $this->view('default_' . $item->layout(__DIR__, 'default_'), 'post')
+        $this
+             ->view('default_' . $item->layout(__DIR__, 'default_'), 'post')
              ->set('actual', true)
              ->set('name', $this->name)
              ->set('option', $this->option)

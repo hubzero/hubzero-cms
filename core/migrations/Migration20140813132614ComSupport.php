@@ -29,7 +29,8 @@ class Migration20140813132614ComSupport extends Base
                 . "consider the matter closed.  You can reopen the matter at any time by sending "
                 . "email or by submitting another problem report on our web site.\r\n\r\n"
                 . "Thanks again for your support!\r\n--the {sitename} team";
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__support_messages')
                 ->where('message', '=', $oldMessage)
@@ -41,7 +42,8 @@ class Migration20140813132614ComSupport extends Base
                     . "we\'ll consider the matter closed.  You can reopen the matter at any time "
                     . "by sending email or by submitting another problem report on our web "
                     . "site.\r\n\r\nThanks again for your support!\r\n--the {sitename} team";
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__support_messages')
                     ->set(['message' => $newMessage])
                     ->where('id', '=', $id)

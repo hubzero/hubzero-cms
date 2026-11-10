@@ -37,7 +37,8 @@ class Editors extends Element
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('element', 'value')
             ->select('name', 'text')
             ->from('#__extensions')

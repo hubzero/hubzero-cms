@@ -31,7 +31,8 @@ class Migration20140709144527ComTags extends Base
         if (!$schema->hasColumn('#__tags', 'created_by')) {
             $schema->addColumn('#__tags', 'created_by')->integer()->notNull()->default(0);
 
-            $rows = $this->db->getQuery(true)
+            $rows = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__tags_log')
                 ->where('action', '=', 'tag_created')
@@ -39,7 +40,8 @@ class Migration20140709144527ComTags extends Base
 
             if ($rows) {
                 foreach ($rows as $row) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__tags')
                         ->set(['created' => $row->timestamp, 'created_by' => $row->actorid])
                         ->where('id', '=', $row->tag_id)

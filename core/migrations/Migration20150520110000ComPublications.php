@@ -25,7 +25,8 @@ class Migration20150520110000ComPublications extends Base
 
         // Create versions table
         if (!$schema->tableExists('#__publication_curation_versions')) {
-            $schema->createTable('#__publication_curation_versions')
+            $schema
+                ->createTable('#__publication_curation_versions')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('type_id')->default(0)
                 ->integer('version_number')->default(0)
@@ -50,7 +51,8 @@ class Migration20150520110000ComPublications extends Base
                 $schema->hasColumn('#__publication_versions', 'curation')
                 && $schema->hasColumn('#__publication_master_types', 'curation')
             ) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('v.curation')
                     ->distinct()
                     ->select('t.id', 'type_id')
@@ -69,7 +71,8 @@ class Migration20150520110000ComPublications extends Base
                 if ($results && count($results) > 0) {
                     foreach ($results as $result) {
                         // Determine version number
-                        $query = $this->db->getQuery(true)
+                        $query = $this->db
+                            ->getQuery(true)
                             ->select('MAX(version_number)')
                             ->from('#__publication_curation_versions')
                             ->where('type_id', '=', $result->type_id);
@@ -83,7 +86,8 @@ class Migration20150520110000ComPublications extends Base
                         $stq->curation        = $result->curation;
 
                         if ($stq->store()) {
-                            $this->db->getQuery(true)
+                            $this->db
+                                ->getQuery(true)
                                 ->update('#__publication_versions')
                                 ->set(['curation_version_id' => $stq->id])
                                 ->where('curation', '=', $result->curation)

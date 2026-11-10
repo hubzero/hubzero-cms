@@ -96,7 +96,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table with multiple columns
-        $schema->table('drv_rebuild_test')->create()
+        $schema
+            ->table('drv_rebuild_test')
+            ->create()
             ->id('id')
             ->string('name', 255)
             ->string('email', 255)->nullable()
@@ -110,7 +112,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         ]);
 
         // Use AlterTableBuilder to drop the email column
-        $schema->table('drv_rebuild_test')->alter()
+        $schema
+            ->table('drv_rebuild_test')
+            ->alter()
             ->dropColumn('email')
             ->execute();
 
@@ -148,7 +152,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a table
-        $schema->table('drv_modify_test')->create()
+        $schema
+            ->table('drv_modify_test')
+            ->create()
             ->id('id')
             ->string('status', 255)->nullable()
             ->execute();
@@ -159,7 +165,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         ]);
 
         // Modify the status column (this should trigger rebuild)
-        $schema->table('drv_modify_test')->alter()
+        $schema
+            ->table('drv_modify_test')
+            ->alter()
             ->modifyColumn('status', 'integer', ['nullable' => false, 'default' => 1])
             ->execute();
 
@@ -196,7 +204,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create initial table
-        $schema->table('drv_combined_test')->create()
+        $schema
+            ->table('drv_combined_test')
+            ->create()
             ->id('id')
             ->string('old_col', 255)->nullable()
             ->string('keep_col', 255)->nullable()
@@ -208,7 +218,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         ]);
 
         // Drop old_col and add new_col in one operation
-        $schema->table('drv_combined_test')->alter()
+        $schema
+            ->table('drv_combined_test')
+            ->alter()
             ->dropColumn('old_col')
             ->addColumn('new_col', 'string', ['length' => 255, 'nullable' => true])
             ->execute();
@@ -245,7 +257,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a simple table
-        $schema->table('drv_rebuild_test')->create()
+        $schema
+            ->table('drv_rebuild_test')
+            ->create()
             ->id('id')
             ->string('name', 255)
             ->execute();
@@ -286,7 +300,9 @@ class SqliteDriverTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create a simple table
-        $schema->table('drv_simple_test')->create()
+        $schema
+            ->table('drv_simple_test')
+            ->create()
             ->id('id')
             ->string('name', 255)
             ->execute();

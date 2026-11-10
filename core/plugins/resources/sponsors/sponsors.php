@@ -90,7 +90,8 @@ class Sponsors extends Plugin
         }
 
         // Instantiate a view
-        $view = $this->view('mini', 'display')
+        $view = $this
+            ->view('mini', 'display')
             ->set('option', $option)
             ->set('resource', $resource)
             ->set('params', $this->params)
@@ -182,7 +183,8 @@ class Sponsors extends Plugin
             ->rows();
 
         // Instantiate a view
-        $view = $this->view('default', 'admin')
+        $view = $this
+            ->view('default', 'admin')
             ->set('rows', $rows)
             ->set('filters', $filters)
             ->set('option', $this->componentOption)
@@ -220,7 +222,8 @@ class Sponsors extends Plugin
             $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrNew($id);
         }
 
-        $view = $this->view('edit', 'admin')
+        $view = $this
+            ->view('edit', 'admin')
             ->set('row', $row)
             ->set('option', $this->componentOption)
             ->set('controller', $this->controller)

@@ -14,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry($this->event->params);
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">

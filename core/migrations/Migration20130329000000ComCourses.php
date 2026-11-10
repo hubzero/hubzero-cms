@@ -21,7 +21,8 @@ class Migration20130329000000ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_member_notes')) {
-            $schema->createTable('#__courses_member_notes')
+            $schema
+                ->createTable('#__courses_member_notes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 255)->default('')
                 ->integer('scope_id')->default(0)

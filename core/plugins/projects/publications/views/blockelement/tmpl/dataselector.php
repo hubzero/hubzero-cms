@@ -197,7 +197,8 @@ if ($coming) {
                 <?php
                 if ($max > (count($this->attachments ? $this->attachments : []))) {
                     // Draw link to select more items
-                    $this->view('_select', 'attachments')
+                    $this
+                         ->view('_select', 'attachments')
                          ->set('pub', $this->pub)
                          ->set('type', $this->type)
                          ->set('props', $props)

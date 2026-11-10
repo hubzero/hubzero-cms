@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('vote.css', 'com_answers')
      ->css('jquery.ui.css', 'system')
      ->js();
@@ -123,7 +124,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 <div class="entry-content">
                     <div class="entry-voting voting" id="wish_<?php echo $this->wish->get('id'); ?>">
                         <?php
-                        $this->view('_vote')
+                        $this
+                             ->view('_vote')
                              ->set('option', $this->option)
                              ->set('item', $this->wish)
                              ->set('listid', $this->wishlist->get('id'))
@@ -302,7 +304,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 ?>
                                     <td class="voting">
                                         <?php
-                                        $this->view('_vote')
+                                        $this
+                                             ->view('_vote')
                                              ->set('option', $this->option)
                                              ->set('item', $this->wish)
                                              ->set('listid', $this->wishlist->get('id'))
@@ -641,7 +644,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
             <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
                 <?php
-                $comments = $this->wish->comments()
+                $comments = $this->wish
+                    ->comments()
                     ->whereIn('state', [
                         Components\Wishlist\Models\Comment::STATE_PUBLISHED,
                         Components\Wishlist\Models\Comment::STATE_FLAGGED,
@@ -655,7 +659,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
             </h3>
                 <?php
                 if ($comments->count() > 0) {
-                    $this->view('_list')
+                    $this
+                    ->view('_list')
                     ->set('parent', 0)
                     ->set('cls', 'odd')
                     ->set('depth', 0)

@@ -27,7 +27,8 @@ class Migration20150828152832Core extends Base
         if ($schema->tableExists('#__extensions')) {
             $query = $this->db->getQuery(true); // Helper variable for reuse
 
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set([
                     'manifest_cache' => Expression::replace(
                         'manifest_cache',
@@ -39,28 +40,32 @@ class Migration20150828152832Core extends Base
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', '_HUB0_nW_', '')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_system')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'hubzero_network', '')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_system')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'hubzero.org', '')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_system')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set([
                     'params' => Expression::replace(
                         'params',
@@ -73,49 +78,56 @@ class Migration20150828152832Core extends Base
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['manifest_cache' => ''])
                 ->where('type', '=', 'file')
                 ->where('element', '=', 'joomla')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', ':10,', ':"10",')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'site\\/media', 'site/media')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'media\\/images', 'media/images')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'image\\/', 'image/')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'application\\/', 'application/')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')
                 ->execute();
 
             $query = $this->db->getQuery(true);
-            $query->update('#__extensions')
+            $query
+                ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'text\\/', 'text/')])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_media')

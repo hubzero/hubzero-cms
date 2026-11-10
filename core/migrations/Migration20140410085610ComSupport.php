@@ -30,7 +30,8 @@ class Migration20140410085610ComSupport extends Base
 
         // add created
         if (!$schema->hasColumn('#__support_attachments', 'created')) {
-            $schema->addColumn('#__support_attachments', 'created')
+            $schema
+                ->addColumn('#__support_attachments', 'created')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

@@ -868,7 +868,8 @@ class Html extends Obj
             $body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : null;
 
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject($subject)
+            $message
+                ->setSubject($subject)
                 ->addTo($email, $email)
                 ->addFrom($from['email'], $from['name'])
                 ->setPriority('normal');

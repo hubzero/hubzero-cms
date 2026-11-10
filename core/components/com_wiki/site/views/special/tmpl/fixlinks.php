@@ -24,7 +24,8 @@ $start = Request::getInt('limitstart', 0);
 
 $filters = ['state' => [0, 1]];
 
-$rows = $this->book->pages($filters)
+$rows = $this->book
+    ->pages($filters)
     ->paginated()
     ->rows();
 ?>

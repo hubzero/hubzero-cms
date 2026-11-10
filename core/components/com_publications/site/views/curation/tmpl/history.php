@@ -19,7 +19,8 @@ $blocks = $this->pub->_curationModel->blocks;
 $history = $this->pub->_curationModel->getHistory();
 
 if (!$this->ajax) :
-    $this->css('curation.css')
+    $this
+        ->css('curation.css')
         ->js('curation.js');
 endif;
 ?>

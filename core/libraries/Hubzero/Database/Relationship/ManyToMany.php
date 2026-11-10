@@ -155,7 +155,8 @@ class ManyToMany extends OneToManyThrough
     {
         if (is_array($ids) && count($ids) > 0) {
             $query = $this->model->getQuery();
-            $query->delete($this->associativeTable)
+            $query
+                  ->delete($this->associativeTable)
                   ->whereEquals($this->associativeLocal, $this->model->getPkValue())
                   ->whereIn($this->associativeRelated, $ids);
 
@@ -186,7 +187,8 @@ class ManyToMany extends OneToManyThrough
             $localKeyValue = $this->model->getPkValue();
 
             // Get any existing entries
-            $existing = $query->select($this->associativeRelated)
+            $existing = $query
+                              ->select($this->associativeRelated)
                               ->from($this->associativeTable)
                               ->whereEquals($this->associativeLocal, $localKeyValue)
                               ->fetch('column');
@@ -194,7 +196,8 @@ class ManyToMany extends OneToManyThrough
             // See if there's anything to delete
             $deletes = array_diff($existing, $ids);
             if (!empty($deletes)) {
-                $query->delete($this->associativeTable)
+                $query
+                      ->delete($this->associativeTable)
                       ->whereEquals($this->associativeLocal, $localKeyValue)
                       ->whereIn($this->associativeRelated, $deletes)
                       ->execute();

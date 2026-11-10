@@ -29,7 +29,9 @@ class Migration20140813200031ComTools extends Base
 
         if ($schema->tableExists('joblog')) {
             if (!$schema->hasPrimaryKeyColumn('joblog', 'venue')) {
-                $schema->table('joblog')->alter()
+                $schema
+                    ->table('joblog')
+                    ->alter()
                     ->dropPrimaryKey()
                     ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
                     ->execute();

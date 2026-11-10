@@ -23,7 +23,8 @@ class Migration20160715100931PlgHubzeroComments extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__item_comment_files') && $schema->hasColumn('#__item_comment_files', 'filename')) {
-            $schema->modifyColumn('#__item_comment_files', 'filename')
+            $schema
+                ->modifyColumn('#__item_comment_files', 'filename')
                 ->string(255)
                 ->nullable()
                 ->default(null)
@@ -39,7 +40,8 @@ class Migration20160715100931PlgHubzeroComments extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__item_comment_files') && $schema->hasColumn('#__item_comment_files', 'filename')) {
-            $schema->modifyColumn('#__item_comment_files', 'filename')
+            $schema
+                ->modifyColumn('#__item_comment_files', 'filename')
                 ->string(100)
                 ->nullable()
                 ->default(null)

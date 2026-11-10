@@ -26,7 +26,8 @@ class Migration20160907185952PlgProjects extends Base
         $this->addPluginEntry('projects', 'info');
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['element' => 'feed'])
                 ->where('folder', '=', 'projects')
@@ -34,7 +35,8 @@ class Migration20160907185952PlgProjects extends Base
                 ->where('type', '=', 'plugin')
                 ->execute();
 
-            $plugins = $this->db->getQuery(true)
+            $plugins = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('folder', '=', 'projects')
@@ -56,7 +58,8 @@ class Migration20160907185952PlgProjects extends Base
                     $num = 2;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['ordering' => (int) $num])
                     ->where('extension_id', '=', (int) $plugin->extension_id)
@@ -77,7 +80,8 @@ class Migration20160907185952PlgProjects extends Base
         $this->deletePluginEntry('projects', 'info');
 
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['element' => 'blog'])
                 ->where('folder', '=', 'projects')

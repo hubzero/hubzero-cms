@@ -26,35 +26,40 @@ class Migration20151007181841ComBlog extends Base
 
         if ($schema->tableExists('#__blog_entries') && $schema->hasColumn('#__blog_entries', 'access')) {
             // Public entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['access' => 1])
                 ->where('state', '=', 1)
                 ->execute();
 
             // Registered entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['access' => 2])
                 ->where('state', '=', 2)
                 ->execute();
 
             // Private entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['access' => 5])
                 ->where('state', '=', 0)
                 ->execute();
 
             // All entries are "published"
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => 1])
                 ->where('state', '>=', 0)
                 ->execute();
 
             // Change the state of trashed entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => 2])
                 ->where('state', '<', 0)
@@ -71,28 +76,32 @@ class Migration20151007181841ComBlog extends Base
 
         if ($schema->tableExists('#__blog_entries') && $schema->hasColumn('#__blog_entries', 'access')) {
             // Public entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => 1])
                 ->where('access', '=', 1)
                 ->execute();
 
             // Registered entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => 2])
                 ->where('access', '=', 2)
                 ->execute();
 
             // Private entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => 0])
                 ->where('access', '=', 5)
                 ->execute();
 
             // Change the state of trashed entries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['state' => -1])
                 ->where('state', '=', 2)

@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $base = rtrim(Request::base(true), '/');
 
-$this->css('create.css')
+$this
+    ->css('create.css')
     ->css('autocompleter.css')
     ->js('create.js');
 ?>
@@ -34,7 +35,8 @@ $this->css('create.css')
 <section class="main section">
     <?php
         $this->group_cn = Request::getString('group', '');
-        $this->view('steps')
+        $this
+             ->view('steps')
              ->set('option', $this->option)
              ->set('step', $this->step)
              ->set('steps', $this->steps)
@@ -64,7 +66,8 @@ $this->css('create.css')
                     <div class="grid">
                         <?php if (!$this->row->type->get('collection')) : ?>
                             <?php
-                            $this->js('jquery.fileuploader.js', 'system')
+                            $this
+                                ->js('jquery.fileuploader.js', 'system')
                                 ->js('fileupload.js');
                             echo $this->loadTemplate('fileuploader');
                             ?>

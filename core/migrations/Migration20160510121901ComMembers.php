@@ -25,7 +25,8 @@ class Migration20160510121901ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__user_profile_fields')) {
-            $schema->createTable('#__user_profile_fields')
+            $schema
+                ->createTable('#__user_profile_fields')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 255)
                 ->string('name', 255)->default('')
@@ -110,7 +111,8 @@ class Migration20160510121901ComMembers extends Base
                 . 'and supports automated linkages between you and your professional '
                 . 'activities ensuring that your work is recognized.';
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__user_profile_fields')
                 ->columns([
                     'id',
@@ -274,7 +276,8 @@ class Migration20160510121901ComMembers extends Base
         }
 
         if (!$schema->tableExists('#__user_profile_options')) {
-            $schema->createTable('#__user_profile_options')
+            $schema
+                ->createTable('#__user_profile_options')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('field_id')->default(0)
                 ->string('value', 255)->default('')
@@ -288,7 +291,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             // Gender
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -299,7 +303,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             // Race
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -313,7 +318,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             // Hispanic
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -326,7 +332,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             // Disability
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -342,7 +349,8 @@ class Migration20160510121901ComMembers extends Base
 
             // Organizations
             if ($schema->tableExists('#__xorganizations')) {
-                $organizations = $this->db->getQuery(true)
+                $organizations = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__xorganizations')
                     ->loadObjectList();
@@ -362,7 +370,8 @@ class Migration20160510121901ComMembers extends Base
                         ];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -374,7 +383,8 @@ class Migration20160510121901ComMembers extends Base
 
             // Organization types
             if ($schema->tableExists('#__xorganization_types')) {
-                $types = $this->db->getQuery(true)
+                $types = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__xorganization_types')
                     ->loadObjectList();
@@ -394,7 +404,8 @@ class Migration20160510121901ComMembers extends Base
                         ];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -406,7 +417,8 @@ class Migration20160510121901ComMembers extends Base
 
             // Reasons
             if ($schema->tableExists('#__xprofiles_reasons')) {
-                $reasons = $this->db->getQuery(true)
+                $reasons = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__xprofiles_reasons')
                     ->loadObjectList();
@@ -426,7 +438,8 @@ class Migration20160510121901ComMembers extends Base
                         ];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -449,7 +462,8 @@ class Migration20160510121901ComMembers extends Base
 
         // Organization types
         if (!$schema->tableExists('#__xorganizations')) {
-            $schema->createTable('#__xorganizations')
+            $schema
+                ->createTable('#__xorganizations')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('organization', 255)->nullable()
                 ->primaryKey('id')
@@ -458,7 +472,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             if ($schema->tableExists('#__user_profile_options')) {
-                $organizations = $this->db->getQuery(true)
+                $organizations = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 1)
@@ -473,7 +488,8 @@ class Migration20160510121901ComMembers extends Base
                         $values[] = [null, $organization->label];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xorganizations')
                         ->columns($columns)
                         ->values($values)
@@ -484,7 +500,8 @@ class Migration20160510121901ComMembers extends Base
 
         // Organization types
         if (!$schema->tableExists('#__xorganization_types')) {
-            $schema->createTable('#__xorganization_types')
+            $schema
+                ->createTable('#__xorganization_types')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 150)->nullable()
                 ->string('title', 255)->nullable()
@@ -494,7 +511,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             if ($schema->tableExists('#__user_profile_options')) {
-                $types = $this->db->getQuery(true)
+                $types = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 2)
@@ -513,7 +531,8 @@ class Migration20160510121901ComMembers extends Base
                         ];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xorganization_types')
                         ->columns($columns)
                         ->values($values)
@@ -524,7 +543,8 @@ class Migration20160510121901ComMembers extends Base
 
         // Reasons
         if (!$schema->tableExists('#__xprofiles_reasons')) {
-            $schema->createTable('#__xprofiles_reasons')
+            $schema
+                ->createTable('#__xprofiles_reasons')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('reason', 255)->nullable()
                 ->primaryKey('id')
@@ -533,7 +553,8 @@ class Migration20160510121901ComMembers extends Base
                 ->execute();
 
             if ($schema->tableExists('#__user_profile_options')) {
-                $reasons = $this->db->getQuery(true)
+                $reasons = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 11)
@@ -548,7 +569,8 @@ class Migration20160510121901ComMembers extends Base
                         $values[] = [null, $reason->label];
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xprofiles_reasons')
                         ->columns($columns)
                         ->values($values)

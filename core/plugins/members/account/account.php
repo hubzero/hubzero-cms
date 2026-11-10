@@ -976,7 +976,8 @@ class Account extends Plugin
         $message .= 'Your reset token is: ' . $token;
 
         $msg = new \Hubzero\Mail\Message();
-        $msg->setSubject($subject)
+        $msg
+            ->setSubject($subject)
             ->addTo($this->user->get('email'))
             ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
             ->setBody($message);

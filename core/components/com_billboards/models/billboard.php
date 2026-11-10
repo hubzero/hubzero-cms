@@ -61,7 +61,8 @@ class Billboard extends Relational
     public function automaticOrdering()
     {
         $instance = self::blank();
-        $result = $instance->select('MAX(ordering) + 1', 'ordering')
+        $result = $instance
+                           ->select('MAX(ordering) + 1', 'ordering')
                            ->whereEquals('collection_id', $this->collection_id)
                            ->rows()
                            ->first()

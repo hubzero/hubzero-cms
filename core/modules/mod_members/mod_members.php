@@ -36,14 +36,16 @@ class Members extends Module
 
         $database = App::get('db');
 
-        $this->unconfirmed = $database->getQuery()
+        $this->unconfirmed = $database
+            ->getQuery()
             ->select('count(u.id)')
             ->from('#__users', 'u')
             ->whereEquals('u.block', 0)
             ->where('u.activation', '<', 1)
             ->value();
 
-        $this->confirmed = $database->getQuery()
+        $this->confirmed = $database
+            ->getQuery()
             ->select('count(u.id)')
             ->from('#__users', 'u')
             ->whereEquals('u.block', 0)
@@ -51,14 +53,16 @@ class Members extends Module
             ->value();
 
         $pastDayDate = gmdate('Y-m-d', (time() - 24 * 3600)) . ' 00:00:00';
-        $this->pastDay = $database->getQuery()
+        $this->pastDay = $database
+            ->getQuery()
             ->select('count(u.id)')
             ->from('#__users', 'u')
             ->whereEquals('u.block', 0)
             ->where('u.registerDate', '>=', $pastDayDate)
             ->value();
 
-        $this->approved = $database->getQuery()
+        $this->approved = $database
+            ->getQuery()
             ->select('count(u.id)')
             ->from('#__users', 'u')
             ->whereEquals('u.block', 0)
@@ -66,7 +70,8 @@ class Members extends Module
             ->where('u.approved', '>', 0)
             ->value();
 
-        $this->unapproved = $database->getQuery()
+        $this->unapproved = $database
+            ->getQuery()
             ->select('count(u.id)')
             ->from('#__users', 'u')
             ->whereEquals('u.block', 0)
@@ -75,7 +80,8 @@ class Members extends Module
             ->value();
 
         $domainExpr = $database->sqlSubstringIndex('email', '@', -1);
-        $this->domains = $database->getQuery()
+        $this->domains = $database
+            ->getQuery()
             ->select($domainExpr, 'domain')
             ->select('COUNT(*)', 'email_count')
             ->from('#__users')

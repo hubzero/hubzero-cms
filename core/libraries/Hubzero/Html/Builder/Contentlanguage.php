@@ -39,7 +39,8 @@ class Contentlanguage
             $db = App::get('db');
 
             // Build the query.
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('a.lang_code', 'value')
                 ->select('a.title', 'text')
                 ->select('a.title_native')

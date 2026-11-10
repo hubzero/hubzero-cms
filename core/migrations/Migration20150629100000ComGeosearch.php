@@ -24,7 +24,8 @@ class Migration20150629100000ComGeosearch extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__geosearch_markers')) {
-            $schema->createTable('#__geosearch_markers')
+            $schema
+                ->createTable('#__geosearch_markers')
                 ->integer('id')->nullable()
                 ->string('scope', 255)->nullable()
                 ->integer('scope_id')->nullable()

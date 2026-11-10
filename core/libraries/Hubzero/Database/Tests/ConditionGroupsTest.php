@@ -43,7 +43,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // Create table using schema builder for database-agnostic DDL
         $schema = $driver->schema();
-        $schema->createTable('cond_group_test')
+        $schema
+            ->createTable('cond_group_test')
             ->id()
             ->integer('status')->default(0)
             ->integer('featured')->default(0)
@@ -121,7 +122,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // status = 1 AND (featured = 1 OR sticky = 1)
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->beginAndGroup()
@@ -149,7 +151,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // published = 1 OR (author_id = 1 AND status = 1)
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('published', 1)
               ->beginOrGroup()
@@ -177,7 +180,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // status = 1 AND (featured = 1 OR sticky = 1)
         // Should match rows 1, 2 (status=1 and either featured or sticky)
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->beginAndGroup()
@@ -206,7 +210,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         // status = 1 AND (featured = 1 OR sticky = 1)
         // Note: Deeply nested groups require careful tracking.
         // This tests basic nesting which is the primary use case.
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->beginAndGroup()
@@ -273,7 +278,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $this->expectException(\LogicException::class);
 
         $query = new Query($driver);
-        $query->beginAndGroup()
+        $query
+              ->beginAndGroup()
               ->endGroup()
               ->endGroup(); // One too many
     }
@@ -314,7 +320,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // This should be a valid, complete query
-        $result = $query->select('*')
+        $result = $query
+                        ->select('*')
                         ->from('cond_group_test')
                         ->whereEquals('status', 1)
                         ->beginAndGroup()
@@ -344,7 +351,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereIn('status', [1, 2])
               ->beginAndGroup()
@@ -366,7 +374,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->beginAndGroup()
@@ -387,7 +396,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->beginAndGroup()
                   ->whereIsNull('author_id')
@@ -415,7 +425,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Using old-style explicit depth
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1, 0)
               ->whereEquals('featured', 1, 1)
@@ -437,7 +448,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Simple query without groups
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->whereEquals('published', 1);
@@ -460,7 +472,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // "Show published articles that are either featured OR written by author 1"
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('published', 1)
               ->beginAndGroup()
@@ -487,7 +500,8 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // "Show records that are either status=1 OR (status=2 AND author_id=1)"
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('cond_group_test')
               ->whereEquals('status', 1)
               ->beginOrGroup()

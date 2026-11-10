@@ -831,7 +831,8 @@ class MysqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('my_items')
             ->order('id', 'asc')
@@ -851,11 +852,13 @@ class MysqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('my_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('my_categories')
                     ->whereEquals('active', 1);
             })
@@ -901,7 +904,8 @@ class MysqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('my_ddl_test')
+        $driver
+            ->createTable('my_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()

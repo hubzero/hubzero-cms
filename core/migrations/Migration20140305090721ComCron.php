@@ -23,7 +23,8 @@ class Migration20140305090721ComCron extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__cron_jobs', 'publish_up')) {
-            $schema->addColumn('#__cron_jobs', 'publish_up')
+            $schema
+                ->addColumn('#__cron_jobs', 'publish_up')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -31,7 +32,8 @@ class Migration20140305090721ComCron extends Base
         }
 
         if (!$schema->hasColumn('#__cron_jobs', 'publish_down')) {
-            $schema->addColumn('#__cron_jobs', 'publish_down')
+            $schema
+                ->addColumn('#__cron_jobs', 'publish_down')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

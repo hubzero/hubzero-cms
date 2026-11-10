@@ -247,7 +247,8 @@ if ($this->comment->get('publication_id')) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('parent', $this->comment->get('id'))
                  ->set('publication', $this->publication)
                  ->set('option', $this->option)

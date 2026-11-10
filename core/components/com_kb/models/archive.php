@@ -44,7 +44,8 @@ class Archive
      */
     public function categories($filters = [])
     {
-        $counts = $this->articles()
+        $counts = $this
+            ->articles()
             ->select('category')
             ->select('count(*)', 'articles');
 
@@ -56,7 +57,8 @@ class Archive
             $counts->whereIn('access', $filters['access']);
         }
 
-        $cts = $counts->group('category')
+        $cts = $counts
+            ->group('category')
             ->rows();
 
         $categories = Category::all();
@@ -69,7 +71,8 @@ class Archive
             $categories->whereIn('access', $filters['access']);
         }
 
-        $cats = $categories->whereEquals('parent_id', 1)
+        $cats = $categories
+            ->whereEquals('parent_id', 1)
             ->order('title', 'ASC')
             ->rows();
 

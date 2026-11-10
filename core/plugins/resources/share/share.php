@@ -102,7 +102,8 @@ class Share extends Plugin
             // Email form
             if ($sharewith == 'email') {
                 // Instantiate a view
-                $view = $this->view('email', 'options')
+                $view = $this
+                    ->view('email', 'options')
                     ->set('option', $option)
                     ->set('resource', $model)
                     ->set('_params', $this->params)
@@ -120,7 +121,8 @@ class Share extends Plugin
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             // Instantiate a view
-            $view = $this->view('default', 'options')
+            $view = $this
+                ->view('default', 'options')
                 ->set('option', $option)
                 ->set('resource', $model)
                 ->set('_params', $this->params)

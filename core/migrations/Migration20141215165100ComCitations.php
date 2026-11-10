@@ -24,7 +24,8 @@ class Migration20141215165100ComCitations extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__citations', 'gid')) {
-            $schema->renameColumn('#__citations', 'gid', 'scope_id')
+            $schema
+                ->renameColumn('#__citations', 'gid', 'scope_id')
                 ->string(45)
                 ->nullable()
                 ->default(null)
@@ -40,7 +41,8 @@ class Migration20141215165100ComCitations extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__citations', 'scope_id')) {
-            $schema->renameColumn('#__citations', 'scope_id', 'gid')
+            $schema
+                ->renameColumn('#__citations', 'scope_id', 'gid')
                 ->string(45)
                 ->nullable()
                 ->default(null)

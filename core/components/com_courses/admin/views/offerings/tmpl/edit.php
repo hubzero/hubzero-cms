@@ -38,7 +38,8 @@ $base = str_replace('/administrator', '', Request::base(true));
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->js('jquery.fileuploader.js', 'system')
+$this
+    ->js('jquery.fileuploader.js', 'system')
     ->js();
 $this->css();
 ?>

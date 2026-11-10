@@ -23,7 +23,8 @@ class Migration20130814185755ComNewsletter extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__email_bounces')) {
-            $schema->createTable('#__email_bounces')
+            $schema
+                ->createTable('#__email_bounces')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('email', 150)->nullable()
                 ->string('component', 100)->nullable()
@@ -38,7 +39,8 @@ class Migration20130814185755ComNewsletter extends Base
                 ->execute();
         }
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__cron_jobs')
             ->set(['params' => ''])
             ->where('plugin', '=', 'newsletter')

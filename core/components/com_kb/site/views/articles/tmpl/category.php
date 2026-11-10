@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (Pathway::count() <= 0) {
@@ -36,7 +37,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 
     <div id="content-header-extra">
         <?php
-        $this->view('_search')
+        $this
+             ->view('_search')
              ->set('option', $this->option)
              ->set('filters', $this->filters)
              ->display();
@@ -91,18 +93,21 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                     $articles = $this->category->articles();
                 }
 
-                $articles->whereEquals('state', 1)
+                $articles
+                        ->whereEquals('state', 1)
                         ->whereIn('access', User::getAuthorisedViewLevels());
 
                 if (isset($this->filters['search']) && $this->filters['search']) {
-                    $articles->whereLike('title', $this->filters['search'], 1)
+                    $articles
+                        ->whereLike('title', $this->filters['search'], 1)
                         ->orWhereLike('fulltxt', $this->filters['search'], 1)
                         ->resetDepth();
                 }
                 if ($this->filters['sort'] == 'popularity') {
                     $articles->order('helpful', 'desc');
                 } else {
-                    $articles->order('modified', 'desc')
+                    $articles
+                            ->order('modified', 'desc')
                             ->order('created', 'desc');
                 }
 
@@ -180,7 +185,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                             </td>
                             <td class="voting">
                                 <?php
-                                $view = $this->view('_vote')
+                                $view = $this
+                                         ->view('_vote')
                                          ->set('option', $this->option)
                                          ->set('item', $row)
                                          ->set('type', 'entry')
@@ -215,7 +221,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
         </div><!-- / .subject -->
         <aside class="aside">
             <?php
-            $this->view('_categories')
+            $this
+                 ->view('_categories')
                  ->set('option', $this->option)
                  ->set('archive', $this->archive)
                  ->set('catid', $this->catid)

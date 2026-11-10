@@ -17,7 +17,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 if (!$this->ajax) {
-    $this->css('jquery.datepicker.css', 'system')
+    $this
+         ->css('jquery.datepicker.css', 'system')
          ->css('jquery.timepicker.css', 'system')
          ->css()
          ->js('jquery.timepicker', 'system')

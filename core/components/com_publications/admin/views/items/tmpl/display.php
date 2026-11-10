@@ -68,7 +68,8 @@ $this->js();
                 <label for="category"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>
                 <?php
                 // Draw category list
-                $this->view('_selectcategory')
+                $this
+                     ->view('_selectcategory')
                      ->set('categories', $this->categories)
                      ->set('value', $this->filters['category'])
                      ->set('name', 'category')
@@ -202,7 +203,8 @@ $this->js();
 
     <?php
     // Draw legend
-    $this->view('_statuskey')
+    $this
+         ->view('_statuskey')
          ->display(); ?>
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

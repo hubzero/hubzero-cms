@@ -25,7 +25,8 @@ class Migration20140611141603ComMembers extends Base
 
         if ($schema->tableExists('#__xprofiles')) {
             if (!$schema->hasColumn('#__xprofiles', 'orcid')) {
-                $schema->addColumn('#__xprofiles', 'orcid')
+                $schema
+                    ->addColumn('#__xprofiles', 'orcid')
                     ->string(255)
                     ->notNull()
                     ->default('')

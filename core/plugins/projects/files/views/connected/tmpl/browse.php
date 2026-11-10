@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('uploader')
      ->js();
 
@@ -150,7 +151,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
             <?php
                 // Display contents
             if (count($this->items) > 0) {
-                $this->view('_items')
+                $this
+                     ->view('_items')
                      ->set('option', $this->option)
                      ->set('model', $this->model)
                      ->set('subdir', $this->subdir)

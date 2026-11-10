@@ -32,7 +32,8 @@ class Mytodos extends Module
         if (!User::isGuest()) {
             $database = App::get('db');
             $limit = intval($this->params->get('limit', 10));
-            $this->rows = $database->getQuery()
+            $this->rows = $database
+                ->getQuery()
                 ->select('a.id')
                 ->select('a.content')
                 ->select('b.title')

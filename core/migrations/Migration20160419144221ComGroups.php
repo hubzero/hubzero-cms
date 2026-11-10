@@ -23,7 +23,8 @@ class Migration20160419144221ComGroups extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xgroups_recents')) {
-            $schema->createTable('#__xgroups_recents')
+            $schema
+                ->createTable('#__xgroups_recents')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->unsignedInteger('group_id')->default(0)

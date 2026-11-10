@@ -24,7 +24,8 @@ class Migration20130507030333ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_offering_badges')) {
-            $schema->createTable('#__courses_offering_badges')
+            $schema
+                ->createTable('#__courses_offering_badges')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('offering_id')
                 ->integer('badge_id')
@@ -40,7 +41,8 @@ class Migration20130507030333ComCourses extends Base
         }
 
         if (!$schema->tableExists('#__courses_member_badges')) {
-            $schema->createTable('#__courses_member_badges')
+            $schema
+                ->createTable('#__courses_member_badges')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('member_id')
                 ->integer('earned')->nullable()

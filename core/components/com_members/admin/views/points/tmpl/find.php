@@ -19,7 +19,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': Manage Points', 'user.png');
 ?>
 
 <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 

@@ -24,7 +24,8 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 Html::behavior('tooltip');
 
 $this->css('tag_graph.css');
-$this->js('d3.js', 'system')
+$this
+    ->js('d3.js', 'system')
     ->js('tag_graph.js');
 ?>
 <form id="tag-sel" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">

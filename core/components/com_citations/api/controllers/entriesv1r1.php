@@ -138,7 +138,8 @@ class Entriesv1r1 extends ApiController
 
         // Get records
         if ($response->total) {
-            $query->limit($filters['limit'])
+            $query
+                ->limit($filters['limit'])
                 ->start($filters['start']);
 
             $href = 'index.php?option=com_citations&task=view&id=';

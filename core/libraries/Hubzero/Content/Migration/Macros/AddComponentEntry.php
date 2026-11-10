@@ -56,7 +56,8 @@ class AddComponentEntry extends Macro
         $name = $option;
 
         // First, make sure it isn't already there
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->whereEquals('name', $option)
@@ -74,7 +75,8 @@ class AddComponentEntry extends Macro
                 $params = json_encode($params);
             }
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->insert('#__extensions')
                 ->values([
                     'name'           => $name,
@@ -105,7 +107,8 @@ class AddComponentEntry extends Macro
 
         if ($this->db->tableExists('#__assets')) {
             // Secondly, add asset entry if not yet created
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->whereEquals('name', $option)
@@ -145,7 +148,8 @@ class AddComponentEntry extends Macro
             // A menu item is unique on its alias within a client, parent and
             // language, and that is what to look for: the same entry has been
             // filed under more than one menutype and title over the years.
-            $existing = $this->db->getQuery(true)
+            $existing = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__menu')
                 ->whereEquals('client_id', 1)
@@ -157,7 +161,8 @@ class AddComponentEntry extends Macro
                 return true;
             }
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->insert('#__menu')
                 ->values([
                     'menutype'          => 'main',

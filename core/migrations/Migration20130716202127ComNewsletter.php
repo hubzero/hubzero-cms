@@ -27,7 +27,8 @@ class Migration20130716202127ComNewsletter extends Base
         $this->addComponentEntry('Newsletters', 'com_newsletter');
 
         if (!$schema->tableExists('#__newsletters')) {
-            $schema->createTable('#__newsletters')
+            $schema
+                ->createTable('#__newsletters')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 150)->nullable()
                 ->string('name', 150)->nullable()
@@ -51,7 +52,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_templates')) {
-            $schema->createTable('#__newsletter_templates')
+            $schema
+                ->createTable('#__newsletter_templates')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('editable')->default(1)
                 ->string('name', 100)->nullable()
@@ -114,7 +116,8 @@ class Migration20130716202127ComNewsletter extends Base
                 . '	</body>\n'
                 . '</html>	';
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__newsletter_templates')
                 ->columns([
                     'editable',
@@ -145,7 +148,8 @@ class Migration20130716202127ComNewsletter extends Base
                 . 'Unsubscribe - {{UNSUBSCRIBE_LINK}}\n'
                 . 'Copyright - {{COPYRIGHT}}';
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__newsletter_templates')
                 ->columns([
                     'editable',
@@ -166,11 +170,13 @@ class Migration20130716202127ComNewsletter extends Base
                 . 'support_ticketreminder_group=\n\n';
 
             $query = $this->db->getQuery(true);
-            $query->select('title')
+            $query
+                ->select('title')
                 ->from('#__cron_jobs')
                 ->where('title', '=', 'Process Newsletter Mailings');
             if ($query->doesntExist()) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__cron_jobs')
                     ->columns([
                         'title',
@@ -208,11 +214,13 @@ class Migration20130716202127ComNewsletter extends Base
             }
 
             $query = $this->db->getQuery(true);
-            $query->select('title')
+            $query
+                ->select('title')
                 ->from('#__cron_jobs')
                 ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
             if ($query->doesntExist()) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insertOrIgnore('#__cron_jobs')
                     ->columns([
                         'title',
@@ -251,7 +259,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_primary_story')) {
-            $schema->createTable('#__newsletter_primary_story')
+            $schema
+                ->createTable('#__newsletter_primary_story')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('nid')
                 ->string('title', 150)->nullable()
@@ -267,7 +276,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_secondary_story')) {
-            $schema->createTable('#__newsletter_secondary_story')
+            $schema
+                ->createTable('#__newsletter_secondary_story')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('nid')
                 ->string('title', 150)->nullable()
@@ -283,7 +293,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailings')) {
-            $schema->createTable('#__newsletter_mailings')
+            $schema
+                ->createTable('#__newsletter_mailings')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('nid')->nullable()
                 ->integer('lid')->nullable()
@@ -301,7 +312,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailinglists')) {
-            $schema->createTable('#__newsletter_mailinglists')
+            $schema
+                ->createTable('#__newsletter_mailinglists')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 150)->nullable()
                 ->text('description')->nullable()
@@ -314,7 +326,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailinglist_unsubscribes')) {
-            $schema->createTable('#__newsletter_mailinglist_unsubscribes')
+            $schema
+                ->createTable('#__newsletter_mailinglist_unsubscribes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('mid')->nullable()
                 ->string('email', 150)->nullable()
@@ -326,7 +339,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailinglist_emails')) {
-            $schema->createTable('#__newsletter_mailinglist_emails')
+            $schema
+                ->createTable('#__newsletter_mailinglist_emails')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('mid')->nullable()
                 ->string('email', 150)->nullable()
@@ -341,7 +355,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailing_recipients')) {
-            $schema->createTable('#__newsletter_mailing_recipients')
+            $schema
+                ->createTable('#__newsletter_mailing_recipients')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('mid')->nullable()
                 ->string('email', 150)->nullable()
@@ -355,7 +370,8 @@ class Migration20130716202127ComNewsletter extends Base
         }
 
         if (!$schema->tableExists('#__newsletter_mailing_recipient_actions')) {
-            $schema->createTable('#__newsletter_mailing_recipient_actions')
+            $schema
+                ->createTable('#__newsletter_mailing_recipient_actions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('mailingid')->nullable()
                 ->string('action', 100)->nullable()
@@ -402,12 +418,14 @@ class Migration20130716202127ComNewsletter extends Base
 
         //remove newsletter cron jobs
         $query = $this->db->getQuery(true);
-        $query->delete('#__cron_jobs')
+        $query
+            ->delete('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Mailings');
         $query->execute();
 
         $query = $this->db->getQuery(true);
-        $query->delete('#__cron_jobs')
+        $query
+            ->delete('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
         $query->execute();
 

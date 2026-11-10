@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
         endif;
 
         // Display List of items
-        $this->view('_item')
+        $this
+            ->view('_item')
             ->set('option', $this->option)
             ->set('filters', $this->filters)
             ->set('row', $row)

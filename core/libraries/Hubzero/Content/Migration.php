@@ -105,7 +105,8 @@ class Migration
     {
         // Try to determine the document root if none provided
         if (is_null($docroot)) {
-            $this->addSearchPath(PATH_CORE)
+            $this
+                 ->addSearchPath(PATH_CORE)
                  ->addSearchPath(PATH_APP);
 
             $nodes = [

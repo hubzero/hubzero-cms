@@ -90,7 +90,8 @@ class Autoapprove extends Plugin
         if (preg_match("/$pattern/", $user['email'])) {
             $usr = User::getInstance($user['id']);
 
-            $query = $usr->getQuery()
+            $query = $usr
+                ->getQuery()
                 ->update($usr->getTableName())
                 ->set(['approved' => 1])
                 ->whereEquals('id', $user['id'])

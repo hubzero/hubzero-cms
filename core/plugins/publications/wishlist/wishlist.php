@@ -305,9 +305,9 @@ class Wishlist extends Plugin
                         case 'bonus':
                             $entries
                                 ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' "
-                                    . "AND type='hold' AND referenceid="
-                            . $entries->getTableName()
-                            . ".id)", 'bonus')
+                                        . "AND type='hold' AND referenceid="
+                                . $entries->getTableName()
+                                . ".id)", 'bonus')
                                 ->order('status', 'asc')
                                 ->order('bonus', 'desc')
                                 ->order('positive', 'desc')
@@ -350,7 +350,8 @@ class Wishlist extends Plugin
 
                 // HTML output
                 // Instantiate a view
-                $view = $this->view('default', 'browse')
+                $view = $this
+                    ->view('default', 'browse')
                     ->set('option', $option)
                     ->set('publication', $publication)
                     ->set('title', $title)
@@ -373,7 +374,8 @@ class Wishlist extends Plugin
         $metadata = '';
 
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $view = $this->view('default', 'metadata')
+            $view = $this
+                ->view('default', 'metadata')
                 ->set('publication', $publication)
                 ->set('items', $items)
                 ->set('wishlistid', $id);

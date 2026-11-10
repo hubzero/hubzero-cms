@@ -27,7 +27,8 @@ Toolbar::help('entries');
 
 Html::behavior('chart');
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

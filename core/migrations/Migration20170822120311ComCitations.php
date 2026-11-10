@@ -24,7 +24,8 @@ class Migration20170822120311ComCitations extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__citations_assoc') && $schema->hasColumn('#__citations_assoc', 'type')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__citations_assoc')
                 ->set(['type' => 'referencedby'])
                 ->whereEquals('tbl', 'resource')
@@ -44,7 +45,8 @@ class Migration20170822120311ComCitations extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__citations_assoc') && $schema->hasColumn('#__citations_assoc', 'type')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__citations_assoc')
                 ->set(['type' => ''])
                 ->whereEquals('tbl', 'resource')

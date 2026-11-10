@@ -772,7 +772,8 @@ class Media extends Base
                 foreach ($reviewers as $reviewer) {
                     $message = new \Hubzero\Mail\Message();
 
-                    $message->setSubject($subject)
+                    $message
+                        ->setSubject($subject)
                         ->addFrom($from['email'], $from['name'])
                         ->setTo($reviewer)
                         ->addHeader('X-Mailer', 'PHP/' . phpversion())

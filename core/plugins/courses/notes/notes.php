@@ -87,7 +87,8 @@ class Notes extends Plugin
             $this->course   = $course;
             $this->offering = $offering;
 
-            $this->view = $this->view('default', 'notes')
+            $this->view = $this
+                ->view('default', 'notes')
                 ->set('option', Request::getCmd('option', 'com_courses'))
                 ->set('controller', Request::getWord('controller', 'course'))
                 ->set('course', $course)
@@ -160,7 +161,8 @@ class Notes extends Plugin
             return;
         }
 
-        $this->view = $this->view('default', 'lecture')
+        $this->view = $this
+            ->view('default', 'lecture')
             ->set('course', $course)
             ->set('offering', $course->offering())
             ->set('unit', $unit)

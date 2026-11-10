@@ -26,7 +26,8 @@ class Migration20141119145715ComUsers extends Base
             $info = $schema->getTableColumns('#__users', false);
 
             if ($info['password']->Type != "varchar(127)") {
-                $schema->modifyColumn('#__users', 'password')
+                $schema
+                    ->modifyColumn('#__users', 'password')
                     ->string(127)
                     ->notNull()
                     ->default('')

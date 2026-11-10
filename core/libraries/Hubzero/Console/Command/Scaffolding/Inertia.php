@@ -92,12 +92,14 @@ class Inertia extends Scaffolding
             }
         }
 
-        $this->addReplacement('component_name', $component)
+        $this
+            ->addReplacement('component_name', $component)
             ->addReplacement('option', 'com_' . $component)
             ->addReplacement('view', $view)
             ->addReplacement('controller', $controller);
 
-        $this->addTemplateFile('inertia.controller.tmpl', $controllerPath)
+        $this
+            ->addTemplateFile('inertia.controller.tmpl', $controllerPath)
             ->addTemplateFile('inertia.default.tmpl', $defaultViewPath)
             ->addTemplateFile('inertia.app.tmpl', $jsEntryPath);
 

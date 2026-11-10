@@ -24,7 +24,8 @@ class Migration20130507170000PlgMembersProfile extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xprofiles_address')) {
-            $schema->createTable('#__xprofiles_address')
+            $schema
+                ->createTable('#__xprofiles_address')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('uidNumber')->nullable()
                 ->string('addressTo', 200)->nullable()

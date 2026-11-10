@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if (Pathway::count() <= 0) {
@@ -33,7 +34,8 @@ Document::setTitle(Lang::txt('COM_KB'));
 
     <div id="content-header-extra">
         <?php
-        $this->view('_search')
+        $this
+             ->view('_search')
              ->set('option', $this->option)
              ->set('filters', $this->filters)
              ->display();
@@ -55,7 +57,8 @@ Document::setTitle(Lang::txt('COM_KB'));
                                 </a>
                             </h4>
                             <?php
-                            $popular = $this->archive->articles()
+                            $popular = $this->archive
+                                        ->articles()
                                         ->whereIn('access', User::getAuthorisedViewLevels())
                                         ->whereEquals('state', 1)
                                         ->order('helpful', 'desc') // (a.helpful - a.nothelpful)
@@ -82,7 +85,8 @@ Document::setTitle(Lang::txt('COM_KB'));
                                 </a>
                             </h4>
                             <?php
-                            $recent = $this->archive->articles()
+                            $recent = $this->archive
+                                        ->articles()
                                         ->whereIn('access', User::getAuthorisedViewLevels())
                                         ->whereEquals('state', 1)
                                         ->order('modified', 'desc')
@@ -119,7 +123,8 @@ Document::setTitle(Lang::txt('COM_KB'));
                     $categories = $this->archive->categories(['state' => 1, 'access' => User::getAuthorisedViewLevels()]);
 
                     foreach ($categories as $row) {
-                        $articles = $row->articles()
+                        $articles = $row
+                            ->articles()
                             ->whereEquals('state', 1)
                             ->whereIn('access', User::getAuthorisedViewLevels())
                             ->order('modified', 'desc')
@@ -194,7 +199,8 @@ Document::setTitle(Lang::txt('COM_KB'));
 
         <aside class="aside">
             <?php
-            $this->view('_categories')
+            $this
+                 ->view('_categories')
                  ->set('option', $this->option)
                  ->set('archive', $this->archive)
                  ->set('catid', $this->catid)

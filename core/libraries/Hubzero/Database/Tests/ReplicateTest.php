@@ -42,7 +42,8 @@ class ReplicateTest extends AbstractDriverTestCase
     {
         $driver->dropTable('replicate_test_items', true);
 
-        $driver->createTable('replicate_test_items')
+        $driver
+            ->createTable('replicate_test_items')
             ->id()
             ->string('title', 255)
             ->string('content', 1000)->nullable()

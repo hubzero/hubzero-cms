@@ -76,7 +76,8 @@ class Templates extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $model->whereEquals('id', (int) substr($filters['search'], 3));
             } else {
-                $model->whereLike('element', $filters['search'], 1)
+                $model
+                    ->whereLike('element', $filters['search'], 1)
                     ->orWhereLike('name', $filters['search'], 1)
                     ->resetDepth();
             }

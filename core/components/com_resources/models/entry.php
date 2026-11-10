@@ -432,7 +432,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 }
             }
         } else {
-            $contributors = $this->authors()
+            $contributors = $this
+                ->authors()
                 ->ordered()
                 ->rows();
 
@@ -499,7 +500,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function hasChild($path)
     {
-        $row = $this->children()
+        $row = $this
+            ->children()
             ->whereEquals('standalone', 0)
             ->whereEquals('path', $path, 1)
             ->orWhere('path', 'LIKE', '%/' . $path, 1)
@@ -1365,7 +1367,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         // Honor publishing window
         $now = Date::toSql();
 
-        $this->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+        $this
+            ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
             ->orWhere($r . '.publish_up', 'IS', null, 1)
             ->orWhere($r . '.publish_up', '<=', $now, 1)
             ->resetDepth()
@@ -1468,7 +1471,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (isset($filters['search'])) {
-            $query->whereLike($r . '.title', $filters['search'], 1)
+            $query
+                ->whereLike($r . '.title', $filters['search'], 1)
                 ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
                 ->resetDepth();
         }
@@ -1518,7 +1522,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             }
 
             if (isset($filters['usergroups']) && !empty($filters['usergroups'])) {
-                $query->whereIn($r . '.access', (array) $filters['access'], 1)
+                $query
+                    ->whereIn($r . '.access', (array) $filters['access'], 1)
                     ->orWhereIn($r . '.group_owner', (array) $filters['usergroups'], 1)
                     ->resetDepth();
             } else {
@@ -1529,7 +1534,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (isset($filters['now'])) {
-            $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+            $query
+                    ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
                     ->orWhere($r . '.publish_up', 'IS', null, 1)
                     ->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
                     ->resetDepth()

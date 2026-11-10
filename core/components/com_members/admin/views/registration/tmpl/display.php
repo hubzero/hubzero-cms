@@ -30,7 +30,8 @@ $this->js();
 ?>
 
 <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 

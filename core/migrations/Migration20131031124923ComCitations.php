@@ -21,7 +21,9 @@ class Migration20131031124923ComCitations extends Base
      **/
     public function up()
     {
-        $this->db->schema()->modifyColumn('#__citations', 'affiliated')
+        $this->db
+            ->schema()
+            ->modifyColumn('#__citations', 'affiliated')
             ->integer()
             ->notNull()
             ->default(0)

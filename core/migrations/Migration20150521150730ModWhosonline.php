@@ -23,7 +23,8 @@ class Migration20150521150730ModWhosonline extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('element', '=', 'mod_whosonline')
@@ -34,7 +35,8 @@ class Migration20150521150730ModWhosonline extends Base
                 $this->addModuleEntry('mod_whosonline', 1, '', 1);
             } else {
                 // Set the first zone as default
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['state' => 0])
                     ->where('extension_id', '=', $id)

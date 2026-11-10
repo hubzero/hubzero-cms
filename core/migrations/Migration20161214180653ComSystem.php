@@ -21,7 +21,8 @@ class Migration20161214180653ComSystem extends Base
      **/
     public function up()
     {
-        $params = $this->db->getQuery(true)
+        $params = $this->db
+            ->getQuery(true)
             ->select('params')
             ->from('#__extensions')
             ->where('name', '=', 'com_system')
@@ -31,7 +32,8 @@ class Migration20161214180653ComSystem extends Base
         $params->geodb_driver = 'pdo';
         $params = json_encode($params);
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set(['params' => $params])
             ->where('name', '=', 'com_system')
@@ -43,7 +45,8 @@ class Migration20161214180653ComSystem extends Base
      **/
     public function down()
     {
-        $params = $this->db->getQuery(true)
+        $params = $this->db
+            ->getQuery(true)
             ->select('params')
             ->from('#__extensions')
             ->where('name', '=', 'com_system')
@@ -53,7 +56,8 @@ class Migration20161214180653ComSystem extends Base
         $params->geodb_driver = 'mysql';
         $params = json_encode($params);
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set(['params' => $params])
             ->where('name', '=', 'com_system')

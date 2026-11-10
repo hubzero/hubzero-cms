@@ -24,7 +24,8 @@ class Migration20150721135541ComUsers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__users_log_auth')) {
-            $schema->createTable('#__users_log_auth')
+            $schema
+                ->createTable('#__users_log_auth')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->string('username', 150)->nullable()

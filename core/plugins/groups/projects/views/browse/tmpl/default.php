@@ -42,7 +42,8 @@ $this->css();
 
 <?php
 // Output the submenu view
-$view = $this->view('submenu', 'partials')
+$view = $this
+    ->view('submenu', 'partials')
     ->set('group', $this->group)
     ->set('projectcount', $this->projectcount)
     ->set('newcount', $this->newcount)
@@ -104,7 +105,8 @@ $view = $this->view('submenu', 'partials')
         <?php
         if ($this->which == 'all') {
             // Show owned projects first
-            $this->view('list')
+            $this
+                 ->view('list')
                  ->set('option', $this->option)
                  ->set('rows', $this->owned)
                  ->set('config', $this->config)
@@ -114,7 +116,8 @@ $view = $this->view('submenu', 'partials')
             echo '</div><div class="container">';
         }
         // Show rows
-        $this->view('list')
+        $this
+             ->view('list')
              ->set('option', $this->option)
              ->set('rows', $this->rows)
              ->set('config', $this->config)

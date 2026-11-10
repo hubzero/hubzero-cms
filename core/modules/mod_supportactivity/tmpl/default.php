@@ -11,7 +11,8 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <div class="mod_<?php echo $this->module->name; ?>">

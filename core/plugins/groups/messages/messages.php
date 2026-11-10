@@ -160,7 +160,8 @@ class Messages extends Plugin
             }
 
             //push styles to the view
-            $this->css()
+            $this
+                 ->css()
                  ->js();
 
             $task = strtolower(trim($action));
@@ -487,7 +488,8 @@ class Messages extends Plugin
         $message = new \Hubzero\Mail\Message();
 
         // set message details and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->setFrom([$from['email'] => $from['name']])
                 ->addPart($plain, 'text/plain');
 

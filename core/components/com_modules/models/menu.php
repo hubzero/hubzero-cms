@@ -97,7 +97,9 @@ class Menu extends Relational
         // Add any automatic fields
         //$this->parseAutomatics('renew');
 
-        $query = $this->getQuery()->update($this->getTableName())
+        $query = $this
+            ->getQuery()
+            ->update($this->getTableName())
             ->set($this->getAttributes());
 
         foreach ($this->getAttributes() as $key => $val) {

@@ -326,7 +326,8 @@ class TableDefinition
      */
     public function id(string $name = 'id'): Column
     {
-        return $this->addColumn(new Column($name, 'bigInteger'))
+        return $this
+            ->addColumn(new Column($name, 'bigInteger'))
             ->unsigned()
             ->autoIncrement()
             ->primary();
@@ -340,7 +341,8 @@ class TableDefinition
      */
     public function increments(string $name): Column
     {
-        return $this->addColumn(new Column($name, 'integer'))
+        return $this
+            ->addColumn(new Column($name, 'integer'))
             ->unsigned()
             ->autoIncrement()
             ->primary();
@@ -354,7 +356,8 @@ class TableDefinition
      */
     public function bigIncrements(string $name): Column
     {
-        return $this->addColumn(new Column($name, 'bigInteger'))
+        return $this
+            ->addColumn(new Column($name, 'bigInteger'))
             ->unsigned()
             ->autoIncrement()
             ->primary();

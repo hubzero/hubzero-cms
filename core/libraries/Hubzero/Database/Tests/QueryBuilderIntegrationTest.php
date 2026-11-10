@@ -74,7 +74,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
         }
 
         // Create main table
-        $driver->createTable(self::$testTable)
+        $driver
+            ->createTable(self::$testTable)
             ->integer('id')->autoIncrement()->primaryKey('id')
             ->string('name', 255)->nullable()
             ->string('email', 255)->nullable()
@@ -82,7 +83,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
             ->execute();
 
         // Create related table for JOIN tests
-        $driver->createTable(self::$relatedTable)
+        $driver
+            ->createTable(self::$relatedTable)
             ->integer('id')->autoIncrement()->primaryKey('id')
             ->integer('user_id')->nullable()
             ->string('comment', 1000)->nullable()
@@ -103,7 +105,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test basic select
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->fetch();
 
@@ -124,7 +127,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test WHERE clause
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->whereEquals('name', 'Bob')
             ->fetch();
@@ -145,7 +149,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test ORDER BY ASC
         $query = new Query($driver);
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from(self::$testTable)
             ->order('name', 'ASC')
             ->fetch();
@@ -157,7 +162,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test ORDER BY DESC
         $query = new Query($driver);
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from(self::$testTable)
             ->order('age', 'DESC')
             ->fetch();
@@ -179,7 +185,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test LIMIT
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->limit(3)
             ->fetch();
@@ -199,7 +206,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test OFFSET
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->order('name', 'ASC')
             ->start(2)
@@ -231,7 +239,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Verify inserted data
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->whereEquals('name', 'Dave')
             ->fetch();
@@ -254,7 +263,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test update
         $query = new Query($driver);
-        $result = $query->update(self::$testTable)
+        $result = $query
+            ->update(self::$testTable)
             ->set(['age' => 23])
             ->whereEquals('name', 'Eve')
             ->execute();
@@ -266,7 +276,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Verify updated data
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->whereEquals('name', 'Eve')
             ->fetch();
@@ -294,7 +305,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Verify it exists
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->whereEquals('name', 'Frank')
             ->fetch();
@@ -302,7 +314,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test delete
         $query = new Query($driver);
-        $result = $query->delete(self::$testTable)
+        $result = $query
+            ->delete(self::$testTable)
             ->whereEquals('name', 'Frank')
             ->execute();
 
@@ -311,7 +324,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Verify deleted
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from(self::$testTable)
             ->whereEquals('name', 'Frank')
             ->fetch();
@@ -342,7 +356,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test INNER JOIN
         $query = new Query($driver);
-        $results = $query->select($table . '.name, ' . $relatedTable . '.comment')
+        $results = $query
+            ->select($table . '.name, ' . $relatedTable . '.comment')
             ->from($table)
             ->join($relatedTable, $table . '.id', $relatedTable . '.user_id')
             ->order($table . '.name', 'ASC')
@@ -370,7 +385,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test GROUP BY with COUNT (use 'cnt' to avoid reserved words)
         $query = new Query($driver);
-        $results = $query->select('age, COUNT(*) as cnt')
+        $results = $query
+            ->select('age, COUNT(*) as cnt')
             ->from(self::$testTable)
             ->group('age')
             ->order('age', 'ASC')
@@ -395,7 +411,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
         // Test HAVING with GROUP BY (use 'cnt' to avoid reserved words)
         $query = new Query($driver);
-        $results = $query->select('age, COUNT(*) as cnt')
+        $results = $query
+            ->select('age, COUNT(*) as cnt')
             ->from(self::$testTable)
             ->group('age')
             ->havingRaw('COUNT(*) > ?', [1])

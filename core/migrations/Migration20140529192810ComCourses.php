@@ -21,7 +21,8 @@ class Migration20140529192810ComCourses extends Base
      **/
     public function up()
     {
-        $results = $this->db->getQuery(true)
+        $results = $this->db
+            ->getQuery(true)
             ->select('ca.*')
             ->from('#__courses_assets', 'ca')
             ->leftJoin('#__courses_asset_associations AS caa', 'ca.id', 'caa.asset_id')
@@ -34,7 +35,8 @@ class Migration20140529192810ComCourses extends Base
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $offering = $this->db->getQuery(true)
+                $offering = $this->db
+                    ->getQuery(true)
                     ->select(['id', 'title'])
                     ->from('#__courses_offerings')
                     ->where('course_id', '=', $result->course_id)
@@ -46,7 +48,8 @@ class Migration20140529192810ComCourses extends Base
                 if ($offering) {
                     $ordering[$offering->id] = (!isset($ordering[$offering->id])) ? 0 : $ordering[$offering->id] + 1;
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__courses_asset_associations')
                         ->set([
                             'asset_id' => $result->id,

@@ -26,7 +26,8 @@ class EnableModule extends Macro
         if ($this->db->tableExists('#__extensions')) {
             $enabled = 1;
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'enabled' => $enabled,
@@ -38,7 +39,8 @@ class EnableModule extends Macro
 
             if ($this->db->query()) {
                 if ($this->db->tableExists('#__modules')) {
-                    $query = $this->db->getQuery()
+                    $query = $this->db
+                        ->getQuery()
                         ->update('#__modules')
                         ->set([
                             'published' => $enabled,

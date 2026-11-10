@@ -25,7 +25,8 @@ class Migration20150331131922PlgAuthenticationShibboleth extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__shibboleth_sessions')) {
-            $schema->createTable('#__shibboleth_sessions')
+            $schema
+                ->createTable('#__shibboleth_sessions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('session_key', 200)
                 ->text('data')

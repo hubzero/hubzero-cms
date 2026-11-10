@@ -79,7 +79,8 @@ class Collectionsv1r0 extends ApiController
             throw new \Exception(Lang::txt('Collection not found'), 404);
         }
 
-        $billboards = $collection->billboards()
+        $billboards = $collection
+                                 ->billboards()
                                  ->select('name')
                                  ->select('learn_more_target')
                                  ->select('background_img')

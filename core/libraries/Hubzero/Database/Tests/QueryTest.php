@@ -77,7 +77,9 @@ class QueryTest extends AbstractDriverTestCase
             } catch (\Exception $e) {
                 // Ignore
             }
-            $schema->table('users')->create()
+            $schema
+                ->table('users')
+                ->create()
                 ->id('id')
                 ->string('name', 255)
                 ->string('email', 255)
@@ -91,7 +93,9 @@ class QueryTest extends AbstractDriverTestCase
             } catch (\Exception $e) {
                 // Ignore
             }
-            $schema->table('groups')->create()
+            $schema
+                ->table('groups')
+                ->create()
                 ->id('id')
                 ->string('cn', 255)->nullable()
                 ->string('name', 255)->nullable()
@@ -106,7 +110,9 @@ class QueryTest extends AbstractDriverTestCase
             } catch (\Exception $e) {
                 // Ignore
             }
-            $schema->table('posts')->create()
+            $schema
+                ->table('posts')
+                ->create()
                 ->id('id')
                 ->string('title', 255)->nullable()
                 ->integer('user_id')->nullable()
@@ -195,7 +201,8 @@ class QueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Try to actually fetch some rows
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('users')
                       ->whereEquals('id', '1')
                       ->fetch();
@@ -217,13 +224,14 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $row = $query->select(
-            Expression::percent(
-                Expression::count('posts.id'),
-                Expression::count('posts.id'),
-            ),
-            'score',
-        )
+        $row = $query
+            ->select(
+                Expression::percent(
+                    Expression::count('posts.id'),
+                    Expression::count('posts.id'),
+                ),
+                'score',
+            )
             ->from('posts')
             ->first();
 
@@ -238,7 +246,8 @@ class QueryTest extends AbstractDriverTestCase
     public function testSelectArrayColumns(string $dbName, Driver $driver)
     {
         $query = new Query($driver);
-        $rows = $query->select(['id', 'email'])
+        $rows = $query
+                      ->select(['id', 'email'])
                       ->from('users')
                       ->order('id', 'asc')
                       ->fetch();
@@ -346,7 +355,8 @@ class QueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Build query with table alias
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users', 'u')
               ->whereEquals('u.name', 'Sam Wilson');
 
@@ -369,7 +379,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test whereRaw with lowercase match
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereRaw("LOWER({$nameCol})=?", ['sam wilson']);
 
@@ -379,7 +390,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereRaw
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('name', 'Sally Smith')
               ->orWhereRaw("LOWER({$nameCol})=?", ['sam wilson']);
@@ -400,7 +412,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test whereLike - match users with 'Sam' or 'Sally' in name
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereLike('name', 'Sa');
 
@@ -414,7 +427,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereLike - match 'Steve' OR names with 'Sa'
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereLike('name', 'Steve')
               ->orWhereLike('name', 'Sally');
@@ -439,7 +453,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test whereIsNull
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereIsNull('email');
 
@@ -457,7 +472,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereIsNull - find users with specific name OR NULL email
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('name', 'Sam Wilson')
               ->orWhereIsNull('email');
@@ -482,7 +498,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test whereIsNotNull - all original users have non-null names
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereIsNotNull('name');
 
@@ -495,7 +512,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereIsNotNull
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('id', 1)
               ->orWhereIsNotNull('name');
@@ -513,7 +531,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test whereIn with actual user names
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereIn('name', ['Sam Wilson', 'Sally Smith', 'Steve Rogers']);
 
@@ -528,7 +547,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereIn
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('name', 'Sarah Connor')
               ->orWhereIn('name', ['Sam Wilson', 'Sally Smith']);
@@ -543,7 +563,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test whereNotIn - should exclude Sam and Sally
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereNotIn('name', ['Sam Wilson', 'Sally Smith']);
 
@@ -558,7 +579,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test orWhereNotIn
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('id', 1)  // Sam Wilson
               ->orWhereNotIn('name', ['Sally Smith', 'Steve Rogers', 'Sarah Connor']);
@@ -582,7 +604,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test nested where: (name = Sam OR name = Sally) AND (email LIKE %example% OR email LIKE %gmail%)
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->whereEquals('name', 'Sam Wilson', 1)
               ->orWhereEquals('name', 'Sally Smith', 1)
@@ -618,7 +641,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test INNER JOIN (alias: join) - let builder handle quoting/casing
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->join('posts', 'users.id', 'posts.user_id');
 
@@ -627,7 +651,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test explicit innerJoin
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->innerJoin('posts', 'users.id', 'posts.user_id');
 
@@ -636,7 +661,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test LEFT JOIN - should include all users even without posts
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->leftJoin('posts', 'users.id', 'posts.user_id');
 
@@ -644,7 +670,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertGreaterThanOrEqual(4, count($results), 'LEFT JOIN should include all users');
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->rightJoin('posts', 'users.id', 'posts.user_id');
 
@@ -666,7 +693,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->fullJoin('posts', 'users.id', 'posts.user_id');
 
@@ -684,7 +712,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(UnsupportedSyntaxException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->fullJoin('posts', 'users.id', 'posts.user_id')
               ->fullJoin('groups', 'users.id', 'groups.created_by')
@@ -711,7 +740,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+              ->select('*')
               ->from('users')
               ->fullJoin('posts', 'users.id', 'posts.user_id')
               ->leftJoin('groups', 'users.id', 'groups.created_by')
@@ -734,7 +764,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+                      ->select('*')
                       ->from('users')
                       ->fullJoin('posts', 'id', 'user_id')
                       ->fetch();
@@ -755,7 +786,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -785,7 +817,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.title')
                       ->from('users')
                       ->joinBuilder('posts', 'left')
@@ -816,13 +849,15 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.title')
                       ->from('users')
                       ->joinBuilder('posts')
                           ->on('users.id', '=', 'posts.user_id')
                           ->group(function ($join) {
-                              $join->on('users.email', '=', 'posts.title')
+                              $join
+                                   ->on('users.email', '=', 'posts.title')
                                    ->orWhere('posts.title', '=', 'active');
                           })
                           ->end()
@@ -849,11 +884,13 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.title')
                       ->from('users')
                       ->leftJoin('posts', function ($join) {
-                          $join->on('users.id', '=', 'posts.user_id')
+                          $join
+                               ->on('users.id', '=', 'posts.user_id')
                                ->andWhere('posts.title', '=', 'active');
                       })
                       ->fetch();
@@ -878,7 +915,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -902,7 +940,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -926,7 +965,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -951,7 +991,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -977,7 +1018,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1001,7 +1043,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1026,7 +1069,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1054,7 +1098,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1077,7 +1122,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1101,7 +1147,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1127,7 +1174,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1152,7 +1200,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1177,7 +1226,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1202,7 +1252,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1225,7 +1276,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1249,7 +1301,8 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1276,12 +1329,14 @@ class QueryTest extends AbstractDriverTestCase
         ]);
 
         $subquery = new Query($driver);
-        $subquery->select('1')
+        $subquery
+                 ->select('1')
                  ->from('groups')
                  ->whereRaw('groups.created_by = users.id');
 
         $query = new Query($driver);
-        $rows = $query->select('users.id', 'user_id')
+        $rows = $query
+                      ->select('users.id', 'user_id')
                       ->select('posts.id', 'post_id')
                       ->from('users')
                       ->joinOn('posts', [
@@ -1303,7 +1358,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->joinOn('posts', [
                   ['users.id', '=', 'posts.user_id'],
@@ -1320,7 +1376,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->joinOn('posts', [
                   ['users.id', '=', 'posts.user_id'],
@@ -1339,7 +1396,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->joinOn('posts', [
                   ['users.id', '=', 'posts.user_id'],
@@ -1356,7 +1414,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->joinOn('posts', [
                   ['users.id', '=', 'posts.user_id'],
@@ -1373,7 +1432,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(UnsupportedSyntaxException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->fullJoinOn('posts', [
                   ['users.id', '=', 'posts.user_id'],
@@ -1399,7 +1459,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test JOIN with additional WHERE condition
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->join('posts', 'users.id', 'posts.user_id')
               ->where('users.id', '>', 1);
@@ -1422,7 +1483,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test basic INSERT - execute and verify
         $query = new Query($driver);
-        $query->insert('users')
+        $query
+            ->insert('users')
             ->values(['name' => 'danger', 'email' => 'danger@test.com'])
             ->execute();
 
@@ -1435,7 +1497,8 @@ class QueryTest extends AbstractDriverTestCase
         // Test INSERT IGNORE (syntax differs by database)
         // Try to insert duplicate - should be ignored if using IGNORE
         $query = new Query($driver);
-        $query->insert('users', true)
+        $query
+            ->insert('users', true)
             ->values(['id' => 1, 'name' => 'should be ignored', 'email' => 'ignored@test.com'])
             ->execute();
 
@@ -1512,7 +1575,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test clearing multiple parts and rebuilding
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->join('groups', 'created_by', 'id', 'inner')
               ->whereIsNotNull('name')
@@ -1531,7 +1595,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test deselect and reselect
         $query = new Query($driver);
-        $query->select('name')
+        $query
+              ->select('name')
               ->from('users')
               ->whereIsNotNull('name')
               ->deselect()
@@ -1546,7 +1611,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test clearing INSERT - build query for groups, then clear and switch to users
         $query = new Query($driver);
-        $query->insert('groups')
+        $query
+              ->insert('groups')
               ->values(['cn' => 'lorem'])
               ->clear('insert')
               ->clear('values')
@@ -1560,7 +1626,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test clearing DELETE
         $query = new Query($driver);
-        $query->delete('groups')
+        $query
+              ->delete('groups')
               ->whereEquals('cn', 'lorem')
               ->clear('delete')
               ->clear('where')
@@ -1574,7 +1641,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test clearing UPDATE
         $query = new Query($driver);
-        $query->update('groups')
+        $query
+              ->update('groups')
               ->set(['cn' => 'lorem'])
               ->whereEquals('cn', 'lorem')
               ->clear('update')
@@ -1605,7 +1673,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test LIMIT only - should get first 10 results
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('groups')
               ->order('id', 'asc')
               ->limit(10);
@@ -1616,7 +1685,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test LIMIT with START - should skip first 5, get next 10
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('groups')
               ->order('id', 'asc')
               ->limit(10)
@@ -1636,7 +1706,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test that non-numeric start is ignored at Query level (casts to 0)
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->start('beginning');
 
@@ -1665,7 +1736,8 @@ class QueryTest extends AbstractDriverTestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('groups')
               ->start(-50);
     }
@@ -1678,7 +1750,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test that non-numeric limit is ignored at Query level (casts to 0)
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->limit('all');
 
@@ -1707,7 +1780,8 @@ class QueryTest extends AbstractDriverTestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('groups')
               ->limit(-50);
     }
@@ -1720,7 +1794,8 @@ class QueryTest extends AbstractDriverTestCase
     {
         // Test ORDER BY ASC - users should be ordered by id ascending
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->order('id', 'asc');
 
@@ -1736,7 +1811,8 @@ class QueryTest extends AbstractDriverTestCase
 
         // Test unorder and reorder with DESC (new query object)
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->order('id', 'asc')  // Set initial order
               ->unorder()           // Clear it
@@ -1756,7 +1832,8 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('users')
               ->order('id', 'foo');
     }
@@ -1768,7 +1845,8 @@ class QueryTest extends AbstractDriverTestCase
     public function testConvenienceHelpers(string $dbName, Driver $driver)
     {
         $query = new Query($driver);
-        $first = $query->select('*')
+        $first = $query
+            ->select('*')
             ->from('users')
             ->order('id', 'asc')
             ->first();
@@ -1776,20 +1854,23 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertEquals(1, $first->id, 'first() should return the lowest id');
 
         $query = new Query($driver);
-        $email = $query->from('users')
+        $email = $query
+            ->from('users')
             ->whereEquals('id', 2)
             ->value('email');
         $this->assertEquals('sally@example.com', $email, 'value() should return a scalar column');
 
         $query = new Query($driver);
-        $names = $query->from('users')
+        $names = $query
+            ->from('users')
             ->order('id', 'asc')
             ->pluck('name');
         $this->assertEquals(4, count($names), 'pluck() should return all names');
         $this->assertEquals('Sam Wilson', $names[0], 'pluck() should preserve ordering');
 
         $query = new Query($driver);
-        $namesById = $query->from('users')
+        $namesById = $query
+            ->from('users')
             ->pluck('name', 'id');
         $this->assertEquals('Sam Wilson', $namesById[1], 'pluck() should support keying');
 
@@ -1852,7 +1933,8 @@ class QueryTest extends AbstractDriverTestCase
     public function testInsertIgnoreHelpers(string $dbName, Driver $driver)
     {
         $query = new Query($driver);
-        $query->insertOrIgnore('users')
+        $query
+            ->insertOrIgnore('users')
             ->values(['id' => 10, 'name' => 'Tony Stark', 'email' => 'tony@example.com'])
             ->execute();
 
@@ -1884,7 +1966,8 @@ class QueryTest extends AbstractDriverTestCase
             ->order('id', 'asc');
 
         $query = new Query($driver);
-        $query->insertUsing('groups', $select, ['id', 'cn', 'name', 'created_by'])
+        $query
+            ->insertUsing('groups', $select, ['id', 'cn', 'name', 'created_by'])
             ->execute();
 
         $rows = (new Query($driver))
@@ -1922,9 +2005,11 @@ class QueryTest extends AbstractDriverTestCase
 
         // SELECT * FROM (SELECT ... LIMIT 5) sub
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->fromSub(function ($sub) {
-                $sub->select('*')
+                $sub
+                    ->select('*')
                     ->from('groups')
                     ->order('id', 'asc')
                     ->limit(5);
@@ -1950,9 +2035,11 @@ class QueryTest extends AbstractDriverTestCase
 
         // SELECT * FROM (SELECT ... LIMIT 5 OFFSET 5) sub
         $query2 = new Query($driver);
-        $query2->select('*')
+        $query2
+            ->select('*')
             ->fromSub(function ($sub) {
-                $sub->select('*')
+                $sub
+                    ->select('*')
                     ->from('groups')
                     ->order('id', 'asc')
                     ->limit(5)
@@ -2004,12 +2091,14 @@ class QueryTest extends AbstractDriverTestCase
 
         // UNION ALL: names from users + names from groups, limited
         $unionQuery = new Query($driver);
-        $unionQuery->select('name')
+        $unionQuery
+            ->select('name')
             ->from('groups')
             ->order('name', 'asc');
 
         $query = new Query($driver);
-        $query->select('name')
+        $query
+            ->select('name')
             ->from('users')
             ->unionAll($unionQuery)
             ->limit(5);
@@ -2040,11 +2129,13 @@ class QueryTest extends AbstractDriverTestCase
 
         // UNION (distinct) removes duplicates like 'Sam Wilson'
         $unionQuery = new Query($driver);
-        $unionQuery->select('name')
+        $unionQuery
+            ->select('name')
             ->from('groups');
 
         $query = new Query($driver);
-        $query->select('name')
+        $query
+            ->select('name')
             ->from('users')
             ->union($unionQuery)
             ->limit(3);
@@ -2082,12 +2173,14 @@ class QueryTest extends AbstractDriverTestCase
             ->select('a.label')
             ->select('a.source')
             ->fromSub(function ($sub) use ($userSource, $groupSource) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->select('name', 'label')
                     ->select($userSource, 'source')
                     ->from('users')
                     ->union(function ($union) use ($groupSource) {
-                        $union->select('id')
+                        $union
+                            ->select('id')
                             ->select('name', 'label')
                             ->select($groupSource, 'source')
                             ->from('groups');
@@ -2147,13 +2240,15 @@ class QueryTest extends AbstractDriverTestCase
                 ->select('a.created')
                 ->select('a.category')
                 ->fromSub(function ($sub) use ($userSource, $groupSource) {
-                    $sub->select('id')
+                    $sub
+                        ->select('id')
                         ->select('id', 'ticket')
                         ->select('id', 'created')
                         ->select($userSource, 'category')
                         ->from('users')
                         ->union(function ($union) use ($groupSource) {
-                            $union->select('id')
+                            $union
+                                ->select('id')
                                 ->select('id', 'ticket')
                                 ->select('id', 'created')
                                 ->select($groupSource, 'category')

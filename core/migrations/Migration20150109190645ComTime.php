@@ -30,7 +30,8 @@ class Migration20150109190645ComTime extends Base
                 $schema->hasColumn('#__time_tasks', 'liaison')
                 && !$schema->hasColumn('#__time_tasks', 'liaison_id')
             ) {
-                $schema->renameColumn('#__time_tasks', 'liaison', 'liaison_id')
+                $schema
+                    ->renameColumn('#__time_tasks', 'liaison', 'liaison_id')
                     ->integer()
                     ->nullable()
                     ->default(null)
@@ -41,7 +42,8 @@ class Migration20150109190645ComTime extends Base
                 $schema->hasColumn('#__time_tasks', 'assignee')
                 && !$schema->hasColumn('#__time_tasks', 'assignee_id')
             ) {
-                $schema->renameColumn('#__time_tasks', 'assignee', 'assignee_id')
+                $schema
+                    ->renameColumn('#__time_tasks', 'assignee', 'assignee_id')
                     ->integer()
                     ->nullable()
                     ->default(null)
@@ -51,7 +53,8 @@ class Migration20150109190645ComTime extends Base
 
         // Create new table #__time_liaisons
         if (!$schema->tableExists('#__time_liaisons')) {
-            $schema->createTable('#__time_liaisons')
+            $schema
+                ->createTable('#__time_liaisons')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->nullable()
                 ->primaryKey('id')
@@ -60,7 +63,8 @@ class Migration20150109190645ComTime extends Base
                 ->execute();
 
             // Add rows to table from old time_users table
-            $liaisons = $this->db->getQuery(true)
+            $liaisons = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__time_users')
                 ->where('liaison', '=', 1)
@@ -68,7 +72,8 @@ class Migration20150109190645ComTime extends Base
 
             if ($liaisons && count($liaisons) > 0) {
                 foreach ($liaisons as $liaison) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__time_liaisons')
                         ->columns(['user_id'])
                         ->values((int) $liaison->user_id)
@@ -92,7 +97,8 @@ class Migration20150109190645ComTime extends Base
             &&  $schema->hasColumn('#__time_proxies', 'manager_id')
             && !$schema->hasColumn('#__time_proxies', 'proxy_id')
         ) {
-            $schema->renameColumn('#__time_proxies', 'manager_id', 'proxy_id')
+            $schema
+                ->renameColumn('#__time_proxies', 'manager_id', 'proxy_id')
                 ->integer()
                 ->nullable()
                 ->default(null)
@@ -101,14 +107,16 @@ class Migration20150109190645ComTime extends Base
 
         // Delete entries formally present just to represent a liaison, not an actually proxy relationship
         if ($schema->tableExists('#__time_proxies')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__time_proxies')
                 ->where('proxy_id', '=', 0)
                 ->execute();
         }
 
         // Fix up entries in assets table to be singular
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__assets')
             ->set(['name' => Expression::replace(Expression::column('name'), 'com_time.hubs.', 'com_time.hub.')])
             ->execute();

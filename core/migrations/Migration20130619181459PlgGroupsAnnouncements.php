@@ -24,7 +24,8 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__announcements')) {
-            $schema->createTable('#__announcements')
+            $schema
+                ->createTable('#__announcements')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 100)->nullable()
                 ->integer('scope_id')->nullable()
@@ -51,7 +52,8 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
 
         // get citation params
         if ($schema->tableExists('#__extensions')) {
-            $p = $this->db->getQuery(true)
+            $p = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -59,7 +61,8 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
                 ->where('folder', '=', 'groups')
                 ->value('params');
         } else {
-            $p = $this->db->getQuery(true)
+            $p = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__plugins')
                 ->where('element', '=', 'messages')
@@ -75,14 +78,16 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
 
         // save new params
         if ($schema->tableExists('#__extensions')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => json_encode($params->toArray())])
                 ->where('element', '=', 'messages')
                 ->where('folder', '=', 'groups')
                 ->execute();
         } else {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__plugins')
                 ->set(['params' => $params->toString()])
                 ->where('element', '=', 'messages')

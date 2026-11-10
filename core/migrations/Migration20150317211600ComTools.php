@@ -24,7 +24,8 @@ class Migration20150317211600ComTools extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__users_tool_preferences')) {
-            $schema->createTable('#__users_tool_preferences')
+            $schema
+                ->createTable('#__users_tool_preferences')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->text('params')->nullable()

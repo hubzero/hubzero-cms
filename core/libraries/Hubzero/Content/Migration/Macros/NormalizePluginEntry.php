@@ -43,7 +43,8 @@ class NormalizePluginEntry extends Macro
         $element = strtolower($element);
         $name    = 'plg_' . $folder . '_' . $element;
 
-        $entry = $this->db->getQuery(true)
+        $entry = $this->db
+            ->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->whereEquals('type', 'plugin')
@@ -56,7 +57,8 @@ class NormalizePluginEntry extends Macro
             return false;
         }
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set(['name' => $name])
             ->whereEquals('extension_id', $entry)

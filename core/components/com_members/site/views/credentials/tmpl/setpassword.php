@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->js('setpassword')
+$this
+     ->js('setpassword')
      ->css('setpassword');
 ?>
 

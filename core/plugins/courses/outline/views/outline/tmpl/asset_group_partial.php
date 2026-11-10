@@ -78,7 +78,8 @@ if ($this->ag->assets()->total()) {
         if (!$a->isDeleted()) {
             $hasPublishedAssets = true;
 
-            $this->view('asset_partial')
+            $this
+                 ->view('asset_partial')
                  ->set('base', $this->base)
                  ->set('course', $this->course)
                  ->set('unit', $this->unit)

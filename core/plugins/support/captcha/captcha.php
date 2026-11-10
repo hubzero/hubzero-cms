@@ -430,7 +430,8 @@ class Captcha extends Plugin
 
         $GLOBALS['totalCaptchas']++;
 
-        $view = $this->view('default', 'image')
+        $view = $this
+                    ->view('default', 'image')
                     ->set('task', Request::getCmd('task', ''))
                     ->set('controller', Request::getCmd('controller', ''))
                     ->set('option', Request::getCmd('option', ''))

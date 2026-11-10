@@ -71,7 +71,8 @@ if ($this->getError()) {
                                             $status = 'Scheduled';
                                             $color  = 'DodgerBlue';
                                         } elseif (
-                                            $mailing->recipients()
+                                            $mailing
+                                            ->recipients()
                                             ->whereEquals('status', 'queued')
                                             ->total() == 0
                                         ) {

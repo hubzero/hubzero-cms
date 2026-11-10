@@ -54,7 +54,8 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $driver->dropTable('temp_add_pk', true);
 
         // Create table WITHOUT id column
-        $driver->createTable('temp_add_pk')
+        $driver
+            ->createTable('temp_add_pk')
             ->string('name', 50)
             ->string('value', 50)
             ->execute();
@@ -69,17 +70,20 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
 
         // Insert data and verify auto-increment works
         $query = new Query($driver);
-        $query->insert('temp_add_pk')
+        $query
+            ->insert('temp_add_pk')
             ->values(['name' => 'test1', 'value' => 'val1'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_add_pk')
+        $query
+            ->insert('temp_add_pk')
             ->values(['name' => 'test2', 'value' => 'val2'])
             ->execute();
 
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('temp_add_pk')
             ->order('id', 'asc')
             ->fetch();
@@ -105,7 +109,8 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $driver->dropTable('temp_custom_pk', true);
 
         // Create table WITHOUT any primary key
-        $driver->createTable('temp_custom_pk')
+        $driver
+            ->createTable('temp_custom_pk')
             ->string('name', 50)
             ->execute();
 
@@ -118,17 +123,20 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
 
         // Verify auto-increment works with custom name
         $query = new Query($driver);
-        $query->insert('temp_custom_pk')
+        $query
+            ->insert('temp_custom_pk')
             ->values(['name' => 'test1'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_custom_pk')
+        $query
+            ->insert('temp_custom_pk')
             ->values(['name' => 'test2'])
             ->execute();
 
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('temp_custom_pk')
             ->order('record_id', 'asc')
             ->fetch();
@@ -155,7 +163,8 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $driver->dropTable('temp_pk_drop_add', true);
 
         // Create table with composite primary key
-        $driver->createTable('temp_pk_drop_add')
+        $driver
+            ->createTable('temp_pk_drop_add')
             ->string('gid_number', 20)
             ->string('uid_number', 20)
             ->string('role', 50)
@@ -164,12 +173,14 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
 
         // Insert test data
         $query = new Query($driver);
-        $query->insert('temp_pk_drop_add')
+        $query
+            ->insert('temp_pk_drop_add')
             ->values(['gid_number' => '1', 'uid_number' => '100', 'role' => 'member'])
             ->execute();
 
         $query = new Query($driver);
-        $query->insert('temp_pk_drop_add')
+        $query
+            ->insert('temp_pk_drop_add')
             ->values(['gid_number' => '1', 'uid_number' => '101', 'role' => 'admin'])
             ->execute();
 
@@ -183,14 +194,16 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
 
         // Verify data is preserved
         $query = new Query($driver);
-        $count = $query->select('COUNT(*) as cnt')
+        $count = $query
+            ->select('COUNT(*) as cnt')
             ->from('temp_pk_drop_add')
             ->fetch('row');
         $this->assertEquals(2, $count->cnt, 'All data should be preserved');
 
         // Verify new id column works
         $query = new Query($driver);
-        $rows = $query->select('*')
+        $rows = $query
+            ->select('*')
             ->from('temp_pk_drop_add')
             ->order('id', 'asc')
             ->fetch();
@@ -218,7 +231,8 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $driver->dropTable('temp_pk_migration', true);
 
         // Create table with 3-column composite PK
-        $driver->createTable('temp_pk_migration')
+        $driver
+            ->createTable('temp_pk_migration')
             ->string('sessnum', 50)
             ->string('job', 50)
             ->string('event', 50)
@@ -229,7 +243,9 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $this->assertFalse($schema->hasPrimaryKeyColumn('temp_pk_migration', 'venue'));
 
         // Drop PK and add new 4-column composite PK (adds 'venue')
-        $schema->table('temp_pk_migration')->alter()
+        $schema
+            ->table('temp_pk_migration')
+            ->alter()
             ->dropPrimaryKey()
             ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
             ->execute();
@@ -256,7 +272,8 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         $driver->dropTable('temp_add_pk_schema', true);
 
         // Create a table without primary key
-        $driver->createTable('temp_add_pk_schema')
+        $driver
+            ->createTable('temp_add_pk_schema')
             ->string('col_a', 50)
             ->string('col_b', 50)
             ->execute();

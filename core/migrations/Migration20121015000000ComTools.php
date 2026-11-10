@@ -21,7 +21,8 @@ class Migration20121015000000ComTools extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__venue') && !$schema->tableExists('venue')) {
-            $schema->createTable('#__venue')
+            $schema
+                ->createTable('#__venue')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('venue', 40)->nullable()
                 ->string('network', 40)->nullable()
@@ -32,7 +33,8 @@ class Migration20121015000000ComTools extends Base
         }
 
         if (!$schema->tableExists('#__venue_countries') && !$schema->tableExists('venue_countries')) {
-            $schema->createTable('#__venue_countries')
+            $schema
+                ->createTable('#__venue_countries')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('countrySHORT', 40)->nullable()
                 ->primaryKey('id')

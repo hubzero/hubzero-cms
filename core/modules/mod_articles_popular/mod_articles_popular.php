@@ -58,7 +58,8 @@ class ArticlesPopular extends Module
             $query->whereEquals('featured', 1);
         }
 
-        $query->start(0)
+        $query
+            ->start(0)
             ->limit((int) $params->get('count', 5));
 
         // Access filter

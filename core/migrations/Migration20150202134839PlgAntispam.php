@@ -29,7 +29,8 @@ class Migration20150202134839PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
-                $id = $this->db->getQuery(true)
+                $id = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -37,7 +38,8 @@ class Migration20150202134839PlgAntispam extends Base
                     ->where('element', '=', $plg)
                     ->value('extension_id');
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'antispam',
@@ -51,7 +53,8 @@ class Migration20150202134839PlgAntispam extends Base
             }
 
             // Get the params from the old antispam plugin. We need the badwords list for the 'blacklist' plugin.
-            $params = $this->db->getQuery(true)
+            $params = $this->db
+                ->getQuery(true)
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -70,7 +73,8 @@ class Migration20150202134839PlgAntispam extends Base
         $this->addPluginEntry('antispam', 'bayesian', 0);
 
         if (!$schema->tableExists('#__antispam_token_probs')) {
-            $schema->createTable('#__antispam_token_probs')
+            $schema
+                ->createTable('#__antispam_token_probs')
                 ->id()
                 ->string('token', 256)
                 ->float('prob')->default(0.00)
@@ -88,7 +92,8 @@ class Migration20150202134839PlgAntispam extends Base
         }
 
         if (!$schema->tableExists('#__antispam_token_counts')) {
-            $schema->createTable('#__antispam_token_counts')
+            $schema
+                ->createTable('#__antispam_token_counts')
                 ->id()
                 ->integer('good_count')->default(0)
                 ->integer('bad_count')->default(0)
@@ -98,7 +103,8 @@ class Migration20150202134839PlgAntispam extends Base
         }
 
         if (!$schema->tableExists('#__antispam_message_hashes')) {
-            $schema->createTable('#__antispam_message_hashes')
+            $schema
+                ->createTable('#__antispam_message_hashes')
                 ->id()
                 ->string('hash', 256)
                 ->engine('InnoDB')
@@ -118,7 +124,8 @@ class Migration20150202134839PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
-                $id = $this->db->getQuery(true)
+                $id = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -126,7 +133,8 @@ class Migration20150202134839PlgAntispam extends Base
                     ->where('element', '=', $plg)
                     ->value('extension_id');
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'content',

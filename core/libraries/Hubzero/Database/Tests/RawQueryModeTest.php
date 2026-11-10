@@ -56,7 +56,9 @@ class RawQueryModeTest extends AbstractDriverTestCase
         }
 
         if (!$driver->tableExists('rqm_test')) {
-            $schema->table('rqm_test')->create()
+            $schema
+                ->table('rqm_test')
+                ->create()
                 ->id('id')
                 ->string('name', 255)
                 ->execute();
@@ -177,7 +179,8 @@ class RawQueryModeTest extends AbstractDriverTestCase
 
         // Query builder calls setQuery() internally
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('rqm_test')
             ->order('id', 'asc')
             ->fetch('rows');
@@ -207,7 +210,8 @@ class RawQueryModeTest extends AbstractDriverTestCase
         );
 
         $query2 = new Query($driver);
-        $count = $query2->select('COUNT(*)', 'cnt')
+        $count = $query2
+            ->select('COUNT(*)', 'cnt')
             ->from('rqm_test')
             ->fetch('rows');
 
@@ -231,7 +235,8 @@ class RawQueryModeTest extends AbstractDriverTestCase
         $driver->setRawQueryMode('log');
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+            ->select('*')
             ->from('rqm_test')
             ->fetch('rows');
 

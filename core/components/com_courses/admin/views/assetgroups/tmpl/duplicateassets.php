@@ -29,7 +29,8 @@ Toolbar::cancel();
 Html::behavior('framework', true);
 
 // Remove datapicker error
-$this->css('duplicateAssets')
+$this
+     ->css('duplicateAssets')
      ->js('duplicateAssets');
 ?>
 

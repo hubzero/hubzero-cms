@@ -21,7 +21,8 @@ foreach ($subs as $s) :
 
         <?php
         if ($subView = $s['view']) :
-            $this->view($subView)
+            $this
+                 ->view($subView)
                  ->set('userId', $userId)
                  ->display();
         endif;

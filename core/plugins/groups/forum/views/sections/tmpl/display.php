@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 if ($this->config->get('access-manage-section')) {
@@ -135,7 +136,8 @@ if ($this->config->get('access-manage-section')) {
                                         </span>
                                     </td>
                                     <td class="priority-4">
-                                        <span><?php echo $row->threads()
+                                        <span><?php echo $row
+                                                ->threads()
                                                 ->whereEquals('state', $this->filters['state'])
                                                 ->whereIn('access', $this->filters['access'])
                                                 ->total(); ?></span>
@@ -144,7 +146,8 @@ if ($this->config->get('access-manage-section')) {
                                         </span>
                                     </td>
                                     <td class="priority-4">
-                                        <span><?php echo $row->posts()
+                                        <span><?php echo $row
+                                                ->posts()
                                                 ->whereEquals('state', $this->filters['state'])
                                                 ->whereIn('access', $this->filters['access'])
                                                 ->total(); ?></span>
@@ -233,7 +236,8 @@ if ($this->config->get('access-manage-section')) {
         </div>
 
         <?php
-                $this->view('_email_settings', '/shared')
+                $this
+                    ->view('_email_settings', '/shared')
                     ->set('config', $this->config)
                     ->set('base', $base)
                     ->set('recvEmailOptionID', $this->recvEmailOptionID)

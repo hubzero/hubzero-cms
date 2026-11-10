@@ -111,7 +111,8 @@ $base = $this->offering->link() . '&active=forum';
                                     </td>
                                     <td>
                                         <span><?php
-                                        echo $row->thread()
+                                        echo $row
+                                            ->thread()
                                             ->whereEquals('state', $row->get('state'))
                                             ->whereIn('access', $this->filters['access'])
                                             ->total();

@@ -671,7 +671,8 @@ class Setup extends Base
                     $formFields = array_merge($old, $newInfo);
                     $knownFields = Field::all()->rows()->toObject();
                     foreach ($knownFields as $kField) {
-                        $existingFields = Description::all()->whereEquals('project_id', $this->model->get('id'))
+                        $existingFields = Description::all()
+                            ->whereEquals('project_id', $this->model->get('id'))
                             ->whereEquals('description_key', $kField->name)
                             ->rows();
                         $kFieldValue = !empty($formFields[$kField->name]) ? $formFields[$kField->name] : [];

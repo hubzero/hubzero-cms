@@ -162,7 +162,8 @@ class Exports extends AdminController
             if (is_numeric($filters['search'])) {
                 $members->whereEquals($a . '.id', (int) $filters['search']);
             } else {
-                $members->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
+                $members
+                    ->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
                     ->orWhereLike($a . '.username', strtolower((string) $filters['search']), 1)
                     ->orWhereLike($a . '.email', strtolower((string) $filters['search']), 1)
                     ->resetDepth();

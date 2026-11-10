@@ -25,7 +25,8 @@ class Migration20130924000005Core extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__extensions')) {
-            $schema->createTable('#__extensions')
+            $schema
+                ->createTable('#__extensions')
                 ->integer('extension_id', ['autoIncrement' => true])
                 ->string('name', 100)
                 ->string('type', 20)
@@ -697,7 +698,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Libraries
@@ -775,7 +777,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Site Modules
@@ -1252,7 +1255,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Administrator Modules
@@ -1538,7 +1542,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Plugins
@@ -2536,7 +2541,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Templates
@@ -2691,7 +2697,8 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Languages
@@ -2764,11 +2771,13 @@ class Migration20130924000005Core extends Base
                 $rows[] = array_combine($columns, $val);
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertMany('#__extensions', $rows);
 
             // Joomla! CMS (700)
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__extensions')
                 ->columns([
                     'extension_id',
@@ -2815,7 +2824,8 @@ class Migration20130924000005Core extends Base
                 ->execute();
 
             // joomla package (800)
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__extensions')
                 ->set([
                     'extension_id'   => 800,
@@ -2842,7 +2852,8 @@ class Migration20130924000005Core extends Base
             $schema->setAutoIncrement('#__extensions', 1000);
 
             // Migrate components
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__components')
                 ->where('parent', '=', 0)
@@ -2864,14 +2875,16 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $id = $this->db->getQuery(true)
+                $id = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $r->option)
                     ->value('extension_id');
 
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set(['enabled' => $r->enabled])
                         ->set(['params' => $r->params])
@@ -2881,7 +2894,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => $r->option,
@@ -2912,7 +2926,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $c)
@@ -2922,7 +2937,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => $c,
@@ -2952,7 +2968,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $c)
@@ -2962,7 +2979,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => $c,
@@ -2986,20 +3004,23 @@ class Migration20130924000005Core extends Base
             }
 
             // Migrate plugins
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__plugins')
                 ->loadObjectList();
 
             foreach ($results as $r) {
-                $id = $this->db->getQuery(true)
+                $id = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('name', '=', "plg_{$r->folder}_{$r->element}")
                     ->value('extension_id');
 
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set(['enabled' => $r->published])
                         ->set(['params' => $r->params])
@@ -3012,7 +3033,8 @@ class Migration20130924000005Core extends Base
                 // Add 1 to access level
                 $r->access++;
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => "plg_{$r->folder}_{$r->element}",
@@ -3038,7 +3060,8 @@ class Migration20130924000005Core extends Base
             // Migrate modules (site)
             $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), [".", ".."]);
             foreach ($modules as $m) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $m)
@@ -3052,7 +3075,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => $m,
@@ -3079,7 +3103,8 @@ class Migration20130924000005Core extends Base
             // @TODO: 2.0.0+ we can't differentiate admin modules at filesystem level
             $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), [".", ".."]);
             foreach ($modules as $m) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $m)
@@ -3093,7 +3118,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => $m,
@@ -3122,7 +3148,8 @@ class Migration20130924000005Core extends Base
                 [".", "..", "system"],
             );
             foreach ($templates as $t) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $t)
@@ -3137,7 +3164,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => ucfirst($t),
@@ -3167,7 +3195,8 @@ class Migration20130924000005Core extends Base
                 [".", "..", "system"],
             );
             foreach ($templates as $t) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('element', '=', $t)
@@ -3182,7 +3211,8 @@ class Migration20130924000005Core extends Base
                     continue;
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__extensions')
                     ->values([
                         'name'              => ucfirst($t),
@@ -3206,7 +3236,8 @@ class Migration20130924000005Core extends Base
             }
 
             // Convert params to json
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['extension_id', 'params'])
                 ->from('#__extensions')
                 ->whereNotNull('params')
@@ -3234,7 +3265,8 @@ class Migration20130924000005Core extends Base
                         $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set(['params' => json_encode($array)])
                         ->where('extension_id', '=', $r->extension_id)
@@ -3254,7 +3286,8 @@ class Migration20130924000005Core extends Base
                 . '"filter_attributes":""},"12":{"filter_type":"BL","filter_tags":"",'
                 . '"filter_attributes":""},"8":{"filter_type":"NONE","filter_tags":"",'
                 . '"filter_attributes":""}}}';
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => $configDefaultParams])
                 ->where('element', '=', 'com_config')
@@ -3313,14 +3346,16 @@ class Migration20130924000005Core extends Base
                 ->execute();
 
             // Also, force xusers user plugin last in list
-            $max = $this->db->getQuery(true)
+            $max = $this->db
+                ->getQuery(true)
                 ->select('ordering')
                 ->from('#__extensions')
                 ->where('folder', '=', 'user')
                 ->order('ordering', 'desc')
                 ->value('ordering');
             $max++;
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['ordering' => $max])
                 ->where('folder', '=', 'user')

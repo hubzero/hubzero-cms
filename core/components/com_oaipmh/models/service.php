@@ -284,7 +284,8 @@ class Service extends Obj
             $this->response->attr('verb', $verb);
         }
 
-        $this->response->end()
+        $this->response
+            ->end()
             ->element('error', $message)
                 ->attr('code', ($error ?: self::ERROR_BAD_ARGUMENT))
             ->end();

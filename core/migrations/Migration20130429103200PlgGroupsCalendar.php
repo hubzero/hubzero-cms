@@ -27,7 +27,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 
         // create event calendars table
         if (!$schema->tableExists('#__events_calendars')) {
-            $schema->createTable('#__events_calendars')
+            $schema
+                ->createTable('#__events_calendars')
                 ->id()
                 ->string('scope', 100)->nullable()
                 ->integer('scope_id')->nullable()
@@ -42,12 +43,14 @@ class Migration20130429103200PlgGroupsCalendar extends Base
             $schema->addColumn('#__events', 'calendar_id')->integer(11);
         }
         if (!$schema->hasColumn('#__events', 'scope')) {
-            $schema->addColumn('#__events', 'scope')
+            $schema
+                ->addColumn('#__events', 'scope')
                 ->string(100)
                 ->execute();
 
             // set scope on all current site events
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__events')
                 ->set(['scope' => 'event'])
                 ->beginOrGroup()
@@ -63,7 +66,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
         if ($schema->tableExists('#__xgroups_events')) {
             // move group events to events table
             $select = $this->db->getQuery(true);
-            $select->select($this->db->quote('group'))
+            $select
+                ->select($this->db->quote('group'))
                 ->select('gidNumber', 'scope_id')
                 ->select('title')
                 ->select('details', 'content')
@@ -74,7 +78,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
                 ->select('end', 'publish_down')
                 ->from('#__xgroups_events');
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__events')
                 ->columns([
                     'scope',

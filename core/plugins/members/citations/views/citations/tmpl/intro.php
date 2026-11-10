@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('citations.css')
+$this
+    ->css('citations.css')
     ->js();
 
 $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations';

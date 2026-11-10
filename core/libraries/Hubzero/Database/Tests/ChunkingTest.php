@@ -57,7 +57,8 @@ class ChunkingTest extends AbstractDriverTestCase
 
         // Create table using schema builder for database-agnostic DDL
         $schema = $driver->schema();
-        $schema->createTable(self::$testTable)
+        $schema
+            ->createTable(self::$testTable)
             ->id()
             ->string('name', 255)
             ->string('category', 50)->nullable()

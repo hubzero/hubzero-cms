@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
-$first = $this->archive->entries([
+$first = $this->archive
+    ->entries([
         'state'    => 1,
         'scope'    => $this->filters['scope'],
         'scope_id' => $this->filters['scope_id'],
@@ -25,12 +26,14 @@ $first = $this->archive->entries([
     ->limit(1)
     ->row();
 
-$rows = $this->archive->entries($this->filters)
+$rows = $this->archive
+    ->entries($this->filters)
     ->ordered()
     ->paginated()
     ->rows();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 
@@ -206,7 +209,8 @@ $isEmpty = $noFilters && !$rows->count();
                                         <dd class="comments">
                                             <a href="<?php echo Route::url($row->link('comments')); ?>">
                                                 <?php
-                                                $comments = $row->comments()
+                                                $comments = $row
+                                                    ->comments()
                                                     ->whereIn('state', [
                                                         Components\Blog\Models\Comment::STATE_PUBLISHED,
                                                         Components\Blog\Models\Comment::STATE_FLAGGED,
@@ -371,7 +375,8 @@ $isEmpty = $noFilters && !$rows->count();
                 <div class="container blog-popular-entries">
                     <h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
                     <?php
-                    $popular = $this->archive->entries([
+                    $popular = $this->archive
+                        ->entries([
                             'state'  => $this->filters['state'],
                             'access' => $this->filters['access'],
                         ])

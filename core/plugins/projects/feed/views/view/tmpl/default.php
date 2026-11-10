@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <div id="plg-header">
@@ -22,7 +23,8 @@ $this->css()
 
 <?php
     // New update form
-    $this->view('default', 'addupdate')
+    $this
+        ->view('default', 'addupdate')
         ->set('option', $this->option)
         ->set('model', $this->model)
         ->display();
@@ -34,7 +36,8 @@ $this->css()
     data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
     <?php
     // Display item list
-    $this->view('default', 'activity')
+    $this
+        ->view('default', 'activity')
         ->set('option', $this->option)
         ->set('model', $this->model)
         ->set('activities', $this->activities)

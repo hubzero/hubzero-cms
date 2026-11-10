@@ -344,7 +344,8 @@ class Searchable extends AdminController
         try {
             $config = Component::params('com_search');
             $query = new \Hubzero\Search\Query($config);
-            $results = $query->query($filter)
+            $results = $query
+                ->query($filter)
                 ->addFilter('facet', $facet)
                 ->limit($limit)->start($limitstart)->run()->getResults();
 

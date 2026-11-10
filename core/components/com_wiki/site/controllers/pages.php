@@ -190,7 +190,8 @@ class Pages extends SiteController
 
         // Retrieve a specific version if given
         if ($version = Request::getInt('version', 0)) {
-            $revision = $this->page->versions()
+            $revision = $this->page
+                ->versions()
                 ->whereEquals('version', $version)
                 ->row();
         } else {
@@ -440,7 +441,8 @@ class Pages extends SiteController
         }
 
         // Pull a tree of pages in this wiki
-        $items = $this->book->pages()
+        $items = $this->book
+            ->pages()
             ->whereEquals('state', Page::STATE_PUBLISHED)
             ->where('namespace', '!=', 'Template')
             ->order('pagename', 'asc')
@@ -1090,7 +1092,8 @@ class Pages extends SiteController
 
         // Retrieve a specific version if given
         if ($version = Request::getInt('version', 0)) {
-            $revision = $this->page->versions()
+            $revision = $this->page
+                ->versions()
                 ->whereEquals('version', $version)
                 ->whereEquals('approved', 1)
                 ->row();

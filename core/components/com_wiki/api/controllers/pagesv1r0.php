@@ -108,14 +108,16 @@ class Pagesv1r0 extends ApiController
         if ($response->total) {
             $base = rtrim(Request::base(), '/');
 
-            $pages = $book->pages($filters)
+            $pages = $book
+                ->pages($filters)
                 ->order($filters['sort'], $filters['sort_Dir'])
                 ->rows();
 
             foreach ($pages as $i => $entry) {
                 $obj = $entry->toObject();
                 $obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
-                $obj->revisions = $entry->versions()
+                $obj->revisions = $entry
+                    ->versions()
                     ->whereEquals('approved', 1)
                     ->count();
 
@@ -254,7 +256,8 @@ class Pagesv1r0 extends ApiController
         }
 
         $response = $page->toObject();
-        $response->revisions = $page->versions()
+        $response->revisions = $page
+            ->versions()
             ->whereEquals('approved', 1)
             ->count();
 

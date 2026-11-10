@@ -21,7 +21,8 @@ defined('_HZEXEC_') or die();
 if (!$this->sub) {
     $this->css();
 }
-$this->js('wiki.js', 'com_wiki')
+$this
+     ->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
 $tags = $this->page->tags('string') ? $this->page->tags('string') : Request::getString('tags', '');
@@ -45,7 +46,8 @@ $scope   = Request::getString('scope', '');
 </header><!-- /#content-header -->
 
 <?php
-    $this->view('submenu')
+    $this
+         ->view('submenu')
          ->setBasePath($this->base_path)
          ->set('option', $this->option)
          ->set('controller', $this->controller)

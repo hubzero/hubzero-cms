@@ -99,7 +99,8 @@ class ArticlesLatest extends Module
         // Set ordering
         switch ($params->get('ordering')) {
             case 'm_dsc':
-                $query->order('modified', 'desc')
+                $query
+                    ->order('modified', 'desc')
                     ->order('created', 'asc');
                 break;
             case 'mc_dsc':

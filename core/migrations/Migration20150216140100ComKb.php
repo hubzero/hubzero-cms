@@ -24,13 +24,15 @@ class Migration20150216140100ComKb extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__faq') && $schema->hasColumn('#__faq', 'access')) {
-            $exists = $this->db->getQuery(true)
+            $exists = $this->db
+                ->getQuery(true)
                 ->from('#__faq')
                 ->where('access', '=', 0)
                 ->exists();
 
             if ($exists) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__faq')
                     ->setRaw('access', 'access + 1')
                     ->execute();
@@ -38,13 +40,15 @@ class Migration20150216140100ComKb extends Base
         }
 
         if ($schema->tableExists('#__faq_categories') && $schema->hasColumn('#__faq_categories', 'access')) {
-            $exists = $this->db->getQuery(true)
+            $exists = $this->db
+                ->getQuery(true)
                 ->from('#__faq_categories')
                 ->where('access', '=', 0)
                 ->exists();
 
             if ($exists) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__faq_categories')
                     ->setRaw('access', 'access + 1')
                     ->execute();
@@ -60,13 +64,15 @@ class Migration20150216140100ComKb extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__faq') && $schema->hasColumn('#__faq', 'access')) {
-            $exists = $this->db->getQuery(true)
+            $exists = $this->db
+                ->getQuery(true)
                 ->from('#__faq')
                 ->where('access', '=', 0)
                 ->exists();
 
             if (!$exists) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__faq')
                     ->setRaw('access', 'access - 1')
                     ->execute();
@@ -74,13 +80,15 @@ class Migration20150216140100ComKb extends Base
         }
 
         if ($schema->tableExists('#__faq_categories') && $schema->hasColumn('#__faq_categories', 'access')) {
-            $exists = $this->db->getQuery(true)
+            $exists = $this->db
+                ->getQuery(true)
                 ->from('#__faq_categories')
                 ->where('access', '=', 0)
                 ->exists();
 
             if (!$exists) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__faq_categories')
                     ->setRaw('access', 'access - 1')
                     ->execute();

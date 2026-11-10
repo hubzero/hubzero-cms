@@ -27,7 +27,8 @@ class Migration20170725133700ComMembers extends Base
             $schema->tableExists('#__user_profile_fields')
             && !$schema->hasColumn('#__user_profile_fields', 'placeholder')
         ) {
-            $schema->addColumn('#__user_profile_fields', 'placeholder')
+            $schema
+                ->addColumn('#__user_profile_fields', 'placeholder')
                 ->string(255)
                 ->notNull()
                 ->default(0)

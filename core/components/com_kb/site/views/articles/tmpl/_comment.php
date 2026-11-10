@@ -46,7 +46,8 @@ if ($this->comment->isReported()) {
         <?php if (!$this->comment->isReported() && $this->comment->get('entry_id')) { ?>
             <div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                 <?php
-                $view = $this->view('_vote')
+                $view = $this
+                             ->view('_vote')
                              ->set('option', $this->option)
                              ->set('item', $this->comment)
                              ->set('type', 'comment')
@@ -158,14 +159,16 @@ if ($this->comment->isReported()) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->article->param('comments_depth', 3)) {
-            $comments = $this->comment->replies()
+            $comments = $this->comment
+                ->replies()
                 ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
                     Components\Kb\Models\Comment::STATE_FLAGGED,
                 ])
                 ->rows();
 
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('parent', $this->comment->get('id'))
                  ->set('cls', $cls)
                  ->set('depth', $this->depth)

@@ -25,14 +25,16 @@ class Migration20180321201800Core extends Base
 
         if ($schema->tableExists('#__extensions')) {
             if (!$schema->hasColumn('#__extensions', 'modified')) {
-                $schema->addColumn('#__extensions', 'modified')
+                $schema
+                    ->addColumn('#__extensions', 'modified')
                     ->datetime()
                     ->nullable()
                     ->execute();
             }
 
             if (!$schema->hasColumn('#__extensions', 'modified_by')) {
-                $schema->addColumn('#__extensions', 'modified_by')
+                $schema
+                    ->addColumn('#__extensions', 'modified_by')
                     ->integer()
                     ->notNull()
                     ->default(0)

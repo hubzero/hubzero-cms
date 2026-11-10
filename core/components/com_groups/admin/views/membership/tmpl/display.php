@@ -67,7 +67,8 @@ $database = App::get('db');
 
 Html::behavior('tooltip');
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

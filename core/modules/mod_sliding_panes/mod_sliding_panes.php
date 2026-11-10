@@ -60,7 +60,8 @@ class SlidingPanes extends Module
 
         $quotedNullDate = $db->quote($nullDate);
         $quotedNow = $db->quote($now);
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.*')
             ->from('#__content', 'a')
             ->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'inner')
@@ -102,7 +103,8 @@ class SlidingPanes extends Module
         // If so, we only want to push the CSS and JS to the template once
         if (self::$instances <= 1) {
             // Push some CSS to the template
-            $this->css($type . '.css')
+            $this
+                 ->css($type . '.css')
                  ->js();
         }
 

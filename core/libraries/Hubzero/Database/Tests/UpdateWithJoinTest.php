@@ -55,7 +55,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Execute UPDATE with INNER JOIN
         // Update user access to 2 where profile is public
         $query = new Query($driver);
-        $query->update('update_test_users')
+        $query
+              ->update('update_test_users')
               ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->set(['update_test_users.access' => 2])
               ->whereEquals('update_test_profiles.public', 1);
@@ -64,7 +65,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify records were updated
         $verifyQuery = new Query($driver);
-        $updated = $verifyQuery->from('update_test_users')
+        $updated = $verifyQuery
+                              ->from('update_test_users')
                               ->select('*')
                               ->whereEquals('access', 2)
                               ->fetch('rows');
@@ -74,7 +76,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify Bob (private profile) was not updated
         $bobQuery = new Query($driver);
-        $bob = $bobQuery->from('update_test_users')
+        $bob = $bobQuery
+                      ->from('update_test_users')
                       ->select('access')
                       ->whereEquals('id', 2)
                       ->fetch('row');
@@ -99,7 +102,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Execute UPDATE with LEFT JOIN and multiple WHERE conditions
         // Update verified=1 for active users with public profiles
         $query = new Query($driver);
-        $query->update('update_test_users')
+        $query
+              ->update('update_test_users')
               ->leftJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->set(['update_test_users.verified' => 1])
               ->whereEquals('update_test_users.status', 'active')
@@ -109,7 +113,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify only Alice was updated (active + public profile)
         $verifyQuery = new Query($driver);
-        $verified = $verifyQuery->from('update_test_users')
+        $verified = $verifyQuery
+                               ->from('update_test_users')
                                ->select('*')
                                ->whereEquals('verified', 1)
                                ->fetch('rows');
@@ -137,7 +142,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Update access for users in admin group with public profiles
         $query = new Query($driver);
-        $query->update('update_test_users')
+        $query
+              ->update('update_test_users')
               ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->innerJoin('update_test_groups', 'update_test_users.group_id', 'update_test_groups.id')
               ->set(['update_test_users.access' => 3])
@@ -148,7 +154,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify Alice was updated (admin group + public profile)
         $verifyQuery = new Query($driver);
-        $updated = $verifyQuery->from('update_test_users')
+        $updated = $verifyQuery
+                              ->from('update_test_users')
                               ->select('*')
                               ->whereEquals('access', 3)
                               ->fetch('rows');
@@ -175,7 +182,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Update both access and verified for users with public profiles
         $query = new Query($driver);
-        $query->update('update_test_users')
+        $query
+              ->update('update_test_users')
               ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->set([
                   'update_test_users.access' => 2,
@@ -187,7 +195,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify both columns were updated
         $verifyQuery = new Query($driver);
-        $updated = $verifyQuery->from('update_test_users')
+        $updated = $verifyQuery
+                              ->from('update_test_users')
                               ->select('*')
                               ->whereEquals('access', 2)
                               ->whereEquals('verified', 1)
@@ -197,7 +206,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify Bob was not updated
         $bobQuery = new Query($driver);
-        $bob = $bobQuery->from('update_test_users')
+        $bob = $bobQuery
+                      ->from('update_test_users')
                       ->select('*')
                       ->whereEquals('id', 2)
                       ->fetch('row');
@@ -222,14 +232,16 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Get original values
         $beforeQuery = new Query($driver);
-        $before = $beforeQuery->from('update_test_users')
+        $before = $beforeQuery
+                             ->from('update_test_users')
                              ->select('*')
                              ->whereEquals('id', 2)
                              ->fetch('row');
 
         // Execute UPDATE that shouldn't match Bob
         $query = new Query($driver);
-        $query->update('update_test_users')
+        $query
+              ->update('update_test_users')
               ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->set(['update_test_users.access' => 2])
               ->whereEquals('update_test_profiles.public', 1);
@@ -238,7 +250,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Verify Bob's row is unchanged (has private profile)
         $afterQuery = new Query($driver);
-        $after = $afterQuery->from('update_test_users')
+        $after = $afterQuery
+                          ->from('update_test_users')
                           ->select('*')
                           ->whereEquals('id', 2)
                           ->fetch('row');
@@ -266,7 +279,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
 
         // Create users table
         $schema = $driver->schema();
-        $schema->createTable('update_test_users')
+        $schema
+            ->createTable('update_test_users')
             ->id()
             ->string('name', 100)
             ->string('status', 20)->default('active')
@@ -276,7 +290,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
             ->execute();
 
         // Create profiles table
-        $schema->createTable('update_test_profiles')
+        $schema
+            ->createTable('update_test_profiles')
             ->id()
             ->integer('user_id')
             ->string('bio', 500)->nullable()
@@ -292,7 +307,8 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         $driver->dropTable('update_test_groups', true);
 
         $schema = $driver->schema();
-        $schema->createTable('update_test_groups')
+        $schema
+            ->createTable('update_test_groups')
             ->id()
             ->string('name', 100)
             ->string('type', 20)

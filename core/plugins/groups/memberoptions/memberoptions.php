@@ -111,7 +111,8 @@ class Memberoptions extends Plugin
             'receive-forum-email',
         );
 
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('recvEmailOptionID', $recvEmailOption->get('id', 0))
             ->set('recvEmailOptionValue', $recvEmailOption->get('optionvalue', 0))
             ->set('option', $this->option)

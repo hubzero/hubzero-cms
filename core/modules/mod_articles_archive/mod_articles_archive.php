@@ -49,7 +49,8 @@ class ArticlesArchive extends Module
         // Get database
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select($db->sqlMonth('created'), 'created_month')
             ->select('created')
             ->select('id')

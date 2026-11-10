@@ -24,14 +24,16 @@ class Migration20140829142600ComCollections extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__collections')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__collections')
                 ->setColumn('created_by', 'object_id')
                 ->where('object_type', '=', 'member')
                 ->where('created_by', '=', 0)
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__collections_posts AS p')
                 ->leftJoin('#__collections AS c', 'p.collection_id', 'c.id')
                 ->setColumn('p.created_by', 'c.created_by')

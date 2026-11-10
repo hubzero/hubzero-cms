@@ -55,7 +55,8 @@ class Newsletter extends Module
         }
 
         // Add stylesheets and scripts
-        $this->css()
+        $this
+             ->css()
              ->js();
 
         // Display module

@@ -794,7 +794,8 @@ class Item extends Base
             return true;
         }
 
-        $this->set('type', 'file')
+        $this
+             ->set('type', 'file')
              ->set('object_id', 0);
 
         if (!$this->store()) {

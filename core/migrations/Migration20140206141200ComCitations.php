@@ -24,7 +24,8 @@ class Migration20140206141200ComCitations extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__citations', 'format')) {
-            $schema->addColumn('#__citations', 'format')
+            $schema
+                ->addColumn('#__citations', 'format')
                 ->string(11)
                 ->execute();
         }

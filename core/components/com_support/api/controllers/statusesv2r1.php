@@ -136,7 +136,8 @@ class Statusesv2r1 extends ApiController
             $sort_dir = 'asc';
         }
 
-        $rows = $rows->order($sort, $sort_dir)
+        $rows = $rows
+            ->order($sort, $sort_dir)
             ->limit(Request::getInt('limit', 25))
             ->start(Request::getInt('start', 0))
             ->rows();

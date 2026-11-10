@@ -142,7 +142,8 @@ class Reviews extends Plugin
             $banking = Component::params('com_members')->get('bankAccounts');
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('option', $option)
                 ->set('publication', $model)
                 ->set('reviews', $reviews)
@@ -162,7 +163,8 @@ class Reviews extends Plugin
 
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $view = $this->view('default', 'metadata')
+            $view = $this
+                ->view('default', 'metadata')
                 ->set('url', Route::url($model->link($this->pluginName)))
                 ->set('url2', Route::url($model->link($this->pluginName) . '&action=addreview#reviewform'))
                 ->set('reviews', $arr['count']);

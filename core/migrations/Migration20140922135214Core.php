@@ -28,7 +28,8 @@ class Migration20140922135214Core extends Base
             && $schema->hasColumn('#__migrations', 'scope')
         ) {
             $query = $this->db->getQuery(true);
-            $query->update('#__migrations')
+            $query
+                ->update('#__migrations')
                 ->set(['scope' => Expression::replace('scope', PATH_ROOT . DS, '')])
                 ->execute();
         }

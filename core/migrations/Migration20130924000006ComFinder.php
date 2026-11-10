@@ -28,7 +28,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_filters
         if (!$schema->tableExists('#__finder_filters')) {
-            $schema->create('#__finder_filters')
+            $schema
+                ->create('#__finder_filters')
                 ->increments('filter_id')
                 ->primaryKey('filter_id')
                 ->string('title', 255)->nullable(false)
@@ -50,7 +51,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_links
         if (!$schema->tableExists('#__finder_links')) {
-            $schema->create('#__finder_links')
+            $schema
+                ->create('#__finder_links')
                 ->increments('link_id')
                 ->primaryKey('link_id')
                 ->string('url', 255)->nullable(false)
@@ -100,7 +102,8 @@ class Migration20130924000006ComFinder extends Base
         foreach ($termSuffixes as $suffix) {
             $tableName = '#__finder_links_terms' . $suffix;
             if (!$schema->tableExists($tableName)) {
-                $schema->create($tableName)
+                $schema
+                    ->create($tableName)
                     ->unsignedInteger('link_id')->nullable(false)
                     ->unsignedInteger('term_id')->nullable(false)
                     ->float('weight')->unsigned()->nullable(false)
@@ -114,7 +117,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_taxonomy
         if (!$schema->tableExists('#__finder_taxonomy')) {
-            $schema->create('#__finder_taxonomy')
+            $schema
+                ->create('#__finder_taxonomy')
                 ->increments('id')
                 ->primaryKey('id')
                 ->unsignedInteger('parent_id')->nullable(false)->default(0)
@@ -134,7 +138,8 @@ class Migration20130924000006ComFinder extends Base
             // Insert root taxonomy entry
             // Insert root taxonomy entry
             // Insert root taxonomy entry
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__finder_taxonomy')
                 ->set([
                     'id'        => 1,
@@ -149,7 +154,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_taxonomy_map
         if (!$schema->tableExists('#__finder_taxonomy_map')) {
-            $schema->create('#__finder_taxonomy_map')
+            $schema
+                ->create('#__finder_taxonomy_map')
                 ->unsignedInteger('link_id')->nullable(false)
                 ->unsignedInteger('node_id')->nullable(false)
                 ->primaryKey(['link_id', 'node_id'])
@@ -161,7 +167,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_terms
         if (!$schema->tableExists('#__finder_terms')) {
-            $schema->create('#__finder_terms')
+            $schema
+                ->create('#__finder_terms')
                 ->increments('term_id')
                 ->primaryKey('term_id')
                 ->string('term', 75)->nullable(false)
@@ -181,7 +188,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_terms_common (no primary key)
         if (!$schema->tableExists('#__finder_terms_common')) {
-            $schema->create('#__finder_terms_common')
+            $schema
+                ->create('#__finder_terms_common')
                 ->string('term', 75)->nullable(false)
                 ->string('language', 3)->nullable(false)
                 ->index('idx_word_lang', ['term', 'language'])
@@ -195,7 +203,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_tokens (MEMORY engine - becomes regular table on SQLite)
         if (!$schema->tableExists('#__finder_tokens')) {
-            $schema->create('#__finder_tokens')
+            $schema
+                ->create('#__finder_tokens')
                 ->string('term', 75)->nullable(false)
                 ->string('stem', 75)->nullable(false)
                 ->unsignedTinyInteger('common')->nullable(false)->default(0)
@@ -210,7 +219,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_tokens_aggregate (MEMORY engine - becomes regular table on SQLite)
         if (!$schema->tableExists('#__finder_tokens_aggregate')) {
-            $schema->create('#__finder_tokens_aggregate')
+            $schema
+                ->create('#__finder_tokens_aggregate')
                 ->unsignedInteger('term_id')->nullable(false)
                 ->char('map_suffix', 1)->nullable(false)
                 ->string('term', 75)->nullable(false)
@@ -229,7 +239,8 @@ class Migration20130924000006ComFinder extends Base
 
         // Table: finder_types
         if (!$schema->tableExists('#__finder_types')) {
-            $schema->create('#__finder_types')
+            $schema
+                ->create('#__finder_types')
                 ->increments('id')
                 ->primaryKey('id')
                 ->string('title', 100)->nullable(false)
@@ -366,7 +377,8 @@ class Migration20130924000006ComFinder extends Base
         ];
 
         foreach ($terms as $term) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__finder_terms_common')
                 ->set([
                     'term'     => $term,

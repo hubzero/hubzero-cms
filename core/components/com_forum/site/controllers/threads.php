@@ -675,7 +675,8 @@ class Threads extends SiteController
         // Create NEW message object and send
         $message = new \Hubzero\Mail\Message();
 
-        $message->setSubject($subject)
+        $message
+            ->setSubject($subject)
             ->addFrom($from['email'], $from['name'])
             ->setTo($from['email'])
             ->setBcc($emails)

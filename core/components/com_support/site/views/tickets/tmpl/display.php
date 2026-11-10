@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 
 $live_site = rtrim(Request::base(), '/');
 
-$this->css()
+$this
+     ->css()
      ->css('conditions.css')
      ->js('jquery.hoverIntent.js', 'system')
      ->js('json2.js')
@@ -224,7 +225,8 @@ $this->css()
                         $statuses = [];
                         foreach ($this->rows as $row) {
                             // Was there any activity on this item?
-                            $lastcomment = $row->comments()
+                            $lastcomment = $row
+                                ->comments()
                                 ->order('created', 'desc')
                                 ->row()
                                 ->get('created');

@@ -55,7 +55,8 @@ class Latestblog extends Module
         }
 
         $archive = new Archive('site', 0);
-        $rows = $archive->entries($filters)
+        $rows = $archive
+            ->entries($filters)
             ->ordered()
             ->rows();
 

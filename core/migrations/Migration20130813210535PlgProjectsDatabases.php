@@ -24,7 +24,8 @@ class Migration20130813210535PlgProjectsDatabases extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__project_databases')) {
-            $schema->createTable('#__project_databases')
+            $schema
+                ->createTable('#__project_databases')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('project')
                 ->string('database_name', 64)
@@ -46,7 +47,8 @@ class Migration20130813210535PlgProjectsDatabases extends Base
         }
 
         if (!$schema->tableExists('#__project_database_versions')) {
-            $schema->createTable('#__project_database_versions')
+            $schema
+                ->createTable('#__project_database_versions')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('database_name', 64)
                 ->integer('version')->default(1)

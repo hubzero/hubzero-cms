@@ -14,7 +14,8 @@ defined('_HZEXEC_') or die('Restricted access');
 
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-$this->css()
+$this
+     ->css()
      ->js()
     ->js('download.js');
 

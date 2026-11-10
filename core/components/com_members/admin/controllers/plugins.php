@@ -142,7 +142,8 @@ class Plugins extends AdminController
             if (stripos($filters['search'], 'id:') === 0) {
                 $query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
             } else {
-                $query->whereLike($p . '.name', $filters['search'], 1)
+                $query
+                    ->whereLike($p . '.name', $filters['search'], 1)
                     ->orWhereLike($p . '.element', $filters['search'], 1)
                     ->resetDepth();
             }

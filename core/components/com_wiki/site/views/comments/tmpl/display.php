@@ -15,13 +15,15 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 if (!$this->sub) {
-    $this->css()
+    $this
+         ->css()
          ->js();
 }
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
-    $this->view('crumbs', 'pages')
+    $this
+        ->view('crumbs', 'pages')
         ->set('parents', $this->parents)
         ->display();
     ?>
@@ -29,7 +31,8 @@ if (!$this->sub) {
     <h2><?php echo $this->escape($this->page->title); ?></h2>
     <?php
     if (!$this->page->isStatic()) {
-        $this->view('authors', 'pages')
+        $this
+            ->view('authors', 'pages')
             //->setBasePath($this->base_path)
             ->set('page', $this->page)
             ->display();
@@ -41,7 +44,8 @@ if (!$this->sub) {
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu', 'pages')
+        $this
+            ->view('wikimenu', 'pages')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -58,7 +62,8 @@ if (!$this->sub) {
         <?php } ?>
 
         <?php
-        $this->view('submenu', 'pages')
+        $this
+            ->view('submenu', 'pages')
             //->setBasePath($this->base_path)
             ->set('option', $this->option)
             ->set('controller', $this->controller)
@@ -83,7 +88,8 @@ if (!$this->sub) {
                 $url = $this->page->link('comments');
                 $txt = Lang::txt('COM_WIKI_ALL');
 
-                $versions = $this->page->versions()
+                $versions = $this->page
+                    ->versions()
                     ->whereEquals('approved', 1)
                     ->order('version', 'asc')
                     ->rows();
@@ -119,7 +125,8 @@ if (!$this->sub) {
         <?php
         // Only the comments that start a thread. Each one renders its own
         // replies below it, so a reply listed here as well appears twice.
-        $model = $this->page->comments()
+        $model = $this->page
+            ->comments()
             ->including(['creator', function ($creator) {
                 $creator->select('*');
             }])
@@ -136,7 +143,8 @@ if (!$this->sub) {
             ->rows();
 
         if ($comments->count()) {
-            $this->view('_list', 'comments')
+            $this
+                ->view('_list', 'comments')
                 //->setBasePath($this->base_path)
                 ->set('parent', 0)
                 ->set('page', $this->page)

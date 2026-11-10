@@ -31,7 +31,8 @@ if ($namespace) {
     $filters['namespace'] = $namespace;
 }
 
-$rows = $this->book->pages($filters)
+$rows = $this->book
+    ->pages($filters)
     ->order('title', $dir)
     ->ordered()
     ->rows();

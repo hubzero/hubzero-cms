@@ -35,7 +35,8 @@ class Migration20150923000001ComStorefront extends Base
 
         if ($schema->hasColumn('#__storefront_product_collections', 'cllId')) {
             // renameColumn handles AUTO_INCREMENT appropriately for each database
-            $schema->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
+            $schema
+                ->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
                 ->integer()
                 ->notNull()
                 ->autoIncrement()

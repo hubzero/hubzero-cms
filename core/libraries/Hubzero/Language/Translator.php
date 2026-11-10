@@ -1112,7 +1112,8 @@ class Translator extends Obj
     public static function getLanguages($key = null)
     {
         $db = \Hubzero\Facades\App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('*')
             ->from('#__languages')
             ->where('published', '=', 1);
@@ -1384,7 +1385,8 @@ class Translator extends Obj
                 $cache = App::get('cache.store');
                 if (!$languages = $cache->get('com_languages.languages')) {
                     $db = App::get('db');
-                    $query = $db->getQuery()
+                    $query = $db
+                        ->getQuery()
                         ->select('*')
                         ->from('#__languages')
                         ->whereEquals('published', 1)
@@ -1433,7 +1435,8 @@ class Translator extends Obj
 
         if ($installed) {
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('element')
                 ->from('#__extensions')
                 ->whereEquals('type', 'language')
@@ -1596,7 +1599,8 @@ class Translator extends Obj
         if (!$tested) {
             // Determine status of language filter plug-in.
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('enabled')
                 ->from('#__extensions')
                 ->whereEquals('type', 'plugin')

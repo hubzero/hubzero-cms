@@ -44,7 +44,8 @@ class DeleteComponentEntry extends Macro
             }
 
             // Delete component entry
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete($table)
                 ->whereEquals('name', $name)
                 ->toString();
@@ -61,7 +62,8 @@ class DeleteComponentEntry extends Macro
 
             if ($this->db->tableExists('#__menu')) {
                 // Check for an admin menu entry...if it's not there, create it
-                $query = $this->db->getQuery()
+                $query = $this->db
+                    ->getQuery()
                     ->delete('#__menu')
                     ->whereEquals('menutype', 'main')
                     ->whereEquals('title', $name)
@@ -95,7 +97,8 @@ class DeleteComponentEntry extends Macro
         // If no parent is provided, try to find it.
         if ($parentId === null) {
             // Get the root item.
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu')
                 ->whereEquals('parent_id', 0)
@@ -110,7 +113,8 @@ class DeleteComponentEntry extends Macro
         }
 
         // Build the structure of the recursive query.
-        $rebuild = $this->db->getQuery()
+        $rebuild = $this->db
+            ->getQuery()
             ->select('id')
             ->select('alias')
             ->from('#__menu')
@@ -144,7 +148,8 @@ class DeleteComponentEntry extends Macro
 
         // We've got the left value, and now that we've processed
         // the children of this node we also know the right value.
-        $query = $this->db->getQuery()
+        $query = $this->db
+            ->getQuery()
             ->update('#__menu')
             ->set([
                 'lft'   => (int) $leftId,

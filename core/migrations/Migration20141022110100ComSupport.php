@@ -23,7 +23,8 @@ class Migration20141022110100ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_tickets')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select(['id', 'report'])
                 ->from('#__support_tickets')
                 ->where('created', '<', '2013-01-01 00:00:00')
@@ -40,7 +41,8 @@ class Migration20141022110100ComSupport extends Base
                         $row->summary .= '...';
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__support_tickets')
                         ->set(['report' => $row->report, 'summary' => $row->summary])
                         ->where('id', '=', $row->id)

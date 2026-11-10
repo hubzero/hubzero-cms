@@ -27,13 +27,15 @@ class Migration20140702071151ComBlog extends Base
         if (!$schema->hasColumn('#__blog_comments', 'state')) {
             $schema->addColumn('state')->tinyInteger()->notNull()->default(0);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', 0)
                 ->execute();
 
-            $ids = $this->db->getQuery(true)
+            $ids = $this->db
+                ->getQuery(true)
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -43,7 +45,8 @@ class Migration20140702071151ComBlog extends Base
             if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__blog_comments')
                     ->set(['state' => 3])
                     ->whereIn('id', $ids)

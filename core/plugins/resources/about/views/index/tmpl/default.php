@@ -73,12 +73,14 @@ $maintext = $this->model->description;
             //$shots = null;
         } else {
             // Screenshots
-            $ss = $this->model->screenshots()
+            $ss = $this->model
+                ->screenshots()
                 ->whereEquals('versionid', $this->model->versionid)
                 ->ordered()
                 ->rows();
 
-            $this->view('_screenshots')
+            $this
+                 ->view('_screenshots')
                  ->set('id', $this->model->id)
                  ->set('created', $this->model->created)
                  ->set('upath', $this->model->params->get('uploadpath'))

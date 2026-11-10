@@ -23,7 +23,8 @@ class Migration20160805180813ComSearch extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__search_blacklist')) {
-            $schema->createTable('#__search_blacklist')
+            $schema
+                ->createTable('#__search_blacklist')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 11)->default('')
                 ->integer('scope_id')

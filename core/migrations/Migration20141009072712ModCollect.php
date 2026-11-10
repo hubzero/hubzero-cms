@@ -27,7 +27,8 @@ class Migration20141009072712ModCollect extends Base
 
         $this->addModuleEntry('mod_collect', 1, '', 0);
 
-        $count = $this->db->getQuery(true)
+        $count = $this->db
+            ->getQuery(true)
             ->from('#__modules')
             ->where('module', '=', 'mod_collect')
             ->count();
@@ -36,7 +37,8 @@ class Migration20141009072712ModCollect extends Base
             $position = 'endpage';
             $found = false;
 
-            $count = $this->db->getQuery(true)
+            $count = $this->db
+                ->getQuery(true)
                 ->from('#__modules')
                 ->where('client_id', '=', 0)
                 ->where('position', '=', $position)
@@ -49,7 +51,8 @@ class Migration20141009072712ModCollect extends Base
             if (!$found) {
                 $position = 'footer';
 
-                $count = $this->db->getQuery(true)
+                $count = $this->db
+                    ->getQuery(true)
                     ->from('#__modules')
                     ->where('client_id', '=', 0)
                     ->where('position', '=', $position)

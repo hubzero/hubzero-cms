@@ -26,7 +26,8 @@ class Migration20150116111000ComPublications extends Base
             $schema->tableExists('#__publication_versions')
             && !$schema->hasColumn('#__publication_versions', 'archived')
         ) {
-            $schema->addColumn('#__publication_versions', 'archived')
+            $schema
+                ->addColumn('#__publication_versions', 'archived')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

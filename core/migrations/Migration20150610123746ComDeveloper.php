@@ -25,7 +25,8 @@ class Migration20150610123746ComDeveloper extends Base
 
         // add applications table
         if (!$schema->tableExists('#__developer_applications')) {
-            $schema->createTable('#__developer_applications')
+            $schema
+                ->createTable('#__developer_applications')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->text('description')->nullable()
@@ -45,7 +46,8 @@ class Migration20150610123746ComDeveloper extends Base
 
         // add application team members table
         if (!$schema->tableExists('#__developer_application_team_members')) {
-            $schema->createTable('#__developer_application_team_members')
+            $schema
+                ->createTable('#__developer_application_team_members')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('uidNumber')->nullable()
                 ->integer('application_id')->nullable()
@@ -57,7 +59,8 @@ class Migration20150610123746ComDeveloper extends Base
 
         // add access token table
         if (!$schema->tableExists('#__developer_access_tokens')) {
-            $schema->createTable('#__developer_access_tokens')
+            $schema
+                ->createTable('#__developer_access_tokens')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('application_id')
                 ->string('access_token', 40)
@@ -74,7 +77,8 @@ class Migration20150610123746ComDeveloper extends Base
 
         // add authorization codes table
         if (!$schema->tableExists('#__developer_authorization_codes')) {
-            $schema->createTable('#__developer_authorization_codes')
+            $schema
+                ->createTable('#__developer_authorization_codes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('application_id')
                 ->string('authorization_code', 40)
@@ -90,7 +94,8 @@ class Migration20150610123746ComDeveloper extends Base
 
         // add refresh tokens table
         if (!$schema->tableExists('#__developer_refresh_tokens')) {
-            $schema->createTable('#__developer_refresh_tokens')
+            $schema
+                ->createTable('#__developer_refresh_tokens')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('application_id')
                 ->string('refresh_token', 40)

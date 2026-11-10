@@ -41,7 +41,8 @@ class Publication extends Base
      */
     public function __construct($referenceid = 0)
     {
-        $this->set('referenceid', $referenceid)
+        $this
+             ->set('referenceid', $referenceid)
              ->set('category', 'publication')
              ->set('option', $this->segments['option']);
 

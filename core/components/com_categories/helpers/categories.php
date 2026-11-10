@@ -199,7 +199,8 @@ class Categories
         $query->select($case_when);
 
         $query->from('#__categories', 'c');
-        $query->whereEquals('c.extension', $extension, 1)
+        $query
+            ->whereEquals('c.extension', $extension, 1)
             ->orWhereEquals('c.extension', 'system', 1)
             ->resetDepth();
 
@@ -257,7 +258,8 @@ class Categories
         }
 
         // Group by
-        $query->group('c.id')
+        $query
+            ->group('c.id')
             ->group('c.asset_id')
             ->group('c.access')
             ->group('c.alias')

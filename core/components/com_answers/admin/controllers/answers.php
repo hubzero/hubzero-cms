@@ -102,7 +102,8 @@ class Answers extends AdminController
         if ($filters['search']) {
             $filters['search'] = strtolower((string) $filters['search']);
 
-            $records->whereLike('answer', $filters['search'], 1)
+            $records
+                ->whereLike('answer', $filters['search'], 1)
                 ->resetDepth();
         }
 

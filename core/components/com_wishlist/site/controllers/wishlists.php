@@ -2397,7 +2397,8 @@ class Wishlists extends SiteController
     {
         $database = App::get('db');
 
-        $query = $database->getQuery()
+        $query = $database
+            ->getQuery()
             ->select('id', 'value')
             ->select('name', 'text')
             ->from('#__users')

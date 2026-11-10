@@ -49,7 +49,8 @@ class AddTemplateEntry extends Macro
             }
 
             // First, see if it already exists
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->whereEquals('type', 'template')
@@ -61,7 +62,8 @@ class AddTemplateEntry extends Macro
             $this->db->setQuery($query);
 
             if (!$this->db->loadResult()) {
-                $query = $this->db->getQuery()
+                $query = $this->db
+                    ->getQuery()
                     ->insert('#__extensions')
                     ->values([
                         'name'           => $name,
@@ -89,7 +91,8 @@ class AddTemplateEntry extends Macro
                 if ($this->db->tableExists('#__template_styles')) {
                     // If we're setting this template to be default, disable others first
                     if ($home) {
-                        $query = $this->db->getQuery()
+                        $query = $this->db
+                            ->getQuery()
                             ->update('#__template_styles')
                             ->set([
                                 'home' => 0,
@@ -102,7 +105,8 @@ class AddTemplateEntry extends Macro
                         $this->log(sprintf('Disabling "home" for all other templates (client "%s")', $client));
                     }
 
-                    $query = $this->db->getQuery()
+                    $query = $this->db
+                        ->getQuery()
                         ->insert('#__template_styles')
                         ->values([
                             'template'  => $element,

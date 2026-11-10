@@ -18,7 +18,8 @@ $rparams = new \Hubzero\Config\Registry($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js');
 ?>
 <header id="content-header">
@@ -35,7 +36,8 @@ $this->css('create.css')
 
 <section class="main section">
     <?php
-        $this->view('steps')
+        $this
+             ->view('steps')
              ->set('option', $this->option)
              ->set('step', $this->step)
              ->set('steps', $this->steps)

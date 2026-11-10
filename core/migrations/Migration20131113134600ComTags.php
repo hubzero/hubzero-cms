@@ -24,7 +24,8 @@ class Migration20131113134600ComTags extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__tags')) {
-            $schema->alterTable('#__tags')
+            $schema
+                ->alterTable('#__tags')
                 ->modifyColumn('id')->integer()->unsigned()->notNull()->autoIncrement()
                 ->modifyColumn('raw_tag')->string(100)->notNull()->default('')
                 ->modifyColumn('description')->text()->notNull()
@@ -34,7 +35,8 @@ class Migration20131113134600ComTags extends Base
         }
 
         if ($schema->tableExists('#__tags_object')) {
-            $schema->alterTable('#__tags_object')
+            $schema
+                ->alterTable('#__tags_object')
                 ->modifyColumn('id')->integer()->unsigned()->notNull()->autoIncrement()
                 ->modifyColumn('objectid')->integer()->unsigned()->notNull()->default(0)
                 ->modifyColumn('tagid')->integer()->unsigned()->notNull()->default(0)
@@ -47,7 +49,8 @@ class Migration20131113134600ComTags extends Base
         }
 
         if ($schema->tableExists('#__tags_group')) {
-            $schema->alterTable('#__tags_group')
+            $schema
+                ->alterTable('#__tags_group')
                 ->modifyColumn('id')->integer()->unsigned()->notNull()->autoIncrement()
                 ->modifyColumn('groupid')->integer()->unsigned()->notNull()->default(0)
                 ->modifyColumn('tagid')->integer()->unsigned()->notNull()->default(0)
@@ -58,7 +61,8 @@ class Migration20131113134600ComTags extends Base
         }
 
         if ($schema->tableExists('#__tags_log')) {
-            $schema->alterTable('#__tags_log')
+            $schema
+                ->alterTable('#__tags_log')
                 ->modifyColumn('id')->integer()->unsigned()->notNull()->autoIncrement()
                 ->modifyColumn('tag_id')->integer()->unsigned()->notNull()->default(0)
                 ->modifyColumn('action')->string(50)->notNull()->default('')
@@ -71,7 +75,8 @@ class Migration20131113134600ComTags extends Base
         }
 
         if ($schema->tableExists('#__tags_substitute')) {
-            $schema->alterTable('#__tags_substitute')
+            $schema
+                ->alterTable('#__tags_substitute')
                 ->modifyColumn('tag_id')->integer()->unsigned()->notNull()->default(0)
                 ->modifyColumn('created_by')->integer()->unsigned()->notNull()->default(0)
                 ->modifyColumn('raw_tag')->string(100)->notNull()->default('')
@@ -91,27 +96,35 @@ class Migration20131113134600ComTags extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__tags')) {
-            $schema->table('#__tags')->alter()
+            $schema
+                ->table('#__tags')
+                ->alter()
                 ->dropIndex('idx_tag')
                 ->execute();
         }
 
         if ($schema->tableExists('#__tags_group')) {
-            $schema->table('#__tags_group')->alter()
+            $schema
+                ->table('#__tags_group')
+                ->alter()
                 ->dropIndex('idx_tagid')
                 ->dropIndex('idx_groupid')
                 ->execute();
         }
 
         if ($schema->tableExists('#__tags_log')) {
-            $schema->table('#__tags_log')->alter()
+            $schema
+                ->table('#__tags_log')
+                ->alter()
                 ->dropIndex('idx_tag_id')
                 ->dropIndex('idx_user_id')
                 ->execute();
         }
 
         if ($schema->tableExists('#__tags_substitute')) {
-            $schema->table('#__tags_substitute')->alter()
+            $schema
+                ->table('#__tags_substitute')
+                ->alter()
                 ->dropIndex('idx_tag_id')
                 ->dropIndex('idx_created_by')
                 ->dropIndex('idx_tag')

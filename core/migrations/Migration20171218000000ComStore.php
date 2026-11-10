@@ -81,7 +81,8 @@ class Migration20171218000000ComStore extends Base
         $this->addComponentEntry('store');
 
         if (!$schema->tableExists('#__store')) {
-            $schema->createTable('#__store')
+            $schema
+                ->createTable('#__store')
                 ->id()
                 ->string('title', 127)->default('')
                 ->integer('price')->default(0)
@@ -100,7 +101,8 @@ class Migration20171218000000ComStore extends Base
         }
 
         if (!$schema->tableExists('#__orders')) {
-            $schema->createTable('#__orders')
+            $schema
+                ->createTable('#__orders')
                 ->id()
                 ->integer('uid')->default(0)
                 ->string('type', 20)->nullable()
@@ -117,7 +119,8 @@ class Migration20171218000000ComStore extends Base
         }
 
         if (!$schema->tableExists('#__order_items')) {
-            $schema->createTable('#__order_items')
+            $schema
+                ->createTable('#__order_items')
                 ->id()
                 ->integer('oid')->default(0)
                 ->integer('uid')->default(0)
@@ -131,7 +134,8 @@ class Migration20171218000000ComStore extends Base
         }
 
         if (!$schema->tableExists('#__cart')) {
-            $schema->createTable('#__cart')
+            $schema
+                ->createTable('#__cart')
                 ->id()
                 ->integer('uid')->default(0)
                 ->integer('itemid')->default(0)

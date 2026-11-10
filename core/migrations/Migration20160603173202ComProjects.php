@@ -24,7 +24,8 @@ class Migration20160603173202ComProjects extends Base
 
         // Create the project_descriptions table
         if (!$schema->tableExists('#__project_descriptions')) {
-            $schema->createTable('#__project_descriptions')
+            $schema
+                ->createTable('#__project_descriptions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('project_id')
                 ->string('description_key', 100)->default('')
@@ -39,7 +40,8 @@ class Migration20160603173202ComProjects extends Base
 
         // Create the project_description_options table
         if (!$schema->tableExists('#__project_description_options')) {
-            $schema->createTable('#__project_description_options')
+            $schema
+                ->createTable('#__project_description_options')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('field_id')->default(0)
                 ->string('value', 255)->default('')
@@ -56,7 +58,8 @@ class Migration20160603173202ComProjects extends Base
 
         // Create the project_description_fields table
         if (!$schema->tableExists('#__project_description_fields')) {
-            $schema->createTable('#__project_description_fields')
+            $schema
+                ->createTable('#__project_description_fields')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 255)
                 ->string('name', 255)->default('')

@@ -49,7 +49,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
     {
         // Create revisionable_articles table
         $driver->dropTable('revisionable_articles', true);
-        $driver->createTable('revisionable_articles')
+        $driver
+            ->createTable('revisionable_articles')
             ->id()
             ->string('title', 255)
             ->string('content', 2048)
@@ -58,7 +59,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
 
         // Create revisionable_articles_revisions table
         $driver->dropTable('revisionable_articles_revisions', true);
-        $driver->createTable('revisionable_articles_revisions')
+        $driver
+            ->createTable('revisionable_articles_revisions')
             ->id()
             ->integer('article_id')
             ->integer('revision_number')
@@ -70,7 +72,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
 
         // Create revisionable_posts table
         $driver->dropTable('revisionable_posts', true);
-        $driver->createTable('revisionable_posts')
+        $driver
+            ->createTable('revisionable_posts')
             ->id()
             ->string('title', 255)
             ->string('body', 2048)
@@ -80,7 +83,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
 
         // Create post_history table
         $driver->dropTable('post_history', true);
-        $driver->createTable('post_history')
+        $driver
+            ->createTable('post_history')
             ->id()
             ->integer('post_id')
             ->integer('revision_number')

@@ -24,7 +24,8 @@ class Migration20150109180705ComUsers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__user_profiles') && $schema->hasColumn('#__user_profiles', 'profile_value')) {
-            $schema->modifyColumn('#__user_profiles', 'profile_value')
+            $schema
+                ->modifyColumn('#__user_profiles', 'profile_value')
                 ->text()
                 ->notNull()
                 ->execute();
@@ -39,7 +40,8 @@ class Migration20150109180705ComUsers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__user_profiles') && $schema->hasColumn('#__user_profiles', 'profile_value')) {
-            $schema->modifyColumn('#__user_profiles', 'profile_value')
+            $schema
+                ->modifyColumn('#__user_profiles', 'profile_value')
                 ->string(255)
                 ->notNull()
                 ->execute();

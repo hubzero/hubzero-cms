@@ -26,7 +26,8 @@ class Migration20140108233318ComGroups extends Base
 
         // a bunch of name changes
         if (!$schema->hasColumn('#__xgroups_pages', 'gidNumber')) {
-            $schema->alterTable('#__xgroups_pages')
+            $schema
+                ->alterTable('#__xgroups_pages')
                 ->renameColumn('gid', 'gidNumber')->integer()
                 ->renameColumn('url', 'alias')->string(100)
                 ->renameColumn('porder', 'ordering')->integer()
@@ -36,14 +37,16 @@ class Migration20140108233318ComGroups extends Base
                 ->addColumn('template')->string(100)
                 ->execute();
 
-            $schema->alterTable('#__xgroups_pages_hits')
+            $schema
+                ->alterTable('#__xgroups_pages_hits')
                 ->renameColumn('gid', 'gidNumber')->integer()
                 ->renameColumn('pid', 'pageid')->integer()
                 ->renameColumn('uid', 'userid')->integer()
                 ->renameColumn('datetime', 'date')->datetime()
                 ->execute();
 
-            $schema->alterTable('#__xgroups_log')
+            $schema
+                ->alterTable('#__xgroups_log')
                 ->renameColumn('gid', 'gidNumber')->integer()
                 ->renameColumn('uid', 'userid')->integer()
                 ->execute();
@@ -51,7 +54,8 @@ class Migration20140108233318ComGroups extends Base
 
         // create page versions table
         if (!$schema->tableExists('#__xgroups_pages_versions')) {
-            $schema->createTable('#__xgroups_pages_versions')
+            $schema
+                ->createTable('#__xgroups_pages_versions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('pageid')->nullable()
                 ->integer('version')->nullable()
@@ -71,7 +75,8 @@ class Migration20140108233318ComGroups extends Base
 
         // create page category table
         if (!$schema->tableExists('#__xgroups_pages_categories')) {
-            $schema->createTable('#__xgroups_pages_categories')
+            $schema
+                ->createTable('#__xgroups_pages_categories')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('gidNumber')->nullable()
                 ->string('title', 255)->nullable()
@@ -84,7 +89,8 @@ class Migration20140108233318ComGroups extends Base
 
         // create modules table
         if (!$schema->tableExists('#__xgroups_modules')) {
-            $schema->createTable('#__xgroups_modules')
+            $schema
+                ->createTable('#__xgroups_modules')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('gidNumber')->nullable()
                 ->string('title', 255)->default('')
@@ -109,7 +115,8 @@ class Migration20140108233318ComGroups extends Base
 
         // create modules menu table
         if (!$schema->tableExists('#__xgroups_modules_menu')) {
-            $schema->createTable('#__xgroups_modules_menu')
+            $schema
+                ->createTable('#__xgroups_modules_menu')
                 ->integer('moduleid')->nullable()
                 ->integer('pageid')->nullable()
                 ->engine('MyISAM')
@@ -119,7 +126,8 @@ class Migration20140108233318ComGroups extends Base
 
         // remove content field from pages table
         if ($schema->hasColumn('#__xgroups_pages', 'content')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__xgroups_pages_versions')
                 ->columns([
                     'pageid',
@@ -132,7 +140,8 @@ class Migration20140108233318ComGroups extends Base
                     'approved_by',
                 ])
                 ->fromSelect(
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->select([
                             'id as pageid',
                             '1',
@@ -151,7 +160,8 @@ class Migration20140108233318ComGroups extends Base
         // if the groups table still has the home page overview content
         if ($schema->hasColumn('#__xgroups', 'overview_type')) {
             // get list of groups
-            $groups = $this->db->getQuery(true)
+            $groups = $this->db
+                ->getQuery(true)
                 ->select(['gidNumber', 'overview_type', 'overview_content'])
                 ->from('#__xgroups')
                 ->whereIn('type', [1, 3])
@@ -162,7 +172,8 @@ class Migration20140108233318ComGroups extends Base
                 // if group has overview content
                 if (trim((string) $group->overview_content) != '') {
                     // create page to store page info
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xgroups_pages')
                         ->columns(['gidNumber', 'alias', 'title', 'ordering', 'state', 'privacy', 'home'])
                         ->values([
@@ -179,7 +190,8 @@ class Migration20140108233318ComGroups extends Base
                     $pageId = $this->db->insertid();
 
                     // create page version to store page content
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xgroups_pages_versions')
                         ->columns([
                             'pageid',
@@ -210,7 +222,8 @@ class Migration20140108233318ComGroups extends Base
             }
 
             if ($schema->hasColumn('#__xgroups', 'overview_type')) {
-                $schema->alterTable('#__xgroups')
+                $schema
+                    ->alterTable('#__xgroups')
                     ->dropColumn('overview_type')
                     ->dropColumn('overview_content')
                     ->execute();
@@ -227,7 +240,8 @@ class Migration20140108233318ComGroups extends Base
 
         //add overview type back
         if (!$schema->hasColumn('#__xgroups', 'overview_type')) {
-            $schema->alterTable('#__xgroups')
+            $schema
+                ->alterTable('#__xgroups')
                 ->addColumn('overview_type')->integer()
                 ->addColumn('overview_content')->text()
                 ->execute();
@@ -237,7 +251,8 @@ class Migration20140108233318ComGroups extends Base
         if (!$schema->hasColumn('#__xgroups_pages', 'content')) {
             $schema->addColumn('#__xgroups_pages', 'content')->text();
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__xgroups_pages');
 
@@ -245,7 +260,8 @@ class Migration20140108233318ComGroups extends Base
 
             if ($pages) {
                 foreach ($pages as $page) {
-                    $content = $this->db->getQuery(true)
+                    $content = $this->db
+                        ->getQuery(true)
                         ->select('content')
                         ->from('#__xgroups_pages_versions')
                         ->where('pageid', '=', $page->id)
@@ -253,7 +269,8 @@ class Migration20140108233318ComGroups extends Base
                         ->value('content');
 
                     if ($content) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__xgroups_pages')
                             ->set(['content' => $content])
                             ->where('id', '=', $page->id)
@@ -265,7 +282,8 @@ class Migration20140108233318ComGroups extends Base
 
         //move home content back to xgroups table and delete those records
         if ($schema->hasColumn('#__xgroups_pages', 'home')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('gidNumber')
                 ->from('#__xgroups');
 
@@ -273,7 +291,8 @@ class Migration20140108233318ComGroups extends Base
 
             if ($groups) {
                 foreach ($groups as $group) {
-                    $page = $this->db->getQuery(true)
+                    $page = $this->db
+                        ->getQuery(true)
                         ->select('content, home')
                         ->from('#__xgroups_pages')
                         ->where('gidNumber', '=', $group->gidNumber)
@@ -281,7 +300,8 @@ class Migration20140108233318ComGroups extends Base
                         ->first();
 
                     if ($page) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__xgroups')
                             ->set([
                                 'overview_content' => $page->content,
@@ -293,7 +313,8 @@ class Migration20140108233318ComGroups extends Base
                 }
             }
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__xgroups_pages')
                 ->where('alias', '=', 'home_page')
                 ->execute();
@@ -301,7 +322,8 @@ class Migration20140108233318ComGroups extends Base
 
         // a bunch of name changes
         if ($schema->hasColumn('#__xgroups_pages', 'gidNumber')) {
-            $schema->alterTable('#__xgroups_pages')
+            $schema
+                ->alterTable('#__xgroups_pages')
                 ->renameColumn('gidNumber', 'gid')->integer()
                 ->renameColumn('alias', 'url')->string(100)
                 ->renameColumn('ordering', 'porder')->integer()
@@ -311,14 +333,16 @@ class Migration20140108233318ComGroups extends Base
                 ->dropColumn('template')
                 ->execute();
 
-            $schema->alterTable('#__xgroups_pages_hits')
+            $schema
+                ->alterTable('#__xgroups_pages_hits')
                 ->renameColumn('gidNumber', 'gid')->integer()
                 ->renameColumn('pageid', 'pid')->integer()
                 ->renameColumn('userid', 'uid')->integer()
                 ->renameColumn('date', 'datetime')->datetime()
                 ->execute();
 
-            $schema->alterTable('#__xgroups_log')
+            $schema
+                ->alterTable('#__xgroups_log')
                 ->renameColumn('gidNumber', 'gid')->integer()
                 ->renameColumn('userid', 'uid')->integer()
                 ->execute();

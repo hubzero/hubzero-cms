@@ -168,7 +168,8 @@ $this->css('import');
                         </td>
                         <td>
                             <?php
-                                $lastRun = $import->runs()
+                                $lastRun = $import
+                                    ->runs()
                                     ->whereEquals('import_id', $import->get('id'))
                                     ->whereEquals('dry_run', 0)
                                     ->ordered()
@@ -190,7 +191,8 @@ $this->css('import');
                         </td>
                         <td class="priority-4">
                             <?php
-                                $runs = $import->runs()
+                                $runs = $import
+                                    ->runs()
                                     ->whereEquals('import_id', $import->get('id'))
                                     ->whereEquals('dry_run', 0)
                                     ->total();

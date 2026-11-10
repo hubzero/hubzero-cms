@@ -13,13 +13,15 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$page = $this->book->pages()
+$page = $this->book
+    ->pages()
     ->whereEquals('pagename', Request::getString('page', ''))
     ->whereEquals('path', Request::getString('path', ''))
     ->row();
 
 if ($v = Request::getInt('version', 0)) {
-    $revision = $page->versions()
+    $revision = $page
+        ->versions()
         ->whereEquals('id', $v)
         ->row();
 } else {

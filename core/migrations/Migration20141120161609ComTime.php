@@ -31,12 +31,14 @@ class Migration20141120161609ComTime extends Base
         $cols = $schema->getTableColumns('#__time_records', false);
 
         if ($cols['date']->Type == 'date') {
-            $schema->modifyColumn('#__time_records', 'date')
+            $schema
+                ->modifyColumn('#__time_records', 'date')
                 ->datetime()
                 ->notNull()
                 ->execute();
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'date'])
                 ->from('#__time_records')
                 ->loadObjectList();
@@ -51,7 +53,8 @@ class Migration20141120161609ComTime extends Base
                         new \Hubzero\Utility\Date($result->date, App::get('config')->get('offset')),
                     )->toSql();
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__time_records')
                         ->set(['date' => $date])
                         ->where('id', '=', (int) $result->id)
@@ -67,13 +70,15 @@ class Migration20141120161609ComTime extends Base
         }
 
         if ($schema->hasColumn('#__time_records', 'date') && !$schema->hasColumn('#__time_records', 'end')) {
-            $schema->addColumn('#__time_records', 'end')
+            $schema
+                ->addColumn('#__time_records', 'end')
                 ->datetime()
                 ->notNull()
                 ->after('date')
                 ->execute();
 
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['id', 'date', 'time'])
                 ->from('#__time_records')
                 ->loadObjectList();
@@ -86,7 +91,8 @@ class Migration20141120161609ComTime extends Base
                 foreach ($results as $result) {
                     $date = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__time_records')
                         ->set(['end' => $date])
                         ->where('id', '=', (int) $result->id)

@@ -34,7 +34,8 @@ class ContentLanguages extends Select
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.lang_code', 'value')
             ->select('a.title', 'title')
             ->select('a.title_native')

@@ -95,7 +95,8 @@ class Watch extends Plugin
     protected function statusAction()
     {
         // Instantiate a view
-        $view = $this->view('default', 'index')
+        $view = $this
+            ->view('default', 'index')
             ->set('resource', $this->resource)
             ->set('link', $this->link)
             ->set('watched', \Hubzero\Activity\Subscription::oneByScope(

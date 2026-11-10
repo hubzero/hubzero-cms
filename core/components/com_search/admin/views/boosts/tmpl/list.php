@@ -20,18 +20,21 @@ $toolbarElements = [
     'preferences' => [$this->option, '550'],
 ];
 
-$this->view('_toolbar', 'shared')
+$this
+    ->view('_toolbar', 'shared')
     ->set('elements', $toolbarElements)
     ->display();
 
-$this->view('_submenu', 'shared')
+$this
+    ->view('_submenu', 'shared')
     ->display();
 
 $boosts = $this->boosts;
 $sortField = $this->sortField;
 $sortDirection = $this->sortDirection;
 
-$this->view('_tag_search_notice')
+$this
+    ->view('_tag_search_notice')
     ->display();
 ?>
 
@@ -41,7 +44,8 @@ $this->view('_tag_search_notice')
     id="adminForm">
 
     <?php
-        $this->view('_boosts_list')
+        $this
+            ->view('_boosts_list')
             ->set('boosts', $boosts)
             ->set('sortField', $sortField)
             ->set('sortDirection', $sortDirection)

@@ -59,7 +59,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         }
 
         $schema = $driver->schema();
-        $schema->createTable('np_users')
+        $schema
+            ->createTable('np_users')
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -67,7 +68,8 @@ class NamedParametersTest extends AbstractDriverTestCase
             ->integer('user_id')->nullable()
             ->execute();
 
-        $schema->createTable('np_posts')
+        $schema
+            ->createTable('np_posts')
             ->id()
             ->integer('user_id')
             ->string('title', 255)
@@ -267,7 +269,8 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         // This triggers conversion because we have named inline params,
         // but :other is not in the params array
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('np_users')
               ->whereRaw('name = :name AND email = :other', ['name' => 'Test']); // Missing :other
     }
@@ -282,7 +285,8 @@ class NamedParametersTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->setParameters(['id' => 1])
+        $query
+              ->setParameters(['id' => 1])
               ->setParameters(['name' => 'Test User']); // Adds to existing
 
         $params = $query->getNamedParameters();
@@ -301,7 +305,8 @@ class NamedParametersTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->setParameter('id', 1)
+        $query
+              ->setParameter('id', 1)
               ->setParameter('id', 2);
 
         $params = $query->getNamedParameters();
@@ -347,7 +352,8 @@ class NamedParametersTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $query->select('*')
+        $query
+              ->select('*')
               ->from('np_users')
               ->whereRaw('name = :name AND email = :email', [
                   'name' => 'Test User',
@@ -377,7 +383,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+              ->select('*')
               ->from('np_users')
               ->whereRaw('name = :name AND email = :email', [
                   'name' => 'Test User',
@@ -401,7 +408,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->setParameter('name', 'Test User')
+        $results = $query
+              ->setParameter('name', 'Test User')
               ->setParameter('email', 'test@test.com')
               ->select('*')
               ->from('np_users')
@@ -425,7 +433,8 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         // Set name to 'Test User' via stored param
-        $results = $query->setParameter('name', 'Test User')
+        $results = $query
+              ->setParameter('name', 'Test User')
               ->select('*')
               ->from('np_users')
               // Override with 'Admin' via inline
@@ -447,7 +456,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+              ->select('*')
               ->from('np_posts')
               ->whereRaw('user_id = :uid OR user_id = :uid', ['uid' => 1])
               ->fetch('rows');
@@ -467,7 +477,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+              ->select('*')
               ->from('np_users')
               ->whereEquals('id', 1)
               ->orWhereRaw('name = :name', ['name' => 'Admin'])
@@ -488,7 +499,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('*')
+        $results = $query
+              ->select('*')
               ->from('np_users')
               ->whereRaw('name = ? AND email = ?', ['Test User', 'test@test.com'])
               ->fetch('rows');
@@ -515,7 +527,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $cast = $this->integerCastType($driver);
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
-        $results = $query->selectRaw("id + CAST(:offset AS $cast)", ['offset' => 100])
+        $results = $query
+              ->selectRaw("id + CAST(:offset AS $cast)", ['offset' => 100])
               ->from('np_users')
               ->fetch('rows');
 
@@ -542,7 +555,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $cast = $this->integerCastType($driver);
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
-        $results = $query->setParameter('offset', 100)
+        $results = $query
+              ->setParameter('offset', 100)
               ->selectRaw("id + CAST(:offset AS $cast)")
               ->from('np_users')
               ->fetch('rows');
@@ -566,7 +580,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->selectRaw('COUNT(*)')
+        $results = $query
+              ->selectRaw('COUNT(*)')
               ->from('np_users')
               ->fetch('rows');
 
@@ -589,7 +604,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->selectRaw('COALESCE(id, ?)', [0])
+        $results = $query
+              ->selectRaw('COALESCE(id, ?)', [0])
               ->from('np_users')
               ->fetch('rows');
 
@@ -616,7 +632,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('user_id')
+        $results = $query
+              ->select('user_id')
               ->selectRaw('COUNT(*)', [], 'cnt')
               ->from('np_posts')
               ->group('user_id')
@@ -639,7 +656,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->setParameter('min_count', 2)
+        $results = $query
+              ->setParameter('min_count', 2)
               ->select('user_id')
               ->selectRaw('COUNT(*)', [], 'cnt')
               ->from('np_posts')
@@ -663,7 +681,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('user_id')
+        $results = $query
+              ->select('user_id')
               ->selectRaw('COUNT(*)', [], 'cnt')
               ->from('np_posts')
               ->group('user_id')
@@ -686,7 +705,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $results = $query->select('user_id')
+        $results = $query
+              ->select('user_id')
               ->selectRaw('COUNT(*)', [], 'cnt')
               ->from('np_posts')
               ->group('user_id')
@@ -716,7 +736,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $cast = $this->integerCastType($driver);
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
-        $results = $query->setParameter('offset', 100)
+        $results = $query
+              ->setParameter('offset', 100)
               ->setParameter('user_id', 1)
               ->setParameter('name', 'Test User')
               ->selectRaw("id + CAST(:offset AS $cast)")

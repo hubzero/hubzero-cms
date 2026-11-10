@@ -69,7 +69,8 @@ class Source extends Obj
             $result = false;
 
             // Get the template information.
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('extension_id')
                 ->select('client_id')
                 ->select('element')

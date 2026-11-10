@@ -257,7 +257,8 @@ class Oauth
             'grant_type'    => 'authorization_code',
         ];
 
-        $this->http->setUrl($url)
+        $this->http
+                   ->setUrl($url)
                    ->setPostFields($fields)
                    ->setHeader(['Accept' => 'application/json']);
 

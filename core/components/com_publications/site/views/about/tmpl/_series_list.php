@@ -20,7 +20,8 @@ $series = $this->series;
     <ul class="element-list">
     <?php
     foreach ($series as $seriesData) :
-        $this->view('_series_item')
+        $this
+            ->view('_series_item')
             ->set('series', $seriesData)
             ->display();
     endforeach;

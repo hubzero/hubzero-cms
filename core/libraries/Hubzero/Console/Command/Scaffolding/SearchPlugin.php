@@ -68,7 +68,8 @@ class SearchPlugin extends Scaffolding
             App::get('filesystem')->makeDirectory($installDir . DS . $extension);
         }
 
-        $this->addTemplateFile("{$this->getType()}.tmpl", $destination)
+        $this
+             ->addTemplateFile("{$this->getType()}.tmpl", $destination)
              ->addReplacement('class_name', $classname)
              ->make();
     }

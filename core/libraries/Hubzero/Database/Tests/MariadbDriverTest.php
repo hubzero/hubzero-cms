@@ -649,7 +649,8 @@ class MariadbDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('mdb_items')
             ->order('id', 'asc')
@@ -669,11 +670,13 @@ class MariadbDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('mdb_items')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('mdb_categories')
                     ->whereEquals('active', 1);
             })
@@ -718,7 +721,8 @@ class MariadbDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $driver->createTable('mdb_ddl_test')
+        $driver
+            ->createTable('mdb_ddl_test')
             ->id()
             ->string('name', 100)
             ->integer('score')->default(0)->nullable()

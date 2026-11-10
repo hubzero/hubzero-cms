@@ -105,7 +105,8 @@ class Migration20150916164629ComStorefront extends Base
         }
 
         if (!$schema->tableExists('#__storefront_images')) {
-            $schema->createTable('#__storefront_images')
+            $schema
+                ->createTable('#__storefront_images')
                 ->unsignedInteger('imgId', ['autoIncrement' => true])
                 ->char('imgName', 255)->nullable()
                 ->char('imgObject', 25)->nullable()

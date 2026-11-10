@@ -25,14 +25,16 @@ class Migration20150601185958ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_tickets')) {
-            $subquery = $this->db->getQuery(true)
+            $subquery = $this->db
+                ->getQuery(true)
                 ->select('created')
                 ->from('#__support_comments', 'c')
                 ->where('c.ticket', '=', Expression::column('t.id'))
                 ->order('c.created', 'DESC')
                 ->limit(1);
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_tickets', 't')
                 ->set(['t.closed' => $subquery])
                 ->where('t.open', '=', 0)

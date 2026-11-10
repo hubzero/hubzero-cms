@@ -24,7 +24,8 @@ class Migration20161005104752ComWiki extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__wiki_versions') && $schema->tableExists('#__wiki_pages')) {
-            $versions = $this->db->getQuery(true)
+            $versions = $this->db
+                ->getQuery(true)
                 ->select('v.id, v.pagetext, v.pagehtml')
                 ->from('#__wiki_versions', 'v')
                 ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
@@ -44,7 +45,8 @@ class Migration20161005104752ComWiki extends Base
                     $version->pagehtml,
                 );
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wiki_versions')
                     ->set(['pagetext' => $version->pagetext])
                     ->where('id', '=', $version->id)
@@ -61,7 +63,8 @@ class Migration20161005104752ComWiki extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__wiki_versions') && $schema->tableExists('#__wiki_pages')) {
-            $versions = $this->db->getQuery(true)
+            $versions = $this->db
+                ->getQuery(true)
                 ->select('v.id, v.pagetext, v.pagehtml')
                 ->from('#__wiki_versions', 'v')
                 ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
@@ -81,7 +84,8 @@ class Migration20161005104752ComWiki extends Base
                     $version->pagehtml,
                 );
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wiki_versions')
                     ->set(['pagetext' => $version->pagetext])
                     ->where('id', '=', $version->id)

@@ -18,7 +18,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('jquery.ui.css', 'system')
      ->js('jquery.timepicker.js', 'system')
     ->js('ticket.js')
@@ -646,7 +647,8 @@ $cc = [];
                         </div>
                         <div class="field-wrap file-list" id="ajax-uploader-list">
                             <?php
-                            $this->view('list', 'media')
+                            $this
+                                ->view('list', 'media')
                                 ->set('model', $this->comment)
                                 ->set('comment', $tmp)
                                 ->set('ticket', $this->row->get('id'))

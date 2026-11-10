@@ -367,7 +367,8 @@ class Jobs extends SiteController
 
             // Show latest jobs
             $view = new View(['name' => 'jobs', 'layout' => 'latest']);
-            $view->set('option', $this->option)
+            $view
+             ->set('option', $this->option)
              ->set('filters', $filters)
              ->set('config', $this->config)
              ->set('task', $this->task)
@@ -472,7 +473,8 @@ class Jobs extends SiteController
             $this->view->filters     = $filters;
             $this->view->emp         = $this->_emp;
             $this->view->option      = $this->option;
-            $this->view->setName('resumes')
+            $this->view
+                        ->setName('resumes')
                         ->setLayout('default')
                         ->display();
         } elseif ($this->_allowSubscriptions) {
@@ -608,7 +610,8 @@ class Jobs extends SiteController
             Notify::error($this->getError());
         }
 
-        $this->view->setName('subscribe')
+        $this->view
+                    ->setName('subscribe')
                     ->setLayout('default')
                     ->display();
     }
@@ -969,7 +972,8 @@ class Jobs extends SiteController
             Notify::error($this->getError());
         }
 
-        $this->view->setName('dashboard')
+        $this->view
+                    ->setName('dashboard')
                     ->setLayout('default')
                     ->display();
     }
@@ -1302,7 +1306,8 @@ class Jobs extends SiteController
             Notify::error($this->getError());
         }
 
-        $this->view->setName('job')
+        $this->view
+                    ->setName('job')
                     ->setLayout('default')
                     ->display();
     }
@@ -1647,7 +1652,8 @@ class Jobs extends SiteController
             Notify::error($this->getError());
         }
 
-        $this->view->setName('editjob')
+        $this->view
+                    ->setName('editjob')
                     ->setLayout('default')
                     ->display();
     }

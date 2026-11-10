@@ -24,7 +24,9 @@ class Migration20130703075132ComCourses extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__courses_pages', 'porder')) {
-            $schema->alterTable('#__courses_pages')->renameColumn('porder', 'ordering')
+            $schema
+                ->alterTable('#__courses_pages')
+                ->renameColumn('porder', 'ordering')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -40,7 +42,8 @@ class Migration20130703075132ComCourses extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__courses_pages', 'ordering')) {
-            $schema->renameColumn('#__courses_pages', 'ordering', 'porder')
+            $schema
+                ->renameColumn('#__courses_pages', 'ordering', 'porder')
                 ->integer()
                 ->notNull()
                 ->default(0)

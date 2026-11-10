@@ -36,7 +36,8 @@ class Migration20160920143801ComSupport extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__support_resolutions')) {
-            $schema->createTable('#__support_resolutions')
+            $schema
+                ->createTable('#__support_resolutions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 100)->default('')
                 ->string('alias', 100)->default('')

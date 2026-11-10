@@ -24,7 +24,8 @@ class Migration20150918121036ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xprofiles_reasons')) {
-            $schema->createTable('#__xprofiles_reasons')
+            $schema
+                ->createTable('#__xprofiles_reasons')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('reason', 255)->nullable()
                 ->primaryKey('id')
@@ -34,12 +35,14 @@ class Migration20150918121036ComMembers extends Base
         }
 
         if ($schema->tableExists('#__xprofiles_reasons')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->from('#__xprofiles_reasons');
             $rows = $query->count();
 
             if (!$rows) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__xprofiles_reasons')
                     ->values([
                         ['id' => 1, 'reason' => 'Required for class'],

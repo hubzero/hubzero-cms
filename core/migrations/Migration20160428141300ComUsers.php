@@ -30,7 +30,8 @@ class Migration20160428141300ComUsers extends Base
             $schema->modifyColumn('#__users', 'activation')->integer()->notNull()->default(0)->execute();
 
             // Update activation from xprofiles
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.activation', 'x.emailConfirmed')
@@ -43,7 +44,8 @@ class Migration20160428141300ComUsers extends Base
         ) {
             $schema->addColumn('#__users', 'givenName')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.givenName', 'x.givenName')
@@ -56,7 +58,8 @@ class Migration20160428141300ComUsers extends Base
         ) {
             $schema->addColumn('#__users', 'middleName')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.middleName', 'x.middleName')
@@ -66,7 +69,8 @@ class Migration20160428141300ComUsers extends Base
         if (!$schema->hasColumn('#__users', 'surname') && $schema->hasColumn('#__xprofiles', 'surname')) {
             $schema->addColumn('#__users', 'surname')->string()->notNull()->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.surname', 'x.surname')
@@ -79,7 +83,8 @@ class Migration20160428141300ComUsers extends Base
         ) {
             $schema->addColumn('#__users', 'usageAgreement')->tinyInteger()->notNull()->default(0)->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users AS u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.usageAgreement', 'x.usageAgreement')
@@ -95,7 +100,8 @@ class Migration20160428141300ComUsers extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__users', 'activation')) {
-            $schema->modifyColumn('#__users', 'activation')
+            $schema
+                ->modifyColumn('#__users', 'activation')
                 ->string(100)
                 ->notNull()
                 ->execute();

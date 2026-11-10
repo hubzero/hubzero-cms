@@ -102,7 +102,8 @@ class Polls extends SiteController
 
         // Check if there is a poll corresponding to id and if poll is published
         if ($poll->get('id')) {
-            $dates = $poll->dates()
+            $dates = $poll
+                ->dates()
                 ->select('MIN(date)', 'mindate')
                 ->select('MAX(date)', 'maxdate')
                 ->row();
@@ -112,7 +113,8 @@ class Polls extends SiteController
                 $last_vote  = Date::of($dates->get('maxdate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
             }
 
-            $votes = $poll->options()
+            $votes = $poll
+                ->options()
                 ->where('text', '!=', '')
                 ->order('hits', 'desc')
                 ->rows()
@@ -216,7 +218,8 @@ class Polls extends SiteController
             App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
 
-        $options = $poll->options()
+        $options = $poll
+            ->options()
             ->where('text', '!=', '')
             ->order('hits', 'desc')
             ->ordered()

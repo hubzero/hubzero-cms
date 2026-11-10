@@ -24,10 +24,12 @@ Toolbar::spacer();
 
 $option = $this->option;
 
-$this->view('_submenu', 'shared')
+$this
+    ->view('_submenu', 'shared')
     ->display();
 
-$this->css('edit')
+$this
+    ->css('edit')
     ->css('jquery.timepicker.css', 'system')
     ->js('jquery.timepicker', 'system')
     ->js('editsearchable');

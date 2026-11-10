@@ -26,7 +26,8 @@ class Migration20131024114858ComCourses extends Base
             $schema->tableExists('#__courses_members')
             && !$schema->hasColumn('#__courses_members', 'first_visit')
         ) {
-            $schema->addColumn('#__courses_members', 'first_visit')
+            $schema
+                ->addColumn('#__courses_members', 'first_visit')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')

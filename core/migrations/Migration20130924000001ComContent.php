@@ -27,7 +27,8 @@ class Migration20130924000001ComContent extends Base
 
         // Add new columns with position (MySQL-specific)
         if (!$schema->hasColumn('#__content', 'asset_id') && $schema->hasColumn('#__content', 'id')) {
-            $schema->addColumn('#__content', 'asset_id')
+            $schema
+                ->addColumn('#__content', 'asset_id')
                 ->integer()
                 ->unsigned()
                 ->notNull()
@@ -36,7 +37,8 @@ class Migration20130924000001ComContent extends Base
                 ->execute();
         }
         if (!$schema->hasColumn('#__content', 'featured') && $schema->hasColumn('#__content', 'metadata')) {
-            $schema->addColumn('#__content', 'featured')
+            $schema
+                ->addColumn('#__content', 'featured')
                 ->tinyInteger()
                 ->unsigned()
                 ->notNull()
@@ -48,14 +50,16 @@ class Migration20130924000001ComContent extends Base
             $schema->addIndex('#__content', 'idx_featured_catid', ['featured', 'catid']);
         }
         if (!$schema->hasColumn('#__content', 'language') && $schema->hasColumn('#__content', 'featured')) {
-            $schema->addColumn('#__content', 'language')
+            $schema
+                ->addColumn('#__content', 'language')
                 ->char(7)
                 ->notNull()
                 ->after('featured')
                 ->execute();
         }
         if (!$schema->hasColumn('#__content', 'xreference') && $schema->hasColumn('#__content', 'language')) {
-            $schema->addColumn('#__content', 'xreference')
+            $schema
+                ->addColumn('#__content', 'xreference')
                 ->string(50)
                 ->notNull()
                 ->after('language')
@@ -63,7 +67,9 @@ class Migration20130924000001ComContent extends Base
         }
 
         // Batch index and column modifications
-        $schema->table('#__content')->alter()
+        $schema
+            ->table('#__content')
+            ->alter()
             ->addIndex('idx_language', 'language')
             ->addIndex('idx_xreference', 'xreference')
             ->dropIndex('idx_section')
@@ -109,7 +115,8 @@ class Migration20130924000001ComContent extends Base
             ->execute();
 
         // modifyColumn handles AUTO_INCREMENT appropriately for each database
-        $schema->modifyColumn('#__content', 'id')
+        $schema
+            ->modifyColumn('#__content', 'id')
             ->integer()
             ->unsigned()
             ->notNull()
@@ -117,7 +124,9 @@ class Migration20130924000001ComContent extends Base
             ->execute();
 
         // Batch content_rating modifications
-        $schema->table('#__content_rating')->alter()
+        $schema
+            ->table('#__content_rating')
+            ->alter()
             ->modifyColumn('rating_sum', function ($column) {
                 $column->integer()->unsigned()->notNull()->default(0);
             })
@@ -128,7 +137,8 @@ class Migration20130924000001ComContent extends Base
 
         // Update "uncategorised" cat_id from 0
         // Update "uncategorised" cat_id from 0
-        $id = $this->db->getQuery(true)
+        $id = $this->db
+            ->getQuery(true)
             ->select('id')
             ->from('#__categories')
             ->where('extension', '=', 'com_content')
@@ -136,7 +146,8 @@ class Migration20130924000001ComContent extends Base
             ->value('id');
 
         if (is_numeric($id)) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__content')
                 ->set(['catid' => $id])
                 ->where('catid', '=', 0)
@@ -146,7 +157,8 @@ class Migration20130924000001ComContent extends Base
         // Convert params to json
         // Convert params to json
         // Convert params to json
-        $results = $this->db->getQuery(true)
+        $results = $this->db
+            ->getQuery(true)
             ->select(['id', 'attribs'])
             ->from('#__content')
             ->beginOrGroup()
@@ -175,7 +187,8 @@ class Migration20130924000001ComContent extends Base
                     $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__content')
                     ->set(['attribs' => json_encode($array)])
                     ->where('id', '=', $r->id)

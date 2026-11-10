@@ -98,7 +98,8 @@ class Posts extends AdminController
 
             $model->join($i, $i . '.id', $p . '.item_id', 'left');
 
-            $model->whereLike($p . '.description', strtolower((string) $filters['search']), 1)
+            $model
+                ->whereLike($p . '.description', strtolower((string) $filters['search']), 1)
                 ->orWhereLike($i . '.title', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }

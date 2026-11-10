@@ -12,13 +12,15 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->js('setup')
     ->css('jquery.fancybox.css', 'system');
 
 // Display page title
-$this->view('_title')
+$this
+    ->view('_title')
     ->set('model', $this->model)
     ->set('step', $this->step)
     ->set('option', $this->option)
@@ -34,20 +36,23 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 <section class="main section" id="setup">
     <?php
     // Display status message
-    $this->view('_statusmsg', 'projects')
+    $this
+         ->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
          ->set('msg', $this->msg)
          ->display();
 
     // Display metadata
-    $this->view('_metadata')
+    $this
+         ->view('_metadata')
          ->set('model', $this->model)
          ->set('step', $this->step)
          ->set('option', $this->option)
          ->display();
 
     // Display steps
-    $this->view('_steps')
+    $this
+         ->view('_steps')
          ->set('model', $this->model)
          ->set('step', $this->step)
          ->display();
@@ -57,7 +62,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
         <form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
             <?php
             // Display form fields
-            $this->view('_form')
+            $this
+                 ->view('_form')
                  ->set('model', $this->model)
                  ->set('step', $this->step)
                  ->set('option', $this->option)

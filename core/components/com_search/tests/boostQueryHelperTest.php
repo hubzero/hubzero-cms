@@ -33,7 +33,8 @@ class BoostQueryHelperTest extends Basic
             'queries' => $factoryMock,
         ]);
 
-        $factoryMock->expects($this->once())
+        $factoryMock
+            ->expects($this->once())
             ->method('one')
             ->with(['boosts' => $boosts]);
 

@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->js('_not_enrolled.js')
+$this
+     ->js('_not_enrolled.js')
      ->css('_not_enrolled.css');
 
 $oparams = new \Hubzero\Config\Registry($this->course->offering()->get('params'));

@@ -15,7 +15,8 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Push some resources to the tmeplate
-$this->css()
+$this
+     ->css()
      ->js();
 
 $show_weight = array_key_exists('show_weight', $_GET);

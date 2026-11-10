@@ -335,7 +335,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
             <ul class="activity-comments">
                 <?php
                 foreach ($rows as $row) {
-                    $this->view('default_item')
+                    $this
+                        ->view('default_item')
                         ->set('group', $this->group)
                         ->set('canModerate', $this->canModerate)
                         ->set('canStar', $this->canStar)

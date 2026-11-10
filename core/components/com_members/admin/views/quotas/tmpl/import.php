@@ -18,7 +18,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
 ?>
 
 <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 

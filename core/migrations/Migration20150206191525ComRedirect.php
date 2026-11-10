@@ -24,14 +24,16 @@ class Migration20150206191525ComRedirect extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__redirection')) {
-            $links = $this->db->getQuery(true)
+            $links = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__redirection')
                 ->loadObjectList();
 
             if ($links) {
                 foreach ($links as $link) {
-                    $exists = $this->db->getQuery(true)
+                    $exists = $this->db
+                        ->getQuery(true)
                         ->select('id')
                         ->from('#__redirect_links')
                         ->where('old_url', '=', $link->oldurl)
@@ -41,7 +43,8 @@ class Migration20150206191525ComRedirect extends Base
                         continue;
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__redirect_links')
                         ->set([
                             'old_url'      => $link->oldurl,
@@ -66,7 +69,8 @@ class Migration20150206191525ComRedirect extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__redirection')) {
-            $schema->createTable('#__redirection')
+            $schema
+                ->createTable('#__redirection')
                 ->id()
                 ->integer('cpt')->default(0)
                 ->string('oldurl', 100)->default('')

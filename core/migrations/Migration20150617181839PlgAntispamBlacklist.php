@@ -24,7 +24,8 @@ class Migration20150617181839PlgAntispamBlacklist extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__antispam_words')) {
-            $schema->createTable('#__antispam_words')
+            $schema
+                ->createTable('#__antispam_words')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('word', 256)->nullable()
                 ->primaryKey('id')

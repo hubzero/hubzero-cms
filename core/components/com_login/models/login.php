@@ -201,7 +201,8 @@ class Login extends Obj
         if (!$clean) {
             $db = App::get('db');
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('m.id')
                 ->select('m.title')
                 ->select('m.module')
@@ -212,7 +213,8 @@ class Login extends Obj
                 ->whereEquals('m.module', $module)
                 ->whereEquals('m.client_id', 1);
 
-            $query->joinRaw('#__extensions AS e', 'e.element = m.module AND e.client_id = m.client_id', 'left')
+            $query
+                ->joinRaw('#__extensions AS e', 'e.element = m.module AND e.client_id = m.client_id', 'left')
                 ->whereEquals('e.enabled', 1);
 
             // Filter by language
@@ -220,7 +222,8 @@ class Login extends Obj
                 $query->whereIn('m.language', [$lang, '*']);
             }
 
-            $query->order('m.position', 'asc')
+            $query
+                ->order('m.position', 'asc')
                 ->order('m.ordering', 'asc');
 
             // Set the query

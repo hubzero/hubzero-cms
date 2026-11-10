@@ -38,7 +38,8 @@ class Menu extends Select
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('menutype', 'value')
             ->select('title', 'text')
             ->from('#__menu_types')

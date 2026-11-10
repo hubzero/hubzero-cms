@@ -55,7 +55,8 @@ endif;
 
         foreach ($this->modules as $module) :
             // create view object
-            $this->view('module')
+            $this
+                ->view('module')
                 ->set('admin', $this->admin)
                 ->set('module', $module)
                 ->display();

@@ -75,7 +75,8 @@ class Modulelayout extends Field
             $db = App::get('db');
 
             // Build the query.
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('e.element')
                 ->select('e.name')
                 ->from('#__extensions', 'e')

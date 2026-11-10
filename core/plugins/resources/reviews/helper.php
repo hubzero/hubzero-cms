@@ -397,7 +397,8 @@ class Helper extends \Hubzero\Base\Obj
         $this->resource->save();
 
         // Instantiate a helper object and get all the contributor IDs
-        $users = $this->resource->authors()
+        $users = $this->resource
+            ->authors()
             ->rows()
             ->fieldsByKey('authorid');
 

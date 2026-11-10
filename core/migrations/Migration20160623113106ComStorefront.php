@@ -28,7 +28,8 @@ class Migration20160623113106ComStorefront extends Base
             $schema->tableExists('#__storefront_product_collections')
             && $schema->hasColumn('#__storefront_product_collections', 'cllId')
         ) {
-            $schema->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
+            $schema
+                ->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
                 ->integer(16)
                 ->notNull()
                 ->autoIncrement()
@@ -48,7 +49,8 @@ class Migration20160623113106ComStorefront extends Base
             $schema->tableExists('#__storefront_product_collections')
             && $schema->hasColumn('#__storefront_product_collections', 'pcId')
         ) {
-            $schema->renameColumn('#__storefront_product_collections', 'pcId', 'cllId')
+            $schema
+                ->renameColumn('#__storefront_product_collections', 'pcId', 'cllId')
                 ->integer(16)
                 ->notNull()
                 ->autoIncrement()

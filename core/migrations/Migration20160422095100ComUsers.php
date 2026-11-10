@@ -31,7 +31,8 @@ class Migration20160422095100ComUsers extends Base
                 $private = 5;
 
                 if ($schema->tableExists('#__viewlevels')) {
-                    $levels = $this->db->getQuery(true)
+                    $levels = $this->db
+                        ->getQuery(true)
                         ->select('*')
                         ->from('#__viewlevels')
                         ->order('ordering', 'ASC')
@@ -50,14 +51,16 @@ class Migration20160422095100ComUsers extends Base
                     }
                 }
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $public])
                     ->where('x.public', '=', 1)
                     ->execute();
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $private])
@@ -67,14 +70,16 @@ class Migration20160422095100ComUsers extends Base
         }
 
         if (!$schema->hasColumn('#__users', 'registerIP')) {
-            $schema->addColumn('#__users', 'registerIP')
+            $schema
+                ->addColumn('#__users', 'registerIP')
                 ->string(40)
                 ->notNull()
                 ->default('')
                 ->execute();
 
             if ($schema->tableExists('#__xprofiles') && $schema->hasColumn('#__xprofiles', 'regIP')) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->setColumn('u.registerIP', 'x.regIP')
@@ -86,7 +91,8 @@ class Migration20160422095100ComUsers extends Base
             $schema->hasColumn('#__users', 'sendEmail')
             && $schema->hasColumn('#__xprofiles', 'mailPreferenceOption')
         ) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users', 'u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.sendEmail', 'x.mailPreferenceOption')

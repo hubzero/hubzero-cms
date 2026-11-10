@@ -27,7 +27,8 @@ class Migration20161212181802ComSearch extends Base
             $schema->tableExists('#__search_blacklist')
             && $schema->hasColumn('#__search_blacklist', 'scope_id')
         ) {
-            $schema->renameColumn('#__search_blacklist', 'scope', 'doc_id')
+            $schema
+                ->renameColumn('#__search_blacklist', 'scope', 'doc_id')
                 ->string(255)
                 ->notNull()
                 ->default('')
@@ -48,13 +49,15 @@ class Migration20161212181802ComSearch extends Base
             $schema->tableExists('#__search_blacklist')
             && !$schema->hasColumn('#__search_blacklist', 'scope_id')
         ) {
-            $schema->renameColumn('#__search_blacklist', 'doc_id', 'scope')
+            $schema
+                ->renameColumn('#__search_blacklist', 'doc_id', 'scope')
                 ->string(255)
                 ->notNull()
                 ->default('')
                 ->execute();
 
-            $schema->addColumn('#__search_blacklist', 'scope_id')
+            $schema
+                ->addColumn('#__search_blacklist', 'scope_id')
                 ->integer(11)
                 ->nullable()
                 ->default(null)

@@ -246,7 +246,8 @@ class View extends AbstractView
             'name'    => ($name ? $name : $this->viewName),
             'layout'  => $layout,
         ]);
-        $view->set('folder', $this->pluginFolder)
+        $view
+             ->set('folder', $this->pluginFolder)
              ->set('element', $this->pluginElement);
 
         return $view;

@@ -24,7 +24,8 @@ class Migration20170911141318ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__categories') && $schema->hasColumn('#__categories', 'extension')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__categories')
                 ->set(['extension' => 'com_members'])
                 ->where('extension', '=', 'com_users')
@@ -40,7 +41,8 @@ class Migration20170911141318ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__categories') && $schema->hasColumn('#__categories', 'extension')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__categories')
                 ->set(['extension' => 'com_users'])
                 ->where('extension', '=', 'com_members')

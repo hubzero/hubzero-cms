@@ -24,7 +24,8 @@ class Migration20150630201210Core extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__extensions')
                 ->where('folder', '=', 'system')
@@ -63,7 +64,8 @@ class Migration20150630201210Core extends Base
                 }
 
                 if (isset($result)) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set(['ordering' => $orderIdx])
                         ->where('extension_id', '=', (int) $result->extension_id)
@@ -81,7 +83,8 @@ class Migration20150630201210Core extends Base
 
             // That leaves everything else, which we'll keep in their same relative order
             foreach ($system as $plugin) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['ordering' => $orderIdx])
                     ->where('extension_id', '=', (int) $plugin->extension_id)

@@ -24,7 +24,8 @@ class Migration20140421135022ComTools extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__tool_version_zone')) {
-            $schema->createTable('#__tool_version_zone')
+            $schema
+                ->createTable('#__tool_version_zone')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('tool_version_id')
                 ->integer('zone_id')

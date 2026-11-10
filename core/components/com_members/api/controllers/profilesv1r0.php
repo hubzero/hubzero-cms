@@ -94,7 +94,8 @@ class Profilesv1r0 extends ApiController
             ->where('approved', '>', 0);
 
         if ($filters['search']) {
-            $entries->whereLike('name', strtolower((string) $filters['search']), 1)
+            $entries
+                ->whereLike('name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('username', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('email', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
@@ -177,7 +178,8 @@ class Profilesv1r0 extends ApiController
         $newUsertype = $usersConfig->get('new_usertype');
         if (!$newUsertype) {
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('id')
                 ->from('#__usergroups')
                 ->whereEquals('title', 'Registered');

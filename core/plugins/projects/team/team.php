@@ -1272,7 +1272,8 @@ class Team extends Plugin
             $recipient = User::getInstance($uid);
 
             $email = new \Hubzero\Mail\Message();
-            $email->setSubject($subject)
+            $email
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->addPart($message['plaintext'], 'text/plain')
                 ->addPart($message['multipart'], 'text/html')

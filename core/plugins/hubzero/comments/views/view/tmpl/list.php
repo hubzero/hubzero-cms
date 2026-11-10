@@ -20,7 +20,8 @@ if ($this->comments) { ?>
         $this->depth++;
 
         foreach ($this->comments as $comment) {
-            $this->view('item')
+            $this
+                 ->view('item')
                  ->set('option', $this->option)
                  ->set('comment', $comment)
                  ->set('obj_type', $this->obj_type)

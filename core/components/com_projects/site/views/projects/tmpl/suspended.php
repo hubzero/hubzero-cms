@@ -13,7 +13,8 @@ use Hubzero\Facades\Html;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 // Check who suspended project
@@ -50,7 +51,8 @@ if ($result) {
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
                 <?php
-                    $this->view('_header')
+                    $this
+                         ->view('_header')
                          ->set('model', $this->model)
                          ->set('showPic', 1)
                          ->set('showPrivacy', 0)

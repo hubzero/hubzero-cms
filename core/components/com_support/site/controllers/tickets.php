@@ -670,7 +670,8 @@ class Tickets extends SiteController
     {
         if (!($row instanceof Ticket)) {
             $row = Ticket::blank();
-            $row->set('open', 1)
+            $row
+                ->set('open', 1)
                 ->set('status', 0)
                 ->set('ip', Request::ip())
                 ->set('uas', Request::getString('HTTP_USER_AGENT', '', 'server'))
@@ -698,7 +699,8 @@ class Tickets extends SiteController
 
         $browser = new Detector();
 
-        $row->set('os', $browser->platform())
+        $row
+            ->set('os', $browser->platform())
             ->set('osver', $browser->platformVersion())
             ->set('browser', $browser->name())
             ->set('browserver', $browser->version());
@@ -1546,7 +1548,8 @@ class Tickets extends SiteController
         // Check if changes were made within the time the comment was started and posted
         $started = Request::getString('started', Date::toSql(), 'post');
 
-        $lastcomment = $row->comments()
+        $lastcomment = $row
+            ->comments()
             ->order('created', 'DESC')
             ->limit(1)
             ->start(0)

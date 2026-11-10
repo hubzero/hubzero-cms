@@ -24,7 +24,8 @@ class Migration20160524000001ComStorefront extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__storefront_serials')) {
-            $schema->createTable('#__storefront_serials')
+            $schema
+                ->createTable('#__storefront_serials')
                 ->unsignedInteger('srId', ['autoIncrement' => true])
                 ->string('srNumber', 32)->nullable()
                 ->integer('srSId')->nullable()

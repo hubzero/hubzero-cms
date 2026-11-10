@@ -358,7 +358,8 @@ class Membership extends Base
             $message = new \Hubzero\Mail\Message();
 
             // build message object and send
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->setTo($from['email'], $from['name'])
                     ->setBcc($groupInvitees)
@@ -444,7 +445,8 @@ class Membership extends Base
             $message = new \Hubzero\Mail\Message();
 
             // build message object and send
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->setTo([$mbr['email']])
                     ->addHeader('X-Mailer', 'PHP/' . phpversion())
@@ -693,7 +695,8 @@ class Membership extends Base
         $message = new \Hubzero\Mail\Message();
 
         // build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($from['email'], $from['name'])
                 ->setBcc($managers)
@@ -1145,7 +1148,8 @@ class Membership extends Base
         $message = new \Hubzero\Mail\Message();
 
         // build message object and send
-        $message->setSubject($subject)
+        $message
+                ->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->setTo($from['email'], $from['name'])
                 ->setBcc($managers)

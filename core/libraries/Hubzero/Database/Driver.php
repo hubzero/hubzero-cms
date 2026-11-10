@@ -2899,7 +2899,8 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Set the query and execute the insert
-        $this->prepare(sprintf($statement, implode(',', $fields), implode(',', $values)))
+        $this
+             ->prepare(sprintf($statement, implode(',', $fields), implode(',', $values)))
              ->bind($binds);
 
         if (!$this->execute()) {

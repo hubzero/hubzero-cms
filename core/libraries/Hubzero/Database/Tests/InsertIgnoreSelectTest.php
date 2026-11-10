@@ -50,7 +50,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Source users - standard table with test data
-        $schema->createTable('iis_source_users')
+        $schema
+            ->createTable('iis_source_users')
             ->id()
             ->string('username', 255)
             ->string('password_hash', 255)
@@ -60,14 +61,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->execute();
         // Dest users - has auto-increment PK named user_id
         // The PK constraint prevents duplicate user_id inserts
-        $schema->createTable('iis_dest_users')
+        $schema
+            ->createTable('iis_dest_users')
             ->id('user_id')
             ->string('passhash', 255)
             ->string('email', 255)->nullable()
             ->uniqueIndex('idx_iis_du_email', 'email')
             ->execute();
         // Unique emails - has UNIQUE constraint on email for INSERT IGNORE testing
-        $schema->createTable('iis_unique_emails')
+        $schema
+            ->createTable('iis_unique_emails')
             ->id()
             ->string('email', 255)
             ->string('name', 255)->nullable()
@@ -211,13 +214,15 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Insert first record
         $query = new Query($driver);
-        $query->insertIgnore('iis_unique_emails')
+        $query
+            ->insertIgnore('iis_unique_emails')
             ->values(['email' => 'duplicate@example.com', 'name' => 'First'])
             ->execute();
 
         // Try to insert duplicate - should not throw error
         $query2 = new Query($driver);
-        $query2->insertIgnore('iis_unique_emails')
+        $query2
+            ->insertIgnore('iis_unique_emails')
             ->values(['email' => 'duplicate@example.com', 'name' => 'Second'])
             ->execute();
 
@@ -244,13 +249,15 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Insert via insertIgnore
         $query1 = new Query($driver);
-        $query1->insertIgnore('iis_unique_emails')
+        $query1
+            ->insertIgnore('iis_unique_emails')
             ->values(['email' => 'equiv@test.com', 'name' => 'First'])
             ->execute();
 
         // Insert duplicate via insert($table, true)
         $query2 = new Query($driver);
-        $query2->insert('iis_unique_emails', true)
+        $query2
+            ->insert('iis_unique_emails', true)
             ->values(['email' => 'equiv@test.com', 'name' => 'Second'])
             ->execute();
 
@@ -273,14 +280,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users')
             ->where('active', '=', 1);
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery)
             ->execute();
@@ -300,13 +309,15 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users');
 
         $insertQuery = new Query($driver);
-        $insertQuery->insertIgnore('iis_dest_users')
+        $insertQuery
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery)
             ->execute();
@@ -326,14 +337,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->from('iis_source_users')
             ->where('active', '=', 1)
             ->where('email', 'LIKE', '%@example.com');
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash'])
             ->fromSelect($selectQuery);
 
@@ -355,14 +368,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Select columns that match dest_users schema: user_id, passhash, email
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users')
             ->where('active', '=', 1);
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->fromSelect($selectQuery)
             ->execute();
 
@@ -385,10 +400,12 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
-                $q->select('id')
+                $q
+                  ->select('id')
                   ->select('password_hash')
                   ->select('email')
                   ->from('iis_source_users')
@@ -411,10 +428,12 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $insertQuery = new Query($driver);
-        $insertQuery->insertIgnore('iis_dest_users')
+        $insertQuery
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
-                $q->select('id')
+                $q
+                  ->select('id')
                   ->select('password_hash')
                   ->select('email')
                   ->from('iis_source_users');
@@ -437,14 +456,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Query object approach
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users')
             ->where('active', '=', 1);
 
         $insertQuery1 = new Query($driver);
-        $insertQuery1->insertIgnore('iis_dest_users')
+        $insertQuery1
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery)
             ->execute();
@@ -458,10 +479,12 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Closure approach
         $insertQuery2 = new Query($driver);
-        $insertQuery2->insertIgnore('iis_dest_users')
+        $insertQuery2
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
-                $q->select('id')
+                $q
+                  ->select('id')
                   ->select('password_hash')
                   ->select('email')
                   ->from('iis_source_users')
@@ -498,7 +521,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $rawSql = "SELECT {$idCol}, {$passCol}, {$emailCol} FROM {$sourceTable} WHERE {$activeCol} = ?";
 
         $insertQuery = new Query($driver);
-        $insertQuery->insertIgnore('iis_dest_users')
+        $insertQuery
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelectRaw($rawSql, [1]);
 
@@ -532,7 +556,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $rawSql = "SELECT {$idCol}, {$passCol}, {$emailCol} FROM {$sourceTable}";
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelectRaw($rawSql);
 
@@ -562,7 +587,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->expectExceptionMessage('fromSelect() expects a Query object or closure');
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->fromSelect('invalid string');
     }
 
@@ -582,13 +608,15 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Use the Query API to execute INSERT ... SELECT
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users');
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery)
             ->execute();
@@ -608,7 +636,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $query = new Query($driver);
-        $query->insert('iis_unique_emails')
+        $query
+            ->insert('iis_unique_emails')
             ->values(['email' => 'regular@test.com', 'name' => 'Regular'])
             ->execute();
 
@@ -630,7 +659,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Set up INSERT SELECT and execute it
         $query1 = new Query($driver);
-        $query1->insert('iis_dest_users')
+        $query1
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
                 $q->select('id')->select('password_hash')->select('email')->from('iis_source_users');
@@ -639,7 +669,8 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // A new query should work fine for regular insert
         $query2 = new Query($driver);
-        $query2->insert('iis_unique_emails')
+        $query2
+            ->insert('iis_unique_emails')
             ->values(['email' => 'reset@test.com', 'name' => 'Reset'])
             ->execute();
 
@@ -665,14 +696,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // First insert - only active users
         $selectQuery1 = new Query($driver);
-        $selectQuery1->select('id')
+        $selectQuery1
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users')
             ->where('active', '=', 1);
 
         $insertQuery1 = new Query($driver);
-        $insertQuery1->insertIgnore('iis_dest_users')
+        $insertQuery1
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery1)
             ->execute();
@@ -684,13 +717,15 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         // Second insert with overlapping data - should ignore duplicates
         $selectQuery2 = new Query($driver);
-        $selectQuery2->select('id')
+        $selectQuery2
+            ->select('id')
             ->select('password_hash')
             ->select('email')
             ->from('iis_source_users');
 
         $insertQuery2 = new Query($driver);
-        $insertQuery2->insertIgnore('iis_dest_users')
+        $insertQuery2
+            ->insertIgnore('iis_dest_users')
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect($selectQuery2)
             ->execute();
@@ -712,14 +747,16 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         $this->resetTestState($driver);
 
         $selectQuery = new Query($driver);
-        $selectQuery->select('id')
+        $selectQuery
+            ->select('id')
             ->select('password_hash')
             ->from('iis_source_users')
             ->where('active', '=', 1)
             ->where('email', 'LIKE', '%alice%');
 
         $insertQuery = new Query($driver);
-        $insertQuery->insert('iis_dest_users')
+        $insertQuery
+            ->insert('iis_dest_users')
             ->columns(['user_id', 'passhash'])
             ->fromSelect($selectQuery)
             ->execute();

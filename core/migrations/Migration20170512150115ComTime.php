@@ -65,7 +65,8 @@ class Migration20170512150115ComTime extends Base
         $this->addPluginEntry('time', 'weeklybar');
 
         if (!$schema->tableExists('#__time_auth_token')) {
-            $schema->createTable('#__time_auth_token')
+            $schema
+                ->createTable('#__time_auth_token')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->string('token', 255)->default('')
@@ -76,7 +77,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_funding_allocations')) {
-            $schema->createTable('#__time_funding_allocations')
+            $schema
+                ->createTable('#__time_funding_allocations')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->unsignedInteger('source_id')->default(0)
@@ -90,7 +92,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_funding_sources')) {
-            $schema->createTable('#__time_funding_sources')
+            $schema
+                ->createTable('#__time_funding_sources')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('title', 255)->default('')
                 ->datetime('created')->default('0000-00-00 00:00:00')
@@ -103,7 +106,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_hub_allotments')) {
-            $schema->createTable('#__time_hub_allotments')
+            $schema
+                ->createTable('#__time_hub_allotments')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('hub_id')->default(0)
                 ->date('start_date')->default('0000-00-00')
@@ -117,7 +121,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_hub_contacts')) {
-            $schema->createTable('#__time_hub_contacts')
+            $schema
+                ->createTable('#__time_hub_contacts')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->string('phone', 255)->default('000-000-0000')
@@ -132,7 +137,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_hubs')) {
-            $schema->createTable('#__time_hubs')
+            $schema
+                ->createTable('#__time_hubs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->string('name_normalized', 255)->default('')
@@ -150,7 +156,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_liaisons')) {
-            $schema->createTable('#__time_liaisons')
+            $schema
+                ->createTable('#__time_liaisons')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')->nullable()
                 ->primaryKey('id')
@@ -160,7 +167,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_proxies')) {
-            $schema->createTable('#__time_proxies')
+            $schema
+                ->createTable('#__time_proxies')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->integer('proxy_id')->nullable()
@@ -171,7 +179,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_records')) {
-            $schema->createTable('#__time_records')
+            $schema
+                ->createTable('#__time_records')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('task_id')
                 ->integer('user_id')
@@ -188,7 +197,8 @@ class Migration20170512150115ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_tasks')) {
-            $schema->createTable('#__time_tasks')
+            $schema
+                ->createTable('#__time_tasks')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->default('')
                 ->integer('hub_id')

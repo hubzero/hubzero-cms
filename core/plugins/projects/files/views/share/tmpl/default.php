@@ -47,7 +47,8 @@ if ($this->getError()) {
         <ul class="sample">
             <?php
                 // Display list item with file data
-                $this->view('default', 'selected')
+                $this
+                     ->view('default', 'selected')
                      ->set('skip', false)
                      ->set('file', $this->file)
                      ->set('action', 'share')

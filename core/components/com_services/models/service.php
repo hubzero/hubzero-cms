@@ -121,11 +121,13 @@ class Service extends Relational
         if ($specialgroup) {
             $joinCondition = $grm . '.gidNumber=' . $grp . '.gidNumber AND '
                 . $grm . '.uidNumber=' . User::get('id');
-            $query->joinRaw($grp, $grp . '.cn = ' . App::get('db')->quote($specialgroup), 'inner')
+            $query
+                ->joinRaw($grp, $grp . '.cn = ' . App::get('db')->quote($specialgroup), 'inner')
                 ->joinRaw($grm, $joinCondition, 'left');
             //->whereEquals($grm . '.uidNumber', \User::get('id'));
 
-            $query->whereEquals($ser . '.restricted', 0, 1)
+            $query
+                ->whereEquals($ser . '.restricted', 0, 1)
                 ->orWhereEquals($ser . '.restricted', 1, 2)
                 ->where($grm . '.gidNumber', 'IS', null, 'and', 2)
                 ->resetDepth();

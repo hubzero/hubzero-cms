@@ -48,7 +48,8 @@ class MenuItem extends Element
 
         // Load the list of menu types
         // TODO: move query to model
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('menutype')
             ->select('title')
             ->from('#__menu_types')
@@ -63,7 +64,8 @@ class MenuItem extends Element
 
         // load the list of menu items
         // TODO: move query to model
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('id')
             ->select('parent_id')
             ->select('title')

@@ -400,7 +400,8 @@ class Screenshots extends SiteController
         $row = Screenshot::blank();
 
         // Check if file with the same name already exists
-        $files = $resource->screenshots()
+        $files = $resource
+            ->screenshots()
             ->whereEquals('versionid', $vid)
             ->ordered()
             ->rows()
@@ -686,7 +687,8 @@ class Screenshots extends SiteController
                 return false;
             } else {
                 // Update screenshot information for this resource
-                $shots = $resource->screenshots()
+                $shots = $resource
+                    ->screenshots()
                     ->whereEquals('versionid', $sourceid)
                     ->ordered()
                     ->rows();
@@ -748,7 +750,8 @@ class Screenshots extends SiteController
         $this->view->published = $objV->getCurrentVersionProperty($resource->alias, 'id');
 
         // Get screenshot information for this resource
-        $this->view->shots = $resource->screenshots()
+        $this->view->shots = $resource
+            ->screenshots()
             ->whereEquals('versionid', $vid)
             ->ordered()
             ->rows();

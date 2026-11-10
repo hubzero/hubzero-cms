@@ -26,7 +26,8 @@ if (!$this->tmpl) {
 }
 
 Html::behavior('tooltip');
-$this->css()
+$this
+    ->css()
     ->js('tickets.js');
 
 $cc = [];

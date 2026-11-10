@@ -83,7 +83,8 @@ class Categories extends AdminController
         $entries = Category::all();
 
         if ($filters['search']) {
-            $entries->whereLike('name', strtolower((string) $filters['search']), 1)
+            $entries
+                ->whereLike('name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('description', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }

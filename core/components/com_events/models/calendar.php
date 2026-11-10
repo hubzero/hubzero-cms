@@ -161,7 +161,8 @@ class Calendar extends Model
 
                             // create transformmer & generate occurences
                             $transformer = new \Recurr\Transformer\ArrayTransformer();
-                            $occurrences = $transformer->transform($rule, null)
+                            $occurrences = $transformer
+                                                       ->transform($rule, null)
                                                        ->startsAfter($publish_up, true)
                                                        ->endsAfter($publish_up, true);
 

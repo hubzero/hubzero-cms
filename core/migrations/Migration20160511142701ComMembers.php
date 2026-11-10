@@ -31,7 +31,9 @@ class Migration20160511142701ComMembers extends Base
             $schema->addAutoIncrementPrimaryKey('#__user_profiles', 'id', true, false);
         }
 
-        $schema->table('#__user_profiles')->alter()
+        $schema
+            ->table('#__user_profiles')
+            ->alter()
             ->dropIndex('idx_user_id_profile_key')
             ->addIndex('idx_user_id', 'user_id')
             ->execute();
@@ -52,7 +54,9 @@ class Migration20160511142701ComMembers extends Base
             $schema->dropColumn('#__user_profiles', 'id');
         }
 
-        $schema->table('#__user_profiles')->alter()
+        $schema
+            ->table('#__user_profiles')
+            ->alter()
             ->dropIndex('idx_user_id')
             ->addUniqueIndex('idx_user_id_profile_key', ['user_id', 'profile_key'])
             ->execute();

@@ -20,7 +20,8 @@ defined('_HZEXEC_') or die();
     $this->depth++;
 
     foreach ($this->comments as $comment) {
-        $this->view('_comment', 'comments')
+        $this
+             ->view('_comment', 'comments')
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('config', $this->config)

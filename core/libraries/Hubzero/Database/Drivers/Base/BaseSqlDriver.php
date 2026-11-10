@@ -2118,7 +2118,8 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $tableName = $this->replacePrefix($tableName);
         $grammar = $this->getSchemaGrammar();
-        $this->setQuery($grammar->compileDrop($tableName, $ifExists))
+        $this
+             ->setQuery($grammar->compileDrop($tableName, $ifExists))
              ->execute();
 
         $this->cleanupSequencesForTable($tableName);

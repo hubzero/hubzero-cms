@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('help.css');
 
 $base = 'index.php?option=' . $this->option;
@@ -42,7 +43,8 @@ $formUrl = Route::url(
     action="<?php echo $formUrl; ?>"
     id="collections">
     <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->set('option', $this->option)
          ->set('active', 'about')
          ->set('collections', $this->collections)

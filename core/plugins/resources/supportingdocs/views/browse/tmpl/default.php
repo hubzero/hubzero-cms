@@ -18,12 +18,14 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 if ($this->model->isTool()) {
-    $children = $this->model->children()
+    $children = $this->model
+        ->children()
         ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
         ->order('ordering', 'asc')
         ->rows();
 } else {
-    $children = $this->model->children()
+    $children = $this->model
+        ->children()
         ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
         ->whereEquals('standalone', 0)
         ->order('ordering', 'asc')

@@ -23,7 +23,8 @@ class Migration20141010150100ComSupport extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__support_queries', 'created_by')) {
-            $schema->addColumn('#__support_queries', 'created_by')
+            $schema
+                ->addColumn('#__support_queries', 'created_by')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -31,7 +32,8 @@ class Migration20141010150100ComSupport extends Base
         }
 
         if (!$schema->hasColumn('#__support_queries', 'ordering')) {
-            $schema->addColumn('#__support_queries', 'ordering')
+            $schema
+                ->addColumn('#__support_queries', 'ordering')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -39,7 +41,8 @@ class Migration20141010150100ComSupport extends Base
         }
 
         if (!$schema->hasColumn('#__support_queries', 'folder_id')) {
-            $schema->addColumn('#__support_queries', 'folder_id')
+            $schema
+                ->addColumn('#__support_queries', 'folder_id')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -47,7 +50,8 @@ class Migration20141010150100ComSupport extends Base
         }
 
         if (!$schema->tableExists('#__support_query_folders')) {
-            $schema->createTable('#__support_query_folders')
+            $schema
+                ->createTable('#__support_query_folders')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->string('title', 200)->default('')
@@ -127,7 +131,8 @@ class Migration20141010150100ComSupport extends Base
             ];
 
             foreach ($folders as $folder) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__support_query_folders')
                     ->set($folder)
                     ->execute();
@@ -143,7 +148,8 @@ class Migration20141010150100ComSupport extends Base
             */
 
             // Update "Common" queries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_queries')
                 ->set(['folder_id' => 1])
                 ->where('iscore', '=', 2)
@@ -151,7 +157,8 @@ class Migration20141010150100ComSupport extends Base
                 ->execute();
 
             // Update "Mine" queries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_queries')
                 ->set(['folder_id' => 2])
                 ->where('iscore', '=', 1)
@@ -159,7 +166,8 @@ class Migration20141010150100ComSupport extends Base
                 ->execute();
 
             // Update "Common not in ACL" queries
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__support_queries')
                 ->set(['folder_id' => 4])
                 ->where('iscore', '=', 4)
@@ -167,7 +175,8 @@ class Migration20141010150100ComSupport extends Base
                 ->execute();
 
             // Get all the "mine" queries
-            $queries = $this->db->getQuery(true)
+            $queries = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__support_queries')
                 ->where('folder_id', '=', 2)
@@ -184,7 +193,8 @@ class Migration20141010150100ComSupport extends Base
                     $data['ordering']  = $k;
                     $data['iscore']    = 4;
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__support_queries')
                         ->set($data)
                         ->execute();

@@ -76,7 +76,8 @@ if (!$no_html) {
     Toolbar::help('ticket');
 
     Html::behavior('tooltip');
-    $this->css()
+    $this
+        ->css()
         ->js('ticket.js');
 }
 ?>
@@ -445,7 +446,8 @@ if (!$no_html) {
                             </div>
                             <div class="field-wrap file-list" id="ajax-uploader-list">
                                 <?php
-                                $this->view('list', 'media')
+                                $this
+                                    ->view('list', 'media')
                                     ->set('model', $this->comment)
                                     ->set('comment', $tmp)
                                     ->set('ticket', $this->row->get('id'))

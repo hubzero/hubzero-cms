@@ -935,7 +935,8 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('FT_ITEMS')
             ->order('id', 'asc')
@@ -953,11 +954,13 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('FT_ITEMS')
             ->whereIn('category_id', function ($sub) {
-                $sub->select('id')
+                $sub
+                    ->select('id')
                     ->from('FT_CATEGORIES')
                     ->whereEquals('active', 1);
             })
@@ -975,7 +978,8 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $items = $driver->getQuery()
+        $items = $driver
+            ->getQuery()
             ->select('*')
             ->from('FT_ITEMS')
             ->whereIn('id', [])

@@ -27,7 +27,8 @@ if (Component::params('com_groups')->get('email_forum_comments') && $this->confi
             $emailSettingsMenu = '_email_settings_simple';
         }
 
-            $this->view($emailSettingsMenu)
+            $this
+                ->view($emailSettingsMenu)
                 ->set('base', $base)
                 ->set('categories', $this->categories)
                 ->set('recvEmailOptionID', $this->recvEmailOptionID)

@@ -27,14 +27,16 @@ class Migration20160210031035Core extends Base
             && !$schema->hasColumn('#__migrations', 'status')
             && $schema->hasColumn('#__migrations', 'action_by')
         ) {
-            $schema->addColumn('#__migrations', 'status')
+            $schema
+                ->addColumn('#__migrations', 'status')
                 ->string(255)
                 ->notNull()
                 ->default('')
                 ->after('action_by')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__migrations')
                 ->set(['status' => 'success'])
                 ->execute();
@@ -56,7 +58,8 @@ class Migration20160210031035Core extends Base
             // restores the original intent of the migrations table.
             // Otherwise, you'd have entries in the table that will look like
             // successful runs, even though they weren't.
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__migrations')
                 ->where('status', '!=', 'success')
                 ->execute();

@@ -22,7 +22,8 @@ Html::behavior('tooltip');
 
 <?php
 
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 

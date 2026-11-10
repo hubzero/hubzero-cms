@@ -37,7 +37,8 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('sections');
 $db = App::get('db');
-$query = $db->getQuery()
+$query = $db
+    ->getQuery()
     ->select('id')
     ->select('title')
     ->from('#__viewlevels');

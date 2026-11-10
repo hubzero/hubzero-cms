@@ -145,7 +145,8 @@ if ($this->condition->expressions) {
     <?php
     if ($this->condition->nestedexpressions && count($this->condition->nestedexpressions) > 0) {
         foreach ($this->condition->nestedexpressions as $nested) {
-            $this->view('condition')
+            $this
+                 ->view('condition')
                  ->set('option', $this->option)
                  ->set('controller', $this->controller)
                  ->set('condition', $nested)

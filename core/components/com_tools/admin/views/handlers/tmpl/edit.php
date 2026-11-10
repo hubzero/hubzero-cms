@@ -21,7 +21,8 @@ Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HANDLERS') .
 Toolbar::save();
 Toolbar::cancel();
 
-$this->css('handlers')
+$this
+     ->css('handlers')
      ->js('handlers');
 ?>
 

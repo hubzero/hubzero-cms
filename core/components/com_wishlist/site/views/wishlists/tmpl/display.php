@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->css('vote.css')
      ->js();
 
@@ -297,7 +298,8 @@ if ($this->wishlist->get('id')) {
                                     <?php if (!$item->isReported()) { ?>
                                         <td class="priority-4 voting">
                                             <?php
-                                            $this->view('_vote')
+                                            $this
+                                                 ->view('_vote')
                                                  ->set('option', $this->option)
                                                  ->set('item', $item)
                                                  ->set('listid', $this->wishlist->get('id'))

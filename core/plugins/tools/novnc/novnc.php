@@ -80,7 +80,8 @@ class Novnc extends Plugin
             'layout'  => 'default',
         ]);
 
-        return $view->set('option', Request::getCmd('option', 'com_tools'))
+        return $view
+                    ->set('option', Request::getCmd('option', 'com_tools'))
                     ->set('controller', Request::getWord('controller', 'sessions'))
                     ->set('output', $session)
                     ->set('app', $tool)

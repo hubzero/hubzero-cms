@@ -81,7 +81,8 @@ class Migration20130924000014ComWeblinks extends Base
         }
 
         // Batch column modification and index operations
-        $schema->alterTable('#__weblinks')
+        $schema
+            ->alterTable('#__weblinks')
             ->modifyColumn('alias')->string(255)->notNull()->default('')
             ->dropIndex('catid')
             ->addIndex('idx_access', 'access')

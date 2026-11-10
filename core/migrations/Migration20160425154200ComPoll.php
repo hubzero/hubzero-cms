@@ -27,7 +27,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__polls', 'published')
                 && !$schema->hasColumn('#__polls', 'state')
             ) {
-                $schema->renameColumn('#__polls', 'published', 'state')
+                $schema
+                    ->renameColumn('#__polls', 'published', 'state')
                     ->tinyInteger()
                     ->default(0)
                     ->execute();
@@ -43,7 +44,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_options', 'pollid')
                 && !$schema->hasColumn('#__poll_options', 'poll_id')
             ) {
-                $schema->renameColumn('#__poll_options', 'pollid', 'poll_id')
+                $schema
+                    ->renameColumn('#__poll_options', 'pollid', 'poll_id')
                     ->integer()
                     ->default(0)
                     ->execute();
@@ -63,7 +65,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_menus', 'pollid')
                 && !$schema->hasColumn('#__poll_menus', 'poll_id')
             ) {
-                $schema->renameColumn('#__poll_menus', 'pollid', 'poll_id')
+                $schema
+                    ->renameColumn('#__poll_menus', 'pollid', 'poll_id')
                     ->integer()
                     ->default(0)
                     ->execute();
@@ -73,7 +76,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_menus', 'menuid')
                 && !$schema->hasColumn('#__poll_menus', 'menu_id')
             ) {
-                $schema->renameColumn('#__poll_menus', 'menuid', 'menu_id')
+                $schema
+                    ->renameColumn('#__poll_menus', 'menuid', 'menu_id')
                     ->integer()
                     ->default(0)
                     ->execute();
@@ -93,7 +97,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__polls', 'state')
                 && !$schema->hasColumn('#__polls', 'published')
             ) {
-                $schema->renameColumn('#__polls', 'state', 'published')
+                $schema
+                    ->renameColumn('#__polls', 'state', 'published')
                     ->tinyInteger()
                     ->default(0)
                     ->execute();
@@ -109,7 +114,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_data', 'poll_id')
                 && !$schema->hasColumn('#__poll_data', 'pollid')
             ) {
-                $schema->renameColumn('#__poll_data', 'poll_id', 'pollid')
+                $schema
+                    ->renameColumn('#__poll_data', 'poll_id', 'pollid')
                     ->integer()
                     ->default(0)
                     ->execute();
@@ -129,7 +135,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_menu', 'poll_id')
                 && !$schema->hasColumn('#__poll_menu', 'pollid')
             ) {
-                $schema->renameColumn('#__poll_menu', 'poll_id', 'pollid')
+                $schema
+                    ->renameColumn('#__poll_menu', 'poll_id', 'pollid')
                     ->integer()
                     ->default(0)
                     ->execute();
@@ -139,7 +146,8 @@ class Migration20160425154200ComPoll extends Base
                 $schema->hasColumn('#__poll_menu', 'menu_id')
                 && !$schema->hasColumn('#__poll_menu', 'menuid')
             ) {
-                $schema->renameColumn('#__poll_menu', 'menu_id', 'menuid')
+                $schema
+                    ->renameColumn('#__poll_menu', 'menu_id', 'menuid')
                     ->integer()
                     ->default(0)
                     ->execute();

@@ -1151,7 +1151,8 @@ class Html
                 }
 
                 $mail = new \Hubzero\Mail\Message();
-                $mail->setSubject($subject)
+                $mail
+                    ->setSubject($subject)
                     ->addTo($user->get('email'), $user->get('name'))
                     ->addFrom($from['email'], $from['name'])
                     ->setPriority('normal');

@@ -16,7 +16,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $txt = '';
@@ -68,7 +69,8 @@ $revision = $this->revision;
                     <?php if ($this->model->params->get('show_authors', 1)) { ?>
                         <div id="authorslist">
                             <?php
-                            $this->view('_contributors')
+                            $this
+                                ->view('_contributors')
                                 ->set('option', $this->option)
                                 ->set('contributors', $this->model->contributors('tool'))
                                 ->display();
@@ -107,7 +109,8 @@ $revision = $this->revision;
                         <?php
                     } else {
                         // get launch button
-                        $children = $this->model->children()
+                        $children = $this->model
+                            ->children()
                             ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->whereEquals('standalone', 0)
                             ->order('ordering', 'asc')
@@ -201,7 +204,8 @@ $revision = $this->revision;
 
             <?php
             // Display canonical
-            $this->view('_canonical')
+            $this
+                ->view('_canonical')
                 ->set('option', $this->option)
                 ->set('model', $this->model)
                 ->display();
@@ -212,7 +216,8 @@ $revision = $this->revision;
         // Show resource ratings
         if (!$thistool) {
             if ($this->model->params->get('show_metadata', 1)) {
-                $this->view('_metadata')
+                $this
+                    ->view('_metadata')
                     ->set('option', $this->option)
                     ->set('sections', $this->sections)
                     ->set('model', $this->model)
@@ -244,14 +249,16 @@ $revision = $this->revision;
         <div class="section-inner hz-layout-with-aside">
             <div class="subject tabbed">
                 <?php
-                $this->view('_tabs')
+                $this
+                    ->view('_tabs')
                     ->set('option', $this->option)
                     ->set('cats', $this->cats)
                     ->set('resource', $this->model)
                     ->set('active', $this->tab)
                     ->display();
 
-                $this->view('_sections')
+                $this
+                    ->view('_sections')
                     ->set('option', $this->option)
                     ->set('sections', $this->sections)
                     ->set('resource', $this->model)

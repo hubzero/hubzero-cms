@@ -24,7 +24,8 @@ class Migration20150122165523ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__support_tickets')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('t.id')
                 ->from('#__support_tickets', 't')
                 ->where('t.closed', '=', '0000-00-00 00:00:00')
@@ -34,7 +35,8 @@ class Migration20150122165523ComSupport extends Base
 
             if ($tickets) {
                 foreach ($tickets as $ticket) {
-                    $lastComment = $this->db->getQuery(true)
+                    $lastComment = $this->db
+                        ->getQuery(true)
                         ->select('created')
                         ->from('#__support_comments')
                         ->where('ticket', '=', $ticket->id)
@@ -42,7 +44,8 @@ class Migration20150122165523ComSupport extends Base
                         ->value('created');
 
                     if ($lastComment) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__support_tickets')
                             ->set(['closed' => $lastComment])
                             ->where('id', '=', $ticket->id)

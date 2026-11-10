@@ -20,7 +20,8 @@ $this->js();
     <h2><?php echo $this->escape($this->page->title); ?></h2>
     <?php
     if (!$this->page->isStatic()) {
-        $this->view('authors', 'pages')
+        $this
+            ->view('authors', 'pages')
             //->setBasePath($this->base_path)
             ->set('page', $this->page)
             ->display();
@@ -32,7 +33,8 @@ $this->js();
 <section class="main section">
     <div class="aside">
         <?php
-        $this->view('wikimenu')
+        $this
+            ->view('wikimenu')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('page', $this->page)
@@ -46,7 +48,8 @@ $this->js();
 
         <?php
         if ($this->page->get('id')) {
-            $this->view('submenu', 'pages')
+            $this
+                ->view('submenu', 'pages')
                 //->setBasePath($this->base_path)
                 ->set('option', $this->option)
                 ->set('controller', $this->controller)

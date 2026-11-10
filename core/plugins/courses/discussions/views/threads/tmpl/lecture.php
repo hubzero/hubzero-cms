@@ -15,7 +15,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js('discussions.lecture.js');
 
 $base = $this->course->offering()->link();
@@ -71,7 +72,8 @@ $base = $this->course->offering()->link();
                                     $instructors[] = $i->get('user_id');
                                 }
                             }
-                            $this->view('_threads')
+                            $this
+                                ->view('_threads')
                                 ->set('category', 'category' . $this->post->get('category_id'))
                                 ->set('option', $this->option)
                                 ->set('threads', $this->threads)

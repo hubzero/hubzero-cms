@@ -265,7 +265,8 @@ class MorphToMany extends OneToManyThrough
     {
         if (is_array($ids) && count($ids) > 0) {
             $query = $this->model->getQuery();
-            $query->delete($this->associativeTable)
+            $query
+                ->delete($this->associativeTable)
                 ->whereEquals($this->associativeLocal, $this->model->getPkValue())
                 ->whereEquals($this->morphType, $this->getTypeIdentifier())
                 ->whereIn($this->associativeRelated, $ids);
@@ -293,7 +294,8 @@ class MorphToMany extends OneToManyThrough
             $type  = $this->getTypeIdentifier();
 
             // Get existing connections
-            $existing = $query->select($this->associativeRelated)
+            $existing = $query
+                ->select($this->associativeRelated)
                 ->from($this->associativeTable)
                 ->whereEquals($this->associativeLocal, $this->model->getPkValue())
                 ->whereEquals($this->morphType, $type)

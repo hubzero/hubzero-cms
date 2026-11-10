@@ -105,7 +105,8 @@ class Router extends Base
                     if (strpos($query['id'], ':') === false) {
                         $db = App::get('db');
                         $db->setQuery(
-                            $db->getQuery()
+                            $db
+                                ->getQuery()
                                 ->select('alias')
                                 ->from('#__content')
                                 ->where('id', '=', (int) $query['id'])

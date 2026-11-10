@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('course.css')
+$this
+     ->css('course.css')
      ->js();
 ?>
 <header id="content-header">

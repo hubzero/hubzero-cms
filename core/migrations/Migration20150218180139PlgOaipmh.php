@@ -37,7 +37,8 @@ class Migration20150218180139PlgOaipmh extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__oaipmh_dcspecs')) {
-            $schema->createTable('#__oaipmh_dcspecs')
+            $schema
+                ->createTable('#__oaipmh_dcspecs')
                 ->integer('id', ['autoIncrement' => true])
                 ->string('name', 255)
                 ->text('query')

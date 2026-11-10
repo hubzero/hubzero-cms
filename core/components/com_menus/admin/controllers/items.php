@@ -132,7 +132,8 @@ class Items extends AdminController
         $a = $query->getTableName();
 
         // Select all fields from the table.
-        $query->select($a . '.id')
+        $query
+            ->select($a . '.id')
             ->select($a . '.menutype')
             ->select($a . '.title')
             ->select($a . '.alias')
@@ -217,7 +218,8 @@ class Items extends AdminController
                     $query->whereLike($a . '.link', $search);
                 }
             } else {
-                $query->whereLike($a . '.title', $search, 1)
+                $query
+                    ->whereLike($a . '.title', $search, 1)
                     ->orWhereLike($a . '.alias', $search, 1)
                     ->orWhereLike($a . '.note', $search, 1)
                     ->resetDepth();

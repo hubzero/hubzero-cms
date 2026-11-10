@@ -27,7 +27,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$components as $c) {
                 $components[] = $c;
             }
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'component')
@@ -38,7 +39,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$modules as $c) {
                 $modules[] = $c;
             }
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'module')
@@ -49,7 +51,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$templates as $c) {
                 $templates[] = $c;
             }
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'template')
@@ -61,7 +64,8 @@ class Migration20150626141512Core extends Base
                 foreach ($plugs as $c) {
                     $contents[] = $c;
                 }
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__extensions')
                     ->set(['protected' => 1])
                     ->where('type', '=', 'plugin')

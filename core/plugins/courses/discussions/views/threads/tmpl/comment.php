@@ -178,7 +178,8 @@ if ($this->lecture) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $this->view('list')
+            $this
+                ->view('list')
                 ->set('parent', $this->comment->get('id'))
                 ->set('thread', $this->comment->get('thread'))
                 ->set('option', $this->option)

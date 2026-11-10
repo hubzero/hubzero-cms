@@ -37,12 +37,14 @@ class Supportingdocs extends Plugin
         $areas = [];
 
         if ($model->isTool()) {
-            $children = $model->children()
+            $children = $model
+                ->children()
                 ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')
                 ->rows();
         } else {
-            $children = $model->children()
+            $children = $model
+                ->children()
                 ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->whereEquals('standalone', 0)
                 ->order('ordering', 'asc')
@@ -92,7 +94,8 @@ class Supportingdocs extends Plugin
         }
 
         // Instantiate a view
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('option', $option)
             ->set('model', $model)
             ->set('live_site', rtrim(Request::base(), '/'));

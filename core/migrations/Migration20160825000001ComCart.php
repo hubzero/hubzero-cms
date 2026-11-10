@@ -23,7 +23,8 @@ class Migration20160825000001ComCart extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__cart_meta')) {
-            $schema->createTable('#__cart_meta')
+            $schema
+                ->createTable('#__cart_meta')
                 ->unsignedInteger('mtId', ['autoIncrement' => true])
                 ->integer('scope_id')->default(0)
                 ->string('scope', 100)->default('')

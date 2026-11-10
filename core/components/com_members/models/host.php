@@ -74,7 +74,8 @@ class Host extends Relational
      */
     public function destroy()
     {
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->delete($this->getTableName())
             ->whereEquals('host', $this->get('host'))
             ->whereEquals('uidNumber', $this->get('uidNumber'));
@@ -99,7 +100,8 @@ class Host extends Relational
 
         $blank = self::blank();
 
-        $query = $blank->getQuery()
+        $query = $blank
+            ->getQuery()
             ->delete($blank->getTableName())
             ->whereIn('host', $host);
 
@@ -122,7 +124,8 @@ class Host extends Relational
 
         $blank = self::blank();
 
-        $query = $blank->getQuery()
+        $query = $blank
+            ->getQuery()
             ->delete($blank->getTableName())
             ->whereIn('uidNumber', $user_id);
 
@@ -180,7 +183,8 @@ class Host extends Relational
                 continue;
             }
 
-            $query = $blank->getQuery()
+            $query = $blank
+                ->getQuery()
                 ->insert($blank->getTableName())
                 ->values([
                     'uidNumber' => $user_id,

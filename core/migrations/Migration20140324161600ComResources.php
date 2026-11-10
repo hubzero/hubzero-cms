@@ -25,7 +25,8 @@ class Migration20140324161600ComResources extends Base
 
         // imports table
         if (!$schema->tableExists('#__resource_imports')) {
-            $schema->createTable('#__resource_imports')
+            $schema
+                ->createTable('#__resource_imports')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 150)->nullable()
                 ->text('notes')->nullable()
@@ -45,7 +46,8 @@ class Migration20140324161600ComResources extends Base
 
         // runs table
         if (!$schema->tableExists('#__resource_import_runs')) {
-            $schema->createTable('#__resource_import_runs')
+            $schema
+                ->createTable('#__resource_import_runs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('import_id')->nullable()
                 ->integer('processed')->nullable()
@@ -61,7 +63,8 @@ class Migration20140324161600ComResources extends Base
 
         // hooks table
         if (!$schema->tableExists('#__resource_import_hooks')) {
-            $schema->createTable('#__resource_import_hooks')
+            $schema
+                ->createTable('#__resource_import_hooks')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('type', 25)->nullable()
                 ->string('name', 255)->nullable()

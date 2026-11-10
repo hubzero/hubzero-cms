@@ -39,7 +39,8 @@ if (!$this->comment->get('item_id')) {
             <?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
                 <div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                     <?php
-                    $this->view('_vote')
+                    $this
+                         ->view('_vote')
                          ->set('option', $this->option)
                          ->set('item', $this->comment)
                          ->set('vote', $this->comment->ballot())
@@ -176,7 +177,8 @@ if (!$this->comment->get('item_id')) {
         </div><!-- / .comment-content -->
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('item_id', $this->comment->get('item_id'))
                  ->set('parent', $this->comment->get('id'))
                  ->set('question', $this->question)

@@ -72,7 +72,8 @@ class Serviceproviders extends AdminController
         $records = ServiceProvider::all();
 
         if ($filters['search']) {
-            $records->whereLike('name', strtolower((string) $filters['search']), 1)
+            $records
+                ->whereLike('name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike('entity_id', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }

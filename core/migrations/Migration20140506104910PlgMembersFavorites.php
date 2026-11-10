@@ -27,7 +27,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
             $this->callback('progress', 'init', ['Running ' . __CLASS__ . '.php:']);
 
             // Check if there are any favorites
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__xfavorites')
                 ->order('uid', 'ASC');
@@ -39,7 +40,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
                 foreach ($results as $result) {
                     // Does this user already have this favorite as a collection item?
-                    $query = $this->db->getQuery(true)
+                    $query = $this->db
+                        ->getQuery(true)
                         ->select('p.id')
                         ->from('#__collections_posts', 'p')
                         ->innerJoin('#__collections_items AS i', 'p.item_id', 'i.id')
@@ -53,7 +55,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
                         // Do we have a collection ID for this user?
                         if (!isset($usrs[$result->uid])) {
                             // No ID yet. Check if the user has a default collection
-                            $query = $this->db->getQuery(true)
+                            $query = $this->db
+                                ->getQuery(true)
                                 ->select('p.id')
                                 ->from('#__collections', 'p')
                                 ->where('p.object_id', '=', $result->uid)
@@ -79,7 +82,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
                                 // No item entry
 
                                 // Get some resource data
-                                $query = $this->db->getQuery(true)
+                                $query = $this->db
+                                    ->getQuery(true)
                                     ->select(['id', 'title', 'introtext'])
                                     ->from('#__resources')
                                     ->where('id', '=', $result->oid);
@@ -145,7 +149,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xfavorites')) {
-            $schema->createTable('#__xfavorites')
+            $schema
+                ->createTable('#__xfavorites')
                 ->id()
                 ->integer('uid')->default(0)
                 ->integer('oid')->default(0)

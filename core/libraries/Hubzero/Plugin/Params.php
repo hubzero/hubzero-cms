@@ -76,7 +76,8 @@ class Params extends Relational
             ->row();
 
         if ($row->isNew()) {
-            $row->set('object_id', (int) $oid)
+            $row
+                ->set('object_id', (int) $oid)
                 ->set('folder', $folder)
                 ->set('element', $element);
         }

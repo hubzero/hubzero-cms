@@ -110,7 +110,8 @@ class Wiki extends Plugin
         }
 
         $book = new \Components\Wiki\Models\Book('group', $group->get('gidNumber'));
-        $arr['metadata']['count'] = $book->pages()
+        $arr['metadata']['count'] = $book
+            ->pages()
             ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
             ->total();
 
@@ -119,7 +120,8 @@ class Wiki extends Plugin
                 $this->setError($result);
             }
 
-            $arr['metadata']['count'] = $book->pages()
+            $arr['metadata']['count'] = $book
+                ->pages()
                 ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->total();
         }
@@ -205,7 +207,8 @@ class Wiki extends Plugin
                     return;
                 }
 
-                $view = $this->view('default', 'settings')
+                $view = $this
+                    ->view('default', 'settings')
                     ->set('option', $option)
                     ->set('group', $group)
                     ->set('params', $params)
@@ -287,7 +290,8 @@ class Wiki extends Plugin
             $content = ob_get_contents();
             ob_end_clean();
 
-            $this->css()
+            $this
+                 ->css()
                  ->js();
 
             // Return the content

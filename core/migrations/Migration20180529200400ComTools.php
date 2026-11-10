@@ -25,7 +25,8 @@ class Migration20180529200400ComTools extends Base
 
         if ($schema->tableExists('#__doi_mapping')) {
             if (!$schema->hasColumn('#__doi_mapping', 'versionid')) {
-                $schema->addColumn('#__doi_mapping', 'versionid')
+                $schema
+                    ->addColumn('#__doi_mapping', 'versionid')
                     ->integer()
                     ->nullable()
                     ->default(0)
@@ -33,7 +34,8 @@ class Migration20180529200400ComTools extends Base
             }
 
             if (!$schema->hasColumn('#__doi_mapping', 'doi')) {
-                $schema->addColumn('#__doi_mapping', 'doi')
+                $schema
+                    ->addColumn('#__doi_mapping', 'doi')
                     ->string(50)
                     ->nullable()
                     ->execute();

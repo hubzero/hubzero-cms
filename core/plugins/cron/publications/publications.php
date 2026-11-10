@@ -185,7 +185,8 @@ class Publications extends Plugin
 
             // Build message
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->addTo($user->get('email'), $user->get('name'))
                     ->addHeader('X-Component', 'com_publications')
@@ -346,7 +347,8 @@ class Publications extends Plugin
                         continue;
                     }
                     $message = new \Hubzero\Mail\Message();
-                    $message->setSubject($subject)
+                    $message
+                            ->setSubject($subject)
                             ->addFrom($from['email'], $from['name'])
                             ->addTo($user->get('email'), $user->get('name'))
                             ->addHeader('X-Component', 'com_publications')

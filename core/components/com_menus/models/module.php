@@ -95,7 +95,8 @@ class Module extends Relational
         if ($result) {
             // Delete the menu assignments
             $db = App::get('db');
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->delete('#__modules_menu')
                 ->whereEquals('moduleid', (int) $pk);
             $db->setQuery((string) $query);
@@ -116,7 +117,8 @@ class Module extends Relational
 
         $query = $db->getQuery();
 
-        $query->select('e.extension_id')
+        $query
+            ->select('e.extension_id')
             ->from('#__extensions', 'e')
             ->whereEquals('e.type', 'module')
             ->whereEquals('e.element', self::MODULE_NAME)
@@ -136,7 +138,8 @@ class Module extends Relational
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('a.id')
             ->select('a.title')
             ->select('a.position')
@@ -150,7 +153,8 @@ class Module extends Relational
         $query->select($subquery, '`except`');
 
         // Join on the asset groups table.
-        $query->select('ag.title', 'access_title')
+        $query
+            ->select('ag.title', 'access_title')
             ->join('#__viewlevels AS ag', 'ag.id', 'a.access', 'left')
             ->where('a.published', '>=', 0)
             ->whereEquals('a.client_id', 0)

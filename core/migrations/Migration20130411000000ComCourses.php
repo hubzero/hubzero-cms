@@ -24,7 +24,8 @@ class Migration20130411000000ComCourses extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__courses_grade_policies')) {
-            $schema->createTable('#__courses_grade_policies')
+            $schema
+                ->createTable('#__courses_grade_policies')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 255)->default('')
                 ->mediumText('description')->nullable()
@@ -46,7 +47,8 @@ class Migration20130411000000ComCourses extends Base
                 . '{"field":"cgb.scope","operator":"=","value":"asset"}],'
                 . '"group":[],"having":[]}';
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__courses_grade_policies')
                 ->set([
                     'id'             => 1,

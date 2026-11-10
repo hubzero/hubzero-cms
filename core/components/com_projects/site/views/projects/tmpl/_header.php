@@ -77,7 +77,8 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
     </h2>
     <?php // Member options
     if (!empty($this->showOptions)) {
-        $this->view('_options', 'projects')
+        $this
+             ->view('_options', 'projects')
              ->set('model', $this->model)
              ->set('option', $this->option)
              ->display();

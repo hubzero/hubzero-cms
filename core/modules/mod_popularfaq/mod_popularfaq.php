@@ -30,7 +30,8 @@ class Popularfaq extends Module
     {
 
         $a = new Archive();
-        $popular = $a->articles()
+        $popular = $a
+            ->articles()
             ->whereIn('access', User::getAuthorisedViewLevels())
             ->whereEquals('state', 1)
             ->order('helpful', 'desc')

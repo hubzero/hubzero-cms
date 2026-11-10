@@ -78,7 +78,8 @@ class Template extends Scaffolding
         }
 
         // Make component
-        $this->addTemplateFile($pathFrom . DS . 'templates' . DS . $from, $pathTo . DS . 'templates' . DS . $to, true)
+        $this
+             ->addTemplateFile($pathFrom . DS . 'templates' . DS . $from, $pathTo . DS . 'templates' . DS . $to, true)
              ->addTemplateFile($pathFrom
                  . DS
                  . 'language'

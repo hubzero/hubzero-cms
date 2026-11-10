@@ -46,7 +46,8 @@ $this->css();
 $this->js('searchable');
 $option = $this->option;
 
-$this->view('_submenu', 'shared')
+$this
+    ->view('_submenu', 'shared')
     ->display();
 
 $sort_dir = Request::getString('filter_order_Dir', 'asc');

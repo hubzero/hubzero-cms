@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
         // Show Comments
         foreach ($this->comments as $comment) {
             // Show comments
-            $this->view('_comment')
+            $this
+                ->view('_comment')
                 ->set('comment', $comment)
                 ->set('model', $this->model)
                 ->set('activity', $this->activity)

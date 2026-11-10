@@ -12,7 +12,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">
@@ -48,7 +49,8 @@ $this->css()
                         </caption>
                         <tbody>
                             <?php
-                            $rows = $this->forum->posts($this->filters)
+                            $rows = $this->forum
+                                ->posts($this->filters)
                                 ->paginated()
                                 ->rows();
 

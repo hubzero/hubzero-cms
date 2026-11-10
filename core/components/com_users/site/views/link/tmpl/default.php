@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('link.css')
+$this
+    ->css('link.css')
     ->css('providers.css')
     ->js('link.js');
 

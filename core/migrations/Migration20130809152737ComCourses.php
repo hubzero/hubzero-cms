@@ -27,7 +27,8 @@ class Migration20130809152737ComCourses extends Base
             $schema->tableExists('#__courses_pages')
             && !$schema->hasColumn('#__courses_pages', 'section_id')
         ) {
-            $schema->addColumn('#__courses_pages', 'section_id')
+            $schema
+                ->addColumn('#__courses_pages', 'section_id')
                 ->integer()
                 ->notNull()
                 ->default(0)

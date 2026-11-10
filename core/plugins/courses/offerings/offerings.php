@@ -86,7 +86,8 @@ class Offerings extends Plugin
         // Check if our area is in the array of areas we want to return results for
         if ($response->get('name') == $active) {
             $view = $this->view('default', 'overview');
-            $view->set('option', Request::getCmd('option', 'com_courses'))
+            $view
+                ->set('option', Request::getCmd('option', 'com_courses'))
                 ->set('controller', Request::getWord('controller', 'course'))
                 ->set('course', $course)
                 ->set('name', $this->pluginName);

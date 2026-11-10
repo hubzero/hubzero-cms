@@ -12,11 +12,13 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js('jquery.fileuploader', 'system')
      ->js();
 
-$this->view('default_menu')
+$this
+     ->view('default_menu')
      ->set('option', $this->option)
      ->set('controller', $this->controller)
      ->set('course', $this->course)

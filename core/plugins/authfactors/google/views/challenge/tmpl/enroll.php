@@ -8,7 +8,8 @@
 
 defined('_HZEXEC_') or die();
 
-$this->css('enroll')
+$this
+    ->css('enroll')
     ->js('enroll');
 
 use Hubzero\Auth\Factor;

@@ -71,12 +71,14 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_posts', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->string('title', 255)
             ->execute();
@@ -106,7 +108,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_posts', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('name', 255)
             ->execute();
@@ -114,7 +117,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $schema1 = $driver->schema()->introspectDatabase('diff_');
 
         // Add another table
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->string('title', 255)
             ->execute();
@@ -145,12 +149,14 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_temp1', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->text('data')
             ->execute();
@@ -183,7 +189,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Create initial schema
         $driver->dropTable('diff_users', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('name', 255)
             ->execute();
@@ -225,16 +232,19 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_temp2', true);
         $driver->dropTable('diff_temp3', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp2')
+        $driver
+            ->createTable('diff_temp2')
             ->id()
             ->string('old_col', 100)
             ->execute();
@@ -244,7 +254,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Make multiple changes: drop temp1, add temp3, modify temp2
         $driver->dropTable('diff_temp1', true);
 
-        $driver->createTable('diff_temp3')
+        $driver
+            ->createTable('diff_temp3')
             ->id()
             ->text('data')
             ->execute();
@@ -286,11 +297,13 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_temp1', true);
         $driver->dropTable('diff_temp2', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->execute();
 
@@ -299,7 +312,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Make changes: drop temp1, add temp2, modify users
         $driver->dropTable('diff_temp1', true);
 
-        $driver->createTable('diff_temp2')
+        $driver
+            ->createTable('diff_temp2')
             ->id()
             ->execute();
 
@@ -332,11 +346,13 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_temp1', true);
         $driver->dropTable('diff_temp2', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->execute();
 
@@ -345,7 +361,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Make changes
         $driver->dropTable('diff_temp1', true);
 
-        $driver->createTable('diff_temp2')
+        $driver
+            ->createTable('diff_temp2')
             ->id()
             ->execute();
 
@@ -378,11 +395,13 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_temp1', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->text('data')
             ->execute();
@@ -416,7 +435,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Create initial schema
         $driver->dropTable('diff_users', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->string('important_col', 255)
             ->execute();
@@ -451,7 +471,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_posts', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
@@ -460,7 +481,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Make non-destructive changes: add column and table
         $driver->schema()->addColumn('diff_users', 'email', 'VARCHAR(255)');
 
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->execute();
 
@@ -491,7 +513,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_users', true);
         $driver->dropTable('diff_posts', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
@@ -500,7 +523,8 @@ class SchemaDiffTest extends AbstractDriverTestCase
         // Make changes
         $driver->schema()->addColumn('diff_users', 'email', 'VARCHAR(255)');
 
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->execute();
 
@@ -539,18 +563,21 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_posts', true);
         $driver->dropTable('diff_comments', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
         $schema1 = $driver->schema()->introspectDatabase('diff_');
 
         // Add tables
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_comments')
+        $driver
+            ->createTable('diff_comments')
             ->id()
             ->execute();
 
@@ -581,15 +608,18 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_temp1', true);
         $driver->dropTable('diff_temp2', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp1')
+        $driver
+            ->createTable('diff_temp1')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_temp2')
+        $driver
+            ->createTable('diff_temp2')
             ->id()
             ->execute();
 
@@ -624,15 +654,18 @@ class SchemaDiffTest extends AbstractDriverTestCase
         $driver->dropTable('diff_posts', true);
         $driver->dropTable('diff_unchanged', true);
 
-        $driver->createTable('diff_users')
+        $driver
+            ->createTable('diff_users')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_posts')
+        $driver
+            ->createTable('diff_posts')
             ->id()
             ->execute();
 
-        $driver->createTable('diff_unchanged')
+        $driver
+            ->createTable('diff_unchanged')
             ->id()
             ->execute();
 

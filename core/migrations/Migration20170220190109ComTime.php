@@ -49,7 +49,9 @@ class Migration20170220190109ComTime extends Base
         }
 
         if ($schema->tableExists('#__time_records')) {
-            $schema->table('#__time_records')->alter()
+            $schema
+                ->table('#__time_records')
+                ->alter()
                 ->addIndex('idx_task_id', 'task_id')
                 ->addIndex('idx_user_id', 'user_id')
                 ->execute();
@@ -64,7 +66,9 @@ class Migration20170220190109ComTime extends Base
         }
 
         if (!$schema->tableExists('#__time_hub_allotments')) {
-            $schema->table('#__time_hub_allotments')->create()
+            $schema
+                ->table('#__time_hub_allotments')
+                ->create()
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('hub_id')->default(0)
                 ->date('start_date')->default('0000-00-00')
@@ -86,7 +90,9 @@ class Migration20170220190109ComTime extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__time_tasks')) {
-            $schema->table('#__time_tasks')->alter()
+            $schema
+                ->table('#__time_tasks')
+                ->alter()
                 ->dropIndex('idx_assignee_id')
                 ->dropIndex('idx_liaison_id')
                 ->dropIndex('idx_priority')
@@ -94,14 +100,18 @@ class Migration20170220190109ComTime extends Base
                 ->execute();
 
             if ($schema->hasColumn('#__time_tasks', 'billable')) {
-                $schema->table('#__time_tasks')->alter()
+                $schema
+                    ->table('#__time_tasks')
+                    ->alter()
                     ->dropColumn('billable')
                     ->execute();
             }
         }
 
         if ($schema->tableExists('#__time_records')) {
-            $schema->table('#__time_records')->alter()
+            $schema
+                ->table('#__time_records')
+                ->alter()
                 ->dropIndex('idx_task_id')
                 ->dropIndex('idx_user_id')
                 ->execute();

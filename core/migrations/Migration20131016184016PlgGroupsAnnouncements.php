@@ -34,14 +34,16 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
         }
 
         // check for group announcements cron
-        $query = $this->db->getQuery(true)
+        $query = $this->db
+            ->getQuery(true)
             ->select('title')
             ->from('#__cron_jobs')
             ->where('title', '=', 'Group Announcements');
 
         if ($query->doesntExist()) {
             // add group announcements cron
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insertOrIgnore('#__cron_jobs')
                 ->values([
                     'title'      => 'Group Announcements',
@@ -72,7 +74,8 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
         }
 
         // remove announcements cron
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->delete('#__cron_jobs')
             ->where('event', '=', 'sendGroupAnnouncements')
             ->execute();

@@ -28,7 +28,8 @@ class Migration20170228000001ComStorefront extends Base
             && !$schema->hasColumn('#__storefront_skus', 'sCheckoutNotes')
         ) {
             $schema->addColumn('#__storefront_skus', 'sCheckoutNotes')->string()->execute();
-            $schema->addColumn('#__storefront_skus', 'sCheckoutNotesRequired')
+            $schema
+                ->addColumn('#__storefront_skus', 'sCheckoutNotesRequired')
                 ->tinyInteger()
                 ->notNull()
                 ->default(0)

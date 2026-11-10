@@ -36,7 +36,8 @@ class Migration20141105073734ComTags extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__tags_group')) {
-            $schema->createTable('#__tags_group')
+            $schema
+                ->createTable('#__tags_group')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('groupid')->default(0)
                 ->unsignedInteger('tagid')->default(0)

@@ -24,7 +24,8 @@ class Migration20160802170610PlgMembersActivity extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__activity_digests')) {
-            $schema->createTable('#__activity_digests')
+            $schema
+                ->createTable('#__activity_digests')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('scope', 250)
                 ->unsignedInteger('scope_id')->default(0)

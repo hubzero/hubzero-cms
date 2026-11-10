@@ -27,13 +27,15 @@ class Migration20130516175532ComFeedback extends Base
         $newPath = '/components/com_feedback/assets/img/contributor.gif';
 
         if ($schema->tableExists('#__components')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__components')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('option', '=', 'com_feedback')
                 ->execute();
         } else {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('element', '=', 'com_feedback')
@@ -52,13 +54,15 @@ class Migration20130516175532ComFeedback extends Base
         $newPath = '/components/com_feedback/images/contributor.gif';
 
         if ($schema->tableExists('#__components')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__components')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('option', '=', 'com_feedback')
                 ->execute();
         } else {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('element', '=', 'com_feedback')

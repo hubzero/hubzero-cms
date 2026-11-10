@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $this->category->set('section_alias', $this->filters['section']);
@@ -53,7 +54,8 @@ $now = Date::of('now')->toSql();
                 // producing blank pages and "lost" posts (support ticket #2159).
                 // Instead, build the full tree and paginate the top-level
                 // replies, each of which carries its complete sub-thread.
-                $all = $this->thread->thread()
+                $all = $this->thread
+                    ->thread()
                     ->whereIn('state', $this->filters['state'])
                     ->whereIn('access', $this->filters['access'])
                     ->order('lft', 'asc')
@@ -74,7 +76,8 @@ $now = Date::of('now')->toSql();
 
                 $pageNav = new \Hubzero\Pagination\Paginator($total, $this->filters['start'], $this->filters['limit']);
             } else {
-                $posts = $this->thread->thread()
+                $posts = $this->thread
+                    ->thread()
                     ->whereIn('state', $this->filters['state'])
                     ->whereIn('access', $this->filters['access'])
                     ->order('id', 'asc')
@@ -86,7 +89,8 @@ $now = Date::of('now')->toSql();
             }
 
             if ($count > 0) {
-                $this->view('_list')
+                $this
+                     ->view('_list')
                      ->set('option', $this->option)
                      ->set('controller', $this->controller)
                      ->set('comments', $posts)
@@ -260,7 +264,8 @@ $now = Date::of('now')->toSql();
             </div><!-- / .container -->
 
             <?php
-            $participants = $this->thread->participants()
+            $participants = $this->thread
+                ->participants()
                 ->whereIn('state', $this->filters['state'])
                 ->whereIn('access', $this->filters['access'])
                 ->rows();

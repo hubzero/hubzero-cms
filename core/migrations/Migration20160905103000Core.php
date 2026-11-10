@@ -28,7 +28,8 @@ class Migration20160905103000Core extends Base
         }
 
         if (!$schema->hasColumn('#__resource_stats_clusters', 'clustersize')) {
-            $schema->addColumn('#__resource_stats_clusters', 'clustersize')
+            $schema
+                ->addColumn('#__resource_stats_clusters', 'clustersize')
                 ->string(255)
                 ->notNull()
                 ->default('')
@@ -37,7 +38,8 @@ class Migration20160905103000Core extends Base
         }
 
         if (!$schema->hasColumn('#__resource_stats_clusters', 'cluster_start')) {
-            $schema->addColumn('#__resource_stats_clusters', 'cluster_start')
+            $schema
+                ->addColumn('#__resource_stats_clusters', 'cluster_start')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -46,7 +48,8 @@ class Migration20160905103000Core extends Base
         }
 
         if (!$schema->hasColumn('#__resource_stats_clusters', 'cluster_end')) {
-            $schema->addColumn('#__resource_stats_clusters', 'cluster_end')
+            $schema
+                ->addColumn('#__resource_stats_clusters', 'cluster_end')
                 ->datetime()
                 ->notNull()
                 ->default('0000-00-00 00:00:00')
@@ -55,7 +58,8 @@ class Migration20160905103000Core extends Base
         }
 
         if (!$schema->hasColumn('#__resource_stats_clusters', 'institution')) {
-            $schema->addColumn('#__resource_stats_clusters', 'institution')
+            $schema
+                ->addColumn('#__resource_stats_clusters', 'institution')
                 ->string(255)
                 ->notNull()
                 ->default('')

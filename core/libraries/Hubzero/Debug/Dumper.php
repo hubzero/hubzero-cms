@@ -211,7 +211,8 @@ class Dumper
             $renderer = php_sapi_name() === 'cli' ? 'console' : 'html';
         }
 
-        return $this->setRenderer($renderer)
+        return $this
+                    ->setRenderer($renderer)
                     ->getRenderer()
                     ->render($this->messages());
     }

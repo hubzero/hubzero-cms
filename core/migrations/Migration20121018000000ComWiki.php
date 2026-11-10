@@ -24,14 +24,16 @@ class Migration20121018000000ComWiki extends Base
 
         if ($schema->tableExists('#__wiki_page')) {
             if (!$schema->hasColumn('#__wiki_page', 'modified')) {
-                $schema->addColumn('#__wiki_page', 'modified')
+                $schema
+                    ->addColumn('#__wiki_page', 'modified')
                     ->datetime()
                     ->notNull()
                     ->default('0000-00-00 00:00:00')
                     ->execute();
             }
             if (!$schema->hasColumn('#__wiki_page', 'version_id')) {
-                $schema->addColumn('#__wiki_page', 'version_id')
+                $schema
+                    ->addColumn('#__wiki_page', 'version_id')
                     ->integer()
                     ->notNull()
                     ->default(0)
@@ -41,7 +43,8 @@ class Migration20121018000000ComWiki extends Base
 
         if ($schema->tableExists('#__wiki_version')) {
             if (!$schema->hasColumn('#__wiki_version', 'length')) {
-                $schema->addColumn('#__wiki_version', 'length')
+                $schema
+                    ->addColumn('#__wiki_version', 'length')
                     ->integer()
                     ->notNull()
                     ->default(0)

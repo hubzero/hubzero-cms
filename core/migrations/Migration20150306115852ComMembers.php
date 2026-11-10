@@ -24,25 +24,30 @@ class Migration20150306115852ComMembers extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__xprofiles')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set(['name' => Expression::replace('name', Expression::hexLiteral('c2ad'), '')])
                 ->execute();
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set(['givenName' => Expression::replace('givenName', Expression::hexLiteral('c2ad'), '')])
                 ->execute();
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set(['middleName' => Expression::replace('middleName', Expression::hexLiteral('c2ad'), '')])
                 ->execute();
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__xprofiles')
                 ->set(['surname' => Expression::replace('surname', Expression::hexLiteral('c2ad'), '')])
                 ->execute();
         }
         if ($schema->tableExists('#__users')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__users')
                 ->set(['name' => Expression::replace('name', Expression::hexLiteral('c2ad'), '')])
                 ->execute();

@@ -22,7 +22,8 @@ class Migration20140529172125ComCourses extends Base
     public function up()
     {
         // Get the problem assets
-        $results = $this->db->getQuery(true)
+        $results = $this->db
+            ->getQuery(true)
             ->select('ca.id')
             ->from('#__courses_assets', 'ca')
             ->leftJoin('#__courses_asset_associations AS caa', 'ca.id', 'caa.asset_id')
@@ -34,7 +35,8 @@ class Migration20140529172125ComCourses extends Base
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__courses_assets')
                     ->set(['type' => 'gradebook', 'subtype' => 'auxiliary'])
                     ->where('id', '=', $result->id)

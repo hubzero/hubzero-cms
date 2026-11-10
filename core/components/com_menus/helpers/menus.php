@@ -139,7 +139,8 @@ class Menus
 
         // Filter by the type
         if ($menuType) {
-            $query->whereEquals('a.menutype', $menuType, 1)
+            $query
+                ->whereEquals('a.menutype', $menuType, 1)
                 ->orWhereEquals('a.parent_id', 0, 1)
                 ->resetDepth();
         }
@@ -148,7 +149,8 @@ class Menus
             if ($mode == 2) {
                 // Prevent the parent and children from showing.
                 $query->join('#__menu AS p', 'p.id', (int) $parentId, 'left');
-                $query->where('a.lft', '<=', 'p.lft', 1)
+                $query
+                    ->where('a.lft', '<=', 'p.lft', 1)
                     ->orWhere('a.rgt', '>=', 'p.rgt', 1)
                     ->resetDepth();
             }
@@ -163,7 +165,8 @@ class Menus
         }
 
         $query->where('a.published', '!=', '-2');
-        $query->group('a.id')
+        $query
+            ->group('a.id')
             ->group('a.title')
             ->group('a.level')
             ->group('a.menutype')
@@ -195,7 +198,8 @@ class Menus
             $query->select('*');
             $query->from('#__menu_types');
             $query->where('menutype', '<>', '');
-            $query->order('title', 'asc')
+            $query
+                ->order('title', 'asc')
                 ->order('menutype', 'asc');
             $db->setQuery($query->toString());
 

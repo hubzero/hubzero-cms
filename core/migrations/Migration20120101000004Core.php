@@ -131,7 +131,8 @@ class Migration20120101000004Core extends Base
                 $schema->hasColumn('#__citations_authors', 'author_uid')
                 && !$schema->hasColumn('#__citations_authors', 'authorid')
             ) {
-                $schema->renameColumn('#__citations_authors', 'author_uid', 'authorid')
+                $schema
+                    ->renameColumn('#__citations_authors', 'author_uid', 'authorid')
                     ->integer()
                     ->nullable()
                     ->default(0)
@@ -142,7 +143,8 @@ class Migration20120101000004Core extends Base
                 !$schema->hasColumn('#__citations_authors', 'uidNumber')
                 && $schema->hasColumn('#__citations_authors', 'authorid')
             ) {
-                $schema->addColumn('#__citations_authors', 'uidNumber')
+                $schema
+                    ->addColumn('#__citations_authors', 'uidNumber')
                     ->integer()
                     ->nullable()
                     ->default(0)
@@ -168,7 +170,8 @@ class Migration20120101000004Core extends Base
                 $schema->hasColumn('#__doi_mapping', 'alias')
                 && !$schema->hasColumn('#__doi_mapping', 'versionid')
             ) {
-                $schema->addColumn('#__doi_mapping', 'versionid')
+                $schema
+                    ->addColumn('#__doi_mapping', 'versionid')
                     ->integer()
                     ->nullable()
                     ->default(0)
@@ -213,7 +216,8 @@ class Migration20120101000004Core extends Base
 
         if ($schema->tableExists('#__faq_categories')) {
             if ($schema->hasColumn('#__faq_categories', 'description')) {
-                $schema->modifyColumn('#__faq_categories', 'description')
+                $schema
+                    ->modifyColumn('#__faq_categories', 'description')
                     ->string(255)
                     ->nullable()
                     ->default('')
@@ -238,7 +242,8 @@ class Migration20120101000004Core extends Base
             }
 
             if ($schema->hasColumn('#__faq_comments', 'created')) {
-                $schema->modifyColumn('#__faq_comments', 'created')
+                $schema
+                    ->modifyColumn('#__faq_comments', 'created')
                     ->datetime()
                     ->notNull()
                     ->default('0000-00-00 00:00:00')
@@ -337,12 +342,16 @@ class Migration20120101000004Core extends Base
 
         if ($schema->tableExists('#__session')) {
             if ($schema->hasPrimaryKey('#__session')) {
-                $schema->table('#__session')->alter()
+                $schema
+                    ->table('#__session')
+                    ->alter()
                     ->dropPrimaryKey()
                     ->addPrimaryKey('session_id')
                     ->execute();
             } elseif ($schema->hasColumn('#__session', 'session_id')) {
-                $schema->table('#__session')->alter()
+                $schema
+                    ->table('#__session')
+                    ->alter()
                     ->addPrimaryKey('session_id')
                     ->execute();
             }
@@ -445,14 +454,18 @@ class Migration20120101000004Core extends Base
                 $pkColumn = $schema->getPrimaryKey('#__users_password_history');
                 if ($pkColumn == 'user_id') {
                     // Drop old primary key and add new one with auto-increment
-                    $schema->table('#__users_password_history')->alter()
+                    $schema
+                        ->table('#__users_password_history')
+                        ->alter()
                         ->dropPrimaryKey()
                         ->modifyColumn('id')->integer()->notNull()->autoIncrement()
                         ->addPrimaryKey('id')
                         ->execute();
                 } elseif (!$schema->hasPrimaryKey('#__users_password_history')) {
                     // Just add primary key with auto-increment
-                    $schema->table('#__users_password_history')->alter()
+                    $schema
+                        ->table('#__users_password_history')
+                        ->alter()
                         ->modifyColumn('id')->integer()->notNull()->autoIncrement()
                         ->addPrimaryKey('id')
                         ->execute();
@@ -508,7 +521,8 @@ class Migration20120101000004Core extends Base
                 $schema->hasColumn('#__xgroups', 'privacy')
                 && !$schema->hasColumn('#__xgroups', 'discussion_email_autosubscribe')
             ) {
-                $schema->addColumn('#__xgroups', 'discussion_email_autosubscribe')
+                $schema
+                    ->addColumn('#__xgroups', 'discussion_email_autosubscribe')
                     ->tinyInteger()
                     ->nullable()
                     ->execute();

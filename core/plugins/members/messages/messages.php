@@ -172,7 +172,8 @@ class Messages extends Plugin
 
             $notifications = []; //Notify::messages('plg_' . $this->_type . '_' . $this->_name);
 
-            $view = $this->view('default', 'default')
+            $view = $this
+                ->view('default', 'default')
                 ->set('option', $option)
                 ->set('member', $member)
                 ->set('task', $task)
@@ -246,7 +247,8 @@ class Messages extends Plugin
         $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
-        $view = $this->view('inbox', 'default')
+        $view = $this
+            ->view('inbox', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('filters', $filters)
@@ -297,7 +299,8 @@ class Messages extends Plugin
         $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
-        $view = $this->view('archive', 'default')
+        $view = $this
+            ->view('archive', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('filters', $filters)
@@ -348,7 +351,8 @@ class Messages extends Plugin
         $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
-        $view = $this->view('trash', 'default')
+        $view = $this
+            ->view('trash', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('filters', $filters)
@@ -393,7 +397,8 @@ class Messages extends Plugin
         $rows = $recipient->getSentMessages($filters);
 
         // Output view
-        $view = $this->view('sent', 'default')
+        $view = $this
+            ->view('sent', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('filters', $filters)
@@ -416,7 +421,8 @@ class Messages extends Plugin
         $xmc = \Hubzero\Message\Component::blank();
         $components = $xmc->getRecords();
 
-        $view = $this->view('settings', 'default')
+        $view = $this
+            ->view('settings', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('components', $components);
@@ -495,7 +501,8 @@ class Messages extends Plugin
             $tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
         }
 
-        $view = $this->view('create', 'default')
+        $view = $this
+            ->view('create', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('tos', implode(',', $tos))
@@ -538,7 +545,8 @@ class Messages extends Plugin
             }
         }
 
-        $view = $this->view('message', 'default')
+        $view = $this
+            ->view('message', 'default')
             ->set('option', $option)
             ->set('member', $member)
             ->set('xmr', $recipient)

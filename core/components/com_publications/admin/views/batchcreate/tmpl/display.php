@@ -49,7 +49,8 @@ $formAction = Route::url(
                     </label>
                     <?php
                     // Draw project list
-                    $this->view('_selectprojects')
+                    $this
+                         ->view('_selectprojects')
                          ->set('projects', $this->projects)
                          ->display(); ?>
                 </div>
@@ -60,7 +61,8 @@ $formAction = Route::url(
                     </label>
                     <?php
                     // Draw master type list
-                    $this->view('_selectmastertypes')
+                    $this
+                         ->view('_selectmastertypes')
                          ->set('mastertypes', $this->mastertypes)
                          ->display(); ?>
                 </div>

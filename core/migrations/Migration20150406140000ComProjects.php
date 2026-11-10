@@ -24,7 +24,8 @@ class Migration20150406140000ComProjects extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__project_repos')) {
-            $schema->createTable('#__project_repos')
+            $schema
+                ->createTable('#__project_repos')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('project_id')
                 ->string('name', 64)->default('')

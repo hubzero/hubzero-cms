@@ -71,7 +71,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         $recordIdField = $records->getQualifiedFieldName('id');
 
-        $records->select($records->getQualifiedFieldName('*'))
+        $records
+                ->select($records->getQualifiedFieldName('*'))
                 ->select('u.username')
                 ->select('F.format', 'template')
                 ->select('CS.sec_cits_cnt', 'sec_cnt')
@@ -136,7 +137,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         if (!empty($filters['tag'])) {
             $tags = explode(',', $filters['tag']);
             $records->whereRelatedHas('tags', function ($tag) use ($tags) {
-                $tag->select('tag', 'tagcount', true)->whereIn('tag', $tags)
+                $tag
+                    ->select('tag', 'tagcount', true)
+                    ->whereIn('tag', $tags)
                     ->group('objectid')
                     ->having('tagcount', '=', count($tags));
                 return $tag;
@@ -381,12 +384,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             ->order('year', 'desc');
 
         if ($scope == 'hub') {
-            $citations->whereEquals('scope', '', 1)
+            $citations
+                ->whereEquals('scope', '', 1)
                 ->orWhere('scope', 'IS', null, 1)
                 ->orWhereEquals('scope', $scope, 1)
                 ->resetDepth();
         } elseif ($scope != 'all' && !empty($filters['scope_id'])) {
-            $citations->whereEquals('scope', $scope)
+            $citations
+                ->whereEquals('scope', $scope)
                 ->whereEquals('scope_id', $filters['scope_id']);
         }
 
@@ -397,12 +402,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             ->where('year', '>', 0);
 
         if ($scope == 'hub') {
-            $query->whereEquals('scope', '', 1)
+            $query
+                ->whereEquals('scope', '', 1)
                 ->orWhere('scope', 'IS', null, 1)
                 ->orWhereEquals('scope', $scope, 1)
                 ->resetDepth();
         } elseif ($scope != 'all' && !empty($filters['scope_id'])) {
-            $query->whereEquals('scope', $scope)
+            $query
+                ->whereEquals('scope', $scope)
                 ->whereEquals('scope_id', $filters['scope_id']);
         }
 
@@ -481,7 +488,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public function publications()
     {
-        return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')
+        return $this
+            ->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')
             ->whereEquals('#__citations_assoc.tbl', 'publication');
     }
 
@@ -493,7 +501,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public function canEdit($userId = null)
     {
-        $owners = $this->publications()
+        $owners = $this
+            ->publications()
             ->select('owners.userid')
             ->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
 
@@ -844,7 +853,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     // prefer the use of the relational table
                     // Fix for the citation tab of a resource.
                     // There were mismatch of author names to a citation, reason being it was using the id to match it with cid in table.
-                    $authors = $this->relatedAuthorsByCitation()
+                    $authors = $this
+                        ->relatedAuthorsByCitation()
                         ->order('ordering', 'asc')
                         ->order('id', 'asc')
                         ->rows();
@@ -1373,7 +1383,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             $this->set('id', $this->tempId);
         }
 
-        $authors = $this->relatedAuthors()
+        $authors = $this
+            ->relatedAuthors()
             ->order('ordering', 'ASC')
             ->rows();
 

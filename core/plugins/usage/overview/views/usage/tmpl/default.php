@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 //Html::behavior('chart', 'resize');
 
 $this->css();
-$this->js('flot/jquery.colorhelpers.min.js', 'system')
+$this
+     ->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('jquery.flot.min.js')
      ->js('jquery.flot.time.min.js')
      ->js('jquery.flot.resize.min.js')

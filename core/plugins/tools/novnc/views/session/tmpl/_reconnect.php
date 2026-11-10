@@ -18,7 +18,8 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
-$this->css('./css/reconnect.css')
+$this
+     ->css('./css/reconnect.css')
      ->js('./js/reconnect.js');
 
 $base = rtrim(Request::root(), '/');

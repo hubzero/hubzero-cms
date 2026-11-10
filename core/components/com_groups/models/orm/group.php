@@ -138,7 +138,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (in_array($key, ['applicants', 'invitees', 'members', 'managers'])) {
-            return $this->$key()
+            return $this
+                ->$key()
                 ->rows()
                 ->fieldsByKey('uidNumber');
         }
@@ -382,7 +383,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     {
         $users = $this->normalizeUserIds($users);
 
-        $existing = $this->$role()
+        $existing = $this
+            ->$role()
             ->rows()
             ->fieldsByKey('uidNumber');
 
@@ -805,7 +807,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             if (is_numeric($filters['search'])) {
                 $query->whereEquals('gidNumber', (int) $filters['search']);
             } else {
-                $query->whereLike('description', $filters['search'], 1)
+                $query
+                    ->whereLike('description', $filters['search'], 1)
                     ->orWhereLike('cn', $filters['search'], 1)
                     ->resetDepth();
             }
@@ -867,7 +870,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (isset($filters['limit']) && $filters['limit'] != 'all') {
-            $query->start($filters['start'])
+            $query
+                ->start($filters['start'])
                 ->limit($filters['limit']);
         }
 

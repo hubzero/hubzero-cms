@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('chart');
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 <div class="<?php echo $this->module->module; ?>">

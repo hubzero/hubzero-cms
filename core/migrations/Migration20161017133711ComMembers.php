@@ -18,7 +18,8 @@ class Migration20161017133711ComMembers extends Base
 {
     public function up()
     {
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__user_profile_fields')
             ->set(['action_edit' => 0])
             ->where('action_create', '=', 0)
@@ -32,7 +33,8 @@ class Migration20161017133711ComMembers extends Base
      **/
     public function down()
     {
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__user_profile_fields')
             ->set(['action_edit' => 2])
             ->where('action_create', '=', 0)

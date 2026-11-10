@@ -14,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 $html  = '';
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 // Do some text cleanup

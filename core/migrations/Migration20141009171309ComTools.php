@@ -43,7 +43,10 @@ class Migration20141009171309ComTools extends Base
             && $schema->hasColumn('zones', 'title')
             && $schema->hasColumn('zones', 'zone')
         ) {
-            $mwdb->schema()->table('zones')->alter()
+            $mwdb
+                ->schema()
+                ->table('zones')
+                ->alter()
                 ->modifyColumn('title')
                 ->string(255)
                 ->nullable()

@@ -180,7 +180,8 @@ $this->css();
 
         if ($this->which == 'all') {
             // Show owned projects first
-            $this->view('list')
+            $this
+                ->view('list')
                 ->set('option', $this->option)
                 ->set('rows', $this->owned)
                 ->set('which', 'owned')
@@ -193,7 +194,8 @@ $this->css();
         }
 
         // Show rows
-        $this->view('list')
+        $this
+            ->view('list')
             ->set('option', $this->option)
             ->set('rows', $this->rows)
             ->set('config', $this->config)

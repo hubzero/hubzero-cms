@@ -26,7 +26,8 @@ class Migration20140716182939Core extends Base
         if ($schema->tableExists('#__migrations') && !$schema->hasColumn('#__migrations', 'scope')) {
             $schema->addColumn('#__migrations', 'scope')->string(255)->notNull()->default('');
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__migrations')
                 ->set(['scope' => PATH_ROOT . DS . 'migrations'])
                 ->execute();
@@ -35,7 +36,8 @@ class Migration20140716182939Core extends Base
         if ($schema->tableExists('migrations') && !$schema->hasColumn('migrations', 'scope')) {
             $schema->addColumn('migrations', 'scope')->string(255)->notNull()->default('');
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('migrations')
                 ->set(['scope' => PATH_ROOT . DS . 'migrations'])
                 ->execute();

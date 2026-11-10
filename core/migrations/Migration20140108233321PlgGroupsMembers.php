@@ -25,21 +25,24 @@ class Migration20140108233321PlgGroupsMembers extends Base
 
         // change role to name
         if (!$schema->hasColumn('#__xgroups_roles', 'name')) {
-            $schema->renameColumn('#__xgroups_roles', 'role', 'name')
+            $schema
+                ->renameColumn('#__xgroups_roles', 'role', 'name')
                 ->string(150)
                 ->execute();
         }
 
         // add permissions field
         if (!$schema->hasColumn('#__xgroups_roles', 'permissions')) {
-            $schema->addColumn('#__xgroups_roles', 'permissions')
+            $schema
+                ->addColumn('#__xgroups_roles', 'permissions')
                 ->text()
                 ->execute();
         }
 
         // add role to roleid
         if (!$schema->hasColumn('#__xgroups_member_roles', 'roleid')) {
-            $schema->renameColumn('#__xgroups_member_roles', 'role', 'roleid')
+            $schema
+                ->renameColumn('#__xgroups_member_roles', 'role', 'roleid')
                 ->integer(11)
                 ->execute();
         }
@@ -54,7 +57,8 @@ class Migration20140108233321PlgGroupsMembers extends Base
 
         // change role to name
         if ($schema->hasColumn('#__xgroups_roles', 'name')) {
-            $schema->renameColumn('#__xgroups_roles', 'name', 'role')
+            $schema
+                ->renameColumn('#__xgroups_roles', 'name', 'role')
                 ->string(150)
                 ->execute();
         }
@@ -66,7 +70,8 @@ class Migration20140108233321PlgGroupsMembers extends Base
 
         // add role to roleid
         if ($schema->hasColumn('#__xgroups_member_roles', 'roleid')) {
-            $schema->renameColumn('#__xgroups_member_roles', 'roleid', 'role')
+            $schema
+                ->renameColumn('#__xgroups_member_roles', 'roleid', 'role')
                 ->integer(11)
                 ->execute();
         }

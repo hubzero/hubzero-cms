@@ -26,7 +26,8 @@ class Migration20140310130202ComTags extends Base
 
         if ($schema->tableExists('#__tags')) {
             // We need to clean out duplicates first
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select(['*', Expression::count('id')->as('cnt')])
                 ->from('#__tags')
                 ->group('tag')
@@ -36,7 +37,8 @@ class Migration20140310130202ComTags extends Base
             if ($results) {
                 foreach ($results as $result) {
                     // Get all duplicate tags
-                    $tags = $this->db->getQuery(true)
+                    $tags = $this->db
+                        ->getQuery(true)
                         ->select('*')
                         ->from('#__tags')
                         ->where('tag', '=', $result->tag)

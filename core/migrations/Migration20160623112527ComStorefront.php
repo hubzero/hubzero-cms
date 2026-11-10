@@ -28,7 +28,8 @@ class Migration20160623112527ComStorefront extends Base
             && $schema->hasColumn('#__storefront_collections', 'cId')
         ) {
             // modifyColumn handles AUTO_INCREMENT appropriately for each database
-            $schema->modifyColumn('#__storefront_collections', 'cId')
+            $schema
+                ->modifyColumn('#__storefront_collections', 'cId')
                 ->integer(16)
                 ->unsigned()
                 ->notNull()
@@ -49,7 +50,8 @@ class Migration20160623112527ComStorefront extends Base
             && $schema->hasColumn('#__storefront_collections', 'cId')
         ) {
             // Note: char(50) with AUTO_INCREMENT is unusual; keeping for backward compatibility
-            $schema->modifyColumn('#__storefront_collections', 'cId')
+            $schema
+                ->modifyColumn('#__storefront_collections', 'cId')
                 ->char(50)
                 ->notNull()
                 ->execute();

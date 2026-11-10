@@ -620,7 +620,8 @@ class View
         // method that called handleSuperGroupError with call_user_func
         ob_start();
         $template = new Template();
-        $template->set('group', \Hubzero\User\Group::getInstance(Request::getString('cn', '')))
+        $template
+                 ->set('group', \Hubzero\User\Group::getInstance(Request::getString('cn', '')))
                  ->set('tab', Request::getCmd('active', 'overview'))
                  ->set('error', $lerror)
                  ->parse()
@@ -806,7 +807,8 @@ class View
 
         // set group doc needed props
         // parse and render content
-        $groupDocument->set('group', $group)
+        $groupDocument
+            ->set('group', $group)
             ->set('page', null)
             ->set('document', $phpPageContent)
             ->parse()

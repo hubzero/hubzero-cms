@@ -36,7 +36,8 @@ class Migration20170112000001ComStorefront extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__storefront_serials', 'srNumber')) {
-            $schema->modifyColumn('#__storefront_serials', 'srNumber')
+            $schema
+                ->modifyColumn('#__storefront_serials', 'srNumber')
                 ->string(32)
                 ->execute();
         }

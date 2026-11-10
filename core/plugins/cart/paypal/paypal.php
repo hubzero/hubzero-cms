@@ -31,7 +31,8 @@ class Paypal extends Plugin
      */
     public function onRenderPaymentOptions($cart, $user)
     {
-        $view = $this->view('default', 'payment')
+        $view = $this
+            ->view('default', 'payment')
             ->set('user', $user)
             ->set('cart', $cart);
 

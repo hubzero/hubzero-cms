@@ -32,13 +32,15 @@ class Migration20141029112543ComBlog extends Base
         }
 
         if (!$schema->hasColumn('#__blog_entries', 'scope_id')) {
-            $schema->renameColumn('#__blog_entries', 'group_id', 'scope_id')
+            $schema
+                ->renameColumn('#__blog_entries', 'group_id', 'scope_id')
                 ->integer()
                 ->notNull()
                 ->default(0)
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['scope_id' => 'created_by'], true)
                 ->where('scope', '=', 'member')
@@ -63,13 +65,15 @@ class Migration20141029112543ComBlog extends Base
         }
 
         if ($schema->hasColumn('#__blog_entries', 'scope_id')) {
-            $schema->renameColumn('#__blog_entries', 'scope_id', 'group_id')
+            $schema
+                ->renameColumn('#__blog_entries', 'scope_id', 'group_id')
                 ->integer()
                 ->notNull()
                 ->default(0)
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__blog_entries')
                 ->set(['group_id' => $this->db->quote('0')])
                 ->where('scope', '=', 'member')

@@ -25,7 +25,8 @@ class Migration20140609160011ComFeedback extends Base
 
         if ($schema->tableExists('#__feedback')) {
             if (!$schema->hasColumn('#__feedback', 'miniquote')) {
-                $schema->addColumn('#__feedback', 'miniquote')
+                $schema
+                    ->addColumn('#__feedback', 'miniquote')
                     ->string(255)
                     ->notNull()
                     ->default('')
@@ -33,7 +34,8 @@ class Migration20140609160011ComFeedback extends Base
             }
 
             if (!$schema->hasColumn('#__feedback', 'admin_rating')) {
-                $schema->addColumn('#__feedback', 'admin_rating')
+                $schema
+                    ->addColumn('#__feedback', 'admin_rating')
                     ->tinyInteger()
                     ->notNull()
                     ->default(0)
@@ -41,7 +43,8 @@ class Migration20140609160011ComFeedback extends Base
             }
 
             if (!$schema->hasColumn('#__feedback', 'notable_quote')) {
-                $schema->addColumn('#__feedback', 'notable_quote')
+                $schema
+                    ->addColumn('#__feedback', 'notable_quote')
                     ->tinyInteger()
                     ->notNull()
                     ->default(0)
@@ -49,7 +52,8 @@ class Migration20140609160011ComFeedback extends Base
             }
 
             if (!$schema->hasColumn('#__feedback', 'user_id')) {
-                $schema->renameColumn('#__feedback', 'userid', 'user_id')
+                $schema
+                    ->renameColumn('#__feedback', 'userid', 'user_id')
                     ->integer()
                     ->nullable()
                     ->execute();
@@ -57,7 +61,8 @@ class Migration20140609160011ComFeedback extends Base
         }
 
         if ($schema->tableExists('#__selected_quotes')) {
-            $results = $this->db->getQuery(true)
+            $results = $this->db
+                ->getQuery(true)
                 ->select('sq.*')
                 ->select('f.id', 'fid')
                 ->from('#__selected_quotes', 'sq')
@@ -71,7 +76,8 @@ class Migration20140609160011ComFeedback extends Base
                 foreach ($results as $result) {
                     if ($result->fid) {
                         // Update existing feedback entry
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__feedback')
                             ->set([
                                 'user_id'       => $result->userid,
@@ -89,7 +95,8 @@ class Migration20140609160011ComFeedback extends Base
                             ->execute();
                     } else {
                         // Insert new feedback entry
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->insert('#__feedback')
                             ->set([
                                 'user_id'       => $result->userid,
@@ -120,7 +127,8 @@ class Migration20140609160011ComFeedback extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__selected_quotes')) {
-            $schema->createTable('#__selected_quotes')
+            $schema
+                ->createTable('#__selected_quotes')
                 ->integer('id', ['autoIncrement' => true])
                 ->integer('userid')->default(0)
                 ->string('fullname', 100)->default('')
@@ -153,7 +161,8 @@ class Migration20140609160011ComFeedback extends Base
             }
 
             if ($schema->hasColumn('#__feedback', 'user_id')) {
-                $schema->renameColumn('#__feedback', 'user_id', 'userid')
+                $schema
+                    ->renameColumn('#__feedback', 'user_id', 'userid')
                     ->integer()
                     ->nullable()
                     ->execute();

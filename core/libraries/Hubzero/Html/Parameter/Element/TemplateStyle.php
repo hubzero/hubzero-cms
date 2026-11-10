@@ -38,7 +38,8 @@ class TemplateStyle extends Element
     {
         $db = App::get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('*')
             ->from('#__template_styles')
             ->whereEquals('client_id', '0')
@@ -69,7 +70,8 @@ class TemplateStyle extends Element
         $id = Request::getVar('cid', 0);
 
         $db = App::get('db');
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('template_style_id')
             ->from('#__menu')
             ->whereEquals('id', (int) $id[0]);

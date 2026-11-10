@@ -25,7 +25,8 @@ class Migration20141022103600PlgResourcesAbout extends Base
         if ($schema->tableExists('#__resource_types')) {
             // Get all the "mine" queries
             // Get all the "mine" queries
-            $records = $this->db->getQuery(true)
+            $records = $this->db
+                ->getQuery(true)
                 ->select(['id', 'params'])
                 ->from('#__resource_types')
                 ->where('category', '=', 27)
@@ -37,7 +38,8 @@ class Migration20141022103600PlgResourcesAbout extends Base
                     $p->set('plg_about', 1);
                     $p->set('plg_abouttool', 0);
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__resource_types')
                         ->set(['params' => $p->toString()])
                         ->where('id', '=', $record->id)
@@ -59,7 +61,8 @@ class Migration20141022103600PlgResourcesAbout extends Base
         $this->addPluginEntry('resources', 'abouttool');
 
         if ($schema->tableExists('#__resource_types')) {
-            $records = $this->db->getQuery(true)
+            $records = $this->db
+                ->getQuery(true)
                 ->select(['id', 'params'])
                 ->from('#__resource_types')
                 ->where('category', '=', 27)
@@ -71,7 +74,8 @@ class Migration20141022103600PlgResourcesAbout extends Base
                     $p->set('plg_about', 0);
                     $p->set('plg_abouttool', 1);
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__resource_types')
                         ->set(['params' => $p->toString()])
                         ->where('id', '=', $record->id)

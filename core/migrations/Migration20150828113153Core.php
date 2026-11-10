@@ -25,7 +25,8 @@ class Migration20150828113153Core extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select('MIN(extension_id)', 'min')
                 ->select('MAX(extension_id)', 'max')
                 ->select('folder')
@@ -50,21 +51,24 @@ class Migration20150828113153Core extends Base
                     }
 
                     // Get params from the max ID
-                    $query = $this->db->getQuery(true)
+                    $query = $this->db
+                        ->getQuery(true)
                         ->select('params')
                         ->from('#__extensions')
                         ->where('extension_id', '=', $result->max);
                     $params = $query->value('params');
 
                     if ($params) {
-                        $this->db->getQuery(true)
+                        $this->db
+                            ->getQuery(true)
                             ->update('#__extensions')
                             ->set(['params' => $params])
                             ->where('extension_id', '=', $result->min)
                             ->execute();
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->delete('#__extensions')
                         ->where('folder', '=', $result->folder)
                         ->where('element', '=', $result->element)

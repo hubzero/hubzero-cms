@@ -39,7 +39,8 @@ class DocumentServiceProvider extends Middleware
             ];
 
             $manager = new Manager();
-            $manager->setType($type)
+            $manager
+                    ->setType($type)
                     ->setLanguage($options['language'])
                     ->setCharset($options['charset'])
                     ->setDirection($options['direction'])

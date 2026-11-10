@@ -65,7 +65,8 @@ if ($results) {
 $current->datetime = $current->year . '-' . \Hubzero\Utility\Str::pad($current->month, 2) . '-01 00:00:00';
 
 $this->css();
-$this->js('flot/jquery.colorhelpers.min.js', 'system')
+$this
+     ->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('flot/jquery.flot.min.js', 'system')
      ->js('flot/jquery.flot.time.min.js', 'system')
      ->js('flot/jquery.flot.resize.min.js', 'system')

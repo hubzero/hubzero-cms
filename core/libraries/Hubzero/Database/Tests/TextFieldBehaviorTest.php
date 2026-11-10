@@ -53,7 +53,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     private function createTextTable(Driver $driver): void
     {
         $driver->dropTable('text_field_behavior', true);
-        $driver->createTable('text_field_behavior')
+        $driver
+            ->createTable('text_field_behavior')
             ->id()
             ->text('body_text')
             ->mediumText('body_medium')
@@ -98,7 +99,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
         $max = $this->maxPayloadForDriver($driver);
         $payload = $this->payload($max);
 
-        $driver->getQuery()
+        $driver
+            ->getQuery()
             ->insert('text_field_behavior')
             ->values([
                 'body_text' => $payload,
@@ -107,7 +109,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             ])
             ->execute();
 
-        $row = $driver->getQuery()
+        $row = $driver
+            ->getQuery()
             ->select('*')
             ->from('text_field_behavior')
             ->whereEquals('id', 1)
@@ -133,7 +136,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
 
         foreach ($sizes as $size) {
             $payload = $this->payload($size);
-            $driver->getQuery()
+            $driver
+                ->getQuery()
                 ->insert('text_field_behavior')
                 ->values([
                     'id' => $id,
@@ -143,7 +147,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
                 ])
                 ->execute();
 
-            $row = $driver->getQuery()
+            $row = $driver
+                ->getQuery()
                 ->select('*')
                 ->from('text_field_behavior')
                 ->whereEquals('id', $id)
@@ -175,7 +180,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     {
         $this->createTextTable($driver);
 
-        $driver->getQuery()
+        $driver
+            ->getQuery()
             ->insert('text_field_behavior')
             ->values([
                 'body_text' => '',
@@ -184,7 +190,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             ])
             ->execute();
 
-        $row = $driver->getQuery()
+        $row = $driver
+            ->getQuery()
             ->select('*')
             ->from('text_field_behavior')
             ->whereEquals('id', 1)
@@ -226,7 +233,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     {
         $this->createTextTable($driver);
 
-        $driver->getQuery()
+        $driver
+            ->getQuery()
             ->insert('text_field_behavior')
             ->values([
                 'id' => 1,
@@ -234,7 +242,8 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             ])
             ->execute();
 
-        $driver->getQuery()
+        $driver
+            ->getQuery()
             ->insert('text_field_behavior')
             ->values([
                 'id' => 2,
@@ -242,13 +251,15 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             ])
             ->execute();
 
-        $nullCount = (int) $driver->getQuery()
+        $nullCount = (int) $driver
+            ->getQuery()
             ->select('COUNT(*)', 'cnt')
             ->from('text_field_behavior')
             ->whereIsNull('body_text')
             ->fetch('row')->cnt;
 
-        $notNullCount = (int) $driver->getQuery()
+        $notNullCount = (int) $driver
+            ->getQuery()
             ->select('COUNT(*)', 'cnt')
             ->from('text_field_behavior')
             ->whereIsNotNull('body_text')

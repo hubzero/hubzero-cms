@@ -98,7 +98,8 @@ class Resources extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $resource->id)
              ->set('created', $resource->created)
              ->set('created_by', $resource->created_by)

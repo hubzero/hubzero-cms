@@ -116,7 +116,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addColumn('email', 'VARCHAR(255)')
                ->nullable()
                ->execute();
@@ -172,7 +173,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
 
         $this->assertTrue($driver->tableHasField($table, 'email'));
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->dropColumn('email')
                ->execute();
 
@@ -203,7 +205,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
             // Ignore if doesn't exist
         }
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addIndex('idx_email', 'email')
                ->execute();
 
@@ -235,13 +238,15 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table, ['email' => 'string']);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addIndex('idx_email', 'email')
                ->execute();
 
         $this->assertTrue($driver->tableHasKey($table, 'idx_email'));
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->dropIndex('idx_email')
                ->execute();
 
@@ -417,7 +422,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addColumn('status', 'INTEGER')
                ->default(0)
                ->execute();
@@ -443,7 +449,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table, ['email' => 'text']);
 
         if (!$driver->tableHasField($table, 'newcol')) {
-            $driver->alterTable($table)
+            $driver
+                   ->alterTable($table)
                    ->addColumn('newcol', 'VARCHAR(255)')
                    ->execute();
 
@@ -468,7 +475,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table, ['email' => 'text', 'phone' => 'text']);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->dropColumn('email')
                ->dropColumn('phone')
                ->execute();
@@ -499,7 +507,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->modifyColumn('name', 'VARCHAR(255) NOT NULL')
                ->execute();
 
@@ -525,7 +534,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table);
 
         if ($driver->tableHasField($table, 'name')) {
-            $driver->alterTable($table)
+            $driver
+                   ->alterTable($table)
                    ->modifyColumn('name', 'VARCHAR(500)')
                    ->execute();
 
@@ -551,7 +561,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table, ['old_name' => 'text']);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->renameColumn('old_name', 'new_name', 'TEXT')
                ->execute();
 
@@ -604,7 +615,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
             // Ignore if doesn't exist
         }
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addUniqueIndex('uidx_username', 'username')
                ->execute();
 
@@ -652,7 +664,8 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->dropTestTable($driver, $table);
         $this->createTestTable($driver, $table, ['content' => 'string']);
 
-        $driver->alterTable($table)
+        $driver
+               ->alterTable($table)
                ->addFulltextIndex('ft_content', 'content')
                ->execute();
 

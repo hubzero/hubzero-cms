@@ -27,7 +27,9 @@ class Migration20260203012618Core extends Base
         $tableName = $this->db->tableExists('migrations') ? 'migrations' : '#__migrations';
 
         if (!$this->db->tableHasField($tableName, 'execution_time')) {
-            $this->db->schema()->alterTable($tableName)
+            $this->db
+                ->schema()
+                ->alterTable($tableName)
                 ->addColumn('execution_time')
                 ->integer()
                 ->unsigned()
@@ -46,7 +48,9 @@ class Migration20260203012618Core extends Base
         $tableName = $this->db->tableExists('migrations') ? 'migrations' : '#__migrations';
 
         if ($this->db->tableHasField($tableName, 'execution_time')) {
-            $this->db->schema()->alterTable($tableName)
+            $this->db
+                ->schema()
+                ->alterTable($tableName)
                 ->dropColumn('execution_time')
                 ->execute();
         }

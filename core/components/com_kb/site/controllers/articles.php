@@ -482,7 +482,8 @@ class Articles extends SiteController
         // the same state filter the article view applies, and take only the
         // top-level ones -- the relation returns replies too, and _feedItem()
         // recurses into those itself.
-        $comments = $article->comments()
+        $comments = $article
+            ->comments()
             ->whereEquals('parent', 0)
             ->whereIn('state', [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED])
             ->rows();
@@ -578,7 +579,8 @@ class Articles extends SiteController
             Document::addItem($item);
 
             // replies() hands back a query builder, so this needs resolving too
-            $replies = $comment->replies()
+            $replies = $comment
+                ->replies()
                 ->whereIn('state', [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED])
                 ->rows();
 

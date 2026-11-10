@@ -199,7 +199,8 @@ if ($this->rows->count() > 0) {
                             'base_path' => Component::path($this->option) . DS . 'site',
                             'layout'    => '_vote',
                         ]);
-                        $view->set('option', 'com_wishlist')
+                        $view
+                             ->set('option', 'com_wishlist')
                              ->set('item', $item)
                              ->set('listid', $this->wishlist->id)
                              ->set('plugin', 0)

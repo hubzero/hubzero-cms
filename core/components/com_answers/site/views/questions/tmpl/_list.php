@@ -24,7 +24,8 @@ $threadId = (isset($this->thread) ? $this->thread : 't')
     foreach ($this->comments as $comment) {
         $comment->set('qid', $this->question->get('id'));
 
-        $this->view('_comment')
+        $this
+             ->view('_comment')
              ->set('item_id', $this->item_id)
              ->set('option', $this->option)
              ->set('comment', $comment)

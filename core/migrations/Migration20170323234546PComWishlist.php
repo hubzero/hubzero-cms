@@ -27,7 +27,8 @@ class Migration20170323234546PComWishlist extends Base
             $schema->tableExists('#__wish_attachments')
             && !$schema->hasColumn('#__wish_attachments', 'comment_id')
         ) {
-            $schema->addColumn('#__wish_attachments', 'comment_id')
+            $schema
+                ->addColumn('#__wish_attachments', 'comment_id')
                 ->integer()
                 ->unsigned()
                 ->notNull()

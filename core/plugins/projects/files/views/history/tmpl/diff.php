@@ -13,7 +13,8 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 // Directory path breadcrumbs
@@ -97,7 +98,8 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
             <ul class="sample">
                 <?php
                     // Display list item with file data
-                    $this->view('default', 'selected')
+                    $this
+                         ->view('default', 'selected')
                          ->set('skip', false)
                          ->set('file', $this->file)
                          ->set('action', 'diff')

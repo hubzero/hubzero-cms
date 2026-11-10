@@ -85,7 +85,8 @@ class Versions extends Plugin
             $tconfig = Component::params('com_tools');
 
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('tconfig', $tconfig)
                 ->set('option', $option)
                 ->set('resource', $model)

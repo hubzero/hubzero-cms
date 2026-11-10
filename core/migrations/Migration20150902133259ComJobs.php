@@ -24,7 +24,8 @@ class Migration20150902133259ComJobs extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__jobs_openings') && !$schema->hasColumn('#__jobs_openings', 'expiredate')) {
-            $schema->addColumn('#__jobs_openings', 'expiredate')
+            $schema
+                ->addColumn('#__jobs_openings', 'expiredate')
                 ->datetime()
                 ->nullable()
                 ->default('0000-00-00 00:00:00')

@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 $html  = '';
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->css('jquery.fancybox.css', 'system');
 
@@ -66,13 +67,15 @@ $sideContent    = $sideContent && !empty($sideContent)
 <div id="project-wrap" class="theme">
     <?php if ($layout == 'extended') {
         // Draw top header
-        $this->view('_topheader')
+        $this
+             ->view('_topheader')
              ->set('model', $this->model)
              ->set('publicView', false)
              ->set('option', $this->option)
              ->display();
         // Draw top menu
-        $this->view('_topmenu', 'projects')
+        $this
+             ->view('_topmenu', 'projects')
              ->set('model', $this->model)
              ->set('active', $this->active)
              ->set('tabs', $this->tabs)
@@ -85,7 +88,8 @@ $sideContent    = $sideContent && !empty($sideContent)
     <?php } else { ?>
         <?php
         // Draw traditional header
-        $this->view('_header')
+        $this
+             ->view('_header')
              ->set('model', $this->model)
              ->set('showPic', 0)
              ->set('showPrivacy', 2)
@@ -99,13 +103,15 @@ $sideContent    = $sideContent && !empty($sideContent)
         <div class="main-menu">
             <?php
             // Draw image
-            $this->view('_image', 'projects')
+            $this
+                 ->view('_image', 'projects')
                  ->set('model', $this->model)
                  ->set('option', $this->option)
                  ->display();
 
             // Draw left menu
-            $this->view('_menu', 'projects')
+            $this
+                 ->view('_menu', 'projects')
                  ->set('model', $this->model)
                  ->set('active', $this->active)
                  ->set('tabs', $this->tabs)
@@ -117,7 +123,8 @@ $sideContent    = $sideContent && !empty($sideContent)
     <?php } ?>
             <?php
                 // Display status message
-                $this->view('_statusmsg', 'projects')
+                $this
+                     ->view('_statusmsg', 'projects')
                      ->set('error', $this->getError())
                      ->set('msg', $this->msg)
                      ->display();

@@ -28,22 +28,26 @@ class Migration20160216115900ComNewsletter extends Base
 
         // Batch column modifications
         // Batch column modifications
-        $schema->modifyColumn('#__newsletter_templates', 'primary_title_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'primary_title_color')
             ->string(255)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'primary_text_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'primary_text_color')
             ->string(255)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'secondary_title_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'secondary_title_color')
             ->string(255)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'secondary_text_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'secondary_text_color')
             ->string(255)
             ->nullable()
             ->default(null)
@@ -63,22 +67,26 @@ class Migration20160216115900ComNewsletter extends Base
 
         // Batch column modifications
         // Batch column modifications
-        $schema->modifyColumn('#__newsletter_templates', 'primary_title_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'primary_title_color')
             ->string(100)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'primary_text_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'primary_text_color')
             ->string(100)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'secondary_title_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'secondary_title_color')
             ->string(100)
             ->nullable()
             ->default(null)
             ->execute();
-        $schema->modifyColumn('#__newsletter_templates', 'secondary_text_color')
+        $schema
+            ->modifyColumn('#__newsletter_templates', 'secondary_text_color')
             ->string(100)
             ->nullable()
             ->default(null)

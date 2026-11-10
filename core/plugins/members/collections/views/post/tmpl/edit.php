@@ -43,7 +43,8 @@ if (!$dir) {
 
 $jbase = rtrim(Request::base(true), '/');
 
-$this->css()
+$this
+    ->css()
     ->js('jquery.fileuploader.js', 'system')
     ->js('fileupload.js')
     ->js();

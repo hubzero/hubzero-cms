@@ -33,12 +33,14 @@ class UnionQuerySingleTest extends AbstractDriverTestCase
         // Create tables
         $schema = $driver->schema();
 
-        $schema->createTable('union_users')
+        $schema
+            ->createTable('union_users')
             ->id()
             ->string('name', 100)
             ->execute();
 
-        $schema->createTable('union_admins')
+        $schema
+            ->createTable('union_admins')
             ->id()
             ->string('name', 100)
             ->execute();

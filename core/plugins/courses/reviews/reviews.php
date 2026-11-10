@@ -56,7 +56,8 @@ class Reviews extends Plugin
         $tbl = new \Components\Courses\Models\Comment();
 
         // Build the HTML meant for the tab's metadata overview
-        $view = $this->view('default', 'metadata')
+        $view = $this
+            ->view('default', 'metadata')
             ->set('option', $this->option)
             ->set('controller', $this->controller)
             ->set('course', $course)

@@ -53,7 +53,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             <?php } ?>
         </div><!-- / .attribution -->
         <?php
-        $this->view('default_' . $item->layout(__DIR__, 'default_'), 'post')
+        $this
+             ->view('default_' . $item->layout(__DIR__, 'default_'), 'post')
              ->set('name', $this->name)
              ->set('option', $this->option)
              ->set('group', $this->group)

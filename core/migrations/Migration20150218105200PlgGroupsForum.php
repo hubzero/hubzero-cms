@@ -28,7 +28,8 @@ class Migration20150218105200PlgGroupsForum extends Base
         ) {
             // adds column status to forum_attachments table
             /* 0 = unpublished, 1 = published, 2 = deleted */
-            $schema->addColumn('#__forum_attachments', 'status')
+            $schema
+                ->addColumn('#__forum_attachments', 'status')
                 ->integer()
                 ->nullable()
                 ->default(1)

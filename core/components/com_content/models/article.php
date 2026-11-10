@@ -856,7 +856,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Join on category table.
-        $query->select('c.title', 'category_title')
+        $query
+            ->select('c.title', 'category_title')
             ->select('c.path', 'category_route')
             ->select('c.access', 'category_access')
             ->select('c.alias', 'category_alias');
@@ -875,14 +876,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Join over the categories to get parent category titles
-        $query->select('parent.title', 'parent_title')
+        $query
+            ->select('parent.title', 'parent_title')
             ->select('parent.id', 'parent_id')
             ->select('parent.path', 'parent_route')
             ->select('parent.alias', 'parent_alias');
         $query->join('#__categories as parent', 'parent.id', 'c.parent_id', 'left');
 
         // Join on voting table
-        $query->select('ROUND(v.rating_sum / v.rating_count, 0)', 'rating')
+        $query
+            ->select('ROUND(v.rating_sum / v.rating_count, 0)', 'rating')
             ->select('v.rating_count', 'rating_count');
         $query->join('#__content_rating AS v', 'a.id', 'v.content_id', 'left');
 
@@ -1002,7 +1005,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     }
 
                     // Add the subquery to the main query
-                    $query->where('a.catid', $type, (int) $categoryId, 'and', 1)
+                    $query
+                        ->where('a.catid', $type, (int) $categoryId, 'and', 1)
                         ->orWhereRaw('a.catid IN (' . $subQuery->toString() . ')', [], 1)
                         ->resetDepth();
                 } else {
@@ -1081,7 +1085,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (!empty($authorWhere) && !empty($authorAliasWhere)) {
-            $query->where($authorWhere[0], $authorWhere[1], $authorWhere[2], 1)
+            $query
+                ->where($authorWhere[0], $authorWhere[1], $authorWhere[2], 1)
                 ->orWhere($authorAliasWhere[0], $authorAliasWhere[1], $authorAliasWhere[2], 1)
                 ->resetDepth();
         } elseif (empty($authorWhere) && empty($authorAliasWhere)) {
@@ -1102,10 +1107,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             !User::authorise('core.edit.state', 'com_content')
             && !User::authorise('core.edit', 'com_content')
         ) {
-            $query->where('a.publish_up', 'IS', $nullDate, 'and', 1)
+            $query
+                ->where('a.publish_up', 'IS', $nullDate, 'and', 1)
                 ->orWhere('a.publish_up', '<=', $nowDate, 1)
                 ->resetDepth();
-            $query->where('a.publish_down', 'IS', $nullDate, 'and', 1)
+            $query
+                ->where('a.publish_down', 'IS', $nullDate, 'and', 1)
                 ->orWhere('a.publish_down', '>=', $nowDate, 1)
                 ->resetDepth();
         }
@@ -1126,7 +1133,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                         $filters['end_date_range'] = $nullDate;
                     }
 
-                    $query->where($dateField, '>=', $filters['start_date_range'])
+                    $query
+                        ->where($dateField, '>=', $filters['start_date_range'])
                         ->where($dateField, '<=', $filters['end_date_range']);
                     break;
 
@@ -1244,7 +1252,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         //->from($query->getTableName(), 'a');
 
         // Join on category table.
-        $query->select('c.title', 'category_title')
+        $query
+            ->select('c.title', 'category_title')
             ->select('c.alias', 'category_alias')
             ->select('c.access', 'category_access');
         $query->join('#__categories AS c', 'c.id', 'a.catid', 'left');
@@ -1259,14 +1268,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Join over the categories to get parent category titles
-        $query->select('parent.title', 'parent_title')
+        $query
+            ->select('parent.title', 'parent_title')
             ->select('parent.id', 'parent_id')
             ->select('parent.path', 'parent_route')
             ->select('parent.alias', 'parent_alias');
         $query->join('#__categories as parent', 'parent.id', 'c.parent_id', 'left');
 
         // Join on voting table
-        $query->select('ROUND(v.rating_sum / v.rating_count, 0)', 'rating')
+        $query
+            ->select('ROUND(v.rating_sum / v.rating_count, 0)', 'rating')
             ->select('v.rating_count', 'rating_count');
         $query->join('#__content_rating AS v', 'a.id', 'v.content_id', 'left');
 
@@ -1282,10 +1293,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             $nullDate = null;
             $nowDate = Date::of('now')->toSql();
 
-            $query->where('a.publish_up', 'IS', $nullDate, 'and', 1)
+            $query
+                ->where('a.publish_up', 'IS', $nullDate, 'and', 1)
                 ->orWhere('a.publish_up', '<=', $nowDate, 1)
                 ->resetDepth();
-            $query->where('a.publish_down', 'IS', $nullDate, 'and', 1)
+            $query
+                ->where('a.publish_down', 'IS', $nullDate, 'and', 1)
                 ->orWhere('a.publish_down', '>=', $nowDate, 1)
                 ->resetDepth();
         }

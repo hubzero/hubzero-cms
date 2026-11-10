@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('reports')
+$this
+     ->css('reports')
      ->css('impact.css', 'projects', 'publications');
 
 // Common options for js charts
@@ -45,7 +46,8 @@ tooltip: true,
 	defaultTheme: false
 }";
 
-$this->js('flot/jquery.flot.min.js', 'system')
+$this
+    ->js('flot/jquery.flot.min.js', 'system')
     ->js('flot/jquery.flot.time.min.js', 'system')
     ->js('flot/jquery.flot.pie.min.js', 'system')
     ->js('flot/jquery.flot.resize.js', 'system');
@@ -58,7 +60,8 @@ $this->js('flot/jquery.flot.min.js', 'system')
     <div id="project-stats">
         <?php
         // Display status message
-        $this->view('_statusmsg', 'projects')
+        $this
+             ->view('_statusmsg', 'projects')
              ->set('error', $this->getError())
              ->set('msg', $this->msg)
              ->display();

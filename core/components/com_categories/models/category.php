@@ -394,7 +394,8 @@ class Category extends Nested
         $path = trim(implode('/', $segments), ' /\\');
 
         // Update the path field for the node.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'path' => $path,
@@ -425,7 +426,8 @@ class Category extends Nested
      */
     public function rebuild($parentId, $leftId = 0, $level = 0, $path = '')
     {
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('id')
             ->select('alias')
             ->from($this->getTableName())
@@ -457,7 +459,8 @@ class Category extends Nested
 
         // We've got the left value, and now that we've processed
         // the children of this node we also know the right value.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft'   => (int) $leftId,

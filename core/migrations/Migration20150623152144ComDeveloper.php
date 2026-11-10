@@ -24,7 +24,8 @@ class Migration20150623152144ComDeveloper extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__developer_rate_limit')) {
-            $schema->createTable('#__developer_rate_limit')
+            $schema
+                ->createTable('#__developer_rate_limit')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('application_id')->nullable()
                 ->integer('uidNumber')->nullable()

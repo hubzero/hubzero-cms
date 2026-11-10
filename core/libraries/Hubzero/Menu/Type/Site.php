@@ -27,7 +27,8 @@ class Site extends Base
         // Initialise variables.
         $db = $this->get('db');
 
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->select('m.id')
             ->select('m.menutype')
             ->select('m.title')

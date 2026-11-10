@@ -1111,7 +1111,8 @@ class Html
             'name'   => 'view',
             'layout' => '_primary',
         ]);
-        $view->set('option', 'com_resources')
+        $view
+            ->set('option', 'com_resources')
             ->set('disabled', $disabled)
             ->set('class', $class)
             ->set('href', $href)

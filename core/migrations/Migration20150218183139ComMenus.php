@@ -24,7 +24,8 @@ class Migration20150218183139ComMenus extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__menu')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__menu')
                 ->set(['ordering' => 0])
                 ->execute();

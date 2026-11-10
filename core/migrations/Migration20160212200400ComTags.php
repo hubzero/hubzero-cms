@@ -29,12 +29,14 @@ class Migration20160212200400ComTags extends Base
                 $schema->addColumn('#__tags', 'objects')->integer()->notNull()->default(0)->execute();
                 $schema->addIndex('#__tags', 'idx_objects', 'objects');
 
-                $subquery = $this->db->getQuery(true)
+                $subquery = $this->db
+                    ->getQuery(true)
                     ->select(Expression::count())
                     ->from('#__tags_object', 'o')
                     ->whereColumn('o.tagid', '=', 't.id');
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__tags', 't')
                     ->set(['t.objects' => (string) $subquery])
                     ->execute();
@@ -44,12 +46,14 @@ class Migration20160212200400ComTags extends Base
                 $schema->addColumn('#__tags', 'substitutes')->integer()->notNull()->default(0)->execute();
                 $schema->addIndex('#__tags', 'idx_substitutes', 'substitutes');
 
-                $subquery = $this->db->getQuery(true)
+                $subquery = $this->db
+                    ->getQuery(true)
                     ->select(Expression::count())
                     ->from('#__tags_substitute', 'o')
                     ->whereColumn('o.tag_id', '=', 't.id');
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__tags', 't')
                     ->set(['t.substitutes' => (string) $subquery])
                     ->execute();

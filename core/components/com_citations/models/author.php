@@ -92,7 +92,8 @@ class Author extends Relational
     public function filterByAuthor($authorString)
     {
         if (!empty($authorString)) {
-            $this->orWhereLike('author', $authorString, 1)
+            $this
+                ->orWhereLike('author', $authorString, 1)
                 ->orWhereLike('givenName', $authorString, 1)
                 ->orWhereLike('surname', $authorString, 1);
         }

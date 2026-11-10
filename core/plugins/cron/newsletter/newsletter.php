@@ -145,7 +145,8 @@ class Newsletter extends Plugin
             }
 
             // build message object and send
-            $message->setSubject($queuedEmail->subject)
+            $message
+                    ->setSubject($queuedEmail->subject)
                     ->setTo($queuedEmail->email)
                     ->setBody($queuedEmail->plain_body, 'text/plain')
                     ->addPart($queuedEmail->html_body, 'text/html');

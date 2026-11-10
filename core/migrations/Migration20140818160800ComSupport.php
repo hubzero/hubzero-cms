@@ -24,25 +24,29 @@ class Migration20140818160800ComSupport extends Base
 
         if ($schema->tableExists('#__abuse_reports')) {
             // Standardize column types
-            $schema->modifyColumn('#__abuse_reports', 'id')
+            $schema
+                ->modifyColumn('#__abuse_reports', 'id')
                 ->integer()
                 ->unsigned()
                 ->notNull()
                 ->autoIncrement()
                 ->execute();
-            $schema->modifyColumn('#__abuse_reports', 'created_by')
+            $schema
+                ->modifyColumn('#__abuse_reports', 'created_by')
                 ->integer()
                 ->unsigned()
                 ->notNull()
                 ->default(0)
                 ->execute();
-            $schema->modifyColumn('#__abuse_reports', 'reviewed_by')
+            $schema
+                ->modifyColumn('#__abuse_reports', 'reviewed_by')
                 ->integer()
                 ->unsigned()
                 ->notNull()
                 ->default(0)
                 ->execute();
-            $schema->modifyColumn('#__abuse_reports', 'referenceid')
+            $schema
+                ->modifyColumn('#__abuse_reports', 'referenceid')
                 ->integer()
                 ->unsigned()
                 ->notNull()

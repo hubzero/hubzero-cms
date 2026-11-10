@@ -162,7 +162,8 @@ class Coins extends Plugin
         }
 
         if ($this->params->get('payload_url')) {
-            $firstchild = $model->children()
+            $firstchild = $model
+                ->children()
                 ->whereEquals('standalone', 0)
                 ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')

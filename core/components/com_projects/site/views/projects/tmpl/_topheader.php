@@ -20,7 +20,8 @@ defined('_HZEXEC_') or die();
             <div class="pimage-container">
                 <?php
                 // Draw image
-                $this->view('_image', 'projects')
+                $this
+                     ->view('_image', 'projects')
                      ->set('model', $this->model)
                      ->set('option', $this->option)
                      ->display();
@@ -55,7 +56,8 @@ defined('_HZEXEC_') or die();
             <?php
             // Member options
             if ($this->publicView == false) {
-                $this->view('_options', 'projects')
+                $this
+                     ->view('_options', 'projects')
                      ->set('model', $this->model)
                      ->set('option', $this->option)
                      ->display();

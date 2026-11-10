@@ -47,13 +47,15 @@ class Migration20190305000000ItemComments extends Base
                     $schema->tableExists($table)
                     && $schema->hasColumn($table, $field)
                 ) {
-                    $schema->modifyColumn($table, $field)
+                    $schema
+                        ->modifyColumn($table, $field)
                         ->datetime()
                         ->nullable()
                         ->default(null)
                         ->execute();
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update($table)
                         ->set([$field => null])
                         ->where($field, '=', '0000-00-00 00:00:00')
@@ -76,7 +78,8 @@ class Migration20190305000000ItemComments extends Base
                     $schema->tableExists($table)
                     && $schema->hasColumn($table, $field)
                 ) {
-                    $schema->modifyColumn($table, $field)
+                    $schema
+                        ->modifyColumn($table, $field)
                         ->datetime()
                         ->notNull()
                         ->default('0000-00-00 00:00:00')

@@ -21,7 +21,8 @@ $sortbys['date'] = Lang::txt('COM_RESOURCES_DATE_PUBLISHED');
 $sortbys['date_modified'] = Lang::txt('COM_RESOURCES_DATE_MODIFIED');
 $sortbys['title'] = Lang::txt('COM_RESOURCES_TITLE');
 
-$this->css()
+$this
+     ->css()
      ->js();
 ?>
 <header id="content-header">
@@ -157,7 +158,8 @@ $this->css()
                                 $supported = $rt->getTagUsage($tag, 'id');
                             }
 
-                            $this->view('_list', 'browse')
+                            $this
+                                 ->view('_list', 'browse')
                                  ->set('lines', $this->results)
                                  ->set('show_edit', $this->authorized)
                                  ->set('supported', $supported)

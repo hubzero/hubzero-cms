@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('component.css')
+$this
+     ->css('component.css')
      ->js('create.js');
 
 $base = rtrim(Request::base(true), '/');

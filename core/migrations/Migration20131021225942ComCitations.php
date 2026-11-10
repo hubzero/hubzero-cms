@@ -23,10 +23,12 @@ class Migration20131021225942ComCitations extends Base
     {
         $schema = $this->db->schema();
 
-        $schema->modifyColumn('#__citations', 'volume')
+        $schema
+            ->modifyColumn('#__citations', 'volume')
             ->string(11)
             ->execute();
-        $schema->modifyColumn('#__citations', 'year')
+        $schema
+            ->modifyColumn('#__citations', 'year')
             ->string(4)
             ->execute();
     }

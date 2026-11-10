@@ -56,7 +56,8 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
         $this->depth++;
 
     foreach ($this->comments as $comment) {
-        $this->view('comment')
+        $this
+             ->view('comment')
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('post', $this->post)

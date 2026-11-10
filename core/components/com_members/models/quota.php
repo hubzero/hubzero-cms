@@ -170,7 +170,8 @@ class Quota extends Relational
 
             // Update their class id, and their actual quota will be
             // updated the next time they log in.
-            $result = $model->getQuery()
+            $result = $model
+                ->getQuery()
                 ->update($model->getTableName())
                 ->set(['class_id' => (int) $deflt->get('id')])
                 ->whereIn('id', $users)

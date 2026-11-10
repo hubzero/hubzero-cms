@@ -33,7 +33,8 @@ class NestedTest extends AbstractDriverTestCase
     {
         $driver->dropTable('nested_discussions', true);
 
-        $driver->createTable('nested_discussions')
+        $driver
+            ->createTable('nested_discussions')
             ->id()
             ->integer('user_id')
             ->string('title', 255)
@@ -149,7 +150,8 @@ class NestedTest extends AbstractDriverTestCase
     {
         $tableName = $driver->quoteName('nested_discussions');
         $idCol = $driver->quoteName('id');
-        $result = $driver->setQuery("SELECT * FROM $tableName ORDER BY $idCol")
+        $result = $driver
+            ->setQuery("SELECT * FROM $tableName ORDER BY $idCol")
             ->loadObjectList();
 
         $this->assertCount(

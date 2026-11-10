@@ -280,7 +280,8 @@ $locIframeUrl = Route::url(
 
                         <?php
                         if ($this->row->exists()) {
-                            $this->css('fileupload.css')
+                            $this
+                                 ->css('fileupload.css')
                                  ->js('jquery.fileuploader.js', 'system');
                             ?>
                             <div id="ajax-uploader"

@@ -32,7 +32,8 @@ class DeletePluginEntry extends Macro
         if ($this->db->tableExists($table)) {
             $enabled = 0;
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->delete($table)
                 ->whereEquals('folder', $folder);
             if ($element) {

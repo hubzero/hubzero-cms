@@ -35,7 +35,8 @@ class Criterion extends Relational
         if ($query = $this->get('query')) {
             $db = App::get('db');
 
-            $violations = $db->setQuery($query)
+            $violations = $db
+                ->setQuery($query)
                 ->execute()
                 ->loadRowList();
         }

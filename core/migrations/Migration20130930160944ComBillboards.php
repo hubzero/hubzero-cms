@@ -24,7 +24,8 @@ class Migration20130930160944ComBillboards extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__billboards')) {
-            $schema->createTable('#__billboards')
+            $schema
+                ->createTable('#__billboards')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('collection_id')->nullable()
                 ->string('name', 255)->nullable()
@@ -47,7 +48,8 @@ class Migration20130930160944ComBillboards extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -72,7 +74,8 @@ class Migration20130930160944ComBillboards extends Base
                 ])
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -98,7 +101,8 @@ class Migration20130930160944ComBillboards extends Base
                 ])
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -122,7 +126,8 @@ class Migration20130930160944ComBillboards extends Base
                 ])
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -151,7 +156,8 @@ class Migration20130930160944ComBillboards extends Base
         }
 
         if (!$schema->tableExists('#__billboard_collection')) {
-            $schema->createTable('#__billboard_collection')
+            $schema
+                ->createTable('#__billboard_collection')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('name', 255)->nullable()
                 ->primaryKey('id')
@@ -159,7 +165,8 @@ class Migration20130930160944ComBillboards extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__billboard_collection')
                 ->set(['name' => 'Home Default Billboard'])
                 ->execute();

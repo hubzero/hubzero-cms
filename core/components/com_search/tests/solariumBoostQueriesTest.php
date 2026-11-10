@@ -52,14 +52,17 @@ class SolariumBoostQueriesTest extends Basic
             'query' => $queryFactoryMock,
         ]);
 
-        $queryFactoryMock->expects($this->exactly(2))
+        $queryFactoryMock
+            ->expects($this->exactly(2))
             ->method('one')
             ->will($this->onConsecutiveCalls($queryMock1, $queryMock2));
 
-        $queryMock1->expects($this->once())
+        $queryMock1
+            ->expects($this->once())
             ->method('toArray');
 
-        $queryMock2->expects($this->once())
+        $queryMock2
+            ->expects($this->once())
             ->method('toArray');
 
         $queries->toArray();

@@ -24,7 +24,8 @@ class Migration20160415105038CoreActivity extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__activity_logs')) {
-            $schema->createTable('#__activity_logs')
+            $schema
+                ->createTable('#__activity_logs')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->datetime('created')->default('0000-00-00 00:00:00')
                 ->unsignedInteger('created_by')->default(0)
@@ -43,7 +44,8 @@ class Migration20160415105038CoreActivity extends Base
         }
 
         if (!$schema->tableExists('#__activity_recipients')) {
-            $schema->createTable('#__activity_recipients')
+            $schema
+                ->createTable('#__activity_recipients')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('log_id')->default(0)
                 ->string('scope', 250)
@@ -61,7 +63,8 @@ class Migration20160415105038CoreActivity extends Base
         }
 
         if (!$schema->tableExists('#__activity_subscriptions')) {
-            $schema->createTable('#__activity_subscriptions')
+            $schema
+                ->createTable('#__activity_subscriptions')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('user_id')->default(0)
                 ->string('scope', 250)->default('')

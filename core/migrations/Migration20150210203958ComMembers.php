@@ -24,7 +24,8 @@ class Migration20150210203958ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__xprofiles_tokens')) {
-            $schema->createTable('#__xprofiles_tokens')
+            $schema
+                ->createTable('#__xprofiles_tokens')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('token', 100)->default('')
                 ->integer('user_id')

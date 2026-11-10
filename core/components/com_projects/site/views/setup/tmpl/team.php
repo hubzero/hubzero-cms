@@ -12,13 +12,15 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->js('setup')
     ->css('jquery.fancybox.css', 'system');
 
 // Display page title
-$this->view('_title')
+$this
+     ->view('_title')
      ->set('model', $this->model)
      ->set('step', $this->step)
      ->set('option', $this->option)
@@ -30,20 +32,23 @@ $this->view('_title')
 <section class="main section" id="setup">
     <?php
     // Display status message
-    $this->view('_statusmsg', 'projects')
+    $this
+         ->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
          ->set('msg', $this->msg)
          ->display();
 
     // Display metadata
-    $this->view('_metadata')
+    $this
+         ->view('_metadata')
          ->set('model', $this->model)
          ->set('step', $this->step)
          ->set('option', $this->option)
          ->display();
 
     // Display steps
-    $this->view('_steps')
+    $this
+         ->view('_steps')
          ->set('model', $this->model)
          ->set('step', $this->step)
          ->display();
@@ -90,7 +95,8 @@ $this->view('_title')
                 <legend><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?></legend>
                 <?php
                 // Display form fields
-                $this->view('_form')
+                $this
+                     ->view('_form')
                      ->set('model', $this->model)
                      ->set('step', $this->step)
                      ->set('option', $this->option)

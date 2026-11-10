@@ -39,7 +39,8 @@ if (!isset($this->category)) {
 
         $subs = [];
         foreach ($this->threads as $thread) {
-            $view = $this->view('_thread')
+            $view = $this
+                ->view('_thread')
                 ->set('option', $this->option)
                 ->set('course', $this->course)
                 ->set('unit', $this->unit)

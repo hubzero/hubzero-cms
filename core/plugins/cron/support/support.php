@@ -389,7 +389,8 @@ class Support extends Plugin
 
                     // Build message
                     $message = new \Hubzero\Mail\Message();
-                    $message->setSubject($subject)
+                    $message
+                            ->setSubject($subject)
                             ->addFrom($from['email'], $from['name'])
                             ->addTo($email, $name)
                             ->addHeader('X-Component', 'com_support')
@@ -536,7 +537,8 @@ class Support extends Plugin
 
             // Build message
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->addTo($user->get('email'), $user->get('name'))
                     ->addHeader('X-Component', 'com_support')
@@ -906,7 +908,8 @@ class Support extends Plugin
 
             // Build message
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
                     ->addTo($email, $name)
                     ->addHeader('X-Component', 'com_support')

@@ -228,7 +228,8 @@ class Ticketsv2r1 extends ApiController
         $created = $this->toTimestamp(Request::getString('created', ''));
         if ($created) {
             if (is_array($created) && count($created) > 1) {
-                $tickets->where('created', '>=', $created[0], 1)
+                $tickets
+                    ->where('created', '>=', $created[0], 1)
                     ->orWhere('created', '<', $created[1], 1)
                     ->resetDepth();
             } else {
@@ -242,7 +243,8 @@ class Ticketsv2r1 extends ApiController
         $closed = $this->toTimestamp(Request::getString('closed', ''));
         if ($closed) {
             if (is_array($closed) && count($closed) > 1) {
-                $tickets->where('closed', '>=', $closed[0], 1)
+                $tickets
+                    ->where('closed', '>=', $closed[0], 1)
                     ->orWhere('closed', '<', $closed[1], 1)
                     ->resetDepth();
             } else {
@@ -264,7 +266,8 @@ class Ticketsv2r1 extends ApiController
             $sort_dir = 'desc';
         }
 
-        $rows = $tickets->order($sort, $sort_dir)
+        $rows = $tickets
+            ->order($sort, $sort_dir)
             ->limit(Request::getInt('limit', 25))
             ->start(Request::getInt('start', 0))
             ->rows();

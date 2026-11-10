@@ -2190,7 +2190,8 @@ class AseDriver extends BaseSqlDriver
         }
 
         $grammar = $this->getSchemaGrammar();
-        $this->setQuery($grammar->compileDrop($tableName, false))
+        $this
+             ->setQuery($grammar->compileDrop($tableName, false))
              ->execute();
 
         $this->cleanupSequencesForTable($tableName);

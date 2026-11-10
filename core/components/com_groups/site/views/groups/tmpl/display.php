@@ -13,7 +13,8 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('introduction.css', 'system')
+$this
+     ->css('introduction.css', 'system')
      ->css()
      ->js();
 ?>
@@ -107,7 +108,8 @@ foreach ($this->notifications as $notification) {
                     <?php else : ?>
                         <?php
                         foreach ($mygroups_members as $group) {
-                            $this->view('_group')
+                            $this
+                                ->view('_group')
                                 ->set('group', $group)
                                 ->display();
                         }
@@ -131,7 +133,8 @@ foreach ($this->notifications as $notification) {
                     <?php else : ?>
                         <?php
                         foreach ($this->interestinggroups as $group) {
-                            $this->view('_group')
+                            $this
+                                ->view('_group')
                                 ->set('group', $group)
                                 ->display();
                         }
@@ -154,7 +157,8 @@ foreach ($this->notifications as $notification) {
                 <?php else : ?>
                     <?php
                     foreach ($this->populargroups as $group) {
-                        $this->view('_group')
+                        $this
+                            ->view('_group')
                             ->set('group', $group)
                             ->display();
                     }
@@ -175,7 +179,8 @@ foreach ($this->notifications as $notification) {
             <?php else : ?>
                 <div class="groups-container">
                 <?php foreach ($this->featuredgroups as $group) {
-                    $this->view('_group')
+                    $this
+                        ->view('_group')
                         ->set('group', $group)
                         ->display();
                 } ?>

@@ -415,7 +415,8 @@ class Wishlist extends Plugin
 
             // HTML output
             // Instantiate a view
-            $view = $this->view('default', 'browse')
+            $view = $this
+                ->view('default', 'browse')
                 ->set('option', $option)
                 ->set('group', $this->group)
                 ->set('wishlist', $wishlist)

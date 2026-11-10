@@ -64,7 +64,8 @@ Toolbar::help('users');
 
 Html::behavior('tooltip');
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

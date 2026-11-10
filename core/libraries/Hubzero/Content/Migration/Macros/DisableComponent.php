@@ -31,7 +31,8 @@ class DisableComponent extends Macro
         if ($this->db->tableExists($table)) {
             $enabled = 0;
 
-            $query = $this->db->getQuery()
+            $query = $this->db
+                ->getQuery()
                 ->update($table)
                 ->set([
                     'enabled' => $enabled,

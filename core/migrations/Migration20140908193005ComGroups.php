@@ -48,7 +48,8 @@ class Migration20140908193005ComGroups extends Base
         if ($schema->hasColumn('#__xgroups_pages', 'ordering')) {
             // get a list of all hub & super groups
             // get a list of all hub & super groups
-            $groups = $this->db->getQuery(true)
+            $groups = $this->db
+                ->getQuery(true)
                 ->select(['gidNumber', 'cn', 'description'])
                 ->from('#__xgroups')
                 ->where('type', 'IN', [1, 3])
@@ -61,7 +62,8 @@ class Migration20140908193005ComGroups extends Base
             // loading all of their pages
             // create a default home page if one does not exist
             foreach ($groups as $group) {
-                $pages = $this->db->getQuery(true)
+                $pages = $this->db
+                    ->getQuery(true)
                     ->select('*')
                     ->from('#__xgroups_pages')
                     ->where('gidNumber', '=', $group->gidNumber)
@@ -81,7 +83,8 @@ class Migration20140908193005ComGroups extends Base
                 // if we dont ahve a home page we need one
                 if ($homePage == null) {
                     // create page
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xgroups_pages')
                         ->columns(['gidNumber', 'parent', 'depth', 'lft', 'alias', 'title', 'state', 'privacy', 'home'])
                         ->values([$group->gidNumber, 0, 0, 1, 'overview', 'Overview', 1, 'default', 1])
@@ -90,14 +93,16 @@ class Migration20140908193005ComGroups extends Base
                     $homePageId = $this->db->insertid();
 
                     // create page version
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__xgroups_pages_versions')
                         ->columns(['pageid', 'version', 'content', 'created', 'created_by'])
                         ->values([$homePageId, 1, $defaultHomePageContent, Expression::now(), 1000])
                         ->execute();
                 } else {
                     // update the home page
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__xgroups_pages')
                         ->set(['parent' => 0, 'depth' => 0, 'lft' => 1, 'alias' => 'overview', 'title' => 'Overview'])
                         ->where('id', '=', $homePage->id)
@@ -113,7 +118,8 @@ class Migration20140908193005ComGroups extends Base
                     $right = $left + 1;
 
                     // update the left, right, parent, & depth
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__xgroups_pages')
                         ->set(['parent' => $homePageId, 'lft' => $left, 'rgt' => $right, 'depth' => 1])
                         ->where('id', '=', $page->id)
@@ -124,7 +130,8 @@ class Migration20140908193005ComGroups extends Base
                 }
 
                 // update the home page after weve computed all the left & rights
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__xgroups_pages')
                     ->set(['rgt' => $left])
                     ->where('id', '=', $homePageId)

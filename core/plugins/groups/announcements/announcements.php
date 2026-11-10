@@ -116,7 +116,8 @@ class Announcements extends Plugin
             ->rows();
 
         // Create view and assign data
-        $view = $this->view('sticky', 'browse')
+        $view = $this
+            ->view('sticky', 'browse')
             ->set('option', 'com_groups')
             ->set('authorized', $authorized)
             ->set('group', $group)
@@ -240,7 +241,8 @@ class Announcements extends Plugin
 
             // Only get published announcements for members
             if ($this->authorized != 'manager') {
-                $model->where('publish_up', 'IS', null, 'and', 1)
+                $model
+                    ->where('publish_up', 'IS', null, 'and', 1)
                     ->orWhere('publish_up', '<=', Date::toSql(), 1)
                     ->resetDepth()
                     ->where('publish_down', 'IS', null, 'and', 1)
@@ -285,21 +287,24 @@ class Announcements extends Plugin
 
         // Only get published announcements for members
         if ($this->authorized != 'manager') {
-            $model->where('publish_up', 'IS', null, 'and', 1)
+            $model
+                ->where('publish_up', 'IS', null, 'and', 1)
                 ->orWhere('publish_up', '<=', Date::toSql(), 1)
                 ->resetDepth()
                 ->where('publish_down', 'IS', null, 'and', 1)
                 ->orWhere('publish_down', '>=', Date::toSql(), 1);
         }
 
-        $rows = $model->ordered()
+        $rows = $model
+            ->ordered()
             ->paginated()
             ->rows();
 
         $this->total = $rows->count();
 
         // Create view and assign data
-        $view = $this->view('default', 'browse')
+        $view = $this
+            ->view('default', 'browse')
             ->set('option', $this->option)
             ->set('authorized', $this->authorized)
             ->set('group', $this->group)
@@ -341,7 +346,8 @@ class Announcements extends Plugin
         }
 
         // Create view and assign data
-        $view = $this->view('default', 'edit')
+        $view = $this
+            ->view('default', 'edit')
             ->set('option', $this->option)
             ->set('authorized', $this->authorized)
             ->set('group', $this->group)
@@ -651,7 +657,8 @@ class Announcements extends Plugin
             $message = new \Hubzero\Mail\Message();
 
             // Set message details and send
-            $message->setSubject($subject)
+            $message
+                    ->setSubject($subject)
                     ->addReplyTo($from['email'], $from['name'])
                     ->addFrom($from['email'], $from['name'])
                     ->setTo($email, $name)
@@ -699,14 +706,16 @@ class Announcements extends Plugin
 
         // Only get published announcements for members
         if (!in_array(User::get('id'), $group->get('managers'))) {
-            $model->where('publish_up', 'IS', null, 'and', 1)
+            $model
+                ->where('publish_up', 'IS', null, 'and', 1)
                 ->orWhere('publish_up', '<=', Date::toSql(), 1)
                 ->resetDepth()
                 ->where('publish_down', 'IS', null, 'and', 1)
                 ->orWhere('publish_down', '>=', Date::toSql(), 1);
         }
 
-        $rows = $model->ordered()
+        $rows = $model
+            ->ordered()
             ->limit($limit)
             ->start($start)
             ->rows();

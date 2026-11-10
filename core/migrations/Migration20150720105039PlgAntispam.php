@@ -29,7 +29,8 @@ class Migration20150720105039PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -37,7 +38,8 @@ class Migration20150720105039PlgAntispam extends Base
                 $id = $query->value('extension_id');
 
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'antispam',
@@ -61,7 +63,8 @@ class Migration20150720105039PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
-                $query = $this->db->getQuery(true)
+                $query = $this->db
+                    ->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -70,7 +73,8 @@ class Migration20150720105039PlgAntispam extends Base
                 $id = $query->value('extension_id');
 
                 if ($id) {
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'content',

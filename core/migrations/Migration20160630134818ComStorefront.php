@@ -24,7 +24,8 @@ class Migration20160630134818ComStorefront extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__storefront_product_access_groups')) {
-            $schema->createTable('#__storefront_product_access_groups')
+            $schema
+                ->createTable('#__storefront_product_access_groups')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('pId')->default(0)
                 ->integer('agId')->default(0)

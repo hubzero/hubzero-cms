@@ -39,13 +39,15 @@ $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
 // The current page
-$page = $this->book->pages()
+$page = $this->book
+    ->pages()
     ->whereEquals('pagename', Request::getString('page', ''))
     ->whereEquals('path', Request::getString('scope', ''))
     ->row();
 
 if ($v = Request::getInt('version', 0)) :
-    $revision = $page->versions()
+    $revision = $page
+        ->versions()
         ->whereEquals('id', $v)
         ->row();
 else :

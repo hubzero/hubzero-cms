@@ -23,7 +23,8 @@ class Migration20150123134039ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__users_quotas_classes_groups')) {
-            $schema->createTable('#__users_quotas_classes_groups')
+            $schema
+                ->createTable('#__users_quotas_classes_groups')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->unsignedInteger('class_id')->default(0)
                 ->unsignedInteger('group_id')->default(0)

@@ -25,7 +25,8 @@ class Migration20150114122012ModTagcloud extends Base
         $this->deleteModuleEntry('mod_tagcloud');
 
         if ($schema->tableExists('#__modules')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__modules')
                 ->set(['module' => 'mod_toptags', 'params' => '{"numtags":"20","exclude":"","message":"No tags found.","sortby":"popularity","morelnk":"0","cache":"0","cache_time":"900"}'])
                 ->where('module', '=', 'mod_tagcloud')

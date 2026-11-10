@@ -127,7 +127,8 @@ class Ticketsv2r0 extends ApiController
 
         $total = clone($tickets);
 
-        $rows = $tickets->order('created', 'desc')
+        $rows = $tickets
+            ->order('created', 'desc')
             ->limit(Request::getInt('limit', 25))
             ->start(Request::getInt('start', 0))
             ->rows();

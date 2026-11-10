@@ -152,7 +152,8 @@ class Forks extends Plugin
         }
 
         // Return the output
-        $arr['html'] = $this->view('status', 'forks')
+        $arr['html'] = $this
+            ->view('status', 'forks')
             ->set('publication', $publication)
             ->set('forks', $forks)
             ->loadTemplate();
@@ -212,7 +213,8 @@ class Forks extends Plugin
         }
 
         // Instantiate a view
-        $view = $this->view('browse', 'forks')
+        $view = $this
+            ->view('browse', 'forks')
             ->set('publication', $publication)
             ->set('config', $publication->config())
             ->set('forks', $forks)
@@ -277,7 +279,8 @@ class Forks extends Plugin
         ksort($projects);
 
         // Return the output
-        return $this->view('fork', 'forks')
+        return $this
+            ->view('fork', 'forks')
             ->set('publication', $publication)
             ->set('projects', $projects)
             ->loadTemplate();

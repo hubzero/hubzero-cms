@@ -70,7 +70,8 @@ class Xml extends SiteController
         // Initiate the service
         $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->option . '&task=stylesheet&metadataPrefix=' . $metadata));
 
-        $service->set('metadataPrefix', $metadata)
+        $service
+                ->set('metadataPrefix', $metadata)
                 ->set('repositoryName', $this->config->get('repository_name', Config::get('sitename')))
                 ->set('baseURL', $hubname)
                 ->set('protocolVersion', '2.0')

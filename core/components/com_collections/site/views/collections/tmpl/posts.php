@@ -22,7 +22,8 @@ if (!User::isGuest()) {
     $foo = $this->editor('description', '', 35, 5, 'field_description', ['class' => 'minimal no-footer']);
 }
 
-$this->css()
+$this
+     ->css()
      ->js('jquery.masonry')
      ->js('jquery.infinitescroll')
      ->js();
@@ -41,7 +42,8 @@ $this->css()
 
 <form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
     <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->set('option', $this->option)
          ->set('active', 'posts')
          ->set('collections', $this->collections)
@@ -80,7 +82,8 @@ $this->css()
                     <div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id')); ?>">
                         <div class="content">
                         <?php
-                            $this->view('display_' . $item->layout(dirname(__DIR__, 2) . DS . 'posts' . DS . 'tmpl', 'display_'), 'posts')
+                            $this
+                                 ->view('display_' . $item->layout(dirname(__DIR__, 2) . DS . 'posts' . DS . 'tmpl', 'display_'), 'posts')
                                  ->set('option', $this->option)
                                  ->set('params', $this->config)
                                  ->set('row', $row)

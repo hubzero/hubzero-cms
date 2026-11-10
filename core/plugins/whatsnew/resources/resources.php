@@ -191,7 +191,8 @@ class Resources extends Plugin
             }
 
             if (!empty($filters['usergroups'])) {
-                $query->whereIn('access', $access, 1)
+                $query
+                    ->whereIn('access', $access, 1)
                     ->orWhereIn('group_owner', $filters['usergroups'], 1)
                     ->resetDepth();
             } else {
@@ -237,7 +238,8 @@ class Resources extends Plugin
                         }
 
                         if (!empty($filters['usergroups'])) {
-                            $query->whereIn('access', $access, 1)
+                            $query
+                                ->whereIn('access', $access, 1)
                                 ->orWhereIn('group_owner', $filters['usergroups'], 1)
                                 ->resetDepth();
                         } else {
@@ -291,7 +293,8 @@ class Resources extends Plugin
             'name' => 'browse',
             'layout' => 'item',
         ]);
-        $view->set('line', $row)
+        $view
+            ->set('line', $row)
             ->set('option', 'com_resources')
             ->set('config', $config)
             ->set('supported', []);

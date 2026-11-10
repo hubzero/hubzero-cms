@@ -57,7 +57,8 @@ class DriverTest extends AbstractDriverTestCase
 
         // Create table using schema builder for database-agnostic DDL
         $schema = $driver->schema();
-        $schema->createTable(self::$testTable)
+        $schema
+            ->createTable(self::$testTable)
             ->id()
             ->string('name', 255)
             ->string('email', 255)
@@ -598,7 +599,8 @@ class DriverTest extends AbstractDriverTestCase
         $tempTable = self::$testTable . '_temp';
 
         try {
-            $schema->createTable($tempTable)
+            $schema
+                ->createTable($tempTable)
                 ->id()
                 ->string('name', 255)
                 ->timestamp('created_at')
@@ -766,7 +768,8 @@ class DriverTest extends AbstractDriverTestCase
 
         // Create temporary table
         $schema = $driver->schema();
-        $schema->createTable($oldTable)
+        $schema
+            ->createTable($oldTable)
             ->id()
             ->string('name', 255)
             ->execute();
@@ -790,7 +793,8 @@ class DriverTest extends AbstractDriverTestCase
 
         // Create temporary table
         $schema = $driver->schema();
-        $schema->createTable($tempTable)
+        $schema
+            ->createTable($tempTable)
             ->id()
             ->string('name', 255)
             ->execute();
@@ -816,7 +820,8 @@ class DriverTest extends AbstractDriverTestCase
 
         // Create table
         $schema = $driver->schema();
-        $schema->createTable($tempTable)
+        $schema
+            ->createTable($tempTable)
             ->id()
             ->string('name', 255)
             ->execute();

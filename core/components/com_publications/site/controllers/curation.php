@@ -632,7 +632,8 @@ class Curation extends SiteController
                             $body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
                             $mail = new \Hubzero\Mail\Message();
-                            $mail->setSubject($subject)
+                            $mail
+                                ->setSubject($subject)
                                 ->addTo($author->invited_email, $author->invited_name)
                                 ->addFrom($from['email'], $from['name'])
                                 ->setPriority('normal')

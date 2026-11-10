@@ -92,7 +92,8 @@ class Quotas extends AdminController
             ->join($users, $users . '.id', $entries->getTableName() . '.user_id', 'left');
 
         if ($filters['search']) {
-            $entries->whereLike($users . '.name', strtolower((string) $filters['search']), 1)
+            $entries
+                ->whereLike($users . '.name', strtolower((string) $filters['search']), 1)
                 ->orWhereLike($users . '.username', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }

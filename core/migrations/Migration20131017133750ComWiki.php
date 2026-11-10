@@ -28,7 +28,8 @@ class Migration20131017133750ComWiki extends Base
             && $schema->tableExists('#__wiki_version')
             && $schema->hasColumn('#__wiki_version', 'pageid')
         ) {
-            $result = $this->db->getQuery(true)
+            $result = $this->db
+                ->getQuery(true)
                 ->select('*')
                 ->from('#__wiki_page', 'wp')
                 ->innerJoin('#__wiki_version AS wv', 'wp.id', 'wv.pageid')
@@ -46,7 +47,8 @@ class Migration20131017133750ComWiki extends Base
                 $pagetext = preg_replace('/(topic)/', 'wiki', $pagetext);
                 $pagehtml = preg_replace('/(topic)/', 'wiki', $pagehtml);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wiki_version')
                     ->set([
                         'pagetext' => $pagetext,
@@ -58,7 +60,8 @@ class Migration20131017133750ComWiki extends Base
 
                 $title = preg_replace('/(Topic)/', 'Wiki', $result->title);
 
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->update('#__wiki_page')
                     ->set(['title' => $title])
                     ->where('id', '=', $result->pageid)

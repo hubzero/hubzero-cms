@@ -104,7 +104,8 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Get user names unioned with admin names
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('union_users')
             ->union(function ($q) {
                 $q->select('name')->from('union_admins');
@@ -135,7 +136,8 @@ class UnionQueryTest extends AbstractDriverTestCase
         $adminQuery->select('name')->from('union_admins');
 
         $query = new Query($driver);
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('union_users')
             ->union($adminQuery)
             ->fetch('rows');
@@ -162,11 +164,13 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Error logs from both tables - "Error 1" exists in both
-        $results = $query->select('message')
+        $results = $query
+            ->select('message')
             ->from('union_logs')
             ->whereEquals('level', 'error')
             ->union(function ($q) {
-                $q->select('message')
+                $q
+                    ->select('message')
                     ->from('union_archived_logs')
                     ->whereEquals('level', 'error');
             })
@@ -193,11 +197,13 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Error logs from both tables - should include duplicate "Error 1"
-        $results = $query->select('message')
+        $results = $query
+            ->select('message')
             ->from('union_logs')
             ->whereEquals('level', 'error')
             ->unionAll(function ($q) {
-                $q->select('message')
+                $q
+                    ->select('message')
                     ->from('union_archived_logs')
                     ->whereEquals('level', 'error');
             })
@@ -227,16 +233,19 @@ class UnionQueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('message')
+        $results = $query
+            ->select('message')
             ->from('union_logs')
             ->whereEquals('level', 'error')
             ->union(function ($q) {
-                $q->select('message')
+                $q
+                    ->select('message')
                     ->from('union_logs')
                     ->whereEquals('level', 'info');
             })
             ->union(function ($q) {
-                $q->select('message')
+                $q
+                    ->select('message')
                     ->from('union_archived_logs');
             })
             ->fetch('rows');
@@ -263,11 +272,13 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // This tests the SQL generation with mixed UNION and UNION ALL
-        $results = $query->select('message')
+        $results = $query
+            ->select('message')
             ->from('union_logs')
             ->whereEquals('level', 'error')
             ->unionAll(function ($q) {
-                $q->select('message')
+                $q
+                    ->select('message')
                     ->from('union_archived_logs')
                     ->whereEquals('level', 'error');
             })
@@ -298,12 +309,14 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Active users union with moderators
-        $results = $query->select('name', 'type')
+        $results = $query
+            ->select('name', 'type')
             ->from('union_users')
             ->whereEquals('active', 1)
             ->whereEquals('type', 'user')
             ->union(function ($q) {
-                $q->select('name', 'type')
+                $q
+                    ->select('name', 'type')
                     ->from('union_users')
                     ->whereEquals('type', 'moderator');
             })
@@ -329,11 +342,13 @@ class UnionQueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Test that bindings work correctly with unions
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('union_users')
             ->where('name', 'LIKE', 'A%')
             ->union(function ($q) {
-                $q->select('name')
+                $q
+                    ->select('name')
                     ->from('union_admins')
                     ->where('name', 'LIKE', 'D%');
             })
@@ -365,11 +380,13 @@ class UnionQueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('union_users')
             ->whereEquals('name', 'NonExistent')
             ->union(function ($q) {
-                $q->select('name')
+                $q
+                    ->select('name')
                     ->from('union_admins');
             })
             ->fetch('rows');
@@ -396,11 +413,13 @@ class UnionQueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $results = $query->select('name')
+        $results = $query
+            ->select('name')
             ->from('union_users')
             ->whereEquals('name', 'NonExistent')
             ->union(function ($q) {
-                $q->select('name')
+                $q
+                    ->select('name')
                     ->from('union_admins')
                     ->whereEquals('name', 'AlsoNonExistent');
             })
@@ -426,7 +445,8 @@ class UnionQueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $query->select('name')
+        $query
+            ->select('name')
             ->from('union_users')
             ->union(function ($q) {
                 $q->select('name')->from('union_admins');
@@ -457,7 +477,8 @@ class UnionQueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
 
-        $query->select('name')
+        $query
+            ->select('name')
             ->from('union_users')
             ->unionAll(function ($q) {
                 $q->select('name')->from('union_admins');
@@ -493,26 +514,30 @@ class UnionQueryTest extends AbstractDriverTestCase
         // Create tables using schema builder
         $schema = $driver->schema();
 
-        $schema->createTable('union_users')
+        $schema
+            ->createTable('union_users')
             ->id()
             ->string('name', 100)
             ->string('type', 50)
             ->integer('active')->default(1)
             ->execute();
 
-        $schema->createTable('union_admins')
+        $schema
+            ->createTable('union_admins')
             ->id()
             ->string('name', 100)
             ->string('level', 50)
             ->execute();
 
-        $schema->createTable('union_logs')
+        $schema
+            ->createTable('union_logs')
             ->id()
             ->string('message', 255)
             ->string('level', 50)
             ->execute();
 
-        $schema->createTable('union_archived_logs')
+        $schema
+            ->createTable('union_archived_logs')
             ->id()
             ->string('message', 255)
             ->string('level', 50)

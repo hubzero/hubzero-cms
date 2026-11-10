@@ -25,7 +25,8 @@ class Migration20140627091431ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__support_attachments', 'ticket')) {
-            $schema->modifyColumn('#__support_attachments', 'ticket')
+            $schema
+                ->modifyColumn('#__support_attachments', 'ticket')
                 ->integer()
                 ->notNull()
                 ->default(0)
@@ -41,7 +42,8 @@ class Migration20140627091431ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->hasColumn('#__support_attachments', 'ticket')) {
-            $schema->modifyColumn('#__support_attachments', 'ticket')
+            $schema
+                ->modifyColumn('#__support_attachments', 'ticket')
                 ->integer()
                 ->unsigned()
                 ->notNull()

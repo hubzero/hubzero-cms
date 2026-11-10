@@ -293,7 +293,8 @@ class Resources extends SiteController
         if ($filters['search']) {
             $filters['search'] = strtolower((string) $filters['search']);
 
-            $query->whereLike($r . '.title', $filters['search'], 1)
+            $query
+                    ->whereLike($r . '.title', $filters['search'], 1)
                     ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
                     ->resetDepth();
         }
@@ -302,12 +303,14 @@ class Resources extends SiteController
             $query->whereEquals($r . '.type', $filters['type']);
         }
 
-        $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
             ->orWhere($r . '.publish_up', 'IS', null, 1)
             ->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
             ->resetDepth();
 
-        $query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+        $query
+            ->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
             ->orWhere($r . '.publish_down', 'IS', null, 1)
             ->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
             ->resetDepth();
@@ -606,7 +609,8 @@ class Resources extends SiteController
 
                 $bits['authorized'] = $model->access('edit'); //$this->_authorize($helper->contributorIDs, $resource);
 
-                $firstChild = $model->children()
+                $firstChild = $model
+                    ->children()
                     ->whereEquals('standalone', 0)
                     ->whereEquals('published', Entry::STATE_PUBLISHED)
                     ->order('ordering', 'asc')
@@ -668,7 +672,8 @@ class Resources extends SiteController
         if (!$this->resid) {
             // No ID, default to the first child
             //$helper->getFirstChild();
-            $activechild = $resource->children()
+            $activechild = $resource
+                ->children()
                 ->whereEquals('published', Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')
                 ->limit(1)
@@ -1646,7 +1651,8 @@ class Resources extends SiteController
 
         $feedtype = Request::getString('content', 'audio');
 
-        $rows = $resource->children()
+        $rows = $resource
+            ->children()
             ->whereEquals('published', Entry::STATE_PUBLISHED)
             ->whereEquals('standalone', 1)
             ->limit($filters['limit'])
@@ -1786,7 +1792,8 @@ class Resources extends SiteController
                     }
                 }
 
-                $grandchildren = $row->children()
+                $grandchildren = $row
+                    ->children()
                     ->whereEquals('published', Entry::STATE_PUBLISHED)
                     ->ordered()
                     ->rows();
@@ -2699,7 +2706,8 @@ class Resources extends SiteController
         if ($resource->standalone != 1) {
             //$helper = new Helper($resource->id, $this->database);
             //$helper->getParents();
-            $parents = $resource->parents()
+            $parents = $resource
+                ->parents()
                 ->whereEquals('published', Entry::STATE_PUBLISHED)
                 ->rows();
 

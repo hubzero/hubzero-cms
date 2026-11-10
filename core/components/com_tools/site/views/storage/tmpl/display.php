@@ -14,7 +14,8 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('storage.css')
+$this
+     ->css('storage.css')
      ->js('storage.js');
 
 $base = rtrim(Request::base(true), '/');

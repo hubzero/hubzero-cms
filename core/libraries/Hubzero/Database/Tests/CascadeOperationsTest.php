@@ -47,14 +47,16 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $schema = $driver->schema();
 
         // Create parent table
-        $schema->createTable('cascade_posts')
+        $schema
+            ->createTable('cascade_posts')
             ->id()
             ->string('title', 255)
             ->text('body')->nullable()
             ->execute();
 
         // Create child table
-        $schema->createTable('cascade_comments')
+        $schema
+            ->createTable('cascade_comments')
             ->id()
             ->integer('post_id')
             ->text('content')
@@ -62,7 +64,8 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             ->execute();
 
         // Create profile table (for one-to-one cascade)
-        $schema->createTable('cascade_profiles')
+        $schema
+            ->createTable('cascade_profiles')
             ->id()
             ->integer('post_id')
             ->string('author_name', 255)->nullable()

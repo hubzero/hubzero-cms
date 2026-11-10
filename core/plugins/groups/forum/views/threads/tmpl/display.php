@@ -23,7 +23,8 @@ $this->thread->set('category', $this->category->get('alias'));
 
 $now = time();
 
-$this->css()
+$this
+     ->css()
      ->js('api')
      ->js('notify')
      ->js('user')
@@ -53,7 +54,8 @@ $this->css()
             // producing blank pages and "lost" posts (support ticket #2159).
             // Instead, build the full tree and paginate the top-level replies,
             // each of which carries its complete sub-thread.
-            $all = $this->thread->thread()
+            $all = $this->thread
+                ->thread()
                 ->whereIn('state', $this->filters['state'])
                 ->whereIn('access', $this->filters['access'])
                 ->order('lft', 'asc')
@@ -72,12 +74,14 @@ $this->css()
             }
             $count = count($posts);
         } else {
-            $total = $this->thread->thread()
+            $total = $this->thread
+                ->thread()
                 ->whereIn('state', $this->filters['state'])
                 ->whereIn('access', $this->filters['access'])
                 ->total();
 
-            $posts = $this->thread->thread()
+            $posts = $this->thread
+                ->thread()
                 ->whereIn('state', $this->filters['state'])
                 ->whereIn('access', $this->filters['access'])
                 ->order('id', 'asc')
@@ -95,7 +99,8 @@ $this->css()
         );
 
         if ($count > 0) {
-            $this->view('_list')
+            $this
+                 ->view('_list')
                  ->set('option', $this->option)
                  ->set('group', $this->group)
                  ->set('comments', $posts)
@@ -140,7 +145,8 @@ $this->css()
         </div><!-- / .container -->
 
         <?php
-        $participants = $this->thread->participants()
+        $participants = $this->thread
+            ->participants()
             ->whereIn('state', $this->filters['state'])
             ->whereIn('access', $this->filters['access'])
             ->rows();

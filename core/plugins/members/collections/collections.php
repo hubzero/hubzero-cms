@@ -734,7 +734,8 @@ class Collections extends Plugin
      */
     private function posts()
     {
-        $view = $this->view('default', 'collection')
+        $view = $this
+            ->view('default', 'collection')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('member', $this->member)
@@ -832,7 +833,8 @@ class Collections extends Plugin
 
         $no_html = Request::getInt('no_html', 0);
 
-        $view = $this->view('default', 'post')
+        $view = $this
+            ->view('default', 'post')
             ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('member', $this->member)
@@ -2088,7 +2090,8 @@ class Collections extends Plugin
             }
 
             // Output HTML
-            $view = $this->view('delete', 'collection')
+            $view = $this
+                ->view('delete', 'collection')
                 ->set('name', $this->pluginName)
                 ->set('option', $this->option)
                 ->set('member', $this->member)

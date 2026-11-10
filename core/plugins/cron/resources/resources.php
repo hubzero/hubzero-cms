@@ -269,12 +269,14 @@ class Resources extends Plugin
                     ->whereIn($r . '.access', [0, 1])
                     ->whereEquals($r . '.standalone', 1);
 
-                $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+                $query
+                    ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
                     ->orWhere($r . '.publish_up', 'IS', null, 1)
                     ->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
                     ->resetDepth();
 
-                $query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+                $query
+                    ->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
                     ->orWhere($r . '.publish_down', 'IS', null, 1)
                     ->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
                     ->resetDepth();
@@ -373,7 +375,8 @@ class Resources extends Plugin
 
         // Build message
         $message = App::get('mailer');
-        $message->setSubject($params->get('digest_subject', Lang::txt('PLG_CRON_RESOURCES_EMAIL_DIGEST_SUBJECT')))
+        $message
+                ->setSubject($params->get('digest_subject', Lang::txt('PLG_CRON_RESOURCES_EMAIL_DIGEST_SUBJECT')))
                 ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
                 ->addTo($user->get('email'), $user->get('name'))
                 ->addHeader('X-Component', 'com_resources')

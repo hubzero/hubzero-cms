@@ -791,7 +791,8 @@ class Orcid extends SiteController
                         $response['access_token'],
                     );
                 }
-                $view->set('permissionGranted', true)
+                $view
+                    ->set('permissionGranted', true)
                     ->set('userName', $response['name'])
                     ->set('userORCID', $response['orcid']);
             }

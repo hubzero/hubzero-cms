@@ -32,7 +32,8 @@ class Migration20140224112212PlgWiki extends Base
         */
 
         /* We do an update instead of the above remove/add so as to preserve state and params */
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -44,7 +45,8 @@ class Migration20140224112212PlgWiki extends Base
             ->where('element', '=', 'wikiparser')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -56,7 +58,8 @@ class Migration20140224112212PlgWiki extends Base
             ->where('element', '=', 'wikieditortoolbar')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -85,7 +88,8 @@ class Migration20140224112212PlgWiki extends Base
         */
 
         /* We do an update instead of the above remove/add so as to preserve state and params */
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',
@@ -97,7 +101,8 @@ class Migration20140224112212PlgWiki extends Base
             ->where('element', '=', 'parserdefault')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',
@@ -109,7 +114,8 @@ class Migration20140224112212PlgWiki extends Base
             ->where('element', '=', 'editortoolbar')
             ->execute();
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',

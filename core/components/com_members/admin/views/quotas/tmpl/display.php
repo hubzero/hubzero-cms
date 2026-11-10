@@ -31,12 +31,14 @@ if ($canDo->get('core.create')) {
 Toolbar::help('quotas');
 
 
-$this->css('quotas.css')
+$this
+    ->css('quotas.css')
     ->js('quotas.js');
 ?>
 
 <?php
-    $this->view('_submenu')
+    $this
+         ->view('_submenu')
          ->display();
 ?>
 

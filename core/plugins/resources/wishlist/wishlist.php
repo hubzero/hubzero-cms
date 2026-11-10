@@ -345,7 +345,8 @@ class Wishlist extends Plugin
 
                 // HTML output
                 // Instantiate a view
-                $view = $this->view('default', 'browse')
+                $view = $this
+                    ->view('default', 'browse')
                     ->set('option', $option)
                     ->set('resource', $model)
                     ->set('title', $title)
@@ -366,7 +367,8 @@ class Wishlist extends Plugin
 
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $view = $this->view('default', 'metadata')
+            $view = $this
+                ->view('default', 'metadata')
                 ->set('resource', $model)
                 ->set('items', $items)
                 ->set('wishlistid', $id);

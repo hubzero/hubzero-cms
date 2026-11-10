@@ -32,7 +32,8 @@ $this->row->fulltxt = trim($this->row->fulltxt);
 $elements = new \Components\Resources\Models\Elements($data, $type->get('customFields'));
 $fields = $elements->render();
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js');
 ?>
 <header id="content-header">
@@ -50,7 +51,8 @@ $this->css('create.css')
 <section class="main section">
     <?php
         $this->group_cn = Request::getString('group', '');
-        $this->view('steps')
+        $this
+             ->view('steps')
              ->set('option', $this->option)
              ->set('step', $this->step)
              ->set('steps', $this->steps)

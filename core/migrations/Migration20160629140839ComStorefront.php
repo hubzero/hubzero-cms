@@ -23,14 +23,16 @@ class Migration20160629140839ComStorefront extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__storefront_product_types')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('ptId')
                 ->from('#__storefront_product_types')
                 ->where('ptModel', '=', 'software')
                 ->value('ptId');
 
             if (!$id) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__storefront_product_types')
                     ->columns(['ptId', 'ptName', 'ptModel'])
                     ->values("NULL, 'Software Download', 'software'")
@@ -47,14 +49,16 @@ class Migration20160629140839ComStorefront extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__storefront_product_types')) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('ptId')
                 ->from('#__storefront_product_types')
                 ->where('ptModel', '=', 'software')
                 ->value('ptId');
 
             if ($id) {
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->delete('#__storefront_product_types')
                     ->where('ptId', '=', $id)
                     ->execute();

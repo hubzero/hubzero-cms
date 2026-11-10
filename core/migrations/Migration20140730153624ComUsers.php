@@ -24,7 +24,8 @@ class Migration20140730153624ComUsers extends Base
         $user_type = $params->get('new_usertype');
 
         if (is_string($user_type) && strlen($user_type) > 2) {
-            $id = $this->db->getQuery(true)
+            $id = $this->db
+                ->getQuery(true)
                 ->select('id')
                 ->from('#__usergroups')
                 ->where('title', '=', $user_type)

@@ -40,7 +40,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
     protected static function setUpDatabase(Driver $driver): void
     {
         $driver->dropTable('hook_test_items', true);
-        $driver->createTable('hook_test_items')
+        $driver
+            ->createTable('hook_test_items')
             ->id()
             ->string('title', 255)
             ->string('slug', 255)->nullable()
@@ -91,7 +92,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Get the ID by querying back
         $query = new Query($driver);
-        $id = $query->select('id')
+        $id = $query
+            ->select('id')
             ->from('hook_test_items')
             ->whereEquals('title', $title)
             ->fetch('column');
@@ -550,7 +552,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Verify it was soft deleted
         $query = new Query($driver);
-        $deletedAt = $query->select('deleted_at')
+        $deletedAt = $query
+            ->select('deleted_at')
             ->from('hook_test_items')
             ->whereEquals('id', $id)
             ->fetch('column');
@@ -575,7 +578,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
         HookTestItemWithSoftDeletes::restoring(fn($m) => self::logCallback('restoring', $m));
         HookTestItemWithSoftDeletes::restored(fn($m) => self::logCallback('restored', $m));
 
-        $item = HookTestItemWithSoftDeletes::blank()->withTrashed()
+        $item = HookTestItemWithSoftDeletes::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
 
@@ -587,7 +591,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Verify it was restored
         $query = new Query($driver);
-        $deletedAt = $query->select('deleted_at')
+        $deletedAt = $query
+            ->select('deleted_at')
             ->from('hook_test_items')
             ->whereEquals('id', $id)
             ->fetch('column');
@@ -610,7 +615,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             return false; // Cancel
         });
 
-        $item = HookTestItemWithSoftDeletes::blank()->withTrashed()
+        $item = HookTestItemWithSoftDeletes::blank()
+            ->withTrashed()
             ->whereEquals('id', $id)
             ->row();
 
@@ -620,7 +626,8 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Verify still trashed
         $query = new Query($driver);
-        $deletedAt = $query->select('deleted_at')
+        $deletedAt = $query
+            ->select('deleted_at')
             ->from('hook_test_items')
             ->whereEquals('id', $id)
             ->fetch('column');

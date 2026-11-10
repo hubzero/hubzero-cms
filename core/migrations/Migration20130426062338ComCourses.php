@@ -22,7 +22,8 @@ class Migration20130426062338ComCourses extends Base
     public function up()
     {
         if ($this->db->tableHasField('#__courses_grade_policies', 'score_criteria')) {
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->delete('#__courses_grade_policies')
                 ->where('id', '=', 1)
                 ->execute();
@@ -69,7 +70,8 @@ AND cgb.scope = 'asset'
 GROUP BY user_id[[::unit::, cag.unit_id]]
 SQL;
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__courses_grade_policies')
                 ->columns(['id', 'alias', 'description', 'type', 'grade_criteria', 'score_criteria', 'badge_criteria'])
                 ->values([
@@ -138,7 +140,8 @@ AND cgb.scope = 'asset'
 GROUP BY user_id[[::unit::, cag.unit_id]]
 SQL;
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__courses_grade_policies')
                 ->columns(['alias', 'description', 'type', 'grade_criteria', 'score_criteria', 'badge_criteria'])
                 ->values([

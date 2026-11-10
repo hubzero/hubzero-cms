@@ -19,7 +19,8 @@ $comment = \Components\Courses\Models\Comment::blank();
 
 $edit = Request::getInt('editcomment', 0);
 
-$vote = $comment->votes()
+$vote = $comment
+    ->votes()
     ->whereEquals('created_by', User::get('id'))
     ->row();
 
@@ -30,7 +31,8 @@ $this->js();
             <?php echo Lang::txt('PLG_COURSES_REVIEWS'); ?>
         </h3>
     <?php if ($this->comments->count() > 0) {
-        $this->view('list')
+        $this
+             ->view('list')
              ->set('option', $this->option)
              ->set('comments', $this->comments)
              ->set('obj_type', $this->obj_type)

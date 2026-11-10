@@ -92,7 +92,8 @@ class Routes extends Base implements CommandInterface
                 continue;
             }
 
-            App::get('db')->getQuery()
+            App::get('db')
+                ->getQuery()
                 ->update('#__menu')
                 ->set(['published' => 1])
                 ->whereEquals('id', $row['id'])
@@ -138,7 +139,8 @@ class Routes extends Base implements CommandInterface
         $components = [];
         $installed  = [];
 
-        $rows = $db->getQuery(true)
+        $rows = $db
+            ->getQuery(true)
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
@@ -173,7 +175,8 @@ class Routes extends Base implements CommandInterface
 
         $routed = [];
 
-        $entries = $db->getQuery(true)
+        $entries = $db
+            ->getQuery(true)
             ->select('alias')
             ->select('link')
             ->from('#__menu')
@@ -360,7 +363,8 @@ class Routes extends Base implements CommandInterface
     {
         $ranked = $db->tableHasField('#__menu_types', 'type');
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->select('m.id')
             ->select('m.published')
             ->select('m.menutype')
@@ -405,7 +409,8 @@ class Routes extends Base implements CommandInterface
     {
         $ranked = $db->tableHasField('#__menu_types', 'type');
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->select('m.id')
             ->select('m.path')
             ->select('m.menutype')

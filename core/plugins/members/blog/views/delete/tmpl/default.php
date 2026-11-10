@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 
 $base = $this->member->link() . '&active=blog';
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 

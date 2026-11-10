@@ -397,7 +397,8 @@ class Paginator extends Obj
         if (!$view instanceof View) {
             $view = new View();
         }
-        $view->set('limit', $this->limit)
+        $view
+             ->set('limit', $this->limit)
              ->set('start', $this->limitstart)
              ->set('total', $this->total)
              ->set('pages', $data)

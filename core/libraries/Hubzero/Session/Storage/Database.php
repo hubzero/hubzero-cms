@@ -82,7 +82,8 @@ class Database extends Store
 
         try {
             // Get the session data from the database table.
-            $query = $this->connection->getQuery()
+            $query = $this->connection
+                ->getQuery()
                 ->select('data')
                 ->from('#__session')
                 ->whereEquals('session_id', $id);
@@ -116,7 +117,8 @@ class Database extends Store
         // Get the database connection object and verify its connected.
         if ($this->connection->connected()) {
             try {
-                $query = $this->connection->getQuery()
+                $query = $this->connection
+                    ->getQuery()
                     ->update('#__session')
                     ->set([
                         'data' => $data,
@@ -163,7 +165,8 @@ class Database extends Store
         }
 
         try {
-            $query = $this->connection->getQuery()
+            $query = $this->connection
+                ->getQuery()
                 ->delete('#__session')
                 ->whereEquals('session_id', $id);
 
@@ -194,7 +197,8 @@ class Database extends Store
         $past = time() - $maxlifetime;
 
         try {
-            $query = $this->connection->getQuery()
+            $query = $this->connection
+                ->getQuery()
                 ->delete('#__session')
                 ->where('time', '<', (int) $past);
 
@@ -225,7 +229,8 @@ class Database extends Store
             return null;
         }
 
-        $query = $this->connection->getQuery()
+        $query = $this->connection
+            ->getQuery()
             ->select('*')
             ->from('#__session')
             ->whereEquals('session_id', $id)
@@ -243,7 +248,8 @@ class Database extends Store
      */
     public function all($filters = [])
     {
-        $query = $this->connection->getQuery()
+        $query = $this->connection
+            ->getQuery()
             ->select('session_id')
             ->select('client_id')
             ->select('guest')

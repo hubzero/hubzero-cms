@@ -29,7 +29,8 @@ class Akismet extends Plugin
         }
 
         $akismet = new \Plugins\Antispam\Akismet\Service\Provider();
-        $akismet->set('apiKey', $this->params->get('apiKey'))
+        $akismet
+            ->set('apiKey', $this->params->get('apiKey'))
             ->set('apiPort', $this->params->get('apiPort', 80))
             ->set('akismetServer', $this->params->get('akismetServer', 'rest.akismet.com'))
             ->set('akismetVersion', $this->params->get('akismetVersion', '1.1'));
@@ -55,7 +56,8 @@ class Akismet extends Plugin
         }
 
         $akismet = new \Plugins\Antispam\Akismet\Service\Provider();
-        $akismet->set('apiKey', $this->params->get('apiKey'))
+        $akismet
+            ->set('apiKey', $this->params->get('apiKey'))
             ->set('apiPort', $this->params->get('apiPort', 80))
             ->set('akismetServer', $this->params->get('akismetServer', 'rest.akismet.com'))
             ->set('akismetVersion', $this->params->get('akismetVersion', '1.1'));

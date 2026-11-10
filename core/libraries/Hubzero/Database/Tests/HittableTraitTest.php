@@ -45,7 +45,8 @@ class HittableTraitTest extends AbstractDriverTestCase
     {
         // Create test table with hits column
         $driver->dropTable('hittable_articles', true);
-        $driver->createTable('hittable_articles')
+        $driver
+            ->createTable('hittable_articles')
             ->id()
             ->string('title', 255)
             ->integer('state')->default(1)
@@ -54,7 +55,8 @@ class HittableTraitTest extends AbstractDriverTestCase
 
         // Create table with custom column name
         $driver->dropTable('hittable_custom_articles', true);
-        $driver->createTable('hittable_custom_articles')
+        $driver
+            ->createTable('hittable_custom_articles')
             ->id()
             ->string('title', 255)
             ->integer('view_count')->default(0)

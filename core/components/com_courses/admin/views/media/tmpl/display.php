@@ -20,7 +20,8 @@ if ($this->getError()) {
     echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
 
-$this->css('uploader')
+$this
+    ->css('uploader')
     ->js('jquery.fileuploader.js', 'system')
     ->js('media.js');
 ?>

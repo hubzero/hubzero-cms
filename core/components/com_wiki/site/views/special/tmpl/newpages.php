@@ -38,7 +38,8 @@ if ($space = Request::getString('namespace', '')) {
     $filters['namespace'] = urldecode($space);
 }
 
-$rows = $this->book->pages($filters)
+$rows = $this->book
+    ->pages($filters)
     ->including([
         'versions',
         function ($version) {

@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js()
     ->css('jquery.fancybox.css', 'system')
     ->css('edit')
@@ -39,13 +40,15 @@ endif;
 <div id="project-wrap" class="edit-project">
     <?php if ($layout == 'extended') :
         // Draw top header
-        $this->view('_topheader', 'projects')
+        $this
+             ->view('_topheader', 'projects')
              ->set('model', $this->model)
              ->set('publicView', false)
              ->set('option', $this->option)
              ->display();
         // Draw top menu
-        $this->view('_topmenu', 'projects')
+        $this
+             ->view('_topmenu', 'projects')
              ->set('model', $this->model)
              ->set('active', 'edit')
              ->set('tabs', [])
@@ -56,7 +59,8 @@ endif;
         ?>
         <div class="project-inner-wrap">
     <?php else :
-            $this->view('_header', 'projects')
+            $this
+             ->view('_header', 'projects')
              ->set('model', $this->model)
              ->set('showPic', 1)
              ->set('showPrivacy', 0)
@@ -67,7 +71,8 @@ endif;
     endif;
 
     // Display status message
-        $this->view('_statusmsg', 'projects')
+        $this
+         ->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
          ->set('msg', $this->msg)
          ->display();
@@ -79,7 +84,8 @@ endif;
                 <div class="col span3">
                     <?php
                     // Display sections menu
-                    $this->view('_sections')
+                    $this
+                         ->view('_sections')
                          ->set('sections', $this->sections)
                          ->set('section', $this->section)
                          ->set('option', $this->option)
@@ -178,7 +184,8 @@ endif;
                         <?php
                         switch ($this->section) :
                             case 'team':
-                                $this->view('_edit_team')
+                                $this
+                                    ->view('_edit_team')
                                     ->set('content', $this->content)
                                     ->set('model', $this->model)
                                     ->display();
@@ -190,7 +197,8 @@ endif;
                                 $fields = (isset($this->fields)) ? $this->fields : null;
                                 $data = (isset($this->data)) ? $this->data : [];
 
-                                $this->view('_edit_info')
+                                $this
+                                    ->view('_edit_info')
                                     ->set('config', $this->config)
                                     ->set('model', $this->model)
                                     ->set('option', $this->option)

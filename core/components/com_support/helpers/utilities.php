@@ -36,7 +36,8 @@ class Utilities
         }
 
         $message = new Message();
-        $message->setSubject(Config::get('sitename') . ' ' . $subject)
+        $message
+                ->setSubject(Config::get('sitename') . ' ' . $subject)
                 ->addFrom($from['email'], $from['name'])
                 ->addTo($email);
 
@@ -79,7 +80,8 @@ class Utilities
                 }
             }
 
-            $message->addPart($contents['plaintext'], 'text/plain')
+            $message
+                    ->addPart($contents['plaintext'], 'text/plain')
                     ->addPart($contents['multipart'], 'text/html');
         } else {
             $message->setBody($contents);

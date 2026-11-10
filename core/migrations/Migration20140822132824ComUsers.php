@@ -23,7 +23,8 @@ class Migration20140822132824ComUsers extends Base
     public function up()
     {
         // Get all users that have no group set
-        $ids = $this->db->getQuery(true)
+        $ids = $this->db
+            ->getQuery(true)
             ->select('u.id')
             ->from('#__users', 'u')
             ->leftJoin('#__user_usergroup_map AS um', 'u.id', 'um.user_id')
@@ -46,7 +47,8 @@ class Migration20140822132824ComUsers extends Base
 
             foreach ($ids as $id) {
                 $id = $this->db->quote($id);
-                $this->db->getQuery(true)
+                $this->db
+                    ->getQuery(true)
                     ->insert('#__user_usergroup_map')
                     ->columns(['user_id', 'group_id'])
                     ->values("{$id},{$group_id}")

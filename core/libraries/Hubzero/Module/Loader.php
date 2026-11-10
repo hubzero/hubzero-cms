@@ -641,7 +641,8 @@ class Loader
         if ($this->app->has('db')) {
             $db = $this->app['db'];
 
-            $query = $db->getQuery()
+            $query = $db
+                ->getQuery()
                 ->select('params')
                 ->from('#__modules')
                 ->whereEquals('published', 1);

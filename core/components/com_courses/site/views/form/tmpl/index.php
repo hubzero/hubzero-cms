@@ -12,7 +12,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('form.css')
+$this
+     ->css('form.css')
      ->css('tablesorter.themes.blue.css', 'system')
      ->js('select.js')
      ->js('jquery.tablesorter.min', 'system');

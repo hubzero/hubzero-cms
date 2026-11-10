@@ -358,7 +358,8 @@ class Tickets extends AdminController
         if ($id) {
             $started = Request::getString('started', Date::toSql(), 'post');
 
-            $lastcomment = $ticket->comments()
+            $lastcomment = $ticket
+                ->comments()
                 ->order('created', 'DESC')
                 ->limit(1)
                 ->start(0)

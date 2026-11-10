@@ -48,7 +48,8 @@ if ($this->course->access('edit', 'course')) {
 }
 $manager = $this->course->manager(User::get('id'));
 
-$this->css('course.css')
+$this
+     ->css('course.css')
      ->js('courses.overview.js');
 ?>
 <header id="content-header">
@@ -530,7 +531,8 @@ $this->css('course.css')
                             if (count($s) > 1) {
                                 $offering->section($s[0]);
 
-                                $this->view('_button')
+                                $this
+                                     ->view('_button')
                                      ->set('course', $this->course)
                                      ->set('offering', $offering)
                                      ->set('section', $s[0])
@@ -588,7 +590,8 @@ $this->css('course.css')
 
                             $sections = $offering->sections($filters, true);
                             if ($this->course->isManager() && $sections->total() > 0) {
-                                $this->view('_button')
+                                $this
+                                     ->view('_button')
                                      ->set('course', $this->course)
                                      ->set('offering', $offering)
                                      ->set('section', $dflt)
@@ -651,7 +654,8 @@ $this->css('course.css')
                 </h3>
                 <?php
                 foreach ($instructors as $i) {
-                    $this->view('_instructor')
+                    $this
+                         ->view('_instructor')
                          ->set('biolength', 200)
                          ->set('instructor', Components\Members\Models\Member::oneOrNew($i->get('user_id')))
                          ->display();

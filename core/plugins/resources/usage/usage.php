@@ -105,7 +105,8 @@ class Usage extends Plugin
         } else {
             $query = \Components\Resources\Models\Stat::all();
         }
-        $stats = $query->whereEquals('resid', $model->id)
+        $stats = $query
+            ->whereEquals('resid', $model->id)
             ->whereEquals('period', $period)
             ->whereLike('datetime', $dthis . '-%')
             ->row();
@@ -141,7 +142,8 @@ class Usage extends Plugin
                 ->row();
 
             if ($field->get('id')) {
-                $options = $field->options()
+                $options = $field
+                    ->options()
                     ->ordered()
                     ->rows();
 
@@ -197,7 +199,8 @@ class Usage extends Plugin
                     $query = \Components\Resources\Models\Stat::all();
                 }
 
-                $stats = $query->whereEquals('resid', $model->id)
+                $stats = $query
+                               ->whereEquals('resid', $model->id)
                                ->whereEquals('period', $period)
                                //->whereLike('datetime', $previousDate . '-%')
                                ->order('datetime', 'desc')

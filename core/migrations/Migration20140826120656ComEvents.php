@@ -22,7 +22,8 @@ class Migration20140826120656ComEvents extends Base
     public function up()
     {
         // select each event
-        $events = $this->db->getQuery(true)
+        $events = $this->db
+            ->getQuery(true)
             ->select(['id', 'title'])
             ->from('#__events')
             ->loadObjectList();
@@ -30,7 +31,8 @@ class Migration20140826120656ComEvents extends Base
         // update each event
         foreach ($events as $event) {
             $fixedTitle = html_entity_decode($event->title);
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__events')
                 ->set(['title' => $this->db->quote($fixedTitle)])
                 ->where('id', '=', $event->id)

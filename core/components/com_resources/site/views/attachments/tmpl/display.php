@@ -14,7 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('create.css')
+$this
+     ->css('create.css')
      ->js('create.js');
 
 $hideform = Request::getInt('hideform', 0);

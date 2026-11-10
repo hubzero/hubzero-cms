@@ -18,7 +18,8 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script');
 
 // add import styles and scripts
-$this->js('handlebars.js', 'system')
+$this
+    ->js('handlebars.js', 'system')
     ->js('import.js');
 $this->css('import');
 ?>

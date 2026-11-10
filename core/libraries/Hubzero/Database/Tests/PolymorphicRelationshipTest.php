@@ -52,36 +52,42 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         $schema = $driver->schema();
 
-        $schema->createTable('poly_videos')
+        $schema
+            ->createTable('poly_videos')
             ->id()
             ->string('title', 255)
             ->execute();
 
-        $schema->createTable('poly_posts')
+        $schema
+            ->createTable('poly_posts')
             ->id()
             ->string('title', 255)
             ->execute();
 
-        $schema->createTable('poly_images')
+        $schema
+            ->createTable('poly_images')
             ->id()
             ->string('imageable_type', 255)
             ->integer('imageable_id')
             ->string('filename', 255)
             ->execute();
 
-        $schema->createTable('poly_activity_logs')
+        $schema
+            ->createTable('poly_activity_logs')
             ->id()
             ->string('loggable_type', 255)
             ->integer('loggable_id')
             ->string('action', 255)
             ->execute();
 
-        $schema->createTable('poly_tags')
+        $schema
+            ->createTable('poly_tags')
             ->id()
             ->string('name', 255)
             ->execute();
 
-        $schema->createTable('poly_taggables')
+        $schema
+            ->createTable('poly_taggables')
             ->id()
             ->integer('tag_id')
             ->string('taggable_type', 255)

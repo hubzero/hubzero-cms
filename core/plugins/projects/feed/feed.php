@@ -263,7 +263,8 @@ class Feed extends Plugin
             $suggestions = \Components\Projects\Helpers\Html::getSuggestions($model);
 
             // Display welcome message
-            $view = $this->view('_welcome', 'modules')
+            $view = $this
+                ->view('_welcome', 'modules')
                 ->set('option', $this->componentOption)
                 ->set('suggestions', $suggestions)
                 ->set('model', $model);
@@ -324,7 +325,8 @@ class Feed extends Plugin
             ->rows();
 
         // Output html
-        $view = $this->view('default', 'view')
+        $view = $this
+            ->view('default', 'view')
             ->set('params', $this->model->params)
             ->set('option', $this->componentOption)
             ->set('model', $this->model)
@@ -612,7 +614,8 @@ class Feed extends Plugin
                         'parent'     => $a->log->get('parent'),
                     ];
 
-                    $prep['body'] = $this->view('_activity', 'activity')
+                    $prep['body'] = $this
+                        ->view('_activity', 'activity')
                         ->set('option', $this->componentOption)
                         ->set('model', $this->model)
                         ->set('activity', $a)
@@ -629,7 +632,8 @@ class Feed extends Plugin
             exit();
         }
 
-        $view = $this->view('default', 'activity')
+        $view = $this
+            ->view('default', 'activity')
             ->set('option', $this->componentOption)
             ->set('model', $this->model)
             ->set('filters', $filters)
@@ -676,7 +680,8 @@ class Feed extends Plugin
             ->join($l, $l . '.id', $r . '.log_id');
 
         // return feed view now if no projects found/provided
-        $view = $this->view('shared', 'activity')
+        $view = $this
+            ->view('shared', 'activity')
             ->set('filters', $filters)
             ->set('uid', $uid)
             ->set('model', $model)
@@ -697,7 +702,8 @@ class Feed extends Plugin
                 $scopes[] = 'project_managers';
             }
 
-            $recipient->orWhereEquals($r . '.scope_id', $project_id, 1)
+            $recipient
+                    ->orWhereEquals($r . '.scope_id', $project_id, 1)
                     ->whereIn($r . '.scope', $scopes, 1)
                     ->resetDepth();
         }

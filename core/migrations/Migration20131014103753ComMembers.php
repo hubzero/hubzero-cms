@@ -24,7 +24,8 @@ class Migration20131014103753ComMembers extends Base
         $schema = $this->db->schema();
 
         if (!$schema->tableExists('#__users_quotas')) {
-            $schema->createTable('#__users_quotas')
+            $schema
+                ->createTable('#__users_quotas')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('user_id')
                 ->integer('class_id')->nullable()
@@ -39,7 +40,8 @@ class Migration20131014103753ComMembers extends Base
         }
 
         if (!$schema->tableExists('#__users_quotas_classes')) {
-            $schema->createTable('#__users_quotas_classes')
+            $schema
+                ->createTable('#__users_quotas_classes')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('alias', 255)->default('')
                 ->integer('hard_files')
@@ -51,7 +53,8 @@ class Migration20131014103753ComMembers extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__users_quotas_classes')
                 ->set([
                     'id'          => 1,
@@ -65,7 +68,8 @@ class Migration20131014103753ComMembers extends Base
         }
 
         if (!$schema->tableExists('#__users_quotas_log')) {
-            $schema->createTable('#__users_quotas_log')
+            $schema
+                ->createTable('#__users_quotas_log')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->string('object_type', 255)->default('')
                 ->integer('object_id')

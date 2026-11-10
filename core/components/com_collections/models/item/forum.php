@@ -87,7 +87,8 @@ class Forum extends GenericItem
         $clean = strip_tags($thread->get('comment'));
         $clean = \Hubzero\Utility\Str::truncate($clean, 200);
 
-        $this->set('type', $this->type)
+        $this
+             ->set('type', $this->type)
              ->set('object_id', $thread->get('id'))
              ->set('created', $thread->get('created'))
              ->set('created_by', $thread->get('created_by'))

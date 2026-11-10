@@ -110,7 +110,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                         </span>
                                     </td>
                                     <td>
-                                        <span><?php echo $row->threads()
+                                        <span><?php echo $row
+                                                    ->threads()
                                                     ->whereEquals('state', $this->filters['state'])
                                                     ->whereIn('access', $this->filters['access'])
                                                     ->total(); ?></span>
@@ -119,7 +120,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                         </span>
                                     </td>
                                     <td>
-                                        <span><?php echo $row->posts()
+                                        <span><?php echo $row
+                                                    ->posts()
                                                     ->whereEquals('state', $this->filters['state'])
                                                     ->whereIn('access', $this->filters['access'])
                                                     ->total(); ?></span>

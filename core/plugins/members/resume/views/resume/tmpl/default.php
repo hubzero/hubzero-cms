@@ -148,7 +148,8 @@ $this->css('jobs', 'com_jobs');
             if (!$seeker or count($seeker) == 0) {
                 echo '<p class="error">' . Lang::txt('PLG_MEMBERS_RESUME_ERROR_RETRIEVING_PROFILE') . '</p>';
             } else {
-                $this->view('seeker')
+                $this
+                     ->view('seeker')
                      ->set('seeker', $seeker[0])
                      ->set('emp', $this->emp)
                      ->set('admin', 0)

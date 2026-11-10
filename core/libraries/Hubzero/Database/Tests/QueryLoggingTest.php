@@ -45,7 +45,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $driver->dropTable('log_test_articles', true);
 
         // Create log_test_articles table
-        $driver->createTable('log_test_articles')
+        $driver
+            ->createTable('log_test_articles')
             ->id()
             ->string('title', 255)->notNull()
             ->string('status', 50)->default('draft')
@@ -103,7 +104,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('status', 'published');
 
@@ -151,7 +153,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('status', 'published')
             ->whereEquals('view_count', 100);
@@ -199,7 +202,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $sql = $query->select('*')
+        $sql = $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('status', 'published')
             ->toRawSql();
@@ -221,7 +225,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $sql = $query->select('*')
+        $sql = $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('view_count', 100)
             ->toRawSql();
@@ -243,7 +248,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $sql = $query->select('*')
+        $sql = $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereIsNull('created')
             ->toRawSql();
@@ -285,7 +291,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('status', 'published');
 
@@ -359,7 +366,8 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $query = new Query($driver);
-        $query->select('*')
+        $query
+            ->select('*')
             ->from('log_test_articles')
             ->whereEquals('status', 'published');
 

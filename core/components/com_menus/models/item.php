@@ -180,7 +180,8 @@ class Item extends Nested
             // administrator nothing. Every component now has a top-level entry,
             // so every component's name is a taken top-level alias on every
             // hub, and this is easy to walk into.
-            $clashes = $this->getQuery()
+            $clashes = $this
+                ->getQuery()
                 ->select('id')
                 ->select('link')
                 ->from($this->getTableName())
@@ -487,7 +488,8 @@ class Item extends Nested
             }
 
             // Shift left values.
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->set(['lft' => new Raw('lft + 2')])
                 ->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val']);
@@ -498,7 +500,8 @@ class Item extends Nested
             }
 
             // Shift right values.
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName())
                 ->set(['rgt' => new Raw('rgt + 2')])
                 ->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val']);
@@ -559,7 +562,8 @@ class Item extends Nested
             $hasRoute = App::get('db')->tableHasField($this->getTableName(), 'route');
         }
 
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('id')
             ->select('alias')
             ->from($this->getTableName())
@@ -600,7 +604,8 @@ class Item extends Nested
 
         // We've got the left value, and now that we've processed
         // the children of this node we also know the right value.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft'   => (int) $leftId,
@@ -633,7 +638,8 @@ class Item extends Nested
         $path = $this->effectivePath($this->parent->get('path'));
 
         // Update the path field for the node.
-        $query = $db->getQuery()
+        $query = $db
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'path' => $path,
@@ -709,7 +715,8 @@ class Item extends Nested
     {
         $db = App::get('db');
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->select('m.id')
             ->from('#__menu', 'm')
             ->whereEquals('m.client_id', (int) $this->get('client_id', 0))
@@ -760,7 +767,8 @@ class Item extends Nested
             return 'display';
         }
 
-        $kind = $db->getQuery(true)
+        $kind = $db
+            ->getQuery(true)
             ->select('type')
             ->from('#__menu_types')
             ->whereEquals('menutype', $this->get('menutype'))
@@ -998,7 +1006,8 @@ class Item extends Nested
             return [];
         }
 
-        $rows = $db->getQuery(true)
+        $rows = $db
+            ->getQuery(true)
             ->select('m.id')
             ->from('#__menu', 'm')
             ->join('#__menu_types AS t', 't.menutype', 'm.menutype')
@@ -1290,7 +1299,8 @@ class Item extends Nested
      */
     public function move($delta, $where = '')
     {
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('id')
             ->from($this->getTableName())
             ->whereEquals('parent_id', $this->get('parent_id'));
@@ -1346,7 +1356,8 @@ class Item extends Nested
         }
 
         // Get the ids of child nodes.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->select('id')
             ->from($this->getTableName())
             ->whereRaw('lft BETWEEN ' . (int) $node->lft . ' AND ' . (int) $node->rgt);
@@ -1362,7 +1373,8 @@ class Item extends Nested
         }
 
         // Move the sub-tree out of the nested sets by negating its left and right values.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft' => new Raw('lft * (-1)'),
@@ -1378,7 +1390,8 @@ class Item extends Nested
         // Close the hole in the tree that was opened by removing the sub-tree from the nested sets.
 
         // Compress the left values.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft' => new Raw('lft - ' . (int) ($node->rgt - $node->lft + 1)),
@@ -1391,7 +1404,8 @@ class Item extends Nested
         }
 
         // Compress the right values.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'rgt' => new Raw('rgt - ' . (int) ($node->rgt - $node->lft + 1)),
@@ -1420,7 +1434,8 @@ class Item extends Nested
         } else {
             // We are moving the tree to be the last child of the root node
             // Get the last root node as the reference node.
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->select('id')
                 ->select('parent_id')
                 ->select('level')
@@ -1445,7 +1460,8 @@ class Item extends Nested
         // Create space in the nested sets at the new location for the moved sub-tree.
 
         // Shift left values.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'lft' => new Raw('lft + ' . (int) ($node->rgt - $node->lft + 1)),
@@ -1458,7 +1474,8 @@ class Item extends Nested
         }
 
         // Shift right values.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'rgt' => new Raw('rgt + ' . (int) ($node->rgt - $node->lft + 1)),
@@ -1476,7 +1493,8 @@ class Item extends Nested
         $levelOffset = $repositionData->new_level - $node->level;
 
         // Move the nodes back into position in the tree using the calculated offsets.
-        $query = $this->getQuery()
+        $query = $this
+            ->getQuery()
             ->update($this->getTableName())
             ->set([
                 'rgt'   => new Raw((int) $offset . ' - rgt'),
@@ -1492,12 +1510,14 @@ class Item extends Nested
 
         // Set the correct parent id for the moved node if required.
         if ($node->parent_id != $repositionData->new_parent_id) {
-            $query = $this->getQuery()
+            $query = $this
+                ->getQuery()
                 ->update($this->getTableName());
 
-            $query->set([
-                'parent_id' => (int) $repositionData->new_parent_id,
-            ])
+            $query
+                ->set([
+                    'parent_id' => (int) $repositionData->new_parent_id,
+                ])
                 ->whereEquals('id', (int) $node->id);
 
             if (!$query->execute()) {
@@ -1905,7 +1925,8 @@ class Item extends Nested
             if ($descendants) {
                 \Hubzero\Utility\Arr::toInteger($descendants);
 
-                $query = $this->getQuery()
+                $query = $this
+                    ->getQuery()
                     ->update($this->getTableName())
                     ->set(['menutype' => $menuType])
                     ->whereIn('id', $descendants);

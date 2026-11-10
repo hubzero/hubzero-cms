@@ -228,7 +228,8 @@ class Abuse extends SiteController
             $defs = array_map('trim', $defs);
 
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
+            $message
+                    ->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
                     ->addFrom(
                         Config::get('mailfrom'),
                         Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),

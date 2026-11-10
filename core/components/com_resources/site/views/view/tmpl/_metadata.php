@@ -78,7 +78,8 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
                 ->whereEquals('rid', $this->model->id)
                 ->row();
 
-            $this->view('_audience', 'view')
+            $this
+                 ->view('_audience', 'view')
                  ->set('audience', $audience)
                  ->set('showtips', 1)
                  ->set('numlevels', 4)

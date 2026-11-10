@@ -24,7 +24,8 @@ class Migration20130924000002Core extends Base
 
         // Create assets table (all of this will only run the first time the table is created)
         if (!$schema->tableExists('#__assets')) {
-            $schema->createTable('#__assets')
+            $schema
+                ->createTable('#__assets')
                 ->unsignedInteger('id', ['autoIncrement' => true])
                 ->integer('parent_id')->default(0)
                 ->integer('lft')->default(0)
@@ -62,7 +63,8 @@ class Migration20130924000002Core extends Base
                 . '"core.delete":[],"core.edit":[],"core.edit.own":{"6":1},"core.edit.state":[]}';
             $r25 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},'
                 . '"core.delete":[],"core.edit":{"4":1},"core.edit.state":{"5":1},"core.edit.own":[]}';
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->insert('#__assets')
                 ->columns(['id', 'parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                 ->values([1, 0, 0, 0, 0, 'root.1', 'Root Asset', $rootRules])
@@ -125,7 +127,8 @@ class Migration20130924000002Core extends Base
             // Insert all components as assets (parent is 0 because we don't need more than
             // 1 entry per component - i.e. no sub items used for menus in 1.5)
             $query = $this->db->getQuery(true);
-            $query->select('*')
+            $query
+                ->select('*')
                 ->from('#__components')
                 ->where('parent', '=', 0);
             $components = $query->loadObjectList();
@@ -148,7 +151,8 @@ class Migration20130924000002Core extends Base
                 foreach ($components as $com) {
                     // Make sure it isn't already in there
                     if (
-                        $this->db->getQuery(true)
+                        $this->db
+                        ->getQuery(true)
                         ->select('id')
                         ->from('#__assets')
                         ->where('name', '=', $com->option)
@@ -158,7 +162,8 @@ class Migration20130924000002Core extends Base
                     }
 
                     // Craft query
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                         ->values([1, '', '', 1, $com->option, $com->option, json_encode($defaulRules)])
@@ -168,7 +173,8 @@ class Migration20130924000002Core extends Base
 
             // Insert existing categories as assets (ignore root item)
             $query = $this->db->getQuery(true);
-            $query->select('*')
+            $query
+                ->select('*')
                 ->from('#__categories')
                 ->where('extension', '!=', 'system');
             $categories = $query->loadObjectList();
@@ -180,7 +186,8 @@ class Migration20130924000002Core extends Base
                     // Make sure it isn't already in there
                     $catName = $cat->extension . '.category.' . $cat->id;
                     if (
-                        $this->db->getQuery(true)
+                        $this->db
+                        ->getQuery(true)
                         ->select('id')
                         ->from('#__assets')
                         ->where('name', '=', $catName)
@@ -190,7 +197,8 @@ class Migration20130924000002Core extends Base
                     }
 
                     // Query for parent id
-                    $result = $this->db->getQuery(true)
+                    $result = $this->db
+                        ->getQuery(true)
                         ->select('id')
                         ->from('#__assets')
                         ->where('name', '=', $cat->extension)
@@ -201,7 +209,8 @@ class Migration20130924000002Core extends Base
                     }
 
                     $catRules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                         ->values([$result, '', '', $cat->level + 1, $catName, $cat->extension, $catRules])
@@ -210,7 +219,8 @@ class Migration20130924000002Core extends Base
                     // Now, update the categories table with the asset id
                     $id = $this->db->insertid();
                     $query = $this->db->getQuery(true);
-                    $query->update('#__categories')
+                    $query
+                        ->update('#__categories')
                         ->set(['asset_id' => $id])
                         ->where('id', '=', $cat->id);
                     $query->execute();
@@ -222,7 +232,8 @@ class Migration20130924000002Core extends Base
             // Now, go back and set parent_id for categories that are level 2
             // (those were original 1.5 categories, i.e. below sections)
             $query = $this->db->getQuery(true);
-            $query->select('*')
+            $query
+                ->select('*')
                 ->from('#__categories')
                 ->where('level', '=', 2);
             $results = $query->loadObjectList();
@@ -232,7 +243,8 @@ class Migration20130924000002Core extends Base
                     // Get the category id from the assets table
                     $assetName = 'com_content.category.' . $r->id;
                     $query = $this->db->getQuery(true);
-                    $query->select('id')
+                    $query
+                        ->select('id')
                         ->from('#__assets')
                         ->where('name', '=', $assetName);
                     $id = $query->value('id');
@@ -240,14 +252,16 @@ class Migration20130924000002Core extends Base
                     // Get the category parent id from the assets table
                     $parentAssetName = 'com_content.category.' . $r->parent_id;
                     $query = $this->db->getQuery(true);
-                    $query->select('id')
+                    $query
+                        ->select('id')
                         ->from('#__assets')
                         ->where('name', '=', $parentAssetName);
                     $parent_id = $query->value('id');
 
                     // Update the assets table
                     $query = $this->db->getQuery(true);
-                    $query->update('#__assets')
+                    $query
+                        ->update('#__assets')
                         ->set(['parent_id' => $parent_id])
                         ->where('id', '=', $id);
                     $query->execute();
@@ -261,7 +275,8 @@ class Migration20130924000002Core extends Base
 
             // Insert articles
             $query = $this->db->getQuery(true);
-            $query->select('*')
+            $query
+                ->select('*')
                 ->from('#__content');
             $articles = $query->loadObjectList();
 
@@ -270,7 +285,8 @@ class Migration20130924000002Core extends Base
                     // Query for parent ID
                     $artCatName = 'com_content.category.' . $art->catid;
                     $query = $this->db->getQuery(true);
-                    $query->select(['id', 'level'])
+                    $query
+                        ->select(['id', 'level'])
                         ->from('#__assets')
                         ->where('name', '=', $artCatName);
                     $obj    = $query->first();
@@ -280,7 +296,8 @@ class Migration20130924000002Core extends Base
                     } else {
                         // We didn't find a parent id, so just use the 'uncategorised' category
                         if (
-                            !$result = $this->db->getQuery(true)
+                            !$result = $this->db
+                            ->getQuery(true)
                             ->select('asset_id')
                             ->from('#__categories')
                             ->where('extension', '=', 'com_content')
@@ -291,7 +308,8 @@ class Migration20130924000002Core extends Base
                         }
                     }
 
-                    $this->db->getQuery(true)
+                    $this->db
+                        ->getQuery(true)
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                         ->values([$result, '', '', $level, 'com_content.article.' . $art
@@ -302,7 +320,8 @@ class Migration20130924000002Core extends Base
                     // Now, update the content table with the asset id
                     $id = $this->db->insertid();
                     $query = $this->db->getQuery(true);
-                    $query->update('#__content')
+                    $query
+                        ->update('#__content')
                         ->set(['asset_id' => $id])
                         ->where('id', '=', $art->id);
                     $query->execute();
@@ -330,7 +349,8 @@ class Migration20130924000002Core extends Base
                     "7" => 1,
                 ],
             ];
-            $this->db->getQuery(true)
+            $this->db
+                ->getQuery(true)
                 ->update('#__assets')
                 ->set(['rules' => json_encode($rules)])
                 ->where('NAME', '=', 'com_mailto')
@@ -351,7 +371,8 @@ class Migration20130924000002Core extends Base
 
     private function rebuildAssets($parentId = 1, $leftId = 0, $level = 0)
     {
-        $children = $this->db->getQuery(true)
+        $children = $this->db
+            ->getQuery(true)
             ->select('id')
             ->from('#__assets')
             ->where('parent_id', '=', (int) $parentId)
@@ -369,7 +390,8 @@ class Migration20130924000002Core extends Base
             }
         }
 
-        $this->db->getQuery(true)
+        $this->db
+            ->getQuery(true)
             ->update('#__assets')
             ->set([
                 'lft'   => (int) $leftId,

@@ -79,7 +79,8 @@ class Migration20150904235936ComUsage extends Base
                 throw new SkipMigrationException('Metrics database not available (run with sudo to auto-configure)');
             }
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db
+                ->getQuery(true)
                 ->select(['Host', 'Db', 'User'])
                 ->from('mysql.db')
                 ->where('User', '=', $options['user'])
@@ -123,7 +124,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('countries')) {
             try {
-                $statsDb->schema()->createTable('countries')
+                $statsDb
+                    ->schema()
+                    ->createTable('countries')
                     ->string('code', 4)
                     ->string('name', 128)->default('')
                     ->primaryKey('code')
@@ -385,7 +388,8 @@ class Migration20150904235936ComUsage extends Base
 
                 // Chunking is handled internally by insertMany if needed,
                 // but we can pass all rows at once as strict chunking isn't required here.
-                $statsDb->getQuery(true)
+                $statsDb
+                    ->getQuery(true)
                     ->insertMany('countries', $rows);
             } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
                 // Internally catch errors and only return a warning.
@@ -396,7 +400,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('sessionlog_metrics')) {
             try {
-                $statsDb->schema()->createTable('sessionlog_metrics')
+                $statsDb
+                    ->schema()
+                    ->createTable('sessionlog_metrics')
                     ->unsignedBigInteger('id', ['autoIncrement' => true])
                     ->unsignedBigInteger('sessnum')
                     ->string('user', 150)->default('')
@@ -427,7 +433,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('#__xprofiles_metrics')) {
             try {
-                $statsDb->schema()->createTable('#__xprofiles_metrics')
+                $statsDb
+                    ->schema()
+                    ->createTable('#__xprofiles_metrics')
                     ->integer('uidNumber')
                     ->string('name', 255)->default('')
                     ->string('username', 150)->default('')
@@ -482,7 +490,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_andmore_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_andmore_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_andmore_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
@@ -499,7 +509,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_misc_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_misc_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_misc_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
@@ -516,7 +528,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_simusage_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_simusage_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_simusage_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
@@ -533,7 +547,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('toolstart')) {
             try {
-                $statsDb->schema()->createTable('toolstart')
+                $statsDb
+                    ->schema()
+                    ->createTable('toolstart')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->bigInteger('sessionid')->nullable()
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
@@ -573,7 +589,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('userlogin')) {
             try {
-                $statsDb->schema()->createTable('userlogin')
+                $statsDb
+                    ->schema()
+                    ->createTable('userlogin')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
                     ->string('user', 255)->default('-')
@@ -592,7 +610,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('web')) {
             try {
-                $statsDb->schema()->createTable('web')
+                $statsDb
+                    ->schema()
+                    ->createTable('web')
                     ->bigInteger('id', ['autoIncrement' => true])
                     ->bigInteger('elementid')->nullable()
                     ->bigInteger('sessionid')->nullable()
@@ -632,7 +652,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('webhits')) {
             try {
-                $statsDb->schema()->createTable('webhits')
+                $statsDb
+                    ->schema()
+                    ->createTable('webhits')
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
                     ->bigInteger('hits')->default(0)
                     ->execute();
@@ -645,7 +667,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('websessions')) {
             try {
-                $statsDb->schema()->createTable('websessions')
+                $statsDb
+                    ->schema()
+                    ->createTable('websessions')
                     ->bigInteger('id')->default(0)
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
                     ->char('ipcountry', 2)->default('')
@@ -669,7 +693,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('domainclass')) {
             try {
-                $statsDb->schema()->createTable('domainclass')
+                $statsDb
+                    ->schema()
+                    ->createTable('domainclass')
                     ->string('domain', 64)->default('')
                     ->tinyInteger('class')->default(0)
                     ->string('country', 4)->default('')
@@ -2597,7 +2623,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('domainclass')
                         ->columns($columns);
 
@@ -2615,7 +2642,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('domainclasses')) {
             try {
-                $statsDb->schema()->createTable('domainclasses')
+                $statsDb
+                    ->schema()
+                    ->createTable('domainclasses')
                     ->tinyInteger('class')
                     ->string('name', 64)->default('')
                     ->primaryKey('class')
@@ -2639,7 +2668,8 @@ class Migration20150904235936ComUsage extends Base
                     $rows[] = array_combine($columns, $val);
                 }
 
-                $statsDb->getQuery(true)
+                $statsDb
+                    ->getQuery(true)
                     ->insertMany('domainclasses', $rows);
             } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
                 // Internally catch errors and only return a warning.
@@ -2650,7 +2680,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_user')) {
             try {
-                $statsDb->schema()->createTable('summary_user')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_user')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -2669,7 +2701,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('summary_user')
                         ->columns($columns);
 
@@ -2687,7 +2720,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_user_vals')) {
             try {
-                $statsDb->schema()->createTable('summary_user_vals')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_user_vals')
                     ->tinyInteger('rowid')->default(0)
                     ->tinyInteger('colid')->default(0)
                     ->dateTime('datetime')->default('0000-00-00 00:00:00')
@@ -2704,7 +2739,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_andmore')) {
             try {
-                $statsDb->schema()->createTable('summary_andmore')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_andmore')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -2728,7 +2765,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('summary_andmore')
                         ->columns($columns);
 
@@ -2746,7 +2784,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_misc')) {
             try {
-                $statsDb->schema()->createTable('summary_misc')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_misc')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -2766,7 +2806,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('summary_misc')
                         ->columns($columns);
 
@@ -2784,7 +2825,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('summary_simusage')) {
             try {
-                $statsDb->schema()->createTable('summary_simusage')
+                $statsDb
+                    ->schema()
+                    ->createTable('summary_simusage')
                     ->tinyInteger('id')->default(0)
                     ->string('label', 255)->default('')
                     ->integer('plot')->default(0)
@@ -2806,7 +2849,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('summary_simusage')
                         ->columns($columns);
 
@@ -2824,7 +2868,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('continents')) {
             try {
-                $statsDb->schema()->createTable('continents')
+                $statsDb
+                    ->schema()
+                    ->createTable('continents')
                     ->char('continentSHORT', 2)->default('')
                     ->string('continentLONG', 45)->default('')
                     ->uniqueIndex('idx_continent', ['continentSHORT', 'continentLONG'])
@@ -2842,7 +2888,8 @@ class Migration20150904235936ComUsage extends Base
                 ];
 
                 foreach (array_chunk($values, 2000) as $chunk) {
-                    $query = $statsDb->getQuery(true)
+                    $query = $statsDb
+                        ->getQuery(true)
                         ->insert('continents')
                         ->columns($columns);
 
@@ -2860,7 +2907,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('country_continent')) {
             try {
-                $statsDb->schema()->createTable('country_continent')
+                $statsDb
+                    ->schema()
+                    ->createTable('country_continent')
                     ->char('country', 2)->default('')
                     ->char('continent', 2)->default('')
                     ->uniqueIndex('idx_country_continent', ['country', 'continent'])
@@ -3121,7 +3170,8 @@ class Migration20150904235936ComUsage extends Base
                     $rows[] = array_combine($columns, $val);
                 }
 
-                $statsDb->getQuery(true)
+                $statsDb
+                    ->getQuery(true)
                     ->insertMany('country_continent', $rows);
             } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
                 // Internally catch errors and only return a warning.
@@ -3132,7 +3182,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('exclude_list')) {
             try {
-                $statsDb->schema()->createTable('exclude_list')
+                $statsDb
+                    ->schema()
+                    ->createTable('exclude_list')
                     ->string('filter', 65)
                     ->string('type', 65)->default('domain')
                     ->string('notes', 120)->nullable()
@@ -3272,7 +3324,8 @@ class Migration20150904235936ComUsage extends Base
                     $rows[] = array_combine($columns, $val);
                 }
 
-                $statsDb->getQuery(true)
+                $statsDb
+                    ->getQuery(true)
                     ->insertMany('exclude_list', $rows);
             } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
                 // Internally catch errors and only return a warning.
@@ -3283,7 +3336,9 @@ class Migration20150904235936ComUsage extends Base
 
         if (!$statsDb->schema()->tableExists('bot_useragents')) {
             try {
-                $statsDb->schema()->createTable('bot_useragents')
+                $statsDb
+                    ->schema()
+                    ->createTable('bot_useragents')
                     ->tinyText('useragent')
                     ->primaryKey('useragent')
                     ->execute();

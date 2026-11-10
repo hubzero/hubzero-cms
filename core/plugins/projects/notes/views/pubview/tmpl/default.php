@@ -13,7 +13,8 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+     ->css()
      ->js();
 
 $html = $this->revision->get('pagehtml');

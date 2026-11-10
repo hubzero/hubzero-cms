@@ -125,7 +125,8 @@ class Watch extends Plugin
     private function status()
     {
         // Instantiate a view
-        $view = $this->view('default', 'index')
+        $view = $this
+            ->view('default', 'index')
             ->set('project', $this->project)
             ->set('watched', \Hubzero\Item\Watch::isWatching(
                 $this->project->get('id'),
@@ -168,7 +169,8 @@ class Watch extends Plugin
         ];
 
         // Instantiate a view
-        $view = $this->view('default', 'manage')
+        $view = $this
+            ->view('default', 'manage')
             ->set('project', $this->project)
             ->set('watch', $watch)
             ->set('cats', $cats);
@@ -406,7 +408,8 @@ class Watch extends Plugin
 
         // Build message
         $message = new \Hubzero\Mail\Message();
-        $message->setSubject($subject)
+        $message
+            ->setSubject($subject)
             ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
             ->addTo($email, $name)
             ->addHeader('X-Component', 'com_projects')

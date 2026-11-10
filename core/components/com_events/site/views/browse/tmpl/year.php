@@ -13,7 +13,8 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
+$this
+    ->css()
     ->js();
 ?>
 <header id="content-header">
@@ -53,7 +54,8 @@ $this->css()
             <ul class="events">
             <?php
             foreach ($this->rows as $row) {
-                $this->view('item')
+                $this
+                     ->view('item')
                      ->set('option', $this->option)
                      ->set('task', $this->task)
                      ->set('row', $row)
