@@ -295,9 +295,7 @@ class TransactionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function notInTransactionAfterSuccess(string $dbName, Driver $driver)
     {
-        $driver->transaction(function ($db) {
-            // Empty transaction
-        });
+        $driver->transaction(fn($db) => null);
 
         $this->assertFalse($driver->inTransaction());
     }

@@ -188,9 +188,7 @@ class ChunkingTest extends AbstractDriverTestCase
 
         $this->insertRecords($driver, 15);
 
-        $result = TestItem::all()->chunk(10, function ($items) {
-            // Do nothing
-        });
+        $result = TestItem::all()->chunk(10, fn($items) => null);
 
         $this->assertTrue($result);
     }
