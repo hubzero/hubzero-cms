@@ -24,6 +24,13 @@ use Hubzero\Facades\Route;
 class Group extends Obj
 {
     /**
+     * Properties that are the object's own bookkeeping, not columns
+     *
+     * @var  array
+     */
+    private const INTERNAL = ['updatedKeys', 'listKeys'];
+
+    /**
      * Group ID
      *
      * @var  integer
@@ -175,14 +182,14 @@ class Group extends Obj
      *
      * @var  array
      */
-    public static $_list_keys = ['members', 'managers', 'applicants', 'invitees'];
+    public static $listKeys = ['members', 'managers', 'applicants', 'invitees'];
 
     /**
      * List of updated keys
      *
      * @var  array
      */
-    private $_updatedkeys = [];
+    private $updatedKeys = [];
 
     /**
      * Constructor
@@ -202,13 +209,13 @@ class Group extends Obj
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         foreach ($cvars as $key => $value) {
-            if ($key[0] != '_') {
+            if (!in_array($key, self::INTERNAL, true)) {
                 unset($this->$key);
 
-                if (!in_array($key, self::$_list_keys)) {
+                if (!in_array($key, self::$listKeys)) {
                     $this->$key = null;
                 } else {
                     $this->$key = [];
@@ -216,7 +223,7 @@ class Group extends Obj
             }
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         return true;
     }
@@ -374,7 +381,7 @@ class Group extends Obj
         }
 
         foreach ($result as $key => $value) {
-            if (property_exists(__CLASS__, $key) && $key[0] != '_') {
+            if (property_exists(__CLASS__, $key) && !in_array($key, self::INTERNAL, true)) {
                 $this->__set($key, $value);
             }
         }
@@ -391,7 +398,7 @@ class Group extends Obj
             $this->__get('managers');
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         return true;
     }
@@ -413,7 +420,7 @@ class Group extends Obj
             return false;
         }
 
-        if (empty($this->_updatedkeys)) {
+        if (empty($this->updatedKeys)) {
             return true;
         }
 
@@ -425,11 +432,11 @@ class Group extends Obj
         $affected = 0;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_') || in_array($property, self::$_list_keys)) {
+            if (in_array($property, self::INTERNAL, true) || in_array($property, self::$listKeys)) {
                 continue;
             }
 
-            if (!in_array($property, $this->_updatedkeys)) {
+            if (!in_array($property, $this->updatedKeys)) {
                 continue;
             }
 
@@ -464,8 +471,8 @@ class Group extends Obj
 
         $aNewUserGroupEnrollments = [];
 
-        foreach (self::$_list_keys as $property) {
-            if (!in_array($property, $this->_updatedkeys)) {
+        foreach (self::$listKeys as $property) {
+            if (!in_array($property, $this->updatedKeys)) {
                 continue;
             }
 
@@ -664,7 +671,7 @@ class Group extends Obj
      */
     public function __get($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -673,7 +680,7 @@ class Group extends Obj
             die();
         }
 
-        if (in_array($property, self::$_list_keys)) {
+        if (in_array($property, self::$listKeys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
@@ -730,7 +737,7 @@ class Group extends Obj
      */
     public function __set($property = null, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -739,7 +746,7 @@ class Group extends Obj
             die();
         }
 
-        if (in_array($property, self::$_list_keys)) {
+        if (in_array($property, self::$listKeys)) {
             $value = array_diff((array) $value, ['']);
 
             if (in_array($property, ['managers', 'members', 'applicants', 'invitees'])) {
@@ -753,8 +760,8 @@ class Group extends Obj
             $this->$property = $value;
         }
 
-        if (!in_array($property, $this->_updatedkeys)) {
-            $this->_updatedkeys[] = $property;
+        if (!in_array($property, $this->updatedKeys)) {
+            $this->updatedKeys[] = $property;
         }
     }
 
@@ -766,7 +773,7 @@ class Group extends Obj
      */
     public function __isset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -786,7 +793,7 @@ class Group extends Obj
      */
     public function __unset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -795,7 +802,7 @@ class Group extends Obj
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+        $this->updatedKeys = array_diff($this->updatedKeys, [$property]);
 
         unset($this->$property);
     }

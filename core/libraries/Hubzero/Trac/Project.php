@@ -16,6 +16,13 @@ use Hubzero\Facades\App;
 class Project
 {
     /**
+     * Properties that are the object's own bookkeeping, not columns
+     *
+     * @var  array
+     */
+    private const INTERNAL = ['updatedKeys', 'listKeys'];
+
+    /**
      * Project ID
      *
      * @var  integer
@@ -34,14 +41,14 @@ class Project
      *
      * @var  array
      */
-    private $_updatedkeys = [];
+    private $updatedKeys = [];
 
     /**
      * List keys
      *
      * @var  array
      */
-    private $_list_keys = [];
+    private $listKeys = [];
 
     /**
      * Resets internal properties
@@ -52,13 +59,13 @@ class Project
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         foreach ($cvars as $key => $value) {
-            if ($key[0] != '_') {
+            if (!in_array($key, self::INTERNAL, true)) {
                 unset($this->$key);
 
-                if (!in_array($key, $this->_list_keys)) {
+                if (!in_array($key, $this->listKeys)) {
                     $this->$key = null;
                 } else {
                     $this->$key = [];
@@ -66,7 +73,7 @@ class Project
             }
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         return true;
     }
@@ -95,7 +102,7 @@ class Project
         $cvars = get_class_vars(__CLASS__);
 
         foreach ($cvars as $key => $value) {
-            if ($key[0] == '_') {
+            if (in_array($key, self::INTERNAL, true)) {
                 continue;
             }
 
@@ -243,12 +250,12 @@ class Project
         $this->clear();
 
         foreach ($result as $key => $value) {
-            if (property_exists(__CLASS__, $key) && $key[0] != '_') {
+            if (property_exists(__CLASS__, $key) && !in_array($key, self::INTERNAL, true)) {
                 $this->__set($key, $value);
             }
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         return true;
     }
@@ -270,11 +277,11 @@ class Project
         $first = true;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_') || in_array($property, $this->_list_keys)) {
+            if (in_array($property, self::INTERNAL, true) || in_array($property, $this->listKeys)) {
                 continue;
             }
 
-            if (!$all && !in_array($property, $this->_updatedkeys)) {
+            if (!$all && !in_array($property, $this->updatedKeys)) {
                 continue;
             }
 
@@ -381,7 +388,7 @@ class Project
      */
     public function __get($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -390,7 +397,7 @@ class Project
             die();
         }
 
-        if (in_array($property, $this->_list_keys)) {
+        if (in_array($property, $this->listKeys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db =  App::get('db');
 
@@ -421,7 +428,7 @@ class Project
      */
     public function __set($property = null, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -430,7 +437,7 @@ class Project
             die();
         }
 
-        if (in_array($property, $this->_list_keys)) {
+        if (in_array($property, $this->listKeys)) {
             $value = array_diff((array) $value, ['']);
             $value = array_unique($value);
             $value = array_values($value);
@@ -439,8 +446,8 @@ class Project
             $this->$property = $value;
         }
 
-        if (!in_array($property, $this->_updatedkeys)) {
-            $this->_updatedkeys[] = $property;
+        if (!in_array($property, $this->updatedKeys)) {
+            $this->updatedKeys[] = $property;
         }
     }
 
@@ -452,7 +459,7 @@ class Project
      */
     public function __isset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -472,7 +479,7 @@ class Project
      */
     public function __unset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -481,7 +488,7 @@ class Project
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+        $this->updatedKeys = array_diff($this->updatedKeys, [$property]);
 
         unset($this->$property);
     }

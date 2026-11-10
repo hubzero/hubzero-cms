@@ -19,6 +19,13 @@ use Hubzero\Facades\Event;
 class Password
 {
     /**
+     * Properties that are the object's own bookkeeping, not columns
+     *
+     * @var  array
+     */
+    private const INTERNAL = ['updatedKeys'];
+
+    /**
      * shadowExpire marking an account expired for inactivity (1970-11-30).
      * In the past, so pam_unix and sssd deny it, and distinct from
      * BLOCKED_EXPIRE_DAY.
@@ -98,11 +105,11 @@ class Password
     private $shadowFlag = null;
 
     /**
-     * Description for '_updatedkeys'
+     * Description for 'updatedKeys'
      *
      * @var  array
      */
-    private $_updatedkeys = [];
+    private $updatedKeys = [];
 
     /**
      * Constructor
@@ -122,17 +129,17 @@ class Password
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
 
         foreach ($cvars as $key => $value) {
-            if ($key[0] != '_') {
+            if (!in_array($key, self::INTERNAL, true)) {
                 unset($this->$key);
 
                 $this->$key = null;
             }
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedKeys = [];
     }
 
     /**
@@ -232,7 +239,7 @@ class Password
                 $this->__set($key, $value);
             }
 
-            $this->_updatedkeys = [];
+            $this->updatedKeys = [];
         } else {
             $hzp = Profile::getInstance($instance);
 
@@ -268,11 +275,11 @@ class Password
         $first = true;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_')) {
+            if (in_array($property, self::INTERNAL, true)) {
                 continue;
             }
 
-            if (!in_array($property, $this->_updatedkeys)) {
+            if (!in_array($property, $this->updatedKeys)) {
                 continue;
             }
 
@@ -365,7 +372,7 @@ class Password
      */
     public function __get($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -395,7 +402,7 @@ class Password
      */
     public function __set($property = null, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -406,8 +413,8 @@ class Password
 
         $this->$property = $value;
 
-        if (!in_array($property, $this->_updatedkeys)) {
-            $this->_updatedkeys[] = $property;
+        if (!in_array($property, $this->updatedKeys)) {
+            $this->updatedKeys[] = $property;
         }
     }
 
@@ -419,7 +426,7 @@ class Password
      */
     public function __isset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -439,7 +446,7 @@ class Password
      */
     public function __unset($property = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -448,7 +455,7 @@ class Password
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+        $this->updatedKeys = array_diff($this->updatedKeys, [$property]);
 
         unset($this->$property);
     }
