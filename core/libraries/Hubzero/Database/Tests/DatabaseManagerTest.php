@@ -83,8 +83,7 @@ class DatabaseManagerTest extends TestCase
     public function extendReturnsSelfForFluent(): void
     {
         $manager = new DatabaseManager();
-        $result = $manager->extend('test', function () {
-        });
+        $result = $manager->extend('test', fn() => null);
 
         $this->assertSame($manager, $result);
     }

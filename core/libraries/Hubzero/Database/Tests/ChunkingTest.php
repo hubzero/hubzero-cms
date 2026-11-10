@@ -204,8 +204,7 @@ class ChunkingTest extends AbstractDriverTestCase
         Relational::setDefaultConnection($driver);
 
         $this->expectException(\InvalidArgumentException::class);
-        TestItem::all()->chunk(0, function ($items) {
-        });
+        TestItem::all()->chunk(0, fn($items) => null);
     }
 
     /**
@@ -318,8 +317,7 @@ class ChunkingTest extends AbstractDriverTestCase
         Relational::setDefaultConnection($driver);
 
         $this->expectException(\InvalidArgumentException::class);
-        TestItem::all()->chunkById(0, function ($items) {
-        });
+        TestItem::all()->chunkById(0, fn($items) => null);
     }
 
     // =========================================================================

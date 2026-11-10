@@ -67,8 +67,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $model = EagerPost::blank();
         $method = $this->getIsAssociativeArrayMethod();
 
-        $array = ['comments', function ($q) {
-        }];
+        $array = ['comments', fn($q) => null];
         $this->assertFalse($method->invoke($model, $array));
     }
 

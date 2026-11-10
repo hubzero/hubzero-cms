@@ -78,8 +78,7 @@ class BundleBuilder
      */
     public function build($versionId, $opts = [])
     {
-        $log = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : function ($m) {
-        };
+        $log = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : fn($m) => null;
 
         $res = $this->buildInternal($versionId, $opts);
 
@@ -127,8 +126,7 @@ class BundleBuilder
         $versionId = (int) $versionId;
         $force     = !empty($opts['force']);
         $level     = isset($opts['level']) ? (int) $opts['level'] : 6;
-        $log       = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : function ($m) {
-        };
+        $log       = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : fn($m) => null;
 
         $fail = function ($msg) {
             return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
@@ -303,8 +301,7 @@ class BundleBuilder
      */
     protected function refreshDownloadLink($versionId, $servedPath, $log = null)
     {
-        $log = is_callable($log) ? $log : function ($m) {
-        };
+        $log = is_callable($log) ? $log : fn($m) => null;
 
         if (!is_file($servedPath)) {
             return false;
@@ -365,8 +362,7 @@ class BundleBuilder
      */
     protected function linkInto($target, $link, $log = null)
     {
-        $log = is_callable($log) ? $log : function ($m) {
-        };
+        $log = is_callable($log) ? $log : fn($m) => null;
 
         if (!is_file($target)) {
             return false;

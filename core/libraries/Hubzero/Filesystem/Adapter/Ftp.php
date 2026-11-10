@@ -365,8 +365,7 @@ class Ftp implements AdapterInterface
      */
     protected function login()
     {
-        set_error_handler(function () {
-        });
+        set_error_handler(fn() => null);
         $isLoggedIn = ftp_login($this->getConnection(), $this->getUsername(), $this->getPassword());
         restore_error_handler();
 
