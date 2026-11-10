@@ -14,7 +14,7 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 $host = $_SERVER['HTTP_HOST'];
-list($base, ) = explode('.', $host);
+list($base) = explode('.', $host);
 $url = 'https://' . $host;
 
 // include needed css and js

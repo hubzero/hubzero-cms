@@ -77,7 +77,7 @@ class ManyShiftsToMany extends ManyToMany
             $associativeLocal,
             $shifter,
             $model,
-            $operator
+            $operator,
         ) {
             $related->whereEquals($associativeTable . '.' . $shifter, strtolower($model->getModelName()))
                     ->group($shifter)

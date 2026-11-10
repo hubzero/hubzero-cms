@@ -67,7 +67,7 @@ class Quickicon extends Module
                         'link'   => Route::url('index.php?option=com_content&task=article.add'),
                         'id'     => 'icon-article-add',
                         'text'   => Lang::txt('MOD_QUICKICON_ADD_NEW_ARTICLE'),
-                        'access' => ['core.manage', 'com_content', 'core.create', 'com_content', ],
+                        'access' => ['core.manage', 'com_content', 'core.create', 'com_content'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_content'),

@@ -39,7 +39,7 @@ class Migration20181015161919ComTools extends Base
                 if (substr($row->filename, -4) != '.') {
                     $ext = substr($row->filename, -3);
 
-                    if (in_array($ext, ['png', 'PNG', 'gif', 'GIF', 'jpg', 'JPG', 'bmp', 'BMP', ])) {
+                    if (in_array($ext, ['png', 'PNG', 'gif', 'GIF', 'jpg', 'JPG', 'bmp', 'BMP'])) {
                         $filename = substr($row->filename, 0, -3) . '.' . $ext;
 
                         $query = "UPDATE `#__screenshots` SET `filename`="

@@ -207,7 +207,7 @@ class Address extends Field
 					});
 				}
 			};
-		",);
+		");
         App::get('document')->addScriptDeclaration(
             "jQuery(document).ready(function($){\nmanageProfileAddresses();\n});",
         );

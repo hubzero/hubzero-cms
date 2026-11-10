@@ -2239,7 +2239,7 @@ abstract class BaseSqlDriver extends PdoDriver
                 function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use (
                     $column,
                     $definition,
-                    $modifiers
+                    $modifiers,
                 ): void {
                     $builder->modifyColumn($column, $definition, $modifiers);
                 },
@@ -2380,7 +2380,7 @@ abstract class BaseSqlDriver extends PdoDriver
                 function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use (
                     $column,
                     $definition,
-                    $modifiers
+                    $modifiers,
                 ): void {
                     $builder->addColumn($column, $definition, $modifiers);
                 },
