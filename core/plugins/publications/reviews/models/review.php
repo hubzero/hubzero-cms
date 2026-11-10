@@ -22,7 +22,6 @@ class Review extends \Hubzero\Base\Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_base;
-    protected $context;
 
     /**
      * ResourcesReview
@@ -245,7 +244,7 @@ class Review extends \Hubzero\Base\Model
 
                     $content = (string) stripslashes($this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->context,
+                        $this->_context,
                         &$this,
                         &$config,
                     ]);
