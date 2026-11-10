@@ -182,7 +182,8 @@ class Behavior
         }
 
         $path = Asset::script('assets/MathJax/MathJax.js', true, true, true);
-        Document::addScriptDeclaration('
+        Document::addScriptDeclaration(
+            '
 		(function() {
 			var script = document.createElement("script");
 			script.type = "text/javascript";
@@ -209,8 +210,8 @@ class Behavior
 				TeX: {
 					extensions: ["autoload-all.js", "mediawiki-texvc.js"],
 					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" '
-        . '} }, // [a11y] '
-        . 'darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
+            . '} }, // [a11y] '
+            . 'darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
 					Macros: { href: "{}" }
 				},
 				messageStyle: "none",
@@ -234,7 +235,8 @@ class Behavior
 			else { script.text = config; }
 			document.getElementsByTagName("head")[0].appendChild(script);
 		})();
-		');
+		',
+        );
 
         self::$loaded[__METHOD__] = true;
     }

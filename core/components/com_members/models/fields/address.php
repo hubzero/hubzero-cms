@@ -140,7 +140,9 @@ class Address extends Field
         $html[] = '</fieldset>';
 
         Behavior::framework(true);
-        App::get('document')->addScriptDeclaration("function manageProfileAddresses() {
+        App::get('document')->addScriptDeclaration(
+            "
+			function manageProfileAddresses() {
 				if (\$('.addresses-" . $this->id . "').length > 0) {
 					var fieldset = $('.addresses-" . $this->id . "');
 					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">"
@@ -199,7 +201,8 @@ class Address extends Field
 					});
 				}
 			};
-		");
+		",
+        );
         App::get('document')->addScriptDeclaration(
             "jQuery(document).ready(function($){\nmanageProfileAddresses();\n});",
         );
