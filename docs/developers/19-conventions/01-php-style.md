@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed-against: per-cs-3.1 @ 335dfef791
 reviewed: 2026-11-10
 screenshots: none
 -->
@@ -12,8 +12,11 @@ no house departures. The repository commits the ruleset that checks it,
 [`phpcs.xml.dist`](../../../phpcs.xml.dist), and the whole tree passes it:
 run phpcs and anything it reports came from your change.
 
-The rules are PSR-12's. This page shows what they look like in core, adds the
-handful of conventions PSR-12 leaves open, and says how to check your work.
+The rules are PSR-12's, with what PER Coding Style 3.0 adds to them: trailing
+commas, arrow-function spacing and the like. phpcs checks PSR-12 only, so the
+PER additions are marked below where they come up. This page shows what the
+rules look like in core, adds the handful of conventions they leave open, and
+says how to check your work.
 
 ## Files
 
@@ -116,6 +119,12 @@ $greeting = "Hello {$name}, welcome back!";
 
 `"${name}"` is not permitted; PHP 8.2 deprecates it.
 
+Never break a line inside a string literal to shorten it. A line break inside
+quotes is part of the value: `'index` + newline + `.php'` is not
+`'index.php'`, and a pattern, a URL or a shell command split that way stops
+working without any error. Split a long string into pieces joined with `.`
+instead, as below.
+
 Concatenate with `.`, a space on each side. When a concatenated expression runs
 long, break before the `.` and indent the continuation one level:
 
@@ -145,9 +154,33 @@ $filters = [
 ];
 ```
 
-Aligning the `=>` operators is allowed and common. A trailing comma on the last
-item of a multi-line array is allowed, and it keeps the next addition to a
-one-line diff.
+Aligning the `=>` operators is allowed and common.
+
+## Lists and trailing commas
+
+PER-CS: a list split across lines, with its first item on the line after the
+opening bracket, ends with a trailing comma; a list on one line never has one.
+That holds for arrays, argument and parameter lists, `match` arms and closure
+`use` lists alike:
+
+```php
+$rows = $this->db->select(
+    'id',
+    'title',
+);
+
+$filter = function ($row) use (
+    $year,
+    $month,
+) {
+    // ...
+};
+
+$pair = [$year, $month];
+```
+
+A single argument that spans lines, such as a closure or a long string, does
+not split the list it is in: `foo(function () {` … `});` takes no comma.
 
 ## Classes
 
@@ -171,6 +204,17 @@ signature. No space between the name and the opening parenthesis. Arguments
 separated by `, `. Arguments with defaults go last, and the default gets a
 space on each side of the `=` — `$limit = 25`, not `$limit=25`. Do not wrap a
 return value in parentheses — `return $this->bar;`, not `return($this->bar);`.
+
+A closure has a space after `function` and around `use`; an arrow function
+has none after `fn` (PER-CS):
+
+```php
+$names = array_map(function ($user) use ($format) {
+    return sprintf($format, $user->name);
+}, $users);
+
+$ids = array_map(fn($user) => $user->id, $users);
+```
 
 Call-time pass-by-reference (`foo(&$bar)` at the call site) is a PHP fatal and
 is never used. Declare the reference in the signature instead:
@@ -283,7 +327,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 
 | Tool | Configuration | What it catches |
 |---|---|---|
-| phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | Every PSR-12 rule above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded; warnings are not shown. |
+| phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | The PSR-12 rules above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions. |
 | phpcbf | the same | Fixes most of what phpcs reports. Run it on the files you changed and read the diff. |
 | PHPStan | [`phpstan.neon`](../../../phpstan.neon) | At level 0: classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings. |
 | `missing-facade-imports.php` | none | A facade called without a `use`. Takes `--fix` to insert the missing imports, and any path to narrow the scan. |
