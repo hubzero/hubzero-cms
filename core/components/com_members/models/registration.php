@@ -574,7 +574,7 @@ class Registration
                 // Check if the email is already in use
                 $row = \Hubzero\User\User::all()
                     ->whereEquals('email', $email)
-                    ->where('id', '!=', (int)$id)
+                    ->where('id', '!=', (int) $id)
                     ->row();
 
                 $xid = intval($row->get('id'));
@@ -594,7 +594,7 @@ class Registration
                             // We also need to catch existing users who might try to change their
                             // email to an existing email address on the hub. For that, we need to
                             // check and see if their email address is changing with this save.
-                            $row = \Hubzero\User\User::oneOrNew((int)$id);
+                            $row = \Hubzero\User\User::oneOrNew((int) $id);
                             $currentEmail = $row->get('email');
 
                             if ($currentEmail != $email) {

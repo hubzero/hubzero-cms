@@ -96,7 +96,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             ->whereEquals('title', $title)
             ->fetch('column');
 
-        return (int)$id[0];
+        return (int) $id[0];
     }
 
     // =========================================================================

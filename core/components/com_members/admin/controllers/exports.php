@@ -155,16 +155,16 @@ class Exports extends AdminController
         if ($filters['group_id']) {
             $members
                 ->join($b, $b . '.user_id', $a . '.id', 'left')
-                ->whereEquals($b . '.group_id', (int)$filters['group_id']);
+                ->whereEquals($b . '.group_id', (int) $filters['group_id']);
         }
 
         if ($filters['search']) {
             if (is_numeric($filters['search'])) {
-                $members->whereEquals($a . '.id', (int)$filters['search']);
+                $members->whereEquals($a . '.id', (int) $filters['search']);
             } else {
-                $members->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
-                    ->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
-                    ->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
+                $members->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
+                    ->orWhereLike($a . '.username', strtolower((string) $filters['search']), 1)
+                    ->orWhereLike($a . '.email', strtolower((string) $filters['search']), 1)
                     ->resetDepth();
             }
         }
@@ -174,15 +174,15 @@ class Exports extends AdminController
         }
 
         if ($filters['access'] > 0) {
-            $members->whereEquals($a . '.access', (int)$filters['access']);
+            $members->whereEquals($a . '.access', (int) $filters['access']);
         }
 
         if (is_numeric($filters['state'])) {
-            $members->whereEquals($a . '.block', (int)$filters['state']);
+            $members->whereEquals($a . '.block', (int) $filters['state']);
         }
 
         if (is_numeric($filters['approved'])) {
-            $members->whereEquals($a . '.approved', (int)$filters['approved']);
+            $members->whereEquals($a . '.approved', (int) $filters['approved']);
         }
 
         if ($filters['activation'] < 0) {
@@ -277,7 +277,7 @@ class Exports extends AdminController
                     $val = implode(';', $val);
                 } elseif ($val != null) {
                     if (strstr($val, '{')) {
-                        $v = json_decode((string)$val, true);
+                        $v = json_decode((string) $val, true);
 
                         if (!$v || json_last_error() !== JSON_ERROR_NONE) {
                             // Nothing else to do

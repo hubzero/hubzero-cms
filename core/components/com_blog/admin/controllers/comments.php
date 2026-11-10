@@ -91,7 +91,7 @@ class Comments extends AdminController
         $comments = Comment::all();
 
         if ($filters['search']) {
-            $comments->whereLike('content', strtolower((string)$filters['search']));
+            $comments->whereLike('content', strtolower((string) $filters['search']));
         }
 
         if ($filters['entry_id']) {

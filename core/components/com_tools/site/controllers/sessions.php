@@ -1155,9 +1155,9 @@ class Sessions extends SiteController
 
         // Build the view command
         if ($this->config->get('access-manage-session')) {
-            $command = "view user=" . escapeshellarg($row->username) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
+            $command = "view user=" . escapeshellarg($row->username) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
         } else {
-            $command = "view user=" . escapeshellarg(User::get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
+            $command = "view user=" . escapeshellarg(User::get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
         }
 
         // Check if we have access to run this tool.

@@ -75,7 +75,7 @@ class Migration20160321145900ComResources extends Base
             if ($id) {
                 $this->db->getQuery(true)
                     ->delete('#__resource_types')
-                    ->where('id', '=', (int)$id)
+                    ->where('id', '=', (int) $id)
                     ->execute();
             }
         }

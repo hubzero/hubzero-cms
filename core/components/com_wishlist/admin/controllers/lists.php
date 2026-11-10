@@ -92,8 +92,8 @@ class Lists extends AdminController
 
         if ($filters['search']) {
             $model
-                ->whereLike('title', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('description', strtolower((string)$filters['search']), 1)
+                ->whereLike('title', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('description', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 

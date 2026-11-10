@@ -92,7 +92,7 @@ class Option extends Relational
             $data['checked'] = 0;
         }
 
-        return (int)$data['checked'];
+        return (int) $data['checked'];
     }
 
     /**

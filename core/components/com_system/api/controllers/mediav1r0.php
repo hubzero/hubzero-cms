@@ -84,7 +84,7 @@ class Mediav1r0 extends ApiController
             ]);
         } else {
             // Get the amount of video watched from last tracking event
-            $time_viewed = (int)$time - (int)$trackingInformation->get('current_position');
+            $time_viewed = (int) $time - (int) $trackingInformation->get('current_position');
 
             // If we have a positive value and its less then our ten second threshold
             // add viewing time to total watched time

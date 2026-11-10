@@ -103,7 +103,7 @@ class Review extends Relational
      **/
     public function automaticUserId()
     {
-        return (int)User::get('id', 0);
+        return (int) User::get('id', 0);
     }
 
     /**

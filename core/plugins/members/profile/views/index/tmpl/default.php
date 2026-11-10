@@ -57,7 +57,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
 
-$uid = (int)$this->profile->get('id');
+$uid = (int) $this->profile->get('id');
 $incrOpts = new Components\Members\Models\Incremental\Options();
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
@@ -115,7 +115,7 @@ if (!function_exists('renderIfJson')) :
     function renderIfJson($v)
     {
         if (strstr($v == null ? '' : $v, '{')) {
-            $v = json_decode((string)$v, true);
+            $v = json_decode((string) $v, true);
 
             if (!$v || json_last_error() !== JSON_ERROR_NONE) {
                 return $v;

@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 ?>
 <div class="unotes">
-    <h2 class="modal-title"><?php echo Lang::txt('COM_MEMBERS_NOTES_FOR_USER', $this->escape($this->user->get('name')), (int)$this->user->get('id')); ?></h2>
+    <h2 class="modal-title"><?php echo Lang::txt('COM_MEMBERS_NOTES_FOR_USER', $this->escape($this->user->get('name')), (int) $this->user->get('id')); ?></h2>
     <table class="adminlist">
         <tbody>
             <tr>

@@ -750,7 +750,7 @@ class Installer
      */
     private function resolveInstallerDriver(array $config): string
     {
-        $requested = strtolower((string)($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
+        $requested = strtolower((string) ($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
 
         // Match the same driver names used in Hubzero\Database\Tests setup.
         if (in_array($requested, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {

@@ -27,7 +27,7 @@ Toolbar::cancel();
 <?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <?php if ($this->getError()) : ?>
-        <p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
+        <p class="error"><?php echo implode('<br />', (array) $this->getError()); ?></p>
     <?php endif; ?>
     <div class="grid">
         <div class="col span7">

@@ -129,8 +129,8 @@ class Migration20160513140417ComMembers extends Base
                     $access   = 5;
 
                     if (isset($fields[$field])) {
-                        $ordering = (int)$fields[$field]['ordering'];
-                        $access   = (int)$fields[$field]['access'];
+                        $ordering = (int) $fields[$field]['ordering'];
+                        $access   = (int) $fields[$field]['access'];
                     }
 
                     $subquery = $this->db->getQuery(true)
@@ -138,8 +138,8 @@ class Migration20160513140417ComMembers extends Base
                             'uidNumber',
                             Expression::literal($field),
                             Expression::column($field),
-                            Expression::literal((int)$ordering),
-                            Expression::literal((int)$access),
+                            Expression::literal((int) $ordering),
+                            Expression::literal((int) $access),
                         ])
                         ->from('#__xprofiles')
                         ->whereNotNull($field)
@@ -161,8 +161,8 @@ class Migration20160513140417ComMembers extends Base
                     $access   = 5;
 
                     if (isset($fields[$field])) {
-                        $ordering = (int)$fields[$field]['ordering'];
-                        $access   = (int)$fields[$field]['access'];
+                        $ordering = (int) $fields[$field]['ordering'];
+                        $access   = (int) $fields[$field]['access'];
                     }
 
                     $subquery = $this->db->getQuery(true)
@@ -170,8 +170,8 @@ class Migration20160513140417ComMembers extends Base
                             'uidNumber',
                             Expression::literal($field),
                             Expression::column($field),
-                            Expression::literal((int)$ordering),
-                            Expression::literal((int)$access),
+                            Expression::literal((int) $ordering),
+                            Expression::literal((int) $access),
                         ])
                         ->from('#__xprofiles_' . $field)
                         ->whereNotNull($field)
@@ -195,8 +195,8 @@ class Migration20160513140417ComMembers extends Base
                 $access   = 5;
 
                 if (isset($fields[$field])) {
-                    $ordering = (int)$fields['address']['ordering'];
-                    $access   = (int)$fields['address']['access'];
+                    $ordering = (int) $fields['address']['ordering'];
+                    $access   = (int) $fields['address']['access'];
                 }
 
                 foreach ($addresses as $address) {

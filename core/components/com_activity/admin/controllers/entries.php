@@ -48,13 +48,13 @@ class Entries extends AdminController
     {
         $start = Date::of('now')->modify('-4 weeks');
 
-        $year  = (int)$start->format('Y');
-        $month = (int)$start->format('m');
-        $day   = (int)$start->format('d');
+        $year  = (int) $start->format('Y');
+        $month = (int) $start->format('m');
+        $day   = (int) $start->format('d');
 
-        $tyear  = (int)Date::of('now')->format('Y');
-        $tmonth = (int)Date::of('now')->format('m');
-        $tday   = (int)Date::of('now')->format('d');
+        $tyear  = (int) Date::of('now')->format('Y');
+        $tmonth = (int) Date::of('now')->format('m');
+        $tday   = (int) Date::of('now')->format('d');
 
         // Group data by year and gather some info for each user
         $y = gmdate("Y");

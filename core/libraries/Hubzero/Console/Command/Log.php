@@ -59,7 +59,7 @@ class Log extends Base implements CommandInterface
 
         // Get file to follow and a few other arguments
         $log        = $this->arguments->getOpt(3);
-        $filters    = (array)$this->arguments->getOpt('filter');
+        $filters    = (array) $this->arguments->getOpt('filter');
         $threshold  = $this->arguments->getOpt('threshold');
         $noBeep     = $this->arguments->getOpt('no-beep');
         $prompt     = trim($this->arguments->getOpt('prompt', '>'));
@@ -382,7 +382,7 @@ class Log extends Base implements CommandInterface
         if (strpos($thresholds, ',')) {
             $thresholds = explode(',', $thresholds);
         } else {
-            $thresholds = (array)$thresholds;
+            $thresholds = (array) $thresholds;
         }
 
         $threshold = [];

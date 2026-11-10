@@ -422,13 +422,13 @@ class Image extends Plugin
         imagefill($image, 0, 0, $black);
 
         $size = 10;
-        $this->ly = (int)(2.4 * $size);
+        $this->ly = (int) (2.4 * $size);
         $x = 20;
         for ($i = 0; $i < strlen($security_code); $i++) {
             $angle = rand(-45, 45);
-            $y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
+            $y = intval(rand((int) ($size * 1.5), (int) ($this->ly - ($size / 7))));
 
-            @imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
+            @imagettftext($image, $size, $angle, $x + (int) ($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
             $x += ($size * 2);
         }
 

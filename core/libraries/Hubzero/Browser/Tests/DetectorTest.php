@@ -139,13 +139,13 @@ class DetectorTest extends Basic
                 $string = $string->field;
 
                 $userAgentString = new stdClass();
-                $userAgentString->browser        = (string)$string[0];
-                $userAgentString->browserVersion = (string)$string[1];
-                $userAgentString->os             = (string)$string[2];
-                $userAgentString->osVersion      = (string)$string[3];
-                $userAgentString->device         = (string)$string[4];
-                $userAgentString->deviceVersion  = (string)$string[5];
-                $userAgentString->string         = str_replace([PHP_EOL, '  '], ' ', (string)$string[6]);
+                $userAgentString->browser        = (string) $string[0];
+                $userAgentString->browserVersion = (string) $string[1];
+                $userAgentString->os             = (string) $string[2];
+                $userAgentString->osVersion      = (string) $string[3];
+                $userAgentString->device         = (string) $string[4];
+                $userAgentString->deviceVersion  = (string) $string[5];
+                $userAgentString->string         = str_replace([PHP_EOL, '  '], ' ', (string) $string[6]);
 
                 $collection[] = $userAgentString;
             }

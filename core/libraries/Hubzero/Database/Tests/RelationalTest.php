@@ -505,7 +505,7 @@ class RelationalTest extends AbstractDriverTestCase
         $driver->setQuery("SELECT COUNT(*) as cnt FROM {$tableName} WHERE id = 3");
         $row = $driver->loadObject();
 
-        $this->assertEquals(0, (int)$row->cnt, "[$dbName] Deleted user should not exist in database");
+        $this->assertEquals(0, (int) $row->cnt, "[$dbName] Deleted user should not exist in database");
 
         $this->cleanupTestData($driver, $dbName);
     }

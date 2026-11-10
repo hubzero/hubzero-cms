@@ -105,8 +105,8 @@ class Watch extends Plugin
     private function status()
     {
         $watching = \Hubzero\Item\Watch::all()
-            ->whereEquals('item_id', (int)$this->publication->get('id'))
-            ->whereEquals('item_type', (string)'publication')
+            ->whereEquals('item_id', (int) $this->publication->get('id'))
+            ->whereEquals('item_type', (string) 'publication')
             ->total();
 
         // Instantiate a view

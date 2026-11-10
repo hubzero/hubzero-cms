@@ -68,7 +68,7 @@ class Campaigns extends AdminController
         $campaigns = Campaign::all();
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
             $campaigns->whereLike('title', $filters['search']);
         }
 

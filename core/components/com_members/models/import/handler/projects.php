@@ -51,7 +51,7 @@ class Projects extends Obj
         }
 
         if (isset($raw->projects) && $raw->projects != '') {
-            $record->projects = (array)$this->multiValueField($raw->projects);
+            $record->projects = (array) $this->multiValueField($raw->projects);
 
             foreach ($record->projects as $i => $pid) {
                 $pid = trim($pid, '"');

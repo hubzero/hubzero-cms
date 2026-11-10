@@ -1385,7 +1385,7 @@ abstract class Driver implements LoggerAwareInterface
 
     public function quoteName($name, $as = null)
     {
-        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
+        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array) $name;
         $bits  = [];
 
         // A quote character inside an identifier can only be an attempt to

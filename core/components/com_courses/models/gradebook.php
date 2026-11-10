@@ -207,7 +207,7 @@ class GradeBook extends Base
                 $views = [];
                 foreach ($grades as $g) {
                     if (!is_null($g->score) || !is_null($g->override)) {
-                        $views[] = (object)[
+                        $views[] = (object) [
                             'member_id'    => $g->member_id,
                             'grade_weight' => $g->grade_weight,
                             'unit_id'      => $g->unit_id,
@@ -774,7 +774,7 @@ class GradeBook extends Base
 
         if (isset($counts)) {
             if (!is_null($member_id) && !is_array($member_id)) {
-                $member_id = (array)$member_id;
+                $member_id = (array) $member_id;
             } else {
                 $member_id = [];
                 foreach ($this->course->offering()->section()->members() as $m) {

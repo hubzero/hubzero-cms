@@ -231,8 +231,8 @@ class Attachment extends Relational
     public static function oneByComment($comment_id, $filename)
     {
         return self::all()
-            ->whereEquals('comment_id', (int)$comment_id)
-            ->whereEquals('filename', (string)$filename)
+            ->whereEquals('comment_id', (int) $comment_id)
+            ->whereEquals('filename', (string) $filename)
             ->row();
     }
 

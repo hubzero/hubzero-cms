@@ -121,7 +121,7 @@ class IncrementalRegistration extends Module
                     $mailPreferenceOption = -1;
 
                     if (isset($_POST['mailPreferenceOption'])) {
-                        $mailPreferenceOption = (int)$_POST['mailPreferenceOption'];
+                        $mailPreferenceOption = (int) $_POST['mailPreferenceOption'];
                     }
                     if (isset($_POST['orgtype']) && trim($_POST['orgtype'])) {
                         $orgtype = trim($_POST['orgtype']);

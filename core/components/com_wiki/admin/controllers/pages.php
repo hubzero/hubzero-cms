@@ -125,7 +125,7 @@ class Pages extends AdminController
         }
 
         if (isset($filters['scope_id'])) {
-            $results->whereEquals('scope_id', (int)$filters['scope_id']);
+            $results->whereEquals('scope_id', (int) $filters['scope_id']);
         }
 
         if ($filters['namespace']) {
@@ -141,7 +141,7 @@ class Pages extends AdminController
         }
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $results->whereLike('title', $filters['search']);
         }

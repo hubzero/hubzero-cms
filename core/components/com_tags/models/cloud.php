@@ -65,11 +65,11 @@ class Cloud extends \Hubzero\Base\Obj
         $this->_db = App::get('db');
 
         if ($scope) {
-            $this->_scope    = (string)$scope;
+            $this->_scope    = (string) $scope;
         }
         // null = no object at all (a whole scope's tags); 0 = an object that
         // has no id yet, which has no tags. tags() tells the two apart.
-        $this->_scope_id = ($scope_id === null || $scope_id === '') ? null : (int)$scope_id;
+        $this->_scope_id = ($scope_id === null || $scope_id === '') ? null : (int) $scope_id;
     }
 
     /**
@@ -234,7 +234,7 @@ class Cloud extends \Hubzero\Base\Obj
             $results->whereEquals('modified_by', $filters['modified_by']);
         }
         if (isset($filters['search']) && $filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $tbl = Substitute::blank()->getTableName();
 

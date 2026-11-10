@@ -203,7 +203,7 @@ class Owner extends Relational
         }
 
         if ($role != 'all') {
-            $query->whereEquals('role', (int)$role);
+            $query->whereEquals('role', (int) $role);
         }
 
         if ($uids) {

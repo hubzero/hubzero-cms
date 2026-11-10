@@ -46,7 +46,7 @@ class Login extends AdminController
             $params    = json_decode($plugin->params);
 
             if (class_exists($className) && isset($params->admin_login) && $params->admin_login) {
-                $myplugin = new $className($this, (array)$plugin);
+                $myplugin = new $className($this, (array) $plugin);
 
                 if ($plugin->name != $authenticator) {
                     continue;
@@ -111,7 +111,7 @@ class Login extends AdminController
 
                 if (class_exists($className)) {
                     if (method_exists($className, 'login')) {
-                        $myplugin = new $className($this, (array)$plugin);
+                        $myplugin = new $className($this, (array) $plugin);
 
                         $myplugin->login($credentials, $options);
 

@@ -62,7 +62,7 @@ class Author extends Relational
         if (!isset($data['ordering'])) {
             $last = self::all()
                 ->select('ordering')
-                ->whereEquals('cid', (int)$data['cid'])
+                ->whereEquals('cid', (int) $data['cid'])
                 ->order('ordering', 'desc')
                 ->order('id', 'desc')
                 ->row();

@@ -42,7 +42,7 @@ class Groups extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->groups) && $raw->groups != '') {
-            $record->groups = (array)$this->multiValueField($raw->groups);
+            $record->groups = (array) $this->multiValueField($raw->groups);
 
             foreach ($record->groups as $i => $gid) {
                 $gid = trim($gid, '"');

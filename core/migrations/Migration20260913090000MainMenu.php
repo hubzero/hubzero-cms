@@ -137,11 +137,11 @@ class Migration20260913090000MainMenu extends Base
 
         $this->addMenuTypes();
 
-        $ids = $this->addRoutes((int)$root);
+        $ids = $this->addRoutes((int) $root);
 
-        $this->addNavigation((int)$root, $ids);
+        $this->addNavigation((int) $root, $ids);
 
-        $this->rebuild((int)$root);
+        $this->rebuild((int) $root);
 
         $this->placeModule();
 
@@ -197,7 +197,7 @@ class Migration20260913090000MainMenu extends Base
         $this->db->getQuery(true)
             ->update('#__assets')
             ->set(['rules' => json_encode($rules)])
-            ->where('id', '=', (int)$asset->id)
+            ->where('id', '=', (int) $asset->id)
             ->execute();
 
         $this->log('The forum is readable by visitors, which nothing had granted.');
@@ -368,7 +368,7 @@ class Migration20260913090000MainMenu extends Base
                     'parent_id' => $parent,
                     'level'     => 2,
                     'ordering'  => $under++,
-                    'params'    => json_encode(['aliasoptions' => (string)$ids[$item]]),
+                    'params'    => json_encode(['aliasoptions' => (string) $ids[$item]]),
                 ]);
             }
         }
@@ -406,7 +406,7 @@ class Migration20260913090000MainMenu extends Base
             ->values($row)
             ->execute();
 
-        return (int)$this->db->insertid();
+        return (int) $this->db->insertid();
     }
 
     /**
@@ -417,7 +417,7 @@ class Migration20260913090000MainMenu extends Base
      **/
     protected function componentId($option)
     {
-        return (int)$this->db->getQuery(true)
+        return (int) $this->db->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -442,7 +442,7 @@ class Migration20260913090000MainMenu extends Base
         $children = $this->db->getQuery(true)
             ->select('id')
             ->from('#__menu')
-            ->where('parent_id', '=', (int)$parent)
+            ->where('parent_id', '=', (int) $parent)
             ->order('ordering', 'asc')
             ->order('id', 'asc')
             ->fetch();
@@ -450,13 +450,13 @@ class Migration20260913090000MainMenu extends Base
         $right = $left + 1;
 
         foreach ($children as $child) {
-            $right = $this->rebuild((int)$child->id, $right);
+            $right = $this->rebuild((int) $child->id, $right);
         }
 
         $this->db->getQuery(true)
             ->update('#__menu')
-            ->set(['lft' => (int)$left, 'rgt' => (int)$right])
-            ->where('id', '=', (int)$parent)
+            ->set(['lft' => (int) $left, 'rgt' => (int) $right])
+            ->where('id', '=', (int) $parent)
             ->execute();
 
         return $right + 1;
@@ -503,7 +503,7 @@ class Migration20260913090000MainMenu extends Base
                     'showtitle' => 0,
                     'params'    => $params,
                 ])
-                ->where('id', '=', (int)$id)
+                ->where('id', '=', (int) $id)
                 ->execute();
 
             return;
@@ -538,7 +538,7 @@ class Migration20260913090000MainMenu extends Base
         $this->db->getQuery(true)
             ->insert('#__modules_menu')
             ->values([
-                'moduleid' => (int)$this->db->insertid(),
+                'moduleid' => (int) $this->db->insertid(),
                 'menuid'   => 0,
             ])
             ->execute();
@@ -571,12 +571,12 @@ class Migration20260913090000MainMenu extends Base
 
             $this->db->getQuery(true)
                 ->delete('#__menu')
-                ->where('parent_id', '=', (int)$id)
+                ->where('parent_id', '=', (int) $id)
                 ->execute();
 
             $this->db->getQuery(true)
                 ->delete('#__menu')
-                ->where('id', '=', (int)$id)
+                ->where('id', '=', (int) $id)
                 ->execute();
         }
 

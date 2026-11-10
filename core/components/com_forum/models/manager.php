@@ -128,7 +128,7 @@ class Manager extends Obj
         }
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $model->whereEquals('state', (int)$filters['state']);
+            $model->whereEquals('state', (int) $filters['state']);
         }
 
         if (isset($filters['state'])) {
@@ -220,19 +220,19 @@ class Manager extends Obj
         }
 
         if (isset($filters['sticky'])) {
-            $model->whereEquals('sticky', (int)$filters['sticky']);
+            $model->whereEquals('sticky', (int) $filters['sticky']);
         }
 
         if (isset($filters['thread']) && $filters['thread']) {
-            $model->whereEquals('thread', (int)$filters['thread']);
+            $model->whereEquals('thread', (int) $filters['thread']);
         }
 
         if (isset($filters['scope_sub_id']) && $filters['scope_sub_id']) {
-            $model->whereEquals('scope_sub_id', (int)$filters['scope_sub_id']);
+            $model->whereEquals('scope_sub_id', (int) $filters['scope_sub_id']);
         }
 
         if (isset($filters['object_id']) && $filters['object_id']) {
-            $model->whereEquals('object_id', (int)$filters['object_id']);
+            $model->whereEquals('object_id', (int) $filters['object_id']);
         }
 
         if (isset($filters['search'])) {
@@ -242,7 +242,7 @@ class Manager extends Obj
         }
 
         if (isset($filters['start_id']) && $filters['start_id']) {
-            $model->where('id', '>', (int)$filters['start_id']);
+            $model->where('id', '>', (int) $filters['start_id']);
         }
 
         if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != '0000-00-00 00:00:00') {

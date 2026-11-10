@@ -79,7 +79,7 @@ class Run extends Relational
      **/
     public function automaticRanBy($data)
     {
-        return (isset($data['ran_by']) && $data['ran_by'] ? (int)$data['ran_by'] : (int)User::get('id'));
+        return (isset($data['ran_by']) && $data['ran_by'] ? (int) $data['ran_by'] : (int) User::get('id'));
     }
 
     /**

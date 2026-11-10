@@ -160,7 +160,7 @@ class Migration20140108233318ComGroups extends Base
             // loop through each group
             foreach ($groups as $group) {
                 // if group has overview content
-                if (trim((string)$group->overview_content) != '') {
+                if (trim((string) $group->overview_content) != '') {
                     // create page to store page info
                     $this->db->getQuery(true)
                         ->insert('#__xgroups_pages')

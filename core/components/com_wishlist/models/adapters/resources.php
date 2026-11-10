@@ -48,7 +48,7 @@ class Resources extends Base
              ->set('category', 'resource')
              ->set('option', $this->_segments['option']);
 
-        $this->_item = Entry::getInstance((int)$this->get('referenceid'));
+        $this->_item = Entry::getInstance((int) $this->get('referenceid'));
 
         if ($this->_item->standalone != 1 || $this->_item->published != Entry::STATE_PUBLISHED) {
             $this->_item->id = 0;

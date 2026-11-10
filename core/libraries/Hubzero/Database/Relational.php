@@ -2141,7 +2141,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function toObject()
     {
-        return (object)$this->attributes;
+        return (object) $this->attributes;
     }
 
     // =========================================================================
@@ -3693,7 +3693,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                       ->first();
         //->count;
 
-        $total = $first ? (int)$first->count : 0;
+        $total = $first ? (int) $first->count : 0;
 
         $this->reset();
 
@@ -7195,7 +7195,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function automaticCreatedBy($data)
     {
         return (isset($data['created_by']) && $data['created_by']
-            ? (int)$data['created_by']
+            ? (int) $data['created_by']
             : static::resolveCurrentUserId());
     }
 

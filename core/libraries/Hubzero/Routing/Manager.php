@@ -44,7 +44,7 @@ class Manager
     public function __construct($app, $paths = [])
     {
         $this->app   = $app;
-        $this->paths = (array)$paths;
+        $this->paths = (array) $paths;
     }
 
     /**

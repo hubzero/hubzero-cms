@@ -264,7 +264,7 @@ class DriverTest extends AbstractDriverTestCase
 
         $id = $driver->insertid();
 
-        $this->assertGreaterThan(0, (int)$id, 'Insert should return a valid ID');
+        $this->assertGreaterThan(0, (int) $id, 'Insert should return a valid ID');
     }
 
     #[Test]
@@ -282,7 +282,7 @@ class DriverTest extends AbstractDriverTestCase
         $id = $driver->insertid();
 
         $driver->setQuery("SELECT * FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('id') . " = " . (int)$id);
+                         . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
         $result = $driver->loadObject();
 
         $this->assertIsObject($result, 'Result should be an object');
@@ -333,7 +333,7 @@ class DriverTest extends AbstractDriverTestCase
         $id = $driver->insertid();
 
         $driver->setQuery("SELECT * FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('id') . " = " . (int)$id);
+                         . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
         $result = $driver->loadAssoc();
 
         $this->assertIsArray($result, 'Result should be an array');
@@ -387,7 +387,7 @@ class DriverTest extends AbstractDriverTestCase
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table));
         $result = $driver->loadResult();
 
-        $this->assertEquals(1, (int)$result, 'Should have 1 row');
+        $this->assertEquals(1, (int) $result, 'Should have 1 row');
     }
 
     #[Test]
@@ -484,7 +484,7 @@ class DriverTest extends AbstractDriverTestCase
         // Verify data was committed
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table)
                          . " WHERE " . $driver->quoteName('name') . " = 'Transaction Test'");
-        $count = (int)$driver->loadResult();
+        $count = (int) $driver->loadResult();
 
         $this->assertEquals(1, $count, 'Transaction should have been committed');
     }
@@ -508,7 +508,7 @@ class DriverTest extends AbstractDriverTestCase
         // Verify data was rolled back
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table)
                          . " WHERE " . $driver->quoteName('name') . " = 'Rollback Test'");
-        $count = (int)$driver->loadResult();
+        $count = (int) $driver->loadResult();
 
         $this->assertEquals(0, $count, 'Transaction should have been rolled back');
     }
@@ -613,7 +613,7 @@ class DriverTest extends AbstractDriverTestCase
 
             // Verify it worked
             $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($tempTable));
-            $count = (int)$driver->loadResult();
+            $count = (int) $driver->loadResult();
             $this->assertEquals(1, $count, 'sqlNow should work in INSERT query');
         } finally {
             // Clean up
@@ -660,7 +660,7 @@ class DriverTest extends AbstractDriverTestCase
 
         // Verify data exists
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table));
-        $count = (int)$driver->loadResult();
+        $count = (int) $driver->loadResult();
         $this->assertGreaterThan(0, $count, 'Should have data before truncate');
 
         // Truncate
@@ -668,7 +668,7 @@ class DriverTest extends AbstractDriverTestCase
 
         // Verify data is gone
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table));
-        $count = (int)$driver->loadResult();
+        $count = (int) $driver->loadResult();
         $this->assertEquals(0, $count, 'Should have no data after truncate');
     }
 

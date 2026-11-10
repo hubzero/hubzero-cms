@@ -189,8 +189,8 @@ class Hubzero extends Plugin
     private function hasExceededLoginLimit($user)
     {
         $params    = Component::params('com_members');
-        $limit     = (int)$params->get('login_attempts_limit', 10);
-        $timeframe = (int)$params->get('login_attempts_timeframe', 1);
+        $limit     = (int) $params->get('login_attempts_limit', 10);
+        $timeframe = (int) $params->get('login_attempts_timeframe', 1);
         $result    = true;
 
         // Get the user's tokens
@@ -225,8 +225,8 @@ class Hubzero extends Plugin
     private function hasExceededBlockLimit($response)
     {
         $params    = Component::params('com_members');
-        $limit     = (int)$params->get('blocked_accounts_limit', 10);
-        $timeframe = (int)$params->get('blocked_accounts_timeframe', 1);
+        $limit     = (int) $params->get('blocked_accounts_limit', 10);
+        $timeframe = (int) $params->get('blocked_accounts_timeframe', 1);
         $ip        = Request::ip();
         $fail2ban  = $params->get('fail2ban', 0);
         $jailname  = $params->get('fail2ban-jail', 'hub-login');

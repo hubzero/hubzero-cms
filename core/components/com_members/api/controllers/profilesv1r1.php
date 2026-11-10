@@ -100,9 +100,9 @@ class Profilesv1r1 extends ApiController
             ->where('approved', '>', 0);
 
         if ($filters['search']) {
-            $entries->whereLike('name', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('username', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('email', strtolower((string)$filters['search']), 1)
+            $entries->whereLike('name', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('username', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('email', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 

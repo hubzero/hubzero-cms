@@ -211,10 +211,10 @@ class Git
             $args['upcoming'] = "HEAD..{$this->upstream}";
         }
         if (isset($length)) {
-            $args['length'] = '-' . (int)$length;
+            $args['length'] = '-' . (int) $length;
         }
         if (isset($start)) {
-            $args['skip'] = '--skip=' . (int)$start;
+            $args['skip'] = '--skip=' . (int) $start;
         }
         if (isset($format)) {
             $args['format'] = '--pretty=format:' . escapeshellarg($format);

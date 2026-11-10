@@ -253,7 +253,7 @@ class Roles extends AdminController
         }
 
         foreach ($ids as $id) {
-            $model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int)$id, $roleid);
+            $model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int) $id, $roleid);
 
             if ($model->get('id')) {
                 $model->destroy();
@@ -333,10 +333,10 @@ class Roles extends AdminController
         $group->read($gid);
 
         foreach ($ids as $id) {
-            $model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int)$id, $roleid);
+            $model = \Components\Groups\Models\Member\Role::oneByUserAndRole((int) $id, $roleid);
             if (!$model->get('id')) {
                 $model->set('roleid', $roleid);
-                $model->set('uidNumber', (int)$id);
+                $model->set('uidNumber', (int) $id);
                 $model->save();
             }
         }

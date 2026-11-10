@@ -94,7 +94,7 @@ class Association extends Relational
             $last = self::all()
                 ->select('ordering')
                 ->whereEquals('parent_id', $data['parent_id'])
-                ->whereEquals('grouping', isset($data['grouping']) ? (int)$data['grouping'] : 0)
+                ->whereEquals('grouping', isset($data['grouping']) ? (int) $data['grouping'] : 0)
                 ->order('ordering', 'desc')
                 ->row();
 

@@ -144,7 +144,7 @@ class Members extends AdminController
         if ($filters['group_id']) {
             $entries
                 ->join($b, $b . '.user_id', $a . '.id', 'left')
-                ->whereEquals($b . '.group_id', (int)$filters['group_id']);
+                ->whereEquals($b . '.group_id', (int) $filters['group_id']);
             /*->group($a . '.id')
             ->group($a . '.name')
             ->group($a . '.username')
@@ -161,11 +161,11 @@ class Members extends AdminController
 
         if ($filters['search']) {
             if (is_numeric($filters['search'])) {
-                $entries->whereEquals($a . '.id', (int)$filters['search']);
+                $entries->whereEquals($a . '.id', (int) $filters['search']);
             } else {
-                $entries->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
-                    ->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
-                    ->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
+                $entries->whereLike($a . '.name', strtolower((string) $filters['search']), 1)
+                    ->orWhereLike($a . '.username', strtolower((string) $filters['search']), 1)
+                    ->orWhereLike($a . '.email', strtolower((string) $filters['search']), 1)
                     ->resetDepth();
             }
         }
@@ -175,15 +175,15 @@ class Members extends AdminController
         }
 
         if ($filters['access'] > 0) {
-            $entries->whereEquals($a . '.access', (int)$filters['access']);
+            $entries->whereEquals($a . '.access', (int) $filters['access']);
         }
 
         if (is_numeric($filters['state'])) {
-            $entries->whereEquals($a . '.block', (int)$filters['state']);
+            $entries->whereEquals($a . '.block', (int) $filters['state']);
         }
 
         if (is_numeric($filters['approved'])) {
-            $entries->whereEquals($a . '.approved', (int)$filters['approved']);
+            $entries->whereEquals($a . '.approved', (int) $filters['approved']);
         }
 
         if ($filters['activation'] < 0) {
@@ -1303,9 +1303,9 @@ class Members extends AdminController
             ->whereEquals('block', 0);
 
         if ($filters['search']) {
-            $entries->whereLike('name', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('username', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('email', strtolower((string)$filters['search']), 1)
+            $entries->whereLike('name', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('username', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('email', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 

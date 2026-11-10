@@ -705,7 +705,7 @@ class Create extends SiteController
             $row->set('standalone', 1);
         }
 
-        $row->set('published', (int)$row->get('published', 2));
+        $row->set('published', (int) $row->get('published', 2));
         $row->set('publish_up', ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()));
         // The compose form posts an empty publish_down. Strict SQL mode refuses
         // '', and the stock column is NOT NULL with a zero-date default, so
@@ -715,7 +715,7 @@ class Create extends SiteController
         }
         $row->set('modified', Date::toSql());
         $row->set('modified_by', User::get('id'));
-        $row->set('access', (int)$row->get('access', 0));
+        $row->set('access', (int) $row->get('access', 0));
 
         $row->set('fulltxt', trim(preg_replace('/\\\/', "%5C", $row->get('fulltxt'))));
         $row->set('introtext', Str::truncate(strip_tags($row->get('fulltxt')), 500));

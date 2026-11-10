@@ -78,7 +78,7 @@ class Cookie
                 return false;
             }
 
-            return (object)$cookie;
+            return (object) $cookie;
         }
 
         return false;

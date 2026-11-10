@@ -53,9 +53,9 @@ class Migration20141113222151ComCourses extends Base
                 $toChange = $this->db->getQuery(true)
                     ->select('*')
                     ->from('#__courses_asset_associations')
-                    ->where('asset_id', '=', (int)$aa->asset_id)
+                    ->where('asset_id', '=', (int) $aa->asset_id)
                     ->order('id', 'DESC')
-                    ->limit((int)($aa->count - 1))
+                    ->limit((int) ($aa->count - 1))
                     ->loadObjectList();
 
                 foreach ($toChange as $a) {
@@ -80,7 +80,7 @@ class Migration20141113222151ComCourses extends Base
 
                         $this->db->getQuery(true)
                             ->update('#__courses_asset_associations')
-                            ->set(['asset_id' => (int)$asset->get('id')])
+                            ->set(['asset_id' => (int) $asset->get('id')])
                             ->where('id', '=', $a->id)
                             ->execute();
 
@@ -89,28 +89,28 @@ class Migration20141113222151ComCourses extends Base
                             $this->db->getQuery(true)
                                 ->update('#__courses_grade_book AS g')
                                 ->leftJoin('#__courses_members AS m', 'g.member_id', 'm.id')
-                                ->set(['g.scope_id' => (int)$asset->get('id')])
-                                ->where('g.scope_id', '=', (int)$oldAssetId)
+                                ->set(['g.scope_id' => (int) $asset->get('id')])
+                                ->where('g.scope_id', '=', (int) $oldAssetId)
                                 ->where('g.scope', '=', 'asset')
-                                ->where('m.offering_id', '=', (int)$offering)
+                                ->where('m.offering_id', '=', (int) $offering)
                                 ->execute();
 
                             // Update asset_unity
                             $this->db->getQuery(true)
                                 ->update('#__courses_asset_unity AS u')
                                 ->leftJoin('#__courses_members AS m', 'u.member_id', 'm.id')
-                                ->set(['u.asset_id' => (int)$asset->get('id')])
-                                ->where('u.asset_id', '=', (int)$oldAssetId)
-                                ->where('m.offering_id', '=', (int)$offering)
+                                ->set(['u.asset_id' => (int) $asset->get('id')])
+                                ->where('u.asset_id', '=', (int) $oldAssetId)
+                                ->where('m.offering_id', '=', (int) $offering)
                                 ->execute();
 
                             // Update asset_views
                             $this->db->getQuery(true)
                                 ->update('#__courses_asset_views AS v')
                                 ->leftJoin('#__courses_members AS m', 'v.viewed_by', 'm.id')
-                                ->set(['v.asset_id' => (int)$asset->get('id')])
-                                ->where('v.asset_id', '=', (int)$oldAssetId)
-                                ->where('m.offering_id', '=', (int)$offering)
+                                ->set(['v.asset_id' => (int) $asset->get('id')])
+                                ->where('v.asset_id', '=', (int) $oldAssetId)
+                                ->where('m.offering_id', '=', (int) $offering)
                                 ->execute();
                         }
                     } else {

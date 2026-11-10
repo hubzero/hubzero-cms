@@ -78,8 +78,8 @@ class User extends Base implements CommandInterface
         if ($directionalIndicator) {
             switch ($directionalIndicator) {
                 case 'into':
-                    $sourceUser      = (int)$this->arguments->getOpt(3);
-                    $destinationUser = (int)$this->arguments->getOpt(5);
+                    $sourceUser      = (int) $this->arguments->getOpt(3);
+                    $destinationUser = (int) $this->arguments->getOpt(5);
                     break;
 
                 default:
@@ -92,8 +92,8 @@ class User extends Base implements CommandInterface
             }
         } else {
             if ($this->output->isInteractive()) {
-                $destinationUser = (int)$this->output->getResponse('What is the destination user ID (this is the user that will remain after the merge)?');
-                $sourceUser      = (int)$this->output->getResponse('What is the source user ID (this is the user that will be deleted after the merge)?');
+                $destinationUser = (int) $this->output->getResponse('What is the destination user ID (this is the user that will remain after the merge)?');
+                $sourceUser      = (int) $this->output->getResponse('What is the source user ID (this is the user that will be deleted after the merge)?');
             } else {
                 $this->output->error('Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]');
             }
@@ -250,8 +250,8 @@ class User extends Base implements CommandInterface
         if ($directionalIndicator) {
             switch ($directionalIndicator) {
                 case 'from':
-                    $sourceUser      = (int)$this->arguments->getOpt(5);
-                    $destinationUser = (int)$this->arguments->getOpt(3);
+                    $sourceUser      = (int) $this->arguments->getOpt(5);
+                    $destinationUser = (int) $this->arguments->getOpt(3);
                     break;
 
                 default:
@@ -264,8 +264,8 @@ class User extends Base implements CommandInterface
             }
         } else {
             if ($this->output->isInteractive()) {
-                $destinationUser = (int)$this->output->getResponse('What is the destination user ID (this is the user that was deleted during the initial merge)?');
-                $sourceUser      = (int)$this->output->getResponse('What is the source user ID (this is the user that was the recipient of the initially merged data)?');
+                $destinationUser = (int) $this->output->getResponse('What is the destination user ID (this is the user that was deleted during the initial merge)?');
+                $sourceUser      = (int) $this->output->getResponse('What is the source user ID (this is the user that was the recipient of the initially merged data)?');
             } else {
                 $this->output->error('Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]');
             }
@@ -490,7 +490,7 @@ class User extends Base implements CommandInterface
         }
 
         $user = is_numeric($identifier)
-            ? \Hubzero\User\User::oneOrNew((int)$identifier)
+            ? \Hubzero\User\User::oneOrNew((int) $identifier)
             : \Hubzero\User\User::oneByUsername($identifier);
 
         if (!$user || !$user->get('id')) {

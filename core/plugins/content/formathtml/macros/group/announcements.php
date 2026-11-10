@@ -76,7 +76,7 @@ class Announcements extends GroupMacro
             ->start(0);
 
         if (isset($filters['limit'])) {
-            $query->limit((int)$filters['limit']);
+            $query->limit((int) $filters['limit']);
         }
 
         $rows = $query->rows();

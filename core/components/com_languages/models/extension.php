@@ -178,7 +178,7 @@ class Extension extends Relational
             $client->path = '/bootstrap/' . ucfirst($client->name);
 
             //$client = $this->client($client_id);
-            $this->path = (string)Lang::getLanguagePath($client->path);
+            $this->path = (string) Lang::getLanguagePath($client->path);
         }
 
         return $this->path;

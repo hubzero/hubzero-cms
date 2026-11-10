@@ -132,8 +132,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
             $alias = $this->automaticAlias($data);
 
             // Set name length
-            $minLength = (int)$this->config('min_name_length', 3);
-            $maxLength = (int)$this->config('max_name_length', 30);
+            $minLength = (int) $this->config('min_name_length', 3);
+            $maxLength = (int) $this->config('max_name_length', 30);
 
             if (strlen($alias) < $minLength) {
                 return Lang::txt('COM_PROJECTS_ERROR_NAME_TOO_SHORT');
@@ -214,7 +214,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     public function automaticCreatedByUser($data)
     {
         $createdBy = isset($data['created_by_user']) && $data['created_by_user'];
-        return $createdBy ? (int)$data['created_by_user'] : (int)User::get('id');
+        return $createdBy ? (int) $data['created_by_user'] : (int) User::get('id');
     }
 
     /**

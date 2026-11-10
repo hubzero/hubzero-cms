@@ -41,7 +41,7 @@ class Managers extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->managers) && $raw->managers != '') {
-            $record->managers = (array)$this->multiValueField($raw->managers);
+            $record->managers = (array) $this->multiValueField($raw->managers);
 
             foreach ($record->managers as $i => $gid) {
                 $gid = trim($gid, '"');

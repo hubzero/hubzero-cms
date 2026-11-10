@@ -27,7 +27,7 @@ class Filters
     public static function getFilters($namespace)
     {
         // Process query filters
-        $q = (array)Request::getArray('q', []);
+        $q = (array) Request::getArray('q', []);
 
         // Turn search into array of results, if not already
         $search = Request::getString('search', '');

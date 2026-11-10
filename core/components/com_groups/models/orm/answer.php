@@ -112,7 +112,7 @@ class Answer extends Relational
                 ->order('ordering', 'desc')
                 ->row();
 
-            $data['ordering'] = (int)$last->get('ordering') + 1;
+            $data['ordering'] = (int) $last->get('ordering') + 1;
         }
 
         return $data['ordering'];

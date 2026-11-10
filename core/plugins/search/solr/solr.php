@@ -39,7 +39,7 @@ class Solr extends Plugin
     private function tableExists()
     {
         if (is_null(self::$tableExists)) {
-            self::$tableExists = (bool)App::get('db')->tableExists('#__solr_search_searchcomponents');
+            self::$tableExists = (bool) App::get('db')->tableExists('#__solr_search_searchcomponents');
         }
 
         return self::$tableExists;

@@ -41,7 +41,7 @@ class Migration20170322093811ComResources extends Base
                 $this->db->getQuery(true)
                     ->update('#__resource_types')
                     ->set(['alias' => $alias])
-                    ->where('id', '=', (int)$result->id)
+                    ->where('id', '=', (int) $result->id)
                     ->execute();
             }
         }

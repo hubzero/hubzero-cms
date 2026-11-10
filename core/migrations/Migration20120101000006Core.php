@@ -324,7 +324,7 @@ class Migration20120101000006Core extends Base
                         'name'      => $license['name'],
                         'text'      => $license['text'],
                         'title'     => $license['title'],
-                        'ordering'  => (int)$license['ordering'],
+                        'ordering'  => (int) $license['ordering'],
                         'apps_only' => 0,
                         'main'      => null,
                         'icon'      => null,

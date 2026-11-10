@@ -56,7 +56,7 @@ $record = $resp->getAnswers();
         <?php $attempt = $resp->getAttemptNumber(); ?>
         <p>
             You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-            <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int)$attempt); ?>
+            <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int) $attempt); ?>
             This was your <strong><?php echo $val; ?></strong> attempt.
         </p>
         <form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">

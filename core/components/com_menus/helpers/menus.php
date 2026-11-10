@@ -248,7 +248,7 @@ class Menus
         $query->whereEquals('a.context', 'com_menus.item');
         $query->join('#__associations as a2', 'a.key', 'a2.key', 'inner');
         $query->join('#__menu as m2', 'a2.id', 'm2.id', 'inner');
-        $query->whereEquals('m.id', (int)$pk);
+        $query->whereEquals('m.id', (int) $pk);
         $query->select('m2.language');
         $query->select('m2.id');
 

@@ -208,7 +208,7 @@ class Loader
             throw new \InvalidArgumentException(sprintf('Invalid client type of "%s".', $client_id));
         }
 
-        return $this->getTemplate((int)$client->id, $this->style);
+        return $this->getTemplate((int) $client->id, $this->style);
     }
 
     /**
@@ -250,7 +250,7 @@ class Loader
             return null;
         }
 
-        $key  = ((int)$client_id === 1) ? 'administrator_template' : 'site_template';
+        $key  = ((int) $client_id === 1) ? 'administrator_template' : 'site_template';
         $name = $this->app['config']->get($key);
 
         if (!is_string($name) || $name === '' || !preg_match('/^[A-Za-z0-9_-]+$/', $name)) {
@@ -307,7 +307,7 @@ class Loader
                     ->select($e . '.protected')
                     ->from($s)
                     ->join($e, $e . '.element', $s . '.template')
-                    ->whereEquals($s . '.client_id', (int)$client_id)
+                    ->whereEquals($s . '.client_id', (int) $client_id)
                     ->whereEquals($e . '.enabled', 1)
                     ->whereEquals($e . '.type', 'template')
                     ->whereRaw($db->quoteName($e . '.client_id') . ' = ' . $db->quoteName($s . '.client_id'));

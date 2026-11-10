@@ -705,7 +705,7 @@ class Validate
         if (!method_exists($className, $method)) {
             throw new InvalidArgumentException(sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
         }
-        $check = (array)$check;
+        $check = (array) $check;
         return call_user_func_array([$className, $method], $check);
     }
 

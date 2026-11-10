@@ -427,7 +427,7 @@ class Batchcreate extends AdminController
                 // Metadata
                 if ($node->metadata) {
                     foreach ($node->metadata->metadatum as $metadatum) {
-                        $item['metadata'][(string)$metadatum->alias] = $metadatum->text;
+                        $item['metadata'][(string) $metadatum->alias] = $metadatum->text;
                     }
                 }
 

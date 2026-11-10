@@ -79,7 +79,7 @@ class Shibboleth extends Plugin
     {
         \Hubzero\Document\Assets::addPluginStylesheet('authentication', 'shibboleth', 'shibboleth.css');
         $dbh = App::get('db');
-        $dbh->setQuery('SELECT domain FROM `#__auth_domain` WHERE id = ' . (int)$adid);
+        $dbh->setQuery('SELECT domain FROM `#__auth_domain` WHERE id = ' . (int) $adid);
 
         // oops ... hopefully not reachable
         if (!($idp = $dbh->loadResult()) || !($label = self::getInstitutionByEntityId($idp, 'label'))) {

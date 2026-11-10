@@ -303,7 +303,7 @@ class Menu extends Relational
             ->whereEquals('published', self::STATE_PUBLISHED)
             ->total();
 
-        return (int)$total;
+        return (int) $total;
     }
 
     /**
@@ -317,7 +317,7 @@ class Menu extends Relational
             ->whereEquals('published', self::STATE_UNPUBLISHED)
             ->total();
 
-        return (int)$total;
+        return (int) $total;
     }
 
     /**
@@ -331,7 +331,7 @@ class Menu extends Relational
             ->whereEquals('published', -2)
             ->total();
 
-        return (int)$total;
+        return (int) $total;
     }
 
     /**

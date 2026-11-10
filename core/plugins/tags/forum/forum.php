@@ -73,7 +73,7 @@ class Forum extends Plugin
 
         $addtl_where = [];
 
-        $gids = $this->getGroupIds((int)User::get('id', 0));
+        $gids = $this->getGroupIds((int) User::get('id', 0));
 
         if (!User::authorise('core.view', 'com_forum')) {
             $addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';

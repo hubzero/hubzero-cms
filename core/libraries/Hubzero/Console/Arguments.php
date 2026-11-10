@@ -157,7 +157,7 @@ class Arguments
                     $value = ($parts[1]);
 
                     if (isset($this->opts[$key])) {
-                        $this->opts[$key] = (array)$this->opts[$key];
+                        $this->opts[$key] = (array) $this->opts[$key];
                         array_push($this->opts[$key], $value);
                     } else {
                         $this->opts[$key] = $value;
@@ -199,7 +199,7 @@ class Arguments
      **/
     public static function registerNamespace($namespace, $paths = [])
     {
-        self::$commandNamespaces[$namespace] = (array)$paths;
+        self::$commandNamespaces[$namespace] = (array) $paths;
     }
 
     /**

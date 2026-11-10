@@ -120,14 +120,14 @@ class Poll extends Relational
         $option_id = (int) $option_id;
 
         $option = Option::oneOrFail($option_id);
-        $option->set('hits', (int)$option->get('hits', 0) + 1);
+        $option->set('hits', (int) $option->get('hits', 0) + 1);
 
         if (!$option->save()) {
             $this->addError($option->getError());
             return false;
         }
 
-        $this->set('voters', (int)$this->get('voters', 0) + 1);
+        $this->set('voters', (int) $this->get('voters', 0) + 1);
 
         if (!$this->save()) {
             return false;

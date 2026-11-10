@@ -30,7 +30,7 @@ class Findresources extends Module
 
         $this->tags = Tag::all()
             ->whereEquals('admin', 0)
-            ->limit((int)$this->params->get('limit', 25))
+            ->limit((int) $this->params->get('limit', 25))
             ->order('objects', 'desc')
             ->rows();
 

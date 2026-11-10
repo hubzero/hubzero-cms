@@ -299,7 +299,7 @@ class Record extends Obj
             $this->raw->access = (int) $this->options['access'];
         }
 
-        $raw = (array)$this->raw;
+        $raw = (array) $this->raw;
         $props = $this->getFields();
 
         foreach ($raw as $key => $val) {

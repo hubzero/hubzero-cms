@@ -140,7 +140,7 @@ class Support extends Plugin
                         $group = $g->get('gidNumber');
                     }
                 }
-                $where[] = "t.`group_id`=" . $database->quote((int)$group);
+                $where[] = "t.`group_id`=" . $database->quote((int) $group);
             }
 
             if ($owners = $params->get('support_ticketpending_owners')) {
@@ -608,7 +608,7 @@ class Support extends Plugin
                         $group = $g->get('gidNumber');
                     }
                 }
-                $where[] = "t.`group_id`=" . $database->quote((int)$group);
+                $where[] = "t.`group_id`=" . $database->quote((int) $group);
             }
 
             if ($owners = $params->get('support_ticketlist_owners')) {

@@ -1225,8 +1225,8 @@ class Forum extends Plugin
     {
         // Incoming
         $filters = [
-            'limit'    => (int)Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
-            'start'    => (int)Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
+            'limit'    => (int) Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
+            'start'    => (int) Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
             'section'  => Request::getString('section', ''),
             'category' => Request::getCmd('category', ''),
             'thread'   => Request::getInt('thread', 0),

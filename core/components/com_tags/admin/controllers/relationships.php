@@ -265,7 +265,7 @@ class Relationships extends AdminController
             sort($later);
             $suggestions = array_merge($suggestions, $later);
             if (isset($_GET['limit'])) {
-                $suggestions = array_slice($suggestions, 0, (int)$_GET['limit']);
+                $suggestions = array_slice($suggestions, 0, (int) $_GET['limit']);
             }
         }
         header('Content-type: application/json');
@@ -282,7 +282,7 @@ class Relationships extends AdminController
     {
         Request::checkToken();
 
-        if (isset($_POST['tag']) && ($tid = (int)$_POST['tag'])) {
+        if (isset($_POST['tag']) && ($tid = (int) $_POST['tag'])) {
             $this->database->setQuery('UPDATE `#__tags` SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
             $this->database->execute();
             $tag = $this->get_tag($tid);
@@ -345,7 +345,7 @@ class Relationships extends AdminController
      */
     public function deleteTask()
     {
-        if (isset($_POST['tag']) && ($tid = (int)$_POST['tag'])) {
+        if (isset($_POST['tag']) && ($tid = (int) $_POST['tag'])) {
             $tag = $this->get_tag($tid, false);
             if (isset($_POST['really']) && $_POST['really'] === 'on') {
                 // The destructive confirm step is a POST form action
@@ -401,14 +401,14 @@ class Relationships extends AdminController
             }
             $new_tag = $this->get_tag($_POST['name-' . $id], false);
             $this->database->setQuery('UPDATE `#__focus_areas` SET
-				mandatory_depth = ' . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ',
-				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ',
+				mandatory_depth = ' . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-' . $id] : 'NULL')) . ',
+				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-' . $id]  : 'NULL')) . ',
 				tag_id = ' . $new_tag['id'] . '
 				WHERE id = ' . $id);
             $this->database->execute();
             if (isset($_POST['types-' . $id])) {
                 foreach ($_POST['types-' . $id] as $type_id) {
-                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int) $type_id) . ')');
                     $this->database->execute();
                 }
             }
@@ -421,14 +421,14 @@ class Relationships extends AdminController
             $tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
             $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES ('
-                . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
-                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', '
+                . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
+                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', '
                 . $tag['id'] . ')');
             $this->database->execute();
             $id = $this->database->insertid();
             if (isset($_POST['types-new-' . $idx])) {
                 foreach ($_POST['types-new-' . $idx] as $type_id) {
-                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int) $type_id) . ')');
                     $this->database->execute();
                 }
             }

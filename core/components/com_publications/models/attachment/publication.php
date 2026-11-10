@@ -623,7 +623,7 @@ class Publication extends Base
             return true;
         }
 
-        $attachments = (array)$attachments;
+        $attachments = (array) $attachments;
 
         foreach ($attachments as $attach) {
             $id = isset($attach->id) ? $attach->id : $attach;

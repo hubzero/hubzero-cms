@@ -90,10 +90,10 @@ class Article extends Field
         $html[] = '</div>';
 
         // The active article id field.
-        if (0 == (int)$this->value) {
+        if (0 == (int) $this->value) {
             $value = '';
         } else {
-            $value = (int)$this->value;
+            $value = (int) $this->value;
         }
 
         // class='required' for client side validation

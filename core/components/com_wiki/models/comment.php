@@ -140,11 +140,11 @@ class Comment extends Relational
             ->whereEquals('parent', $this->get('id'));
 
         if (isset($filters['version'])) {
-            $replies->whereEquals('version', (int)$filters['version']);
+            $replies->whereEquals('version', (int) $filters['version']);
         }
 
         if (isset($filters['created_by'])) {
-            $replies->whereEquals('created_by', (int)$filters['created_by']);
+            $replies->whereEquals('created_by', (int) $filters['created_by']);
         }
 
         if (isset($filters['state'])) {

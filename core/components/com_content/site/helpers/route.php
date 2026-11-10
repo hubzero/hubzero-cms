@@ -48,9 +48,9 @@ abstract class Route
 
         // Create the link
         $link = 'index.php?option=com_content&view=article&id=' . $id;
-        if ((int)$catid > 1) {
+        if ((int) $catid > 1) {
             $categories = new Category();
-            $category = $categories->get((int)$catid);
+            $category = $categories->get((int) $catid);
             if ($category) {
                 $needles['category'] = array_reverse($category->getPath());
                 $needles['categories'] = $needles['category'];
@@ -187,8 +187,8 @@ abstract class Route
             foreach ($needles as $view => $ids) {
                 if (isset(self::$lookup[$language][$view])) {
                     foreach ($ids as $id) {
-                        if (isset(self::$lookup[$language][$view][(int)$id])) {
-                            return self::$lookup[$language][$view][(int)$id];
+                        if (isset(self::$lookup[$language][$view][(int) $id])) {
+                            return self::$lookup[$language][$view][(int) $id];
                         }
                     }
                 }

@@ -207,7 +207,7 @@ class Substitute extends Relational
     public static function cleanUp($tag_id)
     {
         $subs = self::all()
-            ->whereEquals('tag_id', (int)$tag_id)
+            ->whereEquals('tag_id', (int) $tag_id)
             ->rows();
 
         $tags = [];

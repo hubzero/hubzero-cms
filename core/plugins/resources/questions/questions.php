@@ -177,7 +177,7 @@ class Questions extends Plugin
         }
 
         if ($this->filters['search']) {
-            $this->filters['search'] = strtolower((string)$this->filters['search']);
+            $this->filters['search'] = strtolower((string) $this->filters['search']);
 
             $records->whereLike('subject', $this->filters['search'], 1)
                     ->orWhereLike('question', $this->filters['search'], 1)

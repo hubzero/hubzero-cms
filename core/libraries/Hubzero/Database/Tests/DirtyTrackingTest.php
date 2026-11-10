@@ -84,7 +84,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -99,7 +99,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -118,7 +118,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -142,7 +142,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Same Title',
         ]);
@@ -162,7 +162,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -204,7 +204,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -223,7 +223,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -240,7 +240,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
         ]);
 
@@ -258,7 +258,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -278,7 +278,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -303,7 +303,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -319,7 +319,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -339,7 +339,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -361,7 +361,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
             'content' => 'Original Content',
@@ -384,7 +384,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'title' => 'Original Title',
         ]);
@@ -406,7 +406,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => '1',  // String from DB
             'count' => '42',  // String from DB
         ]);
@@ -424,7 +424,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $model = DirtyPost::newFromResults((object)[
+        $model = DirtyPost::newFromResults((object) [
             'id' => 1,
             'deleted_at' => null,
         ]);

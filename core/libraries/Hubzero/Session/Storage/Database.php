@@ -60,7 +60,7 @@ class Database extends Store
         }
 
         if (isset($options['skipWrites'])) {
-            $this->skipWrites = (bool)$options['skipWrites'];
+            $this->skipWrites = (bool) $options['skipWrites'];
         }
 
         parent::__construct($options);

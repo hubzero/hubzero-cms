@@ -51,7 +51,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') as $idp) {
     }
 
 
-    $entity = (array)$idp;
+    $entity = (array) $idp;
     $id = $entity['@attributes']['entityID'];
 
     echo "{\n";

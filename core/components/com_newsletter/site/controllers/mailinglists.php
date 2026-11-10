@@ -108,9 +108,9 @@ class Mailinglists extends SiteController
 
         //get email
         if (User::isGuest()) {
-            $email = (string)urldecode(Request::getString('e', ''));
+            $email = (string) urldecode(Request::getString('e', ''));
         } else {
-            $email = (string)User::get('email');
+            $email = (string) User::get('email');
         }
 
         //must be logged in or have entered email
@@ -271,9 +271,9 @@ class Mailinglists extends SiteController
 
         //get email
         if (User::isGuest()) {
-            $email = (string)urldecode(Request::getString('e', '', 'post'));
+            $email = (string) urldecode(Request::getString('e', '', 'post'));
         } else {
-            $email = (string)User::get('email');
+            $email = (string) User::get('email');
         }
 
         //get mailing lists user belongs to
@@ -673,9 +673,9 @@ class Mailinglists extends SiteController
     {
         //get email
         if (User::isGuest()) {
-            $email = (string)urldecode(Request::getString('e', ''));
+            $email = (string) urldecode(Request::getString('e', ''));
         } else {
-            $email = (string)User::get('email');
+            $email = (string) User::get('email');
         }
 
         //get request vars

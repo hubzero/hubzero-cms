@@ -192,7 +192,7 @@ class Handler extends Plugin
         $xmessage->set('component', $component);
         $xmessage->set('type', $type);
         $xmessage->set('group_id', $group_id);
-        $xmessage->set('anonymous', (int)$anonymous);
+        $xmessage->set('anonymous', (int) $anonymous);
 
         if (!$xmessage->save()) {
             return $xmessage->getError();

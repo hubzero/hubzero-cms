@@ -122,7 +122,7 @@ class Asset extends Nested
         }
 
         if (!is_string($data['rules'])) {
-            $data['rules'] = (string)$data['rules'];
+            $data['rules'] = (string) $data['rules'];
         }
 
         return $data['rules'];

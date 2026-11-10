@@ -803,7 +803,7 @@ class Citations extends Plugin
                 );
                 return;
             }
-        } elseif ((bool)$bulk) {
+        } elseif ((bool) $bulk) {
             /**
              * @TODO move to API, possible use of whereIn()?
              */
@@ -930,7 +930,7 @@ class Citations extends Plugin
                 );
                 return;
             }
-        } elseif ((bool)$bulk) {
+        } elseif ((bool) $bulk) {
             // for bulk citations operation
             /**
              * @TODO move to API, possible use of whereIn()?

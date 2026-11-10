@@ -92,7 +92,7 @@ class Entries extends AdminController
         $entries = Entry::all();
 
         if ($filters['search']) {
-            $entries->whereLike('title', strtolower((string)$filters['search']));
+            $entries->whereLike('title', strtolower((string) $filters['search']));
         }
 
         if ($filters['scope']) {
@@ -100,15 +100,15 @@ class Entries extends AdminController
         }
 
         if ($filters['scope_id']) {
-            $entries->whereEquals('scope_id', (int)$filters['scope_id']);
+            $entries->whereEquals('scope_id', (int) $filters['scope_id']);
         }
 
         if ($filters['state'] >= 0) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         }
 
         if ($filters['access']) {
-            $entries->whereEquals('access', (int)$filters['access']);
+            $entries->whereEquals('access', (int) $filters['access']);
         }
 
         // Get records

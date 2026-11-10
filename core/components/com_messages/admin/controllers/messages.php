@@ -82,13 +82,13 @@ class Messages extends AdminController
 
         if ($filters['search']) {
             $entries
-                ->whereLike('subject', strtolower((string)$filters['search']), 1)
-                ->whereLike('message', strtolower((string)$filters['search']), 1)
+                ->whereLike('subject', strtolower((string) $filters['search']), 1)
+                ->whereLike('message', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 
         if ($filters['state']) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         } else {
             $entries->whereIn('state', [0, 1]);
         }

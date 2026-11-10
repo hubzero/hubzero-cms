@@ -77,7 +77,7 @@ class Arr
     {
         $obj = new $class();
         if (is_object($array)) {
-            $array = (array)$array;
+            $array = (array) $array;
         }
         if (is_array($array)) {
             foreach ($array as $k => $v) {

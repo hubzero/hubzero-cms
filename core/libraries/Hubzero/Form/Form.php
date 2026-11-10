@@ -1004,7 +1004,7 @@ class Form
 
                 // Filter safe HTML.
             case 'SAFEHTML':
-                $return = Sanitize::clean((string)$value);
+                $return = Sanitize::clean((string) $value);
                 break;
 
                 // Convert a date to UTC based on the server timezone offset.

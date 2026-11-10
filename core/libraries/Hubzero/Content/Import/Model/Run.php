@@ -98,7 +98,7 @@ class Run extends Relational
      */
     public function processed($number = 1)
     {
-        $this->set('processed', (int)$this->get('processed', 0) + $number);
+        $this->set('processed', (int) $this->get('processed', 0) + $number);
         $this->save();
     }
 }

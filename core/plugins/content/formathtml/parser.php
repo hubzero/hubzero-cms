@@ -133,7 +133,7 @@ class Parser
      */
     public function addMacroPath($path)
     {
-        $path = trim((string)$path);
+        $path = trim((string) $path);
 
         if ($path) {
             // Make sure paths start with a slash and do NOT end with one

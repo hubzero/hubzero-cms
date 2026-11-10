@@ -76,7 +76,7 @@ class Cfg extends Relational
      **/
     public function automaticUserId($data)
     {
-        return (isset($data['user_id']) && $data['user_id'] ? (int)$data['user_id'] : (int)User::get('id'));
+        return (isset($data['user_id']) && $data['user_id'] ? (int) $data['user_id'] : (int) User::get('id'));
     }
 
     /**

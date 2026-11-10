@@ -132,8 +132,8 @@ class Pagenavigation extends Plugin
             $query->from('#__content AS a');
             $query->leftJoin('#__categories AS cc ON cc.id = a.catid');
             // TODO: Fix where clause
-            $whereClause = 'a.catid = ' . (int)$row->catid . ' AND a.state = ' . (int)$row->state;
-            $whereClause .= $canPublish ? '' : ' AND a.access = ' . (int)$row->access;
+            $whereClause = 'a.catid = ' . (int) $row->catid . ' AND a.state = ' . (int) $row->state;
+            $whereClause .= $canPublish ? '' : ' AND a.access = ' . (int) $row->access;
             $whereClause .= $xwhere;
             $query->where($whereClause);
             $query->order($orderby);

@@ -127,7 +127,7 @@ class Categories extends AdminController
             }]);
 
         if ($filters['search']) {
-            $entries->whereLike('title', strtolower((string)$filters['search']));
+            $entries->whereLike('title', strtolower((string) $filters['search']));
         }
 
         if ($filters['scope']) {
@@ -135,19 +135,19 @@ class Categories extends AdminController
         }
 
         if ($filters['scope_id'] >= 0) {
-            $entries->whereEquals('scope_id', (int)$filters['scope_id']);
+            $entries->whereEquals('scope_id', (int) $filters['scope_id']);
         }
 
         if ($filters['state'] >= 0) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         }
 
         if ($filters['access'] >= 0) {
-            $entries->whereEquals('access', (int)$filters['access']);
+            $entries->whereEquals('access', (int) $filters['access']);
         }
 
         if ($filters['section_id'] > 0) {
-            $entries->whereEquals('section_id', (int)$filters['section_id']);
+            $entries->whereEquals('section_id', (int) $filters['section_id']);
         }
 
         // Get records

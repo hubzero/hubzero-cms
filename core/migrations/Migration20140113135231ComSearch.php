@@ -74,7 +74,7 @@ class Migration20140113135231ComSearch extends Base
                     $this->db->getQuery(true)
                         ->update('#__extensions')
                         ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
-                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->where('extension_id', '=', (int) $result->extension_id)
                         ->execute();
                 }
             }
@@ -145,7 +145,7 @@ class Migration20140113135231ComSearch extends Base
                     $this->db->getQuery(true)
                         ->update('#__extensions')
                         ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
-                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->where('extension_id', '=', (int) $result->extension_id)
                         ->execute();
                 }
             }

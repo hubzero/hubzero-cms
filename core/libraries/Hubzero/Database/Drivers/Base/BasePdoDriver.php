@@ -53,10 +53,10 @@ abstract class BasePdoDriver extends Driver
         // Create lazy PDO connection via ConnectionInterface
         // PdoConnection stores config and connects on first use
         $this->setConnection(new PdoConnection(
-            (string)$options['dsn'],
-            (string)($options['user'] ?? ''),
-            (string)($options['password'] ?? ''),
-            (array)$options['extras'],
+            (string) $options['dsn'],
+            (string) ($options['user'] ?? ''),
+            (string) ($options['password'] ?? ''),
+            (array) $options['extras'],
         ));
 
         // Call parent construct

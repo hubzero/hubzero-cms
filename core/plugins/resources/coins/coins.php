@@ -82,7 +82,7 @@ class Coins extends Plugin
 
         $genre = 'article';
 
-        $assocs = (array)$this->params->get('type', []);
+        $assocs = (array) $this->params->get('type', []);
 
         foreach ($assocs as $assoc) {
             if ($assoc->resource == $model->get('type')) {

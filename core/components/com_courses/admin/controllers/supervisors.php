@@ -61,7 +61,7 @@ class Supervisors extends AdminController
             $mbr = trim($mbr);
 
             if (is_numeric($mbr)) {
-                $uid = (int)$mbr;
+                $uid = (int) $mbr;
             } else {
                 $uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
             }

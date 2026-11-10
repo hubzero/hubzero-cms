@@ -84,7 +84,7 @@ class Author extends Relational
         $ids = [];
 
         $existing = self::all()
-            ->whereEquals('page_id', (int)$page_id)
+            ->whereEquals('page_id', (int) $page_id)
             ->rows();
         foreach ($existing as $ex) {
             $ids[] = $ex->get('user_id');

@@ -48,7 +48,7 @@ class Migration20260912091500ComResources extends Base
         $used = $this->db->getQuery(true)
             ->select('COUNT(*)')
             ->from('#__resources')
-            ->where('type', '=', (int)$id)
+            ->where('type', '=', (int) $id)
             ->value('COUNT(*)');
 
         if ($used) {
@@ -61,7 +61,7 @@ class Migration20260912091500ComResources extends Base
 
         $this->db->getQuery(true)
             ->delete('#__resource_types')
-            ->where('id', '=', (int)$id)
+            ->where('id', '=', (int) $id)
             ->execute();
     }
 

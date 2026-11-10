@@ -630,7 +630,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     public static function oneByCn($cn)
     {
         return self::all()
-            ->whereEquals('cn', (string)$cn)
+            ->whereEquals('cn', (string) $cn)
             ->row();
     }
 
@@ -804,7 +804,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 
         if (isset($filters['search']) && $filters['search'] != '') {
             if (is_numeric($filters['search'])) {
-                $query->whereEquals('gidNumber', (int)$filters['search']);
+                $query->whereEquals('gidNumber', (int) $filters['search']);
             } else {
                 $query->whereLike('description', $filters['search'], 1)
                     ->orWhereLike('cn', $filters['search'], 1)
@@ -839,11 +839,11 @@ class Group extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (isset($filters['published'])) {
-            $query->whereEquals('published', (int)$filters['published']);
+            $query->whereEquals('published', (int) $filters['published']);
         }
 
         if (isset($filters['approved'])) {
-            $query->whereEquals('approved', (int)$filters['approved']);
+            $query->whereEquals('approved', (int) $filters['approved']);
         }
 
         if (isset($filters['created']) && $filters['created'] != '') {

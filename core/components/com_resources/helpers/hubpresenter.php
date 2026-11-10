@@ -43,18 +43,18 @@ class Hubpresenter extends Obj
         }
 
         // Set the title
-        $new_title = (string)$manifest->webtitle;
+        $new_title = (string) $manifest->webtitle;
 
         // Set the type
         $new_type = (in_array($ext, ['webm','mp4','ogv'])) ? 'Video' : 'Audio';
 
         $new_slides = [];
         for ($i = 0; $i < count($manifest->event); $i++) {
-            $title = (string)$manifest->event[$i]->title;
-            $type  = (string)$manifest->event[$i]->type;
-            $media = 'slides' . DS . (string)$manifest->event[$i]->path;
-            $time  = (string)$manifest->event[$i]->start;
-            $slide = (string)$manifest->event[$i]->slide;
+            $title = (string) $manifest->event[$i]->title;
+            $type  = (string) $manifest->event[$i]->type;
+            $media = 'slides' . DS . (string) $manifest->event[$i]->path;
+            $time  = (string) $manifest->event[$i]->start;
+            $slide = (string) $manifest->event[$i]->slide;
 
             if (strtolower($type) == 'video') {
                 $orig_media = $media;

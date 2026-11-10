@@ -118,7 +118,7 @@ class Migration20130924000011ComModules extends Base
                 $ret = $this->db->getQuery(true)
                     ->select('*')
                     ->from('#__modules_menu')
-                    ->where('moduleid', '=', (int)$r->id)
+                    ->where('moduleid', '=', (int) $r->id)
                     ->where('menuid', '=', 0)
                     ->first();
 

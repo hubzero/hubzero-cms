@@ -70,7 +70,7 @@ class Csv implements Adapter
         foreach ($iterator as $row => $data) {
             // if we got back null for a row dont count
             if ($data !== null) {
-                $data = array_map('trim', (array)$data);
+                $data = array_map('trim', (array) $data);
 
                 if (array_filter($data)) {
                     $this->data_count++;
@@ -123,7 +123,7 @@ class Csv implements Adapter
             }
 
             // Make sure we didn't get an empty row
-            $data = array_map('trim', (array)$record);
+            $data = array_map('trim', (array) $record);
             if (!array_filter($data)) {
                 continue;
             }

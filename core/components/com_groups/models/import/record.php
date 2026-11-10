@@ -156,7 +156,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
                 $field->setFormAnswers($this->_description);
                 if (!$field->validate()) {
-                    array_push($this->record->errors, (string)$field->getError());
+                    array_push($this->record->errors, (string) $field->getError());
                 }
             }
         }
@@ -316,7 +316,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         if (isset($this->_options['approved'])) {
-            $this->record->entry->set('approved', (int)$this->_options['approved']);
+            $this->record->entry->set('approved', (int) $this->_options['approved']);
         }
     }
 

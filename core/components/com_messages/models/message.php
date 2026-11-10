@@ -71,8 +71,8 @@ class Message extends Relational
     public function automaticUserIdFrom($data)
     {
         return (isset($data['user_id_from']) && $data['user_id_from']
-            ? (int)$data['user_id_from']
-            : (int)User::get('id'));
+            ? (int) $data['user_id_from']
+            : (int) User::get('id'));
     }
 
     /**

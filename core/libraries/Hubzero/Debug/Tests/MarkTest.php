@@ -118,7 +118,7 @@ class MarkTest extends Basic
 
         $this->assertEquals($mark->toString(), $result);
         $this->assertEquals($mark->__toString(), $result);
-        $this->assertEquals((string)$mark, $result);
+        $this->assertEquals((string) $mark, $result);
     }
 
     /**

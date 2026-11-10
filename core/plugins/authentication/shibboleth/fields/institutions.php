@@ -116,7 +116,7 @@ class Institutions extends Field
             }
             $html[] = '</div>';
         } else {
-            $html[] = '<p class="warning">' . htmlspecialchars((string)$entities, ENT_QUOTES, 'UTF-8') . '</p>';
+            $html[] = '<p class="warning">' . htmlspecialchars((string) $entities, ENT_QUOTES, 'UTF-8') . '</p>';
         }
 
         $html[] = '</div>';

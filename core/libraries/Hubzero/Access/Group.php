@@ -199,8 +199,8 @@ class Group extends Relational
 
         // Select it's children
         $children = self::all()
-            ->where('lft', '>=', (int)$this->get('lft'))
-            ->where('rgt', '<=', (int)$this->get('rgt'))
+            ->where('lft', '>=', (int) $this->get('lft'))
+            ->where('rgt', '<=', (int) $this->get('rgt'))
             ->rows();
 
         if (!$children->count()) {

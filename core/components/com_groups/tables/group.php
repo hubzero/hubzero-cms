@@ -290,7 +290,7 @@ class Group extends Table
      */
     public function getName($id)
     {
-        $query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . (int)$id . ";";
+        $query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . (int) $id . ";";
         $this->_db->setQuery($query);
 
         return $this->_db->loadResult();

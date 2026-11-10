@@ -100,7 +100,7 @@ class Comment extends Relational
         if (!isset($data['state'])) {
             $data['state'] = self::STATE_PUBLISHED;
         }
-        return (int)$data['state'];
+        return (int) $data['state'];
     }
 
     /**
@@ -114,7 +114,7 @@ class Comment extends Relational
         if (!isset($data['anonymous'])) {
             $data['anonymous'] = 0;
         }
-        return (int)$data['anonymous'];
+        return (int) $data['anonymous'];
     }
 
     /**
@@ -128,7 +128,7 @@ class Comment extends Relational
         if (!isset($data['parent'])) {
             $data['parent'] = 0;
         }
-        return (int)$data['parent'];
+        return (int) $data['parent'];
     }
 
     /**

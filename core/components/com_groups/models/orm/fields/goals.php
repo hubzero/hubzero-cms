@@ -184,7 +184,7 @@ class Goals extends Radio
         // Build the radio field output.
         foreach ($values as $i => $value) {
             if (is_string($value)) {
-                $value = json_decode((string)$value, true);
+                $value = json_decode((string) $value, true);
             }
 
             if (!$value || json_last_error() !== JSON_ERROR_NONE) {

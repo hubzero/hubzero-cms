@@ -171,7 +171,7 @@ class Product
      */
     public function getAccessGroups($type = 'include')
     {
-        $id = (int)$this->getId();
+        $id = (int) $this->getId();
 
         if (!$id) {
             return [];
@@ -205,7 +205,7 @@ class Product
             $groups = [$groups];
         }
 
-        $id = (int)$this->getId();
+        $id = (int) $this->getId();
 
         if (!$id) {
             return true;

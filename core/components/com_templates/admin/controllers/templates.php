@@ -71,7 +71,7 @@ class Templates extends AdminController
             ->whereEquals('type', 'template');
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             if (stripos($filters['search'], 'id:') === 0) {
                 $model->whereEquals('id', (int) substr($filters['search'], 3));
@@ -83,7 +83,7 @@ class Templates extends AdminController
         }
 
         if ($filters['client_id'] && $filters['client_id'] != '*') {
-            $model->whereEquals('client_id', (int)$filters['client_id']);
+            $model->whereEquals('client_id', (int) $filters['client_id']);
         }
 
         // Get records

@@ -46,7 +46,7 @@ class Migration20141120215253ComHubgraph extends Base
                 foreach ($ids as $id) {
                     $this->db->getQuery(true)
                         ->delete('#__extensions')
-                        ->where('extension_id', '=', (int)$id)
+                        ->where('extension_id', '=', (int) $id)
                         ->execute();
                 }
             }

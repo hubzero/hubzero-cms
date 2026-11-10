@@ -243,8 +243,8 @@ class Wishlist extends Plugin
 
         if ($filters['search']) {
             $entries
-                ->whereLike('subject', strtolower((string)$filters['search']), 1)
-                ->orWhereLike('about', strtolower((string)$filters['search']), 1)
+                ->whereLike('subject', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('about', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 

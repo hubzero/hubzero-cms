@@ -178,7 +178,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
         if (!$form->validate($this->_profile)) {
             foreach ($form->getErrors() as $key => $error) {
-                array_push($this->record->errors, (string)$error);
+                array_push($this->record->errors, (string) $error);
             }
         }
 
@@ -446,7 +446,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
             if (isset($this->raw->usertype)) {
                 if (is_numeric($this->raw->usertype)) {
-                    $newUsertype = (int)$this->raw->usertype;
+                    $newUsertype = (int) $this->raw->usertype;
                 } else {
                     $db = App::get('db');
                     $query = $db->getQuery()
@@ -454,7 +454,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                         ->from('#__usergroups')
                         ->whereEquals('title', $this->raw->usertype);
                     $db->setQuery($query->toString());
-                    $newUsertype = (int)$db->loadResult();
+                    $newUsertype = (int) $db->loadResult();
                 }
             }
 

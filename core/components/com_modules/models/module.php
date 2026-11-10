@@ -329,8 +329,8 @@ class Module extends Relational
             $db = App::get('db');
             $query = $db->getQuery()
                 ->delete('#__modules_menu')
-                ->whereEquals('moduleid', (int)$pk);
-            $db->setQuery((string)$query);
+                ->whereEquals('moduleid', (int) $pk);
+            $db->setQuery((string) $query);
             $result = $db->query();
         }
 
@@ -404,9 +404,9 @@ class Module extends Relational
         $query = $db->getQuery()
             ->select('menuid')
             ->from('#__modules_menu')
-            ->whereEquals('moduleid', (int)$pk);
+            ->whereEquals('moduleid', (int) $pk);
 
-        $db->setQuery((string)$query->toString());
+        $db->setQuery((string) $query->toString());
         $rows = $db->loadColumn();
 
         foreach ($rows as $menuid) {
@@ -541,7 +541,7 @@ class Module extends Relational
         return $db->loadColumn();*/
 
         return Menu::all()
-            ->whereEquals('moduleid', (int)$this->get('id'))
+            ->whereEquals('moduleid', (int) $this->get('id'))
             ->rows()
             ->fieldsByKey('menuid');
     }

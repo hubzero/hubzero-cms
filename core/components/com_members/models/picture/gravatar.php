@@ -178,7 +178,7 @@ class Gravatar
             return null;
         }
 
-        return ['s' => (int)$this->get('size')];
+        return ['s' => (int) $this->get('size')];
     }
 
     /**

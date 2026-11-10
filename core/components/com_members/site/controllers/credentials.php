@@ -676,8 +676,8 @@ class Credentials extends SiteController
     private function hasExceededResetLimit($user)
     {
         $params     = Component::params('com_members');
-        $resetCount = (int)$params->get('reset_count', 10);
-        $resetHours = (int)$params->get('reset_time', 1);
+        $resetCount = (int) $params->get('reset_count', 10);
+        $resetHours = (int) $params->get('reset_time', 1);
         $result     = true;
 
         // Get the user's tokens

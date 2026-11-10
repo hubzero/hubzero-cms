@@ -831,7 +831,7 @@ class Discussions extends Plugin
         $comments = null;
 
         $entries = $post->thread()
-            ->whereIn('state', (array)$filters['state'])
+            ->whereIn('state', (array) $filters['state'])
             ->whereIn('access', $filters['access']);
 
         if (isset($filters['start_at']) && $filters['start_at']) {
@@ -963,7 +963,7 @@ class Discussions extends Plugin
 
         $entries = Post::all()
             ->whereEquals('parent', 0)
-            ->whereIn('state', (array)$filters['state'])
+            ->whereIn('state', (array) $filters['state'])
             ->whereIn('access', $filters['access']);
 
         if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != 'undefined') {
@@ -1038,7 +1038,7 @@ class Discussions extends Plugin
 
         $entries = Post::all()
             ->whereEquals('thread', $post->id)
-            ->whereIn('state', (array)$filters['state'])
+            ->whereIn('state', (array) $filters['state'])
             ->whereIn('access', $filters['access']);
 
         if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != 'undefined') {

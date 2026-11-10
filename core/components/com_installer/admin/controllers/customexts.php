@@ -125,14 +125,14 @@ class Customexts extends AdminController
         }
 
         if (isset($filters['client_id']) && $filters['client_id'] != '') {
-            $entries->whereEquals('client_id', (int)$filters['client_id']);
+            $entries->whereEquals('client_id', (int) $filters['client_id']);
         }
 
         if (isset($filters['status']) && $filters['status'] != '') {
             if ($filters['status'] == '2') {
                 $entries->whereEquals('protected', 1);
             } else {
-                $entries->whereEquals('enabled', (int)$filters['status']);
+                $entries->whereEquals('enabled', (int) $filters['status']);
             }
         }
 

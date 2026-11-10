@@ -96,7 +96,7 @@ class Polls extends AdminController
             }
             $filters['search'] = strtolower($filters['search']);
 
-            $polls->whereLike('title', strtolower((string)$filters['search']));
+            $polls->whereLike('title', strtolower((string) $filters['search']));
         }
 
         if ($filters['state']) {

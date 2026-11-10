@@ -37,14 +37,14 @@ class Migration20160915110400ComMembers extends Base
             if ($config) {
                 $config = json_decode($config);
                 if (is_object($config)) {
-                    $access = (int)$config->privacy;
+                    $access = (int) $config->privacy;
                     $access = $access ?: 1;
                 }
             }
 
             $this->db->getQuery(true)
                 ->update('#__users')
-                ->set(['access' => (int)$access])
+                ->set(['access' => (int) $access])
                 ->where('access', '=', 0)
                 ->execute();
         }

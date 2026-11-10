@@ -76,7 +76,7 @@ class Pages extends AdminController
         $query = $event->pages();
 
         if ($filters['search']) {
-            $query->whereLike('title', strtolower((string)$filters['search']));
+            $query->whereLike('title', strtolower((string) $filters['search']));
         }
 
         $rows = $query

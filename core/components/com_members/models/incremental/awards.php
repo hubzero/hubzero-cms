@@ -62,7 +62,7 @@ class Awards
     public function __construct($profile)
     {
         $this->profile = $profile;
-        $this->uid = is_integer($profile) ? $profile : (int)$this->profile->get('uidNumber');
+        $this->uid = is_integer($profile) ? $profile : (int) $this->profile->get('uidNumber');
         self::getDbh();
         do {
             $columns = [
@@ -159,7 +159,7 @@ class Awards
                 continue;
             }
             $regField = $fieldMap[$k];
-            if ((bool)$this->profile->get($k)) {
+            if ((bool) $this->profile->get($k)) {
                 $completeSql .= ', ' . $k . ' = 1';
                 $alreadyComplete += $awardPer;
             } else {

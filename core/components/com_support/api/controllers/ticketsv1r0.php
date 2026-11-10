@@ -118,7 +118,7 @@ class Ticketsv1r0 extends ApiController
                     $group = $g->get('gidNumber');
                 }
             }
-            $sql .= " AND `group_id`=" . $this->database->quote((int)$group);
+            $sql .= " AND `group_id`=" . $this->database->quote((int) $group);
         }
         $sql .= " ORDER BY created ASC";
 

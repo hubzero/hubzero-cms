@@ -67,7 +67,7 @@ class Statuses extends AdminController
         $entries = Status::all();
 
         if ($filters['open'] >= 0) {
-            $entries->whereEquals('open', (int)$filters['open']);
+            $entries->whereEquals('open', (int) $filters['open']);
         }
 
         $rows = $entries

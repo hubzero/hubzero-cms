@@ -76,7 +76,7 @@ class Type extends Relational
     public static function oneByOrdering($ordering)
     {
         return self::all()
-            ->whereEquals('ordering', (int)$ordering)
+            ->whereEquals('ordering', (int) $ordering)
             ->row();
     }
 }

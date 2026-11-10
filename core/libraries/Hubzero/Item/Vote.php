@@ -162,11 +162,11 @@ class Vote extends Relational
     public static function oneByScope($item_id, $item_type, $created_by = 0, $ip = null)
     {
         $model = self::all()
-            ->whereEquals('item_id', (int)$item_id)
-            ->whereEquals('item_type', (string)$item_type);
+            ->whereEquals('item_id', (int) $item_id)
+            ->whereEquals('item_type', (string) $item_type);
 
         if ($created_by) {
-            $model->whereEquals('created_by', (int)$created_by);
+            $model->whereEquals('created_by', (int) $created_by);
         }
 
         if ($ip) {

@@ -70,7 +70,7 @@ class ArrTest extends Basic
 
         foreach ($data as $key => $val) {
             $this->assertTrue(is_int($val), 'Value returned was not an integer');
-            $this->assertEquals($val, (int)$dflt[$key]);
+            $this->assertEquals($val, (int) $dflt[$key]);
         }
 
         // In this case, the return value should be `array($dflt2)`
@@ -86,7 +86,7 @@ class ArrTest extends Basic
 
         foreach ($data2 as $key => $val) {
             $this->assertTrue(is_int($val), 'Value returned was not an integer');
-            $this->assertEquals($val, (int)$dflt2);
+            $this->assertEquals($val, (int) $dflt2);
         }
     }
 
@@ -124,7 +124,7 @@ class ArrTest extends Basic
 
             $this->assertTrue(is_object($result), 'Value returned was not an object');
 
-            foreach ((array)$data as $key => $val) {
+            foreach ((array) $data as $key => $val) {
                 $this->assertTrue(isset($result->$key), 'Property "' . $key . '" not set on returned object');
                 if (!is_array($val)) {
                     $this->assertEquals($result->$key, $val);
@@ -177,14 +177,14 @@ class ArrTest extends Basic
 
             $this->assertTrue(is_array($result), 'Value returned was not an array');
 
-            foreach ((array)$data as $key => $val) {
+            foreach ((array) $data as $key => $val) {
                 $this->assertTrue(isset($result[$key]), 'Array value not set from object property');
                 if (!is_array($val) && !is_object($val)) {
                     $this->assertEquals($result[$key], $val);
                 } else {
                     $this->assertTrue(isset($result[$key]), 'Array value not set from object property');
 
-                    foreach ((array)$val as $k => $v) {
+                    foreach ((array) $val as $k => $v) {
                         $this->assertTrue(isset($result[$key][$k]), 'Property not set on returned object');
                         $this->assertEquals($result[$key][$k], $v);
                     }
@@ -195,7 +195,7 @@ class ArrTest extends Basic
         $result = Arr::fromObject($data2, false);
 
         $this->assertTrue(is_array($result), 'Value returned was not an array');
-        foreach ((array)$data2 as $key => $val) {
+        foreach ((array) $data2 as $key => $val) {
             $this->assertTrue(isset($result[$key]), 'Array value not set from object property');
             $this->assertEquals($result[$key], $val);
         }

@@ -563,7 +563,7 @@ class Dashboard extends Plugin
         foreach ($memberPreferences as $memberPreference) {
             // load their member preferences
             $params = [];
-            if ((string)$memberPreference->get('preferences') !== '') {
+            if ((string) $memberPreference->get('preferences') !== '') {
                 $params = json_decode($memberPreference->get('preferences'));
             }
 

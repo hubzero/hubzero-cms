@@ -40,7 +40,7 @@ class Migration20140130105700ComAnswers extends Base
 
                     $this->db->getQuery(true)
                         ->update('#__answers_questions')
-                        ->set(['created_by' => (int)$id])
+                        ->set(['created_by' => (int) $id])
                         ->where('id', '=', $r->id)
                         ->execute();
                 }
@@ -65,7 +65,7 @@ class Migration20140130105700ComAnswers extends Base
 
                     $this->db->getQuery(true)
                         ->update('#__answers_responses')
-                        ->set(['created_by' => (int)$id])
+                        ->set(['created_by' => (int) $id])
                         ->where('id', '=', $r->id)
                         ->execute();
                 }
@@ -117,7 +117,7 @@ class Migration20140130105700ComAnswers extends Base
                     $username = $this->db->getQuery(true)
                         ->select('username')
                         ->from('#__users')
-                        ->where('id', '=', (int)$r->created_by)
+                        ->where('id', '=', (int) $r->created_by)
                         ->value('username');
 
                     $this->db->getQuery(true)
@@ -142,7 +142,7 @@ class Migration20140130105700ComAnswers extends Base
                     $username = $this->db->getQuery(true)
                         ->select('username')
                         ->from('#__users')
-                        ->where('id', '=', (int)$r->created_by)
+                        ->where('id', '=', (int) $r->created_by)
                         ->value('username');
 
                     $this->db->getQuery(true)

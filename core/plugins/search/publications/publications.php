@@ -164,7 +164,7 @@ class Publications extends Plugin
         if (!$quoted_terms) {
             // Find ids of tagged resources that did not match regular fulltext searching
             foreach ($assoc as $row) {
-                $id = (int)$row->get('id');
+                $id = (int) $row->get('id');
                 if (array_key_exists($id, $tag_map)) {
                     $row->add_weight((1 + $tag_map[$id]) / 12, 'tag bonus from publications plugin');
                     unset($tag_map[$id]);
@@ -212,7 +212,7 @@ class Publications extends Plugin
         $sorter = new PublicationChildSorter($placed);
         $rows = [];
         foreach ($id_assoc as $id => $row) {
-            if (!array_key_exists((int)$id, $placed)) {
+            if (!array_key_exists((int) $id, $placed)) {
                 $row->sort_children([$sorter, 'sort']);
                 $rows[] = $row;
             }

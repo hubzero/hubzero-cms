@@ -124,9 +124,9 @@ class Items extends AdminController
 
         if ($filters['search']) {
             if (is_numeric($filters['search'])) {
-                $query->whereEquals('id', (int)$filters['search']);
+                $query->whereEquals('id', (int) $filters['search']);
             } else {
-                $filters['search'] = strtolower((string)$filters['search']);
+                $filters['search'] = strtolower((string) $filters['search']);
 
                 $query->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
@@ -135,11 +135,11 @@ class Items extends AdminController
         }
 
         if ($filters['type']) {
-            $query->whereEquals('type', (int)$filters['type']);
+            $query->whereEquals('type', (int) $filters['type']);
         }
 
         if ($filters['status'] != 'all') {
-            $query->whereEquals('published', (int)$filters['status']);
+            $query->whereEquals('published', (int) $filters['status']);
         }
 
         if ($filters['license'] != 'all') {
@@ -220,15 +220,15 @@ class Items extends AdminController
         ];
 
         // Get parent info
-        $parent = Entry::oneOrFail((int)$filters['parent_id']);
+        $parent = Entry::oneOrFail((int) $filters['parent_id']);
 
         $query = $parent->children();
 
         if ($filters['search']) {
             if (is_numeric($filters['search'])) {
-                $query->whereEquals('id', (int)$filters['search']);
+                $query->whereEquals('id', (int) $filters['search']);
             } else {
-                $filters['search'] = strtolower((string)$filters['search']);
+                $filters['search'] = strtolower((string) $filters['search']);
 
                 $query->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
@@ -237,7 +237,7 @@ class Items extends AdminController
         }
 
         if ($filters['status'] != 'all') {
-            $query->whereEquals('published', (int)$filters['status']);
+            $query->whereEquals('published', (int) $filters['status']);
         }
 
         $rows = $query
@@ -297,9 +297,9 @@ class Items extends AdminController
 
         if ($filters['search']) {
             if (is_numeric($filters['search'])) {
-                $query->whereEquals('id', (int)$filters['search']);
+                $query->whereEquals('id', (int) $filters['search']);
             } else {
-                $filters['search'] = strtolower((string)$filters['search']);
+                $filters['search'] = strtolower((string) $filters['search']);
 
                 $query->whereLike('title', $filters['search'], 1)
                         ->orWhereLike('fulltxt', $filters['search'], 1)
@@ -308,7 +308,7 @@ class Items extends AdminController
         }
 
         if ($filters['status'] != 'all') {
-            $query->whereEquals('published', (int)$filters['status']);
+            $query->whereEquals('published', (int) $filters['status']);
         }
 
         $rows = $query
@@ -1624,7 +1624,7 @@ class Items extends AdminController
         if (is_numeric($id)) {
             $profile = Member::oneOrNew(intval($id));
         } else {
-            $profile = Member::oneByUsername((string)$id);
+            $profile = Member::oneByUsername((string) $id);
         }
 
         if (!is_object($profile) || !$profile->get('id')) {
@@ -1685,7 +1685,7 @@ class Items extends AdminController
         if (is_numeric($id)) {
             $profile = Member::oneOrNew(intval($id));
         } else {
-            $profile = Member::oneByUsername((string)$id);
+            $profile = Member::oneByUsername((string) $id);
         }
 
         if (!is_object($profile) || !$profile->get('id')) {

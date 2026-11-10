@@ -321,9 +321,9 @@ class MathRenderer
             if (!$wm->get('id')) {
                 $wm->set('inputhash', $this->encodeBlob($md5_sql));
                 $wm->set('outputhash', $this->encodeBlob($outmd5_sql));
-                $wm->set('conservativeness', (int)$this->conservativeness);
-                $wm->set('html', (string)$this->html);
-                $wm->set('mathml', (string)$this->mathml);
+                $wm->set('conservativeness', (int) $this->conservativeness);
+                $wm->set('html', (string) $this->html);
+                $wm->set('mathml', (string) $this->mathml);
 
                 if (!$wm->save()) {
                     return $wm->getError();

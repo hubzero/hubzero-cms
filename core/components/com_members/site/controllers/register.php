@@ -812,10 +812,10 @@ class Register extends SiteController
                 $user->set('middleName', $xregistration->get('middleName', ''));
                 $user->set('surname', $xregistration->get('surname', ''));
                 $user->set('email', $xregistration->get('email', ''));
-                $user->set('usageAgreement', (int)$xregistration->get('usageAgreement', 0));
+                $user->set('usageAgreement', (int) $xregistration->get('usageAgreement', 0));
                 $user->set('sendEmail', -1);
                 if ($xregistration->get('sendEmail') >= 0) {
-                    $user->set('sendEmail', (int)$xregistration->get('sendEmail'));
+                    $user->set('sendEmail', (int) $xregistration->get('sendEmail'));
                 }
 
                 // Set home directory
@@ -848,7 +848,7 @@ class Register extends SiteController
                     }
                 } elseif ($useractivation == 0) {
                     $user->set('activation', 1);
-                    $user->set('access', (int)$this->config->get('privacy', 1));
+                    $user->set('access', (int) $this->config->get('privacy', 1));
                 }
 
                 $password = $xregistration->get('password');

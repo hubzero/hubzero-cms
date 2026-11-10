@@ -30,9 +30,9 @@ $elements = [];
 
 foreach ($this->fields as $field) {
     $element = new stdClass();
-    $element->label      = (string)$field->get('label');
-    $element->name       = (string)$field->get('name');
-    $element->field_type = (string)$field->get('type');
+    $element->label      = (string) $field->get('label');
+    $element->name       = (string) $field->get('name');
+    $element->field_type = (string) $field->get('type');
     if ($element->field_type == 'select') {
         $element->field_type = 'dropdown';
     }
@@ -42,21 +42,21 @@ foreach ($this->fields as $field) {
     //$element->required = (bool)$field->get('required');
     //$element->readonly = (bool)$field->get('readonly');
     //$element->disabled = (bool)$field->get('disabled');
-    $element->create   = (int)$field->get('action_create');
-    $element->update   = (int)$field->get('action_update');
-    $element->edit     = (int)$field->get('action_edit');
-    $element->browse   = (int)$field->get('action_browse');
-    $element->access   = (int)$field->get('access');
-    $element->field_id = (int)$field->get('id');
+    $element->create   = (int) $field->get('action_create');
+    $element->update   = (int) $field->get('action_update');
+    $element->edit     = (int) $field->get('action_edit');
+    $element->browse   = (int) $field->get('action_browse');
+    $element->access   = (int) $field->get('access');
+    $element->field_id = (int) $field->get('id');
 
     $element->field_options = new stdClass();
-    $element->field_options->description          = (string)$field->get('description');
-    $element->field_options->placeholder          = (string)$field->get('placeholder');
-    $element->field_options->include_other_option = (bool)$field->get('option_other');
-    $element->field_options->include_blank_option = (bool)$field->get('option_blank');
-    $element->field_options->min = (int)$field->get('min');
-    $element->field_options->max = (int)$field->get('max');
-    $element->field_options->value = (string)$field->get('default_value');
+    $element->field_options->description          = (string) $field->get('description');
+    $element->field_options->placeholder          = (string) $field->get('placeholder');
+    $element->field_options->include_other_option = (bool) $field->get('option_other');
+    $element->field_options->include_blank_option = (bool) $field->get('option_blank');
+    $element->field_options->min = (int) $field->get('min');
+    $element->field_options->max = (int) $field->get('max');
+    $element->field_options->value = (string) $field->get('default_value');
 
     $options = $field->options;
 
@@ -64,10 +64,10 @@ foreach ($this->fields as $field) {
         $element->field_options->options = [];
         foreach ($options as $option) {
             $opt = new stdClass();
-            $opt->field_id = (int)$option->get('id');
-            $opt->label    = (string)$option->get('label');
-            $opt->value    = (string)$option->get('value', $option->get('label'));
-            $opt->checked  = (bool)$option->get('checked');
+            $opt->field_id = (int) $option->get('id');
+            $opt->label    = (string) $option->get('label');
+            $opt->value    = (string) $option->get('value', $option->get('label'));
+            $opt->checked  = (bool) $option->get('checked');
             $dependents = $option->get('dependents', '[]');
             $dependents = $dependents ? $dependents : '[]';
             $dependents = json_decode($dependents);

@@ -243,7 +243,7 @@ class Pucas extends Plugin
                 $datum->set([
                     'link_id'      => $hzal->id,
                     'domain_key'   => 'i2a2',
-                    'domain_value' => (string)$val,
+                    'domain_value' => (string) $val,
                 ]);
                 $datum->save();
             }

@@ -525,7 +525,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         $model = new Association();
-        $model->set('parent_id', (int)$id);
+        $model->set('parent_id', (int) $id);
         $model->set('child_id', $this->get('id'));
         $model->set('grouping', 0);
 
@@ -558,7 +558,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         $model = new Association();
         $model->set('parent_id', $this->get('id'));
-        $model->set('child_id', (int)$id);
+        $model->set('child_id', (int) $id);
         $model->set('grouping', 0);
 
         if (!$model->save()) {
@@ -831,7 +831,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         // The ORM attribute layer strips certain HTML attributes (e.g. alt)
         // during model hydration, which breaks authored content with <img alt="...">.
         $db = App::get('db');
-        $db->setQuery("SELECT fulltxt FROM #__resources WHERE id=" . (int)$this->get('id'));
+        $db->setQuery("SELECT fulltxt FROM #__resources WHERE id=" . (int) $this->get('id'));
         $raw = $db->loadResult();
         $content = stripslashes((string) ($raw ?: $this->get('fulltxt')));
         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);

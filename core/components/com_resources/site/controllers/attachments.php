@@ -567,7 +567,7 @@ class Attachments extends SiteController
             if (!$authOn->access('edit') && !$authOn->access('edit-own')) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
-            $resource->set('title', (string)$name);
+            $resource->set('title', (string) $name);
             $resource->save();
         }
 
@@ -747,7 +747,7 @@ class Attachments extends SiteController
                     $doc_id = $database->insertId();
                 }
 
-                $database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int)$doc_id . ", " . (int)$id . ")");
+                $database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int) $doc_id . ", " . (int) $id . ")");
 
                 system('/usr/bin/textifier ' . escapeshellarg($path) . ' >/dev/null');
             }

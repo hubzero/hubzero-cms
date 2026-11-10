@@ -612,7 +612,7 @@ class Db2Driver extends BaseSqlDriver
         foreach ($rows as $row) {
             // Properties are lowercase due to ATTR_CASE, but SchemaManager expects uppercase
             // Convert to uppercase property names
-            $fixedRow = (object)[
+            $fixedRow = (object) [
                 'Key_name' => $row->key_name,
                 'Non_unique' => $row->non_unique,
                 'Column_name' => $row->column_name,

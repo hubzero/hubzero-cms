@@ -83,7 +83,7 @@ class Csp extends Plugin
             $ps = [];
 
             foreach ($this->policies as $key) {
-                $val = (string)$this->params->get($key);
+                $val = (string) $this->params->get($key);
                 $val = trim($val);
 
                 if ($val) {
@@ -112,12 +112,12 @@ class Csp extends Plugin
                 $val = '';
 
                 if ($this->params->get('report-' . $key)) {
-                    $val = (string)$this->params->get('report-' . $key);
+                    $val = (string) $this->params->get('report-' . $key);
                 }
 
                 if (!$val) {
                     // Deferr to the regular policy
-                    $val = (string)$this->params->get($key);
+                    $val = (string) $this->params->get($key);
                 }
 
                 $val = trim($val);

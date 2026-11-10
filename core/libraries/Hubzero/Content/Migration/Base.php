@@ -444,7 +444,7 @@ class Base
      **/
     public static function registerMacroNamespace($namespace, $paths = [])
     {
-        self::$macroNamespaces[$namespace] = (array)$paths;
+        self::$macroNamespaces[$namespace] = (array) $paths;
     }
 
     /**

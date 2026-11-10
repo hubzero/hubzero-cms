@@ -168,10 +168,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (!empty($filters['year_start'])) {
-            $records->where('year', '>=', (int)$filters['year_start']);
+            $records->where('year', '>=', (int) $filters['year_start']);
         }
         if (!empty($filters['year_end'])) {
-            $records->where('year', '<=', (int)$filters['year_end']);
+            $records->where('year', '<=', (int) $filters['year_end']);
         }
 
         // Author filter: match the citation's own denormalized author field (which

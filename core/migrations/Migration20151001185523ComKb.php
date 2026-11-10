@@ -98,7 +98,7 @@ class Migration20151001185523ComKb extends Base
                     $this->db->getQuery(true)
                         ->update('#__faq')
                         ->set(['category' => $article->category])
-                        ->where('id', '=', (int)$article->id)
+                        ->where('id', '=', (int) $article->id)
                         ->execute();
                 }
 
@@ -221,7 +221,7 @@ class Migration20151001185523ComKb extends Base
                         'section'  => $article->section,
                         'category' => 0,
                     ])
-                    ->where('id', '=', (int)$article->id)
+                    ->where('id', '=', (int) $article->id)
                     ->execute();
             }
         }
@@ -296,7 +296,7 @@ class Migration20151001185523ComKb extends Base
                 ->from('#__faq_categories')
                 ->where('title', '=', $tbl->title)
                 ->where('alias', '=', $tbl->alias)
-                ->where('section', '=', (int)$tbl->parent_id);
+                ->where('section', '=', (int) $tbl->parent_id);
             $id = $query->value('id');
         }
 

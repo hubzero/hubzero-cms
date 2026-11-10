@@ -204,7 +204,7 @@ class Roles extends AdminController
         $i = 0;
 
         foreach ($ids as $id) {
-            $row = Role::oneOrFail((int)$id);
+            $row = Role::oneOrFail((int) $id);
 
             if (!$row->destroy()) {
                 Notify::error($row->getError());

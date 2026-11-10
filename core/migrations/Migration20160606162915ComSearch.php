@@ -37,7 +37,7 @@ class Migration20160606162915ComSearch extends Base
                 $this->db->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $parameters])
-                    ->where('extension_id', '=', (int)$result['extension_id'])
+                    ->where('extension_id', '=', (int) $result['extension_id'])
                     ->execute();
             }
         }

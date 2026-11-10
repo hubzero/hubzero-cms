@@ -66,7 +66,7 @@ class Overview extends Plugin
             }
         }
 
-        $period = (int)$this->periodToInt(Request::getCmd('period', $this->params->get('period', 'prior12')));
+        $period = (int) $this->periodToInt(Request::getCmd('period', $this->params->get('period', 'prior12')));
 
         $cur_year  = $this->params->get('currentYear', floor(date("Y")));
         $cur_month = $this->params->get('currentMonth', floor(date("n")));

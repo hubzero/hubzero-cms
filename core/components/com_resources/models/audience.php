@@ -93,7 +93,7 @@ class Audience extends Relational
      **/
     public function automaticAddedBy($data)
     {
-        return (isset($data['added_by']) && $data['added_by'] ? (int)$data['added_by'] : (int)User::get('id'));
+        return (isset($data['added_by']) && $data['added_by'] ? (int) $data['added_by'] : (int) User::get('id'));
     }
 
     /**

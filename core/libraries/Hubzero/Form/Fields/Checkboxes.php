@@ -91,7 +91,7 @@ class Checkboxes extends Field
         $options = $this->getOptions();
 
         $found  = false;
-        $values = (array)$this->value;
+        $values = (array) $this->value;
 
         // Build the checkbox field output.
         $html[] = '<ul>';

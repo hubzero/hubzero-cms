@@ -179,14 +179,14 @@ $this->css('usage', 'com_usage');
                 'citations'   => 0,
             ];
 
-            $serials = (array)PlgMembersUsage::getSerialResourceTypes();
+            $serials = (array) PlgMembersUsage::getSerialResourceTypes();
 
             // First pass
             // See if any of the resource types are lists of other resources
             $children = [];
             foreach ($this->andmore_stats as $row) {
                 if (in_array($row->type_id, $serials)) {
-                    $children[$row->id] = (array)PlgMembersUsage::getSerialResourceChildren($row->id);
+                    $children[$row->id] = (array) PlgMembersUsage::getSerialResourceChildren($row->id);
                 } else {
                     $children[$row->id] = [];
                 }
@@ -222,9 +222,9 @@ $this->css('usage', 'com_usage');
 
                 $cites = PlgMembersUsage::getCitationcount($row->id, 0);
 
-                $total['usercount12'] += (int)str_replace(',', '', $usercount12);
-                $total['usercount14'] += (int)str_replace(',', '', $usercount14);
-                $total['citations']   += (int)$cites;
+                $total['usercount12'] += (int) str_replace(',', '', $usercount12);
+                $total['usercount14'] += (int) str_replace(',', '', $usercount14);
+                $total['citations']   += (int) $cites;
                 ?>
                 <tr class="<?php
                     $cls = ($cls == 'even') ? 'odd' : 'even';
@@ -249,7 +249,7 @@ $this->css('usage', 'com_usage');
 
                         $cites = PlgMembersUsage::getCitationcount($rw->id, 0);
 
-                        $total['citations']   += (int)$cites;
+                        $total['citations']   += (int) $cites;
                         ?>
                         <tr class="child <?php
                             $cls = ($cls == 'even') ? 'odd' : 'even';

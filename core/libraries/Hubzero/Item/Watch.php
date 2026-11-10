@@ -131,9 +131,9 @@ class Watch extends Relational
         if ($item_id && $item_type && $created_by) {
             $total = self::all()
                 ->whereEquals('state', 1)
-                ->whereEquals('created_by', (int)$created_by)
-                ->whereEquals('item_id', (int)$item_id)
-                ->whereEquals('item_type', (string)$item_type)
+                ->whereEquals('created_by', (int) $created_by)
+                ->whereEquals('item_id', (int) $item_id)
+                ->whereEquals('item_type', (string) $item_type)
                 ->total();
 
             if ($total) {
@@ -156,15 +156,15 @@ class Watch extends Relational
     public static function oneByScope($item_id, $item_type, $created_by = 0, $email = null)
     {
         $model = self::all()
-            ->whereEquals('item_id', (int)$item_id)
-            ->whereEquals('item_type', (string)$item_type);
+            ->whereEquals('item_id', (int) $item_id)
+            ->whereEquals('item_type', (string) $item_type);
 
         if ($created_by) {
-            $model->whereEquals('created_by', (int)$created_by);
+            $model->whereEquals('created_by', (int) $created_by);
         }
 
         if ($email) {
-            $model->whereEquals('email', (string)$email);
+            $model->whereEquals('email', (string) $email);
         }
 
         return $model->row();

@@ -186,7 +186,7 @@ class Team extends AdminController
             $newm = preg_split("/[,;]/", $newm);
             $newm = array_filter($newm);
         }
-        $newm    = (array)$newm;
+        $newm    = (array) $newm;
         $groups  = urldecode(trim(Request::getString('newgroup', '')));
         $role    = Request::getInt('role', 0);
 

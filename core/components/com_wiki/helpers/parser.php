@@ -269,7 +269,7 @@ class Parser extends Obj
         // Build parser plugin classname
         $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
-        if ($this->parser = new $name($this, (array)$plugin)) {
+        if ($this->parser = new $name($this, (array) $plugin)) {
             // Load plugin parameters
             $this->initialise($pconfig, $getnew);
         }

@@ -94,15 +94,15 @@ class Articles extends AdminController
         $articles = Article::all();
 
         if ($filters['search']) {
-            $articles->whereLike('title', strtolower((string)$filters['search']));
+            $articles->whereLike('title', strtolower((string) $filters['search']));
         }
 
         if ($filters['category']) {
-            $articles->whereEquals('category', (int)$filters['category']);
+            $articles->whereEquals('category', (int) $filters['category']);
         }
 
         if ($filters['access']) {
-            $articles->whereEquals('access', (int)$filters['access']);
+            $articles->whereEquals('access', (int) $filters['access']);
         }
 
         // Get records

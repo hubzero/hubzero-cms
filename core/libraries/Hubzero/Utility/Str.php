@@ -46,7 +46,7 @@ class Str
         ];
         $options += $defaults;
         $format = $options['format'];
-        $data   = (array)$data;
+        $data   = (array) $data;
         if (empty($data)) {
             return ($options['clean']) ? self::cleanInsert($str, $options) : $str;
         }
@@ -588,7 +588,7 @@ class Str
     public static function contains($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && strpos((string)$haystack, $needle) !== false) {
+            if ($needle != '' && strpos((string) $haystack, $needle) !== false) {
                 return true;
             }
         }

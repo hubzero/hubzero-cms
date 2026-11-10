@@ -257,8 +257,8 @@ class Member extends User implements \Hubzero\Search\Searchable
      */
     public function saveProfile($profile, $access = [])
     {
-        $profile = (array)$profile;
-        $access  = (array)$access;
+        $profile = (array) $profile;
+        $access  = (array) $access;
 
         // "No (none)" and "Do not wish to reveal" can't stand alongside other
         // answers to a multi-choice field; keep the one that says the least

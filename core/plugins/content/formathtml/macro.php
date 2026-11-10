@@ -215,13 +215,13 @@ class Macro
             $arguments = str_replace(
                 ['&nbsp;', '&quot;'],
                 [' ', '"'],
-                (string)$this->args,
+                (string) $this->args,
             );
             $arguments = html_entity_decode($arguments);
 
             // get the args passed in
             $arguments = explode(',', $arguments);
-            $arguments = array_map('trim', (array)$arguments);
+            $arguments = array_map('trim', (array) $arguments);
 
             $this->_arguments = $arguments;
         }
@@ -257,7 +257,7 @@ class Macro
      */
     protected function setArguments($data)
     {
-        $this->arguments = (array)$data;
+        $this->arguments = (array) $data;
 
         return $this;
     }

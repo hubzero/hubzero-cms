@@ -206,8 +206,8 @@ class Announcement extends Relational
 
         // Make sure scope and id match
         if (
-            $this->get('scope') == (string)$scope
-            && $this->get('scope_id') == (int)$scope_id
+            $this->get('scope') == (string) $scope
+            && $this->get('scope_id') == (int) $scope_id
         ) {
             return true;
         }

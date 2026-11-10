@@ -2634,7 +2634,7 @@ class Query
      **/
     public function start($start)
     {
-        $this->syntax->setStart((int)$start);
+        $this->syntax->setStart((int) $start);
         return $this;
     }
 
@@ -2646,7 +2646,7 @@ class Query
      **/
     public function limit($limit)
     {
-        $this->syntax->setLimit((int)$limit);
+        $this->syntax->setLimit((int) $limit);
         return $this;
     }
 

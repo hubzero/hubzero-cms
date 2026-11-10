@@ -82,7 +82,7 @@ class Asset
         $asset->set('title', $title);
 
         if ($this->model->assetRules instanceof \Hubzero\Access\Rules) {
-            $asset->set('rules', (string)$this->model->assetRules);
+            $asset->set('rules', (string) $this->model->assetRules);
         }
 
         // Specify how a new or moved node asset is inserted into the tree
@@ -109,7 +109,7 @@ class Asset
         }
 
         // Return the id
-        return (int)$asset->get('id');
+        return (int) $asset->get('id');
     }
 
     /**
@@ -142,7 +142,7 @@ class Asset
         //          * namespace might be something like time_hub, which should become time.hub
         //          * non-integer ids will fail
         return strtolower("com_{$this->model->getNamespace()}.{$this->model->getModelName()}.")
-            . (int)$this->model->getPkValue();
+            . (int) $this->model->getPkValue();
     }
 
     /**
@@ -169,7 +169,7 @@ class Asset
         $asset = Model::oneByName('com_' . $this->model->getNamespace());
 
         if ($asset->get('id')) {
-            $assetId = (int)$asset->get('id');
+            $assetId = (int) $asset->get('id');
         }
 
         return ($assetId) ? $assetId : $this->getRootId();

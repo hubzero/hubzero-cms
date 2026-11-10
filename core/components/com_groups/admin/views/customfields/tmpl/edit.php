@@ -27,15 +27,15 @@ $elements = [];
 
 foreach ($this->fields as $field) {
     $element = new stdClass();
-    $element->label = (string)$field->get('label');
-    $element->name  = (string)$field->get('name');
-    $element->type  = (string)$field->get('type');
+    $element->label = (string) $field->get('label');
+    $element->name  = (string) $field->get('name');
+    $element->type  = (string) $field->get('type');
     /*if ($element->type == 'select')
     {
         $element->type = 'dropdown';
     }*/
     if ($element->type == 'paragraph') {
-        $element->label = (string)$field->get('description');
+        $element->label = (string) $field->get('description');
         $field->set('description', null);
     }
     if ($element->type == 'radio') {
@@ -55,20 +55,20 @@ foreach ($this->fields as $field) {
         $element->type = 'textarea';
         $element->subtype = 'facultyadvisor';
     }
-    $element->required = (bool)$field->get('required');
-    $element->readonly = (bool)$field->get('readonly');
-    $element->disabled = (bool)$field->get('disabled');
-    $element->access   = (int)$field->get('access');
-    $element->id = (string)$field->get('id');
-    $element->description = (string)$field->get('description');
-    $element->placeholder = (string)$field->get('placeholder');
-    $element->other = (bool)$field->get('option_other');
-    $element->blank = (bool)$field->get('option_blank');
-    $element->min = (int)$field->get('min');
-    $element->max = (int)$field->get('max');
-    $element->rows = (int)$field->get('rows');
-    $element->access = (string)$field->get('access');
-    $element->value = (string)$field->get('default_value');
+    $element->required = (bool) $field->get('required');
+    $element->readonly = (bool) $field->get('readonly');
+    $element->disabled = (bool) $field->get('disabled');
+    $element->access   = (int) $field->get('access');
+    $element->id = (string) $field->get('id');
+    $element->description = (string) $field->get('description');
+    $element->placeholder = (string) $field->get('placeholder');
+    $element->other = (bool) $field->get('option_other');
+    $element->blank = (bool) $field->get('option_blank');
+    $element->min = (int) $field->get('min');
+    $element->max = (int) $field->get('max');
+    $element->rows = (int) $field->get('rows');
+    $element->access = (string) $field->get('access');
+    $element->value = (string) $field->get('default_value');
 
     $options = $field->options()->ordered()->rows();
 
@@ -76,10 +76,10 @@ foreach ($this->fields as $field) {
         $element->values = [];
         foreach ($options as $option) {
             $opt = new stdClass();
-            $opt->field_id = (int)$option->get('id');
-            $opt->label    = (string)$option->get('label');
-            $opt->value    = (string)$option->get('value', $option->get('label'));
-            $opt->checked  = (bool)$option->get('checked');
+            $opt->field_id = (int) $option->get('id');
+            $opt->label    = (string) $option->get('label');
+            $opt->value    = (string) $option->get('value', $option->get('label'));
+            $opt->checked  = (bool) $option->get('checked');
             $dependents = $option->get('dependents', '[]');
             $dependents = $dependents ? $dependents : '[]';
             $dependents = json_decode($dependents);

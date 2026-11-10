@@ -107,7 +107,7 @@ class Asset extends Base
                     if ($item == 'id') {
                         $k = $this->_scope . '_' . $item;
                     }
-                    $aux[$k] = $this->get((string)$item);
+                    $aux[$k] = $this->get((string) $item);
                 }
                 $tbl->load($aux);
 
@@ -202,7 +202,7 @@ class Asset extends Base
                         if ($item == 'id') {
                             $k = $this->_scope . '_' . $item;
                         }
-                        $aux[$k] = $this->get((string)$item);
+                        $aux[$k] = $this->get((string) $item);
                     }
 
                     $tbl->load($aux);

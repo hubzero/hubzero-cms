@@ -68,7 +68,7 @@ class PdfForm
      **/
     public function __construct($id = null)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
 
         // Get courses config
         $config = Component::params('com_courses');
@@ -156,7 +156,7 @@ class PdfForm
 
         $dbh->setQuery('SELECT 1 FROM `#__courses_forms` WHERE title IS NOT null AND title != \'\' AND active = 0');
 
-        return (bool)$dbh->loadResult();
+        return (bool) $dbh->loadResult();
     }
 
     /**
@@ -174,7 +174,7 @@ class PdfForm
         $dbh = self::getDbh();
         $dbh->setQuery('SELECT 1 FROM `#__courses_forms` WHERE id = ' . $this->id);
 
-        return (bool)$dbh->loadResult();
+        return (bool) $dbh->loadResult();
     }
 
     /**
@@ -184,7 +184,7 @@ class PdfForm
      **/
     public function hasErrors()
     {
-        return (bool)$this->errors;
+        return (bool) $this->errors;
     }
 
     /**
@@ -528,11 +528,11 @@ class PdfForm
                 $questionValues = sprintf(
                     '(%d, %d, %d, %d, %d, %d, %d)',
                     $fid,
-                    (int)$pageNum,
-                    (int)$group['top'],
-                    (int)$group['left'],
-                    (int)$group['height'],
-                    (int)$group['width'],
+                    (int) $pageNum,
+                    (int) $group['top'],
+                    (int) $group['left'],
+                    (int) $group['height'],
+                    (int) $group['width'],
                     $version,
                 );
                 $dbh->setQuery(
@@ -547,8 +547,8 @@ class PdfForm
                     $answerValues = sprintf(
                         '(%d, %d, %d, %d)',
                         $groupId,
-                        (int)$answer['top'],
-                        (int)$answer['left'],
+                        (int) $answer['top'],
+                        (int) $answer['left'],
                         $correct,
                     );
                     $dbh->setQuery(
@@ -575,7 +575,7 @@ class PdfForm
         $fid = $this->getId();
 
         $versionClause = $version
-            ? (int)$version
+            ? (int) $version
             : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
             'SELECT pfa.id AS answer_id, question_id, page, correct, '
@@ -607,7 +607,7 @@ class PdfForm
             $rv[$answer['page']][$answer['question_id']]['answers'][] = [
                 'left'    => $answer['a_left'],
                 'top'     => $answer['a_top'],
-                'correct' => (bool)$answer['correct'],
+                'correct' => (bool) $answer['correct'],
                 'id'      => $answer['answer_id'],
             ];
         }

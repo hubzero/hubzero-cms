@@ -289,14 +289,14 @@ class Output
      **/
     public function backspace($spaces = 1, $destructive = false)
     {
-        echo chr(27) . "[" . (int)$spaces . "D";
+        echo chr(27) . "[" . (int) $spaces . "D";
 
         if ($destructive) {
             for ($i = 0; $i < $spaces; $i++) {
                 echo chr(32);
             }
 
-            echo chr(27) . "[" . (int)$spaces . "D";
+            echo chr(27) . "[" . (int) $spaces . "D";
         }
 
         return $this;

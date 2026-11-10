@@ -1439,7 +1439,7 @@ class Translator extends Obj
                 ->whereEquals('type', 'language')
                 ->whereEquals('state', 0)
                 ->whereEquals('enabled', 1)
-                ->whereEquals('client_id', (is_null($client) ? App::get('client')->id : (int)$client));
+                ->whereEquals('client_id', (is_null($client) ? App::get('client')->id : (int) $client));
             $db->setQuery($query->toString());
             $installed_languages = $db->loadObjectList('element');
         }

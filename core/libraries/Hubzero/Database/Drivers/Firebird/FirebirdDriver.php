@@ -2366,7 +2366,7 @@ class FirebirdDriver extends BaseSqlDriver
             return $quotedArray;
         }
 
-        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
+        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array) $name;
         $bits  = [];
 
         foreach ($parts as $part) {

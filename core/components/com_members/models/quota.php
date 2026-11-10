@@ -92,7 +92,7 @@ class Quota extends Relational
         $result = parent::save();
 
         if ($result) {
-            $command = "update_quota " . escapeshellarg((int)$this->get('user_id')) . " " . escapeshellarg((int)$this->get('soft_blocks')) . " " . escapeshellarg((int)$this->get('hard_blocks'));
+            $command = "update_quota " . escapeshellarg((int) $this->get('user_id')) . " " . escapeshellarg((int) $this->get('soft_blocks')) . " " . escapeshellarg((int) $this->get('hard_blocks'));
 
             $status = Utils::middleware($command, $output);
 
@@ -104,14 +104,14 @@ class Quota extends Relational
 
             $log = Log::blank();
             $log->set('object_type', 'class');
-            $log->set('object_id', (int)$this->get('id'));
-            $log->set('name', (string)$this->get('alias'));
-            $log->set('action', (string)$action);
-            $log->set('actor_id', (int)User::get('id'));
-            $log->set('soft_blocks', (int)$this->get('soft_blocks'));
-            $log->set('hard_blocks', (int)$this->get('hard_blocks'));
-            $log->set('soft_files', (int)$this->get('soft_files'));
-            $log->set('hard_files', (int)$this->get('hard_files'));
+            $log->set('object_id', (int) $this->get('id'));
+            $log->set('name', (string) $this->get('alias'));
+            $log->set('action', (string) $action);
+            $log->set('actor_id', (int) User::get('id'));
+            $log->set('soft_blocks', (int) $this->get('soft_blocks'));
+            $log->set('hard_blocks', (int) $this->get('hard_blocks'));
+            $log->set('soft_files', (int) $this->get('soft_files'));
+            $log->set('hard_files', (int) $this->get('hard_files'));
             $log->save();
         }
 
@@ -143,7 +143,7 @@ class Quota extends Relational
             foreach ($records as $record) {
                 // Update their class id, and their actual quota will be
                 // updated the next time they log in.
-                $record->set('class_id', (int)$deflt->get('id'));
+                $record->set('class_id', (int) $deflt->get('id'));
                 $record->save();
             }
         }
@@ -172,7 +172,7 @@ class Quota extends Relational
             // updated the next time they log in.
             $result = $model->getQuery()
                 ->update($model->getTableName())
-                ->set(['class_id' => (int)$deflt->get('id')])
+                ->set(['class_id' => (int) $deflt->get('id')])
                 ->whereIn('id', $users)
                 ->execute();
 

@@ -306,7 +306,7 @@ class Sponsors extends Plugin
 
         foreach ($ids as $id) {
             // Delete the type
-            $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int)$id);
+            $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int) $id);
 
             if (!$row->destroy()) {
                 Notify::error($row->getError());
@@ -378,7 +378,7 @@ class Sponsors extends Plugin
 
         foreach ($ids as $id) {
             // Update record(s)
-            $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int)$id);
+            $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrFail((int) $id);
             $row->set('state', $state);
 
             if (!$row->save()) {

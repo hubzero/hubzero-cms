@@ -79,7 +79,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
             <?php foreach ($this->intro_items as $key => &$item) : ?>
                 <?php
                 $key = ($key - $leadingcount) + 1;
-                $rowcount = (((int)$key - 1) % (int) $this->columns) + 1;
+                $rowcount = (((int) $key - 1) % (int) $this->columns) + 1;
                 $row = $counter / $this->columns;
 
                 if ($rowcount == 1) : ?>

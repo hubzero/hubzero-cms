@@ -66,7 +66,7 @@ class Migration20150630201210Core extends Base
                     $this->db->getQuery(true)
                         ->update('#__extensions')
                         ->set(['ordering' => $orderIdx])
-                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->where('extension_id', '=', (int) $result->extension_id)
                         ->execute();
                     $orderIdx++;
                 }
@@ -84,7 +84,7 @@ class Migration20150630201210Core extends Base
                 $this->db->getQuery(true)
                     ->update('#__extensions')
                     ->set(['ordering' => $orderIdx])
-                    ->where('extension_id', '=', (int)$plugin->extension_id)
+                    ->where('extension_id', '=', (int) $plugin->extension_id)
                     ->execute();
                 $orderIdx++;
             }

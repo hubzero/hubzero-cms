@@ -98,7 +98,7 @@ class Collections extends AdminController
             }]);
 
         if ($filters['search']) {
-            $model->whereLike('title', strtolower((string)$filters['search']));
+            $model->whereLike('title', strtolower((string) $filters['search']));
         }
 
         if ($filters['state'] >= 0) {
@@ -110,7 +110,7 @@ class Collections extends AdminController
         }
 
         if ($filters['access'] >= 0) {
-            $model->whereEquals('access', (int)$filters['access']);
+            $model->whereEquals('access', (int) $filters['access']);
         }
 
         // Get records

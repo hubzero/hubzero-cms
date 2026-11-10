@@ -171,7 +171,7 @@ foreach ($profiles as $profile) {
                     if (is_array($value)) {
                         foreach ($value as $k => $v) {
                             if (is_string($v) && strstr($v, '{')) {
-                                $decoded = json_decode((string)$v, true);
+                                $decoded = json_decode((string) $v, true);
 
                                 if (!$decoded || json_last_error() !== JSON_ERROR_NONE) {
                                     $value[$k] = $this->escape($v);
@@ -189,7 +189,7 @@ foreach ($profiles as $profile) {
                         }
                     } else {
                         if ($field->get('type') != 'tags' && strstr($value == null ? '' : $value, '{')) {
-                            $decoded = json_decode((string)$value, true);
+                            $decoded = json_decode((string) $value, true);
 
                             if (!$decoded || json_last_error() !== JSON_ERROR_NONE) {
                                 $decoded = [$value];

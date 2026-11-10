@@ -134,7 +134,7 @@ class Menu extends Relational
     public static function destroyForModule($moduleid)
     {
         $rows = self::all()
-            ->whereEquals('moduleid', (int)$moduleid)
+            ->whereEquals('moduleid', (int) $moduleid)
             ->rows();
 
         foreach ($rows as $row) {
@@ -155,7 +155,7 @@ class Menu extends Relational
     public static function destroyForMenu($menuid)
     {
         $rows = self::all()
-            ->whereEquals('menuid', (int)$menuid)
+            ->whereEquals('menuid', (int) $menuid)
             ->rows();
 
         foreach ($rows as $row) {

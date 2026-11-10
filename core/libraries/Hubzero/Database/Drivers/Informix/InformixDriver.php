@@ -1159,7 +1159,7 @@ class InformixDriver extends BaseSqlDriver
         // Get columns
         $this->setQuery(
             "SELECT colname, coltype, collength, extended_id FROM syscolumns"
-            . " WHERE tabid = " . (int)$tabid . " ORDER BY colno",
+            . " WHERE tabid = " . (int) $tabid . " ORDER BY colno",
         );
         $columns = $this->loadObjectList();
         if (empty($columns)) {
@@ -1173,7 +1173,7 @@ class InformixDriver extends BaseSqlDriver
             . " i.part13, i.part14, i.part15, i.part16"
             . " FROM sysconstraints c"
             . " JOIN sysindexes i ON c.idxname = i.idxname"
-            . " WHERE c.tabid = " . (int)$tabid
+            . " WHERE c.tabid = " . (int) $tabid
             . " AND c.constrtype = 'P'",
         );
         $pkInfo = $this->loadObject();
@@ -1202,7 +1202,7 @@ class InformixDriver extends BaseSqlDriver
             . " i.part13, i.part14, i.part15, i.part16"
             . " FROM sysconstraints c"
             . " JOIN sysindexes i ON c.idxname = i.idxname"
-            . " WHERE c.tabid = " . (int)$tabid
+            . " WHERE c.tabid = " . (int) $tabid
             . " AND c.constrtype = 'U'",
         );
         $uniqueConstraints = $this->loadObjectList();
@@ -1215,7 +1215,7 @@ class InformixDriver extends BaseSqlDriver
             . " i.part6, i.part7, i.part8, i.part9, i.part10, i.part11, i.part12,"
             . " i.part13, i.part14, i.part15, i.part16"
             . " FROM sysindexes i"
-            . " WHERE i.tabid = " . (int)$tabid
+            . " WHERE i.tabid = " . (int) $tabid
             . " AND NOT EXISTS ("
             . "   SELECT 1 FROM sysconstraints c WHERE c.idxname = i.idxname AND c.tabid = i.tabid"
             . " )"
@@ -1226,8 +1226,8 @@ class InformixDriver extends BaseSqlDriver
         // Build column definitions
         $colDefs = [];
         foreach ($columns as $col) {
-            $coltype = (int)$col->coltype;
-            $collength = (int)$col->collength;
+            $coltype = (int) $col->coltype;
+            $collength = (int) $col->collength;
             $name = trim($col->colname);
 
             $notNull = ($coltype >= 256);
@@ -1721,7 +1721,7 @@ class InformixDriver extends BaseSqlDriver
             if (strpos($upperType, $generic) === 0) {
                 // For sized types like VARCHAR(255), preserve the size
                 if (preg_match('/^' . preg_quote($generic, '/') . '\s*\((\d+)\)/i', $type, $matches)) {
-                    $size = (int)$matches[1];
+                    $size = (int) $matches[1];
 
                     // Informix VARCHAR max is 255 without LVARCHAR
                     if ($generic === 'VARCHAR' && $size > 255) {

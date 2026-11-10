@@ -651,7 +651,7 @@ class Utils
             }
         }
 
-        if (isset($output->exit_code) && (bool)$output->exit_code !== $execFailed) {
+        if (isset($output->exit_code) && (bool) $output->exit_code !== $execFailed) {
             Log::warning('maxwell shell exit code and JSON exit_code disagree.'
                 . ' shell_exit_code=' . $status
                 . ' json_exit_code=' . $output->exit_code
@@ -667,7 +667,7 @@ class Utils
             $retval = false;
         }
 
-        return (bool)$retval;
+        return (bool) $retval;
     }
 
     /**

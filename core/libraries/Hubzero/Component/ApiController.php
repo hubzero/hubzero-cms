@@ -553,7 +553,7 @@ class ApiController implements ControllerInterface
         }
 
         // Are searching for anything?
-        if ($search = (string)Request::getString('search')) {
+        if ($search = (string) Request::getString('search')) {
             foreach ($searches as $i => $property) {
                 if ($i == 0) {
                     $query->whereLike($property, $search, 1);

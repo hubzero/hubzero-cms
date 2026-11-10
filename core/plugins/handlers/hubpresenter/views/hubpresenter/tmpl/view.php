@@ -337,7 +337,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                     $last_slide_id = 0;
                     ?>
                     <?php foreach ($presentation->slides as $slide) : ?>
-                        <?php if ((int)$slide->slide != $last_slide_id) : ?>
+                        <?php if ((int) $slide->slide != $last_slide_id) : ?>
                             <li id="list_<?php echo $counter; ?>">
                                 <?php
                                     // Use thumb if possible

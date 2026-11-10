@@ -39,8 +39,8 @@ class Mentionsv1r0 extends ApiController
             ->whereIn('access', User::getAuthorisedViewLevels());
 
         if ($search) {
-            $entries->whereLike('name', strtolower((string)$search), 1)
-                ->orWhereLike('username', strtolower((string)$search), 1)
+            $entries->whereLike('name', strtolower((string) $search), 1)
+                ->orWhereLike('username', strtolower((string) $search), 1)
                 ->resetDepth();
         }
 

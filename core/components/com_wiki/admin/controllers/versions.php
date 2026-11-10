@@ -78,7 +78,7 @@ class Versions extends AdminController
         $records = $page->versions();
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $records->whereLike('pagetext', $filters['search']);
         }

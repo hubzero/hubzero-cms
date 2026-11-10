@@ -65,7 +65,7 @@ if ($this->rows) {
         $list = [];
         for ($k = 0; $k < count($this->hosttypes); $k++) {
             $r = $this->hosttypes[$k];
-            $list[$r->name] = (int)$r->value & (int)$row->provisions;
+            $list[$r->name] = (int) $r->value & (int) $row->provisions;
         }
         ?>
             <tr>

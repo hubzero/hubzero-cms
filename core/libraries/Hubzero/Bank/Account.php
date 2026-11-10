@@ -65,7 +65,7 @@ class Account extends Relational
     public static function oneByUserId($user_id)
     {
         return self::all()
-            ->whereEquals('uid', (int)$user_id)
+            ->whereEquals('uid', (int) $user_id)
             ->row();
     }
 }

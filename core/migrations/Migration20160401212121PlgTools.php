@@ -45,7 +45,7 @@ Windows, ie 10.0');
                 $this->db->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
-                    ->where('extension_id', '=', (int)$result->extension_id)
+                    ->where('extension_id', '=', (int) $result->extension_id)
                     ->execute();
             }
 
@@ -70,7 +70,7 @@ iOS, Safari 9999.9');
                 $this->db->getQuery(true)
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
-                    ->where('extension_id', '=', (int)$result->extension_id)
+                    ->where('extension_id', '=', (int) $result->extension_id)
                     ->execute();
             }
         }

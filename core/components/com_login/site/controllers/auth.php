@@ -244,7 +244,7 @@ class Auth extends SiteController
             $className = 'plg' . $plugin->type . $plugin->name;
 
             if (class_exists($className)) {
-                $myplugin = new $className($this, (array)$plugin);
+                $myplugin = new $className($this, (array) $plugin);
 
                 if (method_exists($className, 'status')) {
                     $status[$plugin->name] = $myplugin->status();
@@ -353,7 +353,7 @@ class Auth extends SiteController
 
                 if (class_exists($className)) {
                     if (method_exists($className, 'login')) {
-                        $myplugin = new $className($this, (array)$plugin);
+                        $myplugin = new $className($this, (array) $plugin);
 
                         $myplugin->login($data, $options);
 
@@ -469,7 +469,7 @@ class Auth extends SiteController
             }
         } else {
             // Login failed !
-            $data['remember'] = isset($options['remember']) ? (int)$options['remember'] : 0;
+            $data['remember'] = isset($options['remember']) ? (int) $options['remember'] : 0;
             User::setState('login.form.data', $data);
 
             // Facilitate third party login forms
@@ -677,7 +677,7 @@ class Auth extends SiteController
 
             if (class_exists($className)) {
                 if (method_exists($className, 'link')) {
-                    $myplugin = new $className($this, (array)$plugin);
+                    $myplugin = new $className($this, (array) $plugin);
                     $myplugin->link($options);
                 } else {
                     // No Link method is available
@@ -762,7 +762,7 @@ class Auth extends SiteController
 
                 if (class_exists($className)) {
                     if (method_exists($className, 'logout')) {
-                        $myplugin = new $className($this, (array)$plugin);
+                        $myplugin = new $className($this, (array) $plugin);
 
                         // Redirect to user third party signout view
                         // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)

@@ -73,7 +73,7 @@ class Accessgroups extends AdminController
             ->group('a.id, a.title, a.lft, a.rgt');*/
 
         if ($filters['search']) {
-            $entries->whereLike('title', strtolower((string)$filters['search']));
+            $entries->whereLike('title', strtolower((string) $filters['search']));
         }
 
         $rows = $entries

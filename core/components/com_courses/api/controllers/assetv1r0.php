@@ -72,7 +72,7 @@ class Assetv1r0 extends base
             $max,
         );
 
-        $max_upload = min((int)$max['upload'], (int)$max['post']);
+        $max_upload = min((int) $max['upload'], (int) $max['post']);
 
         // Return message
         $this->send(['ext' => $ext, 'handlers' => $handlers, 'max_upload' => $max_upload]);

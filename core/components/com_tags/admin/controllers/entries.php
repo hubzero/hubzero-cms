@@ -79,7 +79,7 @@ class Entries extends AdminController
         //  ->select('DISTINCT ' . $t . '.*');
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $model
                 ->join($s, $s . '.tag_id', $t . '.id', 'left')
@@ -108,7 +108,7 @@ class Entries extends AdminController
             ->select('COUNT(DISTINCT ' . $t . '.id)', 'count');
 
         $first = $modelc->rows(false)->first();
-        $total = $first ? (int)$first->count : 0;
+        $total = $first ? (int) $first->count : 0;
 
         $model
             ->select('DISTINCT ' . $t . '.*');

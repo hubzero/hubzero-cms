@@ -28,7 +28,7 @@ class Toptags extends Module
 
         $this->tags = Tag::all()
             ->whereEquals('admin', 0)
-            ->limit((int)$this->params->get('numtags', 25))
+            ->limit((int) $this->params->get('numtags', 25))
             ->order('objects', 'desc')
             ->rows();
 

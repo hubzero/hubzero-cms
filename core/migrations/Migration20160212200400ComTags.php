@@ -36,7 +36,7 @@ class Migration20160212200400ComTags extends Base
 
                 $this->db->getQuery(true)
                     ->update('#__tags', 't')
-                    ->set(['t.objects' => (string)$subquery])
+                    ->set(['t.objects' => (string) $subquery])
                     ->execute();
             }
 
@@ -51,7 +51,7 @@ class Migration20160212200400ComTags extends Base
 
                 $this->db->getQuery(true)
                     ->update('#__tags', 't')
-                    ->set(['t.substitutes' => (string)$subquery])
+                    ->set(['t.substitutes' => (string) $subquery])
                     ->execute();
             }
         }

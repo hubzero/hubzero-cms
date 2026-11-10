@@ -87,7 +87,7 @@ class Links extends AdminController
         $entries = Link::all();
 
         if ($filters['state'] != '*') {
-            $entries->whereEquals('published', (int)$filters['state']);
+            $entries->whereEquals('published', (int) $filters['state']);
         }
 
         if ($filters['type'] != '404') {
@@ -97,7 +97,7 @@ class Links extends AdminController
         }
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $entries->whereLike('old_url', $filters['search'], 1)
                     ->orWhereLike('new_url', $filters['search'], 1)

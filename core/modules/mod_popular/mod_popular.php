@@ -114,6 +114,6 @@ class Popular extends Module
         }
 
         $titleKey = 'MOD_POPULAR_TITLE' . ($catid ? '_CATEGORY' : '') . ($who != '0' ? "_$who" : '');
-        return Lang::txts($titleKey, (int)$params->get('count'), $title);
+        return Lang::txts($titleKey, (int) $params->get('count'), $title);
     }
 }

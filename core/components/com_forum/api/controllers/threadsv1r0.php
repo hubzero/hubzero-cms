@@ -231,7 +231,7 @@ class Threadsv1r0 extends ApiController
         }
 
         $entries = Category::all()
-            ->whereIn('section_id', (array)$filters['section_id'])
+            ->whereIn('section_id', (array) $filters['section_id'])
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access']);
 
@@ -257,15 +257,15 @@ class Threadsv1r0 extends ApiController
 
             foreach ($categories as $category) {
                 $obj = new stdClass();
-                $obj->id          = (int)$category->get('id');
+                $obj->id          = (int) $category->get('id');
                 $obj->title       = $category->get('title');
                 $obj->alias       = $category->get('alias');
                 $obj->description = $category->get('description');
                 $obj->created     = with(new Date($category->get('created')))->format('Y-m-d\TH:i:s\Z');
-                $obj->closed      = (int)$category->get('closed');
+                $obj->closed      = (int) $category->get('closed');
                 $obj->scope       = $category->get('scope');
-                $obj->scope_id    = (int)$category->get('scope_id');
-                $obj->section_id  = (int)$category->get('section_id');
+                $obj->scope_id    = (int) $category->get('scope_id');
+                $obj->section_id  = (int) $category->get('section_id');
 
                 $obj->threads     = $category->threads()
                     ->whereEquals('state', $filters['state'])
@@ -453,7 +453,7 @@ class Threadsv1r0 extends ApiController
                 }
             }
 
-            $entries->whereIn('category_id', (array)$filters['category_id']);
+            $entries->whereIn('category_id', (array) $filters['category_id']);
         }
 
         if ($filters['search']) {

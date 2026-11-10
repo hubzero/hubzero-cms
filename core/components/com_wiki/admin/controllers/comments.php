@@ -92,7 +92,7 @@ class Comments extends AdminController
         $comments = Comment::all();
 
         if ($filters['search']) {
-            $comments->whereLike('ctext', strtolower((string)$filters['search']));
+            $comments->whereLike('ctext', strtolower((string) $filters['search']));
         }
 
         if ($filters['page_id']) {

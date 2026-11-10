@@ -103,7 +103,7 @@ class MysqliConnection implements ConnectionInterface
             $this->username,
             $this->password,
             $this->database,
-            (int)$this->port,
+            (int) $this->port,
             $this->socket,
         );
 
@@ -251,7 +251,7 @@ class MysqliConnection implements ConnectionInterface
         if ($value === null) {
             return 'NULL';
         }
-        return "'" . $this->escape((string)$value) . "'";
+        return "'" . $this->escape((string) $value) . "'";
     }
 
     /**

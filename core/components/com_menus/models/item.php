@@ -254,7 +254,7 @@ class Item extends Nested
             $data['img'] = '';
         }
 
-        return (string)$data['img'];
+        return (string) $data['img'];
     }
 
     /**

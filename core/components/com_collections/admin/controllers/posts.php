@@ -98,8 +98,8 @@ class Posts extends AdminController
 
             $model->join($i, $i . '.id', $p . '.item_id', 'left');
 
-            $model->whereLike($p . '.description', strtolower((string)$filters['search']), 1)
-                ->orWhereLike($i . '.title', strtolower((string)$filters['search']), 1)
+            $model->whereLike($p . '.description', strtolower((string) $filters['search']), 1)
+                ->orWhereLike($i . '.title', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 
@@ -108,7 +108,7 @@ class Posts extends AdminController
         }
 
         if ($filters['access'] >= 0) {
-            $model->whereEquals($p . '.access', (int)$filters['access']);
+            $model->whereEquals($p . '.access', (int) $filters['access']);
         }
 
         if ($filters['collection_id']) {

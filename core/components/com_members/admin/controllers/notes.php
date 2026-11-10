@@ -93,24 +93,24 @@ class Notes extends AdminController
 
         if ($filters['search']) {
             if (substr($filters['search'], 0, strlen('uid:')) == 'uid:') {
-                $entries->whereEquals('user_id', (int)substr($filters['search'], strlen('uid:')));
+                $entries->whereEquals('user_id', (int) substr($filters['search'], strlen('uid:')));
             } else {
-                $entries->whereLike('subject', strtolower((string)$filters['search']), 1)
-                    ->orWhereLike('body', strtolower((string)$filters['search']), 1)
+                $entries->whereLike('subject', strtolower((string) $filters['search']), 1)
+                    ->orWhereLike('body', strtolower((string) $filters['search']), 1)
                     ->resetDepth();
             }
         }
 
         if ($filters['state'] >= 0) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         }
 
         if ($filters['access']) {
-            $entries->whereEquals('access', (int)$filters['access']);
+            $entries->whereEquals('access', (int) $filters['access']);
         }
 
         if ($filters['category_id']) {
-            $entries->whereEquals('catid', (int)$filters['category_id']);
+            $entries->whereEquals('catid', (int) $filters['category_id']);
         }
 
         $rows = $entries
@@ -254,7 +254,7 @@ class Notes extends AdminController
                     ->select('id')
                     ->select('title');
             }])
-            ->whereEquals('user_id', (int)$user->get('id'))
+            ->whereEquals('user_id', (int) $user->get('id'))
             ->ordered()
             ->rows();
 

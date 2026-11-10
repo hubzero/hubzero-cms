@@ -78,7 +78,7 @@ class Licenses extends AdminController
         $entries = License::all();
 
         if ($filters['search']) {
-            $entries->whereLike('title', strtolower((string)$filters['search']));
+            $entries->whereLike('title', strtolower((string) $filters['search']));
         }
 
         // Get records

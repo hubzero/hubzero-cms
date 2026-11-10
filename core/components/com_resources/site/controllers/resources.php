@@ -291,7 +291,7 @@ class Resources extends SiteController
         }
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $query->whereLike($r . '.title', $filters['search'], 1)
                     ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
@@ -1787,7 +1787,7 @@ class Resources extends SiteController
                 $children = [];
                 if ($grandchildren && count($grandchildren) > 0) {
                     foreach ($grandchildren as $grandchild) {
-                        if (isset($relevant_logical_types_by_id[(int)$grandchild->get('logical_type')])) {
+                        if (isset($relevant_logical_types_by_id[(int) $grandchild->get('logical_type')])) {
                             if (stripslashes($grandchild->introtext) != '') {
                                 $gdescription = trim($grandchild->introtext);
                                 $gdescription = $gdescription ?: trim($grandchild->fulltxt);
@@ -2043,7 +2043,7 @@ class Resources extends SiteController
         $results = Event::trigger('resources.' . $trigger, [$this->_option]);
         if (is_array($results) && !empty($results)) {
             foreach ($results as $result) {
-                $html .= (is_array($result) ? $result['html'] : (string)$result);
+                $html .= (is_array($result) ? $result['html'] : (string) $result);
             }
         }
 

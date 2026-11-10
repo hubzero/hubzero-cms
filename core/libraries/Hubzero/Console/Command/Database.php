@@ -53,7 +53,7 @@ class Database extends Base implements CommandInterface
         $tables   = $db->getTableList();
         $prefix   = $db->getPrefix();
         $excludes = [];
-        $includes = (array)$this->arguments->getOpt('include-table', []);
+        $includes = (array) $this->arguments->getOpt('include-table', []);
 
         if (!$this->arguments->getOpt('all-tables')) {
             $this->output->addLine('Dumping database with all prefixed tables included');
@@ -334,7 +334,7 @@ class Database extends Base implements CommandInterface
                         }
                         foreach ($results as $row) {
                             foreach ($row as $key => $value) {
-                                $len = strlen((string)$value);
+                                $len = strlen((string) $value);
                                 if ($len > $widths[$key]) {
                                     $widths[$key] = min($len, 50); // Cap at 50 chars
                                 }
@@ -358,7 +358,7 @@ class Database extends Base implements CommandInterface
                         foreach ($results as $row) {
                             $line = '| ';
                             foreach ($headers as $header) {
-                                $value = (string)$row[$header];
+                                $value = (string) $row[$header];
                                 if (strlen($value) > 50) {
                                     $value = substr($value, 0, 47) . '...';
                                 }

@@ -518,7 +518,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                     $counter = 0;
                     $last_slide_id = 0; ?>
                     <?php foreach ($presentation->slides as &$slide) : ?>
-                        <?php if ((int)$slide->slide != $last_slide_id) : ?>
+                        <?php if ((int) $slide->slide != $last_slide_id) : ?>
                             <li id="list_<?php echo $counter; ?>">
                                 <?php
                                     //use thumb if possible

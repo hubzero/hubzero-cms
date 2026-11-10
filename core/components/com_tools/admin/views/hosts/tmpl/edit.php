@@ -57,7 +57,7 @@ Toolbar::help('host');
                     <?php
                     for ($i = 0; $i < count($this->hosttypes); $i++) {
                         $r = $this->hosttypes[$i];
-                        if ((int)$r->value & (int)$this->row->provisions) { ?>
+                        if ((int) $r->value & (int) $this->row->provisions) { ?>
                             <option selected="selected" value="<?php echo $r->name; ?>"><?php echo $r->name; ?></option>
                         <?php } else { ?>
                             <option value="<?php echo $r->name; ?>"><?php echo $r->name; ?></option>

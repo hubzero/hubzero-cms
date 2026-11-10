@@ -67,11 +67,11 @@ class Subscription extends Relational
     public static function oneByScope($scope_id, $scope, $user_id = 0)
     {
         $model = self::all()
-            ->whereEquals('scope_id', (int)$scope_id)
-            ->whereEquals('scope', (string)$scope);
+            ->whereEquals('scope_id', (int) $scope_id)
+            ->whereEquals('scope', (string) $scope);
 
         if ($user_id) {
-            $model->whereEquals('user_id', (int)$user_id);
+            $model->whereEquals('user_id', (int) $user_id);
         }
 
         return $model->row();

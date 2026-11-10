@@ -538,7 +538,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         if (isset($filters['type']) && $filters['type'] >= 0) {
-            $addToSql = " AND p.`ptId`=" . $this->_db->quote((int)$filters['type']);
+            $addToSql = " AND p.`ptId`=" . $this->_db->quote((int) $filters['type']);
             $sql .= $addToSql;
             $whiteListSql .= $addToSql;
         }

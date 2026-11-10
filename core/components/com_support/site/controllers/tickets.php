@@ -929,7 +929,7 @@ class Tickets extends SiteController
         $row->set('cookies', (Request::getString('sessioncookie', '', 'cookie') ? 1 : 0));
         $row->set('instances', 1);
         $row->set('section', 1);
-        $row->set('group_id', (int)$group);
+        $row->set('group_id', (int) $group);
 
         $browser = new Detector();
 

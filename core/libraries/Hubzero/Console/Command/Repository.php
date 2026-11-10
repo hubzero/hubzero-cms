@@ -152,8 +152,8 @@ class Repository extends Base implements CommandInterface
     public function log()
     {
         $mode      = $this->output->getMode();
-        $length    = ($this->arguments->getOpt('length')) ? (int)$this->arguments->getOpt('length') : 20;
-        $start     = ($this->arguments->getOpt('start')) ? (int)$this->arguments->getOpt('start') : null;
+        $length    = ($this->arguments->getOpt('length')) ? (int) $this->arguments->getOpt('length') : 20;
+        $start     = ($this->arguments->getOpt('start')) ? (int) $this->arguments->getOpt('start') : null;
         $upcoming  = $this->arguments->getOpt('include-upcoming');
         $installed = ($this->arguments->getOpt('exclude-installed')) ? false : true;
         $search    = ($this->arguments->getOpt('search')) ? $this->arguments->getOpt('search') : null;

@@ -95,7 +95,7 @@ class Groups
      */
     public function getActiveColumns($uid)
     {
-        $uid = (int)$uid;
+        $uid = (int) $uid;
         self::$dbh->setQuery('SELECT irl.* FROM `#__incremental_registration_groups` irg LEFT JOIN `#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id INNER JOIN `#__incremental_registration_labels` irl ON irl.id = irglr.label_id WHERE irg.hours <= (SELECT (unix_timestamp(current_timestamp) - unix_timestamp(registerDate))/60/60 AS hours FROM `#__users` WHERE id = ' . $uid . ')');
         $cols = self::$dbh->loadAssocList();
         // no data we want, don't bother

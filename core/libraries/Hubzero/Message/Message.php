@@ -122,7 +122,7 @@ class Message extends Relational
             $entries->where('created', '<=', $end);
         }
         if (isset($filters['group_id']) && $filters['group_id'] != 0) {
-            $entries->whereEquals('group_id', (int)$filters['group_id']);
+            $entries->whereEquals('group_id', (int) $filters['group_id']);
         }
 
         return $entries;

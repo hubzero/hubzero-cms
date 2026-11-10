@@ -227,7 +227,7 @@ class Items extends AdminController
         // Filter the items over the parent id if set.
         $parentId = $filters['parent_id'];
         if (!empty($parentId)) {
-            $query->whereEquals($a . '.parent_id', (int)$parentId);
+            $query->whereEquals($a . '.parent_id', (int) $parentId);
         }
 
         // Filter the items over the menu id if set.

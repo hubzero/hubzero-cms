@@ -44,7 +44,7 @@ class Options
     public function isEnabled($uid = null)
     {
         if (!$uid) {
-            $uid = (int)User::get('id');
+            $uid = (int) User::get('id');
         }
         if (!$uid || !Module::isEnabled('incremental_registration')) {
             return false;
@@ -66,7 +66,7 @@ class Options
             . ' UNION SELECT 1 FROM #__xgroups_managers xma '
             . 'WHERE xma.gidNumber = ' . $cur['test_group'] . ' AND xma.uidNumber = ' . $uid . ' LIMIT 1';
         $dbh->setQuery($sql);
-        return (bool)$dbh->loadResult();
+        return (bool) $dbh->loadResult();
     }
 
     /**
@@ -81,7 +81,7 @@ class Options
             return false;
         }
 
-        $uid = $uid ?: (int)User::get('id');
+        $uid = $uid ?: (int) User::get('id');
 
         $dbh = App::get('db');
         $dbh->setQuery('SELECT edited_profile FROM `#__profile_completion_awards` WHERE user_id = ' . $uid);

@@ -97,8 +97,8 @@ class Module extends Relational
             $db = App::get('db');
             $query = $db->getQuery()
                 ->delete('#__modules_menu')
-                ->whereEquals('moduleid', (int)$pk);
-            $db->setQuery((string)$query);
+                ->whereEquals('moduleid', (int) $pk);
+            $db->setQuery((string) $query);
             $result = $db->query();
         }
 

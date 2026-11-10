@@ -192,9 +192,9 @@ class Sitemap extends Plugin
                 . $dbh->quote($_POST['sm-title'])
                 . ', description = ' . $dbh->quote($_POST['sm-description'])
                 . ', link = ' . $dbh->quote($_POST['sm-link'])
-                . ' WHERE id = ' . (int)$_POST['sm-id'];
+                . ' WHERE id = ' . (int) $_POST['sm-id'];
             $dbh->execute($updateSql);
-            $id = (int)$_POST['sm-id'];
+            $id = (int) $_POST['sm-id'];
         } else {
             $insertSql = 'INSERT INTO `#__ysearch_site_map` (title, description, link) VALUES ('
                 . $dbh->quote($_POST['new-sm-title']) . ', '
@@ -223,10 +223,10 @@ class Sitemap extends Plugin
         foreach ($_POST as $k => $v) {
             if (preg_match('/(delete|edit)-(\d+)/', $k, $id)) {
                 if ($id[1] == 'edit') {
-                    return ['sitemap', '', ['edit_id' => (int)$id[2]]];
+                    return ['sitemap', '', ['edit_id' => (int) $id[2]]];
                 } else {
                     $dbh = App::get('db');
-                    $dbh->execute('DELETE FROM `#__ysearch_site_map` WHERE id = ' . (int)$id[2]);
+                    $dbh->execute('DELETE FROM `#__ysearch_site_map` WHERE id = ' . (int) $id[2]);
                     $deleteMsg = '<p class="success">'
                         . Lang::txt('COM_SEARCH_ENTRY_DELETED') . '</p>';
                     return ['sitemap', $deleteMsg, []];

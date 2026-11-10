@@ -195,8 +195,8 @@ class WikiMacro
     {
         if (!is_array($this->_arguments)) {
             // get the args passed in
-            $arguments = explode(',', (string)$this->args);
-            $arguments = array_map('trim', (array)$arguments);
+            $arguments = explode(',', (string) $this->args);
+            $arguments = array_map('trim', (array) $arguments);
 
             $this->_arguments = $arguments;
         }
@@ -232,7 +232,7 @@ class WikiMacro
      */
     protected function setArguments($data)
     {
-        $this->arguments = (array)$data;
+        $this->arguments = (array) $data;
 
         return $this;
     }

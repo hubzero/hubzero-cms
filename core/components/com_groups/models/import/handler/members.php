@@ -41,7 +41,7 @@ class Members extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->members) && $raw->members != '') {
-            $record->members = (array)$this->multiValueField($raw->members);
+            $record->members = (array) $this->multiValueField($raw->members);
 
             foreach ($record->members as $i => $gid) {
                 $gid = trim($gid, '"');

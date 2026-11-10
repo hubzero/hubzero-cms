@@ -162,9 +162,9 @@ class Style extends Relational
             $query = self::$connection->getQuery();
             $query->update($this->getTableName());
             $query->set(['home' => '0']);
-            $query->whereEquals('client_id', (int)$this->get('client_id'));
+            $query->whereEquals('client_id', (int) $this->get('client_id'));
             $query->whereEquals('home', 1);
-            $query->where('id', '!=', (int)$this->get('id'));
+            $query->where('id', '!=', (int) $this->get('id'));
             $query->execute();
         }
 
@@ -190,7 +190,7 @@ class Style extends Relational
      */
     public function syncTemplateConfig()
     {
-        $key = ((int)$this->get('client_id') === 1) ? 'administrator_template' : 'site_template';
+        $key = ((int) $this->get('client_id') === 1) ? 'administrator_template' : 'site_template';
 
         $configPath = PATH_APP . DS . 'config';
         $configFile = $configPath . DS . 'app.php';

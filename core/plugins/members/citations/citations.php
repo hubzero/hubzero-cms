@@ -907,7 +907,7 @@ class Citations extends Plugin
                 );
                 return;
             }
-        } elseif ((bool)$bulk) {
+        } elseif ((bool) $bulk) {
             /***
              * @TODO move to API, possible use of whereIn()?
              ***/

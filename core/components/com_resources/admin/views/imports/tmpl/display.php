@@ -84,7 +84,7 @@ $this->css('import');
                         </td>
                         <td>
                             <?php
-                            echo number_format((int)$import->get('count', 0));
+                            echo number_format((int) $import->get('count', 0));
                             ?>
                         </td>
                         <td class="priority-4">

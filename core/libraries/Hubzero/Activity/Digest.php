@@ -56,8 +56,8 @@ class Digest extends Relational
     public static function oneByScope($scope_id, $scope)
     {
         return self::all()
-            ->whereEquals('scope_id', (int)$scope_id)
-            ->whereEquals('scope', (string)$scope)
+            ->whereEquals('scope_id', (int) $scope_id)
+            ->whereEquals('scope', (string) $scope)
             ->row();
     }
 }

@@ -53,7 +53,7 @@ class Migration20150826205631PlgResourcesAbout extends Base
                     $this->db->getQuery(true)
                         ->update('#__resource_types')
                         ->set(['params' => $params])
-                        ->where('id', '=', (int)$record->id)
+                        ->where('id', '=', (int) $record->id)
                         ->execute();
                 }
             }

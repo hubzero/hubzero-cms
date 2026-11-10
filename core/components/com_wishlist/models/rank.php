@@ -88,7 +88,7 @@ class Rank extends Relational
      **/
     public function automaticUserid($data)
     {
-        return (isset($data['userid']) && $data['userid'] ? (int)$data['userid'] : (int)User::get('id'));
+        return (isset($data['userid']) && $data['userid'] ? (int) $data['userid'] : (int) User::get('id'));
     }
 
     /**

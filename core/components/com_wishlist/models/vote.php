@@ -91,7 +91,7 @@ class Vote extends Relational
      **/
     public function automaticVoter($data)
     {
-        return (isset($data['voter']) && $data['voter'] ? (int)$data['voter'] : (int)User::get('id'));
+        return (isset($data['voter']) && $data['voter'] ? (int) $data['voter'] : (int) User::get('id'));
     }
 
     /**

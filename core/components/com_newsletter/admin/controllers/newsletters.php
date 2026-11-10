@@ -133,7 +133,7 @@ class Newsletters extends AdminController
             ->whereEquals('deleted', 0);
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
             $records->whereLike('name', $filters['search']);
         }
 

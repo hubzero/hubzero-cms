@@ -123,7 +123,7 @@ class Period
                     $this->startTime = strtotime('01/01/' . $this->period);
                 } else {
                     $this->endTime   = strtotime('08/31/' . $this->period);
-                    $this->startTime = strtotime('09/01/' . ((int)$this->period - 1));
+                    $this->startTime = strtotime('09/01/' . ((int) $this->period - 1));
                 }
                 $this->endTime   = gmdate("Y-m-d H:i:s", $this->endTime);
                 $this->startTime = gmdate("Y-m-d H:i:s", $this->startTime);

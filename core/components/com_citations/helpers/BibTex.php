@@ -848,7 +848,7 @@ class BibTex
                 }
             }
         } else {
-            $ret = new \Exception('Could not determine case on word: ' . (string)$word);
+            $ret = new \Exception('Could not determine case on word: ' . (string) $word);
         }
         return $ret;
     }

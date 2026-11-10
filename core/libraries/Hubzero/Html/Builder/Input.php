@@ -149,7 +149,7 @@ class Input
 
         $readonly = isset($options['readonly']) && $options['readonly'] == 'readonly';
         $disabled = isset($options['disabled']) && $options['disabled'] == 'disabled';
-        $time     = isset($options['time']) ? (bool)$options['time'] : true;
+        $time     = isset($options['time']) ? (bool) $options['time'] : true;
 
         $format = 'yy-mm-dd';
         if (isset($options['format'])) {

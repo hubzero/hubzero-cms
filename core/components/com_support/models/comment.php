@@ -187,7 +187,7 @@ class Comment extends Relational
     public function transformComment()
     {
         if (is_null($this->get('comment_transformed'))) {
-            $comment  = (string)$this->get('comment');
+            $comment  = (string) $this->get('comment');
             $original = $comment;
 
             // Replace {ticket#123}

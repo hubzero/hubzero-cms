@@ -119,7 +119,7 @@ class Attachments extends SiteController
             }
 
             $resource = Entry::oneOrFail($id);
-            $resource->set('title', (string)$name);
+            $resource->set('title', (string) $name);
             $resource->save();
         }
 

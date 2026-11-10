@@ -73,7 +73,7 @@ class Migration20140815153140ComCourses extends Base
                         $join->on('pfa.id', '=', 'pfr2.answer_id')
                             ->where('pfa.correct', '=', 1);
                     })
-                    ->where('deployment_id', '=', (int)$deployment->id)
+                    ->where('deployment_id', '=', (int) $deployment->id)
                     ->group(['member_id', 'started', 'finished', 'version'])
                     ->order('member_id', 'ASC')
                     ->order('score', 'ASC')
@@ -86,9 +86,9 @@ class Migration20140815153140ComCourses extends Base
                             $this->db->getQuery(true)
                                 ->update('#__courses_grade_book')
                                 ->set(['score_recorded' => $result->finished])
-                                ->where('member_id', '=', (int)$result->member_id)
+                                ->where('member_id', '=', (int) $result->member_id)
                                 ->where('scope', '=', 'asset')
-                                ->where('scope_id', '=', (int)$deployment->asset_id)
+                                ->where('scope_id', '=', (int) $deployment->asset_id)
                                 ->execute();
                         }
                     }

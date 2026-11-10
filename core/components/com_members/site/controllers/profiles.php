@@ -261,7 +261,7 @@ class Profiles extends SiteController
             ->ordered()
             ->rows();
 
-        $q = (array)Request::getArray('q', []);
+        $q = (array) Request::getArray('q', []);
 
         $filters = [
             'search'   => Request::getString('search', ''),
@@ -384,7 +384,7 @@ class Profiles extends SiteController
 
         // Require at least one filter before running the query — the members table is too
         // large to return as an unfiltered browse (performance + enumeration risk).
-        $hasFilter = (bool)$filters['search'] || (bool)$filters['tags'] || !empty($filters['q']);
+        $hasFilter = (bool) $filters['search'] || (bool) $filters['tags'] || !empty($filters['q']);
 
         // Build query
         $entries = Member::all();
@@ -440,9 +440,9 @@ class Profiles extends SiteController
                             $term = '%' . trim($term) . '%';
 
                             if ($v == 0) {
-                                $entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 'and', 1);
+                                $entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string) $term), 'and', 1);
                             } else {
-                                $entries->orWhere($a . '.name', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
+                                $entries->orWhere($a . '.name', ' ' . $q['o'] . ' ', strtolower((string) $term), 1);
                             }
 
                             foreach ($searches as $z => $searching) {
@@ -452,12 +452,12 @@ class Profiles extends SiteController
                                     'left',
                                 );
 
-                                $entries->orWhere('s' . ($v . '_' . $z) . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
+                                $entries->orWhere('s' . ($v . '_' . $z) . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string) $term), 1);
                             }
                         }
                         $entries->resetDepth();
                     } else {
-                        $entries->where($a . '.name', ' ' . $q['o'] . ' ', (string)$q['value'], 1);
+                        $entries->where($a . '.name', ' ' . $q['o'] . ' ', (string) $q['value'], 1);
 
                         foreach ($searches as $searching) {
                             $entries->joinRaw(
@@ -466,7 +466,7 @@ class Profiles extends SiteController
                                 'left',
                             );
 
-                            $entries->orWhere('s' . $i . '.profile_value', ' ' . $q['o'] . ' ', (string)$q['value'], 1);
+                            $entries->orWhere('s' . $i . '.profile_value', ' ' . $q['o'] . ' ', (string) $q['value'], 1);
                         }
                         $entries->resetDepth();
                     }
@@ -481,7 +481,7 @@ class Profiles extends SiteController
                 if (in_array($q['o'], ['>', '>=', '<', '<=']) && is_numeric($q['value'])) {
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
-                        't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
+                        't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int) $q['value'],
                         'inner',
                     );
                 } elseif (is_array($q['value'])) {
@@ -701,7 +701,7 @@ class Profiles extends SiteController
         if (is_numeric($id)) {
             $profile = Member::oneOrNew(intval($id));
         } else {
-            $profile = Member::oneByUsername((string)$id);
+            $profile = Member::oneByUsername((string) $id);
         }
 
         // Ensure we have a member
@@ -1447,7 +1447,7 @@ class Profiles extends SiteController
         $confirm = null;
 
         if (!is_null($email)) {
-            $member->set('email', (string)$email);
+            $member->set('email', (string) $email);
 
             // Unconfirm if the email address changed
             if ($oldemail != $email) {
@@ -1469,7 +1469,7 @@ class Profiles extends SiteController
         $usageAgreement = Request::getVar('usageAgreement', null, 'post');
 
         if (!is_null($usageAgreement)) {
-            $member->set('usageAgreement', (int)$usageAgreement);
+            $member->set('usageAgreement', (int) $usageAgreement);
         }
 
         // Are we declining the terms of use?
@@ -1557,12 +1557,12 @@ class Profiles extends SiteController
                 }
 
                 if ($error instanceof \Hubzero\Form\Exception\MissingData) {
-                    $errors['_missing'][$key] = (string)$error;
+                    $errors['_missing'][$key] = (string) $error;
                 }
 
-                $errors['_invalid'][$key] = (string)$error;
+                $errors['_invalid'][$key] = (string) $error;
 
-                $this->setError((string)$error);
+                $this->setError((string) $error);
             }
         }
 

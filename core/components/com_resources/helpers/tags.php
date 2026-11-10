@@ -393,7 +393,7 @@ class Tags extends Cloud
      */
     public function getTopTags($limit)
     {
-        return $this->tags('list', ['sort' => 'objects', 'sort_Dir' => 'desc', 'limit' => (int)$limit, 'admin' => 0]);
+        return $this->tags('list', ['sort' => 'objects', 'sort_Dir' => 'desc', 'limit' => (int) $limit, 'admin' => 0]);
     }
 
     /**

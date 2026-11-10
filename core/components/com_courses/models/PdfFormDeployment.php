@@ -127,7 +127,7 @@ class PdfFormDeployment
             . 'results_open AS resultsOpen, time_limit AS timeLimit, crumb, '
             . 'results_closed AS resultsClosed, '
             . '(SELECT name FROM #__users WHERE id = user_id) AS userName '
-            . 'FROM #__courses_form_deployments WHERE form_id = ' . (int)$formId,
+            . 'FROM #__courses_form_deployments WHERE form_id = ' . (int) $formId,
         );
 
         foreach ($dbh->loadAssocList() as $depData) {
@@ -263,7 +263,7 @@ class PdfFormDeployment
      **/
     public static function load($id, $section_id = null)
     {
-        return self::find('id = ' . ((int)$id), $section_id);
+        return self::find('id = ' . ((int) $id), $section_id);
     }
 
     /**
@@ -283,7 +283,7 @@ class PdfFormDeployment
      **/
     public static function latestFromFormId($formId, $section_id = null)
     {
-        return self::find('form_id = ' . (int)$formId . ' ORDER BY `id` DESC');
+        return self::find('form_id = ' . (int) $formId . ' ORDER BY `id` DESC');
     }
 
     /**
@@ -510,7 +510,7 @@ class PdfFormDeployment
             if ($this->startTime && !strtotime($this->startTime)) {
                 $this->errors['startTime'] = ['Invalid start time'];
             }
-            if ($this->timeLimit != '' && (($this->timeLimit != (int)$this->timeLimit) || $this->timeLimit <= 0)) {
+            if ($this->timeLimit != '' && (($this->timeLimit != (int) $this->timeLimit) || $this->timeLimit <= 0)) {
                 $this->errors['timeLimit'] = ['Expected a positive, nonzero, integer number of minutes'];
             }
             if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(Date::of('now'))) {
@@ -536,7 +536,7 @@ class PdfFormDeployment
             }
         }
 
-        return is_null($col) ? (bool)$this->errors : isset($this->errors[$col]) && (bool)$this->errors[$col];
+        return is_null($col) ? (bool) $this->errors : isset($this->errors[$col]) && (bool) $this->errors[$col];
     }
 
     /**
@@ -606,15 +606,15 @@ class PdfFormDeployment
                 . 'time_limit, crumb, user_id, allowed_attempts';
             $dbh->setQuery(
                 'INSERT INTO `#__courses_form_deployments`(' . $columns . ') VALUES ('
-                    . (int)$this->formId . ', '
+                    . (int) $this->formId . ', '
                     . ($this->startTime ? $dbh->quote($this->startTime) : 'NULL') . ', '
                     . ($this->endTime   ? $dbh->quote($this->endTime) : 'NULL') . ', '
                     . $dbh->quote($this->resultsOpen) . ', '
                     . $dbh->quote($this->resultsClosed) . ', '
-                    . (int)$this->timeLimit . ', '
+                    . (int) $this->timeLimit . ', '
                     . $dbh->quote($this->crumb) . ', '
-                    . (int)User::get('id') . ', '
-                    . (int)$this->allowedAttempts
+                    . (int) User::get('id') . ', '
+                    . (int) $this->allowedAttempts
                 . ')',
             );
             $dbh->query();
@@ -633,9 +633,9 @@ class PdfFormDeployment
                 . 'end_time = ' . ($this->endTime     ? $dbh->quote($this->endTime) : 'NULL') . ', '
                 . 'results_open = ' . $dbh->quote($this->resultsOpen) . ', '
                 . 'results_closed = ' . $dbh->quote($this->resultsClosed) . ', '
-                . 'time_limit = ' . (int)$this->timeLimit . ', '
-                . 'allowed_attempts = ' . (int)$this->allowedAttempts
-            . ' WHERE id = ' . (int)$id,
+                . 'time_limit = ' . (int) $this->timeLimit . ', '
+                . 'allowed_attempts = ' . (int) $this->allowedAttempts
+            . ' WHERE id = ' . (int) $id,
         );
         $dbh->query();
 

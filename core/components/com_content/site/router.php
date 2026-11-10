@@ -108,7 +108,7 @@ class Router extends Base
                             $db->getQuery()
                                 ->select('alias')
                                 ->from('#__content')
-                                ->where('id', '=', (int)$query['id'])
+                                ->where('id', '=', (int) $query['id'])
                                 ->toString(),
                         );
                         $alias = $db->loadResult();
@@ -146,7 +146,7 @@ class Router extends Base
             $array = [];
 
             foreach ($path as $id) {
-                if ((int)$id == (int)$mCatid) {
+                if ((int) $id == (int) $mCatid) {
                     break;
                 }
 
@@ -158,7 +158,7 @@ class Router extends Base
             $array = array_reverse($array);
 
             if (!$advanced && count($array)) {
-                $array[0] = (int)$catid . ':' . $array[0];
+                $array[0] = (int) $catid . ':' . $array[0];
             }
 
             $segments = array_merge($segments, $array);
@@ -251,14 +251,14 @@ class Router extends Base
                 } elseif ($vars['view'] == 'category') {
                     $query = 'SELECT id FROM `#__categories` WHERE alias = ' . $db->Quote($id);
                 } else {
-                    $vars['id'] = (int)$id;
+                    $vars['id'] = (int) $id;
                     return $vars;
                 }
                 $db->setQuery($query);
                 $id = $db->loadResult();
                 ;
             }
-            $vars['id'] = (int)$id;
+            $vars['id'] = (int) $id;
 
             return $vars;
         }
@@ -278,7 +278,7 @@ class Router extends Base
                     $id = $db->loadResult();
                     ;
                 }
-                $vars['id'] = (int)$id;
+                $vars['id'] = (int) $id;
                 return $vars;
             }
 
@@ -293,15 +293,15 @@ class Router extends Base
 
                 return $vars;
             } else {
-                $query = 'SELECT alias, catid FROM `#__content` WHERE id = ' . (int)$id;
+                $query = 'SELECT alias, catid FROM `#__content` WHERE id = ' . (int) $id;
                 $db->setQuery($query);
                 $article = $db->loadObject();
 
                 if ($article) {
                     if ($article->alias == $alias) {
                         $vars['view']  = 'article';
-                        $vars['catid'] = (int)$article->catid;
-                        $vars['id']    = (int)$id;
+                        $vars['catid'] = (int) $article->catid;
+                        $vars['id']    = (int) $id;
 
                         return $vars;
                     }
@@ -313,9 +313,9 @@ class Router extends Base
         // because the first segment will have the target category id prepended to it.  If the
         // last segment has a number prepended, it is an article, otherwise, it is a category.
         if (!$advanced) {
-            $cat_id = (int)$segments[0];
+            $cat_id = (int) $segments[0];
 
-            $article_id = (int)$segments[$count - 1];
+            $article_id = (int) $segments[$count - 1];
 
             if ($article_id > 0) {
                 $vars['view']  = 'article';

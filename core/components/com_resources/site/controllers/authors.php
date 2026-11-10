@@ -146,9 +146,9 @@ class Authors extends SiteController
 
                 if ($profile) {
                     $author->set('authorid', $authid);
-                    $author->set('name', (string)$profile->get('name'));
-                    $author->set('role', (string)$role);
-                    $author->set('organization', (string)$profile->get('organization'));
+                    $author->set('name', (string) $profile->get('name'));
+                    $author->set('role', (string) $role);
+                    $author->set('organization', (string) $profile->get('organization'));
                     $author->save();
                 }
             }
@@ -209,9 +209,9 @@ class Authors extends SiteController
                 $author->set('subtable', 'resources');
                 $author->set('subid', $id);
                 $author->set('authorid', $authorid);
-                $author->set('name', (string)$name);
-                $author->set('organization', (string)$organization);
-                $author->set('role', (string)$role);
+                $author->set('name', (string) $name);
+                $author->set('organization', (string) $organization);
+                $author->set('role', (string) $role);
                 $author->save();
 
                 // Log activity

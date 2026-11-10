@@ -1125,7 +1125,7 @@ class Sessionsv1r0 extends ApiController
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         //get request vars
-        $sessionid = (int)Request::getString('sessionid', '');
+        $sessionid = (int) Request::getString('sessionid', '');
         $ip        = Request::ip();
 
         //make sure we have the session
@@ -1162,7 +1162,7 @@ class Sessionsv1r0 extends ApiController
         $tv->loadFromInstance($row->appname);
 
         //command to run on middleware
-        $command = "view user=" . escapeshellarg($result->get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
+        $command = "view user=" . escapeshellarg($result->get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
 
         //app vars
         $app->caption  = $row->sessname;
@@ -1494,7 +1494,7 @@ class Sessionsv1r0 extends ApiController
         Event::trigger('mw.onBeforeSessionStop', [$ms->get('appname')]);
 
         //run command to stop session
-        $status = \Components\Tools\Helpers\Utils::middleware("stop " . (int)$sessionid, $out);
+        $status = \Components\Tools\Helpers\Utils::middleware("stop " . (int) $sessionid, $out);
 
         // Trigger any events that need to be called after session stop
         Event::trigger('mw.onAfterSessionStop', [$ms->get('appname')]);

@@ -46,7 +46,7 @@ class Incremental extends AdminController
         $this->database->execute();
 
         for ($idx = 0; isset($_POST['group-hours-' . $idx]); ++$idx) {
-            if (!($hours = (int)$_POST['group-hours-' . $idx])) {
+            if (!($hours = (int) $_POST['group-hours-' . $idx])) {
                 continue;
             }
 
@@ -70,14 +70,14 @@ class Incremental extends AdminController
 
         if (isset($_POST['popover'])) {
             $popoverText = stripslashes($_POST['popover']);
-            $awardPer    = (int)$_POST['award-per'];
-            $testGroup   = (int)$_POST['test-group'];
-            $repeatType  = (isset($_POST['repeat-type']) && (int)$_POST['repeat-type'] === 1) ? 1 : 0;
+            $awardPer    = (int) $_POST['award-per'];
+            $testGroup   = (int) $_POST['test-group'];
+            $repeatType  = (isset($_POST['repeat-type']) && (int) $_POST['repeat-type'] === 1) ? 1 : 0;
 
             $this->database->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
             list($exPopover, $exAward, $exGroup, $exRepeat) = $row = $this->database->loadRow();
 
-            if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup || $repeatType != (int)$exRepeat) {
+            if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup || $repeatType != (int) $exRepeat) {
                 $this->database->setQuery('INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, repeat_type) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ', ' . $repeatType . ')');
                 $this->database->execute();
             }
@@ -86,7 +86,7 @@ class Incremental extends AdminController
         $this->database->execute();
 
         for ($idx = 0; isset($_POST['recur-' . $idx]); ++$idx) {
-            $hours = (int)$_POST['recur-' . $idx];
+            $hours = (int) $_POST['recur-' . $idx];
             if ($_POST['recur-type-' . $idx] == 'week') {
                 $hours *= 24 * 7;
             } elseif ($_POST['recur-type-' . $idx] == 'day') {

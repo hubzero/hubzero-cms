@@ -99,7 +99,7 @@ class Entriesv1r0 extends ApiController
         $query->whereEquals($r . '.standalone', 1);
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             $query->whereLike($r . '.title', $filters['search'], 1)
                     ->orWhereLike($r . '.fulltxt', $filters['search'], 1)

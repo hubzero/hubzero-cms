@@ -111,7 +111,7 @@ class Styles extends AdminController
             ->whereEquals($e . '.type', 'template');
 
         if ($filters['search']) {
-            $filters['search'] = strtolower((string)$filters['search']);
+            $filters['search'] = strtolower((string) $filters['search']);
 
             if (stripos($filters['search'], 'id:') === 0) {
                 $model->whereEquals($s . '.id', (int) substr($filters['search'], 3));
@@ -123,11 +123,11 @@ class Styles extends AdminController
         }
 
         if ($filters['client_id'] != '*') {
-            $model->whereEquals($s . '.client_id', (int)$filters['client_id']);
+            $model->whereEquals($s . '.client_id', (int) $filters['client_id']);
         }
 
         if ($filters['template']) {
-            $model->whereEquals($s . '.template', (int)$filters['template']);
+            $model->whereEquals($s . '.template', (int) $filters['template']);
         }
 
         $model

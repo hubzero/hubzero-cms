@@ -61,7 +61,7 @@ class Opengraph extends Plugin
             return;
         }
 
-        if ((int)$this->pluginNr > 0) {
+        if ((int) $this->pluginNr > 0) {
             // Second instance in featured view or category view
             return;
         }
@@ -78,7 +78,7 @@ class Opengraph extends Plugin
         } elseif ($view == 'category' && $this->pluginNr == 0) {
             // Data from first article will be set
             $suffix = 'c';
-            if (isset($article->catid) && (int)$article->catid > 0) {
+            if (isset($article->catid) && (int) $article->catid > 0) {
                 $db = App::get('db');
                 $query = 'SELECT c.metadesc, c.title FROM `#__categories` AS c '
                     . 'WHERE c.id = ' . (int) $article->catid;
@@ -127,15 +127,15 @@ class Opengraph extends Plugin
 
             // Try to find image in images/phocaopengraph folder
             if ($img == 0) {
-                if (isset($article->id) && (int)$article->id > 0) {
+                if (isset($article->id) && (int) $article->id > 0) {
                     $imgPath = '';
                     $path = PATH_APP . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'opengraph' . DS;
-                    if (Filesystem::exists($path . DS . (int)$article->id . '.jpg')) {
-                        $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.jpg';
-                    } elseif (Filesystem::exists($path . DS . (int)$article->id . '.png')) {
-                        $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.png';
-                    } elseif (Filesystem::exists($path . DS . (int)$article->id . '.gif')) {
-                        $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.gif';
+                    if (Filesystem::exists($path . DS . (int) $article->id . '.jpg')) {
+                        $imgPath = Request::base(false) . 'images/opengraph/' . (int) $article->id . '.jpg';
+                    } elseif (Filesystem::exists($path . DS . (int) $article->id . '.png')) {
+                        $imgPath = Request::base(false) . 'images/opengraph/' . (int) $article->id . '.png';
+                    } elseif (Filesystem::exists($path . DS . (int) $article->id . '.gif')) {
+                        $imgPath = Request::base(false) . 'images/opengraph/' . (int) $article->id . '.gif';
                     }
 
                     if ($imgPath != '') {

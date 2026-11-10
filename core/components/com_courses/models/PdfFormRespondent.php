@@ -69,14 +69,14 @@ class PdfFormRespondent
 
         $dbh = App::get('db');
         $query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
-        $query .= ' WHERE deployment_id = ' . (int)$depId
-            . ' AND member_id = ' . (int)$member_id
-            . ' AND attempt=' . (int)$attempt;
+        $query .= ' WHERE deployment_id = ' . (int) $depId
+            . ' AND member_id = ' . (int) $member_id
+            . ' AND attempt=' . (int) $attempt;
         $dbh->setQuery($query);
 
         // Set deployment id
-        $this->depId = (int)$depId;
-        $this->member_id = (int)$member_id;
+        $this->depId = (int) $depId;
+        $this->member_id = (int) $member_id;
 
         if (($res = $dbh->loadAssoc())) {
             $this->id       = $res['id'];
@@ -86,9 +86,9 @@ class PdfFormRespondent
         } else {
             $insertValues = sprintf(
                 '(%d, %d, %d)',
-                (int)$depId,
-                (int)$member_id,
-                (int)$attempt,
+                (int) $depId,
+                (int) $member_id,
+                (int) $attempt,
             );
             $dbh->setQuery(
                 'INSERT INTO #__courses_form_respondents(deployment_id, member_id, attempt) '
@@ -127,7 +127,7 @@ class PdfFormRespondent
 
             $dbh->setQuery(
                 'INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) '
-                . 'VALUES (' . $this->id . ', ' . $question->id . ', ' . (int)$answer . ')',
+                . 'VALUES (' . $this->id . ', ' . $question->id . ', ' . (int) $answer . ')',
             );
             $dbh->query();
         }
@@ -279,14 +279,14 @@ class PdfFormRespondent
         $dbh = App::get('db');
         $dbh->setQuery(
             'DELETE FROM #__courses_form_respondent_progress '
-            . 'WHERE respondent_id = ' . (int)$this->id . ' AND question_id = ' . (int)$qid,
+            . 'WHERE respondent_id = ' . (int) $this->id . ' AND question_id = ' . (int) $qid,
         );
         $dbh->query();
         $insertValues = sprintf(
             '(%d, %d, %d, %s)',
-            (int)$this->id,
-            (int)$qid,
-            (int)$aid,
+            (int) $this->id,
+            (int) $qid,
+            (int) $aid,
             $dbh->Quote(Date::toSql()),
         );
         $dbh->setQuery(
@@ -308,7 +308,7 @@ class PdfFormRespondent
         $dbh = App::get('db');
         $dbh->setQuery(
             'SELECT question_id, answer_id FROM #__courses_form_respondent_progress '
-            . 'WHERE respondent_id = ' . (int)$this->id,
+            . 'WHERE respondent_id = ' . (int) $this->id,
         );
         return $dbh->loadAssocList('question_id');
     }
@@ -390,7 +390,7 @@ class PdfFormRespondent
         $dbh = App::get('db');
         $dbh->setQuery(
             'UPDATE #__courses_form_respondents SET started = \'' . $this->started . '\' '
-            . 'WHERE started IS NULL AND id = ' . (int)$this->id,
+            . 'WHERE started IS NULL AND id = ' . (int) $this->id,
         );
         $dbh->query();
 
@@ -408,7 +408,7 @@ class PdfFormRespondent
         $dbh = App::get('db');
         $dbh->setQuery(
             'UPDATE #__courses_form_respondents SET finished = \'' . $this->started . '\' '
-            . 'WHERE id = ' . (int)$this->id,
+            . 'WHERE id = ' . (int) $this->id,
         );
         $dbh->query();
 

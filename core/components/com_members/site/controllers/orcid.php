@@ -142,8 +142,8 @@ class Orcid extends SiteController
             foreach ($root->children() as $child) {
                 if ($child->getName() == 'name') {
                     $name = [
-                        'given-names' => (string)$child->{'given-names'},
-                        'family-name' => (string)$child->{'family-name'},
+                        'given-names' => (string) $child->{'given-names'},
+                        'family-name' => (string) $child->{'family-name'},
                     ];
                     break;
                 }

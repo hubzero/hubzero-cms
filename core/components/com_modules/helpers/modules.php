@@ -165,7 +165,7 @@ abstract class Modules
             ->select('name', 'text')
             ->select('protected')
             ->from('#__extensions', 'e')
-            ->whereEquals('e.client_id', (int)$clientId)
+            ->whereEquals('e.client_id', (int) $clientId)
             ->whereEquals('type', 'module')
             ->joinRaw('#__modules as m', 'm.module=e.element AND m.client_id=e.client_id', 'left')
             ->whereRaw('m.module IS NOT NULL')

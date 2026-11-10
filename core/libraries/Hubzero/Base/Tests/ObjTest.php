@@ -59,7 +59,7 @@ class ObjTest extends Basic
     {
         $obj = new Obj($this->data);
 
-        $result = (string)$obj;
+        $result = (string) $obj;
 
         $this->assertEquals($result, 'Hubzero\Base\Obj');
     }

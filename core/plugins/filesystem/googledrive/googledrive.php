@@ -48,7 +48,7 @@ class Googledrive extends Plugin
         if (isset($params['app_token'])) {
             $accessToken = $params['app_token'];
             // json encode turned our array into an object, we need to undo that
-            $accessToken = (array)$accessToken;
+            $accessToken = (array) $accessToken;
         } else {
             $connectionId = Request::getInt('connection', 0);
             $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);

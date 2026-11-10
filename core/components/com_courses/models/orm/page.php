@@ -95,7 +95,7 @@ class Page extends Relational
             ->order('ordering', 'desc')
             ->row();
 
-        return ((int)$highest->get('ordering', 0) + 1);
+        return ((int) $highest->get('ordering', 0) + 1);
     }
 
     /**

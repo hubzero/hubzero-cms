@@ -789,7 +789,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function hit()
     {
-        $this->set('hits', (int)$this->get('hits') + 1);
+        $this->set('hits', (int) $this->get('hits') + 1);
         $this->save();
     }
 
@@ -1185,14 +1185,14 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $query->order($filters['ordering'], $filters['direction']);
 
         if (isset($filters['limit']) && $filters['limit']) {
-            $query->limit((int)$filters['limit']);
+            $query->limit((int) $filters['limit']);
         }
 
         if (!isset($filters['start'])) {
             $filters['start'] = 0;
         }
 
-        $query->start((int)$filters['start']);
+        $query->start((int) $filters['start']);
 
         return $query;
     }

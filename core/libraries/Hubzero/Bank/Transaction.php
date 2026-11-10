@@ -79,7 +79,7 @@ class Transaction extends Relational
         $model = self::all();
 
         if ($limit) {
-            $model->limit((int)$limit);
+            $model->limit((int) $limit);
         }
 
         if ($uid) {

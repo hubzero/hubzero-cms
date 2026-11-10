@@ -432,13 +432,13 @@ class Publications extends SiteController
         $categories = $categoriesTable->getCategories();
 
         if (is_numeric($filters['category'])) {
-            $filters['category'] = (int)$filters['category'];
+            $filters['category'] = (int) $filters['category'];
         }
 
         if (!is_int($filters['category'])) {
             foreach ($categories as $category) {
                 if (trim($filters['category']) == $category->url_alias) {
-                    $filters['category'] = (int)$category->id;
+                    $filters['category'] = (int) $category->id;
                     break;
                 }
             }

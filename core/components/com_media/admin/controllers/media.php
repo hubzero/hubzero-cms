@@ -284,8 +284,8 @@ class Media extends AdminController
             $memLimit = (int) (ini_get('memory_limit')) * 1024 * 1024;
             if (
                 $file['size'] > ($params->get('upload_maxsize', 0) * 1024 * 1024)
-                || $file['size'] > (int)(ini_get('upload_max_filesize')) * 1024 * 1024
-                || $file['size'] > (int)(ini_get('post_max_size')) * 1024 * 1024
+                || $file['size'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024
+                || $file['size'] > (int) (ini_get('post_max_size')) * 1024 * 1024
                 || (($file['size'] > $memLimit) && ((int) (ini_get('memory_limit')) != -1))
             ) {
                 Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
@@ -387,8 +387,8 @@ class Media extends AdminController
 
         if (
             $size > $sizeLimit
-            || $size > (int)(ini_get('upload_max_filesize')) * 1024 * 1024
-            || $size > (int)(ini_get('post_max_size')) * 1024 * 1024
+            || $size > (int) (ini_get('upload_max_filesize')) * 1024 * 1024
+            || $size > (int) (ini_get('post_max_size')) * 1024 * 1024
             || (($size > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
         ) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));

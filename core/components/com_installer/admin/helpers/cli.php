@@ -74,10 +74,10 @@ class Cli
         $args = [];
 
         if (isset($length)) {
-            $args[] = '--length=' . (int)$length;
+            $args[] = '--length=' . (int) $length;
         }
         if (isset($start)) {
-            $args[] = '--start=' . (int)$start;
+            $args[] = '--start=' . (int) $start;
         }
         if (isset($search)) {
             $args[] = '--search=' . $search;

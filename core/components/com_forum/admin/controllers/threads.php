@@ -160,7 +160,7 @@ class Threads extends AdminController
             ->whereEquals('parent', 0);
 
         if ($filters['search']) {
-            $entries->whereLike('comment', strtolower((string)$filters['search']));
+            $entries->whereLike('comment', strtolower((string) $filters['search']));
         }
 
         if ($filters['scope']) {
@@ -168,15 +168,15 @@ class Threads extends AdminController
         }
 
         if ($filters['scope_id'] >= 0) {
-            $entries->whereEquals('scope_id', (int)$filters['scope_id']);
+            $entries->whereEquals('scope_id', (int) $filters['scope_id']);
         }
 
         if ($filters['state'] >= 0) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         }
 
         if ($filters['access'] >= 0) {
-            $entries->whereEquals('access', (int)$filters['access']);
+            $entries->whereEquals('access', (int) $filters['access']);
         }
 
         if (is_array($filters['category_id'])) {
@@ -185,7 +185,7 @@ class Threads extends AdminController
             }
             $filters['category_id'] = -1;
         } elseif ($filters['category_id'] > 0) {
-            $entries->whereEquals('category_id', (int)$filters['category_id']);
+            $entries->whereEquals('category_id', (int) $filters['category_id']);
         }
 
         $rows = $entries
@@ -292,27 +292,27 @@ class Threads extends AdminController
         $entries = Post::oneOrFail($filters['thread']);
 
         if ($filters['search']) {
-            $entries->whereLike('comment', strtolower((string)$filters['search']));
+            $entries->whereLike('comment', strtolower((string) $filters['search']));
         }
 
         if ($filters['state'] >= 0) {
-            $entries->whereEquals('state', (int)$filters['state']);
+            $entries->whereEquals('state', (int) $filters['state']);
         }
 
         if ($filters['access'] >= 0) {
-            $entries->whereEquals('access', (int)$filters['access']);
+            $entries->whereEquals('access', (int) $filters['access']);
         }
 
         if ($filters['thread']) {
-            $entries->whereEquals('thread', (int)$filters['thread']);
+            $entries->whereEquals('thread', (int) $filters['thread']);
         }
 
         if ($filters['category_id']) {
             if (is_array($filters['category_id'])) {
-                $entries->whereIn('category_id', (int)$filters['category_id']);
+                $entries->whereIn('category_id', (int) $filters['category_id']);
                 $filters['category_id'] = -1;
             } else if ($filters['category_id'] >= 0) {
-                $entries->whereEquals('category_id', (int)$filters['category_id']);
+                $entries->whereEquals('category_id', (int) $filters['category_id']);
             }
         }
 

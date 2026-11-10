@@ -62,11 +62,11 @@ foreach (
     ) as $entity
 ) {
     // easier to work with as an array, the SimpleXMLElement class is bizarre
-    $entity = (array)$entity;
+    $entity = (array) $entity;
     $id = $entity['@attributes']['entityID'];
     $title = $xp->xpath('//base:EntityDescriptor[attribute::entityID="' . $id . '"]//mdui:DisplayName');
     if (isset($title[0])) {
-        $title = (string)$title[0];
+        $title = (string) $title[0];
     } else {
         continue;
     }

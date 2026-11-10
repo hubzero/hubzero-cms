@@ -82,7 +82,7 @@ class Oauth extends Base implements CommandInterface
                 'client_id' => $app->get('client_id'),
                 'state'     => $app->get('state') == 1 ? 'enabled' : 'disabled',
                 'owner'     => $app->get('created_by'),
-                'redirect'  => strtok((string)$app->get('redirect_uri'), "\n"),
+                'redirect'  => strtok((string) $app->get('redirect_uri'), "\n"),
             ];
         }
 

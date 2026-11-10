@@ -58,8 +58,8 @@ class Migration20160907185952PlgProjects extends Base
 
                 $this->db->getQuery(true)
                     ->update('#__extensions')
-                    ->set(['ordering' => (int)$num])
-                    ->where('extension_id', '=', (int)$plugin->extension_id)
+                    ->set(['ordering' => (int) $num])
+                    ->where('extension_id', '=', (int) $plugin->extension_id)
                     ->execute();
 
                 $i++;

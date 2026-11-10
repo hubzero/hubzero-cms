@@ -336,8 +336,8 @@ class Attachment extends Relational
     public static function oneByThread($thread_id, $filename)
     {
         return self::all()
-            ->whereEquals('parent', (int)$thread_id)
-            ->whereEquals('filename', (string)$filename)
+            ->whereEquals('parent', (int) $thread_id)
+            ->whereEquals('filename', (string) $filename)
             ->row();
     }
 
@@ -350,7 +350,7 @@ class Attachment extends Relational
     public static function oneByPost($post_id)
     {
         return self::all()
-            ->whereEquals('post_id', (int)$post_id)
+            ->whereEquals('post_id', (int) $post_id)
             ->row();
     }
 }

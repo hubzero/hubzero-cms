@@ -54,7 +54,7 @@ class Migration20141120161609ComTime extends Base
                     $this->db->getQuery(true)
                         ->update('#__time_records')
                         ->set(['date' => $date])
-                        ->where('id', '=', (int)$result->id)
+                        ->where('id', '=', (int) $result->id)
                         ->execute();
 
                     $i++;
@@ -89,7 +89,7 @@ class Migration20141120161609ComTime extends Base
                     $this->db->getQuery(true)
                         ->update('#__time_records')
                         ->set(['end' => $date])
-                        ->where('id', '=', (int)$result->id)
+                        ->where('id', '=', (int) $result->id)
                         ->execute();
 
                     $i++;
