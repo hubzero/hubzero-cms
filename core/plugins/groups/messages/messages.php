@@ -58,7 +58,6 @@ class Messages extends Plugin
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
             || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
     }
 
