@@ -1200,10 +1200,18 @@ class Resources extends SiteController
 
         // Map of ISO 639-1 language codes to display names
         $langNames = [
-            'en' => 'English', 'es' => 'Spanish', 'fr' => 'French',
-            'de' => 'German', 'pt' => 'Portuguese', 'it' => 'Italian',
-            'zh' => 'Chinese', 'ja' => 'Japanese', 'ko' => 'Korean',
-            'ar' => 'Arabic', 'hi' => 'Hindi', 'ru' => 'Russian',
+            'en' => 'English',
+            'es' => 'Spanish',
+            'fr' => 'French',
+            'de' => 'German',
+            'pt' => 'Portuguese',
+            'it' => 'Italian',
+            'zh' => 'Chinese',
+            'ja' => 'Japanese',
+            'ko' => 'Korean',
+            'ar' => 'Arabic',
+            'hi' => 'Hindi',
+            'ru' => 'Russian',
         ];
 
         //add each subtitle to manifest

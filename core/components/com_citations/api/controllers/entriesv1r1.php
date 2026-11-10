@@ -95,13 +95,21 @@ class Entriesv1r1 extends ApiController
         $filters['year_end']        = Request::getInt('year_end', date("Y"));
         $filters['filter']          = Request::getString('filter', '');
         $filters['reftype']         = Request::getArray('reftype', [
-            'research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1,
+            'research' => 1,
+            'education' => 1,
+            'eduresearch' => 1,
+            'cyberinfrastructure' => 1,
         ]);
         $filters['geo']             = Request::getArray('geo', [
-            'us' => 1, 'na' => 1, 'eu' => 1, 'as' => 1,
+            'us' => 1,
+            'na' => 1,
+            'eu' => 1,
+            'as' => 1,
         ]);
         $filters['aff']             = Request::getArray('aff', [
-            'university' => 1, 'industry' => 1, 'government' => 1,
+            'university' => 1,
+            'industry' => 1,
+            'government' => 1,
         ]);
         $filters['startuploaddate'] = Request::getString('startuploaddate', '0000-00-00');
         $filters['enduploaddate']   = Request::getString('enduploaddate', '0000-00-00');

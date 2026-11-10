@@ -23,8 +23,19 @@ class RoleOrder
      * @var  array
      */
     private static $months = [
-        'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
-        'jul' => 7, 'aug' => 8, 'sep' => 9, 'sept' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12,
+        'jan' => 1,
+        'feb' => 2,
+        'mar' => 3,
+        'apr' => 4,
+        'may' => 5,
+        'jun' => 6,
+        'jul' => 7,
+        'aug' => 8,
+        'sep' => 9,
+        'sept' => 9,
+        'oct' => 10,
+        'nov' => 11,
+        'dec' => 12,
     ];
 
     /**
@@ -33,7 +44,11 @@ class RoleOrder
      * @var  array
      */
     private static $seasons = [
-        'spring' => 3, 'summer' => 6, 'fall' => 9, 'autumn' => 9, 'winter' => 12,
+        'spring' => 3,
+        'summer' => 6,
+        'fall' => 9,
+        'autumn' => 9,
+        'winter' => 12,
     ];
 
     /**
@@ -95,10 +110,19 @@ class RoleOrder
     private static function fullMonth($abbr)
     {
         static $full = [
-            'jan' => 'january', 'feb' => 'february', 'mar' => 'march', 'apr' => 'april',
-            'may' => 'may', 'jun' => 'june', 'jul' => 'july', 'aug' => 'august',
-            'sep' => 'september', 'sept' => 'september', 'oct' => 'october',
-            'nov' => 'november', 'dec' => 'december',
+            'jan' => 'january',
+            'feb' => 'february',
+            'mar' => 'march',
+            'apr' => 'april',
+            'may' => 'may',
+            'jun' => 'june',
+            'jul' => 'july',
+            'aug' => 'august',
+            'sep' => 'september',
+            'sept' => 'september',
+            'oct' => 'october',
+            'nov' => 'november',
+            'dec' => 'december',
         ];
 
         return $full[$abbr];

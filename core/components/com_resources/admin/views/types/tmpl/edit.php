@@ -530,12 +530,22 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         <select name="fields[<?php echo $i; ?>][display]" id="fields-<?php echo $i; ?>-display">
                             <?php
                             $skipPlugins = [
-                                'groups', 'coins', 'collections',
-                                'dublincore', 'findthistext',
-                                'googlescholar', 'opengraph', 'watch',
-                                'citations', 'questions',
-                                'recommendations', 'reviews', 'share',
-                                'sponsors', 'usage', 'versions',
+                                'groups',
+                                'coins',
+                                'collections',
+                                'dublincore',
+                                'findthistext',
+                                'googlescholar',
+                                'opengraph',
+                                'watch',
+                                'citations',
+                                'questions',
+                                'recommendations',
+                                'reviews',
+                                'share',
+                                'sponsors',
+                                'usage',
+                                'versions',
                                 'wishlist',
                             ];
                             foreach ($plugins as $plugin) {

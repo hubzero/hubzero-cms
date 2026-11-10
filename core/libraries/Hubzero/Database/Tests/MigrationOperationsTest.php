@@ -30,8 +30,12 @@ class MigrationOperationsTest extends AbstractDriverTestCase
     protected static function getTestTables(): array
     {
         return [
-            'temp_idempotent', 'temp_migrate_pattern', 'temp_pk_change',
-            'temp_complex_migrate', 'temp_resource_assoc', 'temp_conditional',
+            'temp_idempotent',
+            'temp_migrate_pattern',
+            'temp_pk_change',
+            'temp_complex_migrate',
+            'temp_resource_assoc',
+            'temp_conditional',
         ];
     }
 

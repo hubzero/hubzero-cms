@@ -56,9 +56,23 @@ if ($attributes) {
 
 // Formats that can be previewed via Google viewer
 $docs = [
-    'pdf', 'doc', 'docx', 'xls', 'xlsx',
-    'ppt', 'pptx', 'pages', 'ai',
-    'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg',
+    'pdf',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx',
+    'pages',
+    'ai',
+    'psd',
+    'tiff',
+    'dxf',
+    'eps',
+    'ps',
+    'ttf',
+    'xps',
+    'svg',
 ];
 
 $html5video = ["mp4","m4v","webm","ogv"];

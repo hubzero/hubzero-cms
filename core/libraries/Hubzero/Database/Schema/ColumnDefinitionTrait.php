@@ -644,8 +644,11 @@ trait ColumnDefinitionTrait
         if ($driver->supportsUnsigned() && !empty($this->columnModifiers['unsigned'])) {
             if (
                 in_array($this->columnType, [
-                    'tinyInteger', 'smallInteger', 'mediumInteger',
-                    'integer', 'bigInteger',
+                    'tinyInteger',
+                    'smallInteger',
+                    'mediumInteger',
+                    'integer',
+                    'bigInteger',
                 ])
             ) {
                 $parts[] = 'UNSIGNED';

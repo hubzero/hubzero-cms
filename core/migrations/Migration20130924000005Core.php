@@ -51,9 +51,23 @@ class Migration20130924000005Core extends Base
 
             // Components
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -689,9 +703,23 @@ class Migration20130924000005Core extends Base
             // Libraries
             // Libraries
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -752,9 +780,23 @@ class Migration20130924000005Core extends Base
 
             // Site Modules
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -1215,9 +1257,23 @@ class Migration20130924000005Core extends Base
 
             // Administrator Modules
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -1487,9 +1543,23 @@ class Migration20130924000005Core extends Base
 
             // Plugins
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -2471,9 +2541,23 @@ class Migration20130924000005Core extends Base
 
             // Templates
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -2612,9 +2696,23 @@ class Migration20130924000005Core extends Base
 
             // Languages
             $columns = [
-                'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state',
+                'extension_id',
+                'name',
+                'type',
+                'element',
+                'folder',
+                'client_id',
+                'enabled',
+                'access',
+                'protected',
+                'manifest_cache',
+                'params',
+                'custom_data',
+                'system_data',
+                'checked_out',
+                'checked_out_time',
+                'ordering',
+                'state',
             ];
 
             $values = [
@@ -2673,9 +2771,23 @@ class Migration20130924000005Core extends Base
             $this->db->getQuery(true)
                 ->insert('#__extensions')
                 ->columns([
-                    'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
-                    'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                    'checked_out', 'checked_out_time', 'ordering', 'state',
+                    'extension_id',
+                    'name',
+                    'type',
+                    'element',
+                    'folder',
+                    'client_id',
+                    'enabled',
+                    'access',
+                    'protected',
+                    'manifest_cache',
+                    'params',
+                    'custom_data',
+                    'system_data',
+                    'checked_out',
+                    'checked_out_time',
+                    'ordering',
+                    'state',
                 ])
                 ->values([
                     700,

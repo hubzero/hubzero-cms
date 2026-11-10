@@ -32,8 +32,13 @@ class SchemaDiffTest extends AbstractDriverTestCase
     protected static function getTestTables(): array
     {
         return [
-            'diff_users', 'diff_posts', 'diff_comments',
-            'diff_temp1', 'diff_temp2', 'diff_temp3', 'diff_unchanged',
+            'diff_users',
+            'diff_posts',
+            'diff_comments',
+            'diff_temp1',
+            'diff_temp2',
+            'diff_temp3',
+            'diff_unchanged',
         ];
     }
 

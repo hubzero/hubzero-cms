@@ -123,10 +123,14 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['ora_test_view', 'ora_active_items'];
         $adHocTables = [
-            'ora_rename_dest', 'ora_rename_src',
-            'ora_fk_child', 'ora_fk_parent',
-            'ora_ddl_test', 'ora_trunc_test',
-            'ora_identity_test', 'ora_view_src',
+            'ora_rename_dest',
+            'ora_rename_src',
+            'ora_fk_child',
+            'ora_fk_parent',
+            'ora_ddl_test',
+            'ora_trunc_test',
+            'ora_identity_test',
+            'ora_view_src',
             'ora_pk_test',
         ];
         $adHocSequences = ['ora_test_seq'];

@@ -352,8 +352,16 @@ class Downloads extends AdminController
         $output = fopen("php://output", "w");
 
         $row = [
-            'Downloaded', 'Product', 'SKU', 'User', 'Username',
-            'User ID', 'User Details', 'EULA', 'IP', 'Status',
+            'Downloaded',
+            'Product',
+            'SKU',
+            'User',
+            'Username',
+            'User ID',
+            'User Details',
+            'EULA',
+            'IP',
+            'Status',
         ];
         fputcsv($output, $row);
 
@@ -406,8 +414,16 @@ class Downloads extends AdminController
 
                 // ouput to stream
                 fputcsv($output, [
-                    $row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username,
-                    $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status,
+                    $row->dDownloaded,
+                    $row->pName,
+                    $row->sSku,
+                    $row->dName,
+                    $row->username,
+                    $row->uId,
+                    $metaUserInfoCsv,
+                    $metaEula,
+                    $row->dIp,
+                    $status,
                 ]);
                 // flush up to 5000 lines of output to browser
                 flush();

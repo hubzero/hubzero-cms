@@ -270,8 +270,14 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(Relational::class);
 
         $methods = [
-            'morphTo', 'morphOne', 'morphMany', 'morphToMany',
-            'morphedByMany', 'morphMap', 'getMorphMap', 'clearMorphMap',
+            'morphTo',
+            'morphOne',
+            'morphMany',
+            'morphToMany',
+            'morphedByMany',
+            'morphMap',
+            'getMorphMap',
+            'clearMorphMap',
         ];
         foreach ($methods as $method) {
             $this->assertTrue($reflection->hasMethod($method), "Relational should have method: {$method}");
@@ -310,9 +316,15 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(MorphOne::class);
 
         $methods = [
-            'cascadeOnDelete', 'cascadeOnSave', 'orphanRemoval',
-            'onCondition', 'orOnCondition', 'onConditionIn',
-            'onConditionNotIn', 'onConditionNull', 'onConditionNotNull',
+            'cascadeOnDelete',
+            'cascadeOnSave',
+            'orphanRemoval',
+            'onCondition',
+            'orOnCondition',
+            'onConditionIn',
+            'onConditionNotIn',
+            'onConditionNull',
+            'onConditionNotNull',
         ];
         foreach ($methods as $method) {
             $this->assertTrue($reflection->hasMethod($method), "MorphOne should have method: {$method}");

@@ -118,7 +118,9 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['pc_test_view', 'pc_active_items'];
         $adHocTables = [
-            'pc_ddl_test', 'pc_trunc_test', 'pc_auto_test',
+            'pc_ddl_test',
+            'pc_trunc_test',
+            'pc_auto_test',
         ];
 
         foreach (static::getClassDrivers() as $driver) {

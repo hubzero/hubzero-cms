@@ -122,9 +122,12 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['cubrid_test_view', 'cubrid_active_items'];
         $adHocTables = [
-            'cubrid_rename_dest', 'cubrid_rename_src',
-            'cubrid_fk_child', 'cubrid_fk_parent',
-            'cubrid_ddl_test', 'cubrid_trunc_test',
+            'cubrid_rename_dest',
+            'cubrid_rename_src',
+            'cubrid_fk_child',
+            'cubrid_fk_parent',
+            'cubrid_ddl_test',
+            'cubrid_trunc_test',
             'cubrid_auto_test',
         ];
 

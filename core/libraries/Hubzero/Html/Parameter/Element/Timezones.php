@@ -86,7 +86,8 @@ class Timezones extends Element
             Select::option(
                 12.75,
                 $lang->txt('UTC__12_45__CHATHAM_ISLAND'),
-            ), Select::option(13, $lang->txt('UTC__13_00__TONGA')),
+            ),
+            Select::option(13, $lang->txt('UTC__13_00__TONGA')),
             Select::option(14, $lang->txt('UTC__14_00__KIRIBATI')),
         ];
 

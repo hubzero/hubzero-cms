@@ -21,10 +21,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $message = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -43,10 +45,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $url = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -74,10 +78,12 @@ class RecordProcessingHelperTest extends Basic
             'methods' => ['generateErrorMessage' => $message],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $recordMock = $this->mock([
-            'class' => 'Relational', 'methods' => ['getErrors'],
+            'class' => 'Relational',
+            'methods' => ['getErrors'],
         ]);
         $helper = new Helper([
             'controller' => $controllerMock,
@@ -105,10 +111,12 @@ class RecordProcessingHelperTest extends Basic
             'methods' => ['generateErrorMessage'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $recordMock = $this->mock([
-            'class' => 'Relational', 'methods' => ['getErrors'],
+            'class' => 'Relational',
+            'methods' => ['getErrors'],
         ]);
         $helper = new Helper([
             'controller' => $controllerMock,
@@ -131,10 +139,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $message = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -153,10 +163,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $url = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -184,10 +196,12 @@ class RecordProcessingHelperTest extends Basic
             'methods' => ['generateErrorMessage' => $message],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $recordMock = $this->mock([
-            'class' => 'Relational', 'methods' => ['getErrors'],
+            'class' => 'Relational',
+            'methods' => ['getErrors'],
         ]);
         $helper = new Helper([
             'controller' => $controllerMock,
@@ -215,10 +229,12 @@ class RecordProcessingHelperTest extends Basic
             'methods' => ['generateErrorMessage'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $recordMock = $this->mock([
-            'class' => 'Relational', 'methods' => ['getErrors'],
+            'class' => 'Relational',
+            'methods' => ['getErrors'],
         ]);
         $helper = new Helper([
             'controller' => $controllerMock,
@@ -241,10 +257,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $message = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -263,10 +281,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $url = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['success'],
+            'class' => 'Notify',
+            'methods' => ['success'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -285,10 +305,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $message = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $helper = new Helper([
             'controller' => 0,
@@ -307,10 +329,12 @@ class RecordProcessingHelperTest extends Basic
     {
         $url = 'test';
         $appMock = $this->mock([
-            'class' => 'App', 'methods' => ['redirect'],
+            'class' => 'App',
+            'methods' => ['redirect'],
         ]);
         $notifyMock = $this->mock([
-            'class' => 'Notify', 'methods' => ['error'],
+            'class' => 'Notify',
+            'methods' => ['error'],
         ]);
         $helper = new Helper([
             'controller' => 0,

@@ -119,10 +119,18 @@ class Router extends Base
 
         // General project tasks
         $tasks = [
-            'edit', 'browse', 'intro',
-            'features', 'auth', 'delete',
-            'fixownership', 'suspend', 'reinstate',
-            'process', 'activate', 'requestaccess',
+            'edit',
+            'browse',
+            'intro',
+            'features',
+            'auth',
+            'delete',
+            'fixownership',
+            'suspend',
+            'reinstate',
+            'process',
+            'activate',
+            'requestaccess',
         ];
 
         // Media tasks

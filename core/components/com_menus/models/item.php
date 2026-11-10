@@ -127,10 +127,29 @@ class Item extends Nested
                     $segments = explode(':', $data['link']);
                     $protocol = strtolower($segments[0]);
                     $scheme = [
-                        'http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news',
-                        'prospero', 'telnet', 'rlogin', 'tn3270', 'wais', 'url',
-                        'mid', 'cid', 'nntp', 'tel', 'urn', 'ldap', 'file', 'fax',
-                        'modem', 'git',
+                        'http',
+                        'https',
+                        'ftp',
+                        'ftps',
+                        'gopher',
+                        'mailto',
+                        'news',
+                        'prospero',
+                        'telnet',
+                        'rlogin',
+                        'tn3270',
+                        'wais',
+                        'url',
+                        'mid',
+                        'cid',
+                        'nntp',
+                        'tel',
+                        'urn',
+                        'ldap',
+                        'file',
+                        'fax',
+                        'modem',
+                        'git',
                     ];
 
                     if (!in_array($protocol, $scheme)) {
@@ -407,8 +426,18 @@ class Item extends Nested
 
             if ($stored->get('id') && $stored->isGenerated()) {
                 $derived = [
-                    'menutype', 'alias', 'path', 'route', 'link', 'type',
-                    'component_id', 'parent_id', 'level', 'lft', 'rgt', 'home',
+                    'menutype',
+                    'alias',
+                    'path',
+                    'route',
+                    'link',
+                    'type',
+                    'component_id',
+                    'parent_id',
+                    'level',
+                    'lft',
+                    'rgt',
+                    'home',
                     'language',
                 ];
 
@@ -909,8 +938,17 @@ class Item extends Nested
         // style for that page, its access level, and its params.
         if ($this->isGenerated()) {
             $locked = [
-                'alias', 'path', 'route', 'link', 'type', 'component_id',
-                'menutype', 'parent_id', 'home', 'menuordering', 'language',
+                'alias',
+                'path',
+                'route',
+                'link',
+                'type',
+                'component_id',
+                'menutype',
+                'parent_id',
+                'home',
+                'menuordering',
+                'language',
             ];
 
             foreach ($locked as $field) {

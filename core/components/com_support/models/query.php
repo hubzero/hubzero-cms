@@ -316,9 +316,18 @@ class Query extends Relational
             // Only allow known operator templates; drop anything else so a
             // crafted condition cannot inject SQL through the operator.
             $allowedOps = [
-                '=', '!=', '<', '>', '<=', '>=',
-                'LIKE \'%$1%\'', 'LIKE \'$1%\'', 'LIKE \'%$1\'',
-                'NOT LIKE \'%$1%\'', 'NOT LIKE \'$1%\'', 'NOT LIKE \'%$1\'',
+                '=',
+                '!=',
+                '<',
+                '>',
+                '<=',
+                '>=',
+                'LIKE \'%$1%\'',
+                'LIKE \'$1%\'',
+                'LIKE \'%$1\'',
+                'NOT LIKE \'%$1%\'',
+                'NOT LIKE \'$1%\'',
+                'NOT LIKE \'%$1\'',
             ];
             if (!in_array($expr->opval, $allowedOps, true)) {
                 // Fail closed. Dropping the term was the wrong move: these

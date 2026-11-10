@@ -172,15 +172,24 @@ class Codemirror extends Plugin
 
                 case 'html':
                     $parserFile = [
-                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js',
+                        'parsexml.js',
+                        'parsecss.js',
+                        'tokenizejavascript.js',
+                        'parsejavascript.js',
+                        'parsehtmlmixed.js',
                     ];
                     $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css'];
                     break;
 
                 case 'php':
                     $parserFile = [
-                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js',
-                        'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js',
+                        'parsexml.js',
+                        'parsecss.js',
+                        'tokenizejavascript.js',
+                        'parsejavascript.js',
+                        'tokenizephp.js',
+                        'parsephp.js',
+                        'parsephphtmlmixed.js',
                     ];
                     $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css', 'phpcolors.css'];
                     break;

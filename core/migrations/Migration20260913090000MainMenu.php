@@ -88,14 +88,24 @@ class Migration20260913090000MainMenu extends Base
         'discover' => [
             'title' => 'Discover',
             'items' => [
-                'resources', 'tools', 'publications', 'citations',
-                'collections', 'tags', 'whatsnew',
+                'resources',
+                'tools',
+                'publications',
+                'citations',
+                'collections',
+                'tags',
+                'whatsnew',
             ],
         ],
         'community' => [
             'title' => 'Community',
             'items' => [
-                'groups', 'members', 'forum', 'answers', 'blog', 'projects',
+                'groups',
+                'members',
+                'forum',
+                'answers',
+                'blog',
+                'projects',
             ],
         ],
         'learn' => [

@@ -76,8 +76,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => null, 'checked_out_time' => null,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => null,
+            'checked_out_time' => null,
         ]]);
         $id = 1;
 
@@ -108,8 +110,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => '2024-01-15 10:00:00',
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => '2024-01-15 10:00:00',
         ]]);
         $id = 1;
 
@@ -139,8 +143,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => null, 'checked_out_time' => null,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => null,
+            'checked_out_time' => null,
         ]]);
         $id = 1;
 
@@ -161,8 +167,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => null, 'checked_out_time' => null,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => null,
+            'checked_out_time' => null,
         ]]);
         $id = 1;
 
@@ -187,8 +195,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => null, 'checked_out_time' => null,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => null,
+            'checked_out_time' => null,
         ]]);
         $id = 1;
 
@@ -209,8 +219,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $id = 1;
 
@@ -232,8 +244,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $id = 1;
 
@@ -255,8 +269,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $id = 1;
 
@@ -278,8 +294,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $time = date('Y-m-d H:i:s', strtotime('-1 hour'));
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $time,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $time,
         ]]);
         $id = 1;
 
@@ -311,8 +329,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $expiredTime = date('Y-m-d H:i:s', strtotime('-3 hours'));
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $expiredTime,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $expiredTime,
         ]]);
         $id = 1;
 
@@ -336,8 +356,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Fresh Lock', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Fresh Lock',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $id1 = 1;
         $article1 = LockableArticle::one($id1);
@@ -347,8 +369,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $time = date('Y-m-d H:i:s', strtotime('-3 hours'));
         $query->insertMany('lockable_articles', [[
-            'title' => 'Old Lock', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $time,
+            'title' => 'Old Lock',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $time,
         ]]);
         $id2 = 2; // Second insert gets ID=2
         $article2 = LockableArticle::one($id2);
@@ -371,8 +395,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $id = 1;
 
@@ -392,8 +418,10 @@ class LockableTraitTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => null, 'checked_out_time' => null,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => null,
+            'checked_out_time' => null,
         ]]);
         $id = 1;
 
@@ -414,8 +442,10 @@ class LockableTraitTest extends AbstractDriverTestCase
         $time = '2024-01-15 10:30:00';
         $query = new Query($driver);
         $query->insertMany('lockable_articles', [[
-            'title' => 'Test Article', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $time,
+            'title' => 'Test Article',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $time,
         ]]);
         $id = 1;
 
@@ -440,21 +470,27 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Article 1', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Article 1',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Article 2', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Article 2',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         // Different user
         $query->insertMany('lockable_articles', [[
-            'title' => 'Article 3', 'content' => 'Test content',
-            'checked_out' => 99, 'checked_out_time' => $now,
+            'title' => 'Article 3',
+            'content' => 'Test content',
+            'checked_out' => 99,
+            'checked_out_time' => $now,
         ]]);
 
         $result = LockableArticle::checkinByUser(42);
@@ -484,20 +520,26 @@ class LockableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $now = date('Y-m-d H:i:s');
         $query->insertMany('lockable_articles', [[
-            'title' => 'Fresh Lock', 'content' => 'Test content',
-            'checked_out' => 42, 'checked_out_time' => $now,
+            'title' => 'Fresh Lock',
+            'content' => 'Test content',
+            'checked_out' => 42,
+            'checked_out_time' => $now,
         ]]);
         $query = new Query($driver);
         $time = date('Y-m-d H:i:s', strtotime('-3 hours'));
         $query->insertMany('lockable_articles', [[
-            'title' => 'Expired Lock 1', 'content' => 'Test content',
-            'checked_out' => 99, 'checked_out_time' => $time,
+            'title' => 'Expired Lock 1',
+            'content' => 'Test content',
+            'checked_out' => 99,
+            'checked_out_time' => $time,
         ]]);
         $query = new Query($driver);
         $time = date('Y-m-d H:i:s', strtotime('-4 hours'));
         $query->insertMany('lockable_articles', [[
-            'title' => 'Expired Lock 2', 'content' => 'Test content',
-            'checked_out' => 100, 'checked_out_time' => $time,
+            'title' => 'Expired Lock 2',
+            'content' => 'Test content',
+            'checked_out' => 100,
+            'checked_out_time' => $time,
         ]]);
 
         $result = LockableArticle::checkinExpired();
@@ -531,7 +573,9 @@ class LockableTraitTest extends AbstractDriverTestCase
         // Insert directly with custom columns
         $query = new Query($driver);
         $query->insertMany('lockable_custom_articles', [[
-            'title' => 'Custom', 'locked_by' => null, 'locked_at' => null,
+            'title' => 'Custom',
+            'locked_by' => null,
+            'locked_at' => null,
         ]]);
         $id = 1;
 

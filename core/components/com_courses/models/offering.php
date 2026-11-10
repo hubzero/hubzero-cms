@@ -1306,7 +1306,9 @@ class Offering extends Base
                 $course = Course::getInstance($this->get('course_id'));
 
                 $data = $this->trigger('onCourseEnrollLink', [
-                    $course, $this, $this->section(),
+                    $course,
+                    $this,
+                    $this->section(),
                 ]);
                 if ($data && count($data) > 0) {
                     $link = implode('', $data);

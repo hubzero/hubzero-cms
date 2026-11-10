@@ -66,8 +66,19 @@ class Awards
         self::getDbh();
         do {
             $columns = [
-                'opted_out', 'name', 'orgtype', 'organization', 'countryresident',
-                'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability',
+                'opted_out',
+                'name',
+                'orgtype',
+                'organization',
+                'countryresident',
+                'countryorigin',
+                'gender',
+                'url',
+                'reason',
+                'race',
+                'phone',
+                'picture',
+                'disability',
             ];
 
             foreach ($columns as $key => $val) {

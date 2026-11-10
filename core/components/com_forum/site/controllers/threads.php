@@ -360,9 +360,21 @@ class Threads extends SiteController
         // key it is handed, and lft/rgt/hits/last_activity/asset_id are the
         // model's to maintain (a posted lft/rgt corrupts the nested set).
         $fields = array_intersect_key($fields, array_flip([
-            'id', 'title', 'comment', 'category_id', 'access', 'anonymous',
-            'parent', 'thread', 'state', 'sticky', 'closed',
-            'scope', 'scope_id', 'scope_sub_id', 'object_id',
+            'id',
+            'title',
+            'comment',
+            'category_id',
+            'access',
+            'anonymous',
+            'parent',
+            'thread',
+            'state',
+            'sticky',
+            'closed',
+            'scope',
+            'scope_id',
+            'scope_sub_id',
+            'object_id',
         ]));
 
         $fields['sticky']    = (isset($fields['sticky'])) ? $fields['sticky'] : 0;

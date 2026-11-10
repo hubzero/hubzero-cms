@@ -362,8 +362,11 @@ class MysqlGrammar extends BaseSchemaGrammar
             default:
                 if (
                     isset($params['length']) && in_array($type, [
-                        'tinyInteger', 'smallInteger', 'mediumInteger',
-                        'integer', 'bigInteger',
+                        'tinyInteger',
+                        'smallInteger',
+                        'mediumInteger',
+                        'integer',
+                        'bigInteger',
                     ])
                 ) {
                     return "{$mysqlType}({$params['length']})";

@@ -523,8 +523,18 @@ class DatabaseManagerTest extends TestCase
     public function backendRegistryUsesCanonicalDriverClassesForMovedBackends(): void
     {
         $backends = [
-            'mock', 'ase', 'mysql', 'mariadb', 'pgsql', 'sqlite',
-            'sqlsrv', 'cubrid', 'db2', 'firebird', 'informix', 'oci',
+            'mock',
+            'ase',
+            'mysql',
+            'mariadb',
+            'pgsql',
+            'sqlite',
+            'sqlsrv',
+            'cubrid',
+            'db2',
+            'firebird',
+            'informix',
+            'oci',
         ];
 
         foreach ($backends as $backend) {
@@ -541,8 +551,18 @@ class DatabaseManagerTest extends TestCase
     public function backendRegistryUsesCanonicalSyntaxClassesForMovedBackends(): void
     {
         $backends = [
-            'ase', 'mysql', 'mariadb', 'pgsql', 'sqlite', 'sqlsrv',
-            'cubrid', 'db2', 'firebird', 'informix', 'oci', 'percona',
+            'ase',
+            'mysql',
+            'mariadb',
+            'pgsql',
+            'sqlite',
+            'sqlsrv',
+            'cubrid',
+            'db2',
+            'firebird',
+            'informix',
+            'oci',
+            'percona',
         ];
 
         foreach ($backends as $backend) {
@@ -615,8 +635,19 @@ class DatabaseManagerTest extends TestCase
     public function backendRegistryResolvesCanonicalGrammarClassesForMovedBackends(): void
     {
         $backends = [
-            'mock', 'ase', 'mysql', 'mariadb', 'percona', 'cubrid',
-            'sqlite', 'pgsql', 'firebird', 'informix', 'oci', 'sqlsrv', 'db2',
+            'mock',
+            'ase',
+            'mysql',
+            'mariadb',
+            'percona',
+            'cubrid',
+            'sqlite',
+            'pgsql',
+            'firebird',
+            'informix',
+            'oci',
+            'sqlsrv',
+            'db2',
         ];
 
         foreach ($backends as $backend) {

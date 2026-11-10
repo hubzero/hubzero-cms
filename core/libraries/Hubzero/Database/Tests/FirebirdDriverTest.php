@@ -121,17 +121,32 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
         // Clean up ad-hoc tables created by individual migration tests
         $migTables = [
-            'MIG_ADD_PK', 'MIG_IDEMPOTENT', 'MIG_CUSTOM_PK',
-            'MIG_COMPLEX', 'MIG_RESOURCE_ASSOC', 'MIG_DROP_COL',
-            'MIG_ADD_COL', 'MIG_INDEX_TEST', 'MIG_FK_CHILD', 'MIG_FK_PARENT',
-            'MIG_TRUNCATE', 'MIG_VARCHAR_LEN', 'MIG_INT_BIGINT',
-            'MIG_DEFAULTS', 'MIG_NOTNULL',
-            'MIG_VIEW_CRE', 'MIG_VIEW_REP', 'MIG_VIEW_EXI', 'MIG_VIEW_DRO',
+            'MIG_ADD_PK',
+            'MIG_IDEMPOTENT',
+            'MIG_CUSTOM_PK',
+            'MIG_COMPLEX',
+            'MIG_RESOURCE_ASSOC',
+            'MIG_DROP_COL',
+            'MIG_ADD_COL',
+            'MIG_INDEX_TEST',
+            'MIG_FK_CHILD',
+            'MIG_FK_PARENT',
+            'MIG_TRUNCATE',
+            'MIG_VARCHAR_LEN',
+            'MIG_INT_BIGINT',
+            'MIG_DEFAULTS',
+            'MIG_NOTNULL',
+            'MIG_VIEW_CRE',
+            'MIG_VIEW_REP',
+            'MIG_VIEW_EXI',
+            'MIG_VIEW_DRO',
         ];
 
         $migGenerators = [
-            'GEN_MIG_ADD_PK_ID', 'GEN_MIG_CUSTOM_PK_ID',
-            'GEN_MIG_COMPLEX_ID', 'GEN_MIG_RESOURCE_ASSOC_ID',
+            'GEN_MIG_ADD_PK_ID',
+            'GEN_MIG_CUSTOM_PK_ID',
+            'GEN_MIG_COMPLEX_ID',
+            'GEN_MIG_RESOURCE_ASSOC_ID',
         ];
 
         $migViews = ['MIG_TEST_VIEW_CRE', 'MIG_REPLACE_VIEW', 'MIG_EXISTS_VIEW', 'MIG_DROP_VIEW'];

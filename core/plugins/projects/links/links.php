@@ -105,9 +105,15 @@ class Links extends Plugin
         $this->model = $model;
 
         $tasks = [
-            'browser', 'select' , 'parseurl',
-            'parsedoi', 'addcitation', 'deletecitation',
-            'newcite', 'editcite', 'savecite',
+            'browser',
+            'select' ,
+            'parseurl',
+            'parsedoi',
+            'addcitation',
+            'deletecitation',
+            'newcite',
+            'editcite',
+            'savecite',
         ];
 
         // Publishing?

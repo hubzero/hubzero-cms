@@ -28,13 +28,25 @@ class SchemaTest extends AbstractDriverTestCase
     protected static function getTestTables(): array
     {
         return [
-            'users', 'posts',
-            'temp_drop_test', 'temp_rename_source', 'temp_rename_target',
-            'temp_index_test', 'temp_multi_idx', 'temp_unique_idx',
-            'temp_fulltext', 'temp_drop_idx', 'temp_add_col',
-            'temp_drop_col', 'temp_rename_col', 'temp_auto_test',
-            'temp_setauto_test', 'temp_drop_pk', 'temp_add_pk',
-            'temp_pk_cols', 'temp_pk_migration',
+            'users',
+            'posts',
+            'temp_drop_test',
+            'temp_rename_source',
+            'temp_rename_target',
+            'temp_index_test',
+            'temp_multi_idx',
+            'temp_unique_idx',
+            'temp_fulltext',
+            'temp_drop_idx',
+            'temp_add_col',
+            'temp_drop_col',
+            'temp_rename_col',
+            'temp_auto_test',
+            'temp_setauto_test',
+            'temp_drop_pk',
+            'temp_add_pk',
+            'temp_pk_cols',
+            'temp_pk_migration',
         ];
     }
 

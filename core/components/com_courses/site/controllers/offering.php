@@ -382,7 +382,9 @@ class Offering extends SiteController
             $link = $offering->link();
 
             $data = Event::trigger('courses.onCourseEnrolled', [
-                $this->course, $offering, $offering->section(),
+                $this->course,
+                $offering,
+                $offering->section(),
             ]);
             if ($data && count($data) > 0) {
                 $link = implode('', $data);

@@ -19,10 +19,22 @@ class Inflector
      * @var  array
      */
     protected static $uncountable_words = [
-        'equipment', 'information', 'rice', 'money',
-        'species', 'series', 'fish', 'meta', 'metadata',
-        'buffalo', 'elk', 'rhinoceros', 'salmon',
-        'bison', 'headquarters', 'moose',
+        'equipment',
+        'information',
+        'rice',
+        'money',
+        'species',
+        'series',
+        'fish',
+        'meta',
+        'metadata',
+        'buffalo',
+        'elk',
+        'rhinoceros',
+        'salmon',
+        'bison',
+        'headquarters',
+        'moose',
     ];
 
     /**

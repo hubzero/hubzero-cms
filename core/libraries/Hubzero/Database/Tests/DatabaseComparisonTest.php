@@ -42,8 +42,15 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
     protected function cleanupTables(Driver $driver): void
     {
         $tables = [
-            'dbdiff_users', 'dbdiff_posts', 'dbdiff_comments', 'dbdiff_new', 'dbdiff_old',
-            'dbdiff_rebuild_test', 'dbdiff_modify_test', 'dbdiff_combined_test', 'dbdiff_rename_test',
+            'dbdiff_users',
+            'dbdiff_posts',
+            'dbdiff_comments',
+            'dbdiff_new',
+            'dbdiff_old',
+            'dbdiff_rebuild_test',
+            'dbdiff_modify_test',
+            'dbdiff_combined_test',
+            'dbdiff_rename_test',
         ];
 
         foreach ($tables as $table) {

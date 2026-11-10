@@ -503,8 +503,16 @@ class Ticketsv1r0 extends ApiController
         $response->status->id    = $ticket->get('status');
 
         $props = [
-            'created', 'severity', 'os', 'browser', 'ip',
-            'hostname', 'uas', 'referrer', 'open', 'closed',
+            'created',
+            'severity',
+            'os',
+            'browser',
+            'ip',
+            'hostname',
+            'uas',
+            'referrer',
+            'open',
+            'closed',
         ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);

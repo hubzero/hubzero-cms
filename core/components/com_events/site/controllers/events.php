@@ -1262,9 +1262,28 @@ class Events extends SiteController
 			VALUES ('
                 . $this->event->id . ', '
                 . $this->getValueString($this->database, $reg, [
-                    'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
-                    'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability',
-                    'dietary', 'dinner', 'additional', 'comments',
+                    'firstname',
+                    'lastname',
+                    'affiliation',
+                    'title',
+                    'city',
+                    'state',
+                    'postalcode',
+                    'country',
+                    'telephone',
+                    'fax',
+                    'email',
+                    'website',
+                    'position',
+                    'degree',
+                    'gender',
+                    'arrival',
+                    'departure',
+                    'disability',
+                    'dietary',
+                    'dinner',
+                    'additional',
+                    'comments',
                 ])
             . ')',
         );

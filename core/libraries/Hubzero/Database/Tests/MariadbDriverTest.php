@@ -118,10 +118,14 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['mdb_test_view', 'mdb_active_items'];
         $adHocTables = [
-            'mdb_rename_dest', 'mdb_rename_src',
-            'mdb_fk_child', 'mdb_fk_parent',
-            'mdb_ddl_test', 'mdb_trunc_test',
-            'mdb_auto_test', 'mdb_seq_table',
+            'mdb_rename_dest',
+            'mdb_rename_src',
+            'mdb_fk_child',
+            'mdb_fk_parent',
+            'mdb_ddl_test',
+            'mdb_trunc_test',
+            'mdb_auto_test',
+            'mdb_seq_table',
         ];
         $adHocSequences = ['mdb_test_seq'];
 

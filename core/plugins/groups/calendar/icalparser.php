@@ -315,9 +315,25 @@ class IcalParser
 
         //implement 4.3.11 Text ESCAPED-CHAR
         $text_properties = [
-            'CALSCALE', 'METHOD', 'PRODID', 'VERSION', 'CATEGORIES', 'CLASS',
-            'COMMENT', 'DESCRIPTION', 'LOCATION', 'RESOURCES', 'STATUS', 'SUMMARY',
-            'TRANSP', 'TZID', 'TZNAME', 'CONTACT', 'RELATED-TO', 'UID', 'ACTION',
+            'CALSCALE',
+            'METHOD',
+            'PRODID',
+            'VERSION',
+            'CATEGORIES',
+            'CLASS',
+            'COMMENT',
+            'DESCRIPTION',
+            'LOCATION',
+            'RESOURCES',
+            'STATUS',
+            'SUMMARY',
+            'TRANSP',
+            'TZID',
+            'TZNAME',
+            'CONTACT',
+            'RELATED-TO',
+            'UID',
+            'ACTION',
             'REQUEST-STATUS',
         ];
         if (in_array($key, $text_properties) || strpos($key, 'X-') === 0) {

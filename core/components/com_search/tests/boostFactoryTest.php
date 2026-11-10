@@ -25,10 +25,12 @@ class BoostFactoryTest extends Basic
         $strength = 11;
         $userId = -33;
         $userHelper = $this->mock([
-            'class' => 'User', 'methods' => ['get' => $userId]]);
+            'class' => 'User',
+            'methods' => ['get' => $userId]]);
         $factory = new BoostFactory(['user' => $userHelper]);
         $boostData = [
-            'document_type' => 'test', 'strength' => $strength,
+            'document_type' => 'test',
+            'strength' => $strength,
         ];
 
         $boost = $factory->one($boostData);

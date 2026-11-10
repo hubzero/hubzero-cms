@@ -639,8 +639,14 @@ class Orders extends AdminController
         foreach ($rowsRaw as $row) {
             $itemInfo = $row->itemInfo['info'];
             $rows[] = [
-                $row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty,
-                $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber,
+                $row->sId,
+                $itemInfo->pName . ', ' . $itemInfo->sSku,
+                $row->tiQty,
+                $row->tiPrice,
+                $row->tId,
+                $row->tLastUpdated,
+                $row->name,
+                $row->uidNumber,
             ];
         }
 
@@ -658,8 +664,14 @@ class Orders extends AdminController
 
         $output = fopen("php://output", "w");
         $row = [
-            'SKU ID', 'Product', 'QTY', 'Price', 'Order ID',
-            'Order Placed', 'Purchased By', 'Purchased By (userId)',
+            'SKU ID',
+            'Product',
+            'QTY',
+            'Price',
+            'Order ID',
+            'Order Placed',
+            'Purchased By',
+            'Purchased By (userId)',
         ];
         fputcsv($output, $row);
         foreach ($rows as $row) {

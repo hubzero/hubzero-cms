@@ -689,10 +689,22 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @var array
      */
     private static $uncountable = [
-        'equipment', 'information', 'rice', 'money',
-        'species', 'series', 'fish', 'meta', 'metadata',
-        'buffalo', 'elk', 'rhinoceros', 'salmon',
-        'bison', 'headquarters', 'moose',
+        'equipment',
+        'information',
+        'rice',
+        'money',
+        'species',
+        'series',
+        'fish',
+        'meta',
+        'metadata',
+        'buffalo',
+        'elk',
+        'rhinoceros',
+        'salmon',
+        'bison',
+        'headquarters',
+        'moose',
     ];
 
     /**
@@ -1593,11 +1605,16 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // List of all possible model events
         $events = [
-            'creating', 'created',
-            'updating', 'updated',
-            'saving', 'saved',
-            'deleting', 'deleted',
-            'restoring', 'restored',  // SoftDeletes events
+            'creating',
+            'created',
+            'updating',
+            'updated',
+            'saving',
+            'saved',
+            'deleting',
+            'deleted',
+            'restoring',
+            'restored',  // SoftDeletes events
         ];
 
         // Register each method that exists on the observer

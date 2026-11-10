@@ -74,7 +74,11 @@ class Comparator
      * @var array
      */
     protected $integerTypes = [
-        'tinyint', 'smallint', 'mediumint', 'int', 'bigint',
+        'tinyint',
+        'smallint',
+        'mediumint',
+        'int',
+        'bigint',
     ];
 
     /**

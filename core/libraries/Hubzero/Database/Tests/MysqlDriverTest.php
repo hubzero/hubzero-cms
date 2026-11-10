@@ -127,10 +127,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['my_test_view', 'my_active_items'];
         $adHocTables = [
-            'my_rename_dest', 'my_rename_src',
-            'my_fk_child', 'my_fk_parent',
-            'my_ddl_test', 'my_trunc_test',
-            'my_auto_test', 'my_engine_test',
+            'my_rename_dest',
+            'my_rename_src',
+            'my_fk_child',
+            'my_fk_parent',
+            'my_ddl_test',
+            'my_trunc_test',
+            'my_auto_test',
+            'my_engine_test',
         ];
 
         foreach (static::getClassDrivers() as $driver) {

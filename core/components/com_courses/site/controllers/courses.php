@@ -180,8 +180,32 @@ class Courses extends SiteController
         $this->view->filters['start']  = Request::getInt('limitstart', 0);
         $this->view->filters['index']  = strtolower(Request::getWord('index', ''));
         $validIndexes = [
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            't',
+            'u',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
         ];
         $index = $this->view->filters['index'];
         if ($index && !in_array($index, $validIndexes)) {

@@ -269,8 +269,21 @@ class Ldap
         }
 
         $reqattr = [
-            'uidNumber','uid','cn','gidNumber','homeDirectory','loginShell','userPassword','shadowLastChange',
-            'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host',
+            'uidNumber',
+            'uid',
+            'cn',
+            'gidNumber',
+            'homeDirectory',
+            'loginShell',
+            'userPassword',
+            'shadowLastChange',
+            'shadowMin',
+            'shadowMax',
+            'shadowWarning',
+            'shadowInactive',
+            'shadowExpire',
+            'shadowFlag',
+            'host',
         ];
 
         $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);

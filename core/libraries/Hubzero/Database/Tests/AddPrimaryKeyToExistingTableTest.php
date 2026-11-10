@@ -24,8 +24,11 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
     protected static function getTestTables(): array
     {
         return [
-            'temp_add_pk', 'temp_custom_pk', 'temp_pk_drop_add',
-            'temp_pk_migration', 'temp_add_pk_schema',
+            'temp_add_pk',
+            'temp_custom_pk',
+            'temp_pk_drop_add',
+            'temp_pk_migration',
+            'temp_add_pk_schema',
         ];
     }
 

@@ -124,10 +124,14 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['ss_test_view', 'ss_active_items'];
         $adHocTables = [
-            'ss_rename_dest', 'ss_rename_src',
-            'ss_fk_child', 'ss_fk_parent',
-            'ss_ddl_test', 'ss_trunc_test',
-            'ss_identity_test', 'ss_view_src',
+            'ss_rename_dest',
+            'ss_rename_src',
+            'ss_fk_child',
+            'ss_fk_parent',
+            'ss_ddl_test',
+            'ss_trunc_test',
+            'ss_identity_test',
+            'ss_view_src',
             'ss_pk_test',
         ];
 

@@ -71,28 +71,46 @@ class OnConditionTest extends AbstractDriverTestCase
         $q = new Query($driver);
         $q->insertMany('oncond_comments', [
             [
-                'post_id' => 1, 'content' => 'Active Comment 1',
-                'status' => 1, 'type' => 'general', 'created_at' => '2024-01-01 00:00:00',
+                'post_id' => 1,
+                'content' => 'Active Comment 1',
+                'status' => 1,
+                'type' => 'general',
+                'created_at' => '2024-01-01 00:00:00',
             ],
             [
-                'post_id' => 1, 'content' => 'Active Comment 2',
-                'status' => 1, 'type' => 'featured', 'created_at' => '2024-02-01 00:00:00',
+                'post_id' => 1,
+                'content' => 'Active Comment 2',
+                'status' => 1,
+                'type' => 'featured',
+                'created_at' => '2024-02-01 00:00:00',
             ],
             [
-                'post_id' => 1, 'content' => 'Inactive Comment',
-                'status' => 0, 'type' => 'general', 'created_at' => '2024-03-01 00:00:00',
+                'post_id' => 1,
+                'content' => 'Inactive Comment',
+                'status' => 0,
+                'type' => 'general',
+                'created_at' => '2024-03-01 00:00:00',
             ],
             [
-                'post_id' => 2, 'content' => 'Active Comment 3',
-                'status' => 1, 'type' => 'featured', 'created_at' => '2024-01-15 00:00:00',
+                'post_id' => 2,
+                'content' => 'Active Comment 3',
+                'status' => 1,
+                'type' => 'featured',
+                'created_at' => '2024-01-15 00:00:00',
             ],
             [
-                'post_id' => 2, 'content' => 'Inactive Comment 2',
-                'status' => 0, 'type' => 'general', 'created_at' => '2024-02-15 00:00:00',
+                'post_id' => 2,
+                'content' => 'Inactive Comment 2',
+                'status' => 0,
+                'type' => 'general',
+                'created_at' => '2024-02-15 00:00:00',
             ],
             [
-                'post_id' => 2, 'content' => 'Inactive Comment 3',
-                'status' => 0, 'type' => 'featured', 'created_at' => '2024-03-15 00:00:00',
+                'post_id' => 2,
+                'content' => 'Inactive Comment 3',
+                'status' => 0,
+                'type' => 'featured',
+                'created_at' => '2024-03-15 00:00:00',
             ],
         ]);
     }

@@ -121,10 +121,14 @@ class InformixDriverTest extends AbstractDriverTestCase
 
         // Clean up ad-hoc objects created by individual tests
         $adHocTables = [
-            'ix_rename_dest', 'ix_rename_src',
-            'ix_fk_child', 'ix_fk_parent',
-            'ix_ddl_test', 'ix_trunc_test',
-            'ix_serial_test', 'ix_view_src',
+            'ix_rename_dest',
+            'ix_rename_src',
+            'ix_fk_child',
+            'ix_fk_parent',
+            'ix_ddl_test',
+            'ix_trunc_test',
+            'ix_serial_test',
+            'ix_view_src',
         ];
         $adHocViews = ['ix_test_view', 'ix_replace_view'];
         $adHocSequences = ['ix_test_seq'];

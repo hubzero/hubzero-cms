@@ -144,7 +144,8 @@ class MockDriverTest extends AbstractDriverTestCase
         parent::tearDown();
 
         $adHocTables = [
-            'mk_ddl_test', 'mk_isolation_test',
+            'mk_ddl_test',
+            'mk_isolation_test',
         ];
 
         foreach (static::getClassDrivers() as $driver) {

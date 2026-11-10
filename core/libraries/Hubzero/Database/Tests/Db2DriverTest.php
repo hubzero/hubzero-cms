@@ -134,10 +134,14 @@ class Db2DriverTest extends AbstractDriverTestCase
 
         // Clean up ad-hoc objects created by individual tests
         $adHocTables = [
-            'd2_rename_dest', 'd2_rename_src',
-            'd2_fk_child', 'd2_fk_parent',
-            'd2_ddl_test', 'd2_trunc_test',
-            'd2_serial_test', 'd2_view_src',
+            'd2_rename_dest',
+            'd2_rename_src',
+            'd2_fk_child',
+            'd2_fk_parent',
+            'd2_ddl_test',
+            'd2_trunc_test',
+            'd2_serial_test',
+            'd2_view_src',
         ];
         $adHocViews = ['d2_test_view'];
         $adHocSequences = ['D2_TEST_SEQ'];

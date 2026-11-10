@@ -384,10 +384,23 @@ class Usage extends Plugin
         $results = $this->getOverview($id, $period);
 
         $columns = [
-            'datetime', 'period', 'users', 'sessions', 'simulations', 'jobs',
-            'avg_wall', 'tot_wall', 'avg_cpu', 'tot_cpu',
-            'avg_view', 'tot_view', 'avg_wait', 'tot_wait',
-            'avg_cpus', 'tot_cpus', 'processed_on',
+            'datetime',
+            'period',
+            'users',
+            'sessions',
+            'simulations',
+            'jobs',
+            'avg_wall',
+            'tot_wall',
+            'avg_cpu',
+            'tot_cpu',
+            'avg_view',
+            'tot_view',
+            'avg_wait',
+            'tot_wait',
+            'avg_cpus',
+            'tot_cpus',
+            'processed_on',
         ];
 
         ob_clean();

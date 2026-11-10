@@ -141,7 +141,12 @@ class Reviews extends Plugin
             $this->params->set('access-view-' . $assetType, true);
 
             $actions = [
-                'admin', 'manage', 'edit', 'edit-own', 'create', 'delete',
+                'admin',
+                'manage',
+                'edit',
+                'edit-own',
+                'create',
+                'delete',
             ];
 
             $yearFormat  = "Y";

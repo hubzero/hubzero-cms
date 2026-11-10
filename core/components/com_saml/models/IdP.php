@@ -142,7 +142,13 @@ class IdP
      * @var  array
      */
     protected static $attributeSources = [
-        'email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id',
+        'email',
+        'name',
+        'givenName',
+        'middleName',
+        'surname',
+        'username',
+        'id',
     ];
 
     /**

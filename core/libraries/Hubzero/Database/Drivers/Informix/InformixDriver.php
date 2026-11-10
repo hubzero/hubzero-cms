@@ -790,8 +790,16 @@ class InformixDriver extends BaseSqlDriver
     {
         $firstWord = strtoupper((string) strtok(ltrim($sql), " \t\n"));
         $writeWords = [
-            'INSERT', 'UPDATE', 'DELETE', 'MERGE', 'REPLACE',
-            'CREATE', 'ALTER', 'DROP', 'TRUNCATE', 'RENAME',
+            'INSERT',
+            'UPDATE',
+            'DELETE',
+            'MERGE',
+            'REPLACE',
+            'CREATE',
+            'ALTER',
+            'DROP',
+            'TRUNCATE',
+            'RENAME',
         ];
         return in_array($firstWord, $writeWords, true);
     }
@@ -1673,10 +1681,33 @@ class InformixDriver extends BaseSqlDriver
     {
         // First try abstract type mapping (camelCase types from schema builder)
         $abstractTypes = [
-            'tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger',
-            'boolean', 'string', 'char', 'tinyText', 'text', 'mediumText', 'longText',
-            'float', 'double', 'decimal', 'date', 'time', 'datetime', 'timestamp',
-            'timestampTz', 'year', 'binary', 'json', 'uuid', 'ulid', 'ipAddress', 'macAddress',
+            'tinyInteger',
+            'smallInteger',
+            'mediumInteger',
+            'integer',
+            'bigInteger',
+            'boolean',
+            'string',
+            'char',
+            'tinyText',
+            'text',
+            'mediumText',
+            'longText',
+            'float',
+            'double',
+            'decimal',
+            'date',
+            'time',
+            'datetime',
+            'timestamp',
+            'timestampTz',
+            'year',
+            'binary',
+            'json',
+            'uuid',
+            'ulid',
+            'ipAddress',
+            'macAddress',
         ];
         if (in_array($type, $abstractTypes)) {
             return $this->normalizeColumnType($type);

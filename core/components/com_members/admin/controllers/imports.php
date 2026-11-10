@@ -584,8 +584,17 @@ class Imports extends AdminController
     public function sampleTask()
     {
         $skip = [
-            'gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword',
-            'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber',
+            'gid',
+            'gidnumber',
+            'regIP',
+            'regHost',
+            'modifiedDate',
+            'proxypassword',
+            'loginshell',
+            'ftpshell',
+            'shadowexpire',
+            'params',
+            'proxyuidnumber',
         ];
 
         $fields = [];
@@ -627,7 +636,14 @@ class Imports extends AdminController
 
             $example = 'Example';
             $multiTypes = [
-                'tags', 'select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes',
+                'tags',
+                'select',
+                'dropdown',
+                'list',
+                'radio',
+                'radios',
+                'checkbox',
+                'checkboxes',
             ];
             if ($field->options->count() || in_array($field->get('type'), $multiTypes)) {
                 $example = 'example;example;example';

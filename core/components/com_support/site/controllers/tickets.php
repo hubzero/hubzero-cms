@@ -1766,8 +1766,22 @@ class Tickets extends SiteController
         // Only the documented fields above; the ticket's owner, group, state
         // and id are not the reporter's to set
         $incoming = array_intersect_key($_POST, array_flip([
-            'login', 'severity', 'category', 'summary', 'report', 'email', 'name',
-            'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'cookies', 'section', 'tags',
+            'login',
+            'severity',
+            'category',
+            'summary',
+            'report',
+            'email',
+            'name',
+            'os',
+            'browser',
+            'ip',
+            'hostname',
+            'uas',
+            'referrer',
+            'cookies',
+            'section',
+            'tags',
         ]));
 
         // trim and addslashes all posted items

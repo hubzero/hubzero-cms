@@ -369,8 +369,17 @@ class Ticketsv2r0 extends ApiController
         $response->group_id = $ticket->get('group_id');
 
         $props = [
-            'status', 'created', 'severity', 'os', 'browser',
-            'ip', 'hostname', 'uas', 'referrer', 'open', 'closed',
+            'status',
+            'created',
+            'severity',
+            'os',
+            'browser',
+            'ip',
+            'hostname',
+            'uas',
+            'referrer',
+            'open',
+            'closed',
         ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);

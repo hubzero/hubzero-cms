@@ -380,8 +380,14 @@ class Permissions extends Obj
     {
         // List of actions
         $actions = [
-            'admin', 'manage', 'create', 'delete',
-            'edit', 'edit-state', 'edit-own', 'view',
+            'admin',
+            'manage',
+            'create',
+            'delete',
+            'edit',
+            'edit-state',
+            'edit-own',
+            'view',
         ];
 
         // Are they an admin?

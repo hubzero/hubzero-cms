@@ -1113,8 +1113,10 @@ class WikiParser
 
                     if (class_exists('\\Highlight\\Highlighter')) {
                         static $hlLangMap = [
-                            'js' => 'javascript', 'sh' => 'bash',
-                            'asp' => 'vbnet', 'html4strict' => 'xml',
+                            'js' => 'javascript',
+                            'sh' => 'bash',
+                            'asp' => 'vbnet',
+                            'html4strict' => 'xml',
                         ];
                         $hl = new \Highlight\Highlighter();
                         try {

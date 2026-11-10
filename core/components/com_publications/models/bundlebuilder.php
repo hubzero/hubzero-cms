@@ -49,11 +49,43 @@ class BundleBuilder
     public static function compressedExtList()
     {
         return [
-            'zip', 'gz', 'bz2', 'xz', 'tgz', '7z', 'rar', 'lz4', 'zst',
-            'jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif',
-            'mp4', 'm4v', 'mov', 'mkv', 'avi', 'wmv', 'webm', 'flv',
-            'mp3', 'm4a', 'aac', 'ogg', 'opus', 'flac',
-            'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'epub',
+            'zip',
+            'gz',
+            'bz2',
+            'xz',
+            'tgz',
+            '7z',
+            'rar',
+            'lz4',
+            'zst',
+            'jpg',
+            'jpeg',
+            'png',
+            'gif',
+            'webp',
+            'heic',
+            'heif',
+            'mp4',
+            'm4v',
+            'mov',
+            'mkv',
+            'avi',
+            'wmv',
+            'webm',
+            'flv',
+            'mp3',
+            'm4a',
+            'aac',
+            'ogg',
+            'opus',
+            'flac',
+            'docx',
+            'xlsx',
+            'pptx',
+            'odt',
+            'ods',
+            'odp',
+            'epub',
             'pdf',
         ];
     }
@@ -208,8 +240,12 @@ class BundleBuilder
         if (is_file($outerPath) && !$force) {
             // Nothing to do unless forced; report the existing artifact.
             return [
-                'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+                'ok' => true,
+                'file' => $outerPath,
+                'size' => filesize($outerPath),
+                'source_hash' => $sourceHash,
+                'inner' => null,
+                'error' => null,
             ];
         }
 
@@ -233,8 +269,12 @@ class BundleBuilder
             }
 
             return [
-                'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+                'ok' => true,
+                'file' => $outerPath,
+                'size' => filesize($outerPath),
+                'source_hash' => $sourceHash,
+                'inner' => null,
+                'error' => null,
             ];
         }
 
@@ -512,10 +552,18 @@ class BundleBuilder
         $versionId = (int) $versionId;
 
         $r = [
-            'version_id' => $versionId, 'publication_id' => null, 'doi' => null,
-            'primary_count' => 0, 'outer_exists' => false, 'outer_size' => 0,
-            'inner_exists' => false, 'inner_entries' => null, 'outer_has_bundle' => null,
-            'source_hash' => '', 'issues' => [], 'ok' => true,
+            'version_id' => $versionId,
+            'publication_id' => null,
+            'doi' => null,
+            'primary_count' => 0,
+            'outer_exists' => false,
+            'outer_size' => 0,
+            'inner_exists' => false,
+            'inner_entries' => null,
+            'outer_has_bundle' => null,
+            'source_hash' => '',
+            'issues' => [],
+            'ok' => true,
         ];
 
         $version = $this->versionRow($versionId);
@@ -2230,8 +2278,12 @@ class BundleBuilder
 
         if (is_file($outerPath) && !$force) {
             return [
-                'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+                'ok' => true,
+                'file' => $outerPath,
+                'size' => filesize($outerPath),
+                'source_hash' => $sourceHash,
+                'inner' => null,
+                'error' => null,
             ];
         }
 
@@ -2284,8 +2336,12 @@ class BundleBuilder
         }
 
         return [
-            'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-            'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+            'ok' => true,
+            'file' => $outerPath,
+            'size' => filesize($outerPath),
+            'source_hash' => $sourceHash,
+            'inner' => null,
+            'error' => null,
         ];
     }
 
@@ -2561,8 +2617,12 @@ class BundleBuilder
 
         if (is_file($outerPath) && !$force) {
             return [
-                'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+                'ok' => true,
+                'file' => $outerPath,
+                'size' => filesize($outerPath),
+                'source_hash' => $sourceHash,
+                'inner' => null,
+                'error' => null,
             ];
         }
 
@@ -2586,8 +2646,12 @@ class BundleBuilder
         }
 
         return [
-            'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-            'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
+            'ok' => true,
+            'file' => $outerPath,
+            'size' => filesize($outerPath),
+            'source_hash' => $sourceHash,
+            'inner' => null,
+            'error' => null,
         ];
     }
 

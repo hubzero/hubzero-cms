@@ -104,8 +104,16 @@ class Csv
         $database = App::get('db');
         $ee = new \Components\Events\Tables\Event($database);
         $fields = [
-            'name', 'registered', 'affiliation', 'email', 'telephone',
-            'arrival', 'departure', 'disability', 'dietary', 'dinner',
+            'name',
+            'registered',
+            'affiliation',
+            'email',
+            'telephone',
+            'arrival',
+            'departure',
+            'disability',
+            'dietary',
+            'dinner',
         ];
 
         header('Content-type: text/comma-separated-values');

@@ -157,9 +157,13 @@ class Groupedlist extends Field
                 $groups,
                 null,
                 [
-                    'list.attr' => $attr, 'id' => $this
-                        ->id, 'list.select' => $this
-                        ->value, 'group.items' => null, 'option.key.toHtml' => false,
+                    'list.attr' => $attr,
+                    'id' => $this
+                        ->id,
+                    'list.select' => $this
+                        ->value,
+                    'group.items' => null,
+                    'option.key.toHtml' => false,
                     'option.text.toHtml' => false,
                 ],
             );
@@ -174,9 +178,13 @@ class Groupedlist extends Field
                 $groups,
                 $this->name,
                 [
-                    'list.attr' => $attr, 'id' => $this
-                        ->id, 'list.select' => $this
-                        ->value, 'group.items' => null, 'option.key.toHtml' => false,
+                    'list.attr' => $attr,
+                    'id' => $this
+                        ->id,
+                    'list.select' => $this
+                        ->value,
+                    'group.items' => null,
+                    'option.key.toHtml' => false,
                     'option.text.toHtml' => false,
                 ],
             );

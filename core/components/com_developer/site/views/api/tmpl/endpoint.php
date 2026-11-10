@@ -79,8 +79,15 @@ $base = 'index.php?option=' . $this->option
     . '&controller=' . $this->controller;
 
 $skipKeys = [
-    'name', 'method', 'description', 'replaces',
-    'deprecated', 'uri', 'parameters', 'return', '_metadata',
+    'name',
+    'method',
+    'description',
+    'replaces',
+    'deprecated',
+    'uri',
+    'parameters',
+    'return',
+    '_metadata',
 ];
 
 $typeStyle = 'color: var(--dev-text-muted); font-weight: normal; font-size: 0.9em;';

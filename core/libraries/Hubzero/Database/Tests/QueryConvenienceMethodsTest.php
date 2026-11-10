@@ -89,19 +89,28 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
         // Users
         $query->insertMany('conv_users', [
             [
-                'name' => 'Alice', 'email' => 'alice@example.com',
-                'login_count' => 5, 'score' => 100,
-                'created_at' => '2024-01-01', 'updated_at' => '2024-01-15',
+                'name' => 'Alice',
+                'email' => 'alice@example.com',
+                'login_count' => 5,
+                'score' => 100,
+                'created_at' => '2024-01-01',
+                'updated_at' => '2024-01-15',
             ],
             [
-                'name' => 'Bob', 'email' => 'bob@example.com',
-                'login_count' => 3, 'score' => 50,
-                'created_at' => '2024-01-02', 'updated_at' => '2024-01-02',
+                'name' => 'Bob',
+                'email' => 'bob@example.com',
+                'login_count' => 3,
+                'score' => 50,
+                'created_at' => '2024-01-02',
+                'updated_at' => '2024-01-02',
             ],
             [
-                'name' => 'Charlie', 'email' => 'charlie@example.com',
-                'login_count' => 0, 'score' => 25,
-                'created_at' => '2024-01-03', 'updated_at' => '2024-01-03',
+                'name' => 'Charlie',
+                'email' => 'charlie@example.com',
+                'login_count' => 0,
+                'score' => 25,
+                'created_at' => '2024-01-03',
+                'updated_at' => '2024-01-03',
             ],
         ]);
 

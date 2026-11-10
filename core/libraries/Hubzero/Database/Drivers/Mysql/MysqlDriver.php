@@ -235,8 +235,11 @@ class MysqlDriver extends BaseSqlDriver
     ): string {
         // MySQL supports display width on integer types
         $integerTypes = [
-            'tinyInteger', 'smallInteger',
-            'mediumInteger', 'integer', 'bigInteger',
+            'tinyInteger',
+            'smallInteger',
+            'mediumInteger',
+            'integer',
+            'bigInteger',
         ];
         if (
             isset($modifiers['length'])

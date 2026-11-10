@@ -28,9 +28,18 @@ if ($canDo->get('core.edit')) {
 Toolbar::cancel();
 
 $dcTypes = [
-    'Collection' , 'Dataset' , 'Event' , 'Image' ,
-    'InteractivePublication' , 'MovingImage' , 'PhysicalObject' ,
-    'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text',
+    'Collection' ,
+    'Dataset' ,
+    'Event' ,
+    'Image' ,
+    'InteractivePublication' ,
+    'MovingImage' ,
+    'PhysicalObject' ,
+    'Service' ,
+    'Software' ,
+    'Sound' ,
+    'StillImage' ,
+    'Text',
 ];
 
 $params = $this->row->params;

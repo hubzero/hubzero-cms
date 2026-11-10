@@ -57,20 +57,36 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query->delete('conditional_test_users')->execute();
         $query->insertMany('conditional_test_users', [
             [
-                'id' => 1, 'name' => 'test user', 'email' => 'test1@example.com',
-                'status' => 'active', 'age' => 30, 'created_at' => '2020-01-01 00:00:00',
+                'id' => 1,
+                'name' => 'test user',
+                'email' => 'test1@example.com',
+                'status' => 'active',
+                'age' => 30,
+                'created_at' => '2020-01-01 00:00:00',
             ],
             [
-                'id' => 2, 'name' => 'Bob', 'email' => 'bob@example.com',
-                'status' => 'inactive', 'age' => 40, 'created_at' => '2020-01-02 00:00:00',
+                'id' => 2,
+                'name' => 'Bob',
+                'email' => 'bob@example.com',
+                'status' => 'inactive',
+                'age' => 40,
+                'created_at' => '2020-01-02 00:00:00',
             ],
             [
-                'id' => 3, 'name' => 'Bob', 'email' => 'bob2@example.com',
-                'status' => 'active', 'age' => 25, 'created_at' => '2020-01-03 00:00:00',
+                'id' => 3,
+                'name' => 'Bob',
+                'email' => 'bob2@example.com',
+                'status' => 'active',
+                'age' => 25,
+                'created_at' => '2020-01-03 00:00:00',
             ],
             [
-                'id' => 4, 'name' => 'Alice', 'email' => 'alice@example.com',
-                'status' => 'active', 'age' => null, 'created_at' => null,
+                'id' => 4,
+                'name' => 'Alice',
+                'email' => 'alice@example.com',
+                'status' => 'active',
+                'age' => null,
+                'created_at' => null,
             ],
         ]);
     }

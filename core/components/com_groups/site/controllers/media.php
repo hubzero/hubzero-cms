@@ -100,9 +100,18 @@ class Media extends Base
         // ?layout=deletefile reach deletefileTask() with this gate skipped.
         $mtask = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
         $writeTasks = [
-            'upload', 'ajaxupload', 'editorupload', 'doupload', 'domovefile', 'dorenamefile',
-            'deletefile', 'savefolder', 'dorenamefolder', 'domovefolder',
-            'deletefolder', 'extractfile',
+            'upload',
+            'ajaxupload',
+            'editorupload',
+            'doupload',
+            'domovefile',
+            'dorenamefile',
+            'deletefile',
+            'savefolder',
+            'dorenamefolder',
+            'domovefolder',
+            'deletefolder',
+            'extractfile',
         ];
         if (in_array($mtask, $writeTasks) && !$this->authorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));

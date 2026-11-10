@@ -306,9 +306,25 @@ class ColumnInfo
     public function isString(): bool
     {
         return in_array(strtolower($this->type), [
-            'char', 'varchar', 'varchar2', 'nvarchar', 'nvarchar2', 'nchar',
-            'text', 'ntext', 'tinytext', 'mediumtext', 'longtext', 'clob', 'nclob',
-            'binary', 'varbinary', 'blob', 'tinyblob', 'mediumblob', 'longblob',
+            'char',
+            'varchar',
+            'varchar2',
+            'nvarchar',
+            'nvarchar2',
+            'nchar',
+            'text',
+            'ntext',
+            'tinytext',
+            'mediumtext',
+            'longtext',
+            'clob',
+            'nclob',
+            'binary',
+            'varbinary',
+            'blob',
+            'tinyblob',
+            'mediumblob',
+            'longblob',
             'lvarchar',
         ]);
     }
@@ -321,10 +337,25 @@ class ColumnInfo
     public function isNumeric(): bool
     {
         return in_array(strtolower($this->type), [
-            'tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint',
-            'float', 'double', 'decimal', 'numeric', 'real',
-            'serial', 'serial8', 'bigserial', 'int8', 'smallfloat',
-            'number', 'binary_float', 'binary_double',
+            'tinyint',
+            'smallint',
+            'mediumint',
+            'int',
+            'integer',
+            'bigint',
+            'float',
+            'double',
+            'decimal',
+            'numeric',
+            'real',
+            'serial',
+            'serial8',
+            'bigserial',
+            'int8',
+            'smallfloat',
+            'number',
+            'binary_float',
+            'binary_double',
         ]);
     }
 
@@ -339,8 +370,16 @@ class ColumnInfo
 
         if (
             in_array($type, [
-                'tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint',
-                'serial', 'serial8', 'bigserial', 'int8',
+                'tinyint',
+                'smallint',
+                'mediumint',
+                'int',
+                'integer',
+                'bigint',
+                'serial',
+                'serial8',
+                'bigserial',
+                'int8',
             ])
         ) {
             return true;
@@ -363,7 +402,11 @@ class ColumnInfo
     public function isDateTime(): bool
     {
         return in_array(strtolower($this->type), [
-            'date', 'time', 'datetime', 'timestamp', 'year',
+            'date',
+            'time',
+            'datetime',
+            'timestamp',
+            'year',
         ]);
     }
 

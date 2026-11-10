@@ -119,11 +119,16 @@ class PgsqlDriverTest extends AbstractDriverTestCase
 
         $adHocViews = ['pg_test_view', 'pg_active_items'];
         $adHocTables = [
-            'pg_rename_dest', 'pg_rename_src',
-            'pg_fk_child', 'pg_fk_parent',
-            'pg_ddl_test', 'pg_trunc_test',
-            'pg_serial_test', 'pg_view_src',
-            'pg_pk_test', 'pg_stored_test',
+            'pg_rename_dest',
+            'pg_rename_src',
+            'pg_fk_child',
+            'pg_fk_parent',
+            'pg_ddl_test',
+            'pg_trunc_test',
+            'pg_serial_test',
+            'pg_view_src',
+            'pg_pk_test',
+            'pg_stored_test',
         ];
         $adHocSequences = ['pg_test_seq'];
 

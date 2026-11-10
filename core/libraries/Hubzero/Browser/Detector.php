@@ -861,28 +861,76 @@ class Detector
         // use this order since some navigator user agents will put 'macintosh' in the navigator user agent string
         // which would make the nt test register true
         $a_mobile = [
-            'ios', 'android', 'blackberry os', 'symbian os', 'web os', //, 'windows'
+            'ios',
+            'android',
+            'blackberry os',
+            'symbian os',
+            'web os', //, 'windows'
         ];
 
         $a_mac = [
-            'mac68k', 'macppc',
+            'mac68k',
+            'macppc',
         ]; // this is not used currently
         // same logic, check in order to catch the os's in order, last is always default item
         $a_unix = [
-            'unixware', 'solaris', 'sunos', 'sun4', 'sun5', 'suni86', 'sun',
-            'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9',
-            'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4',
-            'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix',
+            'unixware',
+            'solaris',
+            'sunos',
+            'sun4',
+            'sun5',
+            'suni86',
+            'sun',
+            'freebsd',
+            'openbsd',
+            'bsd' ,
+            'irix5',
+            'irix6',
+            'irix',
+            'hpux9',
+            'hpux10',
+            'hpux11',
+            'hpux',
+            'hp-ux',
+            'aix1',
+            'aix2',
+            'aix3',
+            'aix4',
+            'aix5',
+            'aix',
+            'sco',
+            'unixware',
+            'mpras',
+            'reliant',
+            'dec',
+            'sinix',
             'unix',
         ];
         // only sometimes will you get a linux distro to id itself...
         $a_linux = [
-            'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware',
-            'mandrake', 'gentoo', 'linux',
+            'kanotix',
+            'ubuntu',
+            'mepis',
+            'debian',
+            'suse',
+            'redhat',
+            'slackware',
+            'mandrake',
+            'gentoo',
+            'linux',
         ];
         // note, order of os very important in os array, you will get failed ids if changed
         $a_os = [
-            'beos', 'os2', 'amiga', 'webtv', 'android', 'iphone', 'ipad', 'mac', 'nt', 'win',
+            'beos',
+            'os2',
+            'amiga',
+            'webtv',
+            'android',
+            'iphone',
+            'ipad',
+            'mac',
+            'nt',
+            'win',
             $a_unix,
             $a_linux,
         ];

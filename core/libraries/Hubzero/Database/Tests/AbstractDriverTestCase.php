@@ -182,10 +182,26 @@ abstract class AbstractDriverTestCase extends TestCase
      * @var string[]
      */
     protected static $universalParams = [
-        'host', 'port', 'database', 'user', 'password', 'prefix', 'charset',
-        'service', 'server', 'protocol', 'role', 'schema', 'timezone',
-        'ssl_ca', 'foreign_keys', 'journal_mode', 'busy_timeout', 'synchronous',
-        'trust_server_certificate', 'dsn',
+        'host',
+        'port',
+        'database',
+        'user',
+        'password',
+        'prefix',
+        'charset',
+        'service',
+        'server',
+        'protocol',
+        'role',
+        'schema',
+        'timezone',
+        'ssl_ca',
+        'foreign_keys',
+        'journal_mode',
+        'busy_timeout',
+        'synchronous',
+        'trust_server_certificate',
+        'dsn',
     ];
 
     /**
