@@ -677,7 +677,8 @@ class Project
             }
             $values .= $db->quote($a);
         }
-        $query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
+        $query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND "
+            . "user_id=$quoted_user_id";
         if (!$all) {
             $query .= " AND action IN (" . $values . ");";
         }
@@ -726,7 +727,8 @@ class Project
             }
             $values .= $db->quote($a);
         }
-        $query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
+        $query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND "
+            . "group_id=$quoted_group_id";
         if (!$all) {
             $query .= " AND action IN (" . $values . ");";
         }

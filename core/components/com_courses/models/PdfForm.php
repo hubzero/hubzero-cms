@@ -135,7 +135,8 @@ class PdfForm
         $dbh = self::getDbh();
 
         $dbh->setQuery(
-            'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated
+            'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = '
+                . 'pf.id) AS updated
 			FROM `#__courses_forms` pf
 			WHERE title IS NOT null AND title != \'\' AND active = 1
 			ORDER BY title',
@@ -577,7 +578,8 @@ class PdfForm
             ? (int) $version
             : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
-            'SELECT pfa.id AS answer_id, question_id, page, correct, pfa.left_dist AS a_left, pfa.top_dist AS a_top, pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width
+            'SELECT pfa.id AS answer_id, question_id, page, correct, pfa.left_dist AS a_left, pfa.top_dist AS a_top, '
+                . 'pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width
 			FROM `#__courses_form_questions` pfq
 			LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id
 			WHERE form_id = ' . $fid . ' AND version = ' . $versionClause . '

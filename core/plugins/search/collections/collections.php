@@ -45,7 +45,8 @@ class Collections extends Plugin
         $results->add(new \Components\Search\Models\Basic\Result\Sql(
             "SELECT
 				i.title,
-				CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END AS description,
+				CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END "
+                . "AS description,
 				concat('index.php?option=com_collections&controller=posts&post=', p.id) AS `link`,
 				$weight AS `weight`,
 				p.created AS `date`,

@@ -160,9 +160,11 @@ class Miner extends Obj implements Provider
             }
             $fromQuoted = $this->database->quote($filters['from']);
             $query .= " AND (
-				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $fromQuoted . ")
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= "
+                . $fromQuoted . ")
 				OR
-				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` >= " . $fromQuoted . ")
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` >= " . $fromQuoted
+                . ")
 			)";
         }
         if (isset($filters['until']) && $filters['until']) {
@@ -177,9 +179,11 @@ class Miner extends Obj implements Provider
             }
             $untilQuoted = $this->database->quote($filters['until']);
             $query .= " AND (
-				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $untilQuoted . ")
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < "
+                . $untilQuoted . ")
 				OR
-				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` < " . $untilQuoted . ")
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` < " . $untilQuoted
+                . ")
 			)";
         }
 

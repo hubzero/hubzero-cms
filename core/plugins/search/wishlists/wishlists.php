@@ -42,7 +42,8 @@ class Wishlists extends Plugin
             "SELECT
 				wli.subject AS title,
 				wli.about AS description,
-				concat('index.php?option=com_wishlist&category=', wl.category, '&rid=', wl.referenceid, '&task=wish&wishid=', wli.id) AS link,
+				concat('index.php?option=com_wishlist&category=', wl.category, '&rid=', wl.referenceid, "
+                . "'&task=wish&wishid=', wli.id) AS link,
 				match(wli.subject, wli.about) against('collaboration') AS weight,
 				wli.proposed AS date,
 				concat(wl.title) AS section,
