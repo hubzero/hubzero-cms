@@ -32,7 +32,7 @@ class Offering extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Offering';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Offering';
 
     /**
      * Object scope
@@ -178,9 +178,9 @@ class Offering extends Base
     {
         $section = '!!default!!';
 
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Offering($this->_db);
+        $this->table = new Tables\Offering($this->db);
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
@@ -189,7 +189,7 @@ class Offering extends Base
                     $section = substr($oid, $dot + 1);
                     $oid = substr($oid, 0, $dot);
                 }
-                $this->_tbl->load($oid, $course_id);
+                $this->table->load($oid, $course_id);
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
@@ -318,13 +318,13 @@ class Offering extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Section($this->_db);
+            $tbl = new Tables\Section($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!($this->sections instanceof \Traversable) || $clear) {
-            $tbl = new Tables\Section($this->_db);
+            $tbl = new Tables\Section($this->db);
 
             if (($results = $tbl->find($filters))) {
                 foreach ($results as $key => $result) {
@@ -391,13 +391,13 @@ class Offering extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Unit($this->_db);
+            $tbl = new Tables\Unit($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!($this->units instanceof \Traversable) || $clear) {
-            $tbl = new Tables\Unit($this->_db);
+            $tbl = new Tables\Unit($this->db);
 
             if (($results = $tbl->find($filters))) {
                 foreach ($results as $key => $result) {
@@ -479,13 +479,13 @@ class Offering extends Base
         $filters['student'] = 0;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->managers) || !is_array($this->managers) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -601,7 +601,7 @@ class Offering extends Base
                 $filters['asset_scope']    = 'offering';
             }
 
-            $tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->db);
 
             if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
@@ -695,13 +695,13 @@ class Offering extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->members) || !is_array($this->members) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -750,13 +750,13 @@ class Offering extends Base
         $filters['sort_Dir'] = 'ASC';
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->_membership[$user_id]) || !is_array($this->_membership[$user_id])) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -795,12 +795,12 @@ class Offering extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Role($this->_db);
+            $tbl = new Tables\Role($this->db);
 
             return $tbl->count($filters);
         }
         if (!isset($this->roles) || !is_array($this->roles) || $clear) {
-            $tbl = new Tables\Role($this->_db);
+            $tbl = new Tables\Role($this->db);
 
             if (!($results = $tbl->find($filters))) {
                 $results = [];
@@ -863,13 +863,13 @@ class Offering extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Page($this->_db);
+            $tbl = new Tables\Page($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->pages) || !is_array($this->pages) || $reload) {
-            $tbl = new Tables\Page($this->_db);
+            $tbl = new Tables\Page($this->db);
 
             $results = [];
 
@@ -902,13 +902,13 @@ class Offering extends Base
         $filters = array_merge($defaultFilters, $filters);
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Announcement($this->_db);
+            $tbl = new Tables\Announcement($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->announcements) || !is_array($this->announcements)) {
-            $tbl = new Tables\Announcement($this->_db);
+            $tbl = new Tables\Announcement($this->db);
 
             $results = [];
 
@@ -979,7 +979,7 @@ class Offering extends Base
             $data = [$data];
         }
 
-        $role = new Tables\Role($this->_db);
+        $role = new Tables\Role($this->db);
         $role->load($role_id);
         if (is_string($role_id)) {
             $role_id = $role->get('id');
@@ -1049,9 +1049,9 @@ class Offering extends Base
             return $user;
         }
 
-        $this->_db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->_db->quote($user));
+        $this->db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->db->quote($user));
 
-        if (($result = $this->_db->loadResult())) {
+        if (($result = $this->db->loadResult())) {
             return $result;
         }
 
@@ -1095,7 +1095,7 @@ class Offering extends Base
      */
     public function store($validate = true)
     {
-        if (empty($this->_db)) {
+        if (empty($this->db)) {
             return false;
         }
 
@@ -1103,15 +1103,15 @@ class Offering extends Base
 
         // Validate data?
         if ($validate) {
-            if (!$this->_tbl->check()) {
-                $this->setError($this->_tbl->getError());
+            if (!$this->table->check()) {
+                $this->setError($this->table->getError());
                 return false;
             }
         }
 
         // Store data
-        if (!$this->_tbl->store()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->store()) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -1253,7 +1253,7 @@ class Offering extends Base
                         $this->setError($asset->getError());
                     } else {
                         // Copy asset associations
-                        $tbl = new Tables\AssetAssociation($this->_db);
+                        $tbl = new Tables\AssetAssociation($this->db);
                         $findParams = [
                             'scope_id' => $o_id,
                             'scope' => 'offering',

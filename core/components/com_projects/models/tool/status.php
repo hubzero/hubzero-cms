@@ -26,7 +26,7 @@ class Status extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolStatus';
+    protected $tableClass = '\\Components\\Projects\\Tables\\ToolStatus';
 
     /**
      * Registry
@@ -43,14 +43,14 @@ class Status extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        if (!isset($this->_tbl)) {
-            $this->_tbl = new Tables\ToolStatus($this->_db);
+        if (!isset($this->table)) {
+            $this->table = new Tables\ToolStatus($this->db);
         }
         if (!isset($this->_statuses)) {
             $this->_statuses = [];
-            $statuses = $this->_tbl->getItems();
+            $statuses = $this->table->getItems();
             foreach ($statuses as $status) {
                 $this->_statuses[$status->id] = $status;
             }
@@ -58,9 +58,9 @@ class Status extends Model
 
         if (is_numeric($oid)) {
             if (isset($this->_statuses[$oid])) {
-                $this->_tbl->bind($this->_statuses[$oid]);
+                $this->table->bind($this->_statuses[$oid]);
             } else {
-                $this->_tbl->load($oid);
+                $this->table->load($oid);
             }
         }
     }
@@ -74,7 +74,7 @@ class Status extends Model
     public function getStatus($oid = null)
     {
         if (isset($this->_statuses[$oid])) {
-            $this->_tbl->bind($this->_statuses[$oid]);
+            $this->table->bind($this->_statuses[$oid]);
         }
     }
 

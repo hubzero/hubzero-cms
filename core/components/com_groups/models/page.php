@@ -25,14 +25,14 @@ class Page extends Model
      *
      * @var object
      */
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Table name
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Groups\\Tables\\Page';
+    protected $tableClass = '\\Components\\Groups\\Tables\\Page';
 
     /**
      * \Hubzero\Base\ItemList
@@ -57,14 +57,14 @@ class Page extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // load page table
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // load object
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -234,8 +234,8 @@ class Page extends Model
      */
     public function getNextOrder($gidNumber)
     {
-        $where = "gidNumber=" . $this->_db->quote($gidNumber) . " AND state != 2";
-        $order = $this->_tbl->getNextOrder($where);
+        $where = "gidNumber=" . $this->db->quote($gidNumber) . " AND state != 2";
+        $order = $this->table->getNextOrder($where);
         return $order;
     }
 
@@ -249,7 +249,7 @@ class Page extends Model
     public function move($move, $gidNumber)
     {
         // build where statement
-        $where = "gidNumber=" . $this->_db->quote($gidNumber);
+        $where = "gidNumber=" . $this->db->quote($gidNumber);
 
         // determine if we need to move up or down
         $dir = '';
@@ -260,7 +260,7 @@ class Page extends Model
 
         // move the number of times different
         for ($i = 0; $i < $move; $i++) {
-            $this->_tbl->move($dir . '1', $where);
+            $this->table->move($dir . '1', $where);
         }
     }
 

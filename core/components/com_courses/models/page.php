@@ -25,7 +25,7 @@ class Page extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Page';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Page';
 
     /**
      * Model context
@@ -33,7 +33,7 @@ class Page extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_courses.page.content';
+    protected $context = 'com_courses.page.content';
 
     /**
      * Object scope
@@ -80,7 +80,7 @@ class Page extends Base
 
                     $content = $this->get('content');
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

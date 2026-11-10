@@ -30,7 +30,7 @@ class Log extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolLog';
+    protected $tableClass = '\\Components\\Projects\\Tables\\ToolLog';
 
     /**
      * Registry
@@ -46,9 +46,9 @@ class Log extends Model
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\ToolLog($this->_db);
+        $this->table = new Tables\ToolLog($this->db);
     }
 
     /**
@@ -92,7 +92,7 @@ class Log extends Model
         if (!$id || !$name) {
             return false;
         }
-        return $this->_tbl->updateParentName($id, $name);
+        return $this->table->updateParentName($id, $name);
     }
 
     /**
@@ -103,7 +103,7 @@ class Log extends Model
      */
     public function getLastUpdate($statusChange = false)
     {
-        return $this->_tbl->getLastUpdate(
+        return $this->table->getLastUpdate(
             $this->get('instance_id'),
             $this->get('parent_name'),
             $this->get('parent_id'),
@@ -120,7 +120,7 @@ class Log extends Model
      */
     public function getHistory($filters = [])
     {
-        return $this->_tbl->getHistory(
+        return $this->table->getHistory(
             $this->get('parent_name'),
             $this->get('parent_id'),
             $this->get('instance_id'),

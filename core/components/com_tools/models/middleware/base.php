@@ -33,14 +33,14 @@ class Base extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = Utils::getMWDBO();
+        $this->db = Utils::getMWDBO();
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
-            if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
-                $this->_logError(
+            if (!($this->table instanceof \Hubzero\Database\Table)) {
+                $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); '
                     . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
@@ -53,7 +53,7 @@ class Base extends Model
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {
-                    $this->_tbl->load($oid);
+                    $this->table->load($oid);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);

@@ -22,7 +22,7 @@ class Member extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Member';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Member';
 
     /**
      * Object scope
@@ -57,21 +57,21 @@ class Member extends Base
      */
     public function __construct($uid, $cid = 0, $oid = 0, $sid = 0)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Member($this->_db);
+        $this->table = new Tables\Member($this->db);
 
         if (is_numeric($uid) || is_string($uid)) {
-            $this->_tbl->load($uid, $cid, $oid, $sid);
+            $this->table->load($uid, $cid, $oid, $sid);
         } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }
 
         if (!$this->get('role_alias')) {
-            $result = new Tables\Role($this->_db);
+            $result = new Tables\Role($this->db);
             if ($result->load($this->get('role_id'))) {
                 foreach ($result->getProperties() as $key => $property) {
-                    $this->_tbl->set('__role_' . $key, $property);
+                    $this->table->set('__role_' . $key, $property);
                 }
             }
         }
@@ -187,7 +187,7 @@ class Member extends Base
             $sn .= (!($i % 5) && $i ? '-' : '') . $chars[rand(0, $max)];
         }
 
-        if ($this->_tbl->tokenExists($sn)) {
+        if ($this->table->tokenExists($sn)) {
             return $this->generateToken();
         }
 

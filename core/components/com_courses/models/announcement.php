@@ -25,7 +25,7 @@ class Announcement extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Announcement';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Announcement';
 
     /**
      * Model context
@@ -33,7 +33,7 @@ class Announcement extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_courses.announcement.content';
+    protected $context = 'com_courses.announcement.content';
 
     /**
      * Object scope
@@ -121,7 +121,7 @@ class Announcement extends Base
                     $content = $this->get('content');
                     $this->importPlugin('content')->trigger(
                         'onContentPrepare',
-                        [$this->_context, &$this, &$config],
+                        [$this->context, &$this, &$config],
                     );
 
                     $this->set('content_parsed', $this->get('content'));

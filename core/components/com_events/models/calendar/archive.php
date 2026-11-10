@@ -42,7 +42,7 @@ class Archive extends Model
     public function __construct()
     {
         // create needed objects
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -79,7 +79,7 @@ class Archive extends Model
             case 'list':
             default:
                 if (!($this->calendars instanceof ItemList) || $clear) {
-                    $tbl = new Tables\Calendar($this->_db);
+                    $tbl = new Tables\Calendar($this->db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Calendar($result);

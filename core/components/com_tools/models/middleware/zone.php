@@ -24,7 +24,7 @@ class Zone extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Tools\\Tables\\Zones';
+    protected $tableClass = '\\Components\\Tools\\Tables\\Zones';
 
     /**
      * \Hubzero\ItemList
@@ -67,7 +67,7 @@ class Zone extends Base
      */
     public function locations($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new \Components\Tools\Tables\ZoneLocations($this->_db);
+        $tbl = new \Components\Tools\Tables\ZoneLocations($this->db);
 
         if (!isset($filters['zone_id'])) {
             $filters['zone_id'] = $this->get('id');

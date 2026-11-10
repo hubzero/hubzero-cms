@@ -23,7 +23,7 @@ class Following extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Collections\\Tables\\Following';
+    protected $tableClass = '\\Components\\Collections\\Tables\\Following';
 
     /**
      * Following
@@ -50,14 +50,14 @@ class Following extends Model
      */
     public function __construct($oid = null, $following_type = null, $follower_id = 0, $follower_type = 'member')
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $tbl = $this->_tbl_name;
-        $this->_tbl = new $tbl($this->_db);
+        $tbl = $this->tableClass;
+        $this->table = new $tbl($this->db);
 
         if (is_numeric($oid)) {
             if ($oid) {
-                $this->_tbl->load($oid, $following_type, $follower_id, $follower_type);
+                $this->table->load($oid, $following_type, $follower_id, $follower_type);
             }
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
@@ -155,7 +155,7 @@ class Following extends Model
         switch ($what) {
             case 'following':
                 if ($value === null) {
-                    $value = $this->_tbl->count([
+                    $value = $this->table->count([
                         'follower_type' => $this->get('following_type'),
                         'follower_id'   => $this->get('following_id'),
                     ]);
@@ -165,7 +165,7 @@ class Following extends Model
 
             case 'followers':
                 if ($value === null) {
-                    $value = $this->_tbl->count([
+                    $value = $this->table->count([
                         'following_type' => $this->get('following_type'),
                         'following_id'   => $this->get('following_id'),
                     ]);
@@ -215,8 +215,8 @@ class Following extends Model
             $id = $this->get('id');
         }
 
-        if (!$this->_tbl->delete($id)) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->delete($id)) {
+            $this->setError($this->table->getError());
             return false;
         }
 

@@ -51,7 +51,7 @@ class Tool extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\Tool';
+    protected $tableClass = '\\Components\\Projects\\Tables\\Tool';
 
     /**
      * Entry
@@ -84,13 +84,13 @@ class Tool extends Model
      */
     public function __construct($oid = null, $projectid = null, $instance = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Tool($this->_db);
+        $this->table = new Tables\Tool($this->db);
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
-                $this->_tbl->loadTool($oid, $projectid);
+                $this->table->loadTool($oid, $projectid);
             }
 
             // Load instance
@@ -402,16 +402,16 @@ class Tool extends Model
         switch (strtolower($rtrn)) {
             case 'count':
                 $filters['count'] = 1;
-                return (int) $this->_tbl->getRecordCount($filters, $admin);
+                return (int) $this->table->getRecordCount($filters, $admin);
                 break;
 
             case 'results':
-                return $this->_tbl->getRecords($filters, $admin);
+                return $this->table->getRecords($filters, $admin);
                 break;
 
             case 'list':
             default:
-                if ($results = $this->_tbl->getRecords($filters, $admin)) {
+                if ($results = $this->table->getRecords($filters, $admin)) {
                     foreach ($results as $key => $result) {
                         $results[$key] = self::mapInstance($result);
                     }
@@ -510,7 +510,7 @@ class Tool extends Model
         } else {
             // Verify name uniqueness
             if (
-                $this->_tbl->checkUniqueName($name, $this->get('id'))
+                $this->table->checkUniqueName($name, $this->get('id'))
                 || ($reserved
                 && in_array($name, $reserved))
                 || in_array($name, $tasks)

@@ -24,7 +24,7 @@ class Log extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Publications\\Tables\\Log';
+    protected $tableClass = '\\Components\\Publications\\Tables\\Log';
 
     /**
      * Registry
@@ -60,7 +60,7 @@ class Log extends Model
             return null;
         }
         if (!$pubLog) {
-            $pubLog = new $this->_tbl_name($this->_db);
+            $pubLog = new $this->tableClass($this->db);
         }
 
         $file_handle = fopen($logFile, "r");
@@ -112,7 +112,7 @@ class Log extends Model
         $types = ($type == 'all') ? ['view', 'primary'] : [$type];
 
         // Get all public versions
-        $row  = new Tables\Version($this->_db);
+        $row  = new Tables\Version($this->db);
         $versions = $row->getVersions($pid, $filters = ['public' => 1]);
 
         if (!$versions) {
@@ -137,7 +137,7 @@ class Log extends Model
                 $fpath = $logPath . DS . $logFile;
                 $mo = date('M', strtotime("-" . $a . " month"));
 
-                $pubLog = new $this->_tbl_name($this->_db);
+                $pubLog = new $this->tableClass($this->db);
 
                 foreach ($types as $type) {
                     if (!trim($type)) {

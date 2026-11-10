@@ -29,21 +29,21 @@ class Version extends Model
      *
      * @var  object
      */
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Table name
      *
      * @var  string
      */
-    protected $_tbl_name = '\\Components\\Groups\\Tables\\PageVersion';
+    protected $tableClass = '\\Components\\Groups\\Tables\\PageVersion';
 
     /**
      * Model context
      *
      * @var  string
      */
-    protected $_context = 'com_groups.page_version.content';
+    protected $context = 'com_groups.page_version.content';
 
     /**
      * Constructor
@@ -54,14 +54,14 @@ class Version extends Model
     public function __construct($oid = null)
     {
         // Create database object
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // Create page cateogry table object
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // Load object
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -140,7 +140,7 @@ class Version extends Model
 
                     $content = stripslashes($this->get('content'));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

@@ -23,7 +23,7 @@ class Post extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Collections\\Tables\\Post';
+    protected $tableClass = '\\Components\\Collections\\Tables\\Post';
 
     /**
      * Model context
@@ -31,7 +31,7 @@ class Post extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_collections.post.description';
+    protected $context = 'com_collections.post.description';
 
     /**
      * Adapter
@@ -94,10 +94,10 @@ class Post extends Base
         $item = new \stdClass();
 
         if (is_object($data)) {
-            $res = $this->_tbl->bind($data);
+            $res = $this->table->bind($data);
 
             if ($res) {
-                $properties = $this->_tbl->getProperties();
+                $properties = $this->table->getProperties();
                 foreach (get_object_vars($data) as $key => $property) {
                     if (substr($key, 0, strlen('item_')) == 'item_') {
                         $nk = substr($key, strlen('item_'));
@@ -105,15 +105,15 @@ class Post extends Base
                         continue;
                     }
                     if (!array_key_exists($key, $properties)) {
-                        $this->_tbl->set('__' . $key, $property);
+                        $this->table->set('__' . $key, $property);
                     }
                 }
             }
         } elseif (is_array($data)) {
-            $res = $this->_tbl->bind($data);
+            $res = $this->table->bind($data);
 
             if ($res) {
-                $properties = $this->_tbl->getProperties();
+                $properties = $this->table->getProperties();
                 foreach (array_keys($data) as $key) {
                     if (substr($key, 0, strlen('item_')) == 'item_') {
                         $nk = substr($key, strlen('item_'));
@@ -121,7 +121,7 @@ class Post extends Base
                         continue;
                     }
                     if (!array_key_exists($key, $properties)) {
-                        $this->_tbl->set('__' . $key, $data[$key]);
+                        $this->table->set('__' . $key, $data[$key]);
                     }
                 }
             }
@@ -130,7 +130,7 @@ class Post extends Base
                 'Data must be of type object or array. Type given was %s',
                 gettype($data),
             );
-            $this->_logError(
+            $this->logError(
                 __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg,
             );
             throw new \InvalidArgumentException($errorMsg);
@@ -208,8 +208,8 @@ class Post extends Base
             return false;
         }
 
-        if (!$this->_tbl->delete($this->get('id'))) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->delete($this->get('id'))) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -232,8 +232,8 @@ class Post extends Base
 
         $this->set('collection_id', $collection_id);
 
-        if (!$this->_tbl->store()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->store()) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -302,7 +302,7 @@ class Post extends Base
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

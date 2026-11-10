@@ -54,7 +54,7 @@ abstract class Model extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = null;
+    protected $tableClass = null;
 
     /**
      * Table
@@ -62,7 +62,7 @@ abstract class Model extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Database
@@ -70,7 +70,7 @@ abstract class Model extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Model context.
@@ -79,7 +79,7 @@ abstract class Model extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = null;
+    protected $context = null;
 
     /**
      * Constructor
@@ -89,14 +89,14 @@ abstract class Model extends Obj
      */
     public function __construct($oid = null)
     {
-        $this->_db = $this->initDbo();
+        $this->db = $this->initDbo();
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
-            if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
-                $this->_logError(
+            if (!($this->table instanceof \Hubzero\Database\Table)) {
+                $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Table.'),
                 );
                 throw new \LogicException(Lang::txt('Table class must be an instance of Table.'));
@@ -106,7 +106,7 @@ abstract class Model extends Obj
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {
-                    $this->_tbl->load($oid);
+                    $this->table->load($oid);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
@@ -123,10 +123,10 @@ abstract class Model extends Obj
   */
     public function get($property, $default = null)
     {
-        if (isset($this->_tbl->$property)) {
-            return $this->_tbl->$property;
-        } elseif (isset($this->_tbl->{'__' . $property})) {
-            return $this->_tbl->{'__' . $property};
+        if (isset($this->table->$property)) {
+            return $this->table->$property;
+        } elseif (isset($this->table->{'__' . $property})) {
+            return $this->table->{'__' . $property};
         }
         return $default;
     }
@@ -140,10 +140,10 @@ abstract class Model extends Obj
      */
     public function set($property, $value = null)
     {
-        if (!array_key_exists($property, $this->_tbl->getProperties())) {
+        if (!array_key_exists($property, $this->table->getProperties())) {
             $property = '__' . $property;
         }
-        $this->_tbl->$property = $value;
+        $this->table->$property = $value;
         return $this;
     }
 
@@ -174,7 +174,7 @@ abstract class Model extends Obj
      */
     public function getDbo()
     {
-        return $this->_db;
+        return $this->db;
     }
 
     /**
@@ -189,8 +189,8 @@ abstract class Model extends Obj
             return false;
         }
 
-        $this->_db = $db;
-        $this->_tbl->setDBO($this->_db);
+        $this->db = $db;
+        $this->table->setDBO($this->db);
 
         return true;
     }
@@ -202,7 +202,7 @@ abstract class Model extends Obj
      */
     public function exists()
     {
-        if (!array_key_exists('id', $this->_tbl->getFields())) {
+        if (!array_key_exists('id', $this->table->getFields())) {
             return true;
         }
         if ($this->get('id') && (int) $this->get('id') > 0) {
@@ -218,7 +218,7 @@ abstract class Model extends Obj
      */
     public function isPublished()
     {
-        if (!array_key_exists('state', $this->_tbl->getFields())) {
+        if (!array_key_exists('state', $this->table->getFields())) {
             return true;
         }
         if ($this->get('state') == self::APP_STATE_PUBLISHED) {
@@ -234,7 +234,7 @@ abstract class Model extends Obj
      */
     public function isUnpublished()
     {
-        if (!array_key_exists('state', $this->_tbl->getFields())) {
+        if (!array_key_exists('state', $this->table->getFields())) {
             return false;
         }
         if ($this->get('state') == self::APP_STATE_UNPUBLISHED) {
@@ -250,7 +250,7 @@ abstract class Model extends Obj
      */
     public function isDeleted()
     {
-        if (!array_key_exists('state', $this->_tbl->getFields())) {
+        if (!array_key_exists('state', $this->table->getFields())) {
             return false;
         }
         if ($this->get('state') == self::APP_STATE_DELETED) {
@@ -268,29 +268,29 @@ abstract class Model extends Obj
     public function bind($data = null)
     {
         if (is_object($data)) {
-            $res = $this->_tbl->bind($data);
+            $res = $this->table->bind($data);
 
             if ($res) {
-                $properties = $this->_tbl->getProperties();
+                $properties = $this->table->getProperties();
                 foreach (get_object_vars($data) as $key => $property) {
                     if (!array_key_exists($key, $properties)) {
-                        $this->_tbl->set('__' . $key, $property);
+                        $this->table->set('__' . $key, $property);
                     }
                 }
             }
         } elseif (is_array($data)) {
-            $res = $this->_tbl->bind($data);
+            $res = $this->table->bind($data);
 
             if ($res) {
-                $properties = $this->_tbl->getProperties();
+                $properties = $this->table->getProperties();
                 foreach (array_keys($data) as $key) {
                     if (!array_key_exists($key, $properties)) {
-                        $this->_tbl->set('__' . $key, $data[$key]);
+                        $this->table->set('__' . $key, $data[$key]);
                     }
                 }
             }
         } else {
-            $this->_logError(
+            $this->logError(
                 __CLASS__
                     . '::'
                     . __FUNCTION__
@@ -315,9 +315,9 @@ abstract class Model extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _logError($message)
+    protected function logError($message)
     {
-        return $this->_log('error', $message);
+        return $this->writeLog('error', $message);
     }
 
     /**
@@ -327,9 +327,9 @@ abstract class Model extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _logDebug($message)
+    protected function logDebug($message)
     {
-        return $this->_log('debug', $message);
+        return $this->writeLog('debug', $message);
     }
 
     /**
@@ -339,7 +339,7 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _log($type, $message)
+    protected function writeLog($type, $message)
     {
         if (!$message) {
             return;
@@ -366,8 +366,8 @@ abstract class Model extends Obj
     public function check()
     {
         // Is data valid?
-        if (!$this->_tbl->check()) {
-            $this->_errors = $this->_tbl->getErrors();
+        if (!$this->table->check()) {
+            $this->_errors = $this->table->getErrors();
             return false;
         }
         return true;
@@ -388,9 +388,9 @@ abstract class Model extends Obj
                 return false;
             }
 
-            if ($this->_context) {
+            if ($this->context) {
                 $results = Event::trigger('content.onContentBeforeSave', [
-                    $this->_context,
+                    $this->context,
                     &$this,
                     $this->exists(),
                 ]);
@@ -404,8 +404,8 @@ abstract class Model extends Obj
         }
 
         // Attempt to store data
-        if (!$this->_tbl->store()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->store()) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -425,8 +425,8 @@ abstract class Model extends Obj
         }
 
         // Remove record from the database
-        if (!$this->_tbl->delete()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->delete()) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -471,7 +471,7 @@ abstract class Model extends Obj
      *
      * @return  string
      */
-    public function toString($ignore = ['_db'])
+    public function toString($ignore = ['db'])
     {
         return $this->printR($this, $ignore);
     }
@@ -548,10 +548,10 @@ abstract class Model extends Obj
      */
     public function toArray($verbose = false)
     {
-        $output = $this->_tbl->getProperties();
+        $output = $this->table->getProperties();
 
         if ($verbose) {
-            foreach ($this->_tbl as $key => $value) {
+            foreach ($this->table as $key => $value) {
                 if (substr($key, 0, 2) == '__') {
                     $output[substr($key, 2)] = $value;
                 }

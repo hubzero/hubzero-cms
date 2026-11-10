@@ -92,7 +92,7 @@ class Wiki extends GenericItem
             $id = $page->get('id');
         }
 
-        $this->_tbl->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->_type);
 
         if ($this->exists()) {
             return true;

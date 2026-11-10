@@ -28,14 +28,14 @@ class Event extends Model
      *
      * @var string
      */
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Table name
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Events\\Tables\\Event';
+    protected $tableClass = '\\Components\\Events\\Tables\\Event';
 
     protected $address_info = '';
 
@@ -48,14 +48,14 @@ class Event extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // load page jtable
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // load object
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }

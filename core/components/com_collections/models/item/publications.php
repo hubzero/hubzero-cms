@@ -83,7 +83,7 @@ class Publications extends GenericItem
         $resource = new Publication($id, $v, null);
         $uid = $resource->version->id;
 
-        $this->_tbl->loadType($uid, $this->_type);
+        $this->table->loadType($uid, $this->_type);
 
         if ($this->exists()) {
             return true;

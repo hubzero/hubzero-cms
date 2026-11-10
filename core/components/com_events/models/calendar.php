@@ -32,14 +32,14 @@ class Calendar extends Model
      *
      * @var string
      */
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Table name
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Events\\Tables\\Calendar';
+    protected $tableClass = '\\Components\\Events\\Tables\\Calendar';
 
     /**
      * \Hubzero\Base\ItemList
@@ -71,14 +71,14 @@ class Calendar extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // load page table
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // load object
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -117,7 +117,7 @@ class Calendar extends Model
         switch (strtolower($rtrn)) {
             case 'count':
                 if (!$this->events_count || $clear) {
-                    $tbl = new Tables\Event($this->_db);
+                    $tbl = new Tables\Event($this->db);
                     $this->events_count = $tbl->count($filters);
                 }
                 return $this->events_count;
@@ -146,7 +146,7 @@ class Calendar extends Model
                     }
 
                     // find any events that match our filters
-                    $tbl = new Tables\Event($this->_db);
+                    $tbl = new Tables\Event($this->db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $start = Date::of($result->publish_up);
@@ -188,7 +188,7 @@ class Calendar extends Model
             case 'list':
             default:
                 if (!($this->events instanceof ItemList) || $clear) {
-                    $tbl = new Tables\Event($this->_db);
+                    $tbl = new Tables\Event($this->db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Event($result);
@@ -416,14 +416,14 @@ class Calendar extends Model
         // if subscription delete events
         if ($this->isSubscription() || $deleteEvents) {
             // delete events
-            $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
-            $this->_db->setQuery($sql);
-            $this->_db->query();
+            $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->db->quote($this->get('id'));
+            $this->db->setQuery($sql);
+            $this->db->query();
         } else {
             // update all events, resetting their calendar
-            $sql = "UPDATE `#__events` SET `calendar_id`=0 WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
-            $this->_db->setQuery($sql);
-            $this->_db->query();
+            $sql = "UPDATE `#__events` SET `calendar_id`=0 WHERE `calendar_id`=" . $this->db->quote($this->get('id'));
+            $this->db->setQuery($sql);
+            $this->db->query();
         }
 
         // delete calendar
@@ -444,9 +444,9 @@ class Calendar extends Model
         }
 
         // delete events
-        $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->id);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->db->quote($this->id);
+        $this->db->setQuery($sql);
+        $this->db->query();
 
         // all good
         return true;

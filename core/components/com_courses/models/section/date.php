@@ -21,7 +21,7 @@ class Date extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionDate';
+    protected $tableClass = '\\Components\\Courses\\Tables\\SectionDate';
 
     /**
      * Object scope

@@ -70,7 +70,7 @@ abstract class Base extends Model
      */
     public function isDraft()
     {
-        if (!in_array('state', array_keys($this->_tbl->getProperties()))) {
+        if (!in_array('state', array_keys($this->table->getProperties()))) {
             return false;
         }
         if ($this->get('state') == self::APP_STATE_DRAFT) {
@@ -95,7 +95,7 @@ abstract class Base extends Model
 
         if (
             $this->get('publish_up')
-            && $this->get('publish_up') != $this->_db->getNullDate()
+            && $this->get('publish_up') != $this->db->getNullDate()
             && $this->get('publish_up') > $now
         ) {
             return false;
@@ -120,7 +120,7 @@ abstract class Base extends Model
 
         if (
             $this->get('publish_down')
-            && $this->get('publish_down') != $this->_db->getNullDate()
+            && $this->get('publish_down') != $this->db->getNullDate()
             && $this->get('publish_down') <= $now
         ) {
             return true;
@@ -180,7 +180,7 @@ abstract class Base extends Model
     {
         // Get some data for the log
         $log = new \stdClass();
-        foreach ($this->_tbl->getProperties() as $key => $value) {
+        foreach ($this->table->getProperties() as $key => $value) {
             $log->$key = $value;
         }
         $log = json_encode($log);
@@ -210,7 +210,7 @@ abstract class Base extends Model
         // The table object used to be assigned to $log too, which overwrote the
         // data and stored the object itself as comments (dropped from the
         // INSERT); comments is NOT NULL, so strict SQL refused every log entry
-        $entry = new Tables\Log($this->_db);
+        $entry = new Tables\Log($this->db);
         $entry->scope_id  = $scope_id;
         $entry->scope     = $scope;
         $entry->user_id   = User::get('id');

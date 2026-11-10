@@ -29,7 +29,7 @@ class Unit extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Unit';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Unit';
 
     /**
      * Object scope
@@ -83,15 +83,15 @@ class Unit extends Base
      */
     public function __construct($oid = null, $offering_id = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
             if (is_numeric($oid) || is_string($oid)) {
                 if ($oid) {
-                    $this->_tbl->load($oid, $offering_id);
+                    $this->table->load($oid, $offering_id);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
@@ -130,22 +130,22 @@ class Unit extends Base
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_tbl->$property)) {
-            return $this->_tbl->$property;
-        } elseif (isset($this->_tbl->{'__' . $property})) {
-            return $this->_tbl->{'__' . $property};
+        if (isset($this->table->$property)) {
+            return $this->table->$property;
+        } elseif (isset($this->table->{'__' . $property})) {
+            return $this->table->{'__' . $property};
         } elseif (in_array($property, self::$_section_keys)) {
-            $tbl = new Tables\SectionDate($this->_db);
+            $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'unit', $this->get('section_id'));
 
-            if (!$this->_tbl->get('__publish_up', null)) {
+            if (!$this->table->get('__publish_up', null)) {
                 $this->set('publish_up', $tbl->get('publish_up', ''));
             }
-            if (!$this->_tbl->get('__publish_down', null)) {
+            if (!$this->table->get('__publish_down', null)) {
                 $this->set('publish_down', $tbl->get('publish_down', ''));
             }
 
-            return $this->_tbl->{'__' . $property};
+            return $this->table->{'__' . $property};
         }
         return $default;
     }
@@ -218,7 +218,7 @@ class Unit extends Base
         }
 
         if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Traversable)) {
-            $tbl = new Tables\AssetGroup($this->_db);
+            $tbl = new Tables\AssetGroup($this->db);
             if (($results = $tbl->find(['w' => $filters]))) {
                 $list = [];
 
@@ -392,7 +392,7 @@ class Unit extends Base
                 $filters['section_id']     = (int) $this->get('section_id');
             }
 
-            $tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->db);
 
             if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
@@ -419,7 +419,7 @@ class Unit extends Base
         $value = parent::store($check);
 
         if ($value && $this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 
             $dt->set('publish_up', $this->get('publish_up'));
@@ -469,7 +469,7 @@ class Unit extends Base
 
         // Remove dates
         if ($this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
             if (!$dt->delete()) {
                 $this->setError($dt->getError());
@@ -515,7 +515,7 @@ class Unit extends Base
 
         if ($deep) {
             // Copy assets
-            $tbl = new Tables\AssetAssociation($this->_db);
+            $tbl = new Tables\AssetAssociation($this->db);
             //foreach ($this->assets(array('asset_scope_id' => $u_id)) as $asset)
             foreach ($tbl->find(['scope_id' => $u_id, 'scope' => 'unit']) as $asset) {
                 $tbl->bind($asset);

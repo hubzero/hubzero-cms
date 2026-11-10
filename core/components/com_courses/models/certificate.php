@@ -30,7 +30,7 @@ class Certificate extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Certificate';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Certificate';
 
     /**
      * Object scope
@@ -64,28 +64,28 @@ class Certificate extends Base
      */
     public function __construct($oid = null, $course_id = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
-            if (!($this->_tbl instanceof Table)) {
+            if (!($this->table instanceof Table)) {
                 $errorMsg = Lang::txt(
                     'Table class must be an instance of Hubzero\\Database\\Table.',
                 );
                 $logMsg = __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg;
-                $this->_logError($logMsg);
+                $this->logError($logMsg);
                 throw new \LogicException($errorMsg);
             }
 
             if ($course_id) {
-                $this->_tbl->load(['course_id' => $course_id]);
+                $this->table->load(['course_id' => $course_id]);
             } elseif (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {
-                    $this->_tbl->load($oid);
+                    $this->table->load($oid);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);

@@ -23,7 +23,7 @@ class View extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolView';
+    protected $tableClass = '\\Components\\Projects\\Tables\\ToolView';
 
     /**
      * Registry
@@ -40,12 +40,12 @@ class View extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\ToolView($this->_db);
+        $this->table = new Tables\ToolView($this->db);
 
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         }
     }
 
@@ -87,6 +87,6 @@ class View extends Model
      */
     public function lastView($toolid = 0, $userid = 0)
     {
-        return $this->_tbl->checkView($toolid, $userid);
+        return $this->table->checkView($toolid, $userid);
     }
 }

@@ -21,7 +21,7 @@ class Prerequisite extends Base
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Prerequisites';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Prerequisites';
 
     /**
      * Object scope
@@ -75,13 +75,13 @@ class Prerequisite extends Base
      */
     public function __construct($section_id, $gradebook, $member_id)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // Set vars
         $this->member_id = $member_id;
-        $prerequisites   = $this->_tbl->loadAllBySectionId($section_id);
+        $prerequisites   = $this->table->loadAllBySectionId($section_id);
 
         $this->prerequisites = [];
         foreach ($prerequisites as $prerequisite) {
@@ -98,7 +98,7 @@ class Prerequisite extends Base
 
         $this->progress = $gradebook->progress($member_id);
         $this->views    = $gradebook->views($member_id);
-        $grades         = $gradebook->_tbl->find(['member_id' => $member_id, 'scope' => 'asset']);
+        $grades         = $gradebook->table->find(['member_id' => $member_id, 'scope' => 'asset']);
 
         if ($grades && count($grades) > 0) {
             $this->grades = [];

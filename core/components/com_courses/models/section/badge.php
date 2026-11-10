@@ -25,7 +25,7 @@ class Badge extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionBadge';
+    protected $tableClass = '\\Components\\Courses\\Tables\\SectionBadge';
 
     /**
      * Object scope
@@ -43,12 +43,12 @@ class Badge extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         }
 
         $this->loadCriteriaText();
@@ -61,7 +61,7 @@ class Badge extends Base
      */
     private function loadCriteriaText()
     {
-        $criteria = new Tables\SectionBadgeCriteria($this->_db);
+        $criteria = new Tables\SectionBadgeCriteria($this->db);
         $criteria->load($this->get('criteria_id'));
 
         if ($criteria->get('text')) {
@@ -78,7 +78,7 @@ class Badge extends Base
     public static function loadBySectionId($id)
     {
         $model = new self();
-        $model->_tbl->load(['section_id' => $id]);
+        $model->table->load(['section_id' => $id]);
         $model->loadCriteriaText();
 
         return $model;
@@ -94,7 +94,7 @@ class Badge extends Base
     {
         // (an instance method called statically by the passport API: an Error on PHP 8)
         $model = new self();
-        $model->_tbl->load(['provider_badge_id' => $id]);
+        $model->table->load(['provider_badge_id' => $id]);
         $model->loadCriteriaText();
 
         return $model;
@@ -111,7 +111,7 @@ class Badge extends Base
         // See if we should save criteria text as well
         if ($this->get('criteria_text_new')) {
             // We'll always save a new entry if the text is changing
-            $criteria = new Tables\SectionBadgeCriteria($this->_db);
+            $criteria = new Tables\SectionBadgeCriteria($this->db);
             $criteria->set('text', $this->get('criteria_text_new'));
             $criteria->set('section_badge_id', $this->get('id'));
             $criteria->store();

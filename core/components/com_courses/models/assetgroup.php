@@ -23,7 +23,7 @@ class Assetgroup extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\AssetGroup';
+    protected $tableClass = '\\Components\\Courses\\Tables\\AssetGroup';
 
     /**
      * Object scope
@@ -113,12 +113,12 @@ class Assetgroup extends Base
   */
     public function get($property, $default = null)
     {
-        if (isset($this->_tbl->$property)) {
-            return $this->_tbl->$property;
-        } elseif (isset($this->_tbl->{'__' . $property})) {
-            return $this->_tbl->{'__' . $property};
+        if (isset($this->table->$property)) {
+            return $this->table->$property;
+        } elseif (isset($this->table->{'__' . $property})) {
+            return $this->table->{'__' . $property};
         } elseif (in_array($property, self::$_section_keys)) {
-            $tbl = new Tables\SectionDate($this->_db);
+            $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
 
             $this->set('publish_up', $tbl->get('publish_up', ''));
@@ -150,7 +150,7 @@ class Assetgroup extends Base
                 $filters['section_id'] = $this->get('section_id');
             }
 
-            if (($results = $this->_tbl->find(['w' => $filters]))) {
+            if (($results = $this->table->find(['w' => $filters]))) {
                 foreach ($results as $c) {
                     $this->children->add(new Assetgroup($c));
                 }
@@ -241,7 +241,7 @@ class Assetgroup extends Base
                 $filters['section_id']     = (int) $this->get('section_id');
             }
 
-            $tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->db);
 
             if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
@@ -347,7 +347,7 @@ class Assetgroup extends Base
         $value = parent::store($check);
 
         if ($value && $this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
@@ -385,7 +385,7 @@ class Assetgroup extends Base
         }
 
         if ($this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
             if ($dt->id) {
                 if (!$dt->delete()) {
@@ -439,7 +439,7 @@ class Assetgroup extends Base
                         $this->setError($asset->getError());
                     } else {
                         // Copy asset associations
-                        $tbl = new Tables\AssetAssociation($this->_db);
+                        $tbl = new Tables\AssetAssociation($this->db);
                         foreach (
                             $tbl->find([
                                 'scope_id' => $oldAssetGroupId,
@@ -459,7 +459,7 @@ class Assetgroup extends Base
             }
 
             // Copy asset groups (child asset groups)
-            if ($children = $this->_tbl->find(['w' => ['parent' => $oldAssetGroupId]])) {
+            if ($children = $this->table->find(['w' => ['parent' => $oldAssetGroupId]])) {
                 $found = [];
 
                 foreach ($children as $c) {
@@ -519,7 +519,7 @@ class Assetgroup extends Base
                     } else {
                         // With the new duplicated asset, find the row with the previous
                         // scope_id, scope, and asset_id to duplicate
-                        $tbl = new Tables\AssetAssociation($this->_db);
+                        $tbl = new Tables\AssetAssociation($this->db);
                         $findParams = [
                             'scope_id' => $startingAssetGroupId,
                             'scope' => 'asset_group',

@@ -21,7 +21,7 @@ class MemberBadge extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\MemberBadge';
+    protected $tableClass = '\\Components\\Courses\\Tables\\MemberBadge';
 
     /**
      * Object scope
@@ -39,12 +39,12 @@ class MemberBadge extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         }
     }
 
@@ -61,7 +61,7 @@ class MemberBadge extends Base
     {
         if (is_numeric($id)) {
             $obj = new MemberBadge();
-            $obj->_tbl->loadByMemberId($id);
+            $obj->table->loadByMemberId($id);
             return $obj;
         } else {
             return false;
@@ -80,9 +80,9 @@ class MemberBadge extends Base
     public static function loadByToken($token)
     {
         $obj = new MemberBadge();
-        $obj->_tbl->load(['validation_token' => $token]);
+        $obj->table->load(['validation_token' => $token]);
 
-        if (isset($obj->_tbl->id)) {
+        if (isset($obj->table->id)) {
             return $obj;
         } else {
             return false;

@@ -25,7 +25,7 @@ class Job extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Jobs\\Tables\\Job';
+    protected $tableClass = '\\Components\\Jobs\\Tables\\Job';
 
     /**
      * Model context
@@ -33,7 +33,7 @@ class Job extends Model
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_jobs.job.description';
+    protected $context = 'com_jobs.job.description';
 
     /**
      * User
@@ -118,7 +118,7 @@ class Job extends Model
 
                     $content = stripslashes($this->get('description'));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

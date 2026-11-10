@@ -27,7 +27,7 @@ class GradeBook extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\GradeBook';
+    protected $tableClass = '\\Components\\Courses\\Tables\\GradeBook';
 
     /**
      * Object scope
@@ -559,11 +559,11 @@ class GradeBook extends Base
             }
         } else {
             // Make sure nothing is lingering around...given that there shouldn't be any grades there
-            $this->_tbl->clearGrades($member_id, $course);
+            $this->table->clearGrades($member_id, $course);
         }
 
-        $this->_tbl->saveGrades($scores, $course_id);
-        $this->_tbl->clearUnits($unit_ids);
+        $this->table->saveGrades($scores, $course_id);
+        $this->table->clearUnits($unit_ids);
 
         // Success
         return true;
@@ -577,7 +577,7 @@ class GradeBook extends Base
      **/
     public function refresh($member_id = null)
     {
-        $this->_tbl->syncGrades($this->course, $member_id);
+        $this->table->syncGrades($this->course, $member_id);
 
         // Compute unit and course scores as well
         $this->calculateScores($member_id);
@@ -620,7 +620,7 @@ class GradeBook extends Base
         }
 
         // Calculate course passing info
-        $results = $this->_tbl->passing($filters, 'member_id');
+        $results = $this->table->passing($filters, 'member_id');
 
         foreach ($results as $result) {
             if (!is_null($result->score)) {
@@ -908,7 +908,7 @@ class GradeBook extends Base
                 }
             }
 
-            $results = $this->_tbl->find($filters);
+            $results = $this->table->find($filters);
 
             if ($results && count($results) > 0) {
                 foreach ($results as $grade) {

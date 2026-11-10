@@ -35,21 +35,21 @@ class Manager extends Member
      */
     public function __construct($uid, $cid = 0, $oid = 0, $sid = 0)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Member($this->_db);
+        $this->table = new Tables\Member($this->db);
 
         if (is_numeric($uid) || is_string($uid)) {
-            $this->_tbl->load($uid, $cid, $oid, $sid, 0);
+            $this->table->load($uid, $cid, $oid, $sid, 0);
         } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }
 
         if (!$this->get('role_permissions')) {
-            $result = new Tables\Role($this->_db);
+            $result = new Tables\Role($this->db);
             if ($result->load($this->get('role_id'))) {
                 foreach ($result->getProperties() as $key => $property) {
-                    $this->_tbl->set('__role_' . $key, $property);
+                    $this->table->set('__role_' . $key, $property);
                 }
             }
         }

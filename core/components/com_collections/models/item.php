@@ -38,14 +38,14 @@ class Item extends Base
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Collections\\Tables\\Item';
+    protected $tableClass = '\\Components\\Collections\\Tables\\Item';
 
     /**
      * Model context
      *
      * @var string
      */
-    protected $_context = 'com_collections.item.description';
+    protected $context = 'com_collections.item.description';
 
     /**
      * Modifier
@@ -88,17 +88,17 @@ class Item extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $tbl = $this->_tbl_name;
-        $this->_tbl = new $tbl($this->_db);
+        $tbl = $this->tableClass;
+        $this->table = new $tbl($this->db);
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
                 if (substr($oid, 0, 3) == 'tmp') {
-                    $this->_tbl->loadByTitle($oid);
+                    $this->table->loadByTitle($oid);
                 } else {
-                    $this->_tbl->load($oid);
+                    $this->table->load($oid);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
@@ -146,17 +146,17 @@ class Item extends Base
     {
         switch (strtolower($property)) {
             case 'reposts':
-                if (!isset($this->_tbl->{'__' . $property})) {
-                    $this->set($property, intval($this->_tbl->getReposts()));
+                if (!isset($this->table->{'__' . $property})) {
+                    $this->set($property, intval($this->table->getReposts()));
                 }
                 break;
             case 'voted':
-                if (!isset($this->_tbl->{'__' . $property})) {
-                    $this->set($property, intval($this->_tbl->getVote()));
+                if (!isset($this->table->{'__' . $property})) {
+                    $this->set($property, intval($this->table->getVote()));
                 }
                 break;
             case 'comments':
-                if (!isset($this->_tbl->{'__' . $property})) {
+                if (!isset($this->table->{'__' . $property})) {
                     $this->set($property, intval($this->comments('count')));
                 }
                 break;
@@ -275,7 +275,7 @@ class Item extends Base
     public function assets($filters = [], $reset = false)
     {
         if (!($this->assets instanceof ItemList) || $reset) {
-            $tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->db);
 
             if (!isset($filters['item_id'])) {
                 $filters['item_id'] = $this->exists() ? $this->get('id') : 0;
@@ -328,7 +328,7 @@ class Item extends Base
                 return false;
             }
         } else {
-            $tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->db);
 
             // Scope the removal to THIS item. Callers hand this an id straight
             // from the request (posts.php and the member/group collection
@@ -424,7 +424,7 @@ class Item extends Base
     public function vote()
     {
 
-        $vote = new Tables\Vote($this->_db);
+        $vote = new Tables\Vote($this->db);
         $vote->loadByBulletin($this->get('id'), User::get('id'));
 
         $like = true;
@@ -458,7 +458,7 @@ class Item extends Base
             // Decrease like count
             $this->set('positive', ($this->get('positive') - 1));
         }
-        $this->_tbl->store();
+        $this->table->store();
 
         return true;
     }
@@ -482,10 +482,10 @@ class Item extends Base
         }
 
         if (!$this->get('id')) {
-            if (!$this->_tbl->id) {
-                $this->_tbl->id = $this->_db->insertid();
+            if (!$this->table->id) {
+                $this->table->id = $this->db->insertid();
             }
-            $this->set('id', $this->_tbl->id);
+            $this->set('id', $this->table->id);
         }
 
         if ($this->get('_assets')) {
@@ -598,7 +598,7 @@ class Item extends Base
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);
@@ -712,7 +712,7 @@ class Item extends Base
         switch (strtolower($what)) {
             case 'count':
                 if (!isset($this->cache['collections.count']) || $clear) {
-                    $tbl = new Tables\Collection($this->_db);
+                    $tbl = new Tables\Collection($this->db);
                     $this->cache['collections.count'] = $tbl->getCount($filters);
                 }
                 return $this->cache['collections.count'];
@@ -722,7 +722,7 @@ class Item extends Base
             case 'results':
             default:
                 if (!($this->cache['collections.list'] instanceof ItemList) || $clear) {
-                    $tbl = new Tables\Collection($this->_db);
+                    $tbl = new Tables\Collection($this->db);
 
                     if ($results = $tbl->getRecords($filters)) {
                         foreach ($results as $key => $result) {
@@ -771,7 +771,7 @@ class Item extends Base
         $id = ($id ?: Request::getInt('post', 0));
 
         if ($id) {
-            $post = new Tables\Post($this->_db);
+            $post = new Tables\Post($this->db);
             $post->load($id);
 
             // ?post= named a row that does not exist, so there is no item to
@@ -784,8 +784,8 @@ class Item extends Base
                 return false;
             }
 
-            if (!$this->_tbl->load($post->item_id)) {
-                $this->setError($this->_tbl->getError());
+            if (!$this->table->load($post->item_id)) {
+                $this->setError($this->table->getError());
                 return false;
             }
         }
@@ -841,13 +841,13 @@ class Item extends Base
             return $collection->isReadableBy($uid);
         }
 
-        $this->_db->setQuery(
+        $this->db->setQuery(
             "SELECT DISTINCT p.`collection_id`
 			   FROM `#__collections_posts` AS p
 			  WHERE p.`item_id` = " . (int) $this->get('id'),
         );
 
-        foreach ((array) $this->_db->loadColumn() as $cid) {
+        foreach ((array) $this->db->loadColumn() as $cid) {
             $collection = new Collection($cid);
 
             if ($collection->isReadableBy($uid)) {

@@ -31,7 +31,7 @@ class Asset extends Base
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Asset';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Asset';
 
     /**
      * Object scope
@@ -81,12 +81,12 @@ class Asset extends Base
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_tbl->$property)) {
-            return $this->_tbl->$property;
-        } elseif (isset($this->_tbl->{'__' . $property})) {
-            return $this->_tbl->{'__' . $property};
+        if (isset($this->table->$property)) {
+            return $this->table->$property;
+        } elseif (isset($this->table->{'__' . $property})) {
+            return $this->table->{'__' . $property};
         } elseif (in_array($property, self::$_section_keys)) {
-            $tbl = new Tables\SectionDate($this->_db);
+            $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'asset', $this->get('section_id'));
 
             $this->set('publish_up', $tbl->get('publish_up', ''));
@@ -100,7 +100,7 @@ class Asset extends Base
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
                 $tbl = "Components\\Courses\\Tables\\{$key}";
-                $tbl = new $tbl($this->_db);
+                $tbl = new $tbl($this->db);
                 $aux = [];
                 foreach (self::$_aux_tablekeys[$parts[0]] as $item) {
                     $k = $item;
@@ -171,7 +171,7 @@ class Asset extends Base
         $value = parent::store($check);
 
         if ($value && $this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load(
                 $this->get('id'),
                 $this->_scope,
@@ -184,7 +184,7 @@ class Asset extends Base
             }
         }
 
-        $properties = get_object_vars($this->_tbl);
+        $properties = get_object_vars($this->table);
         foreach ($properties as $k => $v) {
             $kname = substr($k, 2);
             if (!empty($kname) && array_key_exists($kname, self::$_aux_tablekeys)) {
@@ -193,7 +193,7 @@ class Asset extends Base
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
                 $tbl = "Components\\Courses\\Tables\\{$key}";
-                $tbl = new $tbl($this->_db);
+                $tbl = new $tbl($this->db);
 
                 if ($v == 'delete') {
                     $aux = [];
@@ -228,7 +228,7 @@ class Asset extends Base
     {
         // Remove dates
         if ($this->get('section_id')) {
-            $dt = new Tables\SectionDate($this->_db);
+            $dt = new Tables\SectionDate($this->db);
             $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
             if (!$dt->delete()) {
                 $this->setError($dt->getError());
@@ -279,8 +279,8 @@ class Asset extends Base
             return false;
         }
 
-        $view = new Tables\AssetViews($this->_db);
-        $view->asset_id          = $this->_tbl->id;
+        $view = new Tables\AssetViews($this->db);
+        $view->asset_id          = $this->table->id;
         $view->course_id         = $this->get('course_id');
         $view->viewed            = Date::toSql();
         $view->viewed_by         = $member->get('id');
@@ -321,7 +321,7 @@ class Asset extends Base
             'name'      => 'assets',
             'layout'    => $layout,
         ]);
-        $view->asset   = $this->_tbl;
+        $view->asset   = $this->table;
         $view->model   = $this;
         $view->course  = $course;
         $view->set('option', $option);
@@ -412,7 +412,7 @@ class Asset extends Base
             $filters['asset_id'] = (int) $this->get('id');
         }
 
-        $tbl = new Tables\AssetAssociation($this->_db);
+        $tbl = new Tables\AssetAssociation($this->db);
 
         if (isset($filters['count']) && $filters['count']) {
             return $tbl->count($filters);
@@ -438,7 +438,7 @@ class Asset extends Base
             $this->units = [];
         }
 
-        $assets = $this->_tbl->find(['w' => ['asset_id' => $this->get('id')]]);
+        $assets = $this->table->find(['w' => ['asset_id' => $this->get('id')]]);
         if ($assets && count($assets) > 0) {
             foreach ($assets as $asset) {
                 if (isset($asset->unit_id)) {
@@ -565,7 +565,7 @@ class Asset extends Base
         $handlerName = $this->get('type');
         $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
         if (class_exists($handlerClassString)) {
-            $handlerModel = new $handlerClassString($this->_db);
+            $handlerModel = new $handlerClassString($this->db);
             return $handlerModel;
         }
         return false;

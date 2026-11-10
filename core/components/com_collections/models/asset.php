@@ -25,7 +25,7 @@ class Asset extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_tbl_name = '\\Components\\Collections\\Tables\\Asset';
+    public $tableClass = '\\Components\\Collections\\Tables\\Asset';
 
     /**
      * File size
@@ -52,13 +52,13 @@ class Asset extends Base
      */
     public function __construct($oid = null, $item_id = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $tbl = $this->_tbl_name;
-        $this->_tbl = new $tbl($this->_db);
+        $tbl = $this->tableClass;
+        $this->table = new $tbl($this->db);
 
         if (is_numeric($oid) || is_string($oid)) {
-            $this->_tbl->load($oid, $item_id);
+            $this->table->load($oid, $item_id);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -331,8 +331,8 @@ class Asset extends Base
      */
     public function remove()
     {
-        if (!$this->_tbl->remove($this->get('id'))) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->remove($this->get('id'))) {
+            $this->setError($this->table->getError());
             return false;
         }
         return true;
@@ -348,8 +348,8 @@ class Asset extends Base
      */
     public function update($field, $before, $after)
     {
-        if (!$this->_tbl->updateField($field, $before, $after)) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->updateField($field, $before, $after)) {
+            $this->setError($this->table->getError());
             return false;
         }
 
@@ -408,7 +408,7 @@ class Asset extends Base
         if (!$item_id) {
             $item_id = $this->get('item_id');
         }
-        return $this->_tbl->reorder("item_id=" . $this->_db->quote(intval($item_id)));
+        return $this->table->reorder("item_id=" . $this->db->quote(intval($item_id)));
     }
 
     /**

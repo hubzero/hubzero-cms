@@ -73,7 +73,7 @@ class Wishlist extends GenericItem
 
         $id = ($id ?: Request::getInt('wishid', 0));
 
-        $this->_tbl->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->_type);
 
         if ($this->exists()) {
             return true;

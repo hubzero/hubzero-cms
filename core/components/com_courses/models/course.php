@@ -25,7 +25,7 @@ class Course extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Course';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Course';
 
     /**
      * Object scope
@@ -240,14 +240,14 @@ class Course extends Base
 
         // Perform a record count?
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Offering($this->_db);
+            $tbl = new Tables\Offering($this->db);
 
             return $tbl->count($filters);
         }
 
         // Is the data is not set OR is it not the right type?
         if (!($this->offerings instanceof \Traversable) || $clear) {
-            $tbl = new Tables\Offering($this->_db);
+            $tbl = new Tables\Offering($this->db);
 
             // Attempt to get database results
             if (($results = $tbl->find($filters))) {
@@ -329,13 +329,13 @@ class Course extends Base
         $filters['student'] = 0;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->managers) || !is_array($this->managers) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -376,13 +376,13 @@ class Course extends Base
         $filters['student'] = 1;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->students) || !is_array($this->students) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -421,7 +421,7 @@ class Course extends Base
     {
         $user_ids = $this->userIds($data);
 
-        $tbl = new Tables\Member($this->_db);
+        $tbl = new Tables\Member($this->db);
 
         $filters = [
             'course_id' => (int) $this->get('id'),
@@ -485,7 +485,7 @@ class Course extends Base
      */
     private function userIds($users)
     {
-        if (empty($this->_db)) {
+        if (empty($this->db)) {
             return false;
         }
 
@@ -500,7 +500,7 @@ class Course extends Base
             if (is_numeric($u)) {
                 $userids[] = $u;
             } else {
-                $usernames[] = $this->_db->quote($u);
+                $usernames[] = $this->db->quote($u);
             }
         }
 
@@ -508,9 +508,9 @@ class Course extends Base
             return $userids;
         }
 
-        $this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode(",", $usernames) . ");");
+        $this->db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode(",", $usernames) . ");");
 
-        if (!($result = $this->_db->loadColumn())) {
+        if (!($result = $this->db->loadColumn())) {
             $result = [];
         }
 
@@ -525,8 +525,8 @@ class Course extends Base
      */
     public function check()
     {
-        if (!$this->_tbl->check()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->check()) {
+            $this->setError($this->table->getError());
             return false;
         }
         return true;
@@ -542,7 +542,7 @@ class Course extends Base
      */
     public function store($check = true)
     {
-        if (empty($this->_db)) {
+        if (empty($this->db)) {
             return false;
         }
 
@@ -562,12 +562,12 @@ class Course extends Base
             $this->exists(),
         ]);
 
-        if (!$this->_tbl->store()) {
-            $this->setError($this->_tbl->getError());
+        if (!$this->table->store()) {
+            $this->setError($this->table->getError());
             return false;
         }
 
-        $affected = $this->_db->getAffectedRows();
+        $affected = $this->db->getAffectedRows();
 
         // After SQL is done and has no errors, fire off onCourseUserEnrolledEvents
         // for every user added to this course
@@ -643,13 +643,13 @@ class Course extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Page($this->_db);
+            $tbl = new Tables\Page($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->pages) || !is_array($this->pages)) {
-            $tbl = new Tables\Page($this->_db);
+            $tbl = new Tables\Page($this->db);
 
             $results = [];
 

@@ -29,7 +29,7 @@ class Entry extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
+    protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 
     /**
      * Model context
@@ -37,7 +37,7 @@ class Entry extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_projects.todo.details';
+    protected $context = 'com_projects.todo.details';
 
     /**
      * Comment
@@ -89,13 +89,13 @@ class Entry extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Todo($this->_db);
+        $this->table = new Tables\Todo($this->db);
 
         if ($oid) {
             if (is_numeric($oid)) {
-                $this->_tbl->load($oid);
+                $this->table->load($oid);
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
@@ -189,7 +189,7 @@ class Entry extends Model
     {
         if (
             $this->get('duedate')
-            && $this->get('duedate') != $this->_db->getNullDate()
+            && $this->get('duedate') != $this->db->getNullDate()
             && $this->get('duedate') < Date::toSql()
         ) {
             return true;
@@ -220,7 +220,7 @@ class Entry extends Model
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _date($key, $as = '')
     {
-        if ($this->get($key) == $this->_db->getNullDate()) {
+        if ($this->get($key) == $this->db->getNullDate()) {
             return null;
         }
         switch (strtolower($as)) {
@@ -324,7 +324,7 @@ class Entry extends Model
      */
     public function comments($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new \Components\Projects\Tables\Comment($this->_db);
+        $tbl = new \Components\Projects\Tables\Comment($this->db);
 
         switch (strtolower($rtrn)) {
             case 'count':

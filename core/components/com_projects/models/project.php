@@ -75,14 +75,14 @@ class Project extends Model
      *
      * @var  string
      */
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\Project';
+    protected $tableClass = '\\Components\\Projects\\Tables\\Project';
 
     /**
      * Model context
      *
      * @var  string
      */
-    protected $_context = 'com_projects.project.about';
+    protected $context = 'com_projects.project.about';
 
     /**
      * Registry
@@ -106,19 +106,19 @@ class Project extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Project($this->_db);
+        $this->table = new Tables\Project($this->db);
 
         if ($oid) {
             if (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             } else {
-                $this->_tbl->loadProject($oid);
+                $this->table->loadProject($oid);
             }
         }
 
-        $paramsRegistry = new \Hubzero\Config\Registry($this->_tbl->get('params'));
+        $paramsRegistry = new \Hubzero\Config\Registry($this->table->get('params'));
 
         if (empty($paramsRegistry->toArray())) {
             $parsedParams = $this->_getParsedParams();
@@ -136,7 +136,7 @@ class Project extends Model
     protected function _getParsedParams()
     {
         $parsedParams = [];
-        $splitParams = explode("\n", $this->_tbl->get('params', ''));
+        $splitParams = explode("\n", $this->table->get('params', ''));
 
         foreach ($splitParams as $param) {
             if (empty($param)) {
@@ -187,7 +187,7 @@ class Project extends Model
      */
     public function reloadProject()
     {
-        $this->_tbl->loadProject($this->get('id'));
+        $this->table->loadProject($this->get('id'));
     }
 
     /**
@@ -199,7 +199,7 @@ class Project extends Model
     public function project($reload = false)
     {
         if (!isset($this->_project) || $reload == true) {
-            $this->_project = $this->_tbl->getProject($this->get('id'), User::get('id'));
+            $this->_project = $this->table->getProject($this->get('id'), User::get('id'));
         }
 
         return $this->_project;
@@ -251,7 +251,7 @@ class Project extends Model
      */
     protected function _date($key, $as = '')
     {
-        if ($this->get($key) == $this->_db->getNullDate()) {
+        if ($this->get($key) == $this->db->getNullDate()) {
             return null;
         }
         switch (strtolower($as)) {
@@ -289,7 +289,7 @@ class Project extends Model
             return false;
         }
         if (!isset($this->_tblOwner)) {
-            $this->_tblOwner = new Tables\Owner($this->_db);
+            $this->_tblOwner = new Tables\Owner($this->db);
         }
         if (!isset($this->_member) || $reload == true) {
             $this->_tblOwner->loadOwner($this->get('id'), User::get('id'));
@@ -464,7 +464,7 @@ class Project extends Model
             return false;
         }
         if (!isset($this->_publication)) {
-            $this->_objPub = new \Components\Publications\Tables\Publication($this->_db);
+            $this->_objPub = new \Components\Publications\Tables\Publication($this->db);
             $this->_publication = $this->_objPub->getProvPublication($this->get('id'));
         }
         return $this->_publication;
@@ -482,8 +482,8 @@ class Project extends Model
         }
 
         // Load by publication ID
-        $this->_tbl->loadProvisionedProject($pid);
-        $this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
+        $this->table->loadProvisionedProject($pid);
+        $this->params = new \Hubzero\Config\Registry($this->table->get('params'));
         return false;
     }
 
@@ -899,11 +899,11 @@ class Project extends Model
      */
     public function store($check = true)
     {
-        $this->_tbl->store();
-        if (!$this->_tbl->getError()) {
+        $this->table->store();
+        if (!$this->table->getError()) {
             return true;
         }
-        $this->setError($this->_tbl->getError());
+        $this->setError($this->table->getError());
         return false;
     }
 
@@ -957,7 +957,7 @@ class Project extends Model
         } else {
             // Verify name uniqueness
             if (
-                !$this->_tbl->checkUniqueName($name, $pid)
+                !$this->table->checkUniqueName($name, $pid)
                 || in_array($name, $reserved)
                 || in_array($name, $tasks)
             ) {
@@ -1000,7 +1000,7 @@ class Project extends Model
      */
     public function saveParam($param = '', $value = '')
     {
-        $this->_tbl->saveParam($this->get('id'), trim($param), htmlentities($value));
+        $this->table->saveParam($this->get('id'), trim($param), htmlentities($value));
     }
 
     /**
@@ -1046,7 +1046,7 @@ class Project extends Model
     public function team($filters = [], $refresh = false)
     {
         if (!isset($this->_tblOwner)) {
-            $this->_tblOwner = new Tables\Owner($this->_db);
+            $this->_tblOwner = new Tables\Owner($this->db);
         }
         if (!isset($this->_team) || $refresh == true) {
             $this->_team = $this->_tblOwner->getOwners($this->get('id'), $filters);
@@ -1065,42 +1065,42 @@ class Project extends Model
     {
         if ($name == 'Activity') {
             if (!isset($this->_tblActivity)) {
-                $this->_tblActivity = new Tables\Activity($this->_db);
+                $this->_tblActivity = new Tables\Activity($this->db);
             }
             return $this->_tblActivity;
         }
         if ($name == 'Owner') {
             if (!isset($this->_tblOwner)) {
-                $this->_tblOwner = new Tables\Owner($this->_db);
+                $this->_tblOwner = new Tables\Owner($this->db);
             }
             return $this->_tblOwner;
         }
         if ($name == 'Type') {
             if (!isset($this->_tblType)) {
-                $this->_tblType = new Tables\Type($this->_db);
+                $this->_tblType = new Tables\Type($this->db);
             }
             return $this->_tblType;
         }
         if ($name == 'Blog') {
             if (!isset($this->_tblBlog)) {
-                $this->_tblBlog = new Tables\Blog($this->_db);
+                $this->_tblBlog = new Tables\Blog($this->db);
             }
             return $this->_tblBlog;
         }
         if ($name == 'Comment') {
             if (!isset($this->_tblComment)) {
-                $this->_tblComment = new Tables\Comment($this->_db);
+                $this->_tblComment = new Tables\Comment($this->db);
             }
             return $this->_tblComment;
         }
         if ($name == 'Todo') {
             if (!isset($this->_tblTodo)) {
-                $this->_tblTodo = new Tables\Todo($this->_db);
+                $this->_tblTodo = new Tables\Todo($this->db);
             }
             return $this->_tblTodo;
         }
 
-        return $this->_tbl;
+        return $this->table;
     }
 
     /**
@@ -1120,12 +1120,12 @@ class Project extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                return (int) $this->_tbl->getCount($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
+                return (int) $this->table->getCount($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
                 break;
 
             case 'group':
                 $group = isset($filters['group']) ? $filters['group'] : null;
-                $results = $this->_tbl->getGroupProjects(
+                $results = $this->table->getGroupProjects(
                     $group,
                     User::get('id'),
                     $filters,
@@ -1134,7 +1134,7 @@ class Project extends Model
                 break;
 
             default:
-                $results = $this->_tbl->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
+                $results = $this->table->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
                 break;
         }
 
@@ -1476,7 +1476,7 @@ class Project extends Model
     public function type()
     {
         if (empty($this->_type)) {
-            $this->_type = new Tables\Type($this->_db);
+            $this->_type = new Tables\Type($this->db);
             $this->_type->load($this->get('type'));
             $this->_type->_params = new \Hubzero\Html\Parameter($this->_type->params);
         }

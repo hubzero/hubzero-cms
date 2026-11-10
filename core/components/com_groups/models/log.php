@@ -25,14 +25,14 @@ class Log extends Model
      *
      * @var object
      */
-    protected $_tbl = null;
+    protected $table = null;
 
     /**
      * Table name
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Groups\\Tables\\Log';
+    protected $tableClass = '\\Components\\Groups\\Tables\\Log';
 
     /**
      * Constructor
@@ -43,14 +43,14 @@ class Log extends Model
     public function __construct($oid = null)
     {
         // create database object
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // create page cateogry table object
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         // load object
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }

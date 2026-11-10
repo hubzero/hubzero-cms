@@ -19,7 +19,7 @@ class Location extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Tools\\Tables\\ZoneLocations';
+    protected $tableClass = '\\Components\\Tools\\Tables\\ZoneLocations';
 
     /**
      * Returns a reference to a zone location model

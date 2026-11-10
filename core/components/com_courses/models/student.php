@@ -35,19 +35,19 @@ class Student extends Member
      */
     public function __construct($uid, $cid = null, $oid = null, $sid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
             if (is_numeric($uid) || is_string($uid)) {
                 if ($sid !== null) {
-                    $this->_tbl->loadBySection($uid, $sid);
+                    $this->table->loadBySection($uid, $sid);
                 } elseif ($cid !== null) {
-                    $this->_tbl->load($uid, $cid, null, null, 1);
+                    $this->table->load($uid, $cid, null, null, 1);
                 } else {
-                    $this->_tbl->load($uid);
+                    $this->table->load($uid);
                 }
             } elseif (is_object($uid) || is_array($uid)) {
                 $this->bind($uid);

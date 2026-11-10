@@ -72,7 +72,7 @@ class Forum extends GenericItem
 
         $id = ($id ?: Request::getInt('thread', 0));
 
-        $this->_tbl->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->_type);
 
         if ($this->exists()) {
             return true;

@@ -23,7 +23,7 @@ class Todo extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
+    protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 
     /**
      * Entry
@@ -53,9 +53,9 @@ class Todo extends Model
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
+        $this->table = new \Components\Projects\Tables\Todo($this->db);
 
         $this->config = Component::params('com_projects');
     }
@@ -99,7 +99,7 @@ class Todo extends Model
     public function getListName($projectid = null, $filters = [])
     {
         $color = is_array($filters) ? $filters['todolist'] : $filters;
-        return $this->_tbl->getListName($projectid, $color);
+        return $this->table->getListName($projectid, $color);
     }
 
     /**
@@ -110,7 +110,7 @@ class Todo extends Model
      */
     public function getLists($projectid = null)
     {
-        return $this->_tbl->getTodoLists($projectid);
+        return $this->table->getTodoLists($projectid);
     }
 
     /**
@@ -147,13 +147,13 @@ class Todo extends Model
         switch (strtolower($rtrn)) {
             case 'count':
                 $filters['count'] = 1;
-                return (int) $this->_tbl->getTodos(null, $filters);
+                return (int) $this->table->getTodos(null, $filters);
                 break;
 
             case 'list':
             case 'results':
             default:
-                if ($results = $this->_tbl->getTodos(null, $filters)) {
+                if ($results = $this->table->getTodos(null, $filters)) {
                     foreach ($results as $key => $result) {
                         $results[$key] = new Entry($result);
                     }

@@ -22,7 +22,7 @@ class GradePolicies extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\GradePolicies';
+    protected $tableClass = '\\Components\\Courses\\Tables\\GradePolicies';
 
     /**
      * Object scope
@@ -41,9 +41,9 @@ class GradePolicies extends Base
      */
     public function __construct($oid, $sid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new $this->_tbl_name($this->_db);
+        $this->table = new $this->tableClass($this->db);
 
         if (is_numeric($oid)) {
             // Check if this is the default section
@@ -62,7 +62,7 @@ class GradePolicies extends Base
                     }
                 }
             }
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         }
     }
 }

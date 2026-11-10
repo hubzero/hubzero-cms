@@ -25,7 +25,7 @@ class Menu extends Model
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Groups\\Tables\\ModuleMenu';
+    protected $tableClass = '\\Components\\Groups\\Tables\\ModuleMenu';
 
     /**
      * Constructor
@@ -35,12 +35,12 @@ class Menu extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\ModuleMenu($this->_db);
+        $this->table = new Tables\ModuleMenu($this->db);
 
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -62,7 +62,7 @@ class Menu extends Model
         }
 
         // new group page
-        $tbl = new Tables\Page($this->_db);
+        $tbl = new Tables\Page($this->db);
 
         // load page
         $tbl->load($this->get('pageid'));

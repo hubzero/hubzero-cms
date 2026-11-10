@@ -29,7 +29,7 @@ class Review extends \Hubzero\Base\Model
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Publications\\Tables\\Review';
+    protected $tableClass = '\\Components\\Publications\\Tables\\Review';
 
     /**
      * Model context
@@ -37,7 +37,7 @@ class Review extends \Hubzero\Base\Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_publications.review.comment';
+    protected $context = 'com_publications.review.comment';
 
     /**
      * User
@@ -244,7 +244,7 @@ class Review extends \Hubzero\Base\Model
 
                     $content = (string) stripslashes($this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

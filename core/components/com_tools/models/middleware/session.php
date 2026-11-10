@@ -25,7 +25,7 @@ class Session extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Tools\\Tables\\Session';
+    protected $tableClass = '\\Components\\Tools\\Tables\\Session';
 
     /**
      * \Hubzero\ItemList
@@ -46,14 +46,14 @@ class Session extends Base
      */
     public function __construct($oid = null, $authorized = null)
     {
-        $this->_db = Utils::getMWDBO();
+        $this->db = Utils::getMWDBO();
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
-            if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
-                $this->_logError(
+            if (!($this->table instanceof \Hubzero\Database\Table)) {
+                $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); '
                     . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
@@ -66,7 +66,7 @@ class Session extends Base
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {
-                    $obj = $this->_tbl->loadSession($oid, $authorized);
+                    $obj = $this->table->loadSession($oid, $authorized);
                     if ($obj) {
                         $this->bind($obj);
                     }
@@ -130,7 +130,7 @@ class Session extends Base
      */
     public function shared($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new \Components\Tools\Tables\Viewperm($this->_db);
+        $tbl = new \Components\Tools\Tables\Viewperm($this->db);
 
         if (!isset($filters['sessnum'])) {
             $filters['sessnum'] = $this->get('sessnum');
@@ -207,7 +207,7 @@ class Session extends Base
 
         // The owner's own view entry carries the connection details a share copies
         $sess = $this->get('sessnum');
-        $mwViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
+        $mwViewperm = new \Components\Tools\Tables\Viewperm($this->db);
         $rows = $mwViewperm->loadViewperm($sess, $this->get('username'));
         if (!$rows) {
             $this->setError(Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND'));
@@ -229,7 +229,7 @@ class Session extends Base
             }
 
             //load current view perm
-            $mwViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
+            $mwViewperm = new \Components\Tools\Tables\Viewperm($this->db);
             $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username'));
 
             // If there are no matching entries in viewperm, add a new entry,
@@ -273,7 +273,7 @@ class Session extends Base
      */
     public function unshare($with = null)
     {
-        $mv = new \Components\Tools\Tables\Viewperm($this->_db);
+        $mv = new \Components\Tools\Tables\Viewperm($this->db);
         if (!$mv->deleteViewperm($this->get('sessnum'), $with)) {
             $this->setError($mv->getError());
             return false;

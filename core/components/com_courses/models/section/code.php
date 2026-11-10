@@ -24,7 +24,7 @@ class Code extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionCode';
+    protected $tableClass = '\\Components\\Courses\\Tables\\SectionCode';
 
     /**
      * Object scope
@@ -49,14 +49,14 @@ class Code extends Base
      */
     public function __construct($oid = null, $section_id = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        if ($this->_tbl_name) {
-            $cls = $this->_tbl_name;
-            $this->_tbl = new $cls($this->_db);
+        if ($this->tableClass) {
+            $cls = $this->tableClass;
+            $this->table = new $cls($this->db);
 
             if (is_numeric($oid) || is_string($oid)) {
-                $this->_tbl->load($oid, $section_id);
+                $this->table->load($oid, $section_id);
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
@@ -137,7 +137,7 @@ class Code extends Base
 
         if (
             $this->get('expires')
-            && $this->get('expires') != $this->_db->getNullDate()
+            && $this->get('expires') != $this->db->getNullDate()
             && $this->get('expires') <= $now
         ) {
             return true;

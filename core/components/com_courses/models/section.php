@@ -29,7 +29,7 @@ class Section extends Base
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Courses\\Tables\\Section';
+    protected $tableClass = '\\Components\\Courses\\Tables\\Section';
 
     /**
      * Object scope
@@ -116,13 +116,13 @@ class Section extends Base
      */
     public function __construct($oid = null, $offering_id = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Section($this->_db);
+        $this->table = new Tables\Section($this->db);
 
         if (is_numeric($oid) || is_string($oid)) {
             if ($oid) {
-                $this->_tbl->load($oid, $offering_id);
+                $this->table->load($oid, $offering_id);
             }
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
@@ -183,7 +183,7 @@ class Section extends Base
 
         if (
             $this->get('start_date')
-            && $this->get('start_date') != $this->_db->getNullDate()
+            && $this->get('start_date') != $this->db->getNullDate()
             && $this->get('start_date') > $now
         ) {
             return false;
@@ -207,7 +207,7 @@ class Section extends Base
 
         if (
             $this->get('end_date')
-            && $this->get('end_date') != $this->_db->getNullDate()
+            && $this->get('end_date') != $this->db->getNullDate()
             && $this->get('end_date') <= $now
         ) {
             return true;
@@ -232,7 +232,7 @@ class Section extends Base
 
         if (
             $this->get('publish_down')
-            && $this->get('publish_down') != $this->_db->getNullDate()
+            && $this->get('publish_down') != $this->db->getNullDate()
             && $this->get('publish_down') <= $now
         ) {
             return true;
@@ -342,13 +342,13 @@ class Section extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!isset($this->members) || !is_array($this->members) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -406,13 +406,13 @@ class Section extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\SectionDate($this->_db);
+            $tbl = new Tables\SectionDate($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!($this->dates instanceof \Traversable) || $clear) {
-            $tbl = new Tables\SectionDate($this->_db);
+            $tbl = new Tables\SectionDate($this->db);
 
             if (($results = $tbl->find($filters))) {
                 foreach ($results as $key => $result) {
@@ -439,7 +439,7 @@ class Section extends Base
         if (!is_array($data)) {
             $data = [$data];
         }
-        $role = new Tables\Role($this->_db);
+        $role = new Tables\Role($this->db);
         $role->load($role_id);
         if (is_string($role_id)) {
             $role_id = $role->get('id');
@@ -519,9 +519,9 @@ class Section extends Base
             return $user;
         }
 
-        $this->_db->setQuery("SELECT id FROM #__users WHERE username=" . $this->_db->quote($user));
+        $this->db->setQuery("SELECT id FROM #__users WHERE username=" . $this->db->quote($user));
 
-        if (($result = $this->_db->loadResult())) {
+        if (($result = $this->db->loadResult())) {
             return $result;
         }
 
@@ -559,14 +559,14 @@ class Section extends Base
     public function delete()
     {
         // Remove associated date data
-        $sd = new Tables\SectionDate($this->_db);
+        $sd = new Tables\SectionDate($this->db);
         if (!$sd->deleteBySection($this->get('id'))) {
             $this->setError($sd->getError());
             return false;
         }
 
         // Remove associated member data
-        $sm = new Tables\Member($this->_db);
+        $sm = new Tables\Member($this->db);
         if (!$sm->deleteBySection($this->get('id'))) {
             $this->setError($sm->getError());
             return false;
@@ -626,13 +626,13 @@ class Section extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\SectionCode($this->_db);
+            $tbl = new Tables\SectionCode($this->db);
 
             return $tbl->count($filters);
         }
 
         if (!($this->codes instanceof \Traversable) || $clear) {
-            $tbl = new Tables\SectionCode($this->_db);
+            $tbl = new Tables\SectionCode($this->db);
 
             if (($results = $tbl->find($filters))) {
                 foreach ($results as $key => $result) {
@@ -703,7 +703,7 @@ class Section extends Base
             return true;
         }
 
-        $sections = $this->_tbl->find(['offering_id' => $this->get('offering_id')]);
+        $sections = $this->table->find(['offering_id' => $this->get('offering_id')]);
         foreach ($sections as $section) {
             $section = new Section($section);
             $section->set('is_default', 0);

@@ -27,14 +27,14 @@ class Module extends Model
      *
      * @var string
      */
-    protected $_tbl_name = '\\Components\\Groups\\Tables\\Module';
+    protected $tableClass = '\\Components\\Groups\\Tables\\Module';
 
     /**
      * Model context
      *
      * @var string
      */
-    protected $_context = 'com_groups.module.content';
+    protected $context = 'com_groups.module.content';
 
     /**
      * Menu Items
@@ -51,12 +51,12 @@ class Module extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Module($this->_db);
+        $this->table = new Tables\Module($this->db);
 
         if (is_numeric($oid)) {
-            $this->_tbl->load($oid);
+            $this->table->load($oid);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
@@ -72,7 +72,7 @@ class Module extends Model
      */
     public function menu($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new Tables\ModuleMenu($this->_db);
+        $tbl = new Tables\ModuleMenu($this->db);
 
         // make sure we have a moduleId
         if (!isset($filters['moduleid'])) {
@@ -107,7 +107,7 @@ class Module extends Model
     public function buildMenu($modulesMenu = [])
     {
         // create module menu object
-        $tbl = new Tables\ModuleMenu($this->_db);
+        $tbl = new Tables\ModuleMenu($this->db);
 
         // delete any previous menu items
         if (!$tbl->deleteMenus($this->get('id'))) {
@@ -209,7 +209,7 @@ class Module extends Model
      */
     public function getNextOrder($position)
     {
-        $order = $this->_tbl->getNextOrder("position='" . $position . "'");
+        $order = $this->table->getNextOrder("position='" . $position . "'");
         return $order;
     }
 
@@ -231,7 +231,7 @@ class Module extends Model
 
         // move the number of times different
         for ($i = 0; $i < $move; $i++) {
-            $this->_tbl->move($dir . '1', "position='" . $position . "'");
+            $this->table->move($dir . '1', "position='" . $position . "'");
         }
     }
 
@@ -270,7 +270,7 @@ class Module extends Model
 
                     $content = stripslashes($this->get('content'));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);

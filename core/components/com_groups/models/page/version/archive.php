@@ -45,7 +45,7 @@ class Archive extends Model
     public function __construct()
     {
         // create database object
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -58,7 +58,7 @@ class Archive extends Model
      */
     public function versions($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new Tables\PageVersion($this->_db);
+        $tbl = new Tables\PageVersion($this->db);
 
         switch (strtolower($rtrn)) {
             case 'count':

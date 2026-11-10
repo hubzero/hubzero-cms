@@ -39,7 +39,7 @@ class Collection extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Collections\\Tables\\Collection';
+    protected $tableClass = '\\Components\\Collections\\Tables\\Collection';
 
     /**
      * Model context
@@ -47,7 +47,7 @@ class Collection extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_collections.collection.description';
+    protected $context = 'com_collections.collection.description';
 
     /**
      * ItemList
@@ -94,13 +94,13 @@ class Collection extends Base
      */
     public function __construct($oid = null, $object_id = 0, $object_type = 'member')
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $tbl = $this->_tbl_name;
-        $this->_tbl = new $tbl($this->_db);
+        $tbl = $this->tableClass;
+        $this->table = new $tbl($this->db);
 
         if (is_numeric($oid) || is_string($oid)) {
-            $this->_tbl->load($oid, $object_id, $object_type);
+            $this->table->load($oid, $object_id, $object_type);
         } elseif (is_object($oid)) {
             $this->bind($oid);
 
@@ -189,7 +189,7 @@ class Collection extends Base
         // Create an Item entry
         // This is because even collections can be reposted.
         // Thus, there needs to be an item entry to "repost"
-        $item = new Tables\Item($this->_db);
+        $item = new Tables\Item($this->db);
         $item->loadType($this->get('id'), 'collection');
         if (!$item->get('id')) {
             $item->type        = 'collection';
@@ -226,7 +226,7 @@ class Collection extends Base
     public function item()
     {
         if (!($this->item instanceof Item)) {
-            $item = new Tables\Item($this->_db);
+            $item = new Tables\Item($this->db);
             $item->loadType($this->get('id'), 'collection');
             if (!$item->get('id')) {
                 $item->type        = 'collection';
@@ -329,13 +329,13 @@ class Collection extends Base
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Post($this->_db);
+            $tbl = new Tables\Post($this->db);
 
             return $tbl->getCount($filters);
         }
 
         if (!isset($this->posts) || !($this->posts instanceof ItemList)) {
-            $tbl = new Tables\Post($this->_db);
+            $tbl = new Tables\Post($this->db);
 
             if ($results = $tbl->getRecords($filters)) {
                 $ids = [];
@@ -344,7 +344,7 @@ class Collection extends Base
                 }
 
                 // Get all the assets for this list of items
-                $ba = new Tables\Asset($this->_db);
+                $ba = new Tables\Asset($this->db);
                 $assets = $ba->getRecords(['item_id' => $ids]);
 
                 // Get all the tags for this list of items
@@ -410,7 +410,7 @@ class Collection extends Base
 
             case 'followers':
                 if (!isset($this->_counts[$what])) {
-                    $tbl = new Tables\Following($this->_db);
+                    $tbl = new Tables\Following($this->db);
                     $this->_counts[$what] = $tbl->count([
                         'following_type' => 'collection',
                         'following_id'   => $this->get('id'),
@@ -424,7 +424,7 @@ class Collection extends Base
             case 'votes':
             case 'vote':
                 if ($this->get('likes', null) == null) {
-                    $tbl = new Tables\Item($this->_db);
+                    $tbl = new Tables\Item($this->db);
                     $this->set('likes', $tbl->getLikes([
                         'object_type' => 'collection',
                         'object_id'   => $this->get('id'),
@@ -436,7 +436,7 @@ class Collection extends Base
             case 'reposts':
             case 'repost':
                 if ($this->get('reposts', null) == null) {
-                    $tbl = new Tables\Item($this->_db);
+                    $tbl = new Tables\Item($this->db);
                     $this->set('reposts', $tbl->getReposts([
                         'object_type' => 'collection',
                         'object_id'   => $this->get('id'),
@@ -570,7 +570,7 @@ class Collection extends Base
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);
@@ -663,7 +663,7 @@ class Collection extends Base
     {
         $data = new \stdClass();
 
-        $properties = $this->_tbl->getProperties();
+        $properties = $this->table->getProperties();
         foreach ($properties as $key => $value) {
             if ($key && substr($key, 0, 1) != '_') {
                 $data->$key = $this->get($key);

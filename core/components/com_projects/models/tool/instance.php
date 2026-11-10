@@ -25,7 +25,7 @@ class Instance extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolInstance';
+    protected $tableClass = '\\Components\\Projects\\Tables\\ToolInstance';
 
     /**
      * Registry
@@ -41,24 +41,24 @@ class Instance extends Model
      */
     public function __construct($oid, $parent = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\ToolInstance($this->_db);
+        $this->table = new Tables\ToolInstance($this->db);
 
         if ($oid && $oid != 'dev') {
             if (is_numeric($oid)) {
-                $this->_tbl->load($oid);
+                $this->table->load($oid);
             } elseif (is_string($oid)) {
-                $this->_tbl->loadFromInstanceName($oid);
+                $this->table->loadFromInstanceName($oid);
             } elseif (is_object($oid)) {
                 $this->bind($oid);
             }
         } elseif ($parent) {
             // Load dev instance
-            $this->_tbl->loadFromParent($parent, 'dev');
+            $this->table->loadFromParent($parent, 'dev');
         }
 
-        $this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
+        $this->params = new \Hubzero\Config\Registry($this->table->get('params'));
     }
 
     /**
@@ -102,6 +102,6 @@ class Instance extends Model
         if (!$id || !$name) {
             return false;
         }
-        return $this->_tbl->updateParentName($id, $name);
+        return $this->table->updateParentName($id, $name);
     }
 }

@@ -23,7 +23,7 @@ class Comment extends Model
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_name = '\\Components\\Projects\\Tables\\Comment';
+    protected $tableClass = '\\Components\\Projects\\Tables\\Comment';
 
     /**
      * Model context
@@ -31,7 +31,7 @@ class Comment extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_context = 'com_projects.comment.comment';
+    protected $context = 'com_projects.comment.comment';
 
     /**
      * User
@@ -152,7 +152,7 @@ class Comment extends Model
 
                     $content = str_replace(['\"', "\'"], ['"', "'"], (string) $this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config,
                     ]);
@@ -230,7 +230,7 @@ class Comment extends Model
                     if ($this->get('replies', null) !== null) {
                         $results = $this->get('replies');
                     } else {
-                        $results = $this->_tbl->getAllComments($this->get('entry_id'), $this->get('id'));
+                        $results = $this->table->getAllComments($this->get('entry_id'), $this->get('id'));
                     }
 
                     if ($results) {
