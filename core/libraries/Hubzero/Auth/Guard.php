@@ -197,7 +197,8 @@ class Guard
                 continue;
             }
 
-            $className = 'plg' . $plugin->type . $plugin->name;
+            $pluginName = $plugin->name;
+            $className  = 'plg' . $plugin->type . $plugin->name;
             if (class_exists($className)) {
                 $plugin = new $className($this, (array) $plugin);
             } else {
@@ -225,7 +226,7 @@ class Guard
             // If authentication is successful break out of the loop
             if ($response->status === Status::SUCCESS) {
                 if (empty($response->type)) {
-                    $response->type = isset($plugin->_name) ? $plugin->_name : $plugin->name;
+                    $response->type = $pluginName;
                 }
                 break;
             }
