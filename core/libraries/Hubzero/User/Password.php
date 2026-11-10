@@ -851,7 +851,7 @@ class Password
             case 'aprmd5':
                 $length = strlen($plaintext);
                 $context = $plaintext . '$apr1$' . $salt;
-                $binary = self::_bin(md5($plaintext . $salt . $plaintext));
+                $binary = self::bin(md5($plaintext . $salt . $plaintext));
 
                 for ($i = $length; $i > 0; $i -= 16) {
                     $context .= substr($binary, 0, ($i > 16 ? 16 : $i));
@@ -860,7 +860,7 @@ class Password
                     $context .= ($i & 1) ? chr(0) : $plaintext[0];
                 }
 
-                $binary = self::_bin(md5($context));
+                $binary = self::bin(md5($context));
 
                 for ($i = 0; $i < 1000; $i++) {
                     $new = ($i & 1) ? $plaintext : substr($binary, 0, 16);
@@ -871,7 +871,7 @@ class Password
                         $new .= $plaintext;
                     }
                     $new .= ($i & 1) ? substr($binary, 0, 16) : $plaintext;
-                    $binary = self::_bin(md5($new));
+                    $binary = self::bin(md5($new));
                 }
 
                 $p = [];
@@ -881,10 +881,10 @@ class Password
                     if ($j == 16) {
                         $j = 5;
                     }
-                    $p[] = self::_toAPRMD5((ord($binary[$i]) << 16) | (ord($binary[$k]) << 8) | (ord($binary[$j])), 5);
+                    $p[] = self::toAPRMD5((ord($binary[$i]) << 16) | (ord($binary[$k]) << 8) | (ord($binary[$j])), 5);
                 }
 
-                return '$apr1$' . $salt . '$' . implode('', $p) . self::_toAPRMD5(ord($binary[11]), 3);
+                return '$apr1$' . $salt . '$' . implode('', $p) . self::toAPRMD5(ord($binary[11]), 3);
 
             case 'md5-hex':
             default:
@@ -991,7 +991,7 @@ class Password
      * @param   integer  $count  The number of characters to convert.
      * @return  string   $value  converted to the 64 MD5 characters.
      */
-    protected static function _toAPRMD5($value, $count)
+    protected static function toAPRMD5($value, $count)
     {
         // 64 characters that are valid for APRMD5 passwords.
         $APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -1011,7 +1011,7 @@ class Password
      * @param   string  $hex  Hex data.
      * @return  string  Binary data.
      */
-    protected static function _bin($hex)
+    protected static function bin($hex)
     {
         $bin = '';
         $length = strlen($hex);
