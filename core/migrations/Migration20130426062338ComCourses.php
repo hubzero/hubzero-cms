@@ -41,7 +41,7 @@ class Migration20130426062338ComCourses extends Base
             //    - Returns TRUE (passing) or FALSE.
             //    - Supports template injection for filtering by scope (course/section) and user.
 
-            $gradeCriteria1 = <<<SQL
+            $gradeCriteria1 = <<<'SQL'
                 SELECT IF(score >= 70, TRUE, FALSE) as passing, cgb.user_id
                 FROM #__courses_grade_book AS cgb
                 [[::section_id::LEFT JOIN #__courses_members AS cm ON cgb.user_id = cm.user_id]]
@@ -56,7 +56,7 @@ class Migration20130426062338ComCourses extends Base
             //    - Joins grade_book -> assets -> (optional) asset_associations/groups.
             //    - Results in a single average score per user.
 
-            $scoreCriteria1 = <<<SQL
+            $scoreCriteria1 = <<<'SQL'
                 SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]][[:scope:, {{var}}_id as scope_id]]
                 FROM #__courses_grade_book AS cgb
                 LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id
@@ -100,7 +100,7 @@ class Migration20130426062338ComCourses extends Base
             //    - Checks if the *minimum* of the remaining scores is > 70.
             //    - Returns TRUE (passing) only if ALL counted exams are > 70.
 
-            $gradeCriteria2 = <<<SQL
+            $gradeCriteria2 = <<<'SQL'
                 SELECT if(min(score)>70, TRUE, FALSE) AS passing, user_id
                 FROM (
                     SELECT cgb.user_id as user_id, score, section_id, student,
@@ -126,7 +126,7 @@ class Migration20130426062338ComCourses extends Base
             //    - Note: This calculates the average of ALL exams (including the dropped one),
             //      even though the passing criteria drops the lowest.
 
-            $scoreCriteria2 = <<<SQL
+            $scoreCriteria2 = <<<'SQL'
                 SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]][[:scope:, {{var}}_id as scope_id]]
                 FROM #__courses_grade_book AS cgb
                 LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id

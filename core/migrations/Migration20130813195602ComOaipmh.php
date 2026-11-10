@@ -33,7 +33,7 @@ class Migration20130813195602ComOaipmh extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $q1 = <<<SQL
+            $q1 = <<<'SQL'
                 SELECT p.id FROM #__publications p, #__publication_versions pv 
                 WHERE p.id = pv.publication_id AND pv.state = 1
                 SQL;
