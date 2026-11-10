@@ -1260,7 +1260,7 @@ class Events extends SiteController
 			)
 			VALUES ('
                 . $this->event->id . ', '
-                . $this->_getValueString($this->database, $reg, [
+                . $this->getValueString($this->database, $reg, [
                     'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
                     'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability',
                     'dietary', 'dinner', 'additional', 'comments',
@@ -1283,7 +1283,7 @@ class Events extends SiteController
     }
 
     /**
-     * Short description for '_getValueString'
+     * Short description for 'getValueString'
      *
      * Long description (if any) ...
      *
@@ -1292,7 +1292,7 @@ class Events extends SiteController
      * @param      array $values Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    private function _getValueString($database, $reg, $values)
+    private function getValueString($database, $reg, $values)
     {
         $rv = [];
         foreach ($values as $val) {
@@ -1808,7 +1808,7 @@ class Events extends SiteController
             $fs = $this->config->fields;
             foreach ($fields as $param => $value) {
                 if (trim($value) != '') {
-                    $row->content .= '<ef:' . $param . '>' . $this->_clean($value) . '</ef:' . $param . '>';
+                    $row->content .= '<ef:' . $param . '>' . $this->clean($value) . '</ef:' . $param . '>';
                 } else {
                     foreach ($fs as $f) {
                         if ($f[0] == $param && end($f) == 1) {
@@ -1823,13 +1823,13 @@ class Events extends SiteController
         }
 
         // Clean adresse
-        $row->adresse_info = $this->_clean($row->adresse_info);
+        $row->adresse_info = $this->clean($row->adresse_info);
 
         // Clean contact
-        $row->contact_info = $this->_clean($row->contact_info);
+        $row->contact_info = $this->clean($row->contact_info);
 
         // Clean extra
-        $row->extra_info = $this->_clean($row->extra_info);
+        $row->extra_info = $this->clean($row->extra_info);
 
         // Prepend http:// to URLs without it
         if ($row->extra_info != null) {
@@ -2096,14 +2096,14 @@ class Events extends SiteController
     }
 
     /**
-     * Short description for '_clean'
+     * Short description for 'clean'
      *
      * Long description (if any) ...
      *
      * @param      string $string Parameter description (if any) ...
      * @return     string Return description (if any) ...
      */
-    private function _clean($string)
+    private function clean($string)
     {
         return \Hubzero\Utility\Sanitize::clean($string);
     }

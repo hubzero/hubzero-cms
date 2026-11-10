@@ -107,18 +107,18 @@ class Toolsv1r0 extends ApiController
                 case 'id_asc':
                     break;
                 case 'id_desc':
-                    usort($results, [$this, "id_sort_desc"]);
+                    usort($results, [$this, "idSortDesc"]);
                     break;
                 case 'started_asc':
                     break;
                 case 'started_desc':
-                    usort($results, [$this, "started_date_sort_desc"]);
+                    usort($results, [$this, "startedDateSortDesc"]);
                     break;
                 case 'accessed_asc':
-                    usort($results, [$this, "accessed_date_sort_asc"]);
+                    usort($results, [$this, "accessedDateSortAsc"]);
                     break;
                 case 'accessed_desc':
-                    usort($results, [$this, "accessed_date_sort_desc"]);
+                    usort($results, [$this, "accessedDateSortDesc"]);
                     break;
             }
         }
@@ -138,7 +138,7 @@ class Toolsv1r0 extends ApiController
      * @param   array $b
      * @return  array
      */
-    private function id_sort_desc($a, $b)
+    private function idSortDesc($a, $b)
     {
         return $a['id'] < $b['id'] ? 1 : -1;
     }
@@ -150,7 +150,7 @@ class Toolsv1r0 extends ApiController
      * @param   array $b
      * @return  array
      */
-    private function started_date_sort_desc($a, $b)
+    private function startedDateSortDesc($a, $b)
     {
         return (strtotime($a['started']) < strtotime($b['started'])) ? 1 : -1;
     }
@@ -162,7 +162,7 @@ class Toolsv1r0 extends ApiController
      * @param   array $b
      * @return  array
      */
-    private function accessed_date_sort_asc($a, $b)
+    private function accessedDateSortAsc($a, $b)
     {
         return (strtotime($a['accessed']) < strtotime($b['accessed'])) ? -1 : 1;
     }
@@ -174,7 +174,7 @@ class Toolsv1r0 extends ApiController
      * @param   array $b
      * @return  array
      */
-    private function accessed_date_sort_desc($a, $b)
+    private function accessedDateSortDesc($a, $b)
     {
         return (strtotime($a['accessed']) < strtotime($b['accessed'])) ? 1 : -1;
     }

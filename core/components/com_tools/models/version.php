@@ -457,13 +457,13 @@ class Version
     }
 
     /**
-     * Short description for '_sql_create'
+     * Short description for 'sqlCreate'
      *
      * Long description (if any) ...
      *
      * @return   boolean Return description (if any) ...
      */
-    private function _sql_create()
+    private function sqlCreate()
     {
         $db = App::get('db');
 
@@ -522,10 +522,10 @@ class Version
     public function create()
     {
         if (true) {
-            $result = $this->_sql_create();
+            $result = $this->sqlCreate();
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
+                $this->error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
             }
         }
 
@@ -533,13 +533,13 @@ class Version
     }
 
     /**
-     * Short description for '_sql_read'
+     * Short description for 'sqlRead'
      *
      * Long description (if any) ...
      *
      * @return   boolean Return description (if any) ...
      */
-    private function _sql_read()
+    private function sqlRead()
     {
         $db = App::get('db');
         $lazyloading = false;
@@ -604,7 +604,7 @@ class Version
             $instance = $this->instance;
 
             if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
-                $this->_error(
+                $this->error(
                     __FUNCTION__ . ": invalid tool version instance defined",
                     E_USER_ERROR,
                 );
@@ -613,7 +613,7 @@ class Version
         }
 
         if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
-            $this->_error(
+            $this->error(
                 __FUNCTION__ . ": Argument #1 is not a valid string and not numeric",
                 E_USER_ERROR,
             );
@@ -626,7 +626,7 @@ class Version
             $this->clear();
             $this->instance = $instance;
 
-            $result = $this->_sql_read();
+            $result = $this->sqlRead();
 
             if ($result === false) {
                 $this->clear();
@@ -637,14 +637,14 @@ class Version
     }
 
     /**
-     * Short description for '_sql_update'
+     * Short description for 'sqlUpdate'
      *
      * Long description (if any) ...
      *
      * @param     boolean $all Parameter description (if any) ...
      * @return   boolean Return description (if any) ...
      */
-    private function _sql_update($all = false)
+    private function sqlUpdate($all = false)
     {
         $db = App::get('db');
 
@@ -836,10 +836,10 @@ class Version
         $result = true;
 
         if (true) {
-            $result = $this->_sql_update($this->_updateAll);
+            $result = $this->sqlUpdate($this->_updateAll);
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
+                $this->error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
             }
         }
 
@@ -848,13 +848,13 @@ class Version
     }
 
     /**
-     * Short description for '_sql_delete'
+     * Short description for 'sqlDelete'
      *
      * Long description (if any) ...
      *
      * @return   boolean Return description (if any) ...
      */
-    private function _sql_delete()
+    private function sqlDelete()
     {
         if (!isset($this->instance) && !isset($this->id)) {
             return false;
@@ -917,10 +917,10 @@ class Version
         $result = true;
 
         if (true) {
-            $result = $this->_sql_delete();
+            $result = $this->sqlDelete();
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
+                $this->error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
             }
         }
 
@@ -942,7 +942,7 @@ class Version
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
         if (in_array($property, $this->_list_keys)) {
@@ -989,7 +989,7 @@ class Version
             return null;
         }
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+        $this->error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
         return null;
     }
@@ -1009,7 +1009,7 @@ class Version
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -1044,7 +1044,7 @@ class Version
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -1066,7 +1066,7 @@ class Version
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -1076,7 +1076,7 @@ class Version
     }
 
     /**
-     * Short description for '_error'
+     * Short description for 'error'
      *
      * Long description (if any) ...
      *
@@ -1084,7 +1084,7 @@ class Version
      * @param     integer $level Parameter description (if any) ...
      * @return   void
      */
-    private function _error($message, $level = E_USER_NOTICE)
+    private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
 

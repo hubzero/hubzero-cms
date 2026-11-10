@@ -103,17 +103,17 @@ class Request
             'forbidden' => $this->terms->get_forbidden_chunks(),
             'stemmed'   => $this->terms->get_stemmed_chunks(),
         ];
-        $this->load_tags();
+        $this->loadTags();
     }
 
     /**
-     * Short description for 'load_tags'
+     * Short description for 'loadTags'
      *
      * Long description (if any) ...
      *
      * @return     void
      */
-    private function load_tags()
+    private function loadTags()
     {
         $dbh = \App::get('db');
 

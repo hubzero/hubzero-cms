@@ -326,7 +326,7 @@ class Tool
             $result = $this->_sql_create();
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
+                $this->error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
             }
         }
 
@@ -397,13 +397,13 @@ class Tool
             $toolname = $this->toolname;
 
             if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname)) {
-                $this->_error(__FUNCTION__ . ": invalid tool version instance defined", E_USER_ERROR);
+                $this->error(__FUNCTION__ . ": invalid tool version instance defined", E_USER_ERROR);
                 die();
             }
         }
 
         if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname)) {
-            $this->_error(__FUNCTION__ . ": Argument #1 is not a valid string and not numeric", E_USER_ERROR);
+            $this->error(__FUNCTION__ . ": Argument #1 is not a valid string and not numeric", E_USER_ERROR);
             die();
         }
 
@@ -589,7 +589,7 @@ class Tool
             $result = $this->_sql_update($this->_updateAll);
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ': MySQL update failed', E_USER_WARNING);
+                $this->error(__FUNCTION__ . ': MySQL update failed', E_USER_WARNING);
             }
         }
 
@@ -655,7 +655,7 @@ class Tool
             $result = $this->_sql_delete();
 
             if ($result === false) {
-                $this->_error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
+                $this->error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
             }
         }
 
@@ -677,7 +677,7 @@ class Tool
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -715,7 +715,7 @@ class Tool
             return null;
         }
 
-        $this->_error('Undefined property ' . __CLASS__ . '::$' . $property, E_USER_NOTICE);
+        $this->error('Undefined property ' . __CLASS__ . '::$' . $property, E_USER_NOTICE);
 
         return null;
     }
@@ -735,7 +735,7 @@ class Tool
                 $property = '(null)';
             }
 
-            $this->_error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
+            $this->error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
             die();
         }
 
@@ -765,7 +765,7 @@ class Tool
                 $property = '(null)';
             }
 
-            $this->_error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
+            $this->error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
             die();
         }
 
@@ -787,7 +787,7 @@ class Tool
                 $property = '(null)';
             }
 
-            $this->_error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
+            $this->error('Cannot access property ' . __CLASS__ . '::$' . $property, E_USER_ERROR);
             die();
         }
 
@@ -797,7 +797,7 @@ class Tool
     }
 
     /**
-     * Short description for '_error'
+     * Short description for 'error'
      *
      * Long description (if any) ...
      *
@@ -806,7 +806,7 @@ class Tool
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _error($message, $level = E_USER_NOTICE)
+    private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
 

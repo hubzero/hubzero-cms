@@ -35,7 +35,7 @@ class Weighttitle extends Plugin
             return 10;
         }
 
-        $title_stems = self::stem_list($title);
+        $title_stems = self::stemList($title);
         if (!($title_len = count($title_stems))) {
             return 0.5;
         }
@@ -48,7 +48,7 @@ class Weighttitle extends Plugin
                     $quoted_weight += count(explode(' ', $chunk));
                 }
             } else {
-                foreach (self::stem_list($chunk) as $stem) {
+                foreach (self::stemList($chunk) as $stem) {
                     $term_stems[] = $stem;
                 }
             }
@@ -63,14 +63,14 @@ class Weighttitle extends Plugin
     }
 
     /**
-     * Summary for 'stem_list'
+     * Summary for 'stemList'
      *
      * Description (if any) ...
      *
      * @param   unknown  $str Parameter description (if any) ...
      * @return  array    Return description (if any) ...
      */
-    private static function stem_list($str)
+    private static function stemList($str)
     {
         static $stemmer;
         if (!$stemmer) {

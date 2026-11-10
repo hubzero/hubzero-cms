@@ -21,12 +21,12 @@ use Hubzero\Utility\Network;
  */
 class Domainrestriction extends Plugin
 {
-    private $_tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_emails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $emails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -69,7 +69,7 @@ class Domainrestriction extends Plugin
         $this->sortParams();
         $this->parseEmail($new['email']);
 
-        //var_dump($this->_domains); die;
+        //var_dump($this->domains); die;
 
         // Here is the logic: allowed takes precedence over disallowed: if the domain/email is both
         // allowed and disallowed it will be allowed. If the domain/email both neither allowed,
@@ -80,27 +80,27 @@ class Domainrestriction extends Plugin
         $this->allowed = true;
 
         // Check if top level domain is disallowed
-        if (in_array($this->tld, $this->_badtlds)) {
+        if (in_array($this->tld, $this->badtlds)) {
             $this->allowed = false;
         }
 
         // Check if domain is disallowed
-        if (in_array($this->domain, $this->_baddomains)) {
+        if (in_array($this->domain, $this->baddomains)) {
             $this->allowed = false;
         }
 
         // Check if domain is allowed (may reverse two previous steps, and that is ok)
-        if (in_array($this->domain, $this->_domains)) {
+        if (in_array($this->domain, $this->domains)) {
             $this->allowed = true;
         }
 
         // Check if email is disallowed
-        if (in_array($this->email, $this->_bademails)) {
+        if (in_array($this->email, $this->bademails)) {
             $this->allowed = false;
         }
 
         // Check if email is allowed
-        if (in_array($this->email, $this->_emails)) {
+        if (in_array($this->email, $this->emails)) {
             $this->allowed = true;
         }
 
@@ -273,8 +273,8 @@ class Domainrestriction extends Plugin
     private function decision($allowed = false)
     {
         $ret = $allowed
-                ? $this->mailmatch(['_tlds', '_domains', '_emails'])
-                : !$this->mailmatch(['_badtlds', '_baddomains', '_bademails']);
+                ? $this->mailmatch(['tlds', 'domains', 'emails'])
+                : !$this->mailmatch(['badtlds', 'baddomains', 'bademails']);
         return $ret;
     }
 
@@ -314,7 +314,7 @@ class Domainrestriction extends Plugin
     {
         foreach (['tld', 'domain', 'email', 'badtld', 'baddomain', 'bademail'] as $param) {
             $paramvalue = $this->params->get($param, null);
-            $arrayvar = '_' . $param . 's';
+            $arrayvar = $param . 's';
 
             $this->{$arrayvar} = [];
             $this->{$arrayvar} = array_map([$this, 'clean'], explode(',', $paramvalue));

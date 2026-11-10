@@ -133,14 +133,14 @@ class Tools extends Plugin
     }
 
     /**
-     * Summary for 'gettoprank_tools'
+     * Summary for 'gettoprankTools'
      *
      * Description (if any) ...
      *
      * @param   object $database Parameter description (if any) ...
      * @return  string Return description (if any) ...
      */
-    private function gettoprank_tools($database)
+    private function gettoprankTools($database)
     {
         $html = '';
         $count = 1;
@@ -695,7 +695,7 @@ class Tools extends Plugin
             if ($s_top == '9') {
                 $html .= $this->gettopcitedTools($database);
             } elseif ($s_top == '1') {
-                $html .= $this->gettoprank_tools($database);
+                $html .= $this->gettoprankTools($database);
             } else {
                 // Retrieve the header based on $s_top_name.  This is really a hack:
                 // Depends on the drop-down item being "Top Tools by ...", and selects everything after that.

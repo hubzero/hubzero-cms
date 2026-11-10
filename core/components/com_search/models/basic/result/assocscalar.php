@@ -43,7 +43,7 @@ class AssocScalar extends SearchResult
     }
 
     /**
-     * Short description for 'assert_keys'
+     * Short description for 'assertKeys'
      *
      * Long description (if any) ...
      *
@@ -52,7 +52,7 @@ class AssocScalar extends SearchResult
      * @return  void
      * @throws  Exception
      */
-    private static function assert_keys($keys, $row)
+    private static function assertKeys($keys, $row)
     {
         foreach ($keys as $key) {
             if (!array_key_exists($key, $row)) {
@@ -75,7 +75,7 @@ class AssocScalar extends SearchResult
             self::$tag_weight_modifier = Set::get_tag_weight_modifier();
         }
 
-        self::assert_keys(['title', 'description', 'link'], $row);
+        self::assertKeys(['title', 'description', 'link'], $row);
         foreach ($row as $key => $val) {
             // NULL columns stay NULL (weight === null is tested below)
             $this->$key = is_array($val) ? array_map('stripslashes', array_map('strip_tags', $val)) : (is_null($val) ? null : stripslashes(strip_tags($val)));
