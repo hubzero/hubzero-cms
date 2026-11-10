@@ -25,10 +25,6 @@ use Lang;
 use Date;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'recipients.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'formatter.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'token.php';
-
 /**
  * Admin controller for mass mailings.
  */

@@ -18,11 +18,6 @@ use Components\Massmail\Helpers\Rate;
 use Components\Massmail\Helpers\Sender;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'queue.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'log.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'rate.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'sender.php';
-
 /**
  * Admin controller: mass-mail status dashboard.
  */

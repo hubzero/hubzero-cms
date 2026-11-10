@@ -20,9 +20,6 @@ use Route;
 use Lang;
 use User;
 
-include_once __DIR__ . DS . 'acl.php';
-include_once __DIR__ . DS . 'utilities.php';
-
 /**
  * Tells everyone who should know that a ticket was updated
  *

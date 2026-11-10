@@ -12,13 +12,6 @@ use Components\Massmail\Models\Mailing;
 use Components\Massmail\Models\Recipient;
 use Components\Massmail\Models\Status;
 
-require_once __DIR__ . DS . 'rate.php';
-require_once __DIR__ . DS . 'queue.php';
-require_once __DIR__ . DS . 'log.php';
-require_once __DIR__ . DS . 'token.php';
-require_once __DIR__ . DS . 'formatter.php';
-require_once __DIR__ . DS . 'recipients.php';
-
 /**
  * Drives one cron tick of mass-mail delivery: expand any freshly-launched
  * mailings, compute the rate budget, feed that many messages to Postfix, and

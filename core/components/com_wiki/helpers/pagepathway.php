@@ -10,8 +10,6 @@ namespace Components\Wiki\Helpers;
 
 use Pathway;
 
-require_once __DIR__ . DS . 'settings.php';
-
 /**
  * Breadcrumb helpers shared by the wiki site controllers
  */

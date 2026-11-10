@@ -28,8 +28,6 @@ use Hubzero\Facades\Document;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Route;
 
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'pagepathway.php';
-
 /**
  * Wiki controller class for pages
  */

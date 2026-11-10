@@ -8,9 +8,6 @@
 
 namespace Components\Massmail\Helpers;
 
-require_once __DIR__ . DS . 'queue.php';
-require_once __DIR__ . DS . 'log.php';
-
 /**
  * Collects Postfix outbound volume (messages that left the host) from the mail
  * log into hourly and daily rollups for the dashboard's volume chart.

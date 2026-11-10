@@ -10,9 +10,6 @@ namespace Components\Massmail\Models;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'recipient.php';
-require_once __DIR__ . DS . 'attachment.php';
-
 /**
  * Mass mail: a single mailing (one composed message + its recipient queue).
  */

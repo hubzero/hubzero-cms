@@ -16,8 +16,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 
-require_once __DIR__ . DS . 'settings.php';
-
 /**
  * Hubzero helper class for retrieving wiki parser
  */

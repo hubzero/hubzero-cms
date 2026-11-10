@@ -27,8 +27,6 @@ use Hubzero\Facades\Config;
 
 // article.php brings com_categories' nested model with it, which the
 // category writes below save through
-require_once dirname(__DIR__, 2) . '/models/article.php';
-require_once dirname(__DIR__, 2) . '/models/category.php';
 
 /**
  * API controller for the knowledge base

@@ -11,8 +11,6 @@ namespace Components\Tools\Models;
 use Hubzero\Base\Obj;
 use Hubzero\Facades\App;
 
-include_once __DIR__ . DS . 'orm' . DS . 'tool.php';
-
 /**
  * Tools Model
  */

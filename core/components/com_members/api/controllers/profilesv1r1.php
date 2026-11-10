@@ -22,8 +22,6 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Date;
 
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
-
 /**
  * Members API controller class
  */
