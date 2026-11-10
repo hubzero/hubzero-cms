@@ -394,9 +394,12 @@ class Sender
         $mid = (int) $mailing->get('id');
         $db->setQuery(
             "UPDATE `#__massmail_mailings` m
-			 SET m.sent_count    = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SENT . "),
-			     m.failed_count  = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::FAILED . "),
-			     m.skipped_count = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SKIPPED . ")
+			 SET m.sent_count    = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = "
+                . Recipient::SENT . "),
+			     m.failed_count  = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = "
+                . Recipient::FAILED . "),
+			     m.skipped_count = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = "
+                . Recipient::SKIPPED . ")
 			 WHERE m.id = $mid",
         );
         $db->execute();

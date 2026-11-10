@@ -130,7 +130,9 @@ class Event extends Table
 					WHERE $this->tableName.catid = b.id
 					AND (
 					(
-							(publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_up <= " . $this->db->quote($select_date_fin . '%') . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
+							(publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_up <= "
+                    . $this->db->quote($select_date_fin . '%')
+                    . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
 						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= "
                     . $this->db->quote($select_date . '%') . " AND publish_down <= "
                     . $this->db->quote($select_date_fin . '%') . ")
@@ -167,7 +169,8 @@ class Event extends Table
 
                 $sql = "SELECT $this->tableName.* FROM #__categories AS b, $this->tableName
 					WHERE $this->tableName.catid = b.id
-					AND publish_up LIKE " . $this->db->quote($year . '%') . " AND (publish_down >= " . $this->db->quote($year . '%') . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
+					AND publish_up LIKE " . $this->db->quote($year . '%') . " AND (publish_down >= " . $this->db->quote($year . '%')
+                    . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
 					AND $this->tableName.state = '1'";
 
                 //did we pass in a scope filter
@@ -196,7 +199,8 @@ class Event extends Table
                 $enddate = $filters['enddate'];
 
                 $sql = "SELECT * FROM $this->tableName
-					WHERE ((publish_up >= " . $this->db->quote($startdate . '%') . " AND publish_up <= " . $this->db->quote($enddate . '%') . ")
+					WHERE ((publish_up >= " . $this->db->quote($startdate . '%') . " AND publish_up <= "
+                    . $this->db->quote($enddate . '%') . ")
 					OR (publish_down >= " . $this->db->quote($startdate . '%') . " AND publish_down <= "
                     . $this->db->quote($enddate . '%') . ")
 					OR (publish_up >= " . $this->db->quote($startdate . '%') . " AND publish_down <= "
