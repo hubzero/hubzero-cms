@@ -260,7 +260,8 @@ call.</p>
 <p><code>$this-&gt;view($layout, $name = null)</code> builds a sibling view: same base path,
 same <code>option</code>, <code>controller</code>, and <code>task</code>, a different layout. <code>com_kb</code> uses it
 to render a comment thread:</p>
-<pre><code class="language-php">                $this-&gt;view('_list')
+<pre><code class="language-php">                $this
+                     -&gt;view('_list')
                      -&gt;set('parent', 0)
                      -&gt;set('cls', 'odd')
                      -&gt;set('depth', 0)

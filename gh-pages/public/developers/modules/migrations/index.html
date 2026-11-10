@@ -323,7 +323,8 @@ gets both hard parts right:</p>
 
         $this-&gt;addModuleEntry('mod_collect', 1, '', 0);
 
-        $count = $this-&gt;db-&gt;getQuery(true)
+        $count = $this-&gt;db
+            -&gt;getQuery(true)
             -&gt;from('#__modules')
             -&gt;where('module', '=', 'mod_collect')
             -&gt;count();
@@ -332,7 +333,8 @@ gets both hard parts right:</p>
             $position = 'endpage';
             $found = false;
 
-            $count = $this-&gt;db-&gt;getQuery(true)
+            $count = $this-&gt;db
+                -&gt;getQuery(true)
                 -&gt;from('#__modules')
                 -&gt;where('client_id', '=', 0)
                 -&gt;where('position', '=', $position)
@@ -345,7 +347,8 @@ gets both hard parts right:</p>
             if (!$found) {
                 $position = 'footer';
 
-                $count = $this-&gt;db-&gt;getQuery(true)
+                $count = $this-&gt;db
+                    -&gt;getQuery(true)
                     -&gt;from('#__modules')
                     -&gt;where('client_id', '=', 0)
                     -&gt;where('position', '=', $position)

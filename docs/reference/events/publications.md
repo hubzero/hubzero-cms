@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:612`](../../../core/components/com_publications/site/controllers/publications.php#L612) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:613`](../../../core/components/com_publications/site/controllers/publications.php#L613) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended, ]`
 
 Listeners:
 
@@ -49,7 +49,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:606`](../../../core/components/com_publications/site/controllers/publications.php#L606) with `[ $this->model, $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:606`](../../../core/components/com_publications/site/controllers/publications.php#L606) with `[ $this->model, $this->model->versionAlias, $extended, ]`
 
 No plugin in the source tree listens for this event.
 
@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/views/view/tmpl/default.php:240`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L240) with `[$this->publication, $this->option, 1]`
+- [`core/components/com_publications/site/views/view/tmpl/default.php:243`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L243) with `[$this->publication, $this->option, 1]`
 
 Listeners:
 
@@ -95,7 +95,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/curation.php:875`](../../../core/components/com_publications/site/controllers/curation.php#L875) with `[$pub]`
+- [`core/components/com_publications/site/controllers/curation.php:876`](../../../core/components/com_publications/site/controllers/curation.php#L876) with `[$pub]`
 
 Listeners:
 

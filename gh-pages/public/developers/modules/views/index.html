@@ -283,7 +283,8 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 // Push the module CSS to the template
-$this-&gt;css()
+$this
+     -&gt;css()
      -&gt;js();
 ?&gt;
 &lt;div&lt;?php echo ($this-&gt;moduleclass) ? ' class=&quot;' . $this-&gt;moduleclass . '&quot;' : '';?&gt;&gt;

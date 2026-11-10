@@ -97,7 +97,7 @@ A new hub is online. Set **Site Offline** to **Yes** and the public front end
 returns the template's offline page with a `503 Service Temporarily
 Unavailable` status:
 
-<!--include: core/bootstrap/Site/Providers/DocumentServiceProvider.php:79-83-->
+<!--include: core/bootstrap/Site/Providers/DocumentServiceProvider.php:80-84-->
 
 Anyone holding `core.login.offline` still sees the real site. On a new hub
 that permission is granted to the **Manager** access group and inherited by

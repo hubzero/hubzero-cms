@@ -38,7 +38,7 @@ trait, and in every view, through the
 [view helpers](../../../core/libraries/Hubzero/View/Helper/AbstractHelper.php). They chain, and
 the usual call sits at the top of a layout:
 
-<!--include: core/components/com_kb/site/views/articles/tmpl/display.php:19-20-->
+<!--include: core/components/com_kb/site/views/articles/tmpl/display.php:19-21-->
 
 Both arguments have defaults, and both defaults are what you usually want:
 

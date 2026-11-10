@@ -213,7 +213,8 @@ to pass <code>isSafe()</code>, and code that writes the file itself skips it.</p
             }
 
             $filesystem = new Filesystem($adapter);
-            $filesystem-&gt;addMacro(new EmptyDirectory())
+            $filesystem
+                       -&gt;addMacro(new EmptyDirectory())
                        -&gt;addMacro(new Directories())
                        -&gt;addMacro(new Files())
                        -&gt;addMacro(new DirectoryTree());

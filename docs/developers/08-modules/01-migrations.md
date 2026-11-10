@@ -93,7 +93,7 @@ each menu id in `$menus` — the default of `0` meaning all of them.
 One migration in the tree does this, and it is worth reading whole because it
 gets both hard parts right:
 
-<!--include: core/migrations/Migration20141009072712ModCollect.php:22-67-->
+<!--include: core/migrations/Migration20141009072712ModCollect.php:22-70-->
 
 `addModuleEntry()` first, `installModule()` second, and the position is not
 guessed: the migration looks for a position other site modules are already

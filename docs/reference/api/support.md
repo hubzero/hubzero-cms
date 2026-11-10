@@ -74,7 +74,7 @@ API version 1.0, task `create` in [`ticketsv1r0.php`](../../../core/components/c
 
 Create a new support category
 
-API version 2.1, task `create` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L245).
+API version 2.1, task `create` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L248).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -105,7 +105,7 @@ API version 2.1, task `list` in [`categoriesv2r1.php`](../../../core/components/
 
 Delete a support category
 
-API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L438).
+API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L441).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -115,7 +115,7 @@ API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/component
 
 Displays details for a support category
 
-API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L312).
+API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L315).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -125,7 +125,7 @@ API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/
 
 Update a support category
 
-API version 2.1, task `update` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L353).
+API version 2.1, task `update` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L356).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -170,7 +170,7 @@ API version 2.0, task `create` in [`commentsv2r0.php`](../../../core/components/
 
 Create a new comment
 
-API version 2.1, task `create` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L256).
+API version 2.1, task `create` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L258).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -218,7 +218,7 @@ API version 2.0, task `read` in [`commentsv2r0.php`](../../../core/components/co
 
 Displays details for a ticket comment
 
-API version 2.1, task `read` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L490).
+API version 2.1, task `read` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L492).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -238,7 +238,7 @@ API version 2.0, task `update` in [`commentsv2r0.php`](../../../core/components/
 
 Update a ticket comment
 
-API version 2.1, task `update` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L534).
+API version 2.1, task `update` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L536).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -262,7 +262,7 @@ API version 1.0, task `list` in [`ticketsv1r0.php`](../../../core/components/com
 
 Create a new support message
 
-API version 2.1, task `create` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L134).
+API version 2.1, task `create` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L136).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -287,7 +287,7 @@ API version 2.1, task `list` in [`messagesv2r1.php`](../../../core/components/co
 
 Delete a support message
 
-API version 2.1, task `delete` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L276).
+API version 2.1, task `delete` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L278).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -297,7 +297,7 @@ API version 2.1, task `delete` in [`messagesv2r1.php`](../../../core/components/
 
 Displays details for a support message
 
-API version 2.1, task `read` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L182).
+API version 2.1, task `read` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L184).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -307,7 +307,7 @@ API version 2.1, task `read` in [`messagesv2r1.php`](../../../core/components/co
 
 Update a support message
 
-API version 2.1, task `update` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L215).
+API version 2.1, task `update` in [`messagesv2r1.php`](../../../core/components/com_support/api/controllers/messagesv2r1.php#L217).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -336,7 +336,7 @@ API version 1.0, task `stats` in [`ticketsv1r0.php`](../../../core/components/co
 
 Create a new support status
 
-API version 2.1, task `create` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L153).
+API version 2.1, task `create` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L154).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -365,7 +365,7 @@ API version 2.1, task `list` in [`statusesv2r1.php`](../../../core/components/co
 
 Delete a support status
 
-API version 2.1, task `delete` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L327).
+API version 2.1, task `delete` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L328).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -375,7 +375,7 @@ API version 2.1, task `delete` in [`statusesv2r1.php`](../../../core/components/
 
 Displays details for a support status
 
-API version 2.1, task `read` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L217).
+API version 2.1, task `read` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L218).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -385,7 +385,7 @@ API version 2.1, task `read` in [`statusesv2r1.php`](../../../core/components/co
 
 Update a support status
 
-API version 2.1, task `update` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L250).
+API version 2.1, task `update` in [`statusesv2r1.php`](../../../core/components/com_support/api/controllers/statusesv2r1.php#L251).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -412,7 +412,7 @@ API version 2.0, task `list` in [`ticketsv2r0.php`](../../../core/components/com
 
 Create a new ticket
 
-API version 2.0, task `create` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L157).
+API version 2.0, task `create` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L158).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -432,7 +432,7 @@ API version 2.0, task `create` in [`ticketsv2r0.php`](../../../core/components/c
 
 Create a new ticket
 
-API version 2.1, task `create` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L319).
+API version 2.1, task `create` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L322).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -475,7 +475,7 @@ API version 2.1, task `list` in [`ticketsv2r1.php`](../../../core/components/com
 
 Delete a ticket
 
-API version 2.0, task `delete` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L503).
+API version 2.0, task `delete` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L513).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -485,7 +485,7 @@ API version 2.0, task `delete` in [`ticketsv2r0.php`](../../../core/components/c
 
 Delete a ticket
 
-API version 2.1, task `delete` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L669).
+API version 2.1, task `delete` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L672).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -495,7 +495,7 @@ API version 2.1, task `delete` in [`ticketsv2r1.php`](../../../core/components/c
 
 Displays details for a ticket
 
-API version 2.0, task `read` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L334).
+API version 2.0, task `read` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L335).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -505,7 +505,7 @@ API version 2.0, task `read` in [`ticketsv2r0.php`](../../../core/components/com
 
 Displays details for a ticket
 
-API version 2.1, task `read` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L500).
+API version 2.1, task `read` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L503).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -515,7 +515,7 @@ API version 2.1, task `read` in [`ticketsv2r1.php`](../../../core/components/com
 
 Update a ticket
 
-API version 2.0, task `update` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L394).
+API version 2.0, task `update` in [`ticketsv2r0.php`](../../../core/components/com_support/api/controllers/ticketsv2r0.php#L404).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -529,7 +529,7 @@ API version 2.0, task `update` in [`ticketsv2r0.php`](../../../core/components/c
 
 Update a ticket
 
-API version 2.1, task `update` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L553).
+API version 2.1, task `update` in [`ticketsv2r1.php`](../../../core/components/com_support/api/controllers/ticketsv2r1.php#L556).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -543,7 +543,7 @@ API version 2.1, task `update` in [`ticketsv2r1.php`](../../../core/components/c
 
 Delete a ticket
 
-API version 1.0, task `delete` in [`ticketsv1r0.php`](../../../core/components/com_support/api/controllers/ticketsv1r0.php#L574).
+API version 1.0, task `delete` in [`ticketsv1r0.php`](../../../core/components/com_support/api/controllers/ticketsv1r0.php#L582).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -563,7 +563,7 @@ API version 1.0, task `read` in [`ticketsv1r0.php`](../../../core/components/com
 
 Update a ticket
 
-API version 1.0, task `update` in [`ticketsv1r0.php`](../../../core/components/com_support/api/controllers/ticketsv1r0.php#L539).
+API version 1.0, task `update` in [`ticketsv1r0.php`](../../../core/components/com_support/api/controllers/ticketsv1r0.php#L547).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -622,7 +622,7 @@ API version 2.0, task `delete` in [`commentsv2r0.php`](../../../core/components/
 
 Delete a ticket comment
 
-API version 2.1, task `delete` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L559).
+API version 2.1, task `delete` in [`commentsv2r1.php`](../../../core/components/com_support/api/controllers/commentsv2r1.php#L561).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

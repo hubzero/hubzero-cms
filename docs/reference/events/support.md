@@ -45,7 +45,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:769`](../../../core/components/com_support/site/controllers/tickets.php#L769) with `[]`
+- [`core/components/com_support/site/controllers/tickets.php:771`](../../../core/components/com_support/site/controllers/tickets.php#L771) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:364`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L364) with `[$this->row]`
-- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:568`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L568) with `[$this->row]`
+- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:365`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L365) with `[$this->row]`
+- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:569`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L569) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:1258`](../../../core/components/com_support/site/controllers/tickets.php#L1258) with `[$row]`
+- [`core/components/com_support/site/controllers/tickets.php:1260`](../../../core/components/com_support/site/controllers/tickets.php#L1260) with `[$row]`
 
 Listeners:
 
@@ -107,6 +107,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:813`](../../../core/components/com_support/site/controllers/tickets.php#L813) with `[$reporter, $problem]`
+- [`core/components/com_support/site/controllers/tickets.php:815`](../../../core/components/com_support/site/controllers/tickets.php#L815) with `[$reporter, $problem]`
 
 No plugin in the source tree listens for this event.

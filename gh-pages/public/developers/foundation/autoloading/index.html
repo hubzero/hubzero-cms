@@ -223,12 +223,12 @@ below is what it did with it.</p>
 </tbody>
 </table>
 <p>Composer's map is two entries and no more:</p>
-<pre><code class="language-json">    },
-    &quot;autoload&quot;: {
+<pre><code class="language-json">    &quot;autoload&quot;: {
         &quot;psr-4&quot;: {
             &quot;Hubzero\\&quot;: &quot;libraries/Hubzero/&quot;,
             &quot;Bootstrap\\&quot;: &quot;bootstrap/&quot;
         }
+    },
 </code></pre>
 <p>That is worth reading twice. <strong>Composer does not know about your component.</strong>
 <code>composer dump-autoload</code> will never help a component, plugin, module or
@@ -237,8 +237,8 @@ not how it is done. Extension classes are the class loader's job.</p>
 <p>The class loader is registered in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a>, before anything
 else runs:</p>
-<pre><code class="language-php">        return app()-&gt;get($key);
-    }
+<pre><code class="language-php">Hubzero\Base\ClassLoader::addDirectories([ PATH_APP,   PATH_CORE]);
+Hubzero\Base\ClassLoader::register();
 </code></pre>
 <p>The two directories are the search path, and <code>PATH_APP</code> is first, which is
 what makes a hub's own copy of an extension win over the shipped one.</p>

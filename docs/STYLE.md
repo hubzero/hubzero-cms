@@ -84,7 +84,7 @@ Prefer showing real files to pasting copies. The include directive inserts
 the current contents of a repository file, optionally a line range:
 
 ```markdown
-<!--include: core/components/com_kb/site/router.php:20-45-->
+<!--include: core/components/com_kb/site/router.php:20-44-->
 ```
 
 ## Notes and warnings

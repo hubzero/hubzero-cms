@@ -178,7 +178,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/views/course/tmpl/display.php:683`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L683) with `[$this->course]`
+- [`core/components/com_courses/site/views/course/tmpl/display.php:687`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L687) with `[$this->course]`
 
 Listeners:
 

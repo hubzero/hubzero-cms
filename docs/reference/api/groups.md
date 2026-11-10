@@ -152,7 +152,7 @@ API version 1.0, task `read` in [`pluginsv1r0.php`](../../../core/components/com
 
 Delete a group
 
-API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L561).
+API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L562).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -162,7 +162,7 @@ API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/co
 
 Delete a group
 
-API version 1.1, task `delete` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L584).
+API version 1.1, task `delete` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L585).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -194,7 +194,7 @@ API version 1.1, task `read` in [`groupsv1r1.php`](../../../core/components/com_
 
 Update a group
 
-API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L402).
+API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L403).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -210,7 +210,7 @@ API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/co
 
 Update a group
 
-API version 1.1, task `update` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L425).
+API version 1.1, task `update` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L426).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

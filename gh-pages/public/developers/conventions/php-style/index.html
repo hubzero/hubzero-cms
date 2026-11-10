@@ -165,6 +165,8 @@
 <li class="toc__item toc__item--l2"><a href="#classes">Classes</a></li>
 <li class="toc__item toc__item--l2"><a href="#functions-and-methods">Functions and methods</a></li>
 <li class="toc__item toc__item--l2"><a href="#control-structures">Control structures</a></li>
+<li class="toc__item toc__item--l2"><a href="#operators">Operators</a></li>
+<li class="toc__item toc__item--l2"><a href="#method-chains">Method chains</a></li>
 <li class="toc__item toc__item--l2"><a href="#documentation-blocks">Documentation blocks</a></li>
 <li class="toc__item toc__item--l2"><a href="#sql">SQL</a></li>
 <li class="toc__item toc__item--l2"><a href="#checking-your-work">Checking your work</a></li>
@@ -195,9 +197,10 @@ successor, <a href="https://www.php-fig.org/per/coding-style/">PER Coding Style<
 no house departures. The repository commits the ruleset that checks it,
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/phpcs.xml.dist"><code>phpcs.xml.dist</code></a>, and the whole tree passes it:
 run phpcs and anything it reports came from your change.</p>
-<p>The rules are PSR-12's, with what PER Coding Style 3.0 adds to them: trailing
-commas, arrow-function spacing and the like. phpcs checks PSR-12 only, so the
-PER additions are marked below where they come up. This page shows what the
+<p>The rules are PSR-12's, with what PER Coding Style 3.1 adds to them: trailing
+commas, arrow-function spacing, method chains, arrays and the like. phpcs
+checks PSR-12 only, so the PER additions are marked (PER-CS) below where they
+come up. This page shows what the
 rules look like in core, adds the handful of conventions they leave open, and
 says how to check your work.</p>
 <h2 id="files">Files</h2>
@@ -279,6 +282,14 @@ Both interpolation forms are accepted:</p>
 $greeting = &quot;Hello {$name}, welcome back!&quot;;
 </code></pre>
 <p><code>&quot;${name}&quot;</code> is not permitted; PHP 8.2 deprecates it.</p>
+<p>A heredoc or nowdoc starts on the line that uses it, and its lines, the closing
+marker among them, are indented once past that line (PER-CS). PHP strips the
+marker's indentation from every line, so the value does not change:</p>
+<pre><code class="language-php">$sql = &lt;&lt;&lt;SQL
+    SELECT `id` FROM `#__users`
+    WHERE `block` = 0
+    SQL;
+</code></pre>
 <p>Never break a line inside a string literal to shorten it. A line break inside
 quotes is part of the value: <code>'index</code> + newline + <code>.php'</code> is not
 <code>'index.php'</code>, and a pattern, a URL or a shell command split that way stops
@@ -294,8 +305,9 @@ long, break before the <code>.</code> and indent the continuation one level:</p>
 </code></pre>
 <h2 id="arrays">Arrays</h2>
 <p>Short syntax, <code>[]</code>. Core has no <code>array()</code> constructor left.</p>
-<p>A single space after each comma. A multi-line array indents its items one level
-and puts the closing bracket on its own line at the level of the declaration:</p>
+<p>A single space after each comma. A multi-line array has one value per line,
+indents them one level, and puts the closing bracket on the line after the last
+value, at the level of the declaration (PER-CS):</p>
 <pre><code class="language-php">$filters = [
     'year'       =&gt; Request::getInt('year', 0),
     'month'      =&gt; Request::getInt('month', 0),
@@ -306,6 +318,21 @@ and puts the closing bracket on its own line at the level of the declaration:</p
 ];
 </code></pre>
 <p>Aligning the <code>=&gt;</code> operators is allowed and common.</p>
+<p>The opening bracket of a multi-line array never sits on a line of its own
+(PER-CS 3.1), except where the array is itself one item of a multi-line array.
+An array passed as an argument opens on the call's line, and the other
+arguments follow its closing bracket; one argument spanning lines does not
+split the argument list:</p>
+<pre><code class="language-php">$link = str_replace([
+    '{ID}',
+    '{NAME}',
+], [
+    $user-&gt;get('id'),
+    $user-&gt;get('name'),
+], $template);
+</code></pre>
+<p>In a <code>foreach</code> header, assign the array to a variable first: a split condition
+has to start on the line after the parenthesis.</p>
 <h2 id="lists-and-trailing-commas">Lists and trailing commas</h2>
 <p>PER-CS: a list split across lines, with its first item on the line after the
 opening bracket, ends with a trailing comma; a list on one line never has one.
@@ -382,10 +409,12 @@ closing parenthesis and the opening brace share the line after:</p>
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 </code></pre>
-<p>A <code>switch</code> indents its <code>case</code> one level and the case body one more. Give it a
-<code>default</code>. Where a non-empty case falls through deliberately, say so with a
-<code>// no break</code> comment; PSR-12 requires it, and the next reader would otherwise
-read the fall-through as a bug:</p>
+<p>A <code>switch</code> indents its <code>case</code> one level and the case body one more; the body
+starts on the line after the <code>case</code> and is never wrapped in braces. Give it a
+<code>default</code>. Every non-empty case ends with <code>break</code>, <code>return</code> or the like, the
+last one included (PER-CS 3.1). Where a case falls through deliberately, say so
+with a <code>// no break</code> comment instead, so the next reader does not read it as a
+bug:</p>
 <pre><code class="language-php">switch ($state) {
     case 'archived':
         $this-&gt;archive();
@@ -399,6 +428,29 @@ read the fall-through as a bug:</p>
         break;
 }
 </code></pre>
+<p>A closing brace has nothing after it on its line, not even a comment saying
+which block it closes (<code>} // end foreach</code>); the indentation says that.</p>
+<h2 id="operators">Operators</h2>
+<p>A binary operator has a space on each side. An expression split across lines
+puts the operator at the start of each new line, indented once. A split ternary
+takes three lines, never two (PER-CS 3.1):</p>
+<pre><code class="language-php">$label = $row-&gt;isPublished()
+    ? Lang::txt('JPUBLISHED')
+    : Lang::txt('JUNPUBLISHED');
+</code></pre>
+<h2 id="method-chains">Method chains</h2>
+<p>A chain split across lines puts its first call on the line after its subject,
+each call on a line of its own, indented once (PER-CS):</p>
+<pre><code class="language-php">$rows = $this-&gt;db
+    -&gt;getQuery()
+    -&gt;select('*')
+    -&gt;from('#__users')
+    -&gt;rows();
+</code></pre>
+<p>Property access stays with its variable (<code>$this-&gt;db</code>), and a chain that starts
+with a static call keeps it on the first line: <code>Entry::all()</code> and then
+<code>-&gt;whereEquals(...)</code> below it. A call whose arguments span lines indents them
+from the call's own line.</p>
 <h2 id="documentation-blocks">Documentation blocks</h2>
 <p>Docblocks are phpDocumentor format. Every class gets a short description; every
 method gets a description, its parameters, and its return type. Columns are
@@ -449,7 +501,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 <tr>
 <td>phpcs</td>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/phpcs.xml.dist"><code>phpcs.xml.dist</code></a></td>
-<td>The PSR-12 rules above, across <code>core/bootstrap</code>, <code>components</code>, <code>libraries</code>, <code>migrations</code>, <code>modules</code>, <code>plugins</code> and <code>templates</code>. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions.</td>
+<td>The PSR-12 rules above, across <code>core/bootstrap</code>, <code>components</code>, <code>libraries</code>, <code>migrations</code>, <code>modules</code>, <code>plugins</code> and <code>templates</code>. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions; PHP-CS-Fixer's <code>@PER-CS3.0</code> set checks some of them, and none of the 3.1 additions.</td>
 </tr>
 <tr>
 <td>phpcbf</td>
@@ -502,7 +554,7 @@ cares about.</p>
 request; a reviewer will.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 335dfef791</code> on 2026-11-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 14c919bb19</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Conventions</a><a class="pager__next" href="../php-naming/index.html" rel="next"><span>Next</span>PHP Naming Conventions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/19-conventions/01-php-style.md">Edit this page on GitHub</a>

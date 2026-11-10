@@ -49,8 +49,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:623`](../../../core/components/com_resources/site/controllers/resources.php#L623) with `[$model, $this->option, ['about'], 'metadata']`
-- [`core/components/com_resources/site/controllers/resources.php:1407`](../../../core/components/com_resources/site/controllers/resources.php#L1407) with `[ $this->model, $this->option, [$tab], 'all', ]`
+- [`core/components/com_resources/site/controllers/resources.php:627`](../../../core/components/com_resources/site/controllers/resources.php#L627) with `[$model, $this->option, ['about'], 'metadata']`
+- [`core/components/com_resources/site/controllers/resources.php:1420`](../../../core/components/com_resources/site/controllers/resources.php#L1420) with `[ $this->model, $this->option, [$tab], 'all', ]`
 
 Listeners:
 
@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:1379`](../../../core/components/com_resources/site/controllers/resources.php#L1379) with `[ $this->model, ]`
+- [`core/components/com_resources/site/controllers/resources.php:1392`](../../../core/components/com_resources/site/controllers/resources.php#L1392) with `[ $this->model, ]`
 
 No plugin in the source tree listens for this event.
 
@@ -100,11 +100,11 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/views/view/tmpl/courses.php:210`](../../../core/components/com_resources/site/views/view/tmpl/courses.php#L210) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/default.php:182`](../../../core/components/com_resources/site/views/view/tmpl/default.php#L182) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/series.php:280`](../../../core/components/com_resources/site/views/view/tmpl/series.php#L280) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/tools.php:265`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L265) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/workshops.php:245`](../../../core/components/com_resources/site/views/view/tmpl/workshops.php#L245) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/courses.php:220`](../../../core/components/com_resources/site/views/view/tmpl/courses.php#L220) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/default.php:190`](../../../core/components/com_resources/site/views/view/tmpl/default.php#L190) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/series.php:290`](../../../core/components/com_resources/site/views/view/tmpl/series.php#L290) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/tools.php:272`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L272) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/workshops.php:255`](../../../core/components/com_resources/site/views/view/tmpl/workshops.php#L255) with `[$this->model, $this->option, 1]`
 
 Listeners:
 

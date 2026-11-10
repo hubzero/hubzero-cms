@@ -11,7 +11,7 @@ Events in the `members` group. A plugin in `core/plugins/members/` receives an e
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:173`](../../../core/components/com_members/admin/controllers/plugins.php#L173)
+- [`core/components/com_members/admin/controllers/plugins.php:174`](../../../core/components/com_members/admin/controllers/plugins.php#L174)
 
 Listeners:
 
@@ -21,7 +21,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/exports.php:304`](../../../core/components/com_members/admin/controllers/exports.php#L304) with `[$member, $tmp]`
+- [`core/components/com_members/admin/controllers/exports.php:305`](../../../core/components/com_members/admin/controllers/exports.php#L305) with `[$member, $tmp]`
 
 No plugin in the source tree listens for this event.
 
@@ -37,7 +37,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:199`](../../../core/components/com_members/admin/controllers/plugins.php#L199) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ],`
+- [`core/components/com_members/admin/controllers/plugins.php:200`](../../../core/components/com_members/admin/controllers/plugins.php#L200) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ],`
 
 Listeners:
 
@@ -47,7 +47,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:564`](../../../core/plugins/user/xusers/xusers.php#L564) with `[$user, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:565`](../../../core/plugins/user/xusers/xusers.php#L565) with `[$user, $success, $msg]`
 
 Listeners:
 
@@ -59,7 +59,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:515`](../../../core/plugins/user/xusers/xusers.php#L515) with `[$user, $isnew, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:516`](../../../core/plugins/user/xusers/xusers.php#L516) with `[$user, $isnew, $success, $msg]`
 
 Listeners:
 
@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/views/profiles/tmpl/browse.php:357`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L357) with `[$row]`
-- [`core/components/com_members/site/views/profiles/tmpl/view.php:115`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L115) with `[$this->profile]`
+- [`core/components/com_members/site/views/profiles/tmpl/browse.php:358`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L358) with `[$row]`
+- [`core/components/com_members/site/views/profiles/tmpl/view.php:116`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L116) with `[$this->profile]`
 
 No plugin in the source tree listens for this event.
 
@@ -117,7 +117,7 @@ Listeners:
 Fired from:
 
 - [`core/plugins/members/contributions/contributions.php:109`](../../../core/plugins/members/contributions/contributions.php#L109) with `[ $member, $option, 0, $limitstart, $sort, $activeareas, ]`
-- [`core/plugins/members/contributions/contributions.php:161`](../../../core/plugins/members/contributions/contributions.php#L161) with `[ $member, $option, $limit, $limitstart, $sort, $activeareas]`
+- [`core/plugins/members/contributions/contributions.php:161`](../../../core/plugins/members/contributions/contributions.php#L161) with `[ $member, $option, $limit, $limitstart, $sort, $activeareas, ]`
 
 Listeners:
 
@@ -163,6 +163,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:308`](../../../core/components/com_members/admin/controllers/members.php#L308) with `[$user]`
+- [`core/components/com_members/admin/controllers/members.php:309`](../../../core/components/com_members/admin/controllers/members.php#L309) with `[$user]`
 
 No plugin in the source tree listens for this event.

@@ -34,7 +34,7 @@ Endpoints under `/api/courses`, from the `com_courses` API controllers. Authenti
 
 Deletes an asset
 
-API version 1.0, task `delete` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L595).
+API version 1.0, task `delete` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L592).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ API version 1.0, task `delete` in [`assetv1r0.php`](../../../core/components/com
 
 Deletes an asset file
 
-API version 1.0, task `deletefile` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L705).
+API version 1.0, task `deletefile` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L702).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `edit` in [`assetv1r0.php`](../../../core/components/com_c
 
 Looks up the form id and deployment id based on the asset id
 
-API version 1.0, task `getformanddepid` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L967).
+API version 1.0, task `getformanddepid` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L964).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `getformanddepid` in [`assetv1r0.php`](../../../core/compo
 
 Looks up the form id based on the asset id
 
-API version 1.0, task `getformid` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L904).
+API version 1.0, task `getformid` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L901).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -119,7 +119,7 @@ API version 1.0, task `preview` in [`assetv1r0.php`](../../../core/components/co
 
 Reorders assets
 
-API version 1.0, task `reorder` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L762).
+API version 1.0, task `reorder` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L759).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -144,7 +144,7 @@ API version 1.0, task `save` in [`assetv1r0.php`](../../../core/components/com_c
 
 Toggles the published state of an asset
 
-API version 1.0, task `togglepublished` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L849).
+API version 1.0, task `togglepublished` in [`assetv1r0.php`](../../../core/components/com_courses/api/controllers/assetv1r0.php#L846).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -154,7 +154,7 @@ API version 1.0, task `togglepublished` in [`assetv1r0.php`](../../../core/compo
 
 Reorders asset groups
 
-API version 1.0, task `reorder` in [`assetgroupv1r0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1r0.php#L197).
+API version 1.0, task `reorder` in [`assetgroupv1r0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1r0.php#L195).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

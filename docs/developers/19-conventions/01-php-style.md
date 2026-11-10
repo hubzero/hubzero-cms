@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: per-cs-3.1 @ 335dfef791
+reviewed-against: per-cs-3.1 @ 14c919bb19
 reviewed: 2026-11-10
 screenshots: none
 -->
@@ -12,9 +12,10 @@ no house departures. The repository commits the ruleset that checks it,
 [`phpcs.xml.dist`](../../../phpcs.xml.dist), and the whole tree passes it:
 run phpcs and anything it reports came from your change.
 
-The rules are PSR-12's, with what PER Coding Style 3.0 adds to them: trailing
-commas, arrow-function spacing and the like. phpcs checks PSR-12 only, so the
-PER additions are marked below where they come up. This page shows what the
+The rules are PSR-12's, with what PER Coding Style 3.1 adds to them: trailing
+commas, arrow-function spacing, method chains, arrays and the like. phpcs
+checks PSR-12 only, so the PER additions are marked (PER-CS) below where they
+come up. This page shows what the
 rules look like in core, adds the handful of conventions they leave open, and
 says how to check your work.
 
@@ -119,6 +120,17 @@ $greeting = "Hello {$name}, welcome back!";
 
 `"${name}"` is not permitted; PHP 8.2 deprecates it.
 
+A heredoc or nowdoc starts on the line that uses it, and its lines, the closing
+marker among them, are indented once past that line (PER-CS). PHP strips the
+marker's indentation from every line, so the value does not change:
+
+```php
+$sql = <<<SQL
+    SELECT `id` FROM `#__users`
+    WHERE `block` = 0
+    SQL;
+```
+
 Never break a line inside a string literal to shorten it. A line break inside
 quotes is part of the value: `'index` + newline + `.php'` is not
 `'index.php'`, and a pattern, a URL or a shell command split that way stops
@@ -140,8 +152,9 @@ $this->setQuery(
 
 Short syntax, `[]`. Core has no `array()` constructor left.
 
-A single space after each comma. A multi-line array indents its items one level
-and puts the closing bracket on its own line at the level of the declaration:
+A single space after each comma. A multi-line array has one value per line,
+indents them one level, and puts the closing bracket on the line after the last
+value, at the level of the declaration (PER-CS):
 
 ```php
 $filters = [
@@ -155,6 +168,25 @@ $filters = [
 ```
 
 Aligning the `=>` operators is allowed and common.
+
+The opening bracket of a multi-line array never sits on a line of its own
+(PER-CS 3.1), except where the array is itself one item of a multi-line array.
+An array passed as an argument opens on the call's line, and the other
+arguments follow its closing bracket; one argument spanning lines does not
+split the argument list:
+
+```php
+$link = str_replace([
+    '{ID}',
+    '{NAME}',
+], [
+    $user->get('id'),
+    $user->get('name'),
+], $template);
+```
+
+In a `foreach` header, assign the array to a variable first: a split condition
+has to start on the line after the parenthesis.
 
 ## Lists and trailing commas
 
@@ -250,10 +282,12 @@ closing parenthesis and the opening brace share the line after:
 
 <!--include: core/components/com_blog/admin/controllers/entries.php:134-139-->
 
-A `switch` indents its `case` one level and the case body one more. Give it a
-`default`. Where a non-empty case falls through deliberately, say so with a
-`// no break` comment; PSR-12 requires it, and the next reader would otherwise
-read the fall-through as a bug:
+A `switch` indents its `case` one level and the case body one more; the body
+starts on the line after the `case` and is never wrapped in braces. Give it a
+`default`. Every non-empty case ends with `break`, `return` or the like, the
+last one included (PER-CS 3.1). Where a case falls through deliberately, say so
+with a `// no break` comment instead, so the next reader does not read it as a
+bug:
 
 ```php
 switch ($state) {
@@ -269,6 +303,39 @@ switch ($state) {
         break;
 }
 ```
+
+A closing brace has nothing after it on its line, not even a comment saying
+which block it closes (`} // end foreach`); the indentation says that.
+
+## Operators
+
+A binary operator has a space on each side. An expression split across lines
+puts the operator at the start of each new line, indented once. A split ternary
+takes three lines, never two (PER-CS 3.1):
+
+```php
+$label = $row->isPublished()
+    ? Lang::txt('JPUBLISHED')
+    : Lang::txt('JUNPUBLISHED');
+```
+
+## Method chains
+
+A chain split across lines puts its first call on the line after its subject,
+each call on a line of its own, indented once (PER-CS):
+
+```php
+$rows = $this->db
+    ->getQuery()
+    ->select('*')
+    ->from('#__users')
+    ->rows();
+```
+
+Property access stays with its variable (`$this->db`), and a chain that starts
+with a static call keeps it on the first line: `Entry::all()` and then
+`->whereEquals(...)` below it. A call whose arguments span lines indents them
+from the call's own line.
 
 ## Documentation blocks
 
@@ -327,7 +394,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 
 | Tool | Configuration | What it catches |
 |---|---|---|
-| phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | The PSR-12 rules above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions. |
+| phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | The PSR-12 rules above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions; PHP-CS-Fixer's `@PER-CS3.0` set checks some of them, and none of the 3.1 additions. |
 | phpcbf | the same | Fixes most of what phpcs reports. Run it on the files you changed and read the diff. |
 | PHPStan | [`phpstan.neon`](../../../phpstan.neon) | At level 0: classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings. |
 | `missing-facade-imports.php` | none | A facade called without a `use`. Takes `--fix` to insert the missing imports, and any path to narrow the scan. |

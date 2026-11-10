@@ -44,8 +44,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:123`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L123)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:154`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L154)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:155`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L155)
 
 Listeners:
 
@@ -78,8 +78,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:119`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L119)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:144`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L144)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:120`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L120)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:145`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L145)
 
 No plugin in the source tree listens for this event.
 
@@ -105,7 +105,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_templates/admin/controllers/styles.php:461`](../../../core/components/com_templates/admin/controllers/styles.php#L461) with `[$group, $client_id]`
+- [`core/components/com_templates/admin/controllers/styles.php:464`](../../../core/components/com_templates/admin/controllers/styles.php#L464) with `[$group, $client_id]`
 
 Listeners:
 
@@ -123,8 +123,8 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Relational.php:4873`](../../../core/libraries/Hubzero/Database/Relational.php#L4873) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:310`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L310) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:4894`](../../../core/libraries/Hubzero/Database/Relational.php#L4894) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:311`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L311) with `[$this->getTableName(), $this]`
 
 Listeners:
 
@@ -142,7 +142,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:342`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L342) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:343`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L343) with `[$this->getTableName(), $this]`
 
 No plugin in the source tree listens for this event.
 
@@ -155,7 +155,7 @@ Fired from:
 - [`core/components/com_groups/models/orm/manager.php:123`](../../../core/components/com_groups/models/orm/manager.php#L123) with `[$this->getTableName(), $this]`
 - [`core/components/com_groups/models/orm/member.php:124`](../../../core/components/com_groups/models/orm/member.php#L124) with `[$this->getTableName(), $this]`
 - [`core/components/com_modules/models/menu.php:71`](../../../core/components/com_modules/models/menu.php#L71) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Relational.php:4400`](../../../core/libraries/Hubzero/Database/Relational.php#L4400) with `[$this->getTableName(), $this, $this->changes]`
+- [`core/libraries/Hubzero/Database/Relational.php:4419`](../../../core/libraries/Hubzero/Database/Relational.php#L4419) with `[$this->getTableName(), $this, $this->changes]`
 - [`core/libraries/Hubzero/Database/Table.php:736`](../../../core/libraries/Hubzero/Database/Table.php#L736) with `[$this->getTableName(), $this]`
 
 Listeners:

@@ -34,7 +34,7 @@ They are registered in this order and PHP tries them in this order.
 
 Composer's map is two entries and no more:
 
-<!--include: core/composer.json:98-103-->
+<!--include: core/composer.json:99-104-->
 
 That is worth reading twice. **Composer does not know about your component.**
 `composer dump-autoload` will never help a component, plugin, module or
@@ -45,7 +45,7 @@ The class loader is registered in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php), before anything
 else runs:
 
-<!--include: core/bootstrap/app.php:64-65-->
+<!--include: core/bootstrap/app.php:50-51-->
 
 The two directories are the search path, and `PATH_APP` is first, which is
 what makes a hub's own copy of an extension win over the shipped one.

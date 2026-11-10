@@ -60,7 +60,7 @@ means two and a half **days**, not an hour.
 That is the shape of nearly every use in the tree — write with a TTL, read
 back, recompute on a miss:
 
-<!--include: core/components/com_wiki/site/controllers/pages.php:230-238-->
+<!--include: core/components/com_wiki/site/controllers/pages.php:231-239-->
 
 | Method | What it does |
 |---|---|
