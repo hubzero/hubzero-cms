@@ -12,6 +12,7 @@
  * The BingMapsProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
+
 namespace Plugins\Geocode\Bingmaps;
 
 use Hubzero\Plugin\Plugin;

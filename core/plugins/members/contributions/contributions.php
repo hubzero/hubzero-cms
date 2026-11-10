@@ -9,6 +9,7 @@
 /**
  * Members Plugin class for contributions
  */
+
 namespace Plugins\Members\Contributions;
 
 use Hubzero\Plugin\Plugin;

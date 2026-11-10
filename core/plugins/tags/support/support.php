@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for support tickets
  */
+
 namespace Plugins\Tags\Support;
 
 use Hubzero\Plugin\Plugin;

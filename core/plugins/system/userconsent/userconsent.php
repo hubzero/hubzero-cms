@@ -9,6 +9,7 @@
 /**
  * System plugin checking for getting user consent to monitor
  */
+
 namespace Plugins\System\Userconsent;
 
 use Hubzero\Plugin\Plugin;

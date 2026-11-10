@@ -9,6 +9,7 @@
 /**
  * Display sponsors on a resource page
  */
+
 namespace Plugins\Resources\Findthistext;
 
 use Hubzero\Plugin\Plugin;

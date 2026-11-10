@@ -56,7 +56,6 @@ use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
-
 $uid = (int) $this->profile->get('id');
 $incrOpts = new Components\Members\Models\Incremental\Options();
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);

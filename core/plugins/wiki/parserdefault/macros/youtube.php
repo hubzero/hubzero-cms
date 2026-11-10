@@ -9,6 +9,7 @@
 /**
  * Wiki macro class for displaying a youtube video
  */
+
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;

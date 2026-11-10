@@ -9,6 +9,7 @@
 /**
  * MaxMindBinary plugin for geocode
  */
+
 namespace Plugins\Geocode\Maxmindbinary;
 
 use Hubzero\Plugin\Plugin;

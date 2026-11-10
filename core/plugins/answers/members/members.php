@@ -10,6 +10,7 @@
  * Answers plugin for members
  *
  */
+
 namespace Plugins\Answers\Members;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * System plugin checking for spam offences after routing
  */
+
 namespace Plugins\System\Spamjail;
 
 use Hubzero\Plugin\Plugin;

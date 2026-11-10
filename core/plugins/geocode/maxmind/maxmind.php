@@ -14,6 +14,7 @@
  * key is required. This provider provides two constants
  * CITY_EXTENDED_SERVICE by default and OMNI_SERVICE.
  */
+
 namespace Plugins\Geocode\Maxmind;
 
 use Hubzero\Plugin\Plugin;

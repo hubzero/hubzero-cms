@@ -9,6 +9,7 @@
 /**
  * System plugin checking for unconfirmed user emails
  */
+
 namespace Plugins\System\Unconfirmed;
 
 use Hubzero\Plugin\Plugin;

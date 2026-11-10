@@ -12,6 +12,7 @@
  * The MapQuestProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
+
 namespace Plugins\Geocode\Mapquest;
 
 use Hubzero\Plugin\Plugin;

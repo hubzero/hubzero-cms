@@ -9,6 +9,7 @@
 /**
  * Content Security Policy Header Plugin
  */
+
 namespace Plugins\System\Csp;
 
 use Hubzero\Plugin\Plugin;

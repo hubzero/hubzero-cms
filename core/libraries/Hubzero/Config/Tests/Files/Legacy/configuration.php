@@ -1,4 +1,5 @@
 <?php
+
 // @codeCoverageIgnoreStart
 if (!class_exists('JConfig', false)) {
     eval(<<<'JCONFIG'

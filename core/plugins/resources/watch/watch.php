@@ -9,6 +9,7 @@
 /**
  * Display Watch feature on resources page
  */
+
 namespace Plugins\Resources\Watch;
 
 use Hubzero\Plugin\Plugin;

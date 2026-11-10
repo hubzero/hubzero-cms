@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for courses
  */
+
 namespace Plugins\Tags\Courses;
 
 use Hubzero\Plugin\Plugin;

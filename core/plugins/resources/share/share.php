@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for showing social sharing options
  */
+
 namespace Plugins\Resources\Share;
 
 use Hubzero\Plugin\Plugin;

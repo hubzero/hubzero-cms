@@ -10,6 +10,7 @@
  * Base class for wiki macros
  * Should be extended
  */
+
 namespace Plugins\Wiki\Parserdefault;
 
 use Hubzero\Facades\App;

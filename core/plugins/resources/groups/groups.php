@@ -9,6 +9,7 @@
 /**
  * Display groups associated with a resource
  */
+
 namespace Plugins\Resources\Groups;
 
 use Hubzero\Plugin\Plugin;

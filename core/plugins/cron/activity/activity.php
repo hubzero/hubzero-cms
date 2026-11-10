@@ -9,6 +9,7 @@
 /**
  * Cron plugin for activity
  */
+
 namespace Plugins\Cron\Activity;
 
 use Hubzero\Plugin\Plugin;

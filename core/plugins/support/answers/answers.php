@@ -10,6 +10,7 @@
  * Support plugin class for com_answers entries
  *
  */
+
 namespace Plugins\Support\Answers;
 
 use Hubzero\Plugin\Plugin;

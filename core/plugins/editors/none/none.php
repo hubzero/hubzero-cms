@@ -9,6 +9,7 @@
 /**
  * Plain Textarea Editor Plugin
  */
+
 namespace Plugins\Editors\None;
 
 use Hubzero\Plugin\Plugin;

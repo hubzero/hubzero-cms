@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for members
  */
+
 namespace Plugins\Tags\Members;
 
 use Hubzero\Plugin\Plugin;

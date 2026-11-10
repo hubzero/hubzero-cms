@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for events
  */
+
 namespace Plugins\Tags\Events;
 
 use Hubzero\Plugin\Plugin;

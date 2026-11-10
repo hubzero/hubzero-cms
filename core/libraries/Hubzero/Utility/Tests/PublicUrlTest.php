@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.

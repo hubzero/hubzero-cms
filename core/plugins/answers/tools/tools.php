@@ -10,6 +10,7 @@
  * Answers plugin for tools
  *
  */
+
 namespace Plugins\Answers\Tools;
 
 use Hubzero\Plugin\Plugin;

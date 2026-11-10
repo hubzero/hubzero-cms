@@ -9,6 +9,7 @@
 /**
  * Members Plugin class for resources
  */
+
 namespace Plugins\Members\Resources;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Groups Plugin class for blog entries
  */
+
 namespace Plugins\Groups\Blog;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Cron plugin for handling/cleaning cached data
  */
+
 namespace Plugins\Cron\Cache;
 
 use Hubzero\Plugin\Plugin;

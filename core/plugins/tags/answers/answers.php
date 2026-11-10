@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for questions and answers
  */
+
 namespace Plugins\Tags\Answers;
 
 use Hubzero\Plugin\Plugin;

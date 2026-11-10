@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for adding COinS metadata to the document
  */
+
 namespace Plugins\Resources\Coins;
 
 use Hubzero\Plugin\Plugin;

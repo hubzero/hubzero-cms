@@ -9,6 +9,7 @@
 /**
  * Usage plugin class for domain class
  */
+
 namespace Plugins\Usage\Domainclass;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Support plugin class for com_resources entries
  */
+
 namespace Plugins\Support\Publications;
 
 use Hubzero\Plugin\Plugin;

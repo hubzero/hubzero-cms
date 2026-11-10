@@ -16,6 +16,7 @@
  *
  * @todo document
  */
+
 namespace Components\Wiki\Helpers;
 
 class DiffFormatter

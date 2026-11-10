@@ -9,6 +9,7 @@
 /**
  * Members Plugin class for collections
  */
+
 namespace Plugins\Members\Collections;
 
 use Hubzero\Plugin\Plugin;

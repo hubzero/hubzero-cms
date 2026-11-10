@@ -9,6 +9,7 @@
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
  */
+
 namespace Plugins\Editors\Wikitoolbar;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Groups Plugin class for group members
  */
+
 namespace Plugins\Groups\Files;
 
 use Hubzero\Plugin\Plugin;

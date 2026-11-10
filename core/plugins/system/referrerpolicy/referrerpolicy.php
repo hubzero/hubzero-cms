@@ -9,6 +9,7 @@
 /**
  * Referrer Policy Header Plugin
  */
+
 namespace Plugins\System\Referrerpolicy;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * PageDown Editor Plugin
  */
+
 namespace Plugins\Editors\Pagedown;
 
 use Hubzero\Plugin\Plugin;

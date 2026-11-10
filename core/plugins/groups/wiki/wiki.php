@@ -9,6 +9,7 @@
 /**
  * Groups Plugin class for wiki
  */
+
 namespace Plugins\Groups\Wiki;
 
 use Hubzero\Plugin\Plugin;

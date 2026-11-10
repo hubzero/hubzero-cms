@@ -7,6 +7,7 @@
  */
 
 // Include needed libs
+
 namespace Plugins\Members\Citations;
 
 use Hubzero\Plugin\Plugin;

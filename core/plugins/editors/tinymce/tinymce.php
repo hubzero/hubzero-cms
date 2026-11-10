@@ -9,6 +9,7 @@
 /**
  * TinyMCE Editor Plugin
  */
+
 namespace Plugins\Editors\Tinymce;
 
 use Hubzero\Plugin\Plugin;

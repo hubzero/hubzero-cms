@@ -9,6 +9,7 @@
 /**
  * Plugin class for displaying image CAPTCHAs
  */
+
 namespace Plugins\Captcha\Image;
 
 use Hubzero\Plugin\Plugin;

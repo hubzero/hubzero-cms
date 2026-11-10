@@ -9,6 +9,7 @@
 /**
  * IPstack plugin for geocode
  */
+
 namespace Plugins\Geocode\Ipstack;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Authentication Plugin class for PUCAS
  */
+
 namespace Plugins\Authentication\Pucas;
 
 use Hubzero\Plugin\Plugin;

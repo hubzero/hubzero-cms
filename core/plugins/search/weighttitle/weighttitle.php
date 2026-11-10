@@ -11,6 +11,7 @@
  *
  * Long description (if any) ...
  */
+
 namespace Plugins\Search\Weighttitle;
 
 use Hubzero\Plugin\Plugin;

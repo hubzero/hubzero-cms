@@ -9,6 +9,7 @@
 /**
  * Publications Plugin class for adding Dublin Core metadata to the document
  */
+
 namespace Plugins\Publications\Dublincore;
 
 use Hubzero\Plugin\Plugin;

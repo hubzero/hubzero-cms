@@ -9,6 +9,7 @@
 /**
  * Geocode plugin for Hubzero
  */
+
 namespace Plugins\Geocode\Local;
 
 use Hubzero\Plugin\Plugin;

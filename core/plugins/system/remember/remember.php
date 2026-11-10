@@ -9,6 +9,7 @@
 /**
  * System Remember Me Plugin
  */
+
 namespace Plugins\System\Remember;
 
 use Hubzero\Plugin\Plugin;

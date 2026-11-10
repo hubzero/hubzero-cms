@@ -9,6 +9,7 @@
 /**
  * System plugin for Mobile template
  */
+
 namespace Plugins\System\Mobile;
 
 use Hubzero\Plugin\Plugin;

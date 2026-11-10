@@ -9,6 +9,7 @@
 /**
  * Courses Plugin class for the outline
  */
+
 namespace Plugins\Courses\Outline;
 
 use Hubzero\Plugin\Plugin;

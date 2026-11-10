@@ -9,6 +9,7 @@
 /**
  * Cron plugin for support tickets
  */
+
 namespace Plugins\Cron\Support;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * HUBzero plugin class for autocompletion
  */
+
 namespace Plugins\Hubzero\Autocompleter;
 
 use Hubzero\Plugin\Plugin;

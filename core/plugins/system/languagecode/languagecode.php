@@ -9,6 +9,7 @@
 /**
  * Language Code plugin class.
  */
+
 namespace Plugins\System\Languagecode;
 
 use Hubzero\Plugin\Plugin;

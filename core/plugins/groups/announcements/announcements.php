@@ -9,6 +9,7 @@
 /**
  * Group Announcements
  */
+
 namespace Plugins\Groups\Announcements;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Wiki plugin class for loading the default parser
  */
+
 namespace Plugins\Wiki\Parserdefault;
 
 use Hubzero\Plugin\Plugin;

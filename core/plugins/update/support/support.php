@@ -9,6 +9,7 @@
 /**
  * Update plugin for support tickets
  */
+
 namespace Plugins\Update\Support;
 
 use Hubzero\Plugin\Plugin;

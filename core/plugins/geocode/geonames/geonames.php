@@ -12,6 +12,7 @@
  * The GeonamesProvider named geonames is able to geocode and
  * reverse geocode places. A valid username is required.
  */
+
 namespace Plugins\Geocode\Geonames;
 
 use Hubzero\Plugin\Plugin;

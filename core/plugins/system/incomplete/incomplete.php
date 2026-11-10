@@ -9,6 +9,7 @@
 /**
  * System plugin checking for missing/required registration fields
  */
+
 namespace Plugins\System\Incomplete;
 
 use Hubzero\Plugin\Plugin;

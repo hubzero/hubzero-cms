@@ -7,6 +7,7 @@
  */
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
+
 namespace Hubzero\Database {
     if (!class_exists(__NAMESPACE__ . '\\Config', false)) {
         class Config

@@ -9,6 +9,7 @@
 /**
  * Update plugin for handling/cleaning cached data
  */
+
 namespace Plugins\Update\Cache;
 
 use Hubzero\Plugin\Plugin;

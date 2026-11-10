@@ -10,6 +10,7 @@
  * Support plugin class for com_blog entries
  *
  */
+
 namespace Plugins\Support\Blog;
 
 use Hubzero\Plugin\Plugin;

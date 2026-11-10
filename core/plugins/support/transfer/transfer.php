@@ -9,6 +9,7 @@
 /**
  * Support plugin class for transfer
  */
+
 namespace Plugins\Support\Transfer;
 
 use Hubzero\Plugin\Plugin;

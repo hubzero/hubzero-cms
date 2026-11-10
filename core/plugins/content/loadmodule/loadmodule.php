@@ -7,6 +7,7 @@
  */
 
 // no direct access
+
 namespace Plugins\Content\Loadmodule;
 
 use Hubzero\Plugin\Plugin;

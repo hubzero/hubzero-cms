@@ -9,6 +9,7 @@
 /**
  * Support plugin class for comments
  */
+
 namespace Plugins\Support\Comments;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Support plugin class for com_wishlist entries
  */
+
 namespace Plugins\Support\Wishlist;
 
 use Hubzero\Plugin\Plugin;

@@ -14,6 +14,7 @@
  * you can choose between de, es, fr, it, nl, pl, pt and sv.
  * A valid api key is required.
  */
+
 namespace Plugins\Geocode\Tomtom;
 
 use Hubzero\Plugin\Plugin;

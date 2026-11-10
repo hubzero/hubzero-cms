@@ -9,6 +9,7 @@
 /**
  * Publications Plugin class for adding JSON-LD metadata to the document
  */
+
 namespace Plugins\Publications\Jsonld;
 
 use Hubzero\Plugin\Plugin;

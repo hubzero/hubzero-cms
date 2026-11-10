@@ -9,6 +9,7 @@
 /**
  * Courses Plugin class for course PEC
  */
+
 namespace Plugins\Courses\Pec;
 
 use Hubzero\Plugin\Plugin;

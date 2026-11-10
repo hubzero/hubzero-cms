@@ -9,6 +9,7 @@
 /**
  * System plugin for content events
  */
+
 namespace Plugins\System\Content;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * System plugin for hubzero
  */
+
 namespace Plugins\System\Hubzero;
 
 use Hubzero\Plugin\Plugin;

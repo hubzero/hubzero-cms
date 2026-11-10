@@ -15,6 +15,7 @@
  * time (note that this doesn't work on reverse geocoding).
  * This provider also supports SSL.
  */
+
 namespace Plugins\Geocode\Arcgisonline;
 
 use Hubzero\Plugin\Plugin;

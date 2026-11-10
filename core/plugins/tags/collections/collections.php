@@ -9,6 +9,7 @@
 /**
  * Find collections data
  */
+
 namespace Plugins\Tags\Collections;
 
 use Hubzero\Plugin\Plugin;

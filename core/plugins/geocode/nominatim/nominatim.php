@@ -13,6 +13,7 @@
  * street addresses. Access to a Nominatim server is required.
  * See the Nominatim Wiki Page for more information.
  */
+
 namespace Plugins\Geocode\Nominatim;
 
 use Hubzero\Plugin\Plugin;

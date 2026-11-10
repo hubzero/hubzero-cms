@@ -12,6 +12,7 @@
  * The GoogleMapsProvider is able to geocode and reverse geocode
  * street addresses.
  */
+
 namespace Plugins\Geocode\Googlemaps;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Projects Feed plugin
  */
+
 namespace Plugins\Projects\Feed;
 
 use Hubzero\Plugin\Plugin;

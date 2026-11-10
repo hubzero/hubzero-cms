@@ -7,6 +7,7 @@
  */
 
 // Include note model
+
 namespace Plugins\Projects\Notes;
 
 use Hubzero\Utility\Str;

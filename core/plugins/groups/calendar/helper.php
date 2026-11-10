@@ -9,6 +9,7 @@
 /**
  * Helper Class
  */
+
 namespace Plugins\Groups\Calendar;
 
 class Helper

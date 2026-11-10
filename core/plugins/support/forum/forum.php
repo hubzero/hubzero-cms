@@ -9,6 +9,7 @@
 /**
  * Plugin for abuse reports for forum posts
  */
+
 namespace Plugins\Support\Forum;
 
 use Hubzero\Plugin\Plugin;

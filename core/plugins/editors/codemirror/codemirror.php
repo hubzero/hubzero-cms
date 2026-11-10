@@ -9,6 +9,7 @@
 /**
  * CodeMirror Editor Plugin.
  */
+
 namespace Plugins\Editors\Codemirror;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * HUBzero plugin class for system overview
  */
+
 namespace Plugins\Hubzero\Sysusers;
 
 use Hubzero\Plugin\Plugin;

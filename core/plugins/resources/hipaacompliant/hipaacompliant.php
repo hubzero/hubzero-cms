@@ -9,6 +9,7 @@
 /**
  * Allow saving of hipaa compliance checkbox
  */
+
 namespace Plugins\Resources\Hipaacompliant;
 
 use Hubzero\Plugin\Plugin;

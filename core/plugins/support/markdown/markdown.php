@@ -9,6 +9,7 @@
 /**
  * Plugin for converting support comments from MarkDown to HTML
  */
+
 namespace Plugins\Support\Markdown;
 
 use Hubzero\Plugin\Plugin;

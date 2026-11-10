@@ -9,6 +9,7 @@
 /**
  * Support plugin class for wiki comments
  */
+
 namespace Plugins\Support\Wiki;
 
 use Hubzero\Plugin\Plugin;

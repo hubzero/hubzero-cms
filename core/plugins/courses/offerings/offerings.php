@@ -9,6 +9,7 @@
 /**
  * Courses Plugin class for course offerings
  */
+
 namespace Plugins\Courses\Offerings;
 
 use Hubzero\Plugin\Plugin;

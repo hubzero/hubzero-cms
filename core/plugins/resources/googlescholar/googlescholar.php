@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for adding Google Scholar metadata to the document
  */
+
 namespace Plugins\Resources\Googlescholar;
 
 use Hubzero\Plugin\Plugin;

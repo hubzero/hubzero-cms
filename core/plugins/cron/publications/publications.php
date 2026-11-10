@@ -9,6 +9,7 @@
 /**
  * Cron plugin for publications
  */
+
 namespace Plugins\Cron\Publications;
 
 use Hubzero\Plugin\Plugin;

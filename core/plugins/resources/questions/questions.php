@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for questions and answers
  */
+
 namespace Plugins\Resources\Questions;
 
 use Hubzero\Plugin\Plugin;

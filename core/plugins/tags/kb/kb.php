@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for Knowledge Base articles
  */
+
 namespace Plugins\Tags\Kb;
 
 use Hubzero\Plugin\Plugin;

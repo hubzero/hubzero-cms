@@ -9,6 +9,7 @@
 /**
  * P3P Header Plugin
  */
+
 namespace Plugins\System\P3p;
 
 use Hubzero\Plugin\Plugin;

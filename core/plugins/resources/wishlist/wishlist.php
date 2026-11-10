@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for wishlist items
  */
+
 namespace Plugins\Resources\Wishlist;
 
 use Hubzero\Plugin\Plugin;

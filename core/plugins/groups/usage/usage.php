@@ -9,6 +9,7 @@
 /**
  * Groups Plugin class for usage
  */
+
 namespace Plugins\Groups\Usage;
 
 use Hubzero\Plugin\Plugin;

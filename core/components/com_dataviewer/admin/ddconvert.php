@@ -1,5 +1,7 @@
 #!/usr/bin/php
-<?php // phpcs:ignoreFile
+<?php
+
+// phpcs:ignoreFile
 
 /**
  * @package    hubzero-cms

@@ -9,6 +9,7 @@
 /**
  * Wiki plugin class for displaying a WYSIWYG wiki editor
  */
+
 namespace Plugins\Wiki\Editorwykiwyg;
 
 use Hubzero\Plugin\Plugin;

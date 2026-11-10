@@ -9,6 +9,7 @@
 /**
  * System plugin to force .rss and .atom URLs to raw document mode
  */
+
 namespace Plugins\System\Xfeed;
 
 use Hubzero\Plugin\Plugin;

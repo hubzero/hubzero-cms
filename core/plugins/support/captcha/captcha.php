@@ -9,6 +9,7 @@
 /**
  * Support plugin class for CAPTCHA
  */
+
 namespace Plugins\Support\Captcha;
 
 use Hubzero\Plugin\Plugin;

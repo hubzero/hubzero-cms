@@ -9,6 +9,7 @@
 /**
  * Usage plugin class for regions
  */
+
 namespace Plugins\Usage\Region;
 
 use Hubzero\Plugin\Plugin;

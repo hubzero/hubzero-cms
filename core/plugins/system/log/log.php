@@ -9,6 +9,7 @@
 /**
  * System Logging Plugin
  */
+
 namespace Plugins\System\Log;
 
 use Hubzero\Plugin\Plugin;

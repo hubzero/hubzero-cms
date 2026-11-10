@@ -9,6 +9,7 @@
 /**
  * System plugin for activity
  */
+
 namespace Plugins\System\Activity;
 
 use Hubzero\Plugin\Plugin;

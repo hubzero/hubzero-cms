@@ -11,6 +11,7 @@
  *
  * The HostIpProvider is able to geocode IPv4 addresses only.
  */
+
 namespace Plugins\Geocode\Hostip;
 
 use Hubzero\Plugin\Plugin;

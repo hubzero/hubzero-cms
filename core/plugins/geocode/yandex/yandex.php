@@ -16,6 +16,7 @@
  * possible to precise the toponym to get more accurate result for reverse
  * geocoding: house, street, metro, district and locality.
  */
+
 namespace Plugins\Geocode\Yandex;
 
 use Hubzero\Plugin\Plugin;

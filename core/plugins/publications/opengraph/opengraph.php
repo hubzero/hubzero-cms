@@ -9,6 +9,7 @@
 /**
  * Publications Plugin class for adding Open Graph metadata to the document
  */
+
 namespace Plugins\Publications\Opengraph;
 
 use Hubzero\Plugin\Plugin;

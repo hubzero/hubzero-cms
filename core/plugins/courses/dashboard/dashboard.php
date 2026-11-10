@@ -9,6 +9,7 @@
 /**
  * Courses Plugin class for the dashboard
  */
+
 namespace Plugins\Courses\Dashboard;
 
 use Hubzero\Plugin\Plugin;

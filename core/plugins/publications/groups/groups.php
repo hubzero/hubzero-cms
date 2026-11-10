@@ -9,6 +9,7 @@
 /**
  * Display groups associated with a publication
  */
+
 namespace Plugins\Publications\Groups;
 
 use Hubzero\Plugin\Plugin;

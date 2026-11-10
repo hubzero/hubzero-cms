@@ -9,6 +9,7 @@
 /**
  * Tags plugin class for citations
  */
+
 namespace Plugins\Tags\Citations;
 
 use Hubzero\Plugin\Plugin;

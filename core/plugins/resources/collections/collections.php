@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for adding collections
  */
+
 namespace Plugins\Resources\Collections;
 
 use Hubzero\Plugin\Plugin;

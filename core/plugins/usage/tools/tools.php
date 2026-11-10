@@ -9,6 +9,7 @@
 /**
  * Usage plugin class for tools
  */
+
 namespace Plugins\Usage\Tools;
 
 use Hubzero\Plugin\Plugin;

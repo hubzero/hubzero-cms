@@ -9,6 +9,7 @@
 /**
  * System plugin checking auth factors after routing
  */
+
 namespace Plugins\System\Authfactors;
 
 use Hubzero\Plugin\Plugin;

@@ -12,6 +12,7 @@
  * The GeoPluginProvider named geo_plugin is able to geocode
  * IPv4 addresses and IPv6 addresses only.
  */
+
 namespace Plugins\Geocode\Geoplugin;
 
 use Hubzero\Plugin\Plugin;

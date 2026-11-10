@@ -9,6 +9,7 @@
 /**
  * Cron plugin for resources
  */
+
 namespace Plugins\Cron\Resources;
 
 use Hubzero\Plugin\Plugin;

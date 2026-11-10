@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for citations
  */
+
 namespace Plugins\Resources\Citations;
 
 use Hubzero\Plugin\Plugin;

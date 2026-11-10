@@ -12,6 +12,7 @@
  * The IpInfoDbProvider is able to geocode IPv4 addresses
  * only. A valid api key is required.
  */
+
 namespace Plugins\Geocode\Ipinfodb;
 
 use Hubzero\Plugin\Plugin;

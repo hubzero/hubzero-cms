@@ -9,6 +9,7 @@
 /**
  * System plugin to highlight terms.
  */
+
 namespace Plugins\System\Highlight;
 
 use Hubzero\Plugin\Plugin;

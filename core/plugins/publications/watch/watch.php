@@ -9,6 +9,7 @@
 /**
  * Display Watch feature on publication page
  */
+
 namespace Plugins\Publications\Watch;
 
 use Hubzero\Plugin\Plugin;

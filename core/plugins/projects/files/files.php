@@ -7,6 +7,7 @@
  */
 
 // Include external file connection
+
 namespace Plugins\Projects\Files;
 
 use Hubzero\Plugin\Plugin;

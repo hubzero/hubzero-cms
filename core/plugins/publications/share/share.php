@@ -9,6 +9,7 @@
 /**
  * Publication Plugin class for showing social sharing options
  */
+
 namespace Plugins\Publications\Share;
 
 use Hubzero\Plugin\Plugin;

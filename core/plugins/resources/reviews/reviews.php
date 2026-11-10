@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for review
  */
+
 namespace Plugins\Resources\Reviews;
 
 use Hubzero\Plugin\Plugin;

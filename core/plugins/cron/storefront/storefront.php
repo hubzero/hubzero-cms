@@ -9,6 +9,7 @@
 /**
  * Cron plugin for forum
  */
+
 namespace Plugins\Cron\Storefront;
 
 use Hubzero\Plugin\Plugin;

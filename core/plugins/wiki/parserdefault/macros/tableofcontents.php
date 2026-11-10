@@ -9,6 +9,7 @@
 /**
  * Wiki macro class for displaying a table of contents for a page
  */
+
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;

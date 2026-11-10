@@ -9,6 +9,7 @@
 /**
  * Publications Plugin class for related content
  */
+
 namespace Plugins\Publications\Related;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Plugin class for logout redirect handling.
  */
+
 namespace Plugins\System\Logout;
 
 use Hubzero\Plugin\Plugin;

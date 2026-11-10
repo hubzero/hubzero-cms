@@ -9,6 +9,7 @@
 /**
  * Cron plugin for newsletters
  */
+
 namespace Plugins\Cron\Newsletter;
 
 use Hubzero\Plugin\Plugin;

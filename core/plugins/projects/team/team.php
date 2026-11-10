@@ -9,6 +9,7 @@
 /**
  * Projects team
  */
+
 namespace Plugins\Projects\Team;
 
 use Hubzero\Plugin\Plugin;

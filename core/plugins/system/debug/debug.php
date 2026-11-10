@@ -9,6 +9,7 @@
 /**
  * Debug plugin
  */
+
 namespace Plugins\System\Debug;
 
 use Hubzero\Plugin\Plugin;

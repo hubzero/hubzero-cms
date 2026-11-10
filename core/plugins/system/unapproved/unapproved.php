@@ -9,6 +9,7 @@
 /**
  * System plugin checking for unapproved users
  */
+
 namespace Plugins\System\Unapproved;
 
 use Hubzero\Plugin\Plugin;

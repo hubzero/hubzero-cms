@@ -9,6 +9,7 @@
 /**
  * CKEditor Plugin
  */
+
 namespace Plugins\Editors\Ckeditor;
 
 use Hubzero\Plugin\Plugin;

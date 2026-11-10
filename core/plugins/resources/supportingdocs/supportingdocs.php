@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for supporting documentss
  */
+
 namespace Plugins\Resources\Supportingdocs;
 
 use Hubzero\Plugin\Plugin;

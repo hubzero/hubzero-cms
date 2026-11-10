@@ -9,6 +9,7 @@
 /**
  * System plugin checking for spam offences after routing
  */
+
 namespace Plugins\System\Password;
 
 use Hubzero\Plugin\Plugin;

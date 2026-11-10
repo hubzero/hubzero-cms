@@ -9,6 +9,7 @@
 /**
  * Plugin for abuse reports on KB comments
  */
+
 namespace Plugins\Support\Kb;
 
 use Hubzero\Plugin\Plugin;

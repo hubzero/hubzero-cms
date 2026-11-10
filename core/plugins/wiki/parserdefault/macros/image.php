@@ -9,6 +9,7 @@
 /**
  * A wiki macro for embedding images
  */
+
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;

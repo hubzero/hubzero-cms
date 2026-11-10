@@ -9,6 +9,7 @@
 /**
  * System plugin for client side certificate restrictions
  */
+
 namespace Plugins\System\Certificate;
 
 use Hubzero\Plugin\Plugin;

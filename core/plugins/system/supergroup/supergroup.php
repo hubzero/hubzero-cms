@@ -9,6 +9,7 @@
 /**
  * System plugin for hubzero
  */
+
 namespace Plugins\System\Supergroup;
 
 use Hubzero\Plugin\Plugin;

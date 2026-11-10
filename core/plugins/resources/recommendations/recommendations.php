@@ -9,6 +9,7 @@
 /**
  * Resources Plugin class for recommendations
  */
+
 namespace Plugins\Resources\Recommendations;
 
 use Hubzero\Plugin\Plugin;

@@ -9,6 +9,7 @@
 /**
  * Cron plugin for courses
  */
+
 namespace Plugins\Cron\Courses;
 
 use Hubzero\Plugin\Plugin;

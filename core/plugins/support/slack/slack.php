@@ -9,6 +9,7 @@
 /**
  * Plugin for sending notifications to Slack about support tickets
  */
+
 namespace Plugins\Support\Slack;
 
 use Hubzero\Plugin\Plugin;

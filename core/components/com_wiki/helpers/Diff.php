@@ -13,6 +13,7 @@
  * fixes important bugs or such to force cached diff views to
  * clear.
  */
+
 namespace Components\Wiki\Helpers;
 
 define('MW_DIFF_VERSION', '1.11a');
