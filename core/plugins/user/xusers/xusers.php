@@ -313,7 +313,8 @@ class Xusers extends Plugin
             $xprofile->set('gidNumber', $params->get('gidNumber', '100'));
             $xprofile->set('gid', $params->get('gid', 'users'));
             $xprofile->set('uidNumber', $user['id']);
-            $xprofile->set('homeDirectory', isset($user['homeDirectory']) ? $user['homeDirectory']
+            $xprofile->set('homeDirectory', isset($user['homeDirectory'])
+                ? $user['homeDirectory']
                 : $hubHomeDir . DS . $user['username']);
             $xprofile->set(
                 'loginShell',

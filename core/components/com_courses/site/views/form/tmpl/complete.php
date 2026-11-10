@@ -78,7 +78,8 @@ if ($this->resp->getStartTime()) {
                                     || (!isset($_POST['question-' . $qid])
                                         && isset($progress[$qid])
                                         && $progress[$qid]['answer_id'] == $ans['id '])
-                                    ? 'checked="checked" ' : ''
+                                    ? 'checked="checked" '
+                                    : ''
                             ) . 'class="placeholder" type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(

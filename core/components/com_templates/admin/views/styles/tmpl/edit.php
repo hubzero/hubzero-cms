@@ -19,7 +19,8 @@ $canDo = \Components\Templates\Helpers\Utilities::getActions();
 $isNew = $this->item->isNew();
 
 Toolbar::title(
-    $isNew ? Lang::txt('COM_TEMPLATES_MANAGER_ADD_STYLE')
+    $isNew
+            ? Lang::txt('COM_TEMPLATES_MANAGER_ADD_STYLE')
             : Lang::txt('COM_TEMPLATES_MANAGER_EDIT_STYLE'),
     'thememanager',
 );

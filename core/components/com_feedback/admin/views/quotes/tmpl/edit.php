@@ -119,7 +119,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <?php
                     $userIdVal = $this->escape(stripslashes($this->row->get('user_id')));
                     $readonlyAttr = ($this->row->get('id') && $this->row->get('user_id'))
-                        ? ' readonly="readonly"' : '';
+                        ? ' readonly="readonly"'
+                        : '';
                     ?>
                     <input
                         type="text"
@@ -141,9 +142,11 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <div class="input-wrap">
                         <?php
                         $publishChecked = ($this->row->get('publish_ok') == 1)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $disabledAttr = $this->row->get('id')
-                            ? ' disabled="disabled"' : '';
+                            ? ' disabled="disabled"'
+                            : '';
                         ?>
                         <input
                             type="checkbox"
@@ -158,7 +161,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                         <?php
                         $contactChecked = ($this->row->get('contact_ok') == 1)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         ?>
                         <input
                             type="checkbox"

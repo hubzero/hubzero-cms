@@ -154,8 +154,10 @@ class Media extends Field
         // The button.
         $html[] = '	<span class="input-cell">';
         $html[] = '		<a class="button modal" title="' . $lang->txt('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
-            . ($this->element['readonly'] ? ''
-            : ($link ? $link
+            . ($this->element['readonly']
+            ? ''
+            : ($link
+                ? $link
                 : 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
                 . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
             . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';

@@ -86,7 +86,8 @@ Html::behavior('tooltip');
                                 <?php $val = $val; ?>
                                 <?php
                                 $selected = ($offering->get('id') == $this->offering->get('id'))
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                                 $optLabel = $this->escape(stripslashes($offering->get('alias')));
                                 ?>
                             <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
@@ -132,7 +133,8 @@ Html::behavior('tooltip');
                                 <?php $val = $val; ?>
                                 <?php
                                 $selected = ($section->get('id') == $this->filters['section_id'])
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $optLabel = $this->escape(stripslashes($section->get('title')));
                                 ?>
                                 <option value="<?php echo $val; ?>"<?php echo $selected; ?>>

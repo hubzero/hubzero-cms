@@ -106,9 +106,11 @@ if (!$no_html) { ?>
                     'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME',
                 );
                 $meSelected = ($this->filters['created_by'] == 'me')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 $notmeSelected = ($this->filters['created_by'] == 'notme')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 ?>
                 <div class="col span3">
                     <span class="form-group">
@@ -124,7 +126,8 @@ if (!$no_html) { ?>
                             <?php foreach ($this->categories as $category) {
                                 $catVal = $this->escape($category);
                                 $catSel = ($this->filters['scope'] == $category)
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 ?>
                                 <option
                                     value="<?php echo $catVal; ?>"

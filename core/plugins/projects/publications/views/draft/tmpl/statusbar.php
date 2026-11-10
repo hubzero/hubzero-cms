@@ -65,7 +65,8 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
         <?php foreach ($this->pub->curation('blocks') as $blockId => $block) {
             $blockname = $block->name;
             $status    = $block->review && $block->review->status != 2
-                        ? $block->review->status : $block->status->status;
+                        ? $block->review->status
+                        : $block->status->status;
             $updated   = $block->review && $this->pub->state != 1 ? $block->review->lastupdate : null;
 
             if ($updated && $block->review->status != 2) {

@@ -201,7 +201,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortNameTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
                     . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME');
                 $nameActive = $this->params['sortby'] == 'name'
-                    ? ' activesort' : '';
+                    ? ' activesort'
+                    : '';
                 ?>
                 <th class="asset_doc<?php echo $nameActive; ?>">
                     <a href="<?php echo $sortNameUrl; ?>"
@@ -219,7 +220,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortSizeTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
                     . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE');
                 $sizeClass = $this->params['sortby'] == 'size'
-                    ? 'class="activesort"' : '';
+                    ? 'class="activesort"'
+                    : '';
                 ?>
                 <th <?php echo $sizeClass; ?>>
                     <a href="<?php echo $sortSizeUrl; ?>"
@@ -237,7 +239,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortModTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
                     . ' ' . $modLabel;
                 $modClass = $this->params['sortby'] == 'modified'
-                    ? 'class="activesort"' : '';
+                    ? 'class="activesort"'
+                    : '';
                 ?>
                 <th <?php echo $modClass; ?>>
                     <a href="<?php echo $sortModUrl; ?>"
@@ -262,7 +265,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                     <td></td>
                     <?php
                     $colspan = $this->publishing
-                        ? 7 - $min : 6 - $min;
+                        ? 7 - $min
+                        : 6 - $min;
                     $parentUrl = Route::url(
                         $this->model->link('files')
                         . '&action=browse&subdir=' . $parent,

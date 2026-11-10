@@ -362,7 +362,8 @@ class Html
             $text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . $publication->created('date') . '</span>';
         } else {
             $class = 'curversion';
-            $text .= ($publication->isCurrent()) ? ''
+            $text .= ($publication->isCurrent())
+                ? ''
                 : '<strong>' . Lang::txt('COM_PUBLICATIONS_ARCHIVE') . '</strong> ';
             $text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>' . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8') . '</strong>';
 

@@ -178,14 +178,16 @@ Toolbar::help('quotes');
                     $yesLabel = '<span class="state yes"><span>'
                         . Lang::txt('JYES') . '</span></span>';
                     echo ($row->get('notable_quote') == 1)
-                        ? $yesLabel : '';
+                        ? $yesLabel
+                        : '';
                     ?>
 
                 </td>
                 <td class="priority-4">
                     <?php
                     echo ($row->get('publish_ok') == 1)
-                        ? $yesLabel : '';
+                        ? $yesLabel
+                        : '';
                     ?>
                 </td>
             </tr>

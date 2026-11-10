@@ -45,7 +45,8 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         // Is file type allowed?
         $allowed = $item->isFile() && !empty($this->allowed)
                 && !in_array($item->getExtension(), $this->allowed)
-                ? ' notallowed' : ' allowed';
+                ? ' notallowed'
+                : ' allowed';
 
         $used = !empty($this->used)
                 && in_array($item->getPath(), $this->used) ? true : false;

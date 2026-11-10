@@ -50,7 +50,8 @@ $notification = Event::trigger(
     [ $this->model, $this->active ],
 );
 $notification   = $notification && !empty($notification)
-    ? $notification[0] : null;
+    ? $notification[0]
+    : null;
 
 // Get side content
 $sideContent = Event::trigger(
@@ -58,7 +59,8 @@ $sideContent = Event::trigger(
     [ $this->model, $this->active ],
 );
 $sideContent    = $sideContent && !empty($sideContent)
-    ? $sideContent[0] : null;
+    ? $sideContent[0]
+    : null;
 
 ?>
 <div id="project-wrap" class="theme">

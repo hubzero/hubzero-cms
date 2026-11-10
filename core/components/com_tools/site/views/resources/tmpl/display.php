@@ -19,7 +19,8 @@ $dev = ($this->version == 'dev') ? 1 : 0;
 
 if ($this->version == 'dev') {
     $v = ($this->status['version'] && $this->status['version'] != $this->status['currentversion'])
-        ? $this->status['version'] : '';
+        ? $this->status['version']
+        : '';
 } else {
     $v = $this->status['version'];
 }

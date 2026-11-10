@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 $item = $this->item;
 $itemIsFile = $item->isFile();
 $itemName = $item->getName();
-$itemOwner = ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME')
+$itemOwner = ($item->getOwner() == User::get('id'))
+? Lang::txt('PLG_PROJECTS_FILES_ME')
 : User::getInstance($item->getOwner())->get('name');
 $itemPath = $item->getPath();
 $itemTypeInputName = $item->isFile() ? 'asset[]' : 'folder[]';

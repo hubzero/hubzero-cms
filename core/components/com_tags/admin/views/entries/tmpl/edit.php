@@ -155,7 +155,8 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php
                         $created = $this->tag->created();
                         echo ($created && $created != '0000-00-00 00:00:00')
-                            ? $created : Lang::txt('COM_TAGS_UNKNOWN');
+                            ? $created
+                            : Lang::txt('COM_TAGS_UNKNOWN');
                         ?>
                     </td>
                 </tr>
@@ -179,7 +180,8 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                             $modified = $this->tag->modified();
                             echo ($modified && $modified != '0000-00-00 00:00:00')
-                                ? $modified : Lang::txt('COM_TAGS_UNKNOWN');
+                                ? $modified
+                                : Lang::txt('COM_TAGS_UNKNOWN');
                             ?>
                         </td>
                     </tr>

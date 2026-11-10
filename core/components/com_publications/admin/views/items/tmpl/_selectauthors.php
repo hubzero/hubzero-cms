@@ -26,7 +26,8 @@ if ($this->authNames != null) {
         $org = $this->escape($authname->organization ? $authname->organization : $authname->p_organization);
         $email = $this->escape($authname->p_email ? $authname->p_email : $authname->invited_email);
         $credit = ($authname->credit)
-            ? $this->escape($authname->credit) : '';
+            ? $this->escape($authname->credit)
+            : '';
         $userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
         $html .= "\t" . '<li id="author_' . $authname->id . '" class="pick reorder">'

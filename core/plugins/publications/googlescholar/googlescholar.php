@@ -85,7 +85,8 @@ class Googlescholar extends Plugin
                 $contributor->organization = $contributor->p_organization;
             }
             $contributor->organization = stripslashes(trim($contributor->organization
-                ? $contributor->organization : ''));
+                ? $contributor->organization
+                : ''));
 
             Document::setMetaData('citation_author', $view->escape($name));
 

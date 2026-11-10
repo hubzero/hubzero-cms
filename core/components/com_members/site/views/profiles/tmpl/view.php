@@ -222,7 +222,8 @@ if (!$no_html) {
                             <?php $val = Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
                             <?php
                             $whose = ($this->profile->get('id') == User::get('id'))
-                                ? 'my' : $this->profile->get('name') . "'s";
+                                ? 'my'
+                                : $this->profile->get('name') . "'s";
                             $editTitle = $val . ' :: Edit ' . $whose . ' profile.';
                             $editHref = Route::url($this->profile->link() . '&task=edit');
                             ?>

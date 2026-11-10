@@ -90,7 +90,8 @@ $todoContent = $this->row->get('details')
                             <select name="list">
                             <?php
                             $noneSelected = ($color == '')
-                            ? 'selected="selected"' : '';
+                            ? 'selected="selected"'
+                            : '';
                             $noListLabel = Lang::txt(
                                 'PLG_PROJECTS_TODO_ADD_TO_NO_LIST',
                             );

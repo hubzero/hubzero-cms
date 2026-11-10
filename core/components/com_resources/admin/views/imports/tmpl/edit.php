@@ -21,7 +21,8 @@ $this->css('import');
 $this->js('import');
 
 // set title
-$title = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT')
+$title = ($this->import->get('id'))
+? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT')
 : Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt($title), 'import');

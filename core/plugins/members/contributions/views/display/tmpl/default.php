@@ -137,7 +137,8 @@ foreach ($this->cats as $cat) {
                 . '&limitstart=' . $this->start;
 
             $dateClass = ($this->sort == 'date')
-                ? ' class="active"' : '';
+                ? ' class="active"'
+                : '';
             $dateUrl = Route::url($sortBase . '&sort=date')
                 . $pageSuffix;
             $dateByTitle = Lang::txt(
@@ -148,7 +149,8 @@ foreach ($this->cats as $cat) {
             );
 
             $titleClass = ($this->sort == 'title')
-                ? ' class="active"' : '';
+                ? ' class="active"'
+                : '';
             $titleUrl = Route::url($sortBase . '&sort=title')
                 . $pageSuffix;
             $titleByTitle = Lang::txt(
@@ -159,7 +161,8 @@ foreach ($this->cats as $cat) {
             );
 
             $usageClass = ($this->sort == 'usage')
-                ? ' class="active"' : '';
+                ? ' class="active"'
+                : '';
             $usageUrl = Route::url($sortBase . '&sort=usage')
                 . $pageSuffix;
             $usageByTitle = Lang::txt(

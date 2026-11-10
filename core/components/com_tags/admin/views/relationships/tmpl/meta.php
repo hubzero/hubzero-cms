@@ -103,7 +103,8 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                             <?php
                             $optChecked   = is_null($fa['mandatory_depth']) ? ' checked="checked"' : '';
                             $mandChecked  = (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $depthChecked = ($fa['mandatory_depth'] > 1) ? ' checked="checked"' : '';
                             $optLabel     = Lang::txt('COM_TAGS_OPTIONAL');
                             $mandLabel    = Lang::txt('COM_TAGS_MANDATORY');
@@ -141,7 +142,8 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         <div class="input-wrap">
                             <?php
                             $multiChecked  = (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $singleChecked = is_null($fa['multiple_depth']) ? ' checked="checked"' : '';
                             $sdepthChecked = ($fa['multiple_depth'] > 1) ? ' checked="checked"' : '';
                             $multiLabel    = Lang::txt('COM_TAGS_GROUP_MULTI_SELECT');

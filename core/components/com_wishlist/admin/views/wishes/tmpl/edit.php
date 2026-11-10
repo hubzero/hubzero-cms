@@ -78,7 +78,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php foreach ($this->lists as $list) { ?>
                                 <?php
                                 $sel = ($this->row->get('wishlist') == $list->id)
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 ?>
                                 <option value="<?php echo $list->id; ?>"<?php echo $sel; ?>>
                                     <?php echo $this->escape(stripslashes($list->get('title'))); ?>
@@ -190,7 +191,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php foreach ($this->assignees as $assignee) { ?>
                                 <?php
                                 $asel = ($this->row->get('assigned') == $assignee->id)
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 ?>
                                 <option value="<?php echo $assignee->id; ?>"<?php echo $asel; ?>>
                                     <?php echo $this->escape(stripslashes($assignee->name)); ?>

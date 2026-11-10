@@ -654,7 +654,8 @@ class Items extends AdminController
 
         $this->model->setCuration();
         $requireDoi = isset($this->model->_curationModel->manifest->params->require_doi)
-                    ? $this->model->_curationModel->manifest->params->require_doi : 0;
+                    ? $this->model->_curationModel->manifest->params->require_doi
+                    : 0;
 
         // Incoming updates
         $title          = trim(Request::getString('title', '', 'post'));
@@ -1365,7 +1366,8 @@ class Items extends AdminController
             $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 
             $subject = $subject
-                ? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
+                ? $subject
+                : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
 
             // Get message body
             $eview = new \Hubzero\Mail\View([

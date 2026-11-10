@@ -78,11 +78,14 @@ $hitsVal = $this->escape($this->row->hits);
 $statusCode = $this->row->status_code;
 $hasNewUrl = $this->row->new_url;
 $sel404 = ((!$hasNewUrl && !$statusCode) || $statusCode == 404)
-    ? ' selected="selected"' : '';
+    ? ' selected="selected"'
+    : '';
 $sel301 = ($statusCode == 301)
-    ? ' selected="selected"' : '';
+    ? ' selected="selected"'
+    : '';
 $sel302 = (($hasNewUrl && !$statusCode) || $statusCode == 302)
-    ? ' selected="selected"' : '';
+    ? ' selected="selected"'
+    : '';
 ?>
 
 <form

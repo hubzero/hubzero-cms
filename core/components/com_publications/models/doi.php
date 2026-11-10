@@ -262,13 +262,17 @@ class Doi extends Obj
 
         // Set dates
         $pubYear = $pub->version->published_up && $pub->version->published_up != $this->db->getNullDate()
-                ? date('Y', strtotime($pub->version->published_up)) : date('Y');
+                ? date('Y', strtotime($pub->version->published_up))
+                : date('Y');
         $pubDate = $pub->version->published_up && $pub->version->published_up != $this->db->getNullDate()
-                ? date('Y-m-d', strtotime($pub->version->published_up)) : date('Y-m-d');
+                ? date('Y-m-d', strtotime($pub->version->published_up))
+                : date('Y-m-d');
         $acceptedDate = $pub->version->accepted && $pub->version->accepted != $this->db->getNullDate()
-                ? date('Y-m-d', strtotime($pub->version->accepted)) : "0000-00-00";
+                ? date('Y-m-d', strtotime($pub->version->accepted))
+                : "0000-00-00";
         $submittedDate = $pub->version->submitted && $pub->version->submitted != $this->db->getNullDate()
-                ? date('Y-m-d', strtotime($pub->version->submitted)) : "0000-00-00";
+                ? date('Y-m-d', strtotime($pub->version->submitted))
+                : "0000-00-00";
         $this->set('pubYear', $pubYear);
         $this->set('datePublished', $pubDate);
         $this->set('dateAccepted', $acceptedDate);

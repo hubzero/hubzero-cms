@@ -214,7 +214,8 @@ class Sync extends \Hubzero\Base\Obj
 
         // Time to get timed remotes from
         $from = ($synced == $lastRemoteChange || !$lastRemoteChange)
-                ? date("c", strtotime($synced) - (1)) : date("c", strtotime($lastRemoteChange));
+                ? date("c", strtotime($synced) - (1))
+                : date("c", strtotime($lastRemoteChange));
 
         // Get changes via List feed (to make sure we get ALL changes)
         // We need this because Changes feed is not 100% reliable :(
@@ -272,7 +273,8 @@ class Sync extends \Hubzero\Base\Obj
                 $match = !empty($remotes)
                     && isset($remotes[$filename])
                     && $local['type'] == $remotes[$filename]['type']
-                    ? $remotes[$filename] : null;
+                    ? $remotes[$filename]
+                    : null;
 
                 // Check against individual item sync time (to avoid repeat sync)
                 if ($local['synced'] && ($local['synced']  > $local['modified'])) {
@@ -504,7 +506,8 @@ class Sync extends \Hubzero\Base\Obj
                 $match = !empty($locals)
                     && isset($locals[$filename])
                     && $remote['type'] == $locals[$filename]['type']
-                    ? $locals[$filename] : [];
+                    ? $locals[$filename]
+                    : [];
 
                 // Check for match in local changes
                 // Remote usually prevails, unless it's older than last synced remote change

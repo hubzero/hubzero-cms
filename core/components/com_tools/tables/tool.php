@@ -514,7 +514,8 @@ class Tool extends Table
                 && isset($version[0]) && $version[0]->fulltxt != ''
             ) ? 1 : 0,
             'fulltxt'       => isset($version[0]->fulltxt)
-                ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
+                ? $version[0]->fulltxt
+                : $toolinfo[0]->rfulltxt,
             'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
             'toolid'        => isset($toolinfo[0]->id) ? $toolinfo[0]->id : 0,
             'title'         => isset($version[0]->title) ? $version[0]->title : '',
@@ -534,11 +535,13 @@ class Tool extends Table
             'developers'    => $developers,
             'devgroup'      => isset($toolinfo[0]->devgroup) ? $toolinfo[0]->devgroup : '',
             'membergroups'  => (isset($version[0]->toolaccess) && $version[0]->toolaccess == '@GROUP')
-                ? $this->getToolGroups($toolinfo[0]->id) : [],
+                ? $this->getToolGroups($toolinfo[0]->id)
+                : [],
             'ntools'        => isset($toolinfo[0]->ntools) ? $toolinfo[0]->ntools : 0,
             'ntoolsdev'     => isset($toolinfo[0]->ntoolsdev) ? $toolinfo[0]->ntoolsdev : 0,
             'ntools_published' => isset($toolinfo[0]->ntoolspublished)
-                ? $toolinfo[0]->ntoolspublished : 0,
+                ? $toolinfo[0]->ntoolspublished
+                : 0,
             'newmessages'   => isset($toolinfo[0]->comments) ? $toolinfo[0]->comments : 0,
             'changed'       => (
                 isset($toolinfo[0]->state_changed)
@@ -553,10 +556,12 @@ class Tool extends Table
                 ? $version[0]->vnc_command
                 : $invokedir . DS . $toolinfo[0]->toolname . DS . 'invoke',
             'vncGeometry'   => (isset($version[0]->vnc_geometry) && $version[0]->vnc_geometry != '')
-                ? $version[0]->vnc_geometry : $vnc,
+                ? $version[0]->vnc_geometry
+                : $vnc,
             'license'       => isset($version[0]->license) ? $version[0]->license : '',
             'hostreq'       => isset($version[0]->hostreq)
-                ? implode(', ', $version[0]->hostreq) : $hostreq,
+                ? implode(', ', $version[0]->hostreq)
+                : $hostreq,
             'params'        => isset($version[0]->params) ? $version[0]->params : '',
             'repohost'      => $params->get('repohost'),
             'github'        => $params->get('github'),
@@ -579,7 +584,8 @@ class Tool extends Table
         }
 
         $status['currenttool']     = isset($current[0]->instance)
-            ? $current[0]->instance : $status['toolname'] . $dev_suffix;
+            ? $current[0]->instance
+            : $status['toolname'] . $dev_suffix;
         $status['currentrevision'] = isset($current[0]->revision) ? $current[0]->revision : $status['revision'];
         $status['currentversion']  = isset($current[0]->version) ? $current[0]->version : $status['version'];
 

@@ -121,13 +121,17 @@ $required = ['content', 'description', 'authors'];
                         foreach ($panels as $panel => $val) {
                             $inputName = 'params[show_' . $panel . ']';
                             $chk0 = ($params->get('show_' . $panel, $val) == 0)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $chk1 = ($params->get('show_' . $panel, $val) == 1)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $chk2 = ($params->get('show_' . $panel, $val) == 2)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $dis = in_array($panel, $required)
-                                ? ' disabled="disabled"' : '';
+                                ? ' disabled="disabled"'
+                                : '';
                             $hideLabel = Lang::txt('COM_PUBLICATIONS_HIDE');
                             $showLabel = Lang::txt('COM_PUBLICATIONS_SHOW');
                             $reqLabel = Lang::txt(
@@ -160,13 +164,17 @@ $required = ['content', 'description', 'authors'];
                         ?>
                         <?php
                         $metaChk0 = ($params->get('show_metadata', 0) == 0)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $metaChk1 = ($params->get('show_metadata', 0) == 1)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $subChk0 = ($params->get('show_submitter', 0) == 0)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $subChk1 = ($params->get('show_submitter', 0) == 1)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $metaLabel = Lang::txt('COM_PUBLICATIONS_FIELD_METADATA');
                         $subLabel = Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER');
                         $hideLabel = Lang::txt('COM_PUBLICATIONS_HIDE');

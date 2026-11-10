@@ -308,10 +308,12 @@ class Batchcreate extends AdminController
 
         // Get defaults from manifest
         $title = $curationModel && isset($curationModel->manifest->params->default_title)
-            ? $curationModel->manifest->params->default_title : 'Untitled Draft';
+            ? $curationModel->manifest->params->default_title
+            : 'Untitled Draft';
         $title = $title ? $title : 'Untitled Draft';
         $cat = isset($curationModel->manifest->params->default_category)
-                ? $curationModel->manifest->params->default_category : 1;
+                ? $curationModel->manifest->params->default_category
+                : 1;
         $this->curationModel = $curationModel;
 
         // Get element IDs
@@ -786,11 +788,14 @@ class Batchcreate extends AdminController
         $pAuthor->role         = '';
         $pAuthor->status       = 1;
         $pAuthor->organization = isset($author->organization) && $author->organization
-                                ? trim($author->organization) : $org;
+                                ? trim($author->organization)
+                                : $org;
         $pAuthor->firstName    = isset($author->firstname) && $author->firstname
-                                ? trim($author->firstname) : $firstName;
+                                ? trim($author->firstname)
+                                : $firstName;
         $pAuthor->lastName     = isset($author->lastname) && $author->lastname
-                                ? trim($author->lastname) : $lastName;
+                                ? trim($author->lastname)
+                                : $lastName;
         $pAuthor->name         = trim($pAuthor->firstName . ' ' . $pAuthor->lastName);
 
         // Check if project member

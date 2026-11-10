@@ -83,7 +83,8 @@ $dep  = $this->dep;
                         <?php foreach ($completedAttempts as $completedAttempt) : ?>
                             <?php
                                 $sel = ($completedAttempt == $attempt)
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $ord = \Components\Courses\Helpers\Form::toOrdinal(
                                     $completedAttempt,
                                 );
@@ -98,7 +99,8 @@ $dep  = $this->dep;
 
                 <?php
                     $nextAttempt = (count($completedAttempts) < $dep->getAllowedAttempts())
-                        ? (count($completedAttempts) + 1) : null;
+                        ? (count($completedAttempts) + 1)
+                        : null;
                 ?>
             <?php endif; ?>
 

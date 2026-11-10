@@ -21,7 +21,8 @@ $deletable = 0;
 
 if ($this->model->member()) {
     $newComment = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $comment->created
-        ? true : false;
+        ? true
+        : false;
 
     // Is user allowed to delete item?
     $deletable = ($comment->created_by == $this->uid or $this->model->member()->role == 1) ? 1 : 0;
@@ -32,7 +33,8 @@ $longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
 
 $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
-    ? \Hubzero\Utility\Str::truncate($longComment, 250, ['html' => true]) : $longComment;
+    ? \Hubzero\Utility\Str::truncate($longComment, 250, ['html' => true])
+    : $longComment;
 
 $longComment  = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
 $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');

@@ -137,7 +137,8 @@ $this->js();
                     </label><br />
                     <?php $learnMoreTextVal = $this->escape(stripslashes(
                         $this->row->learn_more_text == null
-                        ? '' : $this->row->learn_more_text,
+                        ? ''
+                        : $this->row->learn_more_text,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_text]"
@@ -151,7 +152,8 @@ $this->js();
                     </label><br />
                     <?php $learnMoreTargetVal = $this->escape(stripslashes(
                         $this->row->learn_more_target == null
-                        ? '' : $this->row->learn_more_target,
+                        ? ''
+                        : $this->row->learn_more_target,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_target]"
@@ -165,7 +167,8 @@ $this->js();
                     </label><br />
                     <?php $learnMoreClassVal = $this->escape(stripslashes(
                         $this->row->learn_more_class == null
-                        ? '' : $this->row->learn_more_class,
+                        ? ''
+                        : $this->row->learn_more_class,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_class]"
@@ -183,31 +186,36 @@ $this->js();
                     >
                         <option value="topleft"
                             <?php echo ($loc == 'topleft')
-                                ? 'selected="selected"' : ''; ?>
+                                ? 'selected="selected"'
+                                : ''; ?>
                         >
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_TOP_LEFT'); ?>
                         </option>
                         <option value="topright"
                             <?php echo ($loc == 'topright')
-                                ? 'selected="selected"' : ''; ?>
+                                ? 'selected="selected"'
+                                : ''; ?>
                         >
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_TOP_RIGHT'); ?>
                         </option>
                         <option value="bottomleft"
                             <?php echo ($loc == 'bottomleft')
-                                ? 'selected="selected"' : ''; ?>
+                                ? 'selected="selected"'
+                                : ''; ?>
                         >
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_BOTTOM_LEFT'); ?>
                         </option>
                         <option value="bottomright"
                             <?php echo ($loc == 'bottomright')
-                                ? 'selected="selected"' : ''; ?>
+                                ? 'selected="selected"'
+                                : ''; ?>
                         >
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_BOTTOM_RIGHT'); ?>
                         </option>
                         <option value="relative"
                             <?php echo ($loc == 'relative')
-                                ? 'selected="selected"' : ''; ?>
+                                ? 'selected="selected"'
+                                : ''; ?>
                         >
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_RELATIVE'); ?>
                         </option>
@@ -253,7 +261,8 @@ $this->js();
                         </label><br />
                         <?php $paddingVal = $this->escape(stripslashes(
                             $this->row->padding == null
-                            ? '' : $this->row->padding,
+                            ? ''
+                            : $this->row->padding,
                         )); ?>
                         <input type="text"
                             name="billboard[padding]"

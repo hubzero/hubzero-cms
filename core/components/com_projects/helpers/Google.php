@@ -764,7 +764,8 @@ class Google extends Obj
         $pathTaken = isset($connections['paths'][$fpath])
                     && $connections['paths'][$fpath]['remote_id'] != $id
                     && $connections['paths'][$fpath]['format'] == $format
-                    ? true : false;
+                    ? true
+                    : false;
 
         // Deal with duplicate names
         if ((isset($remotes[$fpath]) && $remotes[$fpath]['mimeType'] == $format) || $pathTaken == true) {

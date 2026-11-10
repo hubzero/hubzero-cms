@@ -253,9 +253,11 @@ $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' '
                     />
                     <?php } else {
                         $inputType = ($paramname == 'min' || $paramname == 'max')
-                            ? 'number' : 'text';
+                            ? 'number'
+                            : 'text';
                         $minAttr = ($paramname == 'min' || $paramname == 'max')
-                            ? ' min="0"' : '';
+                            ? ' min="0"'
+                            : '';
                         ?>
                         <input
                             type="<?php echo $inputType; ?>"

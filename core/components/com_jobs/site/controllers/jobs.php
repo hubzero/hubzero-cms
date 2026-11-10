@@ -1843,14 +1843,18 @@ class Jobs extends SiteController
         // jobs filters
         if ($jobs) {
             $filters['sortby']   = $this->getProperty('sortby') && $checkstored
-                                 ? $this->getProperty('sortby', 'title') : trim(Request::getWord('sortby', 'title'));
+                                 ? $this->getProperty('sortby', 'title')
+                                 : trim(Request::getWord('sortby', 'title'));
             $filters['category'] = $this->getProperty('category') && $checkstored
-                                 ? $this->getProperty('category') : Request::getInt('category', 'all');
+                                 ? $this->getProperty('category')
+                                 : Request::getInt('category', 'all');
         } else {
             $filters['sortby']   = $this->getProperty('sortby') && $checkstored
-                                 ? $this->getProperty('sortby') : trim(Request::getString('sortby', 'lastupdate'));
+                                 ? $this->getProperty('sortby')
+                                 : trim(Request::getString('sortby', 'lastupdate'));
             $filters['category'] = $this->getProperty('category') && $checkstored
-                                 ? $this->getProperty('category') : Request::getInt('category', 0);
+                                 ? $this->getProperty('category')
+                                 : Request::getInt('category', 0);
         }
 
         $filters['type']     = $this->getProperty('type') && $checkstored ? $this->getProperty('type') : Request::getInt('type', 0);

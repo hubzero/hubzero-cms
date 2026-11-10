@@ -200,7 +200,8 @@ Html::behavior('tooltip');
                             $hasRedeemed = ($row->get('redeemed')
                                 && $row->get('redeemed') != '0000-00-00 00:00:00');
                             $stateClass = ($hasRedeemed || $row->get('redeemed_by'))
-                                ? 'yes' : 'no';
+                                ? 'yes'
+                                : 'no';
                         if ($hasRedeemed) {
                             $redeemedDate = Date::of($row->get('redeemed'))
                                 ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));

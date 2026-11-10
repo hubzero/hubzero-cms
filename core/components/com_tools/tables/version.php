@@ -467,22 +467,27 @@ class Version extends Table
             $resource->versionid     = ($revision && $thistool) ? $thistool->id : 0;
             $resource->version       = ($revision && $thistool) ? $thistool->version : 1;
             $resource->tool          = ($revision && $thistool)
-                ? $thistool->instance : $resource->alias . '_r' . $revision;
+                ? $thistool->instance
+                : $resource->alias . '_r' . $revision;
             $resource->toolpublished = ($revision && $thistool) ? $thistool->state : 1;
             $resource->license       = ($revision && $thistool) ? $thistool->license : '';
             $resource->title         = ($revision && $thistool)
-                ? stripslashes($thistool->title) : $resource->title;
+                ? stripslashes($thistool->title)
+                : $resource->title;
             $resource->introtext     = ($revision && $thistool && isset($thistool->description))
-                ? stripslashes($thistool->description) : $resource->introtext;
+                ? stripslashes($thistool->description)
+                : $resource->introtext;
             $resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt))
-                ? $thistool->fulltxt : $resource->fulltxt;
+                ? $thistool->fulltxt
+                : $resource->fulltxt;
             $resource->toolsource    = (
                 $thistool && isset($thistool->codeaccess) && $thistool->codeaccess == '@OPEN'
             ) ? 1 : 0;
             $resource->doi           = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
             $resource->doi_label     = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
             $resource->doi_shoulder  = ($thistool && isset($thistool->doi_shoulder))
-                ? $thistool->doi_shoulder : '';
+                ? $thistool->doi_shoulder
+                : '';
         } elseif (!$curtool) {
             $resource->revision      = 1;
             $revision                 = $resource->revision;

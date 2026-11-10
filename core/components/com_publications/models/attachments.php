@@ -231,7 +231,8 @@ class Attachments extends Obj
 
             $attachments = $pub->_attachments;
             $attachments = isset($attachments['elements'][$element->id])
-                         ? $attachments['elements'][$element->id] : null;
+                         ? $attachments['elements'][$element->id]
+                         : null;
 
             if ($attachments) {
                 $i++;
@@ -501,7 +502,8 @@ class Attachments extends Obj
 
             $attachments = $pub->_attachments;
             $attachments = isset($attachments['elements'][$element->id])
-                         ? $attachments['elements'][$element->id] : null;
+                         ? $attachments['elements'][$element->id]
+                         : null;
 
             // Add to bundle. Note: a falsey return is normal for element
             // types that contribute no files (links, notes, etc.), so it is
@@ -551,7 +553,8 @@ class Attachments extends Obj
 
             $attachments = $pub->_attachments;
             $attachments = isset($attachments['elements'][$element->id])
-                         ? $attachments['elements'][$element->id] : null;
+                         ? $attachments['elements'][$element->id]
+                         : null;
 
             // Add to bundle
             $contents .= $type->drawPackageList(

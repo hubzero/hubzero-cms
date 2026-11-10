@@ -783,7 +783,8 @@ class Connect extends Obj
 
         $remote_md5      = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
         $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
-                            ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+                            ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
+                            : null;
         $remote_format   = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
         $converted       = isset($metadata)
                         && preg_match("/google-apps/", $remote_format)
@@ -896,7 +897,8 @@ class Connect extends Obj
 
         $remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
         $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
-                ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+                ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
+                : null;
         $remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
         $converted = isset($metadata)
                             && preg_match("/google-apps/", $remote_format)
@@ -1043,7 +1045,8 @@ class Connect extends Obj
 
         $remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
         $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
-                ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : null;
+                ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
+                : null;
         $remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
 
         // Update connection record

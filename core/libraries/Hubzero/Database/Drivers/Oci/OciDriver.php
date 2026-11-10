@@ -410,7 +410,8 @@ class OciDriver extends BaseSqlDriver
         }
 
         $parts = (strpos($name, '.') !== false)
-            ? explode('.', $name) : (array) $name;
+            ? explode('.', $name)
+            : (array) $name;
         $bits = [];
 
         foreach ($parts as $part) {

@@ -77,7 +77,8 @@ endif;
                         $fileExt = Filesystem::extension($this->data['name']);
                         $escapedName = $this->escape($this->data['name']);
                         $imgWidth = ($this->data['width'] < 260)
-                            ? $this->data['width'] : '260';
+                            ? $this->data['width']
+                            : '260';
                         ?>
                         <div class="media-thumb img-preview <?php echo $fileExt; ?>"
                             title="<?php echo $escapedName; ?>">

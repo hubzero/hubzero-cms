@@ -179,7 +179,8 @@ foreach ($this->blocks as $b) {
                         <select name="curation[params][show_archival]" id="field-showarchive">
                             <?php
                             $sa = isset($curParams->show_archival)
-                                ? $curParams->show_archival : 0;
+                                ? $curParams->show_archival
+                                : 0;
                             ?>
                             <option value="0"<?php echo ($sa == 0) ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_NO'); ?>
@@ -197,7 +198,8 @@ foreach ($this->blocks as $b) {
                         <label for="field-listall"><?php echo $langTxt; ?></label>
                         <select name="curation[params][list_all]" id="field-listall">
                             <?php $la = isset($curParams->list_all)
-                                ? $curParams->list_all : 0; ?>
+                                ? $curParams->list_all
+                                : 0; ?>
                             <option value="0"<?php echo ($la == 0) ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('JNO'); ?></option>
                             <option value="1"<?php echo ($la == 1) ? ' selected="selected"' : ''; ?>>
@@ -209,7 +211,8 @@ foreach ($this->blocks as $b) {
                         <label for="field-listlabel"><?php echo $langTxt; ?>:</label>
                         <?php
                         $listLabel = (isset($curParams->list_label) && $curParams->list_label)
-                            ? $curParams->list_label : '';
+                            ? $curParams->list_label
+                            : '';
                         ?>
                         <input
                             type="text"
@@ -224,7 +227,8 @@ foreach ($this->blocks as $b) {
                         <label for="field-autoapprove"><?php echo $langTxt; ?></label>
                         <select name="curation[params][auto_approve]" id="field-autoapprove">
                             <?php $aa = isset($curParams->auto_approve)
-                                ? $curParams->auto_approve : 0; ?>
+                                ? $curParams->auto_approve
+                                : 0; ?>
                             <option value="0"<?php echo ($aa == 0) ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('JNO'); ?></option>
                             <option value="1"<?php echo ($aa == 1) ? ' selected="selected"' : ''; ?>>
@@ -236,7 +240,8 @@ foreach ($this->blocks as $b) {
                         <label for="field-requestreview"><?php echo $langTxt; ?></label>
                         <select name="curation[params][request_review]" id="field-requestreview">
                             <?php $rr = isset($curParams->request_review)
-                                ? $curParams->request_review : 0; ?>
+                                ? $curParams->request_review
+                                : 0; ?>
                             <option value="0"<?php echo ($rr == 0) ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('JNO'); ?></option>
                             <option value="1"<?php echo ($rr == 1) ? ' selected="selected"' : ''; ?>>
@@ -274,12 +279,15 @@ foreach ($this->blocks as $b) {
                     <div class="col span2">
                         <?php
                         $activeChecked = (!isset($block->active) || $block->active == 1)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $inactiveChecked = (isset($block->active) && $block->active == 0)
-                            ? ' checked="checked"' : '';
+                            ? ' checked="checked"'
+                            : '';
                         $disabled = ($blockMaster->minimum > 0
                             && !in_array($block->name, $blockSelection['active']))
-                            ? ' disabled="disabled"' : '';
+                            ? ' disabled="disabled"'
+                            : '';
                         $radioName = 'curation[blocks][' . $blockId . '][active]';
                         $activeLabel = Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE');
                         $inactiveLabel = Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE');

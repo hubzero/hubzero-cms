@@ -444,7 +444,8 @@ class Json
                                 $link = $dd['repo_base'];
 
                                 $linkpath = isset($dd['cols'][$key]['linkpath'])
-                                    ? trim($dd['cols'][$key]['linkpath']) : '';
+                                    ? trim($dd['cols'][$key]['linkpath'])
+                                    : '';
 
                                 if (isset($dd['publication_state'])) {
                                     $linkpath = ($linkpath != '') ? $linkpath . '/' : '';

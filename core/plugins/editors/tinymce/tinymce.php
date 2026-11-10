@@ -712,7 +712,8 @@ class Tinymce extends Plugin
                 if ($button->get('name')) {
                     $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
                     $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
-                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"'
+                    $onclick = ($button->get('onclick'))
+                        ? ' onclick="' . $button->get('onclick') . '"'
                         : 'onclick="IeCursorFix(); return false;"';
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
                     $return .= '<div class="button2-left"><div class="' . $button->get('name')

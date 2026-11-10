@@ -202,7 +202,8 @@ class Relationships extends AdminController
 					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.tagid = ' . $tag['id'];
 
                 $this->database->setQuery(
-                    $tag['type'] == 'child' ? $children
+                    $tag['type'] == 'child'
+                    ? $children
                     : ($tag['type'] == 'parent' ? $parents : "$parents UNION $children"),
                 );
 

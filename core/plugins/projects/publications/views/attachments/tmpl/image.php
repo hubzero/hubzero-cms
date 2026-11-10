@@ -29,10 +29,12 @@ if (!empty($data->get('attribs'))) {
 
 // Get settings
 $suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix
-        ? $this->config->params->thumbSuffix : '-tn';
+        ? $this->config->params->thumbSuffix
+        : '-tn';
 
 $format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
-        ? $this->config->params->thumbFormat : 'png';
+        ? $this->config->params->thumbFormat
+        : 'png';
 
 $thumbName = \Components\Projects\Helpers\Html::createThumbName(basename($data->get('fpath')), $suffix, $format);
 

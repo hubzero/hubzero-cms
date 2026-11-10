@@ -69,7 +69,8 @@ $record = $resp->getAnswers();
                         <?php foreach ($completedAttempts as $completedAttempt) : ?>
                             <?php
                                 $sel = ($completedAttempt == $attempt)
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $ord = \Components\Courses\Helpers\Form::toOrdinal(
                                     $completedAttempt,
                                 );
@@ -84,7 +85,8 @@ $record = $resp->getAnswers();
 
                 <?php
                     $nextAttempt = (count($completedAttempts) < $dep->getAllowedAttempts())
-                        ? (count($completedAttempts) + 1) : null;
+                        ? (count($completedAttempts) + 1)
+                        : null;
                 ?>
             <?php endif; ?>
 

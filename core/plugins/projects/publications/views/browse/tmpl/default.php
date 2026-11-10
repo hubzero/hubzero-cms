@@ -96,7 +96,8 @@ if (count($this->rows) > 0) {
             $sortByLabel = Lang::txt('COM_PROJECTS_SORT_BY');
 
             $titleActive = ($this->filters['sortby'] == 'title')
-                ? ' activesort' : '';
+                ? ' activesort'
+                : '';
             $titleUrl = Route::url(
                 $pubLink . $sortAppend . '&sortby=title',
             );
@@ -107,7 +108,8 @@ if (count($this->rows) > 0) {
             );
 
             $idActive = ($this->filters['sortby'] == 'id')
-                ? ' activesort' : '';
+                ? ' activesort'
+                : '';
             $idUrl = Route::url(
                 $pubLink . $sortAppend . '&sortby=id',
             );
@@ -116,7 +118,8 @@ if (count($this->rows) > 0) {
             $idLabel = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID');
 
             $typeActive = ($this->filters['sortby'] == 'type')
-                ? ' activesort' : '';
+                ? ' activesort'
+                : '';
             $typeUrl = Route::url(
                 $pubLink . $sortAppend . '&sortby=type',
             );
@@ -127,7 +130,8 @@ if (count($this->rows) > 0) {
             );
 
             $statusActive = ($this->filters['sortby'] == 'status')
-                ? ' class="activesort"' : '';
+                ? ' class="activesort"'
+                : '';
             $statusUrl = Route::url(
                 $pubLink . $sortAppend . '&sortby=status',
             );

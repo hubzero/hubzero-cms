@@ -43,7 +43,8 @@ class Emails extends Field
             $strings[$string] = Lang::txt('PLG_USER_DOMAINRESTRICTION_' . $string);
         }
 
-        $value = base64_decode($this->value) ? trim(base64_decode($this->value))
+        $value = base64_decode($this->value)
+            ? trim(base64_decode($this->value))
             : json_encode(explode("\n", trim($this->value)));
 
         $script   = ["jQuery(document).ready(function ($) {"];

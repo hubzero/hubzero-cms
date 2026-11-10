@@ -960,7 +960,8 @@ class Git extends Obj
                         $syncT     = $found ? $found['synced'] : null;
 
                         $md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename)
-                            ? hash_file('md5', $localPath . DS . $filename) : null;
+                            ? hash_file('md5', $localPath . DS . $filename)
+                            : null;
 
                         $mimeType = $type == 'file' ? Filesystem::mimetype($localPath . DS . $filename) : null;
 

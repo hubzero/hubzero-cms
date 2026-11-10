@@ -25,9 +25,11 @@ $this->css('template.css');
             <?php foreach ($list as $language) : ?>
                 <?php
                 $dir = Lang::getInstance($language->lang_code)->isRTL()
-                    ? 'rtl' : 'ltr';
+                    ? 'rtl'
+                    : 'ltr';
                 $selected = $language->active
-                    ? 'selected="selected"' : '';
+                    ? 'selected="selected"'
+                    : '';
                 ?>
                 <option dir="<?php echo $dir; ?>"
                     value="<?php echo $language->link; ?>"
@@ -44,7 +46,8 @@ $this->css('template.css');
                 <?php
                 $activeClass = $language->active ? 'lang-active' : '';
                 $langDir = Lang::getInstance($language->lang_code)->isRTL()
-                    ? 'rtl' : 'ltr';
+                    ? 'rtl'
+                    : 'ltr';
                 ?>
                 <li class="<?php echo $activeClass; ?>"
                     dir="<?php echo $langDir; ?>"

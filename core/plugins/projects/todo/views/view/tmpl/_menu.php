@@ -103,7 +103,8 @@ $mineFilterLabel = Lang::txt(
     'PLG_PROJECTS_TODO_FILTER_MINE',
 );
 $mineFilterClass = ($this->filters['mine'] == 1)
-    ? ' active' : '';
+    ? ' active'
+    : '';
 
 $completeFilterUrl = Route::url(
     $filterBase . '&state=1',
@@ -112,7 +113,8 @@ $completeFilterLabel = Lang::txt(
     'PLG_PROJECTS_TODO_FILTER_COMPLETE',
 );
 $completeFilterClass = ($this->filters['state'] == 1)
-    ? ' active' : '';
+    ? ' active'
+    : '';
 
 $onListLabel = Lang::txt('PLG_PROJECTS_TODO_ON_LIST');
 

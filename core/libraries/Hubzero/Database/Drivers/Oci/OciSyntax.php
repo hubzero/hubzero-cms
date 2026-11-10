@@ -435,7 +435,8 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         return ($operatorLower === 'not exists'
-            ? 'NOT EXISTS ' : 'EXISTS ') . $sql;
+            ? 'NOT EXISTS '
+            : 'EXISTS ') . $sql;
     }
 
     /**

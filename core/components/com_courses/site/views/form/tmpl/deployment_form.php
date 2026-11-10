@@ -67,11 +67,14 @@ $this->css('jquery.ui.css', 'system');
         <p>While the form is open, show users:<br />
             <?php
                 $chkConf = ($resultPages['open'] == 'confirmation')
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
                 $chkScore = ($resultPages['open'] == 'score' || !$resultPages['open'])
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
                 $chkDetails = ($resultPages['open'] == 'details')
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
             ?>
             <input
                 type="radio"
@@ -99,12 +102,15 @@ $this->css('jquery.ui.css', 'system');
         <p>After the form is closed, show users:<br />
             <?php
                 $chkConf = ($resultPages['closed'] == 'confirmation')
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
                 $chkScore = ($resultPages['closed'] == 'score')
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
                 $chkDetails = ($resultPages['closed'] == 'details'
                     || !$resultPages['closed'])
-                    ? ' checked="checked"' : '';
+                    ? ' checked="checked"'
+                    : '';
                 ?>
             <input
                 type="radio"

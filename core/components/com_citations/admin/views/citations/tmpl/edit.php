@@ -80,7 +80,8 @@ if ($this->getError()) {
                         <?php foreach ($this->types as $t) : ?>
                             <?php
                             $sel = ($t['id'] == $this->row->type)
-                                ? 'selected="selected"' : '';
+                                ? 'selected="selected"'
+                                : '';
                             $typeTitle = $this->escape(
                                 stripslashes($t['type_title'] ?? ''),
                             );
@@ -144,7 +145,8 @@ if ($this->getError()) {
                             <?php
                             $dateSubmitVal = $this->escape(stripslashes(
                                 $this->row->date_submit == null
-                                    ? '' : $this->row->date_submit,
+                                    ? ''
+                                    : $this->row->date_submit,
                             ));
                             ?>
                             <label for="date_submit">
@@ -164,7 +166,8 @@ if ($this->getError()) {
                             <?php
                             $dateAcceptVal = $this->escape(stripslashes(
                                 $this->row->date_accept == null
-                                    ? '' : $this->row->date_accept,
+                                    ? ''
+                                    : $this->row->date_accept,
                             ));
                             ?>
                             <label for="date_accept">
@@ -187,7 +190,8 @@ if ($this->getError()) {
                             <?php
                             $datePubVal = $this->escape(stripslashes(
                                 $this->row->date_publish == null
-                                    ? '' : $this->row->date_publish,
+                                    ? ''
+                                    : $this->row->date_publish,
                             ));
                             ?>
                             <label for="date_publish">
@@ -391,7 +395,8 @@ if ($this->getError()) {
                             <?php
                             $pagesVal = $this->escape(stripslashes(
                                 $this->row->pages == null
-                                    ? '' : $this->row->pages,
+                                    ? ''
+                                    : $this->row->pages,
                             ));
                             ?>
                             <label for="pages">
@@ -768,9 +773,11 @@ if ($this->getError()) {
                     <select id="format_type" name="citation[format]">
                         <?php
                         $apaSel = ($this->row->format == 'apa')
-                            ? 'selected="selected"' : '';
+                            ? 'selected="selected"'
+                            : '';
                         $ieeeSel = ($this->row->format == 'ieee')
-                            ? 'selected="selected"' : '';
+                            ? 'selected="selected"'
+                            : '';
                         $apaLabel = Lang::txt('MANUAL_FORMAT_FORMAT_APA');
                         $ieeeLabel = Lang::txt('MANUAL_FORMAT_FORMAT_IEEE');
                         ?>
@@ -858,18 +865,24 @@ if ($this->getError()) {
                             $typeName = "assocs[{$i}][type]";
 
                             $tblEmpty = ($assocs[$i]->tbl == '')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                             $tblRes = ($assocs[$i]->tbl == 'resource')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                             $tblPub = ($assocs[$i]->tbl == 'publication')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
 
                             $typeEmpty = ($assocs[$i]->type == '')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                             $typeRef = ($assocs[$i]->type == 'references')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                             $typeRefBy = ($assocs[$i]->type == 'referencedby')
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
 
                             $oidVal = $this->escape($assocs[$i]->oid);
                             $idVal  = $this->escape($assocs[$i]->id);
@@ -951,7 +964,8 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $affChecked = $this->row->affiliated
-                        ? ' checked="checked"' : '';
+                        ? ' checked="checked"'
+                        : '';
                     ?>
                     <input
                         type="checkbox"
@@ -966,7 +980,8 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $fundChecked = $this->row->fundedby
-                        ? ' checked="checked"' : '';
+                        ? ' checked="checked"'
+                        : '';
                     ?>
                     <input
                         type="checkbox"
@@ -990,11 +1005,14 @@ if ($this->getError()) {
                     </label>
                     <?php
                     $hubSel = ($this->row->scope == "hub")
-                        ? 'selected="selected"' : '';
+                        ? 'selected="selected"'
+                        : '';
                     $groupSel = ($this->row->scope == "group")
-                        ? 'selected="selected"' : '';
+                        ? 'selected="selected"'
+                        : '';
                     $memberSel = ($this->row->scope == "member")
-                        ? 'selected="selected"' : '';
+                        ? 'selected="selected"'
+                        : '';
                     ?>
                     <select name="citation[scope]" id="scope">
                         <option <?php echo $hubSel; ?> value="hub">
@@ -1059,7 +1077,8 @@ if ($this->getError()) {
                         <?php foreach ($this->sponsors as $s) : ?>
                             <?php
                             $sel = (in_array($s->get('id'), $this->row_sponsors))
-                                ? 'selected="selected"' : '';
+                                ? 'selected="selected"'
+                                : '';
                             $sponsorVal = $this->escape(
                                 stripslashes($s['sponsor'] ?? ''),
                             );

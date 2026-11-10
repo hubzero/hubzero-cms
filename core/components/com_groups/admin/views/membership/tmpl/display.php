@@ -75,7 +75,8 @@ $this->css()
 // Shown when the feature is on, and also whenever something is still past due,
 // so switching the feature off does not hide enforcement that is still running.
 $expirationPastDue = \Hubzero\User\Group\Membership::supported()
-    ? \Hubzero\User\Group\Membership::pastDueCount() : 0;
+    ? \Hubzero\User\Group\Membership::pastDueCount()
+    : 0;
 ?>
 <?php if (
     \Hubzero\User\Group\Membership::supported()
@@ -238,7 +239,8 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     </span>
                     <?php if (!empty($this->expiration_supported) && isset($row->uidNumber)) : ?>
                         <?php $rowExpires = isset($this->expirations[(int) $row->uidNumber])
-                            ? $this->expirations[(int) $row->uidNumber] : null; ?>
+                            ? $this->expirations[(int) $row->uidNumber]
+                            : null; ?>
                         <?php if ($rowExpires) : ?>
                             <br />
                             <span class="membership-term<?php echo (strtotime($rowExpires . ' UTC') <= time() + (30 * 86400)) ? ' term-expires-soon' : ''; ?>">

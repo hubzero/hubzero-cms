@@ -353,7 +353,8 @@ $formAction = Route::url(
                                 foreach ($severtes as $severity) {
                                     $r  = '{"label": "' . $this->escape(addslashes($severity)) . '", "data": ';
                                     $r .= (isset($sev[$severity]))
-                                        ? round(($sev[$severity] / $total) * 100, 2) : 0;
+                                        ? round(($sev[$severity] / $total) * 100, 2)
+                                        : 0;
                                     $r .= ', "color": "' . $colors[$i] . '"}';
 
                                     $data[] = $r;
@@ -365,7 +366,8 @@ $formAction = Route::url(
                                 <td><?php echo (isset($sev[$severity])) ? $sev[$severity] : '0'; ?></td>
                                 <td><?php
                                     echo (isset($sev[$severity]))
-                                        ? round($sev[$severity] / $total * 100, 2) : '0';
+                                        ? round($sev[$severity] / $total * 100, 2)
+                                        : '0';
                                 ?></td>
                             </tr>
                                     <?php
@@ -428,7 +430,8 @@ $formAction = Route::url(
                             foreach ($resolutns as $resolution) {
                                 $r  = '{"label": "' . $this->escape($resolution->title) . '", "data": ';
                                 $r .= (isset($res[$resolution->id]))
-                                    ? round(($res[$resolution->id] / $total) * 100, 2) : 0;
+                                    ? round(($res[$resolution->id] / $total) * 100, 2)
+                                    : 0;
                                 $r .= ', "color": "' . $colors[$i] . '"}';
                                 $data[] = $r;
 
@@ -444,7 +447,8 @@ $formAction = Route::url(
                                     <td>
                                         <?php
                                         echo (isset($res[$resolution->id]))
-                                            ? round($res[$resolution->id] / $total * 100, 2) : '0';
+                                            ? round($res[$resolution->id] / $total * 100, 2)
+                                            : '0';
                                         ?>
                                     </td>
                                 </tr>

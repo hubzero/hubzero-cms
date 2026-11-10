@@ -71,9 +71,11 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 class="required">
                                 <?php
                                 $memberSel = ($this->row->get('object_type') == 'member')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $groupSel = ($this->row->get('object_type') == 'group')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $memberTxt = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER');
                                 $groupTxt = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP');
                                 ?>
@@ -166,9 +168,11 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <select name="fields[layout]" id="field-layout">
                                 <?php
                                 $gridSel = ($this->row->get('layout') == 'grid')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $listSel = ($this->row->get('layout') == 'list')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $gridTxt = Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_GRID');
                                 $listTxt = Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_LIST');
                                 ?>
@@ -188,9 +192,11 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <select name="fields[sort]" id="field-sort">
                                 <?php
                                 $createdSel = ($this->row->get('sort') == 'created')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $orderingSel = ($this->row->get('sort') == 'ordering')
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $createdTxt = Lang::txt('COM_COLLECTIONS_FIELD_SORT_CREATED');
                                 $orderingTxt = Lang::txt('COM_COLLECTIONS_FIELD_SORT_ORDERING');
                                 ?>

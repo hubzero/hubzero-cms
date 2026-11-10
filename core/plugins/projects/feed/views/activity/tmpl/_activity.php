@@ -36,7 +36,8 @@ if (!$creator->get('id') && !trim($this->activity->log->get('description'))) {
 $new = false;
 if ($this->model->member()) {
     $new = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $this->activity->get('created')
-    ? true : false;
+    ? true
+    : false;
 }
 
 $recorded = $this->activity->get('created');

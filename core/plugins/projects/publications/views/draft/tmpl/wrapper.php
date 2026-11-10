@@ -27,7 +27,8 @@ $title   = $move && $this->manifest->draftHeading ? $this->manifest->draftHeadin
 $tagline = isset($this->manifest->draftTagline) ? $this->manifest->draftTagline : null;
 
 $activeEl = isset($this->master->props['showElement'])
-            ? $this->master->props['showElement'] : 0;
+            ? $this->master->props['showElement']
+            : 0;
 $element =  Request::getInt('el', $activeEl);
 
 $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false;
@@ -86,7 +87,8 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
                         <?php
                         if ($this->active != 'review') {
                             $extClass = ($this->showControls == 2 || $this->showControls == 4)
-                                ? ' extended' : '';
+                                ? ' extended'
+                                : '';
                             ?>
                         <div class="submit-area <?php echo $extClass; ?>"
                             id="submit-area"

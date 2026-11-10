@@ -67,11 +67,13 @@ class File extends Base
 
         // which directory to copy files to
         $configs->directory = isset($typeParams->directory) && $typeParams->directory
-                            ? $typeParams->directory : $pub->secret;
+                            ? $typeParams->directory
+                            : $pub->secret;
 
         // which subdirectory to copy files to
         $configs->subdir = isset($typeParams->subdir) && $typeParams->subdir
-                            ? $typeParams->subdir : null;
+                            ? $typeParams->subdir
+                            : null;
 
         // Directory path within pub folder
         $configs->dirPath = $configs->subdir
@@ -82,27 +84,31 @@ class File extends Base
 
         // Preserve directory structure when copying from project?
         $configs->dirHierarchy = isset($typeParams->dirHierarchy)
-                            ? $typeParams->dirHierarchy : $defaultDirHierarchy;
+                            ? $typeParams->dirHierarchy
+                            : $defaultDirHierarchy;
 
         // Allow reuse of attachments to other elements
         $configs->reuse = isset($typeParams->reuse) ? $typeParams->reuse : 1;
 
         // Fancy launcher?
         $configs->fancyLauncher = isset($typeParams->fancyLauncher)
-            ? $typeParams->fancyLauncher : 0;
+            ? $typeParams->fancyLauncher
+            : 0;
 
         // Allow changes in non-draft version?
         $configs->freeze = isset($blockParams->published_editing)
                             && $blockParams->published_editing == 0
                             && ($pub->isPublished() || $pub->isPending())
-                            ? 1 : 0;
+                            ? 1
+                            : 0;
 
         // Verify file type against allowed before attaching?
         $configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
 
         // Default handler assigned in configs?
         $configs->handler = isset($typeParams->handler) && $typeParams->handler
-                            ? $typeParams->handler : null;
+                            ? $typeParams->handler
+                            : null;
 
         // Bundle multple files in an element together or serve independently?
         $configs->multiZip = isset($typeParams->multiZip) ? $typeParams->multiZip : 1;
@@ -689,7 +695,8 @@ class File extends Base
         // Get configs for new version
         $typeParams = $elementparams->typeParams;
         $directory  = isset($typeParams->directory) && $typeParams->directory
-                    ? $typeParams->directory : $newVersion->secret;
+                    ? $typeParams->directory
+                    : $newVersion->secret;
 
         $newConfigs = new stdClass();
 
@@ -1723,13 +1730,15 @@ class File extends Base
                             '{pubtitle}',
                             $view->pub->title,
                             $view->manifest->params->title,
-                        ) : null;
+                        )
+                        : null;
         $defaultTitle   = $view->manifest->params->title
                         ? str_replace(
                             '{pubversion}',
                             $view->pub->version_label,
                             $defaultTitle,
-                        ) : null;
+                        )
+                        : null;
 
         // Set default title
         $incNum = $view->manifest->params->max > 1 ? ' (' . $i . ')' : '';

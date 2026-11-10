@@ -128,7 +128,8 @@ class Jsonld extends Plugin
                 $contributor->organization = $contributor->p_organization;
             }
             $contributor->organization = stripslashes(trim($contributor->organization
-                    ? $contributor->organization : ''));
+                    ? $contributor->organization
+                    : ''));
 
             $author = [
                 '@type'      => 'Person',

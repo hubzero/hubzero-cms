@@ -457,7 +457,8 @@ class Set extends Obj implements Iterator
                 }
                 $used = [];
                 $pluginWeighters = array_key_exists($plugin, $weighters)
-                    ? array_merge($weighters['all'], $weighters[$plugin]) : $weighters['all'];
+                    ? array_merge($weighters['all'], $weighters[$plugin])
+                    : $weighters['all'];
                 foreach ($pluginWeighters as $weight_plugin) {
                     list($name, $mtd) = $weight_plugin;
                     if (!array_key_exists($name, $used)) {
@@ -620,7 +621,8 @@ class Set extends Obj implements Iterator
             }
 
             $pluginWeight = array_key_exists($plugin, self::$plugin_weights)
-                ? self::$plugin_weights[$plugin] : 1;
+                ? self::$plugin_weights[$plugin]
+                : 1;
             $weight[$res > 0 ? 'a' : 'b'] += $pluginWeight;
         }
 

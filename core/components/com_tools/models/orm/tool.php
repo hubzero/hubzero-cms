@@ -99,7 +99,8 @@ class Tool extends Relational
     public function automaticRegisteredBy($data)
     {
         return (isset($data['registered_by']) && $data['registered_by']
-            ? (int) $data['registered_by'] : (int) User::get('id'));
+            ? (int) $data['registered_by']
+            : (int) User::get('id'));
     }
 
     /**

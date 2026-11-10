@@ -166,7 +166,8 @@ if (count($managers) > 0) {
                                 <?php foreach ($oroles as $role) { ?>
                                     <?php
                                     $selected = ($manager->get('role_id') == $role->id)
-                                        ? ' selected="selected"' : '';
+                                        ? ' selected="selected"'
+                                        : '';
                                     $roleTitle = $this->escape(stripslashes($role->title));
                                     ?>
                                     <option value="<?php echo $role->id; ?>"<?php echo $selected; ?>>

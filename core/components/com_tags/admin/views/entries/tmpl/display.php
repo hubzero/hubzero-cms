@@ -188,7 +188,8 @@ Toolbar::help('entries');
                     <time datetime="<?php echo $rowCreated; ?>">
                         <?php
                         echo ($rowCreated && $rowCreated != '0000-00-00 00:00:00')
-                            ? $rowCreated : Lang::txt('COM_TAGS_UNKNOWN');
+                            ? $rowCreated
+                            : Lang::txt('COM_TAGS_UNKNOWN');
                         ?>
                     </time>
                 </td>

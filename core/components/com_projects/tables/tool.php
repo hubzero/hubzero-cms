@@ -84,7 +84,8 @@ class Tool extends Table
         $project  = isset($filters['project']) && intval($filters['project']) ? (int) $filters['project'] : "";
         $dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
         $projects = isset($filters['projects']) && !empty($filters['projects'])
-                    ? $filters['projects'] : [];
+                    ? $filters['projects']
+                    : [];
         $filterby = isset($filters['filterby']) ? $filters['filterby'] : "";
 
         switch ($filterby) {

@@ -315,9 +315,11 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             $plgName = 'plg_' . $plugin->element;
                             $plgVal = $params->get($plgName, 0);
                             $offChecked = ($plgVal == 0)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $onChecked = ($plgVal == 1)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             ?>
                             <td>
                                 <label>

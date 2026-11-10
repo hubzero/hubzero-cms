@@ -71,14 +71,16 @@ if ($handler) {
 
 $multiZip = (isset($this->manifest->params->typeParams->multiZip)
         && $this->manifest->params->typeParams->multiZip == 0)
-        ? false : true;
+        ? false
+        : true;
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 $updated  = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete)
         || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
 $handlerOptions = (count($this->attachments ? $this->attachments : [])) > 0 && $useHandles
-? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : null;
+? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props)
+: null;
 
 $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step='
 . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);

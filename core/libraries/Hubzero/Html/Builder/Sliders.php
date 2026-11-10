@@ -93,11 +93,13 @@ class Sliders
             $display = (isset($params['startOffset'])
                 && isset($params['startTransition'])
                 && $params['startTransition'])
-                ? (int) $params['startOffset'] : null;
+                ? (int) $params['startOffset']
+                : null;
             $show = (isset($params['startOffset'])
                 && !(isset($params['startTransition'])
                 && $params['startTransition']))
-                ? (int) $params['startOffset'] : null;
+                ? (int) $params['startOffset']
+                : null;
 
             $opt = [];
             $opt['heightStyle'] = "'content'";

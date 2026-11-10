@@ -53,7 +53,8 @@ class Link extends Base
         $configs->freeze = isset($blockParams->published_editing)
                         && $blockParams->published_editing == 0
                         && ($pub->state == 1 || $pub->state == 5)
-                        ? 1 : 0;
+                        ? 1
+                        : 0;
 
         // Log path
         $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath(
@@ -76,7 +77,8 @@ class Link extends Base
 
         // Fancy launcher?
         $configs->fancyLauncher = isset($typeParams->fancyLauncher)
-            ? $typeParams->fancyLauncher : 0;
+            ? $typeParams->fancyLauncher
+            : 0;
 
         return $configs;
     }
@@ -144,7 +146,8 @@ class Link extends Base
 
         $attachments = $pub->_attachments;
         $attachments = isset($attachments['elements'][$elementId])
-                     ? $attachments['elements'][$elementId] : null;
+                     ? $attachments['elements'][$elementId]
+                     : null;
 
         // Sort out attachments for this element
         $attachments = $this->parent->getElementAttachments(

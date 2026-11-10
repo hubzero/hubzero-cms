@@ -72,7 +72,8 @@ class Project extends Table
         $which    = isset($filters['which'])
                     && $filters['which'] != ''
                     && $filters['which'] != 'all'
-                    ? $filters['which'] : '';
+                    ? $filters['which']
+                    : '';
 
         $query  = " FROM $this->tableName AS p ";
 

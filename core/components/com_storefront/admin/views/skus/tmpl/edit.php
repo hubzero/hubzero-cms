@@ -196,7 +196,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                                             ?>
                                             <?php
                                             $optSelected = in_array($option->oId, $this->options)
-                                            ? ' selected="selected"' : '';
+                                            ? ' selected="selected"'
+                                            : '';
                                             $optVal = $option->oId;
                                             $optName = $option->oName;
                                             ?>

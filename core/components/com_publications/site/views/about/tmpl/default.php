@@ -64,7 +64,8 @@ if ($handler = $modelHandler->ini('imageviewer')) {
 <?php
     // List all content?
     $listAll = isset($this->publication->_curationModel->manifest->params->list_all)
-            ? $this->publication->_curationModel->manifest->params->list_all : 0;
+            ? $this->publication->_curationModel->manifest->params->list_all
+            : 0;
     $listLabel = isset($this->publication->_curationModel->manifest->params->list_label)
             ? $this->publication->_curationModel->manifest->params->list_label
             : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST');
@@ -106,7 +107,8 @@ if ($listAll) {
         $archPath = $path . DS . $tarname;
 
         $showArchive = isset($this->publication->_curationModel->manifest->params->show_archival)
-                ? $this->publication->_curationModel->manifest->params->show_archival : 0;
+                ? $this->publication->_curationModel->manifest->params->show_archival
+                : 0;
         $archiveBase = 'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v='
             . $this->publication->version_number;
         $archiveUrl = Route::url($archiveBase . '&render=archive');
@@ -215,7 +217,8 @@ if ($this->publication->params->get('show_metadata')) {
         <?php
             $submitter  = $this->publication->_submitter->name;
             $submitter .= $this->publication->_submitter->organization
-                    ? ', ' . $this->publication->_submitter->organization : '';
+                    ? ', ' . $this->publication->_submitter->organization
+                    : '';
             echo $this->escape($submitter);
         ?>
     </div>

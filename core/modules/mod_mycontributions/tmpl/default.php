@@ -47,7 +47,8 @@ if ($this->show_tools && $tools) {
     for ($i = 0; $i < count($tools); $i++) {
         if ($i <= $this->limit_tools) {
             $class = $tools[$i]->published
-                ? 'published' : 'draft';
+                ? 'published'
+                : 'draft';
             $toolState = $this->getState($tools[$i]->state);
             $urgency = (
                 $toolState == 'installed'

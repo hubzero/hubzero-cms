@@ -31,13 +31,15 @@ $defaultTitle = $this->manifest->params->title
                 '{pubtitle}',
                 $this->pub->title,
                 $this->manifest->params->title,
-            ) : null;
+            )
+            : null;
 $defaultTitle = $this->manifest->params->title
             ? str_replace(
                 '{pubversion}',
                 $this->pub->version_label,
                 $defaultTitle,
-            ) : null;
+            )
+            : null;
 
 $error          = $this->status->getError();
 

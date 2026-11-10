@@ -66,9 +66,11 @@ $this->css();
         <?php
         $filterBy = $this->filters['filterby'];
         $isActive = (!$filterBy || $filterBy == 'active')
-            ? ' class="active"' : '';
+            ? ' class="active"'
+            : '';
         $isArchived = ($filterBy == 'archived')
-            ? ' class="active"' : '';
+            ? ' class="active"'
+            : '';
         $filterAllUrl = Route::url(
             'index.php?option=com_members&id=' . $memberId
             . '&active=projects&action=all',

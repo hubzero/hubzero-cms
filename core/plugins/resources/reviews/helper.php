@@ -145,7 +145,8 @@ class Helper extends \Hubzero\Base\Obj
             \Hubzero\Utility\Sanitize::clean($row->get('content')),
         ));
         $row->set('anonymous', ($row->get('anonymous') == 1 || $row->get('anonymous') == '1')
-            ? $row->get('anonymous') : 0);
+            ? $row->get('anonymous')
+            : 0);
         $row->set('state', $row->isNew() ? 1 : $row->get('state'));
 
         // Save the data

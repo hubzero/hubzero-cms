@@ -452,7 +452,8 @@ class MysqlDriver extends BaseSqlDriver
                     'slave_io_running'    => ($slaveStatus['Slave_IO_Running'] ?? '') === 'Yes',
                     'slave_sql_running'   => ($slaveStatus['Slave_SQL_Running'] ?? '') === 'Yes',
                     'seconds_behind'      => isset($slaveStatus['Seconds_Behind_Master'])
-                        ? (int) $slaveStatus['Seconds_Behind_Master'] : null,
+                        ? (int) $slaveStatus['Seconds_Behind_Master']
+                        : null,
                     'last_error'          => $slaveStatus['Last_Error'] ?? null,
                     'relay_log_file'      => $slaveStatus['Relay_Log_File'] ?? null,
                     'relay_log_pos'       => $slaveStatus['Relay_Log_Pos'] ?? null,

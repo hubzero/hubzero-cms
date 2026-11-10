@@ -17,7 +17,8 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 // set title
-$title = ($this->hook->get('id')) ? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT')
+$title = ($this->hook->get('id'))
+? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT')
 : Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_ADD');
 
 Toolbar::title(Lang::txt($title), 'import');

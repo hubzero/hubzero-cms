@@ -124,7 +124,8 @@ $taggedInvalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                             $rowCreated = $this->row->created();
                             echo ($rowCreated && $rowCreated != '0000-00-00 00:00:00')
-                                ? $rowCreated : Lang::txt('COM_TAGS_UNKNOWN');
+                                ? $rowCreated
+                                : Lang::txt('COM_TAGS_UNKNOWN');
                             ?>
                             <input type="hidden" name="fields[taggedon]" id="field-taggedon"
                                 value="<?php echo $this->escape($this->row->get('taggedon')); ?>" />

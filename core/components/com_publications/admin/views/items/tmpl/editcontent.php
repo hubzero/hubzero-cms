@@ -74,24 +74,28 @@ if ($tmpl != 'component') {
                                         '{pubtitle}',
                                         $this->pub->title,
                                         $element->params->title,
-                                    ) : null;
+                                    )
+                                    : null;
                     $defaultTitle = $element->params->title
                                     ? str_replace(
                                         '{pubversion}',
                                         $this->pub->version_label,
                                         $defaultTitle,
-                                    ) : null;
+                                    )
+                                    : null;
 
                     $attachments = $this->pub->_attachments;
                     $attachments = isset($attachments['elements'][$this->elementId])
-                                 ? $attachments['elements'][$this->elementId] : null;
+                                 ? $attachments['elements'][$this->elementId]
+                                 : null;
 
                     // Get version params and extract bundle name
                     $bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
 
                     $multiZip = (isset($element->params->typeParams->multiZip)
                                     && $element->params->typeParams->multiZip == 0)
-                                    ? false : true;
+                                    ? false
+                                    : true;
 
                     ?>
                     <?php if ($attachments && count($attachments) > 1 && $multiZip) { ?>

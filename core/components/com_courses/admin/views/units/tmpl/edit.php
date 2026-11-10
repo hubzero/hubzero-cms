@@ -75,7 +75,8 @@ $this->js();
                                     <?php
                                     $optId = $this->escape(stripslashes($offering->get('id')));
                                     $selected = ($offering->get('id') == $this->row->get('offering_id'))
-                                        ? ' selected="selected"' : '';
+                                        ? ' selected="selected"'
+                                        : '';
                                     $optLabel = $this->escape(stripslashes($offering->get('alias')));
                                     ?>
                                     <option value="<?php echo $optId; ?>"<?php echo $selected; ?>>

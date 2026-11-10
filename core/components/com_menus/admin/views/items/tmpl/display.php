@@ -209,7 +209,8 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 </th>
                 <?php
                 $assoc = App::has('menu_associations')
-                    ? App::get('menu_associations') : 0;
+                    ? App::get('menu_associations')
+                    : 0;
                 if ($assoc) :
                     ?>
                     <th>
@@ -428,7 +429,8 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 </td>
                 <?php
                 $assoc = App::has('menu_associations')
-                    ? App::get('menu_associations') : 0;
+                    ? App::get('menu_associations')
+                    : 0;
                 if ($assoc) :
                     ?>
                 <td class="center">

@@ -102,9 +102,11 @@ class Middleware extends Plugin
                         //    ?: $cls->soft_files);
                         */
                         $val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks
-                            ? $val['hard_blocks'] : $cls->hard_blocks);
+                            ? $val['hard_blocks']
+                            : $cls->hard_blocks);
                         $val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks
-                            ? $val['soft_blocks'] : $cls->soft_blocks);
+                            ? $val['soft_blocks']
+                            : $cls->soft_blocks);
                     }
 
                     $row->set('hard_files', $val['hard_files']);

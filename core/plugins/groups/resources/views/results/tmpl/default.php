@@ -173,7 +173,8 @@ if ($this->cats) {
                         . '&active=resources&area=' . $activeArea
                         . '&sort=' . $this->sort;
                     $allClass = ($this->access == 'all')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $allUrl = Route::url(
                         $baseParams . '&access=all'
                         . '&limit=' . $this->limit,
@@ -191,7 +192,8 @@ if ($this->cats) {
                     </li>
                     <?php
                     $publicClass = ($this->access == 'public')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $publicUrl = Route::url(
                         $baseParams . '&access=public'
                         . '&limit=' . $this->limit,
@@ -209,7 +211,8 @@ if ($this->cats) {
                     </li>
                     <?php
                     $protectedClass = ($this->access == 'protected')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $protectedUrl = Route::url(
                         $baseParams . '&access=protected'
                         . '&limit=' . $this->limit,
@@ -227,7 +230,8 @@ if ($this->cats) {
                     </li>
                     <?php
                     $privateClass = ($this->access == 'private')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $privateUrl = Route::url(
                         $baseParams . '&access=private'
                         . '&limit=' . $this->limit,
@@ -245,7 +249,8 @@ if ($this->cats) {
                     </li>
                     <?php
                     $sharedClass = ($this->access == 'shared')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $sharedUrl = Route::url(
                         $baseParams . '&access=shared'
                         . '&limit=' . $this->limit,
@@ -270,7 +275,8 @@ if ($this->cats) {
                         . '&active=resources&area=' . $activeArea;
                     $dateClass = ($this->sort == 'date')
                         ? 'active ' . ($this->sortdir == 'desc'
-                            ? 'icon-arrow-up' : 'icon-arrow-down')
+                            ? 'icon-arrow-up'
+                            : 'icon-arrow-down')
                         : 'icon-arrow-down';
                     $dateSortdir = ($this->sort == 'date')
                         ? ($this->sortdir == 'desc' ? 'asc' : 'desc')
@@ -296,7 +302,8 @@ if ($this->cats) {
                     <?php
                     $titleClass = ($this->sort == 'title')
                         ? 'active ' . ($this->sortdir == 'desc'
-                            ? 'icon-arrow-up' : 'icon-arrow-down')
+                            ? 'icon-arrow-up'
+                            : 'icon-arrow-down')
                         : 'icon-arrow-down';
                     $titleSortdir = ($this->sort == 'title')
                         ? ($this->sortdir == 'desc' ? 'asc' : 'desc')
@@ -328,7 +335,8 @@ if ($this->cats) {
                             : 'icon-arrow-down';
                         $rankSortdir = ($this->sort == 'ranking')
                             ? ($this->sortdir == 'desc'
-                                ? 'asc' : 'desc')
+                                ? 'asc'
+                                : 'desc')
                             : 'asc';
                         $rankUrl = Route::url(
                             $sortBase . '&sort=ranking'
@@ -357,7 +365,8 @@ if ($this->cats) {
                             : 'icon-arrow-down';
                         $rateSortdir = ($this->sort == 'rating')
                             ? ($this->sortdir == 'desc'
-                                ? 'asc' : 'desc')
+                                ? 'asc'
+                                : 'desc')
                             : 'asc';
                         $rateUrl = Route::url(
                             $sortBase . '&sort=rating'

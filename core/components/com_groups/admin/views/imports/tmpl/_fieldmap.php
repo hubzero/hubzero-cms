@@ -85,7 +85,8 @@ if ($this->import->get('id')) { ?>
                                     ?>
                                     <?php $fn = $this->escape($field->get('name')); ?>
                                     <?php $sel = ($mapping['field'] == $field->get('name'))
-                                        ? ' selected="selected"' : ''; ?>
+                                        ? ' selected="selected"'
+                                        : ''; ?>
                                     <option value="<?php echo $fn; ?>"<?php echo $sel; ?>><?php echo $fn; ?></option>
                                     <?php
                                 }

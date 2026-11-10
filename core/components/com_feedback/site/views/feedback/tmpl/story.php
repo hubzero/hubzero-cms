@@ -113,7 +113,8 @@ $this->css()
                 </fieldset>
                 <?php
                 $labelClass = ($this->getError() && $this->row->quote == '')
-                    ? ' class="fieldWithErrors"' : '';
+                    ? ' class="fieldWithErrors"'
+                    : '';
                 ?>
                 <label<?php echo $labelClass; ?> for="field-quote">
                     <?php echo Lang::txt('COM_FEEDBACK_STORY_DESCRIPTION'); ?>

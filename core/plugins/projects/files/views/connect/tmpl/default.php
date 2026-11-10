@@ -54,7 +54,8 @@ $i = 0;
         }
 
         $openUrl = $servicename == 'google'
-            ? 'https://drive.google.com/?authuser=0#folders/' . $service['remote_dir_id'] : '';
+            ? 'https://drive.google.com/?authuser=0#folders/' . $service['remote_dir_id']
+            : '';
 
         ?>
     <div class="connect-service <?php echo !$service['on'] ? 'inactive' : ''; ?> <?php echo $servicename; ?>">
@@ -94,7 +95,8 @@ $i = 0;
             </p>
                 <?php } ?>
             <?php } else { ?>
-            <p><?php echo $creator ? Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_INACTIVE_CREATOR')
+            <p><?php echo $creator
+               ? Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_INACTIVE_CREATOR')
                : Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_INACTIVE'); ?></p>
             <?php } ?>
         </div>

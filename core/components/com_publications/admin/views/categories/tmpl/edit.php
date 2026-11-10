@@ -255,9 +255,11 @@ Html::behavior('framework', true);
                                 : stripslashes(ucfirst($plugin->name));
                             $plgInput = 'params[plg_' . $plugin->element . ']';
                             $plgChk0 = ($params->get('plg_' . $plugin->element, 0) == 0)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             $plgChk1 = ($params->get('plg_' . $plugin->element, 0) == 1)
-                                ? ' checked="checked"' : '';
+                                ? ' checked="checked"'
+                                : '';
                             ?>
                             <tr>
                                 <td><?php echo $plgName; ?></td>

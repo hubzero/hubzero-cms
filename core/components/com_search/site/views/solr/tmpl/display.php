@@ -129,7 +129,8 @@ endif;
                                 . $this->terms,
                             );
                             $activeClass = ($this->type == '')
-                                ? 'class="active"' : '';
+                                ? 'class="active"'
+                                : '';
                         ?>
                         <?php if ($this->type == '') : ?>
                             <ul>

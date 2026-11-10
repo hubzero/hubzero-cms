@@ -215,7 +215,8 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                     <td style="<?php echo $tdStyleL; ?>" align="left">
                                         <?php echo $this->ticket->get('name', Lang::txt('COM_SUPPORT_UNKNOWN')); ?>
                                         <?php echo $this->ticket->get('login')
-                                            ? '(' . $this->ticket->get('login') . ')' : ''; ?>
+                                            ? '(' . $this->ticket->get('login') . ')'
+                                            : ''; ?>
                                     </td>
                                 </tr>
                                 <tr>

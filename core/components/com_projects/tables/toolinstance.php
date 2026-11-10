@@ -147,7 +147,8 @@ class ToolInstance extends Table
 
         $query  = "SELECT v.* ";
         $query .= "FROM $this->tableName as v WHERE 1=1 AND ";
-        $query .= $parent_id ? "v.parent_id=" . $this->db->quote($parent_id)
+        $query .= $parent_id
+            ? "v.parent_id=" . $this->db->quote($parent_id)
             : "v.parent_name=" . $this->db->quote($parent_name);
         $query .= $exclude_dev ? ' AND v.state != 3' : '';
         $query .= " ORDER BY v.revision DESC";

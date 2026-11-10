@@ -237,7 +237,8 @@ class Blocks extends Obj
             // Are we allowed to edit?
             $viewname = $viewname == 'edit'
                         && $this->checkFreeze($manifest->params, $pub)
-                        ? 'freeze' : $viewname;
+                        ? 'freeze'
+                        : $viewname;
 
             // Render
             $html = $block->display($pub, $manifest, $viewname, $blockId);
@@ -259,7 +260,8 @@ class Blocks extends Obj
         $freeze = isset($blockParams->published_editing)
                      && $blockParams->published_editing == 0
                      && ($pub->state == 1 || $pub->state == 5)
-                    ? true : false;
+                    ? true
+                    : false;
 
         return $freeze;
     }

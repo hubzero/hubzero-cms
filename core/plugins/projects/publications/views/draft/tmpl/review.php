@@ -56,9 +56,11 @@ $pubdate = Request::getString('publish_date');
 $termsUrl = $this->pub->config()->get('deposit_terms', '');
 
 $autoApprove = isset($this->pub->_curationModel->manifest->params->auto_approve)
-            ? $this->pub->_curationModel->manifest->params->auto_approve : 0;
+            ? $this->pub->_curationModel->manifest->params->auto_approve
+            : 0;
 $requestReview = isset($this->pub->_curationModel->manifest->params->request_review)
-            ? $this->pub->_curationModel->manifest->params->request_review : 0;
+            ? $this->pub->_curationModel->manifest->params->request_review
+            : 0;
 $unsubmitted = $this->pub->version->get('state') == 3;
 $props = $this->pub->curation('blocks', $this->step, 'props');
 ?>

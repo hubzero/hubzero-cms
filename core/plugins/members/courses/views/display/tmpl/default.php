@@ -71,9 +71,11 @@ $this->css();
                         $base . '&task=' . $taskParam . '&sort=enrolled',
                     );
                     $titleSortClass = ($this->filters['sort'] == 'title')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $enrolledSortClass = ($this->filters['sort'] == 'enrolled')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $titleSortTitle = Lang::txt(
                         'PLG_MEMBERS_COURSES_SORT_BY_TITLE',
                     );

@@ -449,7 +449,8 @@ class File extends Obj
         $this->set('fullPath', $fullPath . $this->get('localPath'));
 
         $dirname = dirname($this->get('dirname')) == '.'
-                ? null : dirname($this->get('dirname'));
+                ? null
+                : dirname($this->get('dirname'));
         $this->set('dirname', $dirname);
         $this->setParents();
 

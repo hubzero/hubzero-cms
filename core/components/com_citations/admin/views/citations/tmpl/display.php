@@ -98,13 +98,17 @@ $formAction = Route::url(
                 <?php
                 $scopeFilter = $this->filters['scope'];
                 $allSel = ($scopeFilter == 'all')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 $hubSel = ($scopeFilter == 'hub')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 $grpSel = ($scopeFilter == 'group')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 $memSel = ($scopeFilter == 'member')
-                    ? ' selected="selected"' : '';
+                    ? ' selected="selected"'
+                    : '';
                 ?>
                 <select
                     name="scope"

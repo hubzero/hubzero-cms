@@ -576,7 +576,8 @@ if ($this->message) { ?>
     </div>
     <div class="usage-stats" aria-live="polite">
         <?php
-        $datetime = ($currentSimjob->datetime >= $currentSimuser->datetime ? $currentSimjob->datetime
+        $datetime = ($currentSimjob->datetime >= $currentSimuser->datetime
+        ? $currentSimjob->datetime
         : $currentSimuser->datetime);
 
         $db->setQuery(

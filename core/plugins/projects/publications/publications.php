@@ -866,12 +866,14 @@ class Publications extends Plugin
         // What's next?
         $nextnum     = $pub->_curationModel->getNextBlock($block, $blockId);
         $nextsection = isset($pub->_curationModel->blocks->$nextnum)
-                     ? $pub->_curationModel->blocks->$nextnum->name : 'status';
+                     ? $pub->_curationModel->blocks->$nextnum->name
+                     : 'status';
 
         // Get previous section
         $prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
         $prevsection = isset($pub->_curationModel->blocks->$prevnum)
-                     ? $pub->_curationModel->blocks->$prevnum->name : 'status';
+                     ? $pub->_curationModel->blocks->$prevnum->name
+                     : 'status';
 
         // Build route
         $route  = $pub->link('edit');
@@ -1147,14 +1149,16 @@ class Publications extends Plugin
 
         // Get default category from manifest
         $cat = isset($curationModel->manifest->params->default_category)
-                ? $curationModel->manifest->params->default_category : 1;
+                ? $curationModel->manifest->params->default_category
+                : 1;
         if (!$objC->load($cat)) {
             $cat = 1;
         }
 
         // Get default title from manifest
         $title = isset($curationModel->manifest->params->default_title)
-                ? $curationModel->manifest->params->default_title : Lang::txt('Untitled Draft');
+                ? $curationModel->manifest->params->default_title
+                : Lang::txt('Untitled Draft');
 
         // Make a new publication entry
         $objP->master_type = $mType->id;
@@ -1880,11 +1884,13 @@ class Publications extends Plugin
 
         // Require DOI?
         $requireDoi = isset($pub->_curationModel->manifest->params->require_doi)
-                    ? $pub->_curationModel->manifest->params->require_doi : 0;
+                    ? $pub->_curationModel->manifest->params->require_doi
+                    : 0;
 
         // Auto-approve?
         $autoApprove = isset($pub->_curationModel->manifest->params->auto_approve)
-                    ? $pub->_curationModel->manifest->params->auto_approve : 0;
+                    ? $pub->_curationModel->manifest->params->auto_approve
+                    : 0;
 
         // Make sure the publication belongs to the project
         if (!$pub->belongsToProject($this->model->get('id'))) {
@@ -2066,7 +2072,8 @@ class Publications extends Plugin
 
         if ($this->task != 'revert') {
             $publishedUp = $this->task == 'republish'
-                ? $pub->version->published_up : Date::toSql();
+                ? $pub->version->published_up
+                : Date::toSql();
             $publishedUp = $pubdate ? $pubdate : $publishedUp;
 
             $pub->version->set('rating', '0.0');

@@ -54,7 +54,8 @@ $this->js();
                             <?php foreach ($course->offerings() as $offering) { ?>
                                     <?php
                                         $selected = ($offering->get('id') == $this->row->offering_id)
-                                            ? ' selected="selected"' : '';
+                                            ? ' selected="selected"'
+                                            : '';
                                     ?>
                                     <?php $optVal = $this->escape(stripslashes($offering->get('title'))); ?>
                                     <option value="<?php echo $offering->get('id'); ?>"<?php echo $selected; ?>>

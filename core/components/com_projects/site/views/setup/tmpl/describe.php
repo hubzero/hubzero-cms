@@ -109,7 +109,8 @@ $this->view('_title')
                             . '&task=suggestalias&no_html=1&ajax=1&text=',
                         );
                         $disabledAttr = $this->model->get('id')
-                            ? ' disabled="disabled"' : '';
+                            ? ' disabled="disabled"'
+                            : '';
                         ?>
                         <input
                             name="name"

@@ -37,11 +37,14 @@ class Editor extends Base
         $rows = isset($element->rows) ? $element->rows : 6;
         $cols = isset($element->cols) ? $element->cols : 50;
         $editorMacros  = isset($element->editorMacros)
-                        ? $element->editorMacros : 0;
+                        ? $element->editorMacros
+                        : 0;
         $editorMinimal = isset($element->editorMinimal)
-                        ? $element->editorMinimal : 1;
+                        ? $element->editorMinimal
+                        : 1;
         $editorImages  = isset($element->editorImages)
-                        ? $element->editorImages : 0;
+                        ? $element->editorImages
+                        : 0;
 
         $classes  = $editorMinimal == 1 ? 'minimal ' : '';
         $classes .= ' no-footer ';

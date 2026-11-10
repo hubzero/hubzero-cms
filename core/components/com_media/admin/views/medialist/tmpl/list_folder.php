@@ -57,7 +57,8 @@ $folderUrl = Route::url(
 
 $tdWidth = ($tmpl == 'component'
     && !User::authorise('core.delete', 'com_media'))
-    ? '70' : '60';
+    ? '70'
+    : '60';
 ?>
     <tr class="media-item media-item-list">
         <td width="<?php echo $tdWidth; ?>%">

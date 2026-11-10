@@ -85,7 +85,8 @@ class Category extends Table
             // don't limit by state
         } else {
             $query .= isset($filters['state']) && intval($filters['state']) > 0
-                    ? 'WHERE C.state=' . $this->db->quote($filters['state']) : " WHERE C.state=1 ";
+                    ? 'WHERE C.state=' . $this->db->quote($filters['state'])
+                    : " WHERE C.state=1 ";
         }
 
         $orderby  = isset($filters['sort']) ? $filters['sort'] : "name";

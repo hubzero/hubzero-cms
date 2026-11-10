@@ -114,7 +114,8 @@ foreach ($roles as $role) {
                                     }
                                     $val = $this->escape(stripslashes($offering->get('id')));
                                     $selected = ($offering->get('id') == $this->offering->get('id'))
-                                        ? ' selected="selected"' : '';
+                                        ? ' selected="selected"'
+                                        : '';
                                     $optLabel = $this->escape(stripslashes($offering->get('alias')));
                                     ?>
                                     <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
@@ -138,7 +139,8 @@ foreach ($roles as $role) {
                             <?php
                             $val = $this->escape(stripslashes($section->get('id')));
                             $selected = ($section->get('id') == $this->row->get('section_id'))
-                                ? ' selected="selected"' : '';
+                                ? ' selected="selected"'
+                                : '';
                             $optLabel = $this->escape(stripslashes($section->get('title')));
                             ?>
                             <option value="<?php echo $val; ?>"<?php echo $selected; ?>>

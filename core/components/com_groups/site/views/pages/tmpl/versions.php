@@ -91,7 +91,8 @@ $this->css()
                         data-raw-url="<?php echo $pageVersion->url('raw'); ?>"
                         <?php
                         $val = ($k + 1 != $this->page->versions()->count())
-                            ? $pageVersion->url('restore') : null;
+                            ? $pageVersion->url('restore')
+                            : null;
                         ?>
                         data-restore-url="<?php echo $val; ?>">
 

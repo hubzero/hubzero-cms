@@ -47,7 +47,8 @@ defined('_HZEXEC_') or die();
         // Is file type allowed?
         $allowed = $item->get('type') == 'file' && !empty($this->allowed)
                 && !in_array($item->get('ext'), $this->allowed)
-                ? ' notallowed' : ' allowed';
+                ? ' notallowed'
+                : ' allowed';
 
         $used = !empty($this->used)
                 && in_array($item->get('localPath'), $this->used) ? true : false;

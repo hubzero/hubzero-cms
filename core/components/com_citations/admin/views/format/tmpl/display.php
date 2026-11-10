@@ -53,7 +53,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php foreach ($this->formats as $format) : ?>
                             <?php
                             $selected = ($this->currentFormat->id == $format->id)
-                                ? 'selected' : '';
+                                ? 'selected'
+                                : '';
                             $dataFormat = str_replace('"', '\"', $format->format);
                             ?>
                         <option

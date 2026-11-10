@@ -89,7 +89,8 @@ $formAction = Route::url(
             <select name="calendar[published]" id="field-published">
                 <?php
                 $pubSelected = ($this->calendar->get('published') == 1)
-                    ? 'selected="selected"' : '';
+                    ? 'selected="selected"'
+                    : '';
                 ?>
                 <option <?php echo $pubSelected; ?>
                     value="1"><?php echo Lang::txt('JYes'); ?></option>

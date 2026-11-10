@@ -406,9 +406,11 @@ abstract class Driver implements LoggerAwareInterface
             '',
             $options['driver'],
         ) : 'mysql';
-        $options['database'] = (isset($options['database'])) ? $options['database']
+        $options['database'] = (isset($options['database']))
+            ? $options['database']
             : null;
-        $options['select']   = (isset($options['select'])) ? $options['select']
+        $options['select']   = (isset($options['select']))
+            ? $options['select']
             : true;
         $options['persistent'] = isset($options['persistent']) ? (bool) $options['persistent'] : true;
         // Legacy alias retained for configuration compatibility.

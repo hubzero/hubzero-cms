@@ -38,16 +38,20 @@ $size = isset($this->manifest->params->maxlength) && $this->manifest->params->ma
     ? 'maxlength="' . $this->manifest->params->maxlength . '"'
     : '';
 $placeholder = isset($this->manifest->params->placeholder)
-            ? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
+            ? 'placeholder="' . $this->manifest->params->placeholder . '"'
+            : '';
 $editor = $this->manifest->params->input == 'editor' ? 1 : 0;
 $cols   = isset($this->manifest->params->cols) ? $this->manifest->params->cols : 50;
 $rows   = isset($this->manifest->params->rows) ? $this->manifest->params->rows : 6;
 $editorMacros = isset($this->manifest->params->editorMacros)
-            ? $this->manifest->params->editorMacros : 0;
+            ? $this->manifest->params->editorMacros
+            : 0;
 $editorMinimal = isset($this->manifest->params->editorMinimal)
-            ? $this->manifest->params->editorMinimal : 1;
+            ? $this->manifest->params->editorMinimal
+            : 1;
 $editorImages = isset($this->manifest->params->editorImages)
-            ? $this->manifest->params->editorImages : 0;
+            ? $this->manifest->params->editorImages
+            : 0;
 
 // Metadata field?
 if ($field == 'metadata') {

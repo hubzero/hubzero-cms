@@ -61,7 +61,8 @@ $imgBase = $base . '/core/components/'
                     $this->listdir = '';
                 }
                 $subdird = ($this->subdir && $this->subdir != DS)
-                    ? $this->subdir . DS : DS;
+                    ? $this->subdir . DS
+                    : DS;
                 ?>
                     <tr>
                         <td>
@@ -120,7 +121,8 @@ $imgBase = $base . '/core/components/'
                 $docName = key($docs);
 
                 $subdird = ($this->subdir && $this->subdir != DS)
-                    ? $this->subdir . DS : DS;
+                    ? $this->subdir . DS
+                    : DS;
                 ?>
                     <tr>
                         <td>

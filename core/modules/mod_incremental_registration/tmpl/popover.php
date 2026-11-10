@@ -297,11 +297,14 @@ defined('_HZEXEC_') or die();
                                 'post',
                             );
                             $maleChk = ($gender == 'male')
-                                ? 'checked="checked" ' : '';
+                                ? 'checked="checked" '
+                                : '';
                             $femaleChk = ($gender == 'female')
-                                ? 'checked="checked" ' : '';
+                                ? 'checked="checked" '
+                                : '';
                             $refusedChk = ($gender == 'refused')
-                                ? 'checked="checked" ' : '';
+                                ? 'checked="checked" '
+                                : '';
                             ?>
                             <label><input
                                 <?php echo $maleChk; ?>type="radio"
@@ -412,9 +415,11 @@ defined('_HZEXEC_') or die();
                                     )
                                 );
                                 $yesChk = $originYes
-                                    ? 'checked="checked"' : '';
+                                    ? 'checked="checked"'
+                                    : '';
                                 $noChk = $originNo
-                                    ? 'checked="checked"' : '';
+                                    ? 'checked="checked"'
+                                    : '';
                                 ?>
                                 <label><input type="radio"
                                     class="option"
@@ -505,9 +510,11 @@ defined('_HZEXEC_') or die();
                                     )
                                 );
                                 $yesChk = $resYes
-                                    ? 'checked="checked"' : '';
+                                    ? 'checked="checked"'
+                                    : '';
                                 $noChk = $resNo
-                                    ? 'checked="checked"' : '';
+                                    ? 'checked="checked"'
+                                    : '';
                                 ?>
                                 <label><input type="radio"
                                     class="option"
@@ -563,7 +570,8 @@ defined('_HZEXEC_') or die();
                 <?php if (isset($row['race'])) : ?>
                     <?php
                     $race = isset($_POST['race'])
-                        ? $_POST['race'] : [];
+                        ? $_POST['race']
+                        : [];
                     ?>
                     <li>
                             <?php
@@ -624,7 +632,8 @@ defined('_HZEXEC_') or die();
 
                                 <?php
                                 $asianChk = in_array('asian', $race)
-                                    ? 'checked="checked" ' : '';
+                                    ? 'checked="checked" '
+                                    : '';
                                 ?>
                                 <label><input type="checkbox"
                                     class="option"
@@ -636,7 +645,8 @@ defined('_HZEXEC_') or die();
 
                                 <?php
                                 $blackChk = in_array('black', $race)
-                                    ? 'checked="checked" ' : '';
+                                    ? 'checked="checked" '
+                                    : '';
                                 ?>
                                 <label><input type="checkbox"
                                     class="option"
@@ -662,7 +672,8 @@ defined('_HZEXEC_') or die();
                                     Pacific Islander</label>
                                 <?php
                                 $whiteChk = in_array('white', $race)
-                                    ? 'checked="checked" ' : '';
+                                    ? 'checked="checked" '
+                                    : '';
                                 ?>
                                 <label><input type="checkbox"
                                     class="option"

@@ -78,7 +78,8 @@ $this->css();
                         if ($groups) {
                             foreach ($groups as $group) {
                                 $selected = ($group->gidNumber == $this->row->get('group_id'))
-                                    ? ' selected="selected"' : '';
+                                    ? ' selected="selected"'
+                                    : '';
                                 $groupDesc = $this->escape($group->description);
                                 $groupCn = $this->escape($group->cn);
                                 ?>

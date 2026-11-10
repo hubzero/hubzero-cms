@@ -156,7 +156,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     stripslashes($offering->get('id')),
                                                 );
                                                 $sel = ($offering->get('id') == $this->row->get('offering_id'))
-                                                    ? ' selected="selected"' : '';
+                                                    ? ' selected="selected"'
+                                                    : '';
                                                 $offeringAlias = $this->escape(
                                                     stripslashes($offering->get('alias')),
                                                 );
@@ -320,7 +321,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                                 $pubUp = $this->row->get('publish_up');
                                 $dateVal = ($pubUp && $pubUp != '0000-00-00 00:00:00')
-                                    ? $pubUp : '';
+                                    ? $pubUp
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[publish_up]',
@@ -341,7 +343,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                                 $startDate = $this->row->get('start_date');
                                 $dateVal = ($startDate && $startDate != '0000-00-00 00:00:00')
-                                    ? $startDate : '';
+                                    ? $startDate
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[start_date]',
@@ -362,7 +365,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                                 $endDate = $this->row->get('end_date');
                                 $dateVal = ($endDate && $endDate != '0000-00-00 00:00:00')
-                                    ? $endDate : '';
+                                    ? $endDate
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[end_date]',
@@ -383,7 +387,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                                 $pubDown = $this->row->get('publish_down');
                                 $dateVal = ($pubDown && $pubDown != '0000-00-00 00:00:00')
-                                    ? $pubDown : '';
+                                    ? $pubDown
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[publish_down]',
@@ -763,9 +768,11 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                         $unitPubUp = $unit->get('publish_up');
                                         $unitDatePubUp = $this->row->date('unit', $unitId)->get('publish_up');
                                         $tm = ($unitPubUp && $unitPubUp != $nullDate)
-                                            ? $unitPubUp : $unitDatePubUp;
+                                            ? $unitPubUp
+                                            : $unitDatePubUp;
                                         $tmVal = (!$tm || $tm == $nullDate)
-                                            ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s');
+                                            ? ''
+                                            : Date::of($tm)->toLocal('Y-m-d H:i:s');
                                         ?>
                                             <input
                                                 type="text"
@@ -785,9 +792,11 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             $unitPubDown = $unit->get('publish_down');
                                             $unitDatePubDown = $this->row->date('unit', $unitId)->get('publish_down');
                                             $tm = ($unitPubDown && $unitPubDown != $nullDate)
-                                            ? $unitPubDown : $unitDatePubDown;
+                                            ? $unitPubDown
+                                            : $unitDatePubDown;
                                             $tmVal = (!$tm || $tm == $nullDate)
-                                            ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s');
+                                            ? ''
+                                            : Date::of($tm)->toLocal('Y-m-d H:i:s');
                                             ?>
                                             <input
                                                 type="text"
@@ -859,7 +868,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             $agtUp = $agt->get('publish_up');
                                             $unitUp = $unit->get('publish_up');
                                             $pubUpVal = (!$agtUp || $agtUp == $unitUp || $agtUp == $nullDate)
-                                                ? '' : Date::of($agtUp)->toLocal('Y-m-d H:i:s');
+                                                ? ''
+                                                : Date::of($agtUp)->toLocal('Y-m-d H:i:s');
                                             $fieldId = 'dates_' . $i . '_assetgroup_' . $z . '_publish_up';
                                             ?>
                                             <input
@@ -879,7 +889,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             $agtDown = $agt->get('publish_down');
                                             $unitDown = $unit->get('publish_down');
                                             $pubDownVal = (!$agtDown || $agtDown == $unitDown || $agtDown == $nullDate)
-                                                ? '' : Date::of($agtDown)->toLocal('Y-m-d H:i:s');
+                                                ? ''
+                                                : Date::of($agtDown)->toLocal('Y-m-d H:i:s');
                                             $fieldId = 'dates_' . $i . '_assetgroup_' . $z . '_publish_down';
                                             ?>
                                             <input
@@ -943,7 +954,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     $agUp = $ag->get('publish_up');
                                                     $agtUp = $agt->get('publish_up');
                                                     $agUpVal = (!$agUp || $agUp == $agtUp || $agUp == $nullDate)
-                                                        ? '' : Date::of($agUp)->toLocal('Y-m-d H:i:s');
+                                                        ? ''
+                                                        : Date::of($agUp)->toLocal('Y-m-d H:i:s');
                                                     $fieldId = 'dates_' . $i . '_assetgroup_' . $z
                                                         . '_assetgroup_' . $j . '_publish_up';
                                                     ?>
@@ -970,7 +982,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     $agtDown = $agt->get('publish_down');
                                                     $noDown = (!$agDown || $agDown == $agtDown || $agDown == $nullDate);
                                                     $agDownVal = $noDown
-                                                        ? '' : Date::of($agDown)->toLocal('Y-m-d H:i:s');
+                                                        ? ''
+                                                        : Date::of($agDown)->toLocal('Y-m-d H:i:s');
                                                     $fieldId = 'dates_' . $i . '_assetgroup_' . $z
                                                         . '_assetgroup_' . $j . '_publish_down';
                                                     ?>
@@ -1039,7 +1052,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                             $aUp = $a->get('publish_up');
                                                             $agUp2 = $ag->get('publish_up');
                                                             $aUpVal = (!$aUp || $aUp == $agUp2 || $aUp == $nullDate)
-                                                                ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                                ? ''
+                                                                : Date::of($aUp)->toLocal('Y-m-d H:i:s');
                                                             $aFieldUpId = 'dates_' . $i
                                                                 . '_assetgroup_' . $z
                                                                 . '_assetgroup_' . $j
@@ -1065,7 +1079,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                                 || $aDown == $agDown2
                                                                 || $aDown == $nullDate);
                                                             $aDownVal = $noDown
-                                                                ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                                ? ''
+                                                                : Date::of($aDown)->toLocal('Y-m-d H:i:s');
                                                             $aFieldDownId = 'dates_' . $i
                                                                 . '_assetgroup_' . $z
                                                                 . '_assetgroup_' . $j
@@ -1136,7 +1151,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                         $aUp = $a->get('publish_up');
                                                         $agtUp2 = $agt->get('publish_up');
                                                         $aUpVal = (!$aUp || $aUp == $agtUp2 || $aUp == $nullDate)
-                                                            ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                            ? ''
+                                                            : Date::of($aUp)->toLocal('Y-m-d H:i:s');
                                                         $aFieldUpId = 'dates_' . $i
                                                             . '_assetgroup_' . $z
                                                             . '_asset_' . $k . '_publish_up';
@@ -1161,7 +1177,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                             || $aDown == $agtDown2
                                                             || $aDown == $nullDate);
                                                         $aDownVal = $noDown
-                                                            ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                            ? ''
+                                                            : Date::of($aDown)->toLocal('Y-m-d H:i:s');
                                                         $aFieldDownId = 'dates_' . $i
                                                             . '_assetgroup_' . $z
                                                             . '_asset_' . $k . '_publish_down';
@@ -1229,7 +1246,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     $aUp = $a->get('publish_up');
                                                     $unitUp2 = $unit->get('publish_up');
                                                     $aUpVal = (!$aUp || $aUp == $unitUp2 || $aUp == $nullDate)
-                                                        ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                        ? ''
+                                                        : Date::of($aUp)->toLocal('Y-m-d H:i:s');
                                                     $aFieldUpId = 'dates_' . $i . '_asset_' . $k . '_publish_up';
                                                     ?>
                                                     <input
@@ -1249,7 +1267,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     $aDown = $a->get('publish_down');
                                                     $unitDown2 = $unit->get('publish_down');
                                                     $aDownVal = (!$aDown || $aDown == $unitDown2 || $aDown == $nullDate)
-                                                        ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                        ? ''
+                                                        : Date::of($aDown)->toLocal('Y-m-d H:i:s');
                                                     $aFieldDownId = 'dates_' . $i . '_asset_' . $k . '_publish_down';
                                                     ?>
                                                     <input
@@ -1377,7 +1396,8 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     <select name="badge[provider_name]" id="badge-provider">
                                         <?php
                                         $sel = ($this->badge->get('provider_name', 'passport') == 'passport')
-                                        ? ' selected="selected"' : '';
+                                        ? ' selected="selected"'
+                                        : '';
                                         ?>
                                 <option
                                     value="passport"

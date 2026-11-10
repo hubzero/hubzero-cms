@@ -58,7 +58,8 @@ $view = $this->view('submenu', 'partials')
                     <?php
                     $activeClass = (!$this->filters['filterby']
                         || $this->filters['filterby'] == 'active')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $allUrl = Route::url(
                         'index.php?option=com_groups&cn='
                         . $this->group->get('cn')
@@ -74,7 +75,8 @@ $view = $this->view('submenu', 'partials')
                 <li>
                     <?php
                     $archivedClass = ($this->filters['filterby'] == 'archived')
-                        ? ' class="active"' : '';
+                        ? ' class="active"'
+                        : '';
                     $archivedUrl = Route::url(
                         'index.php?option=com_groups&cn='
                         . $this->group->get('cn')

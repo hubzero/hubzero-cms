@@ -39,7 +39,8 @@ if ($this->versionTracking == '0') {
 } else {
     $versions = $this->dirsize - $working;
     $versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin'))
-    ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+    ? \Hubzero\Utility\Number::formatBytes($versions)
+    : 0;
 }
 
 $inuse = ($inuse > 100) ? '> 100' : $inuse;

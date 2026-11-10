@@ -41,9 +41,11 @@ class Daterangefilter extends Filter
         // PHP 8.1 added, and a stored value with invalid UTF-8 would then
         // render as an empty string instead of rendering.
         $startdate = (isset($dateValues['startdate']) && is_scalar($dateValues['startdate']))
-            ? htmlspecialchars((string) $dateValues['startdate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '';
+            ? htmlspecialchars((string) $dateValues['startdate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            : '';
         $enddate = (isset($dateValues['enddate']) && is_scalar($dateValues['enddate']))
-            ? htmlspecialchars((string) $dateValues['enddate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '';
+            ? htmlspecialchars((string) $dateValues['enddate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            : '';
         $html = '<ul><li><fieldset class="search-filters"><legend>' . htmlspecialchars((string) $this->label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</legend>';
         $html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters['
             . $this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';

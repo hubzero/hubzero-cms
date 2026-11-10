@@ -187,7 +187,8 @@ $maintext = $this->model->description;
                     $cite->url      = '';
                     $cite->type     = '';
                     $authors = [];
-                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool')
+                    $contributors = ($this->model->isTool()
+                    ? $this->model->contributors('tool')
                     : $this->model->contributors('!submitter'));
                     if ($contributors) {
                         foreach ($contributors as $contributor) {
@@ -205,7 +206,8 @@ $maintext = $this->model->description;
                         $doi = '';
 
                         if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
-                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder
+                            $doi = ($this->model->doi_shoulder
+                            ? $this->model->doi_shoulder
                             : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
                             $cite->doi = $doi;
                         }

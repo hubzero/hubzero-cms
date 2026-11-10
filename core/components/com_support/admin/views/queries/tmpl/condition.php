@@ -18,9 +18,11 @@ defined('_HZEXEC_') or die();
         <?php
         $randId = rand();
         $andSelected = (strtolower($this->condition->operator) == 'and')
-            ? ' selected="selected"' : '';
+            ? ' selected="selected"'
+            : '';
         $orSelected = (strtolower($this->condition->operator) == 'or')
-            ? ' selected="selected"' : '';
+            ? ' selected="selected"'
+            : '';
         $selectHtml = '<select id="match' . $randId . '">'
             . '<option value="AND"' . $andSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>'
             . '<option value="OR"' . $orSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>'

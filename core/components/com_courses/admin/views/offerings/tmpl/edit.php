@@ -118,7 +118,8 @@ $this->css();
                             <?php
                                 $pubUp = ($this->row->get('publish_up')
                                     && $this->row->get('publish_up') != '0000-00-00 00:00:00')
-                                    ? $this->row->get('publish_up') : '';
+                                    ? $this->row->get('publish_up')
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[publish_up]',
@@ -135,7 +136,8 @@ $this->css();
                             <?php
                                 $pubDown = ($this->row->get('publish_down')
                                     && $this->row->get('publish_down') != '0000-00-00 00:00:00')
-                                    ? $this->row->get('publish_down') : '';
+                                    ? $this->row->get('publish_down')
+                                    : '';
                                 echo Html::input(
                                     'calendar',
                                     'fields[publish_down]',

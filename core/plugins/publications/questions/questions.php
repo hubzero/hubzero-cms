@@ -360,7 +360,8 @@ class Questions extends Plugin
 
         // Add the tag to link to the publication
         $identifier = $this->publication->get('alias')
-            ? $this->publication->get('alias') : $this->publication->get('id');
+            ? $this->publication->get('alias')
+            : $this->publication->get('id');
         $tag = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
 
         $row->addTag($tag, User::get('id'), ($this->publication->isTool() ? 0 : 1));
