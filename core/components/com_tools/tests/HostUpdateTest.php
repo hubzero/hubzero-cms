@@ -12,10 +12,6 @@ use Components\Tools\Tables\Host;
 use Components\Tools\Tables\Hosttype;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/tables/host.php';
-require_once dirname(__DIR__) . '/tables/hosttype.php';
-require_once __DIR__ . '/RecordingDriver.php';
-
 /**
  * Host and host type tables write their own UPDATE statements; those name
  * the table's columns and nothing the table keeps for itself.

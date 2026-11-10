@@ -21,25 +21,7 @@
  * fixtures that legitimately declare their own classes of the same name.
  */
 
-if (!defined('_HZEXEC_')) {
-    define('_HZEXEC_', true);
-}
-
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-
-if (!defined('PATH_ROOT')) {
-    define('PATH_ROOT', dirname(__DIR__, 2));
-}
-
-if (!defined('PATH_CORE')) {
-    define('PATH_CORE', dirname(__DIR__));
-}
-
-if (!defined('PATH_APP')) {
-    define('PATH_APP', PATH_ROOT . DS . 'app');
-}
+require __DIR__ . '/constants.php';
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/bootstrap/app.php';
@@ -77,10 +59,3 @@ Hubzero\Facades\Facade::setApplication($app);
 Hubzero\Facades\Facade::createAliases(
     require dirname(__DIR__) . '/bootstrap/Cli/aliases.php',
 );
-
-// Plugin tests ship their own bootstrap that requires the plugin class file,
-// because plugin classes live outside any autoloaded namespace. PHPUnit runs
-// a single bootstrap for the whole run, so pull each of those in here.
-foreach (glob(dirname(__DIR__) . '/plugins/*/*/tests/bootstrap.php') as $pluginBootstrap) {
-    require_once $pluginBootstrap;
-}

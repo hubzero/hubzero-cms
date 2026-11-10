@@ -11,8 +11,6 @@ namespace Components\Courses\Tests;
 use Components\Courses\Models\Permissions;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/models/permissions.php';
-
 /**
  * Course permissions are worked out for a course, offering and section that
  * callers set and read by name.

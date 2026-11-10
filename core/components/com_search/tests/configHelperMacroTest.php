@@ -11,8 +11,6 @@ namespace Components\Search\Tests;
 use Components\Search\Helpers\ConfigHelper;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/helpers/confighelper.php';
-
 /**
  * A search path's [[Macro(argument)]] markers are filled in from the record
  * being indexed. Hubs write the macro names in their configuration, so a

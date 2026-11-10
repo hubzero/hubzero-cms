@@ -11,8 +11,6 @@ namespace Components\Saml\Tests;
 use Hubzero\Test\Basic;
 use Components\Saml\Helpers\Metadata;
 
-require_once dirname(__DIR__) . '/helpers/Metadata.php';
-
 /**
  * Metadata import helper test
  */

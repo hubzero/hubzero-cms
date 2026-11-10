@@ -12,8 +12,6 @@ use Hubzero\Test\Basic;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Components\Menus\Models\Item;
 
-require_once dirname(__DIR__) . '/models/item.php';
-
 /**
  * Tidying a declared address
  *

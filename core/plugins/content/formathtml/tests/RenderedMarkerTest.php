@@ -13,10 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Plugins\Content\Formathtml\Formathtml;
 use Plugins\Content\Formatwiki\Formatwiki;
 
-require_once dirname(__DIR__) . '/formathtml.php';
-require_once dirname(__DIR__) . '/parser.php';
-require_once dirname(__DIR__, 2) . '/formatwiki/formatwiki.php';
-
 /**
  * formatwiki marks its own output {FORMAT:RENDERED}, and formathtml skips
  * the purifier for it, but only when formatwiki registered that exact

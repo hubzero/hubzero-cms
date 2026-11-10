@@ -8,8 +8,6 @@
 
 namespace Components\Tools\Tests;
 
-require_once dirname(__DIR__) . '/helpers/duration.php';
-
 use Components\Tools\Helpers\Duration;
 use Hubzero\Test\Basic;
 

@@ -11,8 +11,6 @@ namespace Components\Collections\Tests;
 use Components\Collections\Models\Archive;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/models/archive.php';
-
 /**
  * A collections archive belongs to an object that callers read by name.
  */

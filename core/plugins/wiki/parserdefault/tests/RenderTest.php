@@ -12,8 +12,6 @@ use Hubzero\Facades\Facade;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/wikiparser.php';
-
 /**
  * The wiki parser renders what it set aside: code, HTML, math, anchors, lists
  * and the contents list come back as they went in

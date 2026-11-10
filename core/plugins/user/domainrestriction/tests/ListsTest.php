@@ -12,8 +12,6 @@ use Hubzero\Config\Registry;
 use Plugins\User\Domainrestriction\Domainrestriction;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/domainrestriction.php';
-
 /**
  * The plugin reads its allowed and refused domains, top-level domains and
  * addresses from its settings into lists before checking a new account's

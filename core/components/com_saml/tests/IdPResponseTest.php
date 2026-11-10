@@ -11,11 +11,6 @@ namespace Components\Saml\Tests;
 use Hubzero\Test\Basic;
 use Components\Saml\Models\IdP;
 
-require_once dirname(__DIR__) . '/models/IdP.php';
-require_once __DIR__ . '/StubParams.php';
-require_once __DIR__ . '/StubSamlUser.php';
-require_once __DIR__ . '/StubSamlSp.php';
-
 /**
  * SAML Response construction test
  *

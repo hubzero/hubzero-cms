@@ -8,8 +8,6 @@
 
 namespace Components\Wiki\Tests;
 
-require_once dirname(__DIR__) . '/helpers/anchor.php';
-
 use Components\Wiki\Helpers\Anchor;
 use Hubzero\Test\Basic;
 

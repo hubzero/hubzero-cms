@@ -24,12 +24,6 @@ use LightSaml\Model\Protocol\LogoutResponse;
 use LightSaml\Model\XmlDSig\SignatureWriter;
 use LightSaml\SamlConstants;
 
-require_once dirname(__DIR__) . '/models/IdP.php';
-require_once dirname(__DIR__) . '/models/ServiceProvider.php';
-require_once __DIR__ . '/StubParams.php';
-require_once __DIR__ . '/StubSamlUser.php';
-require_once __DIR__ . '/StubSamlSp.php';
-
 /**
  * SAML messages crossing HTTP: what the IdP reads from a browser's request,
  * whether it trusts the signature on it, and what it sends back

@@ -12,10 +12,6 @@ use Hubzero\Test\Basic;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use ReflectionClass;
 
-require_once dirname(__DIR__) . DS . 'account.php';
-require_once __DIR__ . '/TestMember.php';
-require_once __DIR__ . '/TestPlugin.php';
-
 /**
  * Tests for the SSH key path handling of the members account plugin
  *

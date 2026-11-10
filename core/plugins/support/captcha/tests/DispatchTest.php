@@ -12,8 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Plugins\Support\Captcha\Captcha;
 use ReflectionClass;
 
-require_once dirname(__DIR__) . '/captcha.php';
-
 /**
  * The support captcha builds its form with a method it names from the
  * modCaptcha or comCaptcha setting (generate, the type, Captcha) and draws

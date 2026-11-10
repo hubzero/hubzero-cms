@@ -12,8 +12,6 @@ use Hubzero\Test\Basic;
 use PDO;
 use Plugins\Cron\Members\Members;
 
-require_once dirname(__DIR__) . DS . 'members.php';
-
 /**
  * Selection of inactive accounts by the expireInactiveAccounts cron event
  *

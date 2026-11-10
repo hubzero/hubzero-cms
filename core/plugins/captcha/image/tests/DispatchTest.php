@@ -12,8 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Plugins\Captcha\Image\Image;
 use ReflectionClass;
 
-require_once dirname(__DIR__) . '/image.php';
-
 /**
  * The image captcha draws its picture with a method it names from the
  * plugin's imageFunction setting: createImage plus the setting's value,

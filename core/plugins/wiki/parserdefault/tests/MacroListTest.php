@@ -11,9 +11,6 @@ namespace Plugins\Wiki\Parserdefault\Tests;
 use Plugins\Wiki\Parserdefault\Macros\Macrolist;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/wikiparser.php';
-require_once dirname(__DIR__) . '/macros/macrolist.php';
-
 /**
  * The macro list documents every macro it finds among the macro files.
  */

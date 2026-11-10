@@ -11,8 +11,6 @@ namespace Components\Saml\Tests;
 use Hubzero\Test\Basic;
 use Components\Saml\Models\IdP;
 
-require_once dirname(__DIR__) . '/models/IdP.php';
-
 /**
  * IdP protocol engine test
  *

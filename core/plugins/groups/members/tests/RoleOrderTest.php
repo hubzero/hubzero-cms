@@ -12,8 +12,6 @@ use Hubzero\Test\Basic;
 use Plugins\Groups\Members\Helpers\RoleOrder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-require_once dirname(__DIR__) . '/helpers/roleorder.php';
-
 /**
  * Default ordering of member roles
  */

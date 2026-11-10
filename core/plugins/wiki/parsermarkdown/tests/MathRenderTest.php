@@ -12,8 +12,6 @@ use Hubzero\Facades\Facade;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/markdownparser.php';
-
 /**
  * The markdown parser restores the math it set aside before rendering
  */

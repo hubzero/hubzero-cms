@@ -9,9 +9,6 @@
 namespace Components\Publications\Tests;
 
 use Hubzero\Test\Basic;
-
-require_once dirname(__DIR__) . DS . 'models' . DS . 'bundlebuilder.php';
-
 use Components\Publications\Models\BundleBuilder;
 
 /**

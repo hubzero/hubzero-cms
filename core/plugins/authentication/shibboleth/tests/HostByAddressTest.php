@@ -11,8 +11,6 @@ namespace Plugins\Authentication\Shibboleth\Tests;
 use Plugins\Authentication\Shibboleth\Shibboleth;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/shibboleth.php';
-
 /**
  * The plugin names a client's host by a reverse lookup with a short timeout,
  * and falls back to the address when the lookup fails.

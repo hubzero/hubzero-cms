@@ -11,10 +11,6 @@ namespace Components\Saml\Tests;
 use Hubzero\Test\Basic;
 use Components\Saml\Models\ServiceProvider;
 
-require_once dirname(__DIR__) . '/models/ServiceProvider.php';
-require_once __DIR__ . '/StubbedServiceProvider.php';
-require_once __DIR__ . '/StubUser.php';
-
 /**
  * Service Provider model test
  *

@@ -11,9 +11,6 @@ namespace Components\Groups\Tests;
 use Components\Groups\Helpers\Gitlab;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__) . '/helpers/gitlab.php';
-require_once __DIR__ . '/GitlabClient.php';
-
 /**
  * The super group GitLab helper sends each kind of request through its
  * HTTP client.

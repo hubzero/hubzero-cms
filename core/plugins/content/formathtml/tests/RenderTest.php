@@ -13,8 +13,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Plugins\Content\Formathtml\Parser;
 
-require_once dirname(__DIR__) . '/parser.php';
-
 /**
  * The HTML parser sets preformatted text, code and macros aside while it
  * works and puts each back as it was; a macro it cannot find is dropped,
