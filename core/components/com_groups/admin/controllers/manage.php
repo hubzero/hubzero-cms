@@ -303,7 +303,7 @@ class Manage extends AdminController
         $g['cn'] = strtolower($g['cn']);
 
         // Ensure the data passed is valid
-        if (!$this->_validCn($g['cn'], true)) {
+        if (!$this->validCn($g['cn'], true)) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_INVALID_ID'));
         }
 
@@ -426,10 +426,10 @@ class Manage extends AdminController
 
         // handle special groups
         if ($group->isSuperGroup()) {
-            $this->_handleSuperGroup($group);
+            $this->handleSuperGroup($group);
 
             // git lab stuff
-            $this->_handSuperGroupGitlab($group);
+            $this->handSuperGroupGitlab($group);
         }
 
         // Output messsage and redirect
@@ -451,7 +451,7 @@ class Manage extends AdminController
      * @param   object  $group  \Hubzero\User\Group
      * @return  void
      */
-    private function _handleSuperGroup($group)
+    private function handleSuperGroup($group)
     {
         // get the upload path for groups
         $uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
@@ -576,7 +576,7 @@ class Manage extends AdminController
      * @param   object  $group
      * @return  void
      */
-    private function _handSuperGroupGitlab($group)
+    private function handSuperGroupGitlab($group)
     {
         $client = new Gitlab();
         if (!$client->validate()) {
@@ -1297,7 +1297,7 @@ class Manage extends AdminController
      * @param   boolean  $allowDashes  Allow dashes in cn
      * @return  boolean  True if valid, false if not
      */
-    private function _validCn($cn, $allowDashes = false)
+    private function validCn($cn, $allowDashes = false)
     {
         $regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
         if ($allowDashes) {

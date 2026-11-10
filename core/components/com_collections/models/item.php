@@ -52,28 +52,28 @@ class Item extends Base
      *
      * @var object
      */
-    private $_modifier = null;
+    private $modifier = null;
 
     /**
      * Container for properties
      *
      * @var array
      */
-    private $_assets = null;
+    private $assets = null;
 
     /**
      * Tag Cloud model
      *
      * @var object
      */
-    private $_tags = null;
+    private $tags = null;
 
     /**
      * Container for properties
      *
      * @var array
      */
-    private $_cache = [
+    private $cache = [
         'comments.count'    => null,
         'comments.list'     => null,
         'collections.count' => null,
@@ -202,14 +202,14 @@ class Item extends Base
      */
     public function modifier($property = null, $default = null)
     {
-        if (!($this->_modifier instanceof Member)) {
-            $this->_modifier = Member::oneOrNew($this->get('modified_by'));
+        if (!($this->modifier instanceof Member)) {
+            $this->modifier = Member::oneOrNew($this->get('modified_by'));
         }
         if ($property) {
             $property = ($property == 'id' ? 'uidNumber' : $property);
-            return $this->_modifier->get($property, $default);
+            return $this->modifier->get($property, $default);
         }
-        return $this->_modifier;
+        return $this->modifier;
     }
 
     /**
@@ -234,7 +234,7 @@ class Item extends Base
 
         switch (strtolower(trim($what))) {
             case 'count':
-                if ($this->_cache['comments.count'] === null) {
+                if ($this->cache['comments.count'] === null) {
                     $total = Comment::all()
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereEquals('item_id', $this->get('id'))
@@ -242,15 +242,15 @@ class Item extends Base
                         ->ordered()
                         ->total();
 
-                    $this->_cache['comments.count'] = $total;
+                    $this->cache['comments.count'] = $total;
                 }
-                return $this->_cache['comments.count'];
+                return $this->cache['comments.count'];
                 break;
 
             case 'list':
             case 'results':
             default:
-                if (!is_array($this->_cache['comments.list'])) {
+                if (!is_array($this->cache['comments.list'])) {
                     $results = Comment::all()
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereEquals('item_id', $this->get('id'))
@@ -258,9 +258,9 @@ class Item extends Base
                         ->ordered()
                         ->rows();
 
-                    $this->_cache['comments.list'] = $results;
+                    $this->cache['comments.list'] = $results;
                 }
-                return $this->_cache['comments.list'];
+                return $this->cache['comments.list'];
                 break;
         }
     }
@@ -274,7 +274,7 @@ class Item extends Base
      */
     public function assets($filters = [], $reset = false)
     {
-        if (!($this->_assets instanceof ItemList) || $reset) {
+        if (!($this->assets instanceof ItemList) || $reset) {
             $tbl = new Tables\Asset($this->_db);
 
             if (!isset($filters['item_id'])) {
@@ -289,9 +289,9 @@ class Item extends Base
                 $results = [];
             }
 
-            $this->_assets = new ItemList($results);
+            $this->assets = new ItemList($results);
         }
-        return $this->_assets;
+        return $this->assets;
     }
 
     /**
@@ -302,14 +302,14 @@ class Item extends Base
      */
     public function addAsset($asset = null)
     {
-        if (!isset($this->_assets) || !($this->_assets instanceof ItemList)) {
-            $this->_assets = new ItemList([]);
+        if (!isset($this->assets) || !($this->assets instanceof ItemList)) {
+            $this->assets = new ItemList([]);
         }
         if ($asset) {
             if (!($asset instanceof Asset)) {
                 $asset = new Asset($asset);
             }
-            $this->_assets->add($asset);
+            $this->assets->add($asset);
         }
     }
 
@@ -349,7 +349,7 @@ class Item extends Base
 
         // Reset the asset list so the next time assets
         // are called, the list if fresh
-        $this->_assets = null;
+        $this->assets = null;
 
         return true;
     }
@@ -377,11 +377,11 @@ class Item extends Base
             }
         }
 
-        if (!isset($this->_tags)) {
-            $this->_tags = new Tags($this->get('id'));
+        if (!isset($this->tags)) {
+            $this->tags = new Tags($this->get('id'));
         }
 
-        return $this->_tags->render($as, ['admin' => $admin]);
+        return $this->tags->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -391,12 +391,12 @@ class Item extends Base
      */
     public function tag($tags = null, $user_id = 0, $admin = 0)
     {
-        if (!isset($this->_tags)) {
-            $this->_tags = new Tags($this->get('id'));
+        if (!isset($this->tags)) {
+            $this->tags = new Tags($this->get('id'));
         }
         $user_id = $user_id ?: User::get('id');
 
-        return $this->_tags->setTags($tags, $user_id, $admin);
+        return $this->tags->setTags($tags, $user_id, $admin);
     }
 
     /**
@@ -407,13 +407,13 @@ class Item extends Base
      */
     public function addTag($tag = null, $user_id = 0, $admin = 0)
     {
-        if (!isset($this->_tags)) {
-            $this->_tags = new Tags($this->get('id'));
+        if (!isset($this->tags)) {
+            $this->tags = new Tags($this->get('id'));
         }
         //$user_id = $user_id ?: User::get('id');
 
-        //return $this->_tags->add($tag, $user_id, $admin);
-        return $this->_tags->append($tag);
+        //return $this->tags->add($tag, $user_id, $admin);
+        return $this->tags->append($tag);
     }
 
     /**
@@ -711,17 +711,17 @@ class Item extends Base
 
         switch (strtolower($what)) {
             case 'count':
-                if (!isset($this->_cache['collections.count']) || $clear) {
+                if (!isset($this->cache['collections.count']) || $clear) {
                     $tbl = new Tables\Collection($this->_db);
-                    $this->_cache['collections.count'] = $tbl->getCount($filters);
+                    $this->cache['collections.count'] = $tbl->getCount($filters);
                 }
-                return $this->_cache['collections.count'];
+                return $this->cache['collections.count'];
                 break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_cache['collections.list'] instanceof ItemList) || $clear) {
+                if (!($this->cache['collections.list'] instanceof ItemList) || $clear) {
                     $tbl = new Tables\Collection($this->_db);
 
                     if ($results = $tbl->getRecords($filters)) {
@@ -731,9 +731,9 @@ class Item extends Base
                     } else {
                         $results = [];
                     }
-                    $this->_cache['collections.list'] = new ItemList($results);
+                    $this->cache['collections.list'] = new ItemList($results);
                 }
-                return $this->_cache['collections.list'];
+                return $this->cache['collections.list'];
                 break;
         }
     }

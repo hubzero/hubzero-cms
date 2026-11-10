@@ -28,7 +28,7 @@ class Mysessions extends Module
      * @param   integer  $sess  Session ID
      * @return  void
      */
-    private function _setTimeout($sess)
+    private function setTimeout($sess)
     {
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
@@ -44,7 +44,7 @@ class Mysessions extends Module
      * @param   integer  $sess  Session ID
      * @return  string
      */
-    private function _getTimeout($sess)
+    private function getTimeout($sess)
     {
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 

@@ -27,21 +27,21 @@ class View
      *
      * @var  string
      */
-    private static $_tab = null;
+    private static $tab = null;
 
     /**
      * List of sections
      *
      * @var  array
      */
-    private static $_sections = null;
+    private static $sections = null;
 
     /**
      * List of section content
      *
      * @var  array
      */
-    private static $_sections_content = null;
+    private static $sections_content = null;
 
     /**
      * Get Active Group Tab
@@ -52,7 +52,7 @@ class View
     public static function getTab($group)
     {
         //do we already have an instance of tab?
-        if (!isset(self::$_tab)) {
+        if (!isset(self::$tab)) {
             //get request vars
             $tab = Request::getString('active', 'overview');
 
@@ -65,11 +65,11 @@ class View
             }
 
             //set instance var
-            self::$_tab = $tab;
+            self::$tab = $tab;
         }
 
         //return active tab
-        return self::$_tab;
+        return self::$tab;
     }
 
     /**
@@ -80,7 +80,7 @@ class View
     public static function getSections()
     {
         //do we already have an instance of categories?
-        if (!isset(self::$_sections)) {
+        if (!isset(self::$sections)) {
             // Trigger the functions that return the areas we'll be using
             // then add overview to array
             $sections = Event::trigger('groups.onGroupAreas', []);
@@ -92,11 +92,11 @@ class View
             ]);
 
             //set instance variable
-            self::$_sections = $sections;
+            self::$sections = $sections;
         }
 
         //return sections
-        return self::$_sections;
+        return self::$sections;
     }
 
 
@@ -131,7 +131,7 @@ class View
     public static function getSectionsContent($group)
     {
         //do we already have an instance of sections?
-        if (!isset(self::$_sections_content)) {
+        if (!isset(self::$sections_content)) {
             // are we authorized
             $authorized = self::authorize($group);
 
@@ -166,11 +166,11 @@ class View
             array_unshift($sectionsContent, ['html' => '', 'metadata' => '']);
 
             //set instance var
-            self::$_sections_content = $sectionsContent;
+            self::$sections_content = $sectionsContent;
         }
 
         //return categories
-        return self::$_sections_content;
+        return self::$sections_content;
     }
 
 
