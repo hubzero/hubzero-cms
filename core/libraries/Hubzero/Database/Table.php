@@ -166,7 +166,9 @@ abstract class Table extends \stdClass
      */
     public function getProperties($public = true)
     {
-        $vars = get_object_vars($this);
+        // Only what code outside the table can reach is data; what the class
+        // declares protected or private is the table's own
+        $vars = $public ? self::publicVars($this) : get_object_vars($this);
 
         if ($public) {
             foreach ($vars as $key => $value) {
@@ -177,6 +179,17 @@ abstract class Table extends \stdClass
         }
 
         return $vars;
+    }
+
+    /**
+     * The properties of an object that code outside its class can reach
+     *
+     * @param   object  $object
+     * @return  array
+     */
+    private static function publicVars($object)
+    {
+        return \Closure::bind(static fn ($o) => get_object_vars($o), null, null)($object);
     }
 
     /**
@@ -1537,7 +1550,7 @@ abstract class Table extends \stdClass
         $xml[] = '<record table="' . $this->_tbl . '"' . $map . '>';
 
         // Get the publicly accessible instance properties.
-        foreach (get_object_vars($this) as $k => $v) {
+        foreach (self::publicVars($this) as $k => $v) {
             // If the value is null or non-scalar, or the field is internal ignore it.
             if (!is_scalar($v) || ($v === null) || ($k[0] == '_')) {
                 continue;

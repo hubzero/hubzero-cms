@@ -35,6 +35,20 @@ class TableInternalsTest extends TestCase
     /**
      * @return  void
      */
+    public function testPropertiesAreTheColumnsAndAddedData(): void
+    {
+        $table = new ThingTable($this->driver());
+
+        $this->assertSame(['id', 'title'], array_keys($table->getProperties()));
+
+        $table->extra = 'added';
+
+        $this->assertSame(['id', 'title', 'extra'], array_keys($table->getProperties()));
+    }
+
+    /**
+     * @return  void
+     */
     public function testBindingCannotReplaceTheTablesOwnState(): void
     {
         $db    = $this->driver();
@@ -46,6 +60,7 @@ class TableInternalsTest extends TestCase
             '_tbl'     => '#__elsewhere',
             '_tbl_key' => 'title',
             '_db'      => null,
+            'fieldCache' => [],
         ]);
 
         $this->assertSame(5, $table->id);
@@ -53,6 +68,7 @@ class TableInternalsTest extends TestCase
         $this->assertSame('#__things', $table->getTableName());
         $this->assertSame('id', $table->getKeyName());
         $this->assertSame($db, $table->getDbo());
+        $this->assertSame(['id', 'title'], array_keys($table->getFields()));
     }
 
     /**
