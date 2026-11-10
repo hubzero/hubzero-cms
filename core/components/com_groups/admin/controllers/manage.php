@@ -189,7 +189,7 @@ class Manage extends AdminController
         $group->read($id);
 
         // Make sure we are authorized
-        if (!$this->authorize($task, $group)) {
+        if (!$this->canPerform($task, $group)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -271,7 +271,7 @@ class Manage extends AdminController
 
         $task = ($this->_task == 'edit') ? 'edit' : 'create';
 
-        if (!$this->authorize($task, $group)) {
+        if (!$this->canPerform($task, $group)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -1012,7 +1012,7 @@ class Manage extends AdminController
                 if (!$group) {
                     continue;
                 }
-                if (!$this->authorize('delete', $group)) {
+                if (!$this->canPerform('delete', $group)) {
                     continue;
                 }
 
@@ -1326,7 +1326,7 @@ class Manage extends AdminController
      * @param   object   $group  \Hubzero\User\Group
      * @return  boolean  True if authorized, false if not.
      */
-    protected function authorize($task, $group = null)
+    protected function canPerform($task, $group = null)
     {
         // get users actions
         $canDo = Permissions::getActions('group');

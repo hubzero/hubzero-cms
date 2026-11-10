@@ -49,7 +49,7 @@ class Form extends SiteController
         }
 
         if (!$this->member || !is_numeric($this->member)) {
-            // authorize() already exempts super admins and course managers, but
+            // requireFormAccess() already exempts super admins and course managers, but
             // it runs inside the task and execute() gets here first. Let them
             // through without a member id rather than turning them away, and
             // flag it so the view can say so.
@@ -126,7 +126,7 @@ class Form extends SiteController
     {
         // Check authorization
         // @FIXME: only admins should see ALL exams
-        $this->authorize();
+        $this->requireFormAccess();
 
         // Set the title and pathway
         $this->_buildTitle('Upload a PDF');
@@ -152,7 +152,7 @@ class Form extends SiteController
     public function uploadTask()
     {
         // Check authorization
-        $this->authorize();
+        $this->requireFormAccess();
         $pdf = PdfForm::fromPostedFile('pdf');
 
         // No error, then render the images
@@ -192,7 +192,7 @@ class Form extends SiteController
     public function layoutTask()
     {
         // Check authorization
-        $this->authorize();
+        $this->requireFormAccess();
 
         // Set the title and pathway
         $this->_buildTitle();
@@ -215,7 +215,7 @@ class Form extends SiteController
     public function saveLayoutTask()
     {
         // Check authorization
-        $this->authorize();
+        $this->requireFormAccess();
 
         $pdf = $this->assertExistentForm();
 
@@ -244,7 +244,7 @@ class Form extends SiteController
     public function deployTask($dep = null)
     {
         // Check authorization
-        $this->authorize();
+        $this->requireFormAccess();
 
         // Set the title and pathway
         $this->_buildTitle();
@@ -582,7 +582,7 @@ class Form extends SiteController
      *
      * @return  void
      */
-    public function authorize()
+    public function requireFormAccess()
     {
         // Make sure they're logged in
         if (User::isGuest()) {
