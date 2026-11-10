@@ -1380,14 +1380,14 @@ class Sessions extends SiteController
         );
         Pathway::append(
             $app->title,
-            'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname,
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $toolname,
         );
 
         if ($this->_task) {
             $t = ($app->caption) ? $app->sess . ' "' . $app->caption . '"' : $app->sess;
             Pathway::append(
                 Lang::txt('COM_TOOLS_SESSION_NUMBER', $t),
-                'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess,
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess,
             );
         }
 

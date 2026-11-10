@@ -1340,7 +1340,7 @@ class Tickets extends SiteController
         $id = Request::getInt('id', 0);
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=tickets'),
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
                 Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'),
                 'error',
             );
