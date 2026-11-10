@@ -463,7 +463,7 @@ class File extends Obj
      * @param   string  $mimeType
      * @return  string
      */
-    protected function _fixUpMimeType($mimeType = null)
+    protected function fixUpMimeType($mimeType = null)
     {
         if ($this->get('ext')) {
             switch (strtolower($this->get('ext'))) {

@@ -237,7 +237,7 @@ class Media extends Base
                 echo json_encode(['error' => Lang::txt('User login required')]);
                 return;
             }
-            $this->_showError();
+            $this->showError();
             return;
         }
 
@@ -250,7 +250,7 @@ class Media extends Base
                 echo json_encode(['error' => $this->getError()]);
                 return;
             }
-            $this->_showError();
+            $this->showError();
             return;
         }
 
@@ -264,7 +264,7 @@ class Media extends Base
                 echo json_encode(['error' => $this->getError()]);
                 return;
             }
-            $this->_showError();
+            $this->showError();
             return;
         }
 
@@ -286,7 +286,7 @@ class Media extends Base
                     echo json_encode(['error' => $this->getError()]);
                     return;
                 }
-                $this->_showError();
+                $this->showError();
                 return;
             }
 
@@ -300,7 +300,7 @@ class Media extends Base
                         echo json_encode(['error' => $this->getError()]);
                         return;
                     }
-                    $this->_showError();
+                    $this->showError();
                     return;
                 }
             }
@@ -313,7 +313,7 @@ class Media extends Base
                         echo json_encode(['error' => $this->getError()]);
                         return;
                     }
-                    $this->_showError();
+                    $this->showError();
                     return;
                 }
             }
@@ -344,7 +344,7 @@ class Media extends Base
 
         // Go to error page
         if ($this->getError()) {
-            $this->_showError();
+            $this->showError();
         }
 
         // Return to project page

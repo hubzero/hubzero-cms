@@ -68,8 +68,8 @@ class Membership extends Base
             return;
         }
 
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         //check to make sure we have  cname
         if (!$this->cn) {
@@ -96,7 +96,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
+        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -166,7 +166,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
+        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -595,8 +595,8 @@ class Membership extends Base
         // e-mail, or the return from logging in, arrives by GET and gets a page
         // whose button posts it (carrying the invitation token, if any).
         if (Request::method() !== 'POST') {
-            $this->_buildTitle();
-            $this->_buildPathway();
+            $this->buildTitle();
+            $this->buildPathway();
 
             $this->view
                 ->set('title', Lang::txt('COM_GROUPS_ACCEPT_INVITE') . ': ' . $this->view->group->get('description'))
@@ -924,8 +924,8 @@ class Membership extends Base
             // page or template, or the return from logging in) arrives by GET
             // and gets a page whose button posts it.
             if (Request::method() !== 'POST') {
-                $this->_buildTitle();
-                $this->_buildPathway();
+                $this->buildTitle();
+                $this->buildPathway();
 
                 $this->view
                     ->set('title', Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->view->group->get('description'))

@@ -59,10 +59,10 @@ class Tags extends SiteController
     public function displayTask()
     {
         // Set the page title
-        $this->_buildTitle(null);
+        $this->buildTitle(null);
 
         // Set the pathway
-        $this->_buildPathway(null);
+        $this->buildPathway(null);
 
         $this->view
             ->set('cloud', new Cloud())
@@ -261,10 +261,10 @@ class Tags extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway($tags);
+        $this->buildPathway($tags);
 
         // Set the page title
-        $this->_buildTitle($tags);
+        $this->buildTitle($tags);
 
         // Output HTML
         if (Request::getString('format', '') == 'xml') {
@@ -634,10 +634,10 @@ class Tags extends SiteController
         $rows = $t->tags('list', $filters);
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view
             ->set('rows', $rows)
@@ -684,10 +684,10 @@ class Tags extends SiteController
         ];
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view
             ->set('tag', $tag)
@@ -874,7 +874,7 @@ class Tags extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway($tags = null)
+    protected function buildPathway($tags = null)
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -910,7 +910,7 @@ class Tags extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle($tags = null)
+    protected function buildTitle($tags = null)
     {
         $this->view->title = Lang::txt(strtoupper($this->option));
         if ($this->task && $this->task != 'view' && $this->task != 'display') {

@@ -64,7 +64,7 @@ class Tickets extends SiteController
      * @param   object  $ticket
      * @return  void
      */
-    protected function _buildPathway($ticket = null)
+    protected function buildPathway($ticket = null)
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -105,7 +105,7 @@ class Tickets extends SiteController
      * @param   object  $ticket
      * @return  void
      */
-    protected function _buildTitle($ticket = null)
+    protected function buildTitle($ticket = null)
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->task) {
@@ -148,12 +148,12 @@ class Tickets extends SiteController
         }
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view->title = $this->_title;
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $type = Request::getWord('type', 'submitted');
         $this->view->type = ($type == 'automatic') ? 1 : 0;
@@ -647,10 +647,10 @@ class Tickets extends SiteController
         }
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view
             ->set('watch', $watch)
@@ -736,10 +736,10 @@ class Tickets extends SiteController
         }
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view
             ->set('acl', $this->acl)
@@ -801,12 +801,12 @@ class Tickets extends SiteController
         $validemail = Validate::email($reporter['email']);
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view->title = $this->_title;
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Trigger any events that need to be called
         $customValidation = true;
@@ -1449,10 +1449,10 @@ class Tickets extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway($row);
+        $this->buildPathway($row);
 
         // Set the page title
-        $this->_buildTitle($row);
+        $this->buildTitle($row);
 
         if (Notify::any('support')) {
             foreach (Notify::messages('support') as $error) {

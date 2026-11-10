@@ -187,32 +187,32 @@ class Resume extends Plugin
 
             switch ($task) {
                 case 'uploadresume':
-                    $arr['html'] = $this->_upload($database, $option, $member);
+                    $arr['html'] = $this->upload($database, $option, $member);
                     break;
                 case 'deleteresume':
-                    $arr['html'] = $this->_deleteresume($database, $option, $member, $emp);
+                    $arr['html'] = $this->deleteresume($database, $option, $member, $emp);
                     break;
                 case 'edittitle':
-                    $arr['html'] = $this->_view($database, $option, $member, $emp, 1);
+                    $arr['html'] = $this->renderView($database, $option, $member, $emp, 1);
                     break;
                 case 'savetitle':
-                    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);
+                    $arr['html'] = $this->save($database, $option, $member, $task, $emp);
                     break;
                 case 'saveprefs':
-                    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);
+                    $arr['html'] = $this->save($database, $option, $member, $task, $emp);
                     break;
                 case 'editprefs':
-                    $arr['html'] = $this->_view($database, $option, $member, $emp, 0, $editpref = 2);
+                    $arr['html'] = $this->renderView($database, $option, $member, $emp, 0, $editpref = 2);
                     break;
                 case 'activate':
-                    $arr['html'] = $this->_activate($database, $option, $member, $emp);
+                    $arr['html'] = $this->activate($database, $option, $member, $emp);
                     break;
                 case 'download':
-                    $arr['html'] = $this->_download($member);
+                    $arr['html'] = $this->download($member);
                     break;
                 case 'view':
                 default:
-                    $arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0);
+                    $arr['html'] = $this->renderView($database, $option, $member, $emp, $edittitle = 0);
                     break;
             }
         } elseif ($emp) {
@@ -232,7 +232,7 @@ class Resume extends Plugin
      * @param   integer  $emp       Is user employer?
      * @return  string
      */
-    protected function _save($database, $option, $member, $task, $emp)
+    protected function save($database, $option, $member, $task, $emp)
     {
         // Check for request forgeries (both forms in views/resume post the token)
         Request::checkToken();
@@ -280,7 +280,7 @@ class Resume extends Plugin
             }
         }
 
-        return $this->_view($database, $option, $member, $emp);
+        return $this->renderView($database, $option, $member, $emp);
     }
 
     /**
@@ -292,7 +292,7 @@ class Resume extends Plugin
      * @param   integer  $emp       Is user employer?
      * @return  string
      */
-    protected function _activate($database, $option, $member, $emp)
+    protected function activate($database, $option, $member, $emp)
     {
         // are we activating or disactivating?
         $active = Request::getInt('on', 0);
@@ -315,10 +315,10 @@ class Resume extends Plugin
                 exit();
             }
 
-            return $this->_view($database, $option, $member, $emp);
+            return $this->renderView($database, $option, $member, $emp);
         } else {
             // ask to confirm/add search preferences
-            return $this->_view($database, $option, $member, $emp, 0, 1);
+            return $this->renderView($database, $option, $member, $emp, 0, 1);
         }
     }
 
@@ -333,7 +333,7 @@ class Resume extends Plugin
      * @param   integer  $editpref   Parameter description (if any) ...
      * @return  string
      */
-    protected function _view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
+    protected function renderView($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
     {
         $out = '';
 
@@ -366,7 +366,7 @@ class Resume extends Plugin
         // get active resume
         $resume = new \Components\Jobs\Tables\Resume($database);
         $file = '';
-        $path = $this->build_path($member->get('id'));
+        $path = $this->buildPath($member->get('id'));
 
         if ($resume->loadResume($member->get('id'))) {
             $file = PATH_APP . $path . DS . $resume->filename;
@@ -409,7 +409,7 @@ class Resume extends Plugin
      * @param   integer  $uid  User ID
      * @return  mixed    False if errors, string otherwise
      */
-    public function build_path($uid)
+    public function buildPath($uid)
     {
         // Get the configured upload path
         $base_path = $this->params->get('webpath', '/site/members');
@@ -437,14 +437,14 @@ class Resume extends Plugin
      * @param   object  $member    Profile
      * @return  string
      */
-    protected function _upload($database, $option, $member)
+    protected function upload($database, $option, $member)
     {
-        $path = $this->build_path($member->get('id'));
+        $path = $this->buildPath($member->get('id'));
         $emp = Request::getInt('emp', 0);
 
         if (!$path) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
-            return $this->_view($database, $option, $member, $emp);
+            return $this->renderView($database, $option, $member, $emp);
         }
 
         // Check for request forgeries
@@ -455,7 +455,7 @@ class Resume extends Plugin
 
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
-            return $this->_view($database, $option, $member, $emp);
+            return $this->renderView($database, $option, $member, $emp);
         }
 
         // Get media config
@@ -467,7 +467,7 @@ class Resume extends Plugin
 
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
-            return $this->_view($database, $option, $member, $emp);
+            return $this->renderView($database, $option, $member, $emp);
         }
 
         // Incoming
@@ -490,7 +490,7 @@ class Resume extends Plugin
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
         if (!empty($allowed) && !in_array($ext, $allowed)) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->_view($database, $option, $member, $emp);
+            return $this->renderView($database, $option, $member, $emp);
         }
 
         if (User::get('id') != $member->get('id') && !User::authorise('core.admin')) {
@@ -522,7 +522,7 @@ class Resume extends Plugin
                 Filesystem::delete($fpath);
 
                 $this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
-                return $this->_view($database, $option, $member, $emp);
+                return $this->renderView($database, $option, $member, $emp);
             }
 
             // File was uploaded, create database entry
@@ -538,7 +538,7 @@ class Resume extends Plugin
                 $this->setError($row->getError());
             }
         }
-        return $this->_view($database, $option, $member, $emp);
+        return $this->renderView($database, $option, $member, $emp);
     }
 
     /**
@@ -550,7 +550,7 @@ class Resume extends Plugin
      * @param   integer  $emp       Is user employer?
      * @return  string
      */
-    protected function _deleteresume($database, $option, $member, $emp)
+    protected function deleteresume($database, $option, $member, $emp)
     {
         if (User::get('id') != $member->get('id') && !User::authorise('core.admin')) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
@@ -568,7 +568,7 @@ class Resume extends Plugin
         // Incoming file
         $file = $row->filename;
 
-        $path = $this->build_path($member->get('id'));
+        $path = $this->buildPath($member->get('id'));
 
         if (!file_exists(PATH_APP . $path . DS . $file) or !$file) {
             $this->setError(Lang::txt('FILE_NOT_FOUND'));
@@ -594,7 +594,7 @@ class Resume extends Plugin
         }
 
         // Push through to the main view
-        return $this->_view($database, $option, $member, $emp);
+        return $this->renderView($database, $option, $member, $emp);
     }
 
     /**
@@ -729,7 +729,7 @@ class Resume extends Plugin
      * @param   object  $member
      * @return  void
      */
-    protected function _download($member)
+    protected function download($member)
     {
         $database = App::get('db');
 
@@ -745,7 +745,7 @@ class Resume extends Plugin
         // Load the resume
         $resume = new \Components\Jobs\Tables\Resume($database);
         $file = '';
-        $path = $this->build_path($uid);
+        $path = $this->buildPath($uid);
 
         if ($resume->loadResume($uid)) {
             $file = PATH_APP . $path . DS . $resume->filename;

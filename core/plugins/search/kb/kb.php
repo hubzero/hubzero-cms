@@ -40,7 +40,7 @@ class Kb extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];

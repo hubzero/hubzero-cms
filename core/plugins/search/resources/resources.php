@@ -39,7 +39,7 @@ class Resources extends Plugin
 
         $database = App::get('db');
 
-        $groups = array_map([$database, 'escape'], $authz->get_group_names());
+        $groups = array_map([$database, 'escape'], $authz->getGroupNames());
         $viewlevels = implode(',', (User::isGuest() ? [0, 3] : [0, 1, 3]));
 
         if ($groups) {
@@ -50,12 +50,12 @@ class Resources extends Plugin
             $access = '(access IN (0,' . $viewlevels . '))';
         }
 
-        $term_parser = $request->get_terms();
-        $terms = $request->get_term_ar();
+        $term_parser = $request->getTerms();
+        $terms = $request->getTermAr();
 
         $quoted_terms = [];
         foreach ($terms['optional'] as $idx => $term) {
-            if ($term_parser->is_quoted($idx)) {
+            if ($term_parser->isQuoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
                     if (strpos($term, $stem) === 0 || strpos($stem, $term) === 0) {
                         unset($terms['stemmed'][$sidx]);
@@ -66,7 +66,7 @@ class Resources extends Plugin
         }
 
         $tag_map = [];
-        foreach ($request->get_tagged_ids('resources') as $id) {
+        foreach ($request->getTaggedIds('resources') as $id) {
             if (array_key_exists($id, $tag_map)) {
                 ++$tag_map[$id];
             } else {
@@ -129,7 +129,7 @@ class Resources extends Plugin
 				AND ($weight > 0)"
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
-        $assoc = $sql->to_associative();
+        $assoc = $sql->toAssociative();
 
         $id_assoc = [];
         foreach ($assoc as $row) {
@@ -142,7 +142,7 @@ class Resources extends Plugin
             foreach ($assoc as $row) {
                 $id = (int) $row->get('id');
                 if (array_key_exists($id, $tag_map)) {
-                    $row->add_weight((1 + $tag_map[$id]) / 12, 'tag bonus from resources plugin');
+                    $row->addWeight((1 + $tag_map[$id]) / 12, 'tag bonus from resources plugin');
                     unset($tag_map[$id]);
                 }
             }
@@ -178,9 +178,9 @@ class Resources extends Plugin
 						$whereClause2
 						AND r.id in ($tagIds)" . $addtlWhereStr,
                 );
-                foreach ($sql->to_associative() as $row) {
+                foreach ($sql->toAssociative() as $row) {
                     if ($tag_map[$row->get('id')] > 1) {
-                        $row->adjust_weight(
+                        $row->adjustWeight(
                             $tag_map[$row->get('id')] / 8,
                             'tag bonus for non-matching but tagged resources',
                         );
@@ -214,13 +214,13 @@ class Resources extends Plugin
         $rows = [];
         foreach ($id_assoc as $id => $row) {
             if (!array_key_exists((int) $id, $placed)) {
-                $row->sort_children([$sorter, 'sort']);
+                $row->sortChildren([$sorter, 'sort']);
                 $rows[] = $row;
             }
         }
 
         usort($rows, function ($a, $b) {
-            $res = $a->get_weight() - $b->get_weight();
+            $res = $a->getWeight() - $b->getWeight();
             return $res == 0 ? 0 : ($res > 0 ? -1 : 1);
         });
         foreach ($rows as $row) {

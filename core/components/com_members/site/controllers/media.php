@@ -58,7 +58,7 @@ class Media extends SiteController
         $id = Request::getInt('id', 0);
 
         // load profile from id
-        $this->_requireSelfOrAdmin($id);
+        $this->requireSelfOrAdmin($id);
         $profile = Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
@@ -108,7 +108,7 @@ class Media extends SiteController
 
         // Get the id and load profile
         $id = Request::getInt('id', 0);
-        $this->_requireSelfOrAdmin($id);
+        $this->requireSelfOrAdmin($id);
         $profile = Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
@@ -225,7 +225,7 @@ class Media extends SiteController
         }
 
         //load the user profile
-        $this->_requireSelfOrAdmin($id);
+        $this->requireSelfOrAdmin($id);
         $profile = Member::oneOrFail($id);
         if (!$profile->get('id')) {
             echo json_encode(['error' => 'Unable to locate user profile.']);
@@ -274,7 +274,7 @@ class Media extends SiteController
             return;
         }
 
-        $this->_requireSelfOrAdmin((int) $owner);
+        $this->requireSelfOrAdmin((int) $owner);
 
         if (!file_exists(PATH_ROOT . $dir . $file)) {
             return;
@@ -317,7 +317,7 @@ class Media extends SiteController
         // Before anything touches the filesystem: $path is built from this id, so
         // checking further down still let a stranger's upload overwrite the
         // directory and delete the current picture before being refused.
-        $this->_requireSelfOrAdmin($id);
+        $this->requireSelfOrAdmin($id);
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
@@ -444,7 +444,7 @@ class Media extends SiteController
             return $this->displayTask('', $id);
         }
 
-        $this->_requireSelfOrAdmin($id);
+        $this->requireSelfOrAdmin($id);
         $profile = Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
@@ -526,7 +526,7 @@ class Media extends SiteController
      * @param   integer  $id  Member ID
      * @return  void
      */
-    protected function _requireSelfOrAdmin($id)
+    protected function requireSelfOrAdmin($id)
     {
         if (User::isGuest() || (User::get('id') != $id && $this->authorize() != 'admin')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));

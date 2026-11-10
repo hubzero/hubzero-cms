@@ -33,7 +33,7 @@ class Media extends SiteController
      * @param   integer  $listdir  Page id
      * @return  void
      */
-    protected function _requirePageEdit($listdir)
+    protected function requirePageEdit($listdir)
     {
         $listdir = (int) $listdir;
         if ($listdir < 0) {
@@ -194,7 +194,7 @@ class Media extends SiteController
             echo json_encode(['error' => Lang::txt('COM_WIKI_NO_ID')]);
             return;
         }
-        $this->_requirePageEdit($listdir);
+        $this->requirePageEdit($listdir);
 
         // get the file
         if (isset($_GET['qqfile'])) {
@@ -336,7 +336,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
             return $this->displayTask();
         }
-        $this->_requirePageEdit($listdir);
+        $this->requirePageEdit($listdir);
 
         // Incoming file
         $file = Request::getArray('upload', '', 'files');
@@ -432,7 +432,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
             return $this->displayTask();
         }
-        $this->_requirePageEdit($listdir);
+        $this->requirePageEdit($listdir);
 
         // Incoming folder
         $folder = trim(Request::getString('folder', '', 'get'));
@@ -493,7 +493,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
             return $this->displayTask();
         }
-        $this->_requirePageEdit($listdir);
+        $this->requirePageEdit($listdir);
 
         // Incoming file
         $file = trim(Request::getString('file', '', 'get'));
@@ -566,7 +566,7 @@ class Media extends SiteController
         // The same gate as the upload and delete tasks. Without it this task
         // enumerates the attachment filenames of any page by id, including one
         // whose access level forbids viewing it, to an unauthenticated caller.
-        $this->_requirePageEdit($listdir);
+        $this->requirePageEdit($listdir);
 
         $attachment = Attachment::blank();
 

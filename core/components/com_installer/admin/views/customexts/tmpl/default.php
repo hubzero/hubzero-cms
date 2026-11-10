@@ -106,10 +106,10 @@ $saveOrder = $listOrder == 'ordering';
                 $stateLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');
                 $typeLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');
                 $folderLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');
-                $locationOpts = $helpers::LocationOptions();
-                $statusOpts = $helpers::StatusOptions();
-                $typeOpts = $helpers::TypeOptions();
-                $groupOpts = $helpers::GroupOptions();
+                $locationOpts = $helpers::locationOptions();
+                $statusOpts = $helpers::statusOptions();
+                $typeOpts = $helpers::typeOptions();
+                $groupOpts = $helpers::groupOptions();
                 ?>
 
                 <label for="filter_location">

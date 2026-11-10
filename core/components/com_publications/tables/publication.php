@@ -263,7 +263,7 @@ class Publication extends Table
         }
         if (isset($filters['tag']) && $filters['tag'] != '') {
             $tagging = new \Components\Publications\Helpers\Tags($this->db);
-            $tags = $tagging->_parse_tags($filters['tag']);
+            $tags = $tagging->parseTags($filters['tag']);
 
             $query .= "AND RTA.tbl='publications' ";
             $query .= "AND TA.tag IN ('" . implode("','", $tags) . "')";

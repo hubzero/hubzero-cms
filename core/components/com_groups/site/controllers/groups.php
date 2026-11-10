@@ -81,10 +81,10 @@ class Groups extends Base
     public function displayTask()
     {
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Vars
         $mytags = '';
@@ -143,10 +143,10 @@ class Groups extends Base
     public function browseTask()
     {
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Build list of filters
         $filters = [
@@ -336,10 +336,10 @@ class Groups extends Base
         }
 
         // Build the title
-        $this->_buildTitle($pages);
+        $this->buildTitle($pages);
 
         // Build pathway
-        $this->_buildPathway($pages);
+        $this->buildPathway($pages);
 
         // Set some vars for view
         $this->view->title         = $this->_title;
@@ -450,7 +450,7 @@ class Groups extends Base
 
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
-            if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.edit'))) {
+            if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.edit'))) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
 
@@ -500,10 +500,10 @@ class Groups extends Base
         $this->view->group_plugin_access = Group\Helper::getPluginAccess($this->view->group);
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view->task = $this->task;
         $this->view->config = $this->config;
@@ -593,7 +593,7 @@ class Groups extends Base
 
         // Check authorization
         // Published = 2 = archived. Archived is a read-only mode.
-        if ($group->published == 2 || ($this->authorize() != 'manager' && $g_gidNumber != 0 && !$this->_authorizedForTask('group.edit'))) {
+        if ($group->published == 2 || ($this->authorize() != 'manager' && $g_gidNumber != 0 && !$this->authorizedForTask('group.edit'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -976,10 +976,10 @@ class Groups extends Base
         }
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Get view notifications
         $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];

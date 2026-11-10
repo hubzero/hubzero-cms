@@ -411,7 +411,7 @@ class Items extends AdminController
 
                         if ($child && $child->title != '') {
                             // Link 'em up!
-                            $this->_attachChild($cid, $pid);
+                            $this->attachChild($cid, $pid);
                         } else {
                             // No child ID! Throw an error and present the form from the previous step
                             $this->setError(Lang::txt('COM_RESOURCES_ERROR_RESOURCE_NOT_FOUND'));
@@ -454,7 +454,7 @@ class Items extends AdminController
      * @param   integer  $pid  ID of the parent
      * @return  void
      */
-    public function _attachChild($id, $pid)
+    public function attachChild($id, $pid)
     {
         // Make sure we have both parent and child IDs
         if (!$pid) {
@@ -1027,7 +1027,7 @@ class Items extends AdminController
         $pid = Request::getInt('pid', 0, 'post');
 
         if ($isNew && $pid) {
-            $this->_attachChild($row->get('id'), $pid);
+            $this->attachChild($row->get('id'), $pid);
         }
 
         // Is this a standalone resource and we need to email approved submissions?

@@ -45,35 +45,35 @@ class QueryAddColumnStatement
      */
     public function toString()
     {
-        $this->_generateBaseString();
-        $this->_addName();
-        $this->_addType();
-        $this->_addRestriction();
-        $this->_addDefault();
+        $this->generateBaseString();
+        $this->addName();
+        $this->addType();
+        $this->addRestriction();
+        $this->addDefault();
 
         return $this->asString;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateBaseString()
+    protected function generateBaseString()
     {
         $this->asString = 'ADD COLUMN';
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addName()
+    protected function addName()
     {
         $this->asString .= " $this->name";
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addType()
+    protected function addType()
     {
         $this->asString .= " $this->type";
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addRestriction()
+    protected function addRestriction()
     {
         $restriction = rtrim(" $this->restriction");
 
@@ -81,7 +81,7 @@ class QueryAddColumnStatement
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addDefault()
+    protected function addDefault()
     {
         $default = '';
 

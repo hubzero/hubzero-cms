@@ -78,7 +78,7 @@ class Reviews extends Plugin
             $this->view->depth    = 0;
             $this->view->tbl      = $tbl;
 
-            $this->_authorize();
+            $this->authorize();
 
             $this->view->params   = $this->params;
             $this->view->task     = $this->task    = Request::getString('action', '');
@@ -86,26 +86,26 @@ class Reviews extends Plugin
             switch ($this->task) {
                 // Entries
                 case 'save':
-                    $this->_save();
+                    $this->save();
                     break;
                 case 'new':
-                    $this->_view();
+                    $this->renderView();
                     break;
                 case 'edit':
-                    $this->_view();
+                    $this->renderView();
                     break;
                 case 'delete':
-                    $this->_delete();
+                    $this->delete();
                     break;
                 case 'view':
-                    $this->_view();
+                    $this->renderView();
                     break;
                 case 'vote':
-                    $this->_vote();
+                    $this->vote();
                     break;
 
                 default:
-                    $this->_view();
+                    $this->renderView();
                     break;
             }
 
@@ -127,7 +127,7 @@ class Reviews extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'comment', $assetId = null)
+    protected function authorize($assetType = 'comment', $assetId = null)
     {
         // Are comments public or registered members only?
         if ($this->params->get('comments_viewable', 0) <= 0) {
@@ -225,7 +225,7 @@ class Reviews extends Plugin
     /**
      * Redirect to login page
      */
-    protected function _login()
+    protected function login()
     {
         // Return to the reviews page rather than to the action that was requested
         $return = base64_encode($this->url);
@@ -242,12 +242,12 @@ class Reviews extends Plugin
      *
      * @return  void
      */
-    protected function _vote()
+    protected function vote()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->setError(Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -328,7 +328,7 @@ class Reviews extends Plugin
      *
      * @return  void
      */
-    protected function _view()
+    protected function renderView()
     {
         // Get comments on this article
         $comments = $this->view->tbl
@@ -353,11 +353,11 @@ class Reviews extends Plugin
      *
      * @return  void
      */
-    protected function _save()
+    protected function save()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -463,11 +463,11 @@ class Reviews extends Plugin
      *
      * @return  void
      */
-    protected function _delete()
+    protected function delete()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $this->_login();
+            $this->login();
         }
 
         // Require POST

@@ -39,7 +39,7 @@ class Migration20241218103500ComMembers extends Base
     */
 
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function cleanUnicode_ProperNames()
+    public function cleanUnicodeProperNames()
     {
         $query = 'SELECT id FROM #__users where surname REGEXP "\\\\p{C}" '
             . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
@@ -73,7 +73,7 @@ class Migration20241218103500ComMembers extends Base
     }
 
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function cleanInvaldChars_ProperNames()
+    public function cleanInvaldCharsProperNames()
     {
         foreach (['#__users', '#__xprofiles'] as $table) {
             foreach (['name','givenName','middleName','surname'] as $field) {
@@ -189,8 +189,8 @@ class Migration20241218103500ComMembers extends Base
 
     public function up()
     {
-        $this->cleanUnicode_ProperNames();
-        $this->cleanInvaldChars_ProperNames();
+        $this->cleanUnicodeProperNames();
+        $this->cleanInvaldCharsProperNames();
         $this->rebuildName();
         $this->rebuildNameParts();
         $this->syncProfiles();

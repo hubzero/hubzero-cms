@@ -49,7 +49,7 @@ class Utility
         $firstCharClass = ($allowNumericFirstCharacter) ? 'a-z0-9' : 'a-z';
 
         if (preg_match("/^[" . $firstCharClass . "][_.a-z0-9]{1,31}$/", $login)) {
-            if (self::is_positiveint($login)) {
+            if (self::isPositiveint($login)) {
                 return 0;
             } else {
                 return 1;
@@ -65,7 +65,7 @@ class Utility
      * @param   integer  $x
      * @return  boolean
      */
-    public static function is_positiveint($x)
+    public static function isPositiveint($x)
     {
         if (is_numeric($x) && intval($x) == $x && $x >= 0) {
             return true;

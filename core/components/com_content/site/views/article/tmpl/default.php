@@ -63,7 +63,7 @@ if (
             <?php if (!$this->print) : ?>
                 <?php if ($params->get('show_print_icon')) : ?>
                     <li class="print-icon">
-                        <?php echo Html::icon('print_popup', $this->item, $params); ?>
+                        <?php echo Html::icon('printPopup', $this->item, $params); ?>
                     </li>
                 <?php endif; ?>
                 <?php if ($params->get('show_email_icon')) : ?>
@@ -78,7 +78,7 @@ if (
                 <?php endif;*/ ?>
             <?php else : ?>
                 <li>
-                    <?php echo Html::icon('print_screen', $this->item, $params); ?>
+                    <?php echo Html::icon('printScreen', $this->item, $params); ?>
                 </li>
             <?php endif; ?>
         </ul>

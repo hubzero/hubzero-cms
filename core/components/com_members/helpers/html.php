@@ -60,7 +60,7 @@ class Html
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function propercase_singleresponse($response)
+    public static function propercaseSingleresponse($response)
     {
         $html = '';
         switch ($response) {
@@ -87,7 +87,7 @@ class Html
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function propercase_multiresponse($response_array)
+    public static function propercaseMultiresponse($response_array)
     {
         $html = '';
         if (count($response_array) == 0) {

@@ -27,7 +27,7 @@ class Wishlists extends Plugin
      */
     public static function onSearch($request, &$results)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = 'match(wli.subject, wli.about) against(\'' . join(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
@@ -63,11 +63,11 @@ class Wishlists extends Plugin
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
             . " AND wli.status != 2 ORDER BY $weight DESC",
         );
-        foreach ($rows->to_associative() as $row) {
+        foreach ($rows->toAssociative() as $row) {
             if (!$row) {
                 continue;
             }
-            $row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
+            $row->setDescription(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->getDescription()));
             $results->add($row);
         }
     }

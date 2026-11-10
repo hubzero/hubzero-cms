@@ -72,15 +72,15 @@ if ($feed != false) {
                 ?>
                 <li class="newsfeed-item">
                     <?php
-                    if (!is_null($currItem->get_link())) {
+                    if (!is_null($currItem->getLink())) {
                         if (!is_null($feed->title) && $params->get('rsstitle', 1)) {
                             echo '<h5 class="feed-link">';
                         } else {
                             echo '<h4 class="feed-link">';
                         }
                         ?>
-                        <a href="<?php echo $currItem->get_link(); ?>" rel="nofollow external">
-                            <?php echo $currItem->get_title(); ?>
+                        <a href="<?php echo $currItem->getLink(); ?>" rel="nofollow external">
+                            <?php echo $currItem->getTitle(); ?>
                         </a>
                         <?php
                         if (!is_null($feed->title) && $params->get('rsstitle', 1)) {
@@ -93,7 +93,7 @@ if ($feed != false) {
                     // item description
                     if ($params->get('rssitemdesc', 1)) {
                         // item description
-                        $text = $currItem->get_description();
+                        $text = $currItem->getDescription();
                         $text = str_replace('&apos;', "'", $text);
                         $text = strip_tags($text);
                         // word limit check

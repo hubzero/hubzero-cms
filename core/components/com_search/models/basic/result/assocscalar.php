@@ -37,7 +37,7 @@ class AssocScalar extends SearchResult
      *
      * @return     boolean Return description (if any) ...
      */
-    public function is_scalar()
+    public function isScalar()
     {
         return true;
     }
@@ -72,7 +72,7 @@ class AssocScalar extends SearchResult
     public function __construct($row)
     {
         if (is_null(self::$tag_weight_modifier)) {
-            self::$tag_weight_modifier = Set::get_tag_weight_modifier();
+            self::$tag_weight_modifier = Set::getTagWeightModifier();
         }
 
         self::assertKeys(['title', 'description', 'link'], $row);
@@ -100,7 +100,7 @@ class AssocScalar extends SearchResult
             $this->weight_log[] = 'plugin did not suggest weight, guessing ' . $this->weight . ' based on tag count(' . $this->tag_count . ')';
         } elseif ($this->tag_count) {
             $this->weight_log[] = 'plugin suggested weight of ' . $this->weight;
-            $this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of ' . $this->tag_count);
+            $this->adjustWeight($this->tag_count * self::$tag_weight_modifier, 'tag count of ' . $this->tag_count);
         }
 
         $this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : [];
@@ -120,7 +120,7 @@ class AssocScalar extends SearchResult
      *
      * @return     unknown Return description (if any) ...
      */
-    public function get_result()
+    public function getResult()
     {
         return $this->row;
     }
@@ -132,7 +132,7 @@ class AssocScalar extends SearchResult
      *
      * @return     unknown Return description (if any) ...
      */
-    public function to_associative()
+    public function toAssociative()
     {
         return $this;
     }

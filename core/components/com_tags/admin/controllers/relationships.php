@@ -81,7 +81,7 @@ class Relationships extends AdminController
         $id = null;
         $descr = '';
 
-        $rv = $tag = $this->get_tag($tag, true, false);
+        $rv = $tag = $this->getTag($tag, true, false);
         $nodes[] = [
             'id'      => $rv['id'],
             'tag'     => $rv['tag'],
@@ -176,7 +176,7 @@ class Relationships extends AdminController
         $id = null;
         $descr = '';
 
-        $rv = $tag = $this->get_tag($tag, true, false);
+        $rv = $tag = $this->getTag($tag, true, false);
         $tag['type'] = 'center';
         $nodes = [[
             'id'      => $rv['id'],
@@ -285,7 +285,7 @@ class Relationships extends AdminController
         if (isset($_POST['tag']) && ($tid = (int) $_POST['tag'])) {
             $this->database->setQuery('UPDATE `#__tags` SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
             $this->database->execute();
-            $tag = $this->get_tag($tid);
+            $tag = $this->getTag($tid);
             $preload = $tag['raw_tag'];
             $normalize = function ($a) {
                 return preg_replace('/[^a-zA-Z0-9]/', '', strtolower($a));
@@ -320,7 +320,7 @@ class Relationships extends AdminController
                             unset($ex[$norm_n_tag]);
                         } else {
                             // otherwise we need to add a new relationship
-                            $n_tag = $this->get_tag($n_tag, false);
+                            $n_tag = $this->getTag($n_tag, false);
                             $this->database->setQuery(sprintf($sql[0], $tid, $n_tag['id']));
                             $this->database->execute();
                         }
@@ -328,7 +328,7 @@ class Relationships extends AdminController
                 }
                 // any tags that have not been unset were deleted on the form, so we need to reflect that in the database
                 foreach ($ex as $e_tag => $_v) {
-                    $e_tag = $this->get_tag($e_tag, false);
+                    $e_tag = $this->getTag($e_tag, false);
                     $this->database->setQuery(sprintf($sql[1], $tid, $e_tag['id']));
                     $this->database->execute();
                 }
@@ -346,7 +346,7 @@ class Relationships extends AdminController
     public function deleteTask()
     {
         if (isset($_POST['tag']) && ($tid = (int) $_POST['tag'])) {
-            $tag = $this->get_tag($tid, false);
+            $tag = $this->getTag($tid, false);
             if (isset($_POST['really']) && $_POST['really'] === 'on') {
                 // The destructive confirm step is a POST form action
                 Request::checkToken();
@@ -399,7 +399,7 @@ class Relationships extends AdminController
                 $this->database->execute();
                 continue;
             }
-            $new_tag = $this->get_tag($_POST['name-' . $id], false);
+            $new_tag = $this->getTag($_POST['name-' . $id], false);
             $this->database->setQuery('UPDATE `#__focus_areas` SET
 				mandatory_depth = ' . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-' . $id] : 'NULL')) . ',
 				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple' ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-' . $id] : 'NULL')) . ',
@@ -418,7 +418,7 @@ class Relationships extends AdminController
             if (!trim($_POST['name-new-' . $idx])) {
                 continue;
             }
-            $tag = $this->get_tag($_POST['name-new-' . $idx], false);
+            $tag = $this->getTag($_POST['name-new-' . $idx], false);
 
             $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES ('
                 . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
@@ -440,7 +440,7 @@ class Relationships extends AdminController
     /**
      * Get data for a tag
      */
-    public function get_tag($tag_str, $detailed = true, $create = true)
+    public function getTag($tag_str, $detailed = true, $create = true)
     {
         $this->database->setQuery(
             is_int($tag_str)

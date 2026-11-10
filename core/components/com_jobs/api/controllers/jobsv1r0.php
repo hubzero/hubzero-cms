@@ -79,7 +79,7 @@ class Jobsv1r0 extends ApiController
 
         $obj = new \Components\Jobs\Tables\Job($database);
 
-        $jobs = $obj->get_openings($filters);
+        $jobs = $obj->getOpenings($filters);
 
         // Create object with records property
         $response = new stdClass();
@@ -112,7 +112,7 @@ class Jobsv1r0 extends ApiController
 
         $obj = new \Components\Jobs\Tables\Job($database);
         $filters = [];
-        $job = $obj->get_opening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
+        $job = $obj->getOpening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
 
         // Create object with records property
         $response = new stdClass();

@@ -342,7 +342,7 @@ class Publication extends Obj
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -353,7 +353,7 @@ class Publication extends Obj
      */
     public function modified($as = '')
     {
-        return $this->_date('modified', $as);
+        return $this->date('modified', $as);
     }
 
     /**
@@ -369,9 +369,9 @@ class Publication extends Obj
             && $this->get('accepted') != '0000-00-00 00:00:00'
             && $this->get('accepted') > $this->get('published_up')
         ) {
-            return $this->_date('accepted', $as);
+            return $this->date('accepted', $as);
         }
-        return $this->_date('published_up', $as);
+        return $this->date('published_up', $as);
     }
 
     /**
@@ -382,7 +382,7 @@ class Publication extends Obj
      */
     public function unpublished($as = '')
     {
-        return $this->_date('published_down', $as);
+        return $this->date('published_down', $as);
     }
 
     /**
@@ -393,7 +393,7 @@ class Publication extends Obj
      */
     public function submitted($as = '')
     {
-        return $this->_date('submitted', $as);
+        return $this->date('submitted', $as);
     }
 
     /**
@@ -404,7 +404,7 @@ class Publication extends Obj
      */
     public function accepted($as = '')
     {
-        return $this->_date('accepted', $as);
+        return $this->date('accepted', $as);
     }
 
     /**
@@ -415,7 +415,7 @@ class Publication extends Obj
      */
     public function archived($as = '')
     {
-        return $this->_date('archived', $as);
+        return $this->date('archived', $as);
     }
 
     /**
@@ -426,7 +426,7 @@ class Publication extends Obj
      */
     public function released($as = '')
     {
-        return $this->_date('released', $as);
+        return $this->date('released', $as);
     }
 
     /**
@@ -468,7 +468,7 @@ class Publication extends Obj
      * @param   string  $as   What data to return
      * @return  string
      */
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         if ($this->get($key) == $this->db->getNullDate()) {
             return null;
@@ -483,7 +483,7 @@ class Publication extends Obj
                 break;
 
             case 'datetime':
-                return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+                return $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
                 break;
 
             case 'timeago':
@@ -1430,7 +1430,7 @@ class Publication extends Obj
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
             foreach ($matches as $match) {
-                $data[$match[1]] = Helpers\Html::_txtUnpee($match[2]);
+                $data[$match[1]] = Helpers\Html::txtUnpee($match[2]);
             }
         }
 
@@ -1670,7 +1670,7 @@ class Publication extends Obj
         }
         if (!isset($this->_tags)) {
             $rt = new Helpers\Tags($this->db);
-            $this->_tags = $rt->get_tags_on_object($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
+            $this->_tags = $rt->getTagsOnObject($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         }
 
         return $this->_tags;
@@ -1691,7 +1691,7 @@ class Publication extends Obj
         }
 
         $rt = new Helpers\Tags($this->db);
-        $this->_tagsForEditing = $rt->get_tag_string($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
+        $this->_tagsForEditing = $rt->getTagString($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         return $this->_tagsForEditing;
     }
 
@@ -1709,7 +1709,7 @@ class Publication extends Obj
 
         if (!isset($this->_tagCloud)) {
             $rt = new Helpers\Tags($this->db);
-            $this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->version->get('id'));
+            $this->_tagCloud = $rt->getTagCloud(0, $admin, $this->version->get('id'));
         }
 
         return $this->_tagCloud;

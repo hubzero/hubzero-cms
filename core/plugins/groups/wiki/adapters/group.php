@@ -71,7 +71,7 @@ class Group extends Base
         switch (strtolower($type)) {
             case 'base':
                 unset($segments['pagename']);
-                return $this->base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->toQueryString($segments);
                 break;
 
             case 'pdf':
@@ -110,7 +110,7 @@ class Group extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->toQueryString($segments) . (string) $anchor;
     }
 
     /**

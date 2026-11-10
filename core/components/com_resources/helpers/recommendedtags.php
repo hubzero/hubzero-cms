@@ -171,19 +171,19 @@ class RecommendedTags
         return isset($stop_words[$word]) || strlen($word) < $word_min_len;
     }
 
-    public function get_tags()
+    public function getTags()
     {
         return $this->tags;
     }
-    public function get_existing_tags()
+    public function getExistingTags()
     {
         return $this->existing_tags;
     }
-    public function get_existing_tags_map()
+    public function getExistingTagsMap()
     {
         return $this->existing_map;
     }
-    public function get_existing_tags_value_list()
+    public function getExistingTagsValueList()
     {
         static $val_list = [];
         if (!$val_list) {
@@ -193,19 +193,19 @@ class RecommendedTags
         }
         return implode(',', $val_list);
     }
-    public function get_focus_areas()
+    public function getFocusAreas()
     {
         return $this->focus_areas;
     }
-    public function get_focus_areas_map()
+    public function getFocusAreasMap()
     {
         return $this->focus_areas_map;
     }
-    public function get_existing_focus_areas_map()
+    public function getExistingFocusAreasMap()
     {
         return $this->existing_fa_map;
     }
-    public function get_focus_area_properties()
+    public function getFocusAreaProperties()
     {
         return $this->fa_properties;
     }

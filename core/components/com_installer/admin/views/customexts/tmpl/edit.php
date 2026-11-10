@@ -65,7 +65,7 @@ $this->js();
                     <?php echo $this->form->getLabel('type'); ?><br />
                     <select name="fields[type]" class="required" id="field-type">
                         <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->row['type'], true);?>
+                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::typeOptions(), 'value', 'text', $this->row['type'], true);?>
                     </select>
                 </div>
 
@@ -73,7 +73,7 @@ $this->js();
                     <?php echo $this->form->getLabel('folder'); ?><br />
                     <select name="fields[folder]" id="field-folder">
                         <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['folder']);?>
+                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::groupOptions(), 'value', 'text', $this->row['folder']);?>
                     </select>
                 </div>
 
@@ -101,7 +101,7 @@ $this->js();
                     <?php echo $this->form->getLabel('client_id'); ?><br />
                     <select name="fields[client_id]" id="field-client_id">
                         <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
+                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::locationOptions(), 'value', 'text', $this->row['client_id'], true);?>
                     </select>
                 </div>
 

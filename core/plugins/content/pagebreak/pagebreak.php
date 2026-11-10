@@ -94,7 +94,7 @@ class Pagebreak extends Plugin
             if ($hasToc) {
                 // Display TOC.
                 $page = 1;
-                $this->_createTOC($row, $matches, $page);
+                $this->createTOC($row, $matches, $page);
             } else {
                 $row->toc = '';
             }
@@ -136,7 +136,7 @@ class Pagebreak extends Plugin
             if ($style == 'pages') {
                 // Display TOC.
                 if ($hasToc) {
-                    $this->_createTOC($row, $matches, $page);
+                    $this->createTOC($row, $matches, $page);
                 } else {
                     $row->toc = '';
                 }
@@ -157,7 +157,7 @@ class Pagebreak extends Plugin
 
                 // Adds navigation between pages to bottom of text.
                 if ($hasToc) {
-                    $this->_createNavigation($row, $page, $n);
+                    $this->createNavigation($row, $page, $n);
                 }
 
                 // Page links shown at bottom of page if TOC disabled.
@@ -211,7 +211,7 @@ class Pagebreak extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _createTOC(&$row, &$matches, &$page)
+    protected function createTOC(&$row, &$matches, &$page)
     {
         $heading    = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
         $limitstart = Request::getUInt('limitstart', 0);
@@ -291,7 +291,7 @@ class Pagebreak extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _createNavigation(&$row, $page, $n)
+    protected function createNavigation(&$row, $page, $n)
     {
         $pnSpace = '';
         if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_LT')) {

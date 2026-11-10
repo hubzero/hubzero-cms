@@ -37,7 +37,7 @@ class Logo extends AdminController
 
         // Build the path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!$path) {
             echo json_encode(['error' => $this->getError()]);
@@ -213,7 +213,7 @@ class Logo extends AdminController
 
         // Build the path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!$path) {
             $this->displayTask('', $id);
@@ -339,7 +339,7 @@ class Logo extends AdminController
 
         // Build the path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!$path) {
             echo json_encode(['error' => $this->getError()]);
@@ -433,7 +433,7 @@ class Logo extends AdminController
 
         // Build the file path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!file_exists($path . DS . $file) or !$file) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
@@ -486,7 +486,7 @@ class Logo extends AdminController
      * @param   integer  $id    ID
      * @return  string
      */
-    protected function _path($type, $id)
+    protected function path($type, $id)
     {
         $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS;
 
@@ -537,7 +537,7 @@ class Logo extends AdminController
 
         // Build the file path
         $this->view->dir  = $id;
-        $this->view->path = $this->_path($this->view->type, $id);
+        $this->view->path = $this->path($this->view->type, $id);
 
         switch ($this->view->type) {
             case 'section':

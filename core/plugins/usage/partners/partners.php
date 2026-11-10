@@ -68,7 +68,7 @@ class Partners extends Plugin
             $enddate,
             $thisyear,
             $monthsReverse,
-            'check_for_regiondata',
+            'checkForRegiondata',
         );
 
         // Build HTML

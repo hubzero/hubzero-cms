@@ -148,7 +148,7 @@ class Impact extends Plugin
             switch ($task) {
                 case 'view':
                 default:
-                    $arr['html'] = $this->_view($member->get('id'));
+                    $arr['html'] = $this->renderView($member->get('id'));
                     break;
             }
         }
@@ -167,7 +167,7 @@ class Impact extends Plugin
      * @return string
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _view($uid = 0)
+    protected function renderView($uid = 0)
     {
         // Build the final HTML
         $view = $this->view('default', 'stats');

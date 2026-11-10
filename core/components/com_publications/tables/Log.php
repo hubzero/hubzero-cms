@@ -650,7 +650,7 @@ class Log extends Table
 
         if ($filter) {
             $tagging = new \Components\Publications\Helpers\Tags($this->db);
-            $tags = $tagging->_parse_tags($filter);
+            $tags = $tagging->parseTags($filter);
 
             $query .= " AND RTA.objectid=C.id AND (TA.tag IN (";
             $tquery = '';

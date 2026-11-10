@@ -28,6 +28,6 @@ class Weighttools extends Plugin
      */
     public static function onSearchWeightResources($_terms, $res)
     {
-        return $res->get_plugin() == 'resources' && $res->get_section() == 'Tools' ? 1 : 0.5;
+        return $res->getPlugin() == 'resources' && $res->getSection() == 'Tools' ? 1 : 0.5;
     }
 }

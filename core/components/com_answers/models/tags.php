@@ -32,6 +32,6 @@ class Tags extends Cloud
      */
     public function parse($tag_string, $keep = 0)
     {
-        return $this->_parse($tag_string, $keep);
+        return $this->splitTags($tag_string, $keep);
     }
 }

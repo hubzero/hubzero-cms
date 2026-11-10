@@ -264,7 +264,7 @@ class Tool
      * @return   boolean Return description (if any) ...
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function _sql_create()
+    public function sqlCreate()
     {
         $db = App::get('db');
 
@@ -323,7 +323,7 @@ class Tool
         $result = true;
 
         if (true) {
-            $result = $this->_sql_create();
+            $result = $this->sqlCreate();
 
             if ($result === false) {
                 $this->error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
@@ -431,7 +431,7 @@ class Tool
      * @return   boolean Return description (if any) ...
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function _sql_update($all = false)
+    public function sqlUpdate($all = false)
     {
         $db = App::get('db');
 
@@ -585,7 +585,7 @@ class Tool
         $result = true;
 
         if (true) {
-            $result = $this->_sql_update($this->updateAll);
+            $result = $this->sqlUpdate($this->updateAll);
 
             if ($result === false) {
                 $this->error(__FUNCTION__ . ': MySQL update failed', E_USER_WARNING);
@@ -604,7 +604,7 @@ class Tool
      * @return   boolean Return description (if any) ...
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function _sql_delete()
+    public function sqlDelete()
     {
         if (!isset($this->toolname) && !isset($this->id)) {
             return false;
@@ -651,7 +651,7 @@ class Tool
         $result = true;
 
         if (true) {
-            $result = $this->_sql_delete();
+            $result = $this->sqlDelete();
 
             if ($result === false) {
                 $this->error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);

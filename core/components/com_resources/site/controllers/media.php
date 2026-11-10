@@ -47,7 +47,7 @@ class Media extends SiteController
      * @param   mixed  $resource  Requested resource id
      * @return  boolean
      */
-    protected function _isTempId($resource)
+    protected function isTempId($resource)
     {
         // create.php issues these as '9999' . rand(1000, 10000), so they are
         // "9999" followed by four or five digits. The old test was a bare
@@ -77,7 +77,7 @@ class Media extends SiteController
             return $this->displayTask();
         }
 
-        if ($this->_isTempId($resource)) {
+        if ($this->isTempId($resource)) {
             $row = Entry::blank();
         } else {
             $row = Entry::oneOrFail($resource);
@@ -97,7 +97,7 @@ class Media extends SiteController
             return;
         }
         if (
-            !($this->_isTempId($resource))
+            !($this->isTempId($resource))
             && !$row->access('edit') && !$row->access('edit-own')
             && !User::authorise('core.manage', 'com_resources')
         ) {
@@ -184,7 +184,7 @@ class Media extends SiteController
             return $this->displayTask();
         }
 
-        if ($this->_isTempId($resource)) {
+        if ($this->isTempId($resource)) {
             $row = Entry::blank();
         } else {
             $row = Entry::oneOrFail($resource);
@@ -204,7 +204,7 @@ class Media extends SiteController
             return;
         }
         if (
-            !($this->_isTempId($resource))
+            !($this->isTempId($resource))
             && !$row->access('edit') && !$row->access('edit-own')
             && !User::authorise('core.manage', 'com_resources')
         ) {
@@ -262,7 +262,7 @@ class Media extends SiteController
             return;
         }
 
-        if ($this->_isTempId($resource)) {
+        if ($this->isTempId($resource)) {
             $row = Entry::blank();
         } else {
             $row = Entry::oneOrFail($resource);
@@ -277,7 +277,7 @@ class Media extends SiteController
             return;
         }
         if (
-            !($this->_isTempId($resource))
+            !($this->isTempId($resource))
             && !$row->access('edit') && !$row->access('edit-own')
             && !User::authorise('core.manage', 'com_resources')
         ) {

@@ -76,7 +76,7 @@ abstract class Base extends Obj
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _build(array $segments)
+    protected function toQueryString(array $segments)
     {
         $bits = [];
         foreach ($segments as $key => $param) {

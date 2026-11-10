@@ -118,11 +118,11 @@ class Guide extends Plugin
 
             switch ($action) {
                 case 'mark':
-                    $this->_mark();
+                    $this->mark();
                     break;
 
                 default:
-                    $this->_default();
+                    $this->default();
                     break;
             }
 
@@ -145,7 +145,7 @@ class Guide extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _default()
+    public function default()
     {
         $this->view->setLayout('overlay');
     }
@@ -156,7 +156,7 @@ class Guide extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _mark()
+    public function mark()
     {
         $this->view->setLayout('mark');
 

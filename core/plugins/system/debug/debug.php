@@ -390,10 +390,10 @@ class Debug extends Plugin
      */
     protected function displayRequest()
     {
-        $get     = $this->_arr($_GET);
-        $post    = $this->_arr($_POST);
-        $cookies = $this->_arr($_COOKIE);
-        $server  = $this->_arr($_SERVER);
+        $get     = $this->arr($_GET);
+        $post    = $this->arr($_POST);
+        $cookies = $this->arr($_COOKIE);
+        $server  = $this->arr($_SERVER);
 
         $html  = '';
         $html .= '
@@ -446,14 +446,14 @@ class Debug extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _arr($arr)
+    protected function arr($arr)
     {
         $html = 'Array( ' . "\n";
         $a = [];
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
-                     . '</code> <code class="op">=></code> <code class="vl">' . $this->_arr($val) . '</code>';
+                     . '</code> <code class="op">=></code> <code class="vl">' . $this->arr($val) . '</code>';
             } elseif (is_object($val)) {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
                      . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';

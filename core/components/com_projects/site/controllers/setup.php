@@ -48,7 +48,7 @@ class Setup extends Base
             $this->_msg = $this->task == 'edit' || !$this->task
                 ? Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
                 : Lang::txt('COM_PROJECTS_LOGIN_SETUP');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -88,7 +88,7 @@ class Setup extends Base
             if (!$this->model->access('create')) {
                 // Dispay error
                 $this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
-                $this->_showError();
+                $this->showError();
                 return;
             }
             $this->model->saveParam('versionTracking', '0');
@@ -159,13 +159,13 @@ class Setup extends Base
         $this->view->setLayout($layout);
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         if ($this->section == 'team') {
-            $this->view->content = $this->_loadTeamEditor();
+            $this->view->content = $this->loadTeamEditor();
         }
 
         // Output HTML
@@ -178,8 +178,8 @@ class Setup extends Base
         $this->view->extended = Request::getInt('extended', 0, 'post');
 
         // Get messages and errors
-        $this->view->msg = $this->_getNotifications('success');
-        $error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
+        $this->view->msg = $this->getNotifications('success');
+        $error = $this->getError() ? $this->getError() : $this->getNotifications('error');
         if ($error) {
             $this->view->setError($error);
         }
@@ -212,7 +212,7 @@ class Setup extends Base
         if ($new && !$this->model->access('create')) {
             // Dispay error
             $this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
-            $this->_showError();
+            $this->showError();
             return;
         }
 
@@ -289,18 +289,18 @@ class Setup extends Base
 
         if ($this->section == 'finalize') {
             // Complete project setup
-            if ($this->_finalize()) {
-                $this->_setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
+            if ($this->finalize()) {
+                $this->setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
 
                 // Some follow-up actions
-                $this->_onAfterProjectCreate();
+                $this->onAfterProjectCreate();
 
                 App::redirect(Route::url($this->model->link()));
                 return;
             }
         } else {
             // Save
-            $this->_process();
+            $this->process();
         }
 
         // Record setup stage and move on
@@ -311,11 +311,11 @@ class Setup extends Base
             // Did we actually complete setup?
             if (!$this->model->inSetup()) {
                 // Complete project setup
-                if ($this->_finalize()) {
-                    $this->_setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
+                if ($this->finalize()) {
+                    $this->setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
 
                     // Some follow-up actions
-                    $this->_onAfterProjectCreate();
+                    $this->onAfterProjectCreate();
 
                     App::redirect(Route::url($this->model->link()));
                     return;
@@ -328,9 +328,9 @@ class Setup extends Base
         // Don't go next in case of error
         if ($this->getError()) {
             $this->next = $this->section;
-            $this->_setNotification($this->getError(), 'error');
+            $this->setNotification($this->getError(), 'error');
         } else {
-            $this->_setNotification(Lang::txt('COM_PROJECTS_' . strtoupper($this->section) . '_SAVED'), 'success');
+            $this->setNotification(Lang::txt('COM_PROJECTS_' . strtoupper($this->section) . '_SAVED'), 'success');
         }
 
         // Redirect
@@ -347,7 +347,7 @@ class Setup extends Base
      *
      * @return  bool
      */
-    protected function _finalize()
+    protected function finalize()
     {
         $agree       = Request::getInt('agree', 0, 'post');
         $restricted  = Request::getString('restricted', '', 'post');
@@ -506,10 +506,10 @@ class Setup extends Base
      *
      * @return  void
      */
-    protected function _onAfterProjectCreate()
+    protected function onAfterProjectCreate()
     {
         // Initialize files repository
-        $this->_iniGitRepo();
+        $this->iniGitRepo();
 
         // Email administrators about a new project
         if ($this->config->get('messaging') == 1) {
@@ -551,7 +551,7 @@ class Setup extends Base
             $this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_STARTED'));
 
             // Send out emails
-            $this->_notifyTeam();
+            $this->notifyTeam();
         }
 
         // Trigger project create event
@@ -566,7 +566,7 @@ class Setup extends Base
      *
      * @return  boolean
      */
-    protected function _iniGitRepo()
+    protected function iniGitRepo()
     {
         if (!$this->model->exists()) {
             return false;
@@ -586,7 +586,7 @@ class Setup extends Base
      *
      * @return  void
      */
-    protected function _process()
+    protected function process()
     {
         // New project?
         $new = $this->model->exists() ? false : true;
@@ -876,7 +876,7 @@ class Setup extends Base
 
                 if (isset($content[0]) && $this->next == $this->section) {
                     if (isset($content[0]['msg']) && !empty($content[0]['msg'])) {
-                        $this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
+                        $this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
                     }
                 }
                 break;
@@ -959,7 +959,7 @@ class Setup extends Base
      *
      * @return  string
      */
-    protected function _loadTeamEditor()
+    protected function loadTeamEditor()
     {
         // Get plugin output
         $content = Event::trigger('projects.onProject', [
@@ -973,7 +973,7 @@ class Setup extends Base
             return false;
         }
         if (isset($content[0]['msg']) && !empty($content[0]['msg'])) {
-            $this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
+            $this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
         }
 
         return $content[0]['html'];
@@ -1022,14 +1022,14 @@ class Setup extends Base
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view->setLayout('edit');
         if ($this->section == 'team') {
-            $this->view->content = $this->_loadTeamEditor();
+            $this->view->content = $this->loadTeamEditor();
         }
 
         // Output HTML
@@ -1045,11 +1045,11 @@ class Setup extends Base
         $this->view->active     = 'edit';
 
         // Get messages and errors
-        $error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
+        $error = $this->getError() ? $this->getError() : $this->getNotifications('error');
         if ($error) {
             $this->view->setError($error);
         }
-        $this->view->msg = $this->_getNotifications('success');
+        $this->view->msg = $this->getNotifications('success');
 
         $this->view->display();
     }

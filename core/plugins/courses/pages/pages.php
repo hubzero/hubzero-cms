@@ -124,30 +124,30 @@ class Pages extends Plugin
             switch ($action) {
                 case 'add':
                 case 'edit':
-                    $this->_edit();
+                    $this->edit();
                     break;
                 case 'save':
-                    $this->_save();
+                    $this->save();
                     break;
                 case 'delete':
-                    $this->_delete();
+                    $this->delete();
                     break;
 
                 case 'upload':
-                    $this->_fileUpload();
+                    $this->fileUpload();
                     break;
                 case 'download':
-                    $this->_fileDownload();
+                    $this->fileDownload();
                     break;
                 case 'list':
-                    $this->_fileList();
+                    $this->fileList();
                     break;
                 case 'remove':
-                    $this->_fileDelete();
+                    $this->fileDelete();
                     break;
 
                 default:
-                    $this->_list();
+                    $this->list();
                     break;
             }
 
@@ -169,7 +169,7 @@ class Pages extends Plugin
     /**
      * Set layout and data for main page
      */
-    public function _list()
+    public function list()
     {
         $this->view->setLayout('default');
 
@@ -224,7 +224,7 @@ class Pages extends Plugin
      *
      * @param   mixed  $model
      */
-    public function _edit($model = null)
+    public function edit($model = null)
     {
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
@@ -234,7 +234,7 @@ class Pages extends Plugin
             return;
         }
         if (!$this->view->offering->access('manage', 'section')) {
-            return $this->_list();
+            return $this->list();
         }
 
         $this->view->setLayout('edit');
@@ -254,7 +254,7 @@ class Pages extends Plugin
         if ($this->view->model->exists()) {
             // Ensure section managers can only edit section pages
             if (!$this->view->model->get('section_id') && !$this->view->offering->access('manage')) {
-                return $this->_list();
+                return $this->list();
             }
         }
 
@@ -285,7 +285,7 @@ class Pages extends Plugin
      *
      * @return  void
      */
-    public function _save()
+    public function save()
     {
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
@@ -295,7 +295,7 @@ class Pages extends Plugin
             return;
         }
         if (!$this->view->offering->access('manage', 'section')) {
-            return $this->_list();
+            return $this->list();
         }
 
         // Check for request forgeries
@@ -331,17 +331,17 @@ class Pages extends Plugin
 
         if (!$model->bind($page)) {
             Notify::error($model->getError());
-            return $this->_edit($model);
+            return $this->edit($model);
         }
 
         // Ensure section managers can only edit section pages
         if (!$model->get('section_id') && !$offering->access('manage')) {
-            return $this->_list();
+            return $this->list();
         }
 
         if (!$model->store(true)) {
             Notify::error($model->getError());
-            return $this->_edit($model);
+            return $this->edit($model);
         }
 
         App::redirect(
@@ -354,7 +354,7 @@ class Pages extends Plugin
      *
      * @return  void
      */
-    public function _delete()
+    public function delete()
     {
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
@@ -364,7 +364,7 @@ class Pages extends Plugin
             return;
         }
         if (!$this->view->offering->access('manage')) {
-            return $this->_list();
+            return $this->list();
         }
 
         // Check for request forgeries
@@ -390,7 +390,7 @@ class Pages extends Plugin
      *
      * @return  string
      */
-    public function _ajaxUpload()
+    public function ajaxUpload()
     {
         // Check if they're logged in
         if (User::isGuest()) {
@@ -537,15 +537,15 @@ class Pages extends Plugin
      *
      * @return  void
      */
-    public function _fileUpload()
+    public function fileUpload()
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->_files();
+            return $this->files();
         }
 
         if (Request::getInt('no_html', 0)) {
-            return $this->_ajaxUpload();
+            return $this->ajaxUpload();
         }
 
         // Check for request forgeries
@@ -554,21 +554,21 @@ class Pages extends Plugin
         // Only a section manager may upload page files
         if (!$this->view->offering->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE'));
-            return $this->_files();
+            return $this->files();
         }
 
         // Ensure we have an ID to work with
         $listdir = Request::getInt('listdir', 0, 'post');
         if (!$listdir) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
-            return $this->_files();
+            return $this->files();
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
-            return $this->_files();
+            return $this->files();
         }
 
         // Build the upload path if it doesn't exist
@@ -577,7 +577,7 @@ class Pages extends Plugin
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
-                return $this->_files();
+                return $this->files();
             }
         }
 
@@ -590,7 +590,7 @@ class Pages extends Plugin
 
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
-            return $this->_files();
+            return $this->files();
         }
 
         // Make the filename safe
@@ -604,7 +604,7 @@ class Pages extends Plugin
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->_files();
+            return $this->files();
         }
 
         // Upload new files
@@ -619,7 +619,7 @@ class Pages extends Plugin
         }
 
         // Push through to the media view
-        return $this->_files();
+        return $this->files();
     }
 
     /**
@@ -672,14 +672,14 @@ class Pages extends Plugin
      *
      * @return  void
      */
-    public function _fileDelete()
+    public function fileDelete()
     {
         // Check for request forgeries
         Request::checkToken('get');
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->_files();
+            return $this->files();
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -697,13 +697,13 @@ class Pages extends Plugin
                 ]);
                 exit();
             }
-            return $this->_files();
+            return $this->files();
         }
 
         // Only a section manager may delete page files
         if (!$this->view->offering->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
-            return $this->_files();
+            return $this->files();
         }
 
         // Keep the target within the page directory
@@ -724,7 +724,7 @@ class Pages extends Plugin
                 ]);
                 exit();
             }
-            return $this->_files();
+            return $this->files();
         } else {
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
@@ -742,17 +742,17 @@ class Pages extends Plugin
         }
 
         if ($no_html) {
-            return $this->_fileList();
+            return $this->fileList();
         }
 
         // Push through to the media view
-        return $this->_files();
+        return $this->files();
     }
 
     /**
      * Display a form for uploading files
      */
-    public function _files()
+    public function files()
     {
         $this->view->setLayout('files');
 
@@ -766,7 +766,7 @@ class Pages extends Plugin
     /**
      * Display a list of files
      */
-    public function _fileList()
+    public function fileList()
     {
         // The file manager is part of the page editor, a section manager tool
         if (!$this->view->offering->access('manage', 'section')) {
@@ -830,7 +830,7 @@ class Pages extends Plugin
      *
      * @return  void
      */
-    public function _fileDownload()
+    public function fileDownload()
     {
         if (!$this->view->course->access('view')) {
             App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));

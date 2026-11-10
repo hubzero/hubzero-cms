@@ -38,7 +38,7 @@ class Blogs extends Plugin
     {
         $now = Date::toSql();
 
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = '(match(be.title, be.content) against (\'' . join(' ', $terms['stemmed']) . '\'))';
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -80,7 +80,7 @@ class Blogs extends Plugin
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
 
-        if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
+        if (($rows = $rows->toAssociative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
             return;
         }
 
@@ -108,8 +108,8 @@ class Blogs extends Plugin
 				WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
 				ORDER BY bc.created",
             );
-            foreach ($comments->to_associative() as $comment) {
-                $rows->at($id_map[$comment->get('entry_id')])->add_child($comment);
+            foreach ($comments->toAssociative() as $comment) {
+                $rows->at($id_map[$comment->get('entry_id')])->addChild($comment);
             }
         }
 

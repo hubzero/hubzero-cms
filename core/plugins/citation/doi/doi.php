@@ -140,7 +140,7 @@ class Doi extends Plugin
 
         if (!empty($citationInfo)) {
             foreach ($relationTypeArr as $pubDOI => $relationType) {
-                $xml = $this->_getDoiXml($pubDOI);
+                $xml = $this->getDoiXml($pubDOI);
 
                 if ($xml) {
                     if ($this->isCitationUpdated($xml, $citationInfo, $relationType)) {
@@ -215,7 +215,7 @@ class Doi extends Plugin
      * @return  mixed   XML or false
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getDoiXml($doi)
+    protected function getDoiXml($doi)
     {
         if (
             $this->configs->dataciteEZIDSwitch
@@ -351,7 +351,7 @@ class Doi extends Plugin
             $nodeList->item(0)->setAttribute("resourceTypeGeneral", $resourceTypeGeneral);
             $xmlStr = $dom->saveXML();
 
-            $result = $this->_regMetadata($xmlStr);
+            $result = $this->regMetadata($xmlStr);
 
             return $result;
         }
@@ -420,7 +420,7 @@ class Doi extends Plugin
             }
         }
 
-        $result = $this->_regMetadata($xmlStr);
+        $result = $this->regMetadata($xmlStr);
 
         return $result;
     }
@@ -485,7 +485,7 @@ class Doi extends Plugin
      * @return  bool    curl command response code
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _regMetadata($xml)
+    protected function regMetadata($xml)
     {
         $url = rtrim($this->configs->dataciteServiceURL, '/') . '/' . 'metadata';
 

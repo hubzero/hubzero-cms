@@ -134,7 +134,7 @@ class Item extends Table
 
         switch ($what) {
             case 'count':
-                $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
@@ -186,7 +186,7 @@ class Item extends Table
                 if (!isset($filters['collection_id']) || !$filters['collection_id']) {
                     $query .= ", d.id AS collection_id, d.title AS board_title, d.object_id, d.object_type ";
                 }
-                $query .= $this->_buildQuery($filters);
+                $query .= $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'posted';
@@ -215,7 +215,7 @@ class Item extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS b";
         $query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
@@ -411,7 +411,7 @@ class Item extends Table
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= ", v.id AS voted ";
         }
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
             $query .= ' LIMIT ' . (isset($filters['start']) ? intval($filters['start']) : 0) . ',' . intval($filters['limit']);

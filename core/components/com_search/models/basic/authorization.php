@@ -50,7 +50,7 @@ class Authorization
      * @return  bolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function is_guest()
+    public function isGuest()
     {
         return is_null($this->uid);
     }
@@ -61,7 +61,7 @@ class Authorization
      * @return  boolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function is_super_admin()
+    public function isSuperAdmin()
     {
         return $this->super_admin;
     }
@@ -72,7 +72,7 @@ class Authorization
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_groups()
+    public function getGroups()
     {
         if (is_null($this->groups)) {
             $dbh = App::get('db');
@@ -102,9 +102,9 @@ class Authorization
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_group_ids()
+    public function getGroupIds()
     {
-        return array_keys($this->get_groups());
+        return array_keys($this->getGroups());
     }
 
     /**
@@ -113,8 +113,8 @@ class Authorization
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_group_names()
+    public function getGroupNames()
     {
-        return array_values($this->get_groups());
+        return array_values($this->getGroups());
     }
 }

@@ -36,15 +36,15 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 </fieldset>
             </form>
     <?php if ($this->results->valid()) : ?>
-        <?php if (($ct = $this->results->get_custom_title())) : ?>
+        <?php if (($ct = $this->results->getCustomTitle())) : ?>
             <p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="<?php echo Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1'); ?>">View all results.</a></p>
         <?php endif; ?>
 
             <div class="container">
                 <?php
-                $total  = $this->results->get_plugin_list_count();
-                $offset = $this->results->get_offset();
-                $limit  = $this->results->get_limit();
+                $total  = $this->results->getPluginListCount();
+                $offset = $this->results->getOffset();
+                $limit  = $this->results->getLimit();
                 $limit  = ($limit == 0) ? ($limit + 1) : $limit;
                 $current_page = $offset / $limit + 1;
                 $total_pages  = ceil($total / $limit);
@@ -54,36 +54,36 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     <span>(<?php echo Lang::txt('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
                 </h3>
 
-                <?php if (($tags = $this->results->get_tags())) : ?>
+                <?php if (($tags = $this->results->getTags())) : ?>
                     <ol class="tags">
                         <?php foreach ($tags as $tag) : ?>
-                            <li><a class="tag" href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $this->escape($tag->get_title()); ?></a></li>
+                            <li><a class="tag" href="<?php echo Route::url($tag->getLink()); ?>"><?php echo $this->escape($tag->getTitle()); ?></a></li>
                         <?php endforeach; ?>
                     </ol>
                 <?php endif; ?>
 
-                <?php foreach ($this->results->get_widgets() as $widget) : ?>
+                <?php foreach ($this->results->getWidgets() as $widget) : ?>
                     <?php echo $widget; ?>
                 <?php endforeach; ?>
 
                 <ol class="results">
                 <?php foreach ($this->results as $res) : ?>
                     <li>
-                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->get_plugin()), [$res]); ?>
-                        <p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $this->escape($res->get_highlighted_title()); ?></a></p>
+                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->getPlugin()), [$res]); ?>
+                        <p class="title"><a href="<?php echo $res->getLink(); ?>"><?php echo $this->escape($res->getHighlightedTitle()); ?></a></p>
                         <div class="summary">
-                            <?php if ($res->has_metadata()) : ?>
+                            <?php if ($res->hasMetadata()) : ?>
                                 <p class="details">
-                                    <?php if (($section = $res->get_section())) {
+                                    <?php if (($section = $res->getSection())) {
                                         ?><span class="section"><?php echo $this->escape($section); ?></span><?php
                                     }?>
-                                    <?php if (($date = $res->get_date())) {
+                                    <?php if (($date = $res->getDate())) {
                                         ?><span class="date"><?php echo Date::of($date)->format('j M Y'); ?></span><?php
                                     } ?>
-                                    <?php if (($contributors = $res->get_contributors())) : ?>
+                                    <?php if (($contributors = $res->getContributors())) : ?>
                                     <span class="contributors">
                                             <?php
-                                                $contrib_ids = $res->get_contributor_ids();
+                                                $contrib_ids = $res->getContributorIds();
                                                 $contrib_len = count($contributors);
                                             ?>
                                             Contributor(s):
@@ -109,22 +109,22 @@ $show_weight = array_key_exists('show_weight', $_GET);
                             <?php endif; ?>
                             <?php if ($show_weight) : ?>
                                 <ul class="weight-log">
-                                    <?php foreach ($res->get_weight_log() as $entry) : ?>
+                                    <?php foreach ($res->getWeightLog() as $entry) : ?>
                                         <li><?php echo $entry; ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             <?php endif; ?>
                             <div class="result-description<?php echo $before ? ' shifted' : ''; ?>">
-                                <p><?php echo $res->get_highlighted_excerpt(); ?></p>
+                                <p><?php echo $res->getHighlightedExcerpt(); ?></p>
                             </div><!-- / .result-description<?php echo $before ? ' shifted' : ''; ?> -->
                             <p class="clear"></p>
                         </div><!-- / .summary -->
                         <?php
                             $last_type = null;
-                        if (($children = $res->get_children())) :
+                        if (($children = $res->getChildren())) :
                             $ctypec = [];
                             foreach ($children as $child) {
-                                if (($section = $child->get_section())) {
+                                if (($section = $child->getSection())) {
                                     if (!array_key_exists($section, $ctypec)) {
                                         $ctypec[$section] = 1;
                                     } else {
@@ -137,27 +137,27 @@ $show_weight = array_key_exists('show_weight', $_GET);
                             <ul class="child-types">
                                 <?php foreach ($children as $idx => $child) : ?>
                                     <?php
-                                    if (!($current_type = $child->get_section())) {
+                                    if (!($current_type = $child->getSection())) {
                                         continue;
                                     }
                                     if (!$last_type) :
                                         ?>
                                         <li>
-                                            <h4><span class="expand"></span><?php echo $this->escape($current_type == 'Questions' ? 'Answers' : $current_type); ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+                                            <h4><span class="expand"></span><?php echo $this->escape($current_type == 'Questions' ? 'Answers' : $current_type); ?> <small>(<?php echo $ctypec[$child->getSection()]; ?>)</small></h4>
                                             <ul class="child-result">
                                     <?php elseif ($last_type != $current_type) : ?>
                                             </ul>
                                         </li>
                                         <li>
-                                            <h4><span class="expand"></span><?php echo $this->escape($current_type); ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+                                            <h4><span class="expand"></span><?php echo $this->escape($current_type); ?> <small>(<?php echo $ctypec[$child->getSection()]; ?>)</small></h4>
                                             <ul class="child-result">
                                             <?php
                                     endif;
                                         $last_type = $current_type;
                                     ?>
                                         <li class="<?php echo $idx & 1 ? 'odd' : 'even'; ?>">
-                                            <a href="<?php echo $child->get_link(); ?>"><?php echo $this->escape($child->get_highlighted_title()); ?></a>
-                                            <p><?php echo $child->get_highlighted_excerpt(); ?></p>
+                                            <a href="<?php echo $child->getLink(); ?>"><?php echo $this->escape($child->getHighlightedTitle()); ?></a>
+                                            <p><?php echo $child->getHighlightedExcerpt(); ?></p>
                                         </li>
                                 <?php endforeach; ?>
                                     </ul>
@@ -165,7 +165,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                             </ul>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <p class="url"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_link(); ?></a></p>
+                        <p class="url"><a href="<?php echo $res->getLink(); ?>"><?php echo $res->getLink(); ?></a></p>
                     </li>
                 <?php endforeach; ?>
                 </ol>
@@ -173,8 +173,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     <?php
                     $pagination = $this->pagination(
                         $this->total,
-                        $this->results->get_offset(),
-                        $this->results->get_limit(),
+                        $this->results->getOffset(),
+                        $this->results->getLimit(),
                     );
                     $pagination->setAdditionalUrlParam('terms', $this->terms);
                     echo $pagination->render();
@@ -183,7 +183,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     <div class="clearfix"></div>
                 </form>
             </div><!-- / .container -->
-    <?php elseif (($raw = $this->terms->get_raw())) : ?>
+    <?php elseif (($raw = $this->terms->getRaw())) : ?>
         <p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
         <?php
             // raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
@@ -198,16 +198,16 @@ $show_weight = array_key_exists('show_weight', $_GET);
             <h3>
                 <?php echo Lang::txt('COM_SEARCH_FILTER_RESULTS'); ?>
             </h3>
-        <?php if ($this->results->get_total_count()) : ?>
+        <?php if ($this->results->getTotalCount()) : ?>
             <ul class="sub-nav">
                 <li>
                     <?php if ($this->plugin) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+                        <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->getTotalCount(); ?></span></a>
                     <?php else : ?>
-                        <strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
+                        <strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->getTotalCount(); ?></span></strong>
                     <?php endif; ?>
                 </li>
-            <?php foreach ($this->results->get_result_counts() as $cat => $def) : ?>
+            <?php foreach ($this->results->getResultCounts() as $cat => $def) : ?>
                 <?php if ($def['count']) : ?>
                     <li>
                         <?php if ($this->plugin == $cat && !$this->section) : ?>

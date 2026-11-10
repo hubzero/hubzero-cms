@@ -19,7 +19,7 @@ class CertificatePdf extends \TCPDF
 
     //Page header
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function Header()
+    public function header()
     {
         // get the current page break margin
         $bMargin = $this->getBreakMargin();

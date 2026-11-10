@@ -223,7 +223,7 @@ class Collection extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS b";
         $query .= " INNER JOIN `#__collections_items` AS im ON im.type="
@@ -308,7 +308,7 @@ class Collection extends Table
 
         switch ($what) {
             case 'count':
-                $query = "SELECT COUNT(DISTINCT b.id) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(DISTINCT b.id) " . $this->buildQuery($filters);
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
@@ -364,7 +364,7 @@ class Collection extends Table
                 if (isset($filters['object_type']) && $filters['object_type'] == 'group') {
                     $query .= ", g.cn AS group_alias";
                 }
-                $query .= $this->_buildQuery($filters);
+                $query .= $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'created';

@@ -178,10 +178,10 @@ class Todo extends Plugin
                     $arr['html'] = $this->item();
                     break;
                 case 'savecomment':
-                    $arr['html'] = $this->_saveComment();
+                    $arr['html'] = $this->saveComment();
                     break;
                 case 'deletecomment':
-                    $arr['html'] = $this->_deleteComment();
+                    $arr['html'] = $this->deleteComment();
                     break;
                 case 'reorder':
                 case 'sortitems':
@@ -782,7 +782,7 @@ class Todo extends Plugin
     /**
      * Delete comment
      */
-    protected function _deleteComment()
+    protected function deleteComment()
     {
         // Check for request forgeries
         Request::checkToken();
@@ -842,7 +842,7 @@ class Todo extends Plugin
     /**
      * Save comment
      */
-    protected function _saveComment()
+    protected function saveComment()
     {
         // Check for request forgeries
         Request::checkToken();

@@ -550,8 +550,8 @@ class Discussions extends Plugin
         $this->lecture = $lecture;
         $this->base = $this->offering->link() . '&active=' . $this->active;
 
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         // Incoming
         $filters = [
@@ -682,24 +682,24 @@ class Discussions extends Plugin
                     $filters['parent']   = $post->get('id');
                     $filters['start_at'] = Request::getString('start_at', '');
 
-                    $data->thread = $this->_posts($post, $filters);
+                    $data->thread = $this->posts($post, $filters);
                     break;
 
                 case 'delete':
                     if ($pid = Request::getInt('post', 0)) {
                         $this->deletethread($pid, false);
                     }
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
                     break;
 
                 case 'thread':
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
                     break;
 
                 case 'search':
                     $filters['search'] = Request::getString('search', '');
 
-                    $data->threads = $this->_threadsSearch($post, $filters);
+                    $data->threads = $this->threadsSearch($post, $filters);
                     break;
 
                 case 'sticky':
@@ -718,11 +718,11 @@ class Discussions extends Plugin
                 case 'both':
                     $filters['start_at'] = Request::getString('start_at', '');
 
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
 
                     $filters['start_at'] = Request::getString('threads_start', '');
 
-                    $data->threads = $this->_threads($post, $filters);
+                    $data->threads = $this->postThreads($post, $filters);
                     break;
 
                 case 'threads':
@@ -730,7 +730,7 @@ class Discussions extends Plugin
                     $filters['parent']   = $post->get('id');
                     $filters['start_at'] = Request::getString('threads_start', '');
 
-                    $data->threads = $this->_threads($post, $filters);
+                    $data->threads = $this->postThreads($post, $filters);
                     break;
             }
 
@@ -748,7 +748,7 @@ class Discussions extends Plugin
         switch ($action) {
             case 'search':
                 $filters['search'] = Request::getString('search', '');
-                $data = $this->_threadsSearch($post, $filters);
+                $data = $this->threadsSearch($post, $filters);
                 $threads = $data->posts;
                 break;
 
@@ -761,7 +761,7 @@ class Discussions extends Plugin
 
                 $filters['parent'] = 0;
 
-                $data = $this->_threadsSearch($post, $filters);
+                $data = $this->threadsSearch($post, $filters);
                 $threads = $data->posts;
                 break;
         }
@@ -770,7 +770,7 @@ class Discussions extends Plugin
 
         if ($thread) {
             $post = Post::oneOrNew($thread);
-            $data = $this->_thread($post, $filters);
+            $data = $this->thread($post, $filters);
         }
 
         if ($threads == null) {
@@ -796,7 +796,7 @@ class Discussions extends Plugin
     /**
      * Get a list of instructors for this course
      */
-    protected function _instructors()
+    protected function instructors()
     {
         if (!isset($this->instructors) || !is_array($this->instructors)) {
             $this->instructors = [];
@@ -819,7 +819,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _thread($post, $filters = [])
+    protected function thread($post, $filters = [])
     {
         $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
@@ -889,7 +889,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _threadsSearch($post, $filters = [])
+    protected function threadsSearch($post, $filters = [])
     {
         $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
@@ -930,7 +930,7 @@ class Discussions extends Plugin
                 ->set('unit', '')
                 ->set('lecture', '')
                 ->set('course', $this->course)
-                ->set('instructors', $this->_instructors());
+                ->set('instructors', $this->instructors());
 
             if ($this->active == 'outline') {
                 $cview->set('unit', $this->unit->get('alias'));
@@ -952,7 +952,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _threads($post, $filters = [])
+    protected function postThreads($post, $filters = [])
     {
         $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
@@ -1000,7 +1000,7 @@ class Discussions extends Plugin
                     ->set('base', $this->base)
                     ->set('search', '')
                     ->set('course', $this->course)
-                    ->set('instructors', $this->_instructors());
+                    ->set('instructors', $this->instructors());
 
                 if ($this->active == 'outline') {
                     $cview->set('unit', $this->unit->get('alias'));
@@ -1025,7 +1025,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object|array
      */
-    protected function _posts($post, $filters = [])
+    protected function posts($post, $filters = [])
     {
         $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
@@ -1121,7 +1121,7 @@ class Discussions extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->params->set('access-view', true);
         if (!User::isGuest()) {
@@ -1206,9 +1206,9 @@ class Discussions extends Plugin
         $action  = strtolower(Request::getWord('action', ''));
 
         //get authorization
-        $this->_authorize('section');
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('section');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         if ($no_html) {
             $filters['sticky'] = false;
@@ -1258,24 +1258,24 @@ class Discussions extends Plugin
                     $filters['parent']   = $post->get('id');
                     $filters['start_at'] = Request::getString('start_at', '');
 
-                    $data->thread = $this->_posts($post, $filters);
+                    $data->thread = $this->posts($post, $filters);
                     break;
 
                 case 'delete':
                     if ($pid = Request::getInt('post', 0)) {
                         $this->deletethread($pid, false);
                     }
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
                     break;
 
                 case 'thread':
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
                     break;
 
                 case 'search':
                     $filters['search'] = Request::getString('search', '');
 
-                    $data->threads = $this->_threadsSearch($post, $filters);
+                    $data->threads = $this->threadsSearch($post, $filters);
                     break;
 
                 case 'sticky':
@@ -1294,11 +1294,11 @@ class Discussions extends Plugin
                 case 'both':
                     $filters['start_at'] = Request::getString('start_at', '');
 
-                    $data->thread = $this->_thread($post, $filters);
+                    $data->thread = $this->thread($post, $filters);
 
                     $filters['start_at'] = Request::getString('threads_start', '');
 
-                    $data->threads = $this->_threads($post, $filters);
+                    $data->threads = $this->postThreads($post, $filters);
                     break;
 
                 case 'threads':
@@ -1306,7 +1306,7 @@ class Discussions extends Plugin
                     $filters['parent']   = $post->get('id');
                     $filters['start_at'] = Request::getString('threads_start', '');
 
-                    $data->threads = $this->_threads($post, $filters);
+                    $data->threads = $this->postThreads($post, $filters);
                     break;
             }
 
@@ -1415,7 +1415,7 @@ class Discussions extends Plugin
         $data = null;
         if ($thread) {
             $post = Post::oneOrNew($thread);
-            $data = $this->_thread($post, $filters);
+            $data = $this->thread($post, $filters);
         }
 
         $view = $this->view('display', 'panel')
@@ -1539,8 +1539,8 @@ class Discussions extends Plugin
         }
 
         // Get authorization
-        $this->_authorize('section');
-        $this->_authorize('category');
+        $this->authorize('section');
+        $this->authorize('category');
 
         // Filters
         $filters = [
@@ -1689,7 +1689,7 @@ class Discussions extends Plugin
         // Check if user is authorized to delete entries
         // ($model has never existed here -- on PHP 8 reading ->id off it is a
         // warning, which this hub turns into a 500.)
-        $this->_authorize('section', $section->get('id'));
+        $this->authorize('section', $section->get('id'));
 
         if (!$this->params->get('access-delete-section')) {
             App::redirect(
@@ -1803,8 +1803,8 @@ class Discussions extends Plugin
         }
 
         // Get authorization
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         $threads = $category->threads()
             ->select("*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
@@ -1865,7 +1865,7 @@ class Discussions extends Plugin
                 ->row();
         }
 
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if ($category->isNew()) {
             $category->set('created_by', User::get('id'));
@@ -1955,7 +1955,7 @@ class Discussions extends Plugin
         }
 
         // Double-check that the user is authorized
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->params->get('access-edit-category')) {
             // Set the redirect
@@ -2046,7 +2046,7 @@ class Discussions extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->params->get('access-delete-category')) {
             App::redirect(
@@ -2169,9 +2169,9 @@ class Discussions extends Plugin
         $filters['state'] = [Post::STATE_PUBLISHED, 3];
 
         // Get authorization
-        $this->_authorize('category', $category->get('id'));
-        $this->_authorize('thread', $thread->get('id'));
-        $this->_authorize('post');
+        $this->authorize('category', $category->get('id'));
+        $this->authorize('thread', $thread->get('id'));
+        $this->authorize('post');
 
         // If the access is anything beyond public,
         // make sure they're logged in.
@@ -2216,7 +2216,7 @@ class Discussions extends Plugin
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type
      */
-    public function _treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
+    public function treeRecurseIndented($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {
         if (@$children[$id] && $level <= $maxlevel) {
             foreach ($children[$id] as $v) {
@@ -2236,7 +2236,7 @@ class Discussions extends Plugin
                 $list[$id]->set('treename', "$indent$txt");
                 $list[$id]->set('children', count($children[$id] ?? []));
 
-                $list = $this->_treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
+                $list = $this->treeRecurseIndented($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }
         }
         return $list;
@@ -2281,7 +2281,7 @@ class Discussions extends Plugin
         }
 
         // Get authorization
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         if ($post->isNew()) {
             $post->set('scope', $this->forum->get('scope'));
@@ -2334,7 +2334,7 @@ class Discussions extends Plugin
         // $fields is Request::getArray('fields'), so 'id' need not be present at all;
         // read it once, guarded, and use that everywhere below.
         $__pid   = isset($fields['id']) ? (int) $fields['id'] : 0;
-        $this->_authorize('thread', $__pid);
+        $this->authorize('thread', $__pid);
         $asset = 'thread';
 
         if (
@@ -2551,7 +2551,7 @@ class Discussions extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         if (!$this->params->get('access-delete-thread')) {
             App::redirect(
@@ -2722,7 +2722,7 @@ class Discussions extends Plugin
         }
 
         // Load ACL
-        $this->_authorize('thread', $post->get('thread'));
+        $this->authorize('thread', $post->get('thread'));
 
         // Ensure the user is authorized to view this file
         if (!$this->course->access('view')) {

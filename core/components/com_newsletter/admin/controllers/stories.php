@@ -297,7 +297,7 @@ class Stories extends AdminController
 
         //set vars
         $lowestOrder  = 1;
-        $highestOrder = $story->_getCurrentHighestOrder($id);
+        $highestOrder = $story->getCurrentHighestOrder($id);
         $currentOrder = $story->order;
 
         //move page up or down

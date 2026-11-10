@@ -167,7 +167,7 @@ class Filesv1r0 extends ApiController
                 $files = [];
             }
 
-            $response->results = $this->_parseFlysystemListing($files);
+            $response->results = $this->parseFlysystemListing($files);
         } else {
             $files = $this->model->repo()->filelist([
                 'subdir'           => Request::getString('subdir', ''),
@@ -180,7 +180,7 @@ class Filesv1r0 extends ApiController
                 'getChildren'      => true,
             ]);
 
-            $response->results = $this->_parseResults($files);
+            $response->results = $this->parseResults($files);
         }
 
         $response->count = is_array($files) ? count($files) : 0;
@@ -241,7 +241,7 @@ class Filesv1r0 extends ApiController
                     // Nothing here
                 }
             }
-            $response->results = $this->_parseFlysystemListing($entities);
+            $response->results = $this->parseFlysystemListing($entities);
         } else {
             $files = $this->model->repo()->filelist([
                 'subdir'           => Request::getString('subdir', '', 'post'),
@@ -250,7 +250,7 @@ class Filesv1r0 extends ApiController
                 'getParents'       => true,
                 'getChildren'      => true,
             ]);
-            $response->results = $this->_parseResults($files);
+            $response->results = $this->parseResults($files);
         }
         $this->send($response);
     }
@@ -358,7 +358,7 @@ class Filesv1r0 extends ApiController
     public function deleteTask()
     {
         // Incoming
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         if (empty($items)) {
             throw new Exception(Lang::txt('No asset/folder path(s) given'), 404);
@@ -449,7 +449,7 @@ class Filesv1r0 extends ApiController
     public function moveTask()
     {
         // Incoming
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         if (empty($items)) {
             throw new Exception(Lang::txt('No asset/folder path(s) given'), 404);
@@ -903,7 +903,7 @@ class Filesv1r0 extends ApiController
      */
     public function downloadTask()
     {
-        $items = $this->_getCollection();
+        $items = $this->getCollection();
 
         // Check items
         if (!$items || count($items) == 0) {
@@ -969,7 +969,7 @@ class Filesv1r0 extends ApiController
             throw new Exception(Lang::txt('No data path given'), 404);
         }
 
-        if (!$this->_acceptDataPath($dataPath)) {
+        if (!$this->acceptDataPath($dataPath)) {
             throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
@@ -1081,7 +1081,7 @@ class Filesv1r0 extends ApiController
                         if (empty($fields)) {
                             $response->metadata[$file] = $metadata[0];
                         } else {
-                            $response->metadata[$file] = $this->_filter($metadata[0], $fields);
+                            $response->metadata[$file] = $this->filter($metadata[0], $fields);
                         }
                         $response->success = 1;
                     } catch (Exception $e) {
@@ -1159,7 +1159,7 @@ class Filesv1r0 extends ApiController
                     if ($entity->exists()) {
                         try {
                             $tmpoldmetadata = Event::trigger('metadata.onMetadataGet', [$entity]);
-                            $oldmetadata = $this->_packMetadata($tmpoldmetadata[0]);
+                            $oldmetadata = $this->packMetadata($tmpoldmetadata[0]);
 
                             $error = Event::trigger('metadata.onMetadataSave', [$entity, array_merge($oldmetadata, $metadata)]);
 
@@ -1192,7 +1192,7 @@ class Filesv1r0 extends ApiController
      * @param   array $files
      * @return  array
      */
-    protected function _parseFlysystemListing($files)
+    protected function parseFlysystemListing($files)
     {
         // Get array of file metadata
         if (!empty($files)) {
@@ -1213,7 +1213,7 @@ class Filesv1r0 extends ApiController
      * @param   array $files
      * @return  array
      */
-    protected function _parseResults($files)
+    protected function parseResults($files)
     {
         // Get array of file metadata
         if (!empty($files)) {
@@ -1235,7 +1235,7 @@ class Filesv1r0 extends ApiController
      * @param   array $filter
      * @return  array
      */
-    protected function _filter($source, $filter)
+    protected function filter($source, $filter)
     {
         $result = [];
         foreach ($source as $key => $value) {
@@ -1252,7 +1252,7 @@ class Filesv1r0 extends ApiController
      *
      * @return  array
      */
-    protected function _getCollection()
+    protected function getCollection()
     {
         // Incoming
         $files       = $this->prune((array) Request::getArray('asset', []));
@@ -1296,7 +1296,7 @@ class Filesv1r0 extends ApiController
      *
      * @return     array
      */
-    protected function _sortIncoming()
+    protected function sortIncoming()
     {
         // Incoming
         $checked = Request::getArray('asset', []);
@@ -1332,7 +1332,7 @@ class Filesv1r0 extends ApiController
      * @param      array  $metadata  incoming metadata
      * @return     array
      */
-    protected function _packMetadata($metadata)
+    protected function packMetadata($metadata)
     {
         $packedMetadata = [];
         if (!empty($metadata) && is_array($metadata)) {
@@ -1480,7 +1480,7 @@ class Filesv1r0 extends ApiController
      * @param   string   $dataPath
      * @return  boolean
      */
-    protected function _acceptDataPath($dataPath)
+    protected function acceptDataPath($dataPath)
     {
         $scheme = strtolower((string) parse_url($dataPath, PHP_URL_SCHEME));
 

@@ -115,7 +115,7 @@ $revision = $this->revision;
 
                         $firstChild = $children->first();
 
-                        echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model, $firstChild, '');
+                        echo \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstChild, '');
 
                         $html = '';
 

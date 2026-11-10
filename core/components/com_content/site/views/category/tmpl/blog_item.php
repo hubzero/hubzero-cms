@@ -53,7 +53,7 @@ Html::behavior('framework');
     <ul class="actions">
         <?php if ($params->get('show_print_icon')) : ?>
             <li class="print-icon">
-                <?php echo Html::icon('print_popup', $this->item, $params); ?>
+                <?php echo Html::icon('printPopup', $this->item, $params); ?>
             </li>
         <?php endif; ?>
         <?php if ($params->get('show_email_icon')) : ?>

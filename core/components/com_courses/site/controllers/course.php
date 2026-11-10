@@ -53,7 +53,7 @@ class Course extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -79,7 +79,7 @@ class Course extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         //set title used in view
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -131,10 +131,10 @@ class Course extends SiteController
         }
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view->active = Request::getString('active', 'overview');
 
@@ -188,10 +188,10 @@ class Course extends SiteController
         }
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         if (is_object($model)) {
             $this->course = $model;
@@ -507,10 +507,10 @@ class Course extends SiteController
     public function deleteTask()
     {
         // Build title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Check if they're logged in
         if (User::isGuest()) {

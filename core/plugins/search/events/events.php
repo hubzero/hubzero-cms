@@ -31,7 +31,7 @@ class Events extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = 'match(e.title, e.content) against(\'' . join(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
@@ -68,7 +68,7 @@ class Events extends Plugin
             . " ORDER BY $weight DESC",
         );
 
-        foreach ($rows->to_associative() as $row) {
+        foreach ($rows->toAssociative() as $row) {
             if (!$row) {
                 continue;
             }
@@ -98,7 +98,7 @@ class Events extends Plugin
                 }
             }
 
-            $row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
+            $row->setDescription(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->getDescription()));
             $results->add($row);
         }
     }

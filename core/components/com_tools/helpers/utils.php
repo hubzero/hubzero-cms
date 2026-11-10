@@ -177,7 +177,7 @@ class Utils
      * @param      string $field Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    public static function check_validInput($field)
+    public static function checkValidInput($field)
     {
         if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field == '') {
             return 0;
@@ -265,7 +265,7 @@ class Utils
         $path = DS . trim($resourceParams->get("uploadpath"), DS);
 
         //build path based on resource creation date and id
-        $path .= \Components\Resources\Helpers\Html::build_path($createdDate, $resourceId, '');
+        $path .= \Components\Resources\Helpers\Html::buildPath($createdDate, $resourceId, '');
 
         //append version id if we have one
         if ($versionId) {

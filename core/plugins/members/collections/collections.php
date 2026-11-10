@@ -84,7 +84,7 @@ class Collections extends Plugin
 
         $this->member = $member;
 
-        $this->_authorize('collection');
+        $this->authorize('collection');
 
         $this->model = new \Components\Collections\Models\Archive('member', $this->member->get('id'));
 
@@ -97,7 +97,7 @@ class Collections extends Plugin
             $this->option   = $option;
             $this->database = App::get('db');
 
-            $this->_authorize('item');
+            $this->authorize('item');
 
             $default = $this->params->get('defaultView', 'feed');
             if (User::get('id') != $member->get('id')) {
@@ -2152,7 +2152,7 @@ class Collections extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'plugin', $assetId = null)
+    protected function authorize($assetType = 'plugin', $assetId = null)
     {
         // Everyone can view by default
         $this->params->set('access-view-' . $assetType, true);

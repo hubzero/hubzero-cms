@@ -49,7 +49,7 @@ class Sessions extends SiteController
      * @param   integer  $session  Session ID
      * @return  void
      */
-    protected function _buildPathway($session = null)
+    protected function buildPathway($session = null)
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -97,7 +97,7 @@ class Sessions extends SiteController
      * @param   integer  $session  Session ID
      * @return  void
      */
-    protected function _buildTitle($session = null)
+    protected function buildTitle($session = null)
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->app && $this->app->name) {
@@ -199,8 +199,8 @@ class Sessions extends SiteController
         }
 
         $this->view->setLayout('launch');
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view->title     = $this->_title;
         $this->view->app       = $app;
@@ -242,10 +242,10 @@ class Sessions extends SiteController
         $this->view->setLayout('accessdenied');
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Instantiate the view
         $this->view->title = $this->_title;
@@ -268,10 +268,10 @@ class Sessions extends SiteController
         $this->view->setLayout('badparams');
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Instantiate the view
         $this->view->title = $this->_title;

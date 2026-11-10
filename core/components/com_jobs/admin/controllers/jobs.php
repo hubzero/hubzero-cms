@@ -79,8 +79,8 @@ class Jobs extends AdminController
         // Get data
         $obj = new Job($this->database);
 
-        $this->view->rows  = $obj->get_openings($this->view->filters, User::get('id'), 1);
-        $this->view->total = $obj->get_openings($this->view->filters, User::get('id'), 1, '', 1);
+        $this->view->rows  = $obj->getOpenings($this->view->filters, User::get('id'), 1);
+        $this->view->total = $obj->getOpenings($this->view->filters, User::get('id'), 1, '', 1);
 
         $this->view->config = $this->config;
 
@@ -143,7 +143,7 @@ class Jobs extends AdminController
             return;
         }
 
-        $this->view->job = $this->view->row->get_opening($id, User::get('id'), 1);
+        $this->view->job = $this->view->row->getOpening($id, User::get('id'), 1);
 
         // Get employer information
         if ($this->view->row->employerid != 1) {

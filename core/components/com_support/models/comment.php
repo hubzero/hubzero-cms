@@ -196,7 +196,7 @@ class Comment extends Relational
             $comment = preg_replace('/\{ticket#([\d]+)\}/i', $ticketLink, $comment);
 
             // Handle legacy attachment strings
-            $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', [&$this,'_getAttachment'], $comment);
+            $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', [&$this,'getAttachment'], $comment);
 
             $this->set('comment', $comment);
 
@@ -228,7 +228,7 @@ class Comment extends Relational
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAttachment($matches)
+    protected function getAttachment($matches)
     {
         $tokens = explode('#', $matches[0]);
 

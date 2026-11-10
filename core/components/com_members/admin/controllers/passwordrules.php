@@ -253,7 +253,7 @@ class PasswordRules extends AdminController
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function toggle_enabledTask()
+    public function toggleEnabledTask()
     {
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
@@ -299,7 +299,7 @@ class PasswordRules extends AdminController
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function restore_default_contentTask()
+    public function restoreDefaultContentTask()
     {
         if (
             !User::authorise('core.manage', $this->option)

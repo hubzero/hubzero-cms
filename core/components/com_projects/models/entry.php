@@ -155,7 +155,7 @@ class Entry extends Model
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -166,7 +166,7 @@ class Entry extends Model
      */
     public function due($as = '')
     {
-        return $this->_date('duedate', $as);
+        return $this->date('duedate', $as);
     }
 
     /**
@@ -177,7 +177,7 @@ class Entry extends Model
      */
     public function closed($as = '')
     {
-        return $this->_date('closed', $as);
+        return $this->date('closed', $as);
     }
 
     /**
@@ -218,7 +218,7 @@ class Entry extends Model
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         if ($this->get($key) == $this->db->getNullDate()) {
             return null;

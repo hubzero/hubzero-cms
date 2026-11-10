@@ -151,19 +151,19 @@ class Projects extends Plugin
 
             switch ($task) {
                 case 'all':
-                    $arr['html'] = $this->_view('all');
+                    $arr['html'] = $this->renderView('all');
                     break;
                 case 'group':
-                    $arr['html'] = $this->_view('group');
+                    $arr['html'] = $this->renderView('group');
                     break;
                 case 'owned':
-                    $arr['html'] = $this->_view('owned');
+                    $arr['html'] = $this->renderView('owned');
                     break;
                 case 'updates':
-                    $arr['html'] = $this->_updates();
+                    $arr['html'] = $this->updates();
                     break;
                 default:
-                    $arr['html'] = $this->_view('all');
+                    $arr['html'] = $this->renderView('all');
                     break;
             }
         }
@@ -198,7 +198,7 @@ class Projects extends Plugin
      * @return string
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _view($which = 'all')
+    protected function renderView($which = 'all')
     {
         // Build the final HTML
         $view = $this->view('default', 'browse');
@@ -244,7 +244,7 @@ class Projects extends Plugin
      * @return string
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _updates()
+    protected function updates()
     {
         // Build the final HTML
         $view = $this->view('default', 'updates');

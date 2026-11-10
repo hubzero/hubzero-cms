@@ -99,10 +99,10 @@ class Import extends SiteController
         }
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         //citation temp file cleanup
         //$this->_citationCleanup();
@@ -223,10 +223,10 @@ class Import extends SiteController
         }
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Instantiate a new view
         $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
@@ -372,10 +372,10 @@ class Import extends SiteController
         }
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Filters for gettiung just previously uploaded
         $filters = [
@@ -424,7 +424,7 @@ class Import extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -446,7 +446,7 @@ class Import extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->task) {

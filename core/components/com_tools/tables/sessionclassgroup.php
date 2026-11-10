@@ -56,7 +56,7 @@ class SessionClassGroup extends Table
      * @return  string  Database query
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query = "FROM $this->tableName AS qcg";
 
@@ -101,7 +101,7 @@ class SessionClassGroup extends Table
 
         switch ($what) {
             case 'count':
-                $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
@@ -139,7 +139,7 @@ class SessionClassGroup extends Table
 
             case 'list':
             default:
-                $query = "SELECT qcg.* " . $this->_buildQuery($filters);
+                $query = "SELECT qcg.* " . $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'id';

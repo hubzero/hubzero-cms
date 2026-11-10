@@ -76,7 +76,7 @@ class Installer
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function LocationOptions()
+    public static function locationOptions()
     {
         // Build the active state filter options.
         $options = [];
@@ -92,7 +92,7 @@ class Installer
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function StatusOptions()
+    public static function statusOptions()
     {
         // Build the active state filter options.
         $options = [];
@@ -109,7 +109,7 @@ class Installer
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function TypeOptions()
+    public static function typeOptions()
     {
         $db = App::get('db');
 
@@ -135,7 +135,7 @@ class Installer
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function GroupOptions()
+    public static function groupOptions()
     {
         $db = App::get('db');
 
@@ -162,7 +162,7 @@ class Installer
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function VersionOptions()
+    public static function versionOptions()
     {
         // Build the active state filter options.
         $options = [];

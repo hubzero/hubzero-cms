@@ -201,7 +201,7 @@ class Product extends \Hubzero\Component\SiteController
         $this->view->productAvailable = $productAvailable;
 
         //build pathway
-        $this->_buildPathway($product->pName);
+        $this->buildPathway($product->pName);
 
         // Set notifications
         $this->view->notifications = $pageMessages;
@@ -350,7 +350,7 @@ class Product extends \Hubzero\Component\SiteController
      * @param   string  $product
      * @return  void
      */
-    public function _buildPathway($product)
+    public function buildPathway($product)
     {
         if (Pathway::count() <= 0) {
             Pathway::append(

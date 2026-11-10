@@ -63,7 +63,7 @@ class DiffFormatter
         $nlead = $this->leading_context_lines;
         $ntrail = $this->trailing_context_lines;
 
-        $this->_start_diff();
+        $this->startDiff();
 
         echo '<table class="diffs">' . "\n";
         echo "\t" . '<tbody>' . "\n";
@@ -78,7 +78,7 @@ class DiffFormatter
                             $context = array_slice($edit->orig, 0, $ntrail);
                             $block[] = new DiffOpCopy($context);
                         }
-                        $this->_block(
+                        $this->block(
                             $x0,
                             $ntrail + $xi - $x0,
                             $y0,
@@ -126,7 +126,7 @@ class DiffFormatter
         }
 
         if (is_array($block)) {
-            $this->_block(
+            $this->block(
                 $x0,
                 $xi - $x0,
                 $y0,
@@ -136,7 +136,7 @@ class DiffFormatter
         }
         echo "\t" . '</tbody>' . "\n";
         echo '</table>' . "\n";
-        $end = $this->_end_diff();
+        $end = $this->endDiff();
 
         return $end;
     }
@@ -153,23 +153,23 @@ class DiffFormatter
      * @param      array &$edits Parameter description (if any) ...
      * @return     void
      */
-    public function _block($xbeg, $xlen, $ybeg, $ylen, &$edits)
+    public function block($xbeg, $xlen, $ybeg, $ylen, &$edits)
     {
-        $this->_start_block($this->_block_header($xbeg, $xlen, $ybeg, $ylen));
+        $this->startBlock($this->blockHeader($xbeg, $xlen, $ybeg, $ylen));
         foreach ($edits as $edit) {
             if ($edit->type == 'copy') {
-                $this->_context($edit->orig);
+                $this->context($edit->orig);
             } elseif ($edit->type == 'add') {
-                $this->_added($edit->closing);
+                $this->added($edit->closing);
             } elseif ($edit->type == 'delete') {
-                $this->_deleted($edit->orig);
+                $this->deleted($edit->orig);
             } elseif ($edit->type == 'change') {
-                $this->_changed($edit->orig, $edit->closing);
+                $this->changed($edit->orig, $edit->closing);
             } else {
                 trigger_error('Unknown edit type', E_USER_ERROR);
             }
         }
-        $this->_end_block();
+        $this->endBlock();
     }
 
     /**
@@ -179,7 +179,7 @@ class DiffFormatter
      *
      * @return     void
      */
-    public function _start_diff()
+    public function startDiff()
     {
         ob_start();
     }
@@ -191,7 +191,7 @@ class DiffFormatter
      *
      * @return     unknown Return description (if any) ...
      */
-    public function _end_diff()
+    public function endDiff()
     {
         $val = ob_get_contents();
         ob_end_clean();
@@ -209,7 +209,7 @@ class DiffFormatter
      * @param      number $ylen Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    public function _block_header($xbeg, $xlen, $ybeg, $ylen)
+    public function blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
         if ($xlen > 1) {
             $xbeg .= "," . ($xbeg + $xlen - 1);
@@ -229,7 +229,7 @@ class DiffFormatter
      * @param      unknown $header Parameter description (if any) ...
      * @return     void
      */
-    public function _start_block($header)
+    public function startBlock($header)
     {
         echo $header;
     }
@@ -241,7 +241,7 @@ class DiffFormatter
      *
      * @return     void
      */
-    public function _end_block()
+    public function endBlock()
     {
     }
 
@@ -254,7 +254,7 @@ class DiffFormatter
      * @param      string $prefix Parameter description (if any) ...
      * @return     void
      */
-    public function _lines($lines, $prefix = ' ')
+    public function lines($lines, $prefix = ' ')
     {
         foreach ($lines as $line) {
             echo "$prefix $line\n";
@@ -269,9 +269,9 @@ class DiffFormatter
      * @param      unknown $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _context($lines)
+    public function context($lines)
     {
-        $this->_lines($lines);
+        $this->lines($lines);
     }
 
     /**
@@ -282,9 +282,9 @@ class DiffFormatter
      * @param      unknown $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _added($lines)
+    public function added($lines)
     {
-        $this->_lines($lines, '>');
+        $this->lines($lines, '>');
     }
 
     /**
@@ -295,9 +295,9 @@ class DiffFormatter
      * @param      unknown $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _deleted($lines)
+    public function deleted($lines)
     {
-        $this->_lines($lines, '<');
+        $this->lines($lines, '<');
     }
 
     /**
@@ -309,10 +309,10 @@ class DiffFormatter
      * @param      unknown $closing Parameter description (if any) ...
      * @return     void
      */
-    public function _changed($orig, $closing)
+    public function changed($orig, $closing)
     {
-        $this->_deleted($orig);
+        $this->deleted($orig);
         echo "---\n";
-        $this->_added($closing);
+        $this->added($closing);
     }
 }

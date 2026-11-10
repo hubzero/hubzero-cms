@@ -567,7 +567,7 @@ class Pipeline extends SiteController
                     $log .= '-----------------------------------------' . "\n";
 
                     // Log reason for closed source
-                    $this->_writeToFile($log, PATH_APP . $path . DS . 'closed_source_reasons.txt', true);
+                    $this->writeToFile($log, PATH_APP . $path . DS . 'closed_source_reasons.txt', true);
                 }
 
                 // code for saving license
@@ -576,7 +576,7 @@ class Pipeline extends SiteController
                 // save version info
                 $hztv->update(); //@FIXME: look
 
-                $this->_setTracAccess($hztv->toolname, $hztv->codeaccess, null);
+                $this->setTracAccess($hztv->toolname, $hztv->codeaccess, null);
 
                 if ($action != 'confirm') {
                     $this->_msg = Lang::txt('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
@@ -596,7 +596,7 @@ class Pipeline extends SiteController
             // save version info
             $hztv->update(); //@FIXME: look
 
-            $this->_setTracAccess($hztv->toolname, $hztv->codeaccess, null);
+            $this->setTracAccess($hztv->toolname, $hztv->codeaccess, null);
 
             if ($action != 'confirm') {
                 $this->_msg = Lang::txt('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
@@ -623,7 +623,7 @@ class Pipeline extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _writeToFile($content = '', $file = '', $append = false)
+    protected function writeToFile($content = '', $file = '', $append = false)
     {
         $place   = $append == true ? 'a' : 'w';
         $content = $append ? $content . "\n" : $content;
@@ -783,7 +783,7 @@ class Pipeline extends SiteController
      * @return  boolean
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
+    protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
         if (!($hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $toolname))) {
             return false;
@@ -1033,7 +1033,7 @@ class Pipeline extends SiteController
             }
         }
 
-        $this->_setTracAccess($tool['toolname'], $hztv->codeaccess, $hztv->wikiaccess);
+        $this->setTracAccess($tool['toolname'], $hztv->codeaccess, $hztv->wikiaccess);
 
         if ($this->_error) {
             App::abort(500, $this->_error);
@@ -1101,7 +1101,7 @@ class Pipeline extends SiteController
             $hztv->update(); // Make sure tool exists in database or gensvn won't configure apachce access to it
 
             // Run add repo
-            $this->_addRepo($output, [
+            $this->addRepo($output, [
                 'toolname'    => $tool['toolname'],
                 'title'       => $tool['title'],
                 'description' => $tool['description'],
@@ -1165,7 +1165,7 @@ class Pipeline extends SiteController
 
         // update history ticket
         if ($id && $oldstatus != $status && $editversion != 'current') {
-            $this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0, 1);
+            $this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0, 1);
         }
 
         App::redirect(
@@ -1187,7 +1187,7 @@ class Pipeline extends SiteController
      * @return  boolean  False if errors, True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addRepo(&$output, $toolinfo = [])
+    protected function addRepo(&$output, $toolinfo = [])
     {
         if (!$this->_toolid) {
             return false;
@@ -1226,7 +1226,7 @@ class Pipeline extends SiteController
                 }
             }
 
-            if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output)) {
+            if (!$this->invokescript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output)) {
                 return false;
             } else {
                 return true;
@@ -1308,7 +1308,7 @@ class Pipeline extends SiteController
                 $status['toolstate'] = $hzt->state;
                 // update history ticket
                 if ($oldstatus != $status) {
-                    $this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
+                    $this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
                 }
                 $this->_msg = Lang::txt('COM_TOOLS_NOTICE_CHANGE_VERSION_SAVED');
                 $this->statusTask();
@@ -1414,7 +1414,7 @@ class Pipeline extends SiteController
         $status['toolstate'] = $hzt->state;
         // update history ticket
         if ($oldstatus != $status) {
-            $this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
+            $this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
         }
 
         $this->_msg = Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED');
@@ -1559,7 +1559,7 @@ class Pipeline extends SiteController
         Log::debug(__FUNCTION__ . "() before newUpdateTicket test");
         if ($oldstatus != $status || !empty($comment)) {
             Log::debug(__FUNCTION__ . "() before newUpdateTicket");
-            $this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, $access, 1);
+            $this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, $access, 1);
             Log::debug(__FUNCTION__ . "() after newUpdateTicket");
         }
 
@@ -1606,7 +1606,7 @@ class Pipeline extends SiteController
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 
         if ($comment) {
-            $this->_newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
+            $this->newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
             $this->_msg = Lang::txt('COM_TOOLS_NOTICE_MSG_SENT');
         }
 
@@ -1625,7 +1625,7 @@ class Pipeline extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = [])
+    protected function email($toolid, $summary, $comment, $access, $action, $toolinfo = [])
     {
         $headline = '';
 
@@ -1765,7 +1765,7 @@ class Pipeline extends SiteController
      * @return  boolean  False if errors, True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _newUpdateTicket(
+    protected function newUpdateTicket(
         $toolid,
         $ticketid,
         $oldstuff,
@@ -1950,7 +1950,7 @@ class Pipeline extends SiteController
             if ($email) {
                 Log::debug(__FUNCTION__ . '() emailing notifications');
                 // send notification emails
-                $this->_email($toolid, $summary, $comment, $access, $action);
+                $this->email($toolid, $summary, $comment, $access, $action);
             }
         }
 
@@ -1998,7 +1998,7 @@ class Pipeline extends SiteController
      * @return  boolean  False if errors, True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _updateTicket(
+    protected function updateTicket(
         $toolid,
         $oldstuff,
         $newstuff,
@@ -2155,7 +2155,7 @@ class Pipeline extends SiteController
         if ($email) {
             // send notification emails
             $summary = $summary ? $summary : $comment;
-            $this->_email($toolid, $summary, $comment, $access, $action, $toolinfo);
+            $this->email($toolid, $summary, $comment, $access, $action, $toolinfo);
         }
 
         // Log activity
@@ -2232,7 +2232,7 @@ class Pipeline extends SiteController
                 $obj->saveTicketId($toolid, $row->get('id'));
 
                 // make a record
-                $this->_updateTicket($toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
+                $this->updateTicket($toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
             }
         }
 
@@ -2292,7 +2292,7 @@ class Pipeline extends SiteController
         $obj->updateTool($this->_toolid, \Components\Tools\Helpers\Html::getStatusNum('Abandoned'), 5);
 
         // add comment to ticket
-        $this->_updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
+        $this->updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
 
         // continue output
         App::redirect(
@@ -2314,7 +2314,7 @@ class Pipeline extends SiteController
      * @return  boolean  True if no errors
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _invokescript($command, $successmsg, &$output, $success = 1)
+    protected function invokescript($command, $successmsg, &$output, $success = 1)
     {
         $output['class'] = 'passed';
         $output['msg']   = '';

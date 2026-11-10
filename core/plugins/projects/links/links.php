@@ -204,7 +204,7 @@ class Links extends Plugin
 
         // ...and the version is that publication's: pid was checked, vid is
         // what the citation is detached from
-        if (!$this->getError() && !$this->_versionOfProject($vid)) {
+        if (!$this->getError() && !$this->versionOfProject($vid)) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
         }
 
@@ -291,7 +291,7 @@ class Links extends Plugin
         if (!$vid || !$cite['type'] || !$cite['title']) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
         } elseif (
-            !$this->_versionOfProject($vid)
+            !$this->versionOfProject($vid)
             || (!$new && !Association::all()
                 ->whereEquals('cid', (int) $cite['id'])
                 ->whereEquals('tbl', 'publication')
@@ -1275,7 +1275,7 @@ class Links extends Plugin
      * @param   integer  $vid
      * @return  boolean
      */
-    protected function _versionOfProject($vid)
+    protected function versionOfProject($vid)
     {
         $v = \Components\Publications\Models\Orm\Version::oneOrNew((int) $vid);
         if ($v->isNew()) {

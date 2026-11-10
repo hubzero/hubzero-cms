@@ -84,7 +84,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tags_on_object(
+    public function getTagsOnObject(
         $object_id,
         $offset = 0,
         $limit = 10,
@@ -114,7 +114,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     boolean True on success, false if errors
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function safe_tag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
+    public function safeTag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
     {
         if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
             $this->setError('safe_tag argument missing');
@@ -182,7 +182,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tags_with_objects($id = 0, $category = 0, $tag = '')
+    public function getTagsWithObjects($id = 0, $category = 0, $tag = '')
     {
         $now = Date::toSql();
 
@@ -258,7 +258,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     boolean True on success, false if errors
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
+    public function tagObject($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
     {
         $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->setTags($tag_string, $tagger_id, $admin, $strength, $label);
@@ -274,7 +274,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     boolean True on success, false if errors
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function remove_tag($tagger_id, $object_id, $tag, $admin)
+    public function removeTag($tagger_id, $object_id, $tag, $admin)
     {
         $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->remove($tag, $tagger_id);
@@ -287,7 +287,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     boolean True on success, false if errors
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function remove_all_tags($object_id)
+    public function removeAllTags($object_id)
     {
         $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->removeAll();
@@ -301,7 +301,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     string Normalized tag
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function normalize_tag($tag)
+    public function normalizeTag($tag)
     {
         $t = \Components\Tags\Models\Tag::blank();
         return $t->normalize($tag);
@@ -314,7 +314,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     mixed False if errors, integer on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tag_id($tag)
+    public function getTagId($tag)
     {
         if (!isset($tag)) {
             $this->setError('get_tag_id argument missing');
@@ -332,13 +332,13 @@ class Tags extends \Hubzero\Base\Obj
      * @return     mixed False if errors, integer on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_raw_tag_id($tag)
+    public function getRawTagId($tag)
     {
         if (!isset($tag)) {
             $this->setError('get_raw_tag_id argument missing');
             return false;
         }
-        return $this->get_tag_id($tag);
+        return $this->getTagId($tag);
     }
 
     /**
@@ -348,7 +348,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function count_tags($admin = 0)
+    public function countAllTags($admin = 0)
     {
         $t = \Components\Tags\Models\Tag::all();
         if (!$admin) {
@@ -366,7 +366,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tag_cloud($showsizes = 0, $admin = 0, $objectid = null)
+    public function getTagCloud($showsizes = 0, $admin = 0, $objectid = null)
     {
         $cloud = new Cloud($objectid, $this->tbl);
         return $cloud->render(); //TODO: Check with author as to why admin is aasumed not needed
@@ -385,7 +385,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tag_string(
+    public function getTagString(
         $oid,
         $offset = 0,
         $limit = 0,
@@ -406,7 +406,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
-    public function _parse_tags($tag_string, $keep = 0)
+    public function parseTags($tag_string, $keep = 0)
     {
         $newwords = [];
 
@@ -431,7 +431,7 @@ class Tags extends \Hubzero\Base\Obj
 
         foreach ($raw_tags as $raw_tag) {
             $raw_tag = trim($raw_tag);
-            $nrm_tag = $this->normalize_tag($raw_tag);
+            $nrm_tag = $this->normalizeTag($raw_tag);
             if ($keep != 0) {
                 $newwords[$nrm_tag] = $raw_tag;
             } else {
@@ -472,7 +472,7 @@ class Tags extends \Hubzero\Base\Obj
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_objects_on_tag(
+    public function getObjectsOnTag(
         $tag = '',
         $id = 0,
         $category = 0,
@@ -815,7 +815,7 @@ class Tags extends \Hubzero\Base\Obj
         if (is_array($tag)) {
             $bunch = $tag;
         } else {
-            $bunch = $this->_parse_tags($tag);
+            $bunch = $this->parseTags($tag);
         }
 
         $tags = [];
@@ -848,7 +848,7 @@ class Tags extends \Hubzero\Base\Obj
         if ($tags && count($tags) > 0) {
             $lst = [];
             if (is_string($tagstring)) {
-                $lst = $this->_parse_tags($tagstring);
+                $lst = $this->parseTags($tagstring);
             } else {
                 $lst = $tagstring;
             }

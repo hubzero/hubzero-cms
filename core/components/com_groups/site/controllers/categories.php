@@ -54,7 +54,7 @@ class Categories extends Base
         }
 
         // Check authorization
-        if ($this->group->published == 2 || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))) {
+        if ($this->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.pages'))) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -96,10 +96,10 @@ class Categories extends Base
         }
 
         // build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // get view notifications
         $notifications = ($this->getNotifications()) ? $this->getNotifications() : [];

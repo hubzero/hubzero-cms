@@ -30,9 +30,9 @@ class Weightcontributor extends Plugin
      */
     public static function onSearchWeightAll($terms, $res)
     {
-        $pos_terms = $terms->get_positive_chunks();
+        $pos_terms = $terms->getPositiveChunks();
 
-        foreach (array_map('strtolower', $res->get_contributors()) as $contributor) {
+        foreach (array_map('strtolower', $res->getContributors()) as $contributor) {
             foreach ($pos_terms as $term) {
                 if (strpos($contributor, $term) !== false) {
                     return 1.0;

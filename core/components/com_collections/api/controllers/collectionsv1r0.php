@@ -31,7 +31,7 @@ class Collectionsv1r0 extends ApiController
      * @param   integer  $objectId
      * @return  boolean
      */
-    protected function _canManageObject($objectType, $objectId)
+    protected function canManageObject($objectType, $objectId)
     {
         // Collection::_adapter() throws on any other scope, and that runs on
         // every listing that links the row
@@ -234,7 +234,7 @@ class Collectionsv1r0 extends ApiController
         ];
 
         // May only create a collection for an object the caller owns/manages
-        if (!$this->_canManageObject($fields['object_type'], $fields['object_id'])) {
+        if (!$this->canManageObject($fields['object_type'], $fields['object_id'])) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
         $fields['created_by'] = App::get('authn')['user_id'];
@@ -411,12 +411,12 @@ class Collectionsv1r0 extends ApiController
         }
 
         // Must own the collection, and any object it is being repointed to
-        if (!$this->_canManageObject($row->get('object_type'), $row->get('object_id'))) {
+        if (!$this->canManageObject($row->get('object_type'), $row->get('object_id'))) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
         if (
             !empty($fields['object_id'])
-            && !$this->_canManageObject(!empty($fields['object_type']) ? $fields['object_type'] : $row->get('object_type'), $fields['object_id'])
+            && !$this->canManageObject(!empty($fields['object_type']) ? $fields['object_type'] : $row->get('object_type'), $fields['object_id'])
         ) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
@@ -471,7 +471,7 @@ class Collectionsv1r0 extends ApiController
                 throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
             }
 
-            if (!$this->_canManageObject($row->get('object_type'), $row->get('object_id'))) {
+            if (!$this->canManageObject($row->get('object_type'), $row->get('object_id'))) {
                 throw new Exception(Lang::txt('Access denied'), 403);
             }
 

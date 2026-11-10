@@ -92,7 +92,7 @@ class Nogit extends Obj
         chdir($this->path);
 
         // exec call
-        return $this->_exec($call);
+        return $this->exec($call);
     }
 
     /**
@@ -101,7 +101,7 @@ class Nogit extends Obj
      * @param   string  $call
      * @return  array   to be parsed
      */
-    protected function _exec($call = '')
+    protected function exec($call = '')
     {
         if (!$call) {
             return false;

@@ -272,9 +272,9 @@ class Notes extends Plugin
             }
             // Listing/unlisting?
             if ($this->task == 'publist' || $this->task == 'unlist') {
-                $arr['html'] = $this->_list();
+                $arr['html'] = $this->list();
             } elseif ($this->task == 'share') {
-                $arr['html'] = $this->_share();
+                $arr['html'] = $this->share();
             } else {
                 // Display page
                 $arr['html'] = $this->page();
@@ -426,7 +426,7 @@ class Notes extends Plugin
     /**
      * List/unlist on public project page
      */
-    protected function _list()
+    protected function list()
     {
         // Incoming
         $id = trim(Request::getInt('p', 0));
@@ -457,7 +457,7 @@ class Notes extends Plugin
      *
      * @return  string
      */
-    protected function _share()
+    protected function share()
     {
         // Incoming
         $id = trim(Request::getInt('p', 0));

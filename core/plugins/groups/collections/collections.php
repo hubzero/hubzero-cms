@@ -190,8 +190,8 @@ class Collections extends Plugin
         $this->members = $group->get('members');
         $this->authorized = $authorized;
 
-        $this->_authorize('collection');
-        $this->_authorize('item');
+        $this->authorize('collection');
+        $this->authorize('item');
 
         //are we returning html
         if ($return == 'html') {
@@ -2452,7 +2452,7 @@ class Collections extends Plugin
      * @param   integer  $group_id
      * @return  object
      */
-    protected function _params($group_id)
+    protected function params($group_id)
     {
         if (!$this->customParams) {
             $this->customParams = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->pluginName);
@@ -2467,13 +2467,13 @@ class Collections extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'plugin', $assetId = null)
+    protected function authorize($assetType = 'plugin', $assetId = null)
     {
         // Everyone can view by default
         $this->params->set('access-view', true);
         $this->params->set('access-can-follow', false);
         if (!User::isGuest() && $this->group->published == 1) {
-            $customParams = $this->_params($this->group->get('gidNumber'));
+            $customParams = $this->params($this->group->get('gidNumber'));
             $this->params->merge($customParams);
 
             // Set asset to viewable

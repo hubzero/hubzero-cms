@@ -102,23 +102,23 @@ class Notes extends Plugin
             if ($action = strtolower(Request::getWord('action', ''))) {
                 switch ($action) {
                     case 'add':
-                        $result = $this->_edit();
+                        $result = $this->edit();
                         break;
                     case 'edit':
-                        $result = $this->_edit();
+                        $result = $this->edit();
                         break;
                     case 'save':
-                        $result = $this->_save();
+                        $result = $this->save();
                         break;
                     case 'delete':
-                        $result = $this->_delete();
+                        $result = $this->delete();
                         break;
                     case 'download':
-                        $result = $this->_download();
+                        $result = $this->download();
                         break;
 
                     default:
-                        $result = $this->_list();
+                        $result = $this->list();
                         break;
                 }
             }
@@ -170,7 +170,7 @@ class Notes extends Plugin
     /**
      * Set layout to the listing
      */
-    public function _list()
+    public function list()
     {
         if (!$this->view->no_html) {
             $this->view->setLayout('default');
@@ -180,7 +180,7 @@ class Notes extends Plugin
     /**
      * Download
      */
-    public function _download()
+    public function download()
     {
         $format = strtolower(Request::getWord('frmt', 'txt'));
         if (!in_array($format, ['txt', 'csv'])) {
@@ -207,7 +207,7 @@ class Notes extends Plugin
      *
      * @param   mixed  $model
      */
-    public function _edit($model = null)
+    public function edit($model = null)
     {
         if (!($model instanceof \Plugins\Courses\Notes\Models\Note)) {
             $note_id = Request::getInt('note', 0);
@@ -227,7 +227,7 @@ class Notes extends Plugin
      *
      * @return  mixed
      */
-    public function _save()
+    public function save()
     {
         // Check for request forgeries
         Request::checkToken();
@@ -286,12 +286,12 @@ class Notes extends Plugin
         if (!$model->save()) {
             $this->setError($model->getError());
             if (!$this->view->no_html) {
-                return $this->_edit($model);
+                return $this->edit($model);
             }
         }
 
         if (!$this->view->no_html) {
-            return $this->_list();
+            return $this->list();
         }
 
         return $model->get('id');
@@ -302,7 +302,7 @@ class Notes extends Plugin
      *
      * @return  mixed
      */
-    public function _delete()
+    public function delete()
     {
         // Require POST
         if (Request::method() !== 'POST') {
@@ -326,7 +326,7 @@ class Notes extends Plugin
         }
 
         if (!$this->view->no_html) {
-            return $this->_list();
+            return $this->list();
         }
         return $note_id;
     }

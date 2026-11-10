@@ -32,7 +32,7 @@ class Postsv1r0 extends ApiController
      * @param   integer  $collectionId
      * @return  boolean
      */
-    protected function _canManageCollection($collectionId)
+    protected function canManageCollection($collectionId)
     {
         // The one predicate the site uses for "may this user post to this board".
         // This method used to carry its own copy, and the copy had drifted: it
@@ -284,7 +284,7 @@ class Postsv1r0 extends ApiController
         }
 
         // Must be able to manage the target collection; never trust created_by
-        if (!$this->_canManageCollection($fields['collection_id'])) {
+        if (!$this->canManageCollection($fields['collection_id'])) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
         $fields['created_by'] = App::get('authn')['user_id'];
@@ -554,12 +554,12 @@ class Postsv1r0 extends ApiController
         }
 
         // Must manage the post's current collection, and any collection it is moved to
-        if (!$this->_canManageCollection($row->get('collection_id'))) {
+        if (!$this->canManageCollection($row->get('collection_id'))) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
         if (
             !empty($fields['collection_id']) && $fields['collection_id'] != $row->get('collection_id')
-            && !$this->_canManageCollection($fields['collection_id'])
+            && !$this->canManageCollection($fields['collection_id'])
         ) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
@@ -658,7 +658,7 @@ class Postsv1r0 extends ApiController
                 throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
             }
 
-            if (!$this->_canManageCollection($row->get('collection_id'))) {
+            if (!$this->canManageCollection($row->get('collection_id'))) {
                 throw new Exception(Lang::txt('Access denied'), 403);
             }
 

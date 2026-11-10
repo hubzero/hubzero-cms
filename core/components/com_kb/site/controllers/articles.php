@@ -250,7 +250,7 @@ class Articles extends SiteController
         switch ($type) {
             case 'article':
                 $row = Article::oneOrFail($id);
-                $this->_requireReadableArticle($row);
+                $this->requireReadableArticle($row);
                 break;
             case 'comment':
                 $row = Comment::oneOrFail($id);
@@ -264,7 +264,7 @@ class Articles extends SiteController
                     throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
                 }
 
-                $this->_requireReadableArticle(Article::oneOrNew($row->get('entry_id')));
+                $this->requireReadableArticle(Article::oneOrNew($row->get('entry_id')));
                 break;
         }
 
@@ -456,7 +456,7 @@ class Articles extends SiteController
 
         // This feed carries the same comments the article page shows, so it must
         // not serve an article the page itself refuses.
-        $this->_requireReadableArticle($article);
+        $this->requireReadableArticle($article);
 
         // Set the mime encoding for the document
         Document::setType('feed');
@@ -487,7 +487,7 @@ class Articles extends SiteController
             ->whereIn('state', [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED])
             ->rows();
 
-        $this->_feedItem($comments, Route::url($article->link()));
+        $this->feedItem($comments, Route::url($article->link()));
     }
 
     /**
@@ -507,7 +507,7 @@ class Articles extends SiteController
      * @param   object  $article
      * @return  void
      */
-    protected function _requireReadableArticle($article)
+    protected function requireReadableArticle($article)
     {
         if (!$article->get('id') || $article->get('state') != Article::STATE_PUBLISHED) {
             throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
@@ -530,7 +530,7 @@ class Articles extends SiteController
      * @param   string  $link      Link to the article the comments hang off
      * @return  void
      */
-    protected function _feedItem($comments, $link)
+    protected function feedItem($comments, $link)
     {
         foreach ($comments as $comment) {
             // Load individual item creator class
@@ -583,7 +583,7 @@ class Articles extends SiteController
                 ->rows();
 
             if ($replies->count()) {
-                $this->_feedItem($replies, $link);
+                $this->feedItem($replies, $link);
             }
         }
     }

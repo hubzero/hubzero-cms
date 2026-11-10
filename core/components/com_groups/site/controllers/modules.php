@@ -58,7 +58,7 @@ class Modules extends Base
 
         // Check authorization
         $isUnauthorized = $this->group->published == 2
-            || ($this->authorize() != 'manager' && !$this->_authorizedForTask('group.pages'));
+            || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.pages'));
         if ($isUnauthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
@@ -134,10 +134,10 @@ class Modules extends Base
         $this->view->stylesheets = Helpers\View::getPageCss($this->group);
 
         // build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // get view notifications
         $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];

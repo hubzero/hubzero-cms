@@ -184,7 +184,7 @@ class Version extends Table
      * @return  mixed    False on error, object on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function load_version($toolid = null, $version = 'dev')
+    public function loadVersion($toolid = null, $version = 'dev')
     {
         if ($toolid === null) {
             return false;
@@ -685,7 +685,7 @@ class Version extends Table
         if ($required && !$newversion) { // was left blank
             $result = 0;
             $error = Lang::txt('ERR_VERSION_BLANK');
-        } elseif ($toolhelper->check_validInput($newversion)) { // illegal characters
+        } elseif ($toolhelper->checkValidInput($newversion)) { // illegal characters
             $result = 0;
             $error = Lang::txt('ERR_VERSION_ILLEGAL');
         } elseif ($required) {

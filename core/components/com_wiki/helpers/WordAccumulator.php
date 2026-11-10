@@ -52,7 +52,7 @@ class WordAccumulator
      * @param      unknown $new_tag Parameter description (if any) ...
      * @return     void
      */
-    public function _flushGroup($new_tag)
+    public function flushGroup($new_tag)
     {
         if ($this->group !== '') {
             if ($this->tag == 'ins') {
@@ -75,9 +75,9 @@ class WordAccumulator
      * @param      unknown $new_tag Parameter description (if any) ...
      * @return     void
      */
-    public function _flushLine($new_tag)
+    public function flushLine($new_tag)
     {
-        $this->_flushGroup($new_tag);
+        $this->flushGroup($new_tag);
         if ($this->line != '') {
             array_push($this->lines, $this->line);
         } else {
@@ -99,7 +99,7 @@ class WordAccumulator
     public function addWords($words, $tag = '')
     {
         if ($tag != $this->tag) {
-            $this->_flushGroup($tag);
+            $this->flushGroup($tag);
         }
 
         foreach ($words as $word) {
@@ -108,7 +108,7 @@ class WordAccumulator
                 continue;
             }
             if ($word[0] == "\n") {
-                $this->_flushLine($tag);
+                $this->flushLine($tag);
                 $word = substr($word, 1);
             }
             assert(!strstr($word, "\n"));
@@ -125,7 +125,7 @@ class WordAccumulator
      */
     public function getLines()
     {
-        $this->_flushLine('~done');
+        $this->flushLine('~done');
         return $this->lines;
     }
 }

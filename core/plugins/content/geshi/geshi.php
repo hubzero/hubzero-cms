@@ -56,7 +56,7 @@ class Geshi extends Plugin
         $regex = "#<pre xml:\s*(.*?)>(.*?)</pre>#s";
 
         // Perform the replacement.
-        $article->text = preg_replace_callback($regex, [&$this, '_replace'], $article->text);
+        $article->text = preg_replace_callback($regex, [&$this, 'replace'], $article->text);
 
         // Load highlight.js CSS theme
         $this->css('highlight.css');
@@ -71,7 +71,7 @@ class Geshi extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _replace(&$matches)
+    protected function replace(&$matches)
     {
         $args = self::parseAttributes($matches[1]);
         $text = $matches[2];

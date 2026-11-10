@@ -167,10 +167,10 @@ class Feed extends Plugin
 
             switch ($this->task) {
                 case 'delete':
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
                     // comments are activity entries: _save()/_delete() handle them
                     // (_saveComment()/_deleteComment() were never defined). The
@@ -178,11 +178,11 @@ class Feed extends Plugin
                     // handlers read the entry as 'activity'.
                 case 'savecomment':
                     Request::setVar('activity', Request::getInt('cid', 0));
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
                 case 'deletecomment':
                     Request::setVar('activity', Request::getInt('cid', 0));
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
                 case 'update':
                     $arr['html'] = $this->updateFeed();
@@ -345,7 +345,7 @@ class Feed extends Plugin
     /**
      * Save new blog entry
      */
-    protected function _save()
+    protected function save()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -377,7 +377,7 @@ class Feed extends Plugin
             // ... and the caller must be its author or a project manager (the
             // feed view offers the edit action to managers on every entry)
             if (
-                !$this->_entryBelongsToProject($row)
+                !$this->entryBelongsToProject($row)
                 || ($row->get('created_by') != User::get('id') && !$this->model->access('manager'))
             ) {
                 throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -468,7 +468,7 @@ class Feed extends Plugin
     /**
      * Delete entry
      */
-    protected function _delete()
+    protected function delete()
     {
         // Require POST to prevent accidental deletion by crawlers
         if (Request::method() !== 'POST') {
@@ -491,7 +491,7 @@ class Feed extends Plugin
         $entry = \Hubzero\Activity\Log::oneOrFail($id);
 
         // The entry must belong to the project being viewed
-        if (!$this->_entryBelongsToProject($entry)) {
+        if (!$this->entryBelongsToProject($entry)) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
@@ -785,7 +785,7 @@ class Feed extends Plugin
      * @param   object  $entry
      * @return  boolean
      */
-    protected function _entryBelongsToProject($entry)
+    protected function entryBelongsToProject($entry)
     {
         foreach ($entry->recipients()->rows() as $recipient) {
             if (

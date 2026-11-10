@@ -391,7 +391,7 @@ class Endnote extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _cleanText($string)
+    protected function cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);
         $encoded = strtr($string, $translations);

@@ -69,7 +69,7 @@ class Publications extends SiteController
 
         // Resource map
         if (strrpos(strtolower($this->_alias), '.rdf') > 0) {
-            return $this->_resourceMap();
+            return $this->resourceMap();
         }
 
         // Set the default task
@@ -155,7 +155,7 @@ class Publications extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -232,7 +232,7 @@ class Publications extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         if (!$this->_title) {
             $this->_title = Lang::txt(strtoupper($this->option));
@@ -304,7 +304,7 @@ class Publications extends SiteController
      * Login view
      *
      */
-    protected function _login()
+    protected function login()
     {
         $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
 
@@ -337,10 +337,10 @@ class Publications extends SiteController
     public function introTask()
     {
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $filters = [
             'sortby' => 'date_published',
@@ -477,10 +477,10 @@ class Publications extends SiteController
         }
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view
@@ -502,7 +502,7 @@ class Publications extends SiteController
      * Retrieves the data from database and compose the RDF file for download.
      *
      */
-    protected function _resourceMap()
+    protected function resourceMap()
     {
         $resourceMap = new \Components\Publications\Helpers\ResourceMapGenerator();
         $id = '';
@@ -577,7 +577,7 @@ class Publications extends SiteController
                 );
                 return;
             } else {
-                $this->_blockAccess();
+                $this->blockAccess();
                 return;
             }
         }
@@ -680,7 +680,7 @@ class Publications extends SiteController
         Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . stripslashes($this->model->version->title));
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view->set('version', $this->model->versionAlias);
         $this->view->set('config', $this->config);
@@ -741,7 +741,7 @@ class Publications extends SiteController
 
         // Is the visitor authorized to view content?
         if (!$this->model->access('view-all')) {
-            $this->_blockAccess();
+            $this->blockAccess();
             return true;
         }
 
@@ -1200,7 +1200,7 @@ class Publications extends SiteController
         fwrite($fp, $doc);
         fclose($fp);
 
-        $this->_serveup(false, $path, $file, $mime);
+        $this->serveup(false, $path, $file, $mime);
 
         die; // REQUIRED
     }
@@ -1249,7 +1249,7 @@ class Publications extends SiteController
      * @param   string   $mime    Mimetype
      * @return  void
      */
-    protected function _serveup($inline, $p, $f, $mime)
+    protected function serveup($inline, $p, $f, $mime)
     {
         $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
@@ -1281,7 +1281,7 @@ class Publications extends SiteController
 
         // No encoding - we aren't using compression... (RFC1945)
 
-        $this->_readfile_chunked($file);
+        $this->readfileChunked($file);
     }
 
     /**
@@ -1291,7 +1291,7 @@ class Publications extends SiteController
      * @param   boolean  $retbytes
      * @return  mixed
      */
-    protected function _readfile_chunked($filename, $retbytes = true)
+    protected function readfileChunked($filename, $retbytes = true)
     {
         $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
         $buffer = '';
@@ -1351,10 +1351,10 @@ class Publications extends SiteController
 
         // Set page title
         $this->_task_title = Lang::txt('COM_PUBLICATIONS_SUBMIT');
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // What plugin requested?
         $allowed = ['team', 'files', 'notes', 'databases', 'publications', 'links'];
@@ -1364,7 +1364,7 @@ class Publications extends SiteController
             $this->_msg = $this->task == 'start'
                         ? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
                         : Lang::txt('COM_PUBLICATIONS_LOGIN_TO_VIEW_SUBMISSIONS');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -1384,7 +1384,7 @@ class Publications extends SiteController
 
             // Block unauthorized access
             if (!$project->access('owner') && !$project->access('content')) {
-                $this->_blockAccess();
+                $this->blockAccess();
                 return;
             }
 
@@ -1399,7 +1399,7 @@ class Publications extends SiteController
 
         // Is project registration restricted?
         if ($action == 'start' && !$project->access('create')) {
-            $this->_buildPathway(null);
+            $this->buildPathway(null);
 
             $this->view = new \Hubzero\Component\View([
                 'name'   => 'error',
@@ -1490,7 +1490,7 @@ class Publications extends SiteController
 
         // Process tags
         $rt = new Helpers\Tags($this->database);
-        $rt->tag_object(User::get('id'), $id, $tags, 1, 0);
+        $rt->tagObject(User::get('id'), $id, $tags, 1, 0);
 
         if (!$no_html) {
             // Push through to the resource view
@@ -1531,14 +1531,14 @@ class Publications extends SiteController
 
         // Set page title
         $this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -1547,7 +1547,7 @@ class Publications extends SiteController
         $version   = Models\Orm\Version::oneOrFail($vid);
         $sourcePub = new Models\Publication(null, 'default', $version->get('id'));
         if (!$sourcePub->access('view')) {
-            return $this->_blockAccess();
+            return $this->blockAccess();
         }
 
         // Get project model
@@ -1564,7 +1564,7 @@ class Publications extends SiteController
 
             // Block unauthorized access
             if (!$project->access('owner') && !$project->access('content')) {
-                $this->_blockAccess();
+                $this->blockAccess();
                 return;
             }
 
@@ -1595,7 +1595,7 @@ class Publications extends SiteController
 
         // Is project registration restricted?
         if (!$pid && !$project->access('create')) {
-            $this->_buildPathway(null);
+            $this->buildPathway(null);
 
             $this->view
                 ->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))
@@ -1714,8 +1714,8 @@ class Publications extends SiteController
         // Copy tags
 
         $rt = new Helpers\Tags($this->database);
-        if ($tags = $rt->get_tag_string($pub_id)) {
-            $rt->tag_object(User::get('id'), $version->get('publication_id'), $tags, 1);
+        if ($tags = $rt->getTagString($pub_id)) {
+            $rt->tagObject(User::get('id'), $version->get('publication_id'), $tags, 1);
         }
 
         // Copy citations (associations are keyed on the version id, see Publication::getCitations)
@@ -2148,7 +2148,7 @@ class Publications extends SiteController
         // Make sure the actor is allowed to view the lft (source) version
         $lsource = new Models\Publication(null, 'default', $lversion->get('id'));
         if (!$lsource->access('view')) {
-            return $this->_blockAccess();
+            return $this->blockAccess();
         }
 
         // Load the rgt version and make sure the user has access
@@ -2165,7 +2165,7 @@ class Publications extends SiteController
         $rpublica = new Models\Publication(null, 'default', $rversion->get('id'));
 
         if (!$rpublica->access('view')) {
-            return $this->_blockAccess();
+            return $this->blockAccess();
         }
 
         $rpublica->setCuration();
@@ -2248,21 +2248,21 @@ class Publications extends SiteController
      * Block access to restricted publications
      *
      */
-    protected function _blockAccess()
+    protected function blockAccess()
     {
         // Set the task
         $this->task = 'block';
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Instantiate a new view
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
-            return $this->_login();
+            return $this->login();
         }
 
         Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'));

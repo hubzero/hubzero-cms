@@ -137,7 +137,7 @@ class Login extends Obj
     public static function getLoginModule($name = 'mod_login', $title = null)
     {
         $result  = null;
-        $modules = self::_load($name);
+        $modules = self::load($name);
         $total   = count($modules);
 
         for ($i = 0; $i < $total; $i++) {
@@ -179,7 +179,7 @@ class Login extends Obj
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _load($module)
+    protected static function load($module)
     {
         static $clean;
 

@@ -40,7 +40,7 @@ class Forum extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = "match(f.title, f.comment) against ('" . join(' ', $terms['stemmed']) . "')";
 
         $addtl_where = [];
@@ -51,7 +51,7 @@ class Forum extends Plugin
             $addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.comment NOT LIKE '%$forb%')";
         }
 
-        $gids = $authz->get_group_ids();
+        $gids = $authz->getGroupIds();
         if (!User::authorise('core.view', 'com_groups')) {
             $addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
         } else {
@@ -68,11 +68,11 @@ class Forum extends Plugin
 
         // fml
         $groupAuth = [];
-        if ($authz->is_super_admin()) {
+        if ($authz->isSuperAdmin()) {
             $groupAuth[] = '1';
         } else {
             $groupAuth[] = "g.plugins LIKE '%forum=anyone%'";
-            if (!$authz->is_guest()) {
+            if (!$authz->isGuest()) {
                 $groupAuth[] = "g.plugins LIKE '%forum=registered%'";
                 if ($gids) {
                     $groupAuth[] = "(g.plugins LIKE '%wiki=members%' AND g.gidNumber IN (" . join(',', $gids) . "))";
@@ -119,7 +119,7 @@ class Forum extends Plugin
             ORDER BY $weight DESC";
 
         $rows = new \Components\Search\Models\Basic\Result\Sql($sql);
-        foreach ($rows->to_associative() as $row) {
+        foreach ($rows->toAssociative() as $row) {
             if (!$row) {
                 continue;
             }

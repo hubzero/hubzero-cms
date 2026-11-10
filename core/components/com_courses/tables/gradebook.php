@@ -57,7 +57,7 @@ class GradeBook extends Table
      * @return     string SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS gb";
         $query .= " LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id";
@@ -118,7 +118,7 @@ class GradeBook extends Table
      */
     public function find($filters = [], $key = null)
     {
-        $query = "SELECT gb.*, ca.grade_weight" . $this->_buildQuery($filters);
+        $query = "SELECT gb.*, ca.grade_weight" . $this->buildQuery($filters);
 
         $this->db->setQuery($query);
         return $this->db->loadObjectList($key);

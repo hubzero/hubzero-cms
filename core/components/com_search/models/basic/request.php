@@ -33,7 +33,7 @@ class Request
      *
      * @return     object Return description (if any) ...
      */
-    public function get_terms()
+    public function getTerms()
     {
         return $this->terms;
     }
@@ -45,7 +45,7 @@ class Request
      *
      * @return     unknown Return description (if any) ...
      */
-    public function get_term_ar()
+    public function getTermAr()
     {
         return $this->term_ar;
     }
@@ -57,7 +57,7 @@ class Request
      *
      * @return     unknown Return description (if any) ...
      */
-    public function get_tags()
+    public function getTags()
     {
         return $this->tags;
     }
@@ -70,7 +70,7 @@ class Request
      * @param      unknown $tbl Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    public function get_tagged_ids($tbl)
+    public function getTaggedIds($tbl)
     {
         return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : [];
     }
@@ -83,7 +83,7 @@ class Request
      * @param      unknown $tbl Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    public function get_tag_ids_by_table($tbl)
+    public function getTagIdsByTable($tbl)
     {
         return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : [];
     }
@@ -98,10 +98,10 @@ class Request
     {
         $this->terms = $terms;
         $this->term_ar = [
-            'mandatory' => $this->terms->get_mandatory_chunks(),
-            'optional'  => $this->terms->get_optional_chunks(),
-            'forbidden' => $this->terms->get_forbidden_chunks(),
-            'stemmed'   => $this->terms->get_stemmed_chunks(),
+            'mandatory' => $this->terms->getMandatoryChunks(),
+            'optional'  => $this->terms->getOptionalChunks(),
+            'forbidden' => $this->terms->getForbiddenChunks(),
+            'stemmed'   => $this->terms->getStemmedChunks(),
         ];
         $this->loadTags();
     }
@@ -145,7 +145,7 @@ class Request
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         );
-        $this->tags = $tags->to_associative();
+        $this->tags = $tags->toAssociative();
 
         $tag_ids = [];
         foreach ($this->tags as $tag) {

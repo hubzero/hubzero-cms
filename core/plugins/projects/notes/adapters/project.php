@@ -76,7 +76,7 @@ class Project extends Base
         switch (strtolower($type)) {
             case 'base':
                 unset($segments['pagename']);
-                return $this->base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->toQueryString($segments);
                 break;
 
             case 'pdf':
@@ -116,7 +116,7 @@ class Project extends Base
         $segments = array_merge($segments, (array) $params);
         //$segments['t'] = 1;
 
-        return Route::url($this->base . '?' . (string) $this->_build($segments) . (string) $anchor);
+        return Route::url($this->base . '?' . (string) $this->toQueryString($segments) . (string) $anchor);
     }
 
     /**

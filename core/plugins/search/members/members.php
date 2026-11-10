@@ -139,7 +139,7 @@ class Members extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $stemmed = join(' ', $terms['stemmed']);
         $weight = "(u.name LIKE '" . $stemmed . "' OR p.profile_value LIKE '" . $stemmed . "')";
 
@@ -182,11 +182,11 @@ class Members extends Plugin
      */
     public static function onSearchCustom($request, &$results)
     {
-        if (($section = $request->get_terms()->get_section()) && $section[0] != 'members') {
+        if (($section = $request->getTerms()->getSection()) && $section[0] != 'members') {
             return;
         }
 
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $addtl_where = [];
         foreach ([$terms['mandatory'], $terms['optional']] as $pos) {
             foreach ($pos as $term) {
@@ -215,7 +215,7 @@ class Members extends Plugin
 				u.block=0 AND u.approved>0 AND
 				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where),
         );
-        $assoc = $sql->to_associative();
+        $assoc = $sql->toAssociative();
         if (!($assoc instanceof \Countable) || !count($assoc)) {
             return false;
         }
@@ -279,19 +279,19 @@ class Members extends Plugin
 
             $query .= " WHERE aa.authorid = " . $row->get('id');
             $work = new \Components\Search\Models\Basic\Result\Sql($query);
-            $work_assoc = $work->to_associative();
+            $work_assoc = $work->toAssociative();
 
             $added = [];
             foreach ($work_assoc as $wrow) {
-                $link = $wrow->get_link();
+                $link = $wrow->getLink();
                 if (array_key_exists($link, $added)) {
                     continue;
                 }
-                $row->add_child($wrow);
-                $row->add_weight(1);
+                $row->addChild($wrow);
+                $row->addWeight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children([ContributionSorter::class, 'sort']);
+            $row->sortChildren([ContributionSorter::class, 'sort']);
 
             $workp = new \Components\Search\Models\Basic\Result\Sql(
                 "SELECT
@@ -311,22 +311,22 @@ class Members extends Plugin
 						ON rt.id = p.category
 					WHERE aa.user_id = " . $row->get('id'),
             );
-            $workp_assoc = $workp->to_associative();
+            $workp_assoc = $workp->toAssociative();
 
             foreach ($workp_assoc as $wrow) {
-                $link = $wrow->get_link();
+                $link = $wrow->getLink();
                 if (array_key_exists($link, $added)) {
                     continue;
                 }
-                $row->add_child($wrow);
-                $row->add_weight(1);
+                $row->addChild($wrow);
+                $row->addWeight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children([ContributionSorter::class, 'sort']);
+            $row->sortChildren([ContributionSorter::class, 'sort']);
 
             $resp[] = $row;
         }
-        usort($resp, [ContributionSorter::class, 'sort_weight']);
+        usort($resp, [ContributionSorter::class, 'sortWeight']);
         foreach ($resp as $row) {
             $results->add($row);
         }
@@ -348,7 +348,7 @@ class Members extends Plugin
             $href = User::getInstance($res->get('id'))->picture();
         }
 
-        $title = htmlentities($res->get_title());
+        $title = htmlentities($res->getTitle());
         return '<img src="' . $href . '" alt="' . $title . '" title="' . $title . '" />';
     }
 }

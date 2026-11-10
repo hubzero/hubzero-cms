@@ -24,7 +24,7 @@ class ContributionSorter
      */
     public static function sort($a, $b)
     {
-        $sec_diff = strcmp($a->get_section(), $b->get_section());
+        $sec_diff = strcmp($a->getSection(), $b->getSection());
         if ($sec_diff < 0) {
             return -1;
         }
@@ -43,10 +43,10 @@ class ContributionSorter
      * @param   object   $b
      * @return  integer
      */
-    public static function sort_weight($a, $b)
+    public static function sortWeight($a, $b)
     {
-        $aw = $a->get_weight();
-        $bw = $b->get_weight();
+        $aw = $a->getWeight();
+        $bw = $b->getWeight();
         if ($aw == $bw) {
             return 0;
         }
@@ -60,8 +60,8 @@ class ContributionSorter
      * @param   object  $b
      * @return  object
      */
-    public static function sort_title($a, $b)
+    public static function sortTitle($a, $b)
     {
-        return strcmp($a->get_title(), $b->get_title());
+        return strcmp($a->getTitle(), $b->getTitle());
     }
 }

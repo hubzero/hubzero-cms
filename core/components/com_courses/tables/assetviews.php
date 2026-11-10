@@ -34,7 +34,7 @@ class AssetViews extends Table
      * @return     string SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $select = [];
         $from   = [];
@@ -117,7 +117,7 @@ class AssetViews extends Table
      */
     public function find($filters = [], $key = null)
     {
-        $query = $this->_buildQuery($filters);
+        $query = $this->buildQuery($filters);
 
         $this->db->setQuery($query);
         return $this->db->loadObjectList($key);

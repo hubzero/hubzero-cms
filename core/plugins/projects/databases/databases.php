@@ -105,7 +105,7 @@ class Databases extends Plugin
         }
 
         // Hide section completely if not configured
-        if ($this->_checkConfig() == false) {
+        if ($this->checkConfig() == false) {
             return $area;
         }
 
@@ -152,7 +152,7 @@ class Databases extends Plugin
      * @return  boolean
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _checkConfig()
+    protected function checkConfig()
     {
         if (isset($this->configured)) {
             return $this->configured;
@@ -263,7 +263,8 @@ class Databases extends Plugin
             return $this->select();
         }
 
-        $act_func = 'act_' . $action;
+        // An action such as preview_data is handled by actPreviewData()
+        $act_func = 'act' . str_replace('_', '', ucwords(strtolower($action), '_'));
 
         if (!method_exists($this, $act_func)) {
             if ($raw_op) {
@@ -271,7 +272,7 @@ class Databases extends Plugin
                 echo json_encode(['status' => 'success', 'data' => []]);
                 exit();
             } else {
-                $act_func = 'act_list';
+                $act_func = 'actList';
             }
         }
 
@@ -471,7 +472,7 @@ class Databases extends Plugin
      * @return  array
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_list()
+    public function actList()
     {
         // Get project path
         $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
@@ -524,7 +525,7 @@ class Databases extends Plugin
      * @return  array
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_create()
+    public function actCreate()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -611,7 +612,7 @@ class Databases extends Plugin
      * @return  void
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_preview_data()
+    public function actPreviewData()
     {
         // Incoming
         $file = Request::getString('file', '');
@@ -710,7 +711,7 @@ class Databases extends Plugin
                             $type_info[$i]['max_len'] = strlen($val);
                         }
 
-                        $type_info[$i]['type'] = $this->_guess_data_type(
+                        $type_info[$i]['type'] = $this->guessDataType(
                             $val,
                             $type_info[$i]['type'],
                             $type_info[$i]['max_len'],
@@ -812,7 +813,7 @@ class Databases extends Plugin
      * @return  string
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
-    protected function _guess_data_type($data, $type, $max_len)
+    protected function guessDataType($data, $type, $max_len)
     {
         $data = trim($data);
 
@@ -867,7 +868,7 @@ class Databases extends Plugin
      * @return  void
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_create_database()
+    public function actCreateDatabase()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -888,7 +889,7 @@ class Databases extends Plugin
         $dd = Request::getString('dd', '');
         $d = json_decode($dd, true);
 
-        $db = $this->get_ds_db($this->model->get('id'));
+        $db = $this->getDsDb($this->model->get('id'));
         $table = [];
 
         // Add new or Recreate
@@ -1073,7 +1074,7 @@ class Databases extends Plugin
             $objPD->store();
 
             // Update source CSV file
-            $this->_save_csv($objPD->id);
+            $this->saveCsv($objPD->id);
 
             // Success
             if ($objPD->id) {
@@ -1117,9 +1118,9 @@ class Databases extends Plugin
      * @return  void
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
-    public function _save_csv($id)
+    public function saveCsv($id)
     {
-        $db = $this->get_ds_db($this->model->get('id'));
+        $db = $this->getDsDb($this->model->get('id'));
 
         // Get project database object
         $objPD = new \Components\Projects\Tables\Database($this->database);
@@ -1129,7 +1130,7 @@ class Databases extends Plugin
         $path .= DS;
 
         if ($objPD->loadRecord($id)) {
-            $db = $this->get_ds_db($objPD->project);
+            $db = $this->getDsDb($objPD->project);
             $table = $objPD->database_name;
             $title = $objPD->title;
             $file = $objPD->source_file;
@@ -1223,7 +1224,7 @@ class Databases extends Plugin
      * @return  array
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_delete()
+    public function actDelete()
     {
         // Require POST to prevent accidental deletion by crawlers
         if (Request::method() !== 'POST') {
@@ -1240,7 +1241,7 @@ class Databases extends Plugin
 
         // Incoming
         $id = Request::getString('db_id', false);
-        $ds_db = $this->get_ds_db($this->model->get('id'));
+        $ds_db = $this->getDsDb($this->model->get('id'));
 
         // Get project database object
         $objPD = new \Components\Projects\Tables\Database($this->database);
@@ -1298,7 +1299,7 @@ class Databases extends Plugin
      * @return  array
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function act_update()
+    public function actUpdate()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1356,7 +1357,7 @@ class Databases extends Plugin
      * @return  integer
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function clone_database($identifier = 0, $project = null, $base_path = null)
+    public function cloneDatabase($identifier = 0, $project = null, $base_path = null)
     {
         if (!$identifier || $project == null) {
             $this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID'));
@@ -1364,7 +1365,7 @@ class Databases extends Plugin
         }
 
         $db = App::get('db');
-        $ds_db = $this->get_ds_db($project->get('id'));
+        $ds_db = $this->getDsDb($project->get('id'));
 
         // Load database record
         $objPD = new \Components\Projects\Tables\Database($db);
@@ -1429,7 +1430,7 @@ class Databases extends Plugin
      * @return  bool
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function remove_database($identifier = 0, $project = null, $version = null)
+    public function removeDatabase($identifier = 0, $project = null, $version = null)
     {
         if (!$identifier || $project == null) {
             $this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID'));
@@ -1442,7 +1443,7 @@ class Databases extends Plugin
         }
 
         $db = App::get('db');
-        $ds_db = $this->get_ds_db($project->get('id'));
+        $ds_db = $this->getDsDb($project->get('id'));
 
         // Load database record
         $objPD = new \Components\Projects\Tables\Database($db);
@@ -1473,7 +1474,7 @@ class Databases extends Plugin
      * @return  object
      */
     // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function get_ds_db($id)
+    public function getDsDb($id)
     {
         $opt = [];
 

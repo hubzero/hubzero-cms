@@ -39,7 +39,7 @@ class Images extends AdminController
 
         // Build the path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!$path) {
             echo json_encode(['error' => $this->getError()]);
@@ -201,16 +201,16 @@ class Images extends AdminController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_STOREFRONT_ERROR_NO_ID'));
-            $this->_backToEdit($id);
+            $this->backToEdit($id);
             return;
         }
 
         // Build the path
         $type = strtolower(Request::getWord('type', ''));
-        $path = $this->_path($type, $id);
+        $path = $this->path($type, $id);
 
         if (!$path) {
-            $this->_backToEdit($id);
+            $this->backToEdit($id);
             return;
         }
 
@@ -218,7 +218,7 @@ class Images extends AdminController
         $file = Request::getArray('upload', [], 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
-            $this->_backToEdit($id);
+            $this->backToEdit($id);
             return;
         }
         $curfile = Request::getString('curfile', '');
@@ -226,7 +226,7 @@ class Images extends AdminController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                $this->_backToEdit($id);
+                $this->backToEdit($id);
                 return;
             }
         }
@@ -239,7 +239,7 @@ class Images extends AdminController
         $ext = strtolower(Filesystem::extension($file['name']));
         if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) {
             $this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE'));
-            $this->_backToEdit($id);
+            $this->backToEdit($id);
             return;
         }
 
@@ -252,7 +252,7 @@ class Images extends AdminController
                 Filesystem::delete($path . DS . $file['name']);
 
                 $this->setError(Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE'));
-                $this->_backToEdit($id);
+                $this->backToEdit($id);
                 return;
             }
 
@@ -262,7 +262,7 @@ class Images extends AdminController
                 if (file_exists($path . DS . $curfile)) {
                     if (!Filesystem::delete($path . DS . $curfile)) {
                         $this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
-                        $this->_backToEdit($id);
+                        $this->backToEdit($id);
                         return;
                     }
                 }
@@ -288,7 +288,7 @@ class Images extends AdminController
         }
 
         // Push through to the image view
-        $this->_backToEdit($id);
+        $this->backToEdit($id);
     }
 
     /**
@@ -393,7 +393,7 @@ class Images extends AdminController
      * @param   integer  $id
      * @return  void
      */
-    protected function _backToEdit($id)
+    protected function backToEdit($id)
     {
         $type = strtolower(Request::getWord('type', ''));
         $controller = ($type == 'collection') ? 'collections' : 'products';
@@ -405,7 +405,7 @@ class Images extends AdminController
         );
     }
 
-    protected function _path($type, $id)
+    protected function path($type, $id)
     {
         $config = Component::params('com_storefront');
 

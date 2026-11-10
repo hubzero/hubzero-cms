@@ -21,7 +21,7 @@ class Html
      * @param   string  $pee  Text to unparagraph
      * @return  string
      */
-    public static function txt_unpee($pee)
+    public static function txtUnpee($pee)
     {
         $pee = str_replace("\t", '', $pee);
         $pee = str_replace('</p><p>', '', $pee);

@@ -37,7 +37,7 @@ class Mailinglists extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildTitle($newsletter = null)
+    public function buildTitle($newsletter = null)
     {
         //default if no campaign
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -68,7 +68,7 @@ class Mailinglists extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway($newsletter = null)
+    public function buildPathway($newsletter = null)
     {
         //add 'newlsetters' item to pathway
         if (Pathway::count() <= 0) {
@@ -120,10 +120,10 @@ class Mailinglists extends SiteController
             $redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
             //build title
-            $this->_buildTitle();
+            $this->buildTitle();
 
             //build pathway
-            $this->_buildPathway();
+            $this->buildPathway();
 
             //output
             $this->view
@@ -169,10 +169,10 @@ class Mailinglists extends SiteController
             }
 
             //build title
-            $this->_buildTitle();
+            $this->buildTitle();
 
             //build pathway
-            $this->_buildPathway();
+            $this->buildPathway();
 
             //output
             $this->view
@@ -456,10 +456,10 @@ class Mailinglists extends SiteController
         }
 
         //build title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         //build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         //output
         $this->view

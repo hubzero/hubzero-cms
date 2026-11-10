@@ -27,10 +27,10 @@ class Questions extends Plugin
      * @param      object $b Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    public static function sort_by_date($a, $b)
+    public static function sortByDate($a, $b)
     {
-        $aw = $a->get_date();
-        $bw = $b->get_date();
+        $aw = $a->getDate();
+        $bw = $b->getDate();
         if ($aw == $bw) {
             return 0;
         }
@@ -46,9 +46,9 @@ class Questions extends Plugin
      * @param      mixed $b Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    public static function sort_by_weight($a, $b)
+    public static function sortByWeight($a, $b)
     {
-        return ($res = $a->get_weight() - $b->get_weight()) == 0 ? 0 : ($res > 0 ? -1 : 1);
+        return ($res = $a->getWeight() - $b->getWeight()) == 0 ? 0 : ($res > 0 ? -1 : 1);
     }
 
     /**
@@ -61,7 +61,7 @@ class Questions extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $qweight  = 'match(q.question, q.subject) against(\'' . join(' ', $terms['stemmed']) . '\')';
         $rweight  = 'match(r.answer) against(\'' . join(' ', $terms['stemmed']) . '\')';
         $r2weight = 'match(r2.answer) against(\'' . join(' ', $terms['stemmed']) . '\')';
@@ -147,7 +147,7 @@ class Questions extends Plugin
             }
             if (!array_key_exists($row['qid'] . '-' . $row['rid'], $seen_answers) && $row['answer']) {
                 $contributorName = $row['rcontributors'] ? $row['rcontributors'] : 'Anonymous';
-                $questions[$row['qid']]->add_child(new \Components\Search\Models\Basic\Result\AssocScalar([
+                $questions[$row['qid']]->addChild(new \Components\Search\Models\Basic\Result\AssocScalar([
                     'title'           => $contributorName . ', ' . $row['r_created'],
                     'description'     => $row['answer'],
                     'section'         => 'Questions',
@@ -161,14 +161,14 @@ class Questions extends Plugin
                 $seen_answers[$row['qid'] . '-' . $row['rid']] = 1;
             }
         }
-        usort($questions, [static::class, 'sort_by_weight']);
+        usort($questions, [static::class, 'sortByWeight']);
         $maxWeight = 0;
         foreach ($questions as $question) {
-            $maxWeight = max($maxWeight, $question->get_weight());
+            $maxWeight = max($maxWeight, $question->getWeight());
         }
         foreach ($questions as $question) {
-            $question->sort_children([static::class, 'sort_by_date']);
-            $question->scale_weight($maxWeight, 'normalizing within plugin');
+            $question->sortChildren([static::class, 'sortByDate']);
+            $question->scaleWeight($maxWeight, 'normalizing within plugin');
             $results->add($question);
         }
     }

@@ -95,7 +95,7 @@ class Andmore extends Base
             $html .= ' </tbody>' . "\n";
             $html .= '</table>' . "\n";
         }
-        $html .= $this->display_substats();
+        $html .= $this->displaySubstats();
 
         return $html;
     }

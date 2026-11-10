@@ -567,7 +567,7 @@ class Pages
         // create view object
         $view = new \Hubzero\Component\View([
             'name'   => 'pages',
-            'layout' => '_view',
+            'layout' => 'renderView',
         ]);
 
         // if super group add super group folder

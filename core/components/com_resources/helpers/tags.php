@@ -34,7 +34,7 @@ class Tags extends Cloud
      */
     public function parse($tags, $keep = 0)
     {
-        return $this->_parse($tags, $keep);
+        return $this->splitTags($tags, $keep);
     }
 
     /**
@@ -45,7 +45,7 @@ class Tags extends Cloud
      * @param   string   $tag
      * @return  array
      */
-    public function get_tags_with_objects($id = 0, $type = 0, $tag = '')
+    public function getTagsWithObjects($id = 0, $type = 0, $tag = '')
     {
         $now = Date::toSql();
 
@@ -153,7 +153,7 @@ class Tags extends Cloud
      * @param   array    $filterby  Extra, optional filters
      * @return  array
      */
-    public function get_objects_on_tag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = [])
+    public function getObjectsOnTag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = [])
     {
         $now  = Date::toSql();
 
@@ -426,7 +426,7 @@ class Tags extends Cloud
      */
     public function parseTags($tag_string, $keep = 0)
     {
-        return $this->_parse($tag_string, $keep);
+        return $this->splitTags($tag_string, $keep);
     }
 
     /**
@@ -438,7 +438,7 @@ class Tags extends Cloud
      */
     public function parseTopTags($tag, $remove = '')
     {
-        $bunch = $this->_parse($tag);
+        $bunch = $this->splitTags($tag);
 
         $tags = [];
         if ($remove) {
@@ -470,7 +470,7 @@ class Tags extends Cloud
         if ($tags && count($tags) > 0) {
             $lst = [];
             if (is_string($tagstring)) {
-                $lst = $this->_parse($tagstring);
+                $lst = $this->splitTags($tagstring);
             } else {
                 $lst = $tagstring;
             }

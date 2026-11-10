@@ -35,8 +35,8 @@ class Pagedown extends Plugin
      */
     public function onInit()
     {
-        $this->_addScripts();
-        $this->_addStylesheets();
+        $this->addScripts();
+        $this->addStylesheets();
     }
 
     /**
@@ -45,9 +45,9 @@ class Pagedown extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addScripts()
+    protected function addScripts()
     {
-        $scriptPaths = $this->_getScriptPaths();
+        $scriptPaths = $this->getScriptPaths();
 
         foreach ($scriptPaths as $scriptPath) {
             Document::addScript($scriptPath);
@@ -60,9 +60,9 @@ class Pagedown extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addStylesheets()
+    protected function addStylesheets()
     {
-        $stylesheetPaths = $this->_getStylesheetPaths();
+        $stylesheetPaths = $this->getStylesheetPaths();
 
         foreach ($stylesheetPaths as $stylesheetPath) {
             Document::addStyleSheet($stylesheetPath);
@@ -75,7 +75,7 @@ class Pagedown extends Plugin
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getScriptPaths()
+    protected function getScriptPaths()
     {
         $scriptNames = [
             'turndown.js',
@@ -86,7 +86,7 @@ class Pagedown extends Plugin
             'editorForm.php?INPUT_ID=' . self::INPUT_ID,
         ];
 
-        $scriptPaths = $this->_buildAssetPaths($scriptNames, self::JS_DIRECTORY);
+        $scriptPaths = $this->buildAssetPaths($scriptNames, self::JS_DIRECTORY);
 
         return $scriptPaths;
     }
@@ -97,13 +97,13 @@ class Pagedown extends Plugin
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getStylesheetPaths()
+    protected function getStylesheetPaths()
     {
         $stylesheetNames = [
             'markdown.css',
         ];
 
-        $stylesheetPaths = $this->_buildAssetPaths($stylesheetNames, self::CSS_DIRECTORY);
+        $stylesheetPaths = $this->buildAssetPaths($stylesheetNames, self::CSS_DIRECTORY);
 
         return $stylesheetPaths;
     }
@@ -116,7 +116,7 @@ class Pagedown extends Plugin
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildAssetPaths($assetFileNames, $assetDirectory)
+    protected function buildAssetPaths($assetFileNames, $assetDirectory)
     {
         $assetPaths = array_map(function ($fileName) use ($assetDirectory) {
             return str_replace('/administrator', '/', Request::base(true)) . "$assetDirectory/$fileName";
@@ -157,10 +157,10 @@ class Pagedown extends Plugin
         $id = empty($id) ? $name : $id;
         $columns = $columns ? $columns : 35;
         $rows = $rows ? $rows : 10;
-        $this->_parseClasses($params);
-        $this->_setDefaultHeight($params, $rows);
+        $this->parseClasses($params);
+        $this->setDefaultHeight($params, $rows);
 
-        $editorDomElements = $this->_buildEditorDomElements($content, $name, $columns, $rows);
+        $editorDomElements = $this->buildEditorDomElements($content, $name, $columns, $rows);
 
         $editorDomContent = $editorDomElements;
 
@@ -174,7 +174,7 @@ class Pagedown extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _parseClasses(&$params)
+    protected function parseClasses(&$params)
     {
         if (!isset($params['class'])) {
             $params['class'] = [];
@@ -196,7 +196,7 @@ class Pagedown extends Plugin
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _setDefaultHeight(&$params, $rows)
+    protected function setDefaultHeight(&$params, $rows)
     {
         if (!isset($params['height'])) {
             $defaultHeight = 18 * intval($rows);
@@ -214,12 +214,12 @@ class Pagedown extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildEditorDomElements($content, $name, $columns, $rows)
+    protected function buildEditorDomElements($content, $name, $columns, $rows)
     {
         $editorDomElements = '<div>';
         $idPostfix = ($this->editorCount > 1) ? ("-" . $this->editorCount) : '';
         $editorDomElements .= '<div id="' . self::BUTTON_BAR_ID . $idPostfix . '"></div>';
-        $editorDomElements .= $this->_buildTextarea($content, $name, $columns, $rows, $idPostfix);
+        $editorDomElements .= $this->buildTextarea($content, $name, $columns, $rows, $idPostfix);
         $editorDomElements .= '</div>';
         $this->editorCount++;
 
@@ -236,7 +236,7 @@ class Pagedown extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTextarea($content, $name, $columns, $rows, $idPostfix)
+    protected function buildTextarea($content, $name, $columns, $rows, $idPostfix)
     {
         $textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\""
             . " rows=\"$rows\">";

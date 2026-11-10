@@ -94,8 +94,8 @@ class Members extends Plugin
 
             if ($rows) {
                 foreach ($rows as $r) {
-                    $AE->distribute_points($r->id, $r->q_owner, $r->a_owner, $action);
-                    $accumulated = $accumulated + $AE->calculate_marketvalue($r->id, $action);
+                    $AE->distributePoints($r->id, $r->q_owner, $r->a_owner, $action);
+                    $accumulated = $accumulated + $AE->calculateMarketvalue($r->id, $action);
                 }
 
                 // make a record of royalty payment
@@ -134,8 +134,8 @@ class Members extends Plugin
             $accumulated = 0;
             if ($reviews && $voting) {
                 foreach ($reviews as $r) {
-                    $RE->distribute_points($r, $action);
-                    $accumulated = $accumulated + $RE->calculate_marketvalue($r, $action);
+                    $RE->distributePoints($r, $action);
+                    $accumulated = $accumulated + $RE->calculateMarketvalue($r, $action);
                 }
 
                 $this->message .= $rmsg;
@@ -171,7 +171,7 @@ class Members extends Plugin
             $accumulated = 0;
             if ($cons) {
                 foreach ($cons as $con) {
-                    $ResE->distribute_points($con, $action);
+                    $ResE->distributePoints($con, $action);
                     $accumulated = $accumulated + $con->ranking;
                 }
 

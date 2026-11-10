@@ -80,11 +80,11 @@ class Jobs extends SiteController
         $this->_allowSubscriptions = $this->config->get('allowsubscriptions', 0);
 
         // Get admin privileges
-        self::_authorizeAdmin();
+        self::authorizeAdmin();
 
         // Get employer privileges
         if ($this->_allowSubscriptions) {
-            self::_authorizeEmployer($this->_admin);
+            self::authorizeEmployer($this->_admin);
         } else {
             $this->_emp = 0;
         }
@@ -112,7 +112,7 @@ class Jobs extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title  = Lang::txt(strtoupper($this->option));
         $this->_title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
@@ -129,7 +129,7 @@ class Jobs extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         $title  = Lang::txt(strtoupper($this->option));
         $title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
@@ -308,10 +308,10 @@ class Jobs extends SiteController
         $this->js();
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $model    = new Employer($this->database);
         $employer = $subscriptionCode ? $model->getEmployer(0, $subscriptionCode) : '';
@@ -325,14 +325,14 @@ class Jobs extends SiteController
 
         if (!User::isGuest() && ($this->task == 'browse' or !$this->_allowSubscriptions)) {
             // save incoming prefs
-            $this->_updatePrefs('job');
+            $this->updatePrefs('job');
 
             // get stored preferences
-            $this->_getPrefs('job');
+            $this->getPrefs('job');
         }
 
         // Get filters
-        $filters = $this->_getFilters($this->_admin, 0, 1, 1);
+        $filters = $this->getFilters($this->_admin, 0, 1, 1);
         $filters['active'] = 1; // only show jobs that have open/unexpired search close date
 
         // Get data
@@ -340,9 +340,9 @@ class Jobs extends SiteController
 
         // Get jobs
         $adminoptions = ($this->task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
-        $jobs = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode);
+        $jobs = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode);
 
-        $total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);
+        $total = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);
 
         // Initiate paging
         $jtotal = ($this->task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : $total;
@@ -424,19 +424,19 @@ class Jobs extends SiteController
 
         if ($this->_admin or $this->_emp) {
             // Set page title
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway();
+            $this->buildPathway();
 
             // save incoming prefs
-            $this->_updatePrefs();
+            $this->updatePrefs();
 
             // get stored preferences
-            $this->_getPrefs();
+            $this->getPrefs();
 
             // get filters
-            $filters = self::_getFilters($this->_admin, $this->_emp);
+            $filters = self::getFilters($this->_admin, $this->_emp);
 
             // get job types
             $jt       = new Type($this->database);
@@ -530,10 +530,10 @@ class Jobs extends SiteController
         $uid = $uid ? $uid : User::get('id');
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Push some styles to the template
         $this->css();
@@ -580,7 +580,7 @@ class Jobs extends SiteController
 
         if ($services->count() <= 0) {
             // setup with default info
-            $this->_setupServices();
+            $this->setupServices();
         }
 
         // check available user funds (if paying with points)
@@ -885,7 +885,7 @@ class Jobs extends SiteController
 
         // Make sure we have special admin subscription
         if ($admin) {
-            $this->_authorizeEmployer(1);
+            $this->authorizeEmployer(1);
         }
 
         // Get the member's info
@@ -922,7 +922,7 @@ class Jobs extends SiteController
             App::abort(404, Lang::txt('COM_JOBS_ERROR_SERVICE_NOT_FOUND'));
         } else {
             // get service params like maxads
-            $this->_getServiceParams($service);
+            $this->getServiceParams($service);
         }
 
         // Get current stats for dashboard
@@ -931,7 +931,7 @@ class Jobs extends SiteController
 
         // Get job postings
         $job = new Job($this->database);
-        $myjobs     = $job->get_my_openings($uid, 0, $admin);
+        $myjobs     = $job->getMyOpenings($uid, 0, $admin);
         $activejobs = $job->countMyActiveOpenings($uid, 1, $admin);
 
         // Push some styles to the template
@@ -941,10 +941,10 @@ class Jobs extends SiteController
         $this->js();
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view->title          = $this->_title;
@@ -1003,7 +1003,7 @@ class Jobs extends SiteController
         $code = Request::getString('code', '');
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $job = new Job($this->database);
         if (!$job->loadJob($code)) {
@@ -1029,7 +1029,7 @@ class Jobs extends SiteController
         // Set the pathway
         $this->_jobCode  = $job->code;
         $this->_jobtitle = $job->title;
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Push some styles to the template
         $this->css();
@@ -1192,7 +1192,7 @@ class Jobs extends SiteController
         $code = !$code && $this->_jobCode ? $this->_jobCode : $code;
 
         $obj = new Job($this->database);
-        $job = $obj->get_opening(0, User::get('id'), $this->_masterAdmin, $code);
+        $job = $obj->getOpening(0, User::get('id'), $this->_masterAdmin, $code);
 
         // Push some styles to the template
         $this->css();
@@ -1234,7 +1234,7 @@ class Jobs extends SiteController
         // Set the pathway
         $this->_jobid = $job->id;
         $this->_jobtitle = $job->title;
-        $this->_buildPathway();
+        $this->buildPathway();
 
         if (User::isGuest() && $job->status != 1) {
             // Not authorized
@@ -1258,7 +1258,7 @@ class Jobs extends SiteController
 
         // Set page title
         $this->_subtitle = $job->status == 4 ? Lang::txt('COM_JOBS_ACTION_PREVIEW_AD') . ' ' . $job->code : $job->title;
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Get category & type names
         $jt = new Type($this->database);
@@ -1426,7 +1426,7 @@ class Jobs extends SiteController
             $job->applyExternalUrl = Request::getString('applyExternalUrl', '');
         } elseif ($job->status == 4 && $this->task == 'confirmjob') {
             // make sure we aren't over quota
-            $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
+            $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->checkQuota($job);
 
             if ($allowedAds <= 0) {
                 $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_CANT_PUBLISH_OVER_LIMIT'));
@@ -1448,7 +1448,7 @@ class Jobs extends SiteController
             Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
         } elseif ($job->status == 3 && $this->task == 'reopen') {
             // make sure we aren't over quota
-            $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
+            $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->checkQuota($job);
 
             if ($allowedAds <= 0) {
                 $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
@@ -1620,12 +1620,12 @@ class Jobs extends SiteController
         $cats[0] = Lang::txt('COM_JOBS_CATEGORY_NO_SPECIFIC');
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
         $this->_jobid = $job->id;
         $this->_jobtitle = $job->title;
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view->title    = $this->_title;
@@ -1658,7 +1658,7 @@ class Jobs extends SiteController
      * @param      integer $admin If user is admin or not
      * @return     void
      */
-    protected function _authorizeEmployer($admin = 0)
+    protected function authorizeEmployer($admin = 0)
     {
         $emp = 0;
 
@@ -1706,7 +1706,7 @@ class Jobs extends SiteController
      * @param      integer $admin Optional default value to pass
      * @return     void
      */
-    protected function _authorizeAdmin($admin = 0)
+    protected function authorizeAdmin($admin = 0)
     {
         if (!User::isGuest()) {
             // Check if they're a site admin
@@ -1738,14 +1738,14 @@ class Jobs extends SiteController
      * @param      string $category Preferences category
      * @return     void
      */
-    protected function _updatePrefs($category = 'resume')
+    protected function updatePrefs($category = 'resume')
     {
         // Incoming
         $saveprefs  = Request::getInt('saveprefs', 0, 'post');
 
         $p = new Prefs($this->database);
 
-        $filters = $this->_getFilters(0, 0, 0);
+        $filters = $this->getFilters(0, 0, 0);
         if ($category == 'job') {
             $filters['sortby'] = trim(Request::getWord('sortby', 'title'));
         }
@@ -1797,7 +1797,7 @@ class Jobs extends SiteController
      * @param      string $category Preferences category
      * @return     void
      */
-    protected function _getPrefs($category = 'resume')
+    protected function getPrefs($category = 'resume')
     {
         $p = new Prefs($this->database);
         if ($p->loadPrefs(User::get('id'), $category)) {
@@ -1835,7 +1835,7 @@ class Jobs extends SiteController
      * @param      integer $jobs        Are filters for jobs?
      * @return     array
      */
-    protected function _getFilters($admin = 0, $emp = 0, $checkstored = 1, $jobs = 0)
+    protected function getFilters($admin = 0, $emp = 0, $checkstored = 1, $jobs = 0)
     {
         // Query filters defaults
         $filters = [];
@@ -2011,7 +2011,7 @@ class Jobs extends SiteController
      * @param   object   $job Job
      * @return  integer
      */
-    protected function _checkQuota($job)
+    protected function checkQuota($job)
     {
         // make sure we aren't over quota
         $servicename = Service::getUserService(User::get('id'));
@@ -2021,7 +2021,7 @@ class Jobs extends SiteController
         if (!$service->get('id')) {
             return 0;
         } else {
-            $this->_getServiceParams($service);
+            $this->getServiceParams($service);
             $maxads      = $service->maxads > 0 ? $service->maxads : 1;
             $activejobs  = $job->countMyActiveOpenings(User::get('id'), 1);
             $allowedAds = $maxads - $activejobs;
@@ -2034,7 +2034,7 @@ class Jobs extends SiteController
      *
      * @return  boolean  False if errors, true otherwise
      */
-    protected function _setupServices()
+    protected function setupServices()
     {
         $objS = Service::blank();
         $now = Date::toSql();
@@ -2103,7 +2103,7 @@ class Jobs extends SiteController
      * @param   object  &$service  Service
      * @return  void
      */
-    protected function _getServiceParams(&$service)
+    protected function getServiceParams(&$service)
     {
         $params = new \Hubzero\Config\Registry($service->params);
         $service->maxads = $params->get('maxads', '');

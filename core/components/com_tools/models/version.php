@@ -353,7 +353,7 @@ class Version
      * @param     unknown $tool Parameter description (if any) ...
      * @return   unknown Return description (if any) ...
      */
-    public function getTool_VersionNames($tool = null)
+    public function getToolVersionNames($tool = null)
     {
         $db = App::get('db');
 

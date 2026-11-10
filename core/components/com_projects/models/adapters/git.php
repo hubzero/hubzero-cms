@@ -197,7 +197,7 @@ class Git extends Models\Adapter
 
                     case 'modified':
                         // Need to get extra metadata (slower)
-                        $sorting[] = $this->_file($file, $dirPath, 'date');
+                        $sorting[] = $this->file($file, $dirPath, 'date');
                         break;
 
                     case 'localpath':
@@ -216,7 +216,7 @@ class Git extends Models\Adapter
         array_multisort($sorting, $sortdir, $items);
 
         // Apply start and limit, get complete metadata and return
-        return $this->_list($items, $params);
+        return $this->list($items, $params);
     }
 
     /**
@@ -242,7 +242,7 @@ class Git extends Models\Adapter
      * @param   array  $folders
      * @return  array
      */
-    protected function _list($items, $params, $folders = [])
+    protected function list($items, $params, $folders = [])
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
         $limit    = isset($params['limit']) ? $params['limit'] : 0;
@@ -666,7 +666,7 @@ class Git extends Models\Adapter
      * @param   string  $property
      * @return  array
      */
-    protected function _file($file, $dirPath, $property = null)
+    protected function file($file, $dirPath, $property = null)
     {
         if (isset($this->files[$file->get('localPath')])) {
             return $property

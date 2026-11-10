@@ -112,7 +112,7 @@ class Asset extends Table
 
         switch ($what) {
             case 'count':
-                $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
@@ -151,7 +151,7 @@ class Asset extends Table
             case 'list':
             default:
                 $query = "SELECT a.*, u.name";
-                $query .= $this->_buildQuery($filters);
+                $query .= $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'a.ordering';
@@ -180,7 +180,7 @@ class Asset extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS a";
         $query .= " LEFT JOIN #__users AS u ON a.created_by=u.id";

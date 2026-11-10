@@ -240,7 +240,7 @@ class Gitlab
      * @return [type]           [description]
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _putRequest($resource, $params = [])
+    public function putRequest($resource, $params = [])
     {
         $requestOptions = array_merge(['form_params' => $params], $this->options);
 
@@ -255,7 +255,7 @@ class Gitlab
         $send = [
             'GET'  => 'getRequest',
             'POST' => 'postRequest',
-            'PUT'  => '_putRequest',
+            'PUT'  => 'putRequest',
         ][strtoupper($method)];
         $response = $this->$send($resource, $params);
         if (array_key_exists('message', $response)) {

@@ -241,7 +241,7 @@ class Hubzero extends Plugin
      */
     public function onUserLogin($user, $options = [])
     {
-        $instance = $this->_getUser($user, $options);
+        $instance = $this->getUser($user, $options);
 
         // If _getUser returned an error, then pass it back.
         if ($instance instanceof \Exception) {
@@ -450,7 +450,7 @@ class Hubzero extends Plugin
      * @param   array   $options  Array holding options (remember, autoregister, group).
      * @return  object  A User object
      */
-    protected function _getUser($user, $options = [])
+    protected function getUser($user, $options = [])
     {
         $instance = \Hubzero\User\User::oneByUsername($user['username']);
 

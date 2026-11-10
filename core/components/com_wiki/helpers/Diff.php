@@ -154,7 +154,7 @@ class Diff
      * @param   unknown $to_lines
      * @return  void
      */
-    public function _check($from_lines, $to_lines)
+    public function check($from_lines, $to_lines)
     {
         if (serialize($from_lines) != serialize($this->orig())) {
             trigger_error("Reconstructed original doesn't match", E_USER_ERROR);

@@ -41,29 +41,29 @@ class Basic extends SiteController
         $terms = new Terms(Request::getString('terms'));
 
         // Set the document title
-        $title = $terms->is_set()
-            ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw()))
+        $title = $terms->isSet()
+            ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->getRaw()))
             : 'Search';
         Document::setTitle($title);
 
         // Get search results
         $results = new Set($terms);
-        $results->set_limit(Request::getState('global.list.limit', 'limit', Config::get('list_limit'), 'int'));
-        $results->set_offset(Request::getInt('limitstart', 0));
+        $results->setLimit(Request::getState('global.list.limit', 'limit', Config::get('list_limit'), 'int'));
+        $results->setOffset(Request::getInt('limitstart', 0));
         $results->collect(Request::getBool('force-generic'));
 
-        $this->view->url_terms = urlencode($terms->get_raw_without_section());
-        @list($plugin, $section) = $terms->get_section();
+        $this->view->url_terms = urlencode($terms->getRawWithoutSection());
+        @list($plugin, $section) = $terms->getSection();
 
         if ($plugin) {
-            foreach ($results->get_result_counts() as $cat => $def) {
+            foreach ($results->getResultCounts() as $cat => $def) {
                 if ($plugin == $cat) {
                     $total = $def['count'];
                     break;
                 }
             }
         } else {
-            $total = $results->get_total_count();
+            $total = $results->getTotalCount();
         }
 
         $this->view->terms   = $terms;

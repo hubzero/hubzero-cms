@@ -33,7 +33,7 @@ class Media extends SiteController
      * @param   integer  $scopeId  member/group id
      * @return  boolean
      */
-    protected function _authorizeArchive($scope, $scopeId)
+    protected function authorizeArchive($scope, $scopeId)
     {
         if (User::authorise('core.manage', 'com_blog')) {
             return true;
@@ -147,7 +147,7 @@ class Media extends SiteController
         // Only the owner, a group member/manager, or a blog admin may write here
         $scope   = Request::getWord('scope', 'site');
         $scopeId = Request::getInt('id', 0);
-        if (!$this->_authorizeArchive($scope, $scopeId)) {
+        if (!$this->authorizeArchive($scope, $scopeId)) {
             throw new \Exception(Lang::txt('Access denied.'), 403);
         }
 
@@ -242,7 +242,7 @@ class Media extends SiteController
         // Only the owner, a group member/manager, or a blog admin may write here
         $scope   = Request::getWord('scope', 'site');
         $scopeId = Request::getInt('id', 0);
-        if (!$this->_authorizeArchive($scope, $scopeId)) {
+        if (!$this->authorizeArchive($scope, $scopeId)) {
             throw new \Exception(Lang::txt('Access denied.'), 403);
         }
 
@@ -298,7 +298,7 @@ class Media extends SiteController
         // Only the owner, a group member/manager, or a blog admin may write here
         $scope   = Request::getWord('scope', 'site');
         $scopeId = Request::getInt('id', 0);
-        if (!$this->_authorizeArchive($scope, $scopeId)) {
+        if (!$this->authorizeArchive($scope, $scopeId)) {
             throw new \Exception(Lang::txt('Access denied.'), 403);
         }
 
@@ -341,7 +341,7 @@ class Media extends SiteController
         // for anyone who asked. The internal `return $this->displayTask()`
         // calls that follow an upload or a delete are the same actor in the
         // same request, so they still pass.
-        if (!$this->_authorizeArchive($scope, $scopeId)) {
+        if (!$this->authorizeArchive($scope, $scopeId)) {
             throw new \Exception(Lang::txt('Access denied.'), 403);
         }
 
@@ -366,7 +366,7 @@ class Media extends SiteController
         $scope   = Request::getWord('scope', 'site');
         $scopeId = Request::getInt('id', 0);
 
-        if (!$this->_authorizeArchive($scope, $scopeId)) {
+        if (!$this->authorizeArchive($scope, $scopeId)) {
             throw new \Exception(Lang::txt('Access denied.'), 403);
         }
 

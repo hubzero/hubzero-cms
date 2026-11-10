@@ -275,14 +275,14 @@ class MediaHelper
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public static function _buildFolderTree($folders, $parent_id = 0, $path = '')
+    public static function buildFolderTree($folders, $parent_id = 0, $path = '')
     {
         $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
                 $folder['path'] = ($path == '') ? $folder['name'] : $path . '/' . $folder['name'];
 
-                $children = self::_buildFolderTree($folders, $folder['id'], $folder['path']);
+                $children = self::buildFolderTree($folders, $folder['id'], $folder['path']);
                 if ($children) {
                     $folder['children'] = $children;
                 }

@@ -30,7 +30,7 @@ class Wiki extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $stemmed = join(' ', $terms['stemmed']);
         $weight = '(match(wp.title) against (\'' . $stemmed . '\') '
             . '+ match(wv.pagetext) against (\'' . $stemmed . '\'))';
@@ -45,7 +45,7 @@ class Wiki extends Plugin
 
         $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
-        if ($gids = $authz->get_group_ids()) {
+        if ($gids = $authz->getGroupIds()) {
             $gidList = join(',', $gids);
             $authorization = '(wp.access IN (0,' . $viewlevels . ') '
                 . 'OR (wp.access = 1 AND xg.gidNumber IN (' . $gidList . ')))';
@@ -55,13 +55,13 @@ class Wiki extends Plugin
 
         // fml
         $groupAuth = [];
-        if ($authz->is_super_admin()) {
+        if ($authz->isSuperAdmin()) {
             $groupAuth[] = '1';
         } else {
             $groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-            if (!$authz->is_guest()) {
+            if (!$authz->isGuest()) {
                 $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-                if ($gids = $authz->get_group_ids()) {
+                if ($gids = $authz->getGroupIds()) {
                     $gidList = join(',', $gids);
                     $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' '
                         . 'AND xg.gidNumber IN (' . $gidList . '))';
@@ -101,7 +101,7 @@ class Wiki extends Plugin
 
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
 
-        foreach ($rows->to_associative() as $row) {
+        foreach ($rows->toAssociative() as $row) {
             if (!$row) {
                 continue;
             }
@@ -111,11 +111,11 @@ class Wiki extends Plugin
             $page->set('scope', $row->scope);
             $page->set('scope_id', $row->scope_id);
 
-            $row->set_link(Route::url($page->link()));
+            $row->setLink(Route::url($page->link()));
             // rough de-wikifying. probably a bit faster than rendering to html and
             // then stripping the tags, but not perfect
             //$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
-            $row->set_description(strip_tags($row->get_description()));
+            $row->setDescription(strip_tags($row->getDescription()));
             $results->add($row);
         }
     }

@@ -546,7 +546,7 @@ class Connections
         // Set up view
         $connection_params = json_decode($this->connection->params ? $this->connection->params : "");
         if (!isset($connection_params->path)) {
-            return $this->setup_base_dir();
+            return $this->setupBaseDir();
         }
 
         $view = new \Hubzero\Plugin\View([
@@ -593,7 +593,7 @@ class Connections
      *
      * @return string
      */
-    public function setup_base_dir()
+    public function setupBaseDir()
     {
         $view = new \Hubzero\Plugin\View([
             'folder'    => 'projects',

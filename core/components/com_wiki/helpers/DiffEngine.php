@@ -87,21 +87,21 @@ class DiffEngine
 
         // Ignore lines which do not exist in both files.
         for ($xi = $skip; $xi < $n_from - $endskip; $xi++) {
-            $xhash[$this->_line_hash($from_lines[$xi])] = 1;
+            $xhash[$this->lineHash($from_lines[$xi])] = 1;
         }
 
         for ($yi = $skip; $yi < $n_to - $endskip; $yi++) {
             $line = $to_lines[$yi];
-            if (($this->ychanged[$yi] = empty($xhash[$this->_line_hash($line)]))) {
+            if (($this->ychanged[$yi] = empty($xhash[$this->lineHash($line)]))) {
                 continue;
             }
-            $yhash[$this->_line_hash($line)] = 1;
+            $yhash[$this->lineHash($line)] = 1;
             $this->yv[] = $line;
             $this->yind[] = $yi;
         }
         for ($xi = $skip; $xi < $n_from - $endskip; $xi++) {
             $line = $from_lines[$xi];
-            if (($this->xchanged[$xi] = empty($yhash[$this->_line_hash($line)]))) {
+            if (($this->xchanged[$xi] = empty($yhash[$this->lineHash($line)]))) {
                 continue;
             }
             $this->xv[] = $line;
@@ -109,11 +109,11 @@ class DiffEngine
         }
 
         // Find the LCS.
-        $this->_compareseq(0, count($this->xv), 0, count($this->yv));
+        $this->compareseq(0, count($this->xv), 0, count($this->yv));
 
         // Merge edits when possible
-        $this->_shift_boundaries($from_lines, $this->xchanged, $this->ychanged);
-        $this->_shift_boundaries($to_lines, $this->ychanged, $this->xchanged);
+        $this->shiftBoundaries($from_lines, $this->xchanged, $this->ychanged);
+        $this->shiftBoundaries($to_lines, $this->ychanged, $this->xchanged);
 
         // Compute the edit operations.
         $edits = [];
@@ -161,7 +161,7 @@ class DiffEngine
      * @param   string  $line
      * @return  string
      */
-    public function _line_hash($line)
+    public function lineHash($line)
     {
         if (strlen($line) > self::MAX_XREF_LENGTH) {
             return md5($line);
@@ -198,7 +198,7 @@ class DiffEngine
      * @param      number $nchunks Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    public function _diag($xoff, $xlim, $yoff, $ylim, $nchunks)
+    public function diag($xoff, $xlim, $yoff, $ylim, $nchunks)
     {
         $flip = false;
 
@@ -245,7 +245,7 @@ class DiffEngine
                 while ($y = current($matches)) {
                     next($matches);
                     if (empty($this->in_seq[$y])) {
-                        $k = $this->_lcs_pos($y);
+                        $k = $this->lcsPos($y);
                         USE_ASSERTS && assert($k > 0);
                         $ymids[$k] = $ymids[$k - 1];
                         break;
@@ -261,7 +261,7 @@ class DiffEngine
                         $this->seq[$k] = $y;
                         $this->in_seq[$y] = 1;
                     } elseif (empty($this->in_seq[$y])) {
-                        $k = $this->_lcs_pos($y);
+                        $k = $this->lcsPos($y);
                         USE_ASSERTS && assert($k > 0);
                         $ymids[$k] = $ymids[$k - 1];
                     }
@@ -289,7 +289,7 @@ class DiffEngine
      * @param      unknown $ypos Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    public function _lcs_pos($ypos)
+    public function lcsPos($ypos)
     {
         $end = $this->lcs;
         if ($end == 0 || $ypos > $this->seq[$end]) {
@@ -335,7 +335,7 @@ class DiffEngine
      * @param      number $ylim Parameter description (if any) ...
      * @return     void
      */
-    public function _compareseq($xoff, $xlim, $yoff, $ylim)
+    public function compareseq($xoff, $xlim, $yoff, $ylim)
     {
         // Slide down the bottom initial diagonal.
         while ($xoff < $xlim && $yoff < $ylim && $this->xv[$xoff] == $this->yv[$yoff]) {
@@ -356,7 +356,7 @@ class DiffEngine
             //$nchunks = sqrt(min($xlim - $xoff, $ylim - $yoff) / 2.5);
             //$nchunks = max(2,min(8,(int)$nchunks));
             $nchunks = min(7, $xlim - $xoff, $ylim - $yoff) + 1;
-            list($lcs, $seps) = $this->_diag($xoff, $xlim, $yoff, $ylim, $nchunks);
+            list($lcs, $seps) = $this->diag($xoff, $xlim, $yoff, $ylim, $nchunks);
         }
 
         if ($lcs == 0) {
@@ -373,7 +373,7 @@ class DiffEngine
             reset($seps);
             $pt1 = $seps[0];
             while ($pt2 = next($seps)) {
-                $this->_compareseq($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
+                $this->compareseq($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
                 $pt1 = $pt2;
             }
         }
@@ -397,7 +397,7 @@ class DiffEngine
      * @param      array $other_changed Parameter description (if any) ...
      * @return     void
      */
-    public function _shift_boundaries($lines, &$changed, $other_changed)
+    public function shiftBoundaries($lines, &$changed, $other_changed)
     {
         $i = 0;
         $j = 0;

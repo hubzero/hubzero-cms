@@ -74,7 +74,7 @@ class Comments extends Plugin
         $this->view->url      = $this->url      = ($url ? $url : Route::url('index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments'));
         $this->view->depth    = 0;
 
-        $this->_authorize();
+        $this->authorize();
 
         if ($params instanceof \Hubzero\Config\Registry) {
             $this->params->merge($params);
@@ -90,33 +90,33 @@ class Comments extends Plugin
             // Feeds
             case 'feed.rss':
             case 'feed':
-                $this->_feed();
+                $this->feed();
                 break;
 
                 // Entries
             case 'commentsave':
             case 'save':
-                $this->_save();
+                $this->save();
                 break;
             case 'commentnew':
             case 'commentedit':
             case 'edit':
-                $this->_view();
+                $this->renderView();
                 break;
             case 'commentdelete':
             case 'delete':
-                $this->_delete();
+                $this->delete();
                 break;
             case 'view':
-                $this->_view();
+                $this->renderView();
                 break;
             case 'commentvote':
             case 'vote':
-                $this->_vote();
+                $this->vote();
                 break;
 
             default:
-                $this->_view();
+                $this->renderView();
                 break;
         }
 
@@ -135,7 +135,7 @@ class Comments extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'comment', $assetId = null)
+    protected function authorize($assetType = 'comment', $assetId = null)
     {
         // Are comments public or registered members only?
         if ($this->params->get('comments_viewable', 0) <= 0) {
@@ -219,7 +219,7 @@ class Comments extends Plugin
     /**
      * Show a list of comments
      */
-    protected function _login()
+    protected function login()
     {
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
@@ -233,11 +233,11 @@ class Comments extends Plugin
      *
      * @return  void
      */
-    protected function _vote()
+    protected function vote()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -314,7 +314,7 @@ class Comments extends Plugin
      *
      * @return  void
      */
-    protected function _view()
+    protected function renderView()
     {
         // Get the plugin parameter for the default sorting (Newest first vs Oldest first)
         $defaultSorting = $this->params->get('comments_sorting');
@@ -347,11 +347,11 @@ class Comments extends Plugin
      *
      * @return  void
      */
-    protected function _save()
+    protected function save()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -486,11 +486,11 @@ class Comments extends Plugin
      *
      * @return  void
      */
-    protected function _delete()
+    protected function delete()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -551,11 +551,11 @@ class Comments extends Plugin
      *
      * @return  void
      */
-    protected function _feed()
+    protected function feed()
     {
         if (!$this->params->get('comments_feeds')) {
             $this->action = 'view';
-            $this->_view();
+            $this->renderView();
             return;
         }
 

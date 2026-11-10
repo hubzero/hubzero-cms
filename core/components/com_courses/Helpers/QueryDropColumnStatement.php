@@ -36,20 +36,20 @@ class QueryDropColumnStatement
      */
     public function toString()
     {
-        $this->_generateBaseString();
-        $this->_addName();
+        $this->generateBaseString();
+        $this->addName();
 
         return $this->asString;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateBaseString()
+    protected function generateBaseString()
     {
         $this->asString = 'DROP COLUMN';
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addName()
+    protected function addName()
     {
         $this->asString .= " $this->name";
     }

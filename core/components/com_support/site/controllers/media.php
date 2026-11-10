@@ -40,7 +40,7 @@ class Media extends SiteController
      * @param   integer  $ticket  Ticket ID
      * @return  boolean
      */
-    protected function _mayAttachToTicket($ticket)
+    protected function mayAttachToTicket($ticket)
     {
         $ticket = (int) $ticket;
         if ($ticket <= 0) {
@@ -83,7 +83,7 @@ class Media extends SiteController
      * @param   object  $model  Attachment
      * @return  boolean
      */
-    protected function _mayManageAttachment($model)
+    protected function mayManageAttachment($model)
     {
         $ticket = (int) $model->get('ticket');
 
@@ -123,7 +123,7 @@ class Media extends SiteController
             return;
         }
         // A real ticket may only receive attachments from someone who can act on it
-        if (!$this->_mayAttachToTicket($ticket)) {
+        if (!$this->mayAttachToTicket($ticket)) {
             echo json_encode(['error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
             return;
         }
@@ -353,7 +353,7 @@ class Media extends SiteController
         }
 
         // The same rule as the ajax twin above: this path is reached without it
-        if (!$this->_mayAttachToTicket($ticket)) {
+        if (!$this->mayAttachToTicket($ticket)) {
             $this->setError(Lang::txt('JERROR_ALERTNOAUTHOR'));
             return $this->displayTask();
         }
@@ -484,7 +484,7 @@ class Media extends SiteController
             return $this->displayTask();
         }
         // Only the person who added the attachment, or a support agent, may delete it
-        if (!$this->_mayManageAttachment($model)) {
+        if (!$this->mayManageAttachment($model)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -514,7 +514,7 @@ class Media extends SiteController
                 echo json_encode(['success' => false, 'error' => Lang::txt('Must be logged in.')]);
                 return;
             }
-            if (!$this->_mayManageAttachment($model)) {
+            if (!$this->mayManageAttachment($model)) {
                 echo json_encode(['success' => false, 'error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
                 return;
             }
@@ -551,7 +551,7 @@ class Media extends SiteController
         // caller it had just turned away. A temporary (non-positive) id is
         // still admitted, as it is for upload: it belongs to a ticket that has
         // not been submitted yet.
-        if (!$this->_mayAttachToTicket($ticket)) {
+        if (!$this->mayAttachToTicket($ticket)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
@@ -572,7 +572,7 @@ class Media extends SiteController
             // ticket=0 _mayAttachToTicket() returns true for the temporary-id
             // case and any comment's attachment list came back. Bind the comment
             // to a ticket the caller may actually reach.
-            if (!$this->_mayAttachToTicket($model->get('ticket'))) {
+            if (!$this->mayAttachToTicket($model->get('ticket'))) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
         } else {

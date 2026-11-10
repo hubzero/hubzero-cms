@@ -116,7 +116,7 @@ class Git extends Obj
         chdir($this->path);
 
         // exec call
-        return $this->_exec($this->gitpath . ' ' . $call);
+        return $this->exec($this->gitpath . ' ' . $call);
     }
 
     /**
@@ -125,7 +125,7 @@ class Git extends Obj
      * @param   string  $call
      * @return  array   to be parsed
      */
-    protected function _exec($call = '')
+    protected function exec($call = '')
     {
         if (!$call) {
             return false;
@@ -704,7 +704,7 @@ class Git extends Obj
         $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
         $cmd .= $this->gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
 
-        $results = $this->_exec($cmd);
+        $results = $this->exec($cmd);
         $return  = [];
 
         foreach ($results as $result) {
@@ -725,7 +725,7 @@ class Git extends Obj
         $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
         $cmd .= $this->gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
 
-        $results = $this->_exec($cmd);
+        $results = $this->exec($cmd);
         $return  = [];
 
         foreach ($results as $result) {
@@ -1016,7 +1016,7 @@ class Git extends Obj
         chdir($this->path);
 
         // Create an empty file
-        $this->_exec('touch ' . escapeshellarg($dir) . '/.gitignore ');
+        $this->exec('touch ' . escapeshellarg($dir) . '/.gitignore ');
 
         // Git add
         $this->gitAdd($dir, $commitMsg);

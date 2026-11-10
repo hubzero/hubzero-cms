@@ -43,7 +43,7 @@ class PublicationChildSorter
     {
         $a_id = $a->get('id');
         $b_id = $b->get('id');
-        $sec_diff = strcmp($a->get_section(), $b->get_section());
+        $sec_diff = strcmp($a->getSection(), $b->getSection());
         if ($sec_diff < 0) {
             return -1;
         }

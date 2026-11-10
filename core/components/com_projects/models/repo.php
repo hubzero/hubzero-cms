@@ -508,7 +508,7 @@ class Repo extends Obj
         array_multisort($timestamps, SORT_DESC, $versions);
 
         // Get status for each version
-        $versions = $this->_getVersionStatus($versions);
+        $versions = $this->getVersionStatus($versions);
 
         return true;
     }
@@ -851,7 +851,7 @@ class Repo extends Obj
             }
 
             // Via remote/local copy
-            if ($item = $this->_insert($dataPath, $target, $available, $params)) {
+            if ($item = $this->insertPath($dataPath, $target, $available, $params)) {
                 if (!empty($item['replace'])) {
                     $results['updated'][] = $item['localPath'];
                 } else {
@@ -876,7 +876,7 @@ class Repo extends Obj
             }
 
             // Upload and pick up output
-            if ($item = $this->_upload($file, $tmp_name, $target, $size, $available, $params)) {
+            if ($item = $this->upload($file, $tmp_name, $target, $size, $available, $params)) {
                 if (!empty($item['replace'])) {
                     $results['updated'][] = $item['localPath'];
                 } else {
@@ -901,7 +901,7 @@ class Repo extends Obj
                 $size     = $upload['size'][$i];
 
                 // Upload and pick up output
-                if ($item = $this->_upload($file, $tmp_name, $target, $size, $available, $params)) {
+                if ($item = $this->upload($file, $tmp_name, $target, $size, $available, $params)) {
                     if (!empty($item['replace'])) {
                         $results['updated'][] = $item['localPath'];
                     } else {
@@ -921,7 +921,7 @@ class Repo extends Obj
      *
      * @return  mixed
      */
-    protected function _insert($dataPath, $target, &$available, $params)
+    protected function insertPath($dataPath, $target, &$available, $params)
     {
         $path         = isset($params['path']) ? $params['path'] : $this->get('path');
         $dirPath      = isset($params['subdir']) ? $params['subdir'] : null;
@@ -1000,7 +1000,7 @@ class Repo extends Obj
         }
 
         // Run some checks
-        if (!$this->_check($dataPath, null, filesize($dataPath), $available)) {
+        if (!$this->check($dataPath, null, filesize($dataPath), $available)) {
             return false;
         }
 
@@ -1041,7 +1041,7 @@ class Repo extends Obj
      *
      * @return  mixed
      */
-    protected function _upload($file, $tmp_name, $target, $size, &$available, $params)
+    protected function upload($file, $tmp_name, $target, $size, &$available, $params)
     {
         $dirPath     = isset($params['subdir']) ? $params['subdir'] : null;
         $expand      = isset($params['expand']) ? $params['expand'] : false;
@@ -1051,13 +1051,13 @@ class Repo extends Obj
         $exists      = false;
 
         // Expand archive
-        if ($expand && ($this->_isZip($file) || $this->_isTar($file))) {
-            if (!$this->_expand($file, $tmp_name, $target, $size, $available, $params)) {
+        if ($expand && ($this->isZip($file) || $this->isTar($file))) {
+            if (!$this->expand($file, $tmp_name, $target, $size, $available, $params)) {
                 return false;
             }
         } else {
             // Run some checks
-            if (!$this->_check($file, $tmp_name, $size, $available)) {
+            if (!$this->check($file, $tmp_name, $size, $available)) {
                 return false;
             }
 
@@ -1091,9 +1091,9 @@ class Repo extends Obj
      *
      * @return  boolean
      */
-    protected function _expand($file, $tmp_name, $target, $size, &$available, $params)
+    protected function expand($file, $tmp_name, $target, $size, &$available, $params)
     {
-        $engine    = $this->_isTar($file) ? 'tar' : 'zip';
+        $engine    = $this->isTar($file) ? 'tar' : 'zip';
         $dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
         $tempPath    = sys_get_temp_dir();
@@ -1150,7 +1150,7 @@ class Repo extends Obj
         }
 
         // Move extracted contents from temp to repo
-        return $this->_addFromExtracted($extractPath, $file, $target, $params, $available);
+        return $this->addFromExtracted($extractPath, $file, $target, $params, $available);
     }
 
     /**
@@ -1158,7 +1158,7 @@ class Repo extends Obj
      *
      * @return  boolean
      */
-    protected function _addFromExtracted($extractPath, $zipName, $target, $params, &$available)
+    protected function addFromExtracted($extractPath, $zipName, $target, $params, &$available)
     {
         $reserved  = isset($params['reserved']) ? $params['reserved'] : [];
         $dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
@@ -1237,7 +1237,7 @@ class Repo extends Obj
             $size = filesize($e);
 
             // Run some checks, stop in case of a problem
-            if (!$this->_check($file, $e, $size, $available, $virusChecked)) {
+            if (!$this->check($file, $e, $size, $available, $virusChecked)) {
                 return false;
             }
 
@@ -1303,7 +1303,7 @@ class Repo extends Obj
      *
      * @return  boolean
      */
-    protected function _check($file, $tmp_name, $size, &$available, $virusChecked = false)
+    protected function check($file, $tmp_name, $size, &$available, $virusChecked = false)
     {
         if (!isset($this->sizeLimit)) {
             $pParams = Plugin::params('projects', 'files');
@@ -1489,7 +1489,7 @@ class Repo extends Obj
      * @param   array  $versions  Array of file version data
      * @return  array
      */
-    protected function _getVersionStatus($versions = [])
+    protected function getVersionStatus($versions = [])
     {
         if (count($versions) == 0) {
             return $versions;
@@ -1588,7 +1588,7 @@ class Repo extends Obj
      * @param   string   $file
      * @return  boolean
      */
-    protected function _isZip($file)
+    protected function isZip($file)
     {
         $ext = Helpers\Html::getFileExtension($file);
         return in_array($ext, ['zip']) ? true : false;
@@ -1600,7 +1600,7 @@ class Repo extends Obj
      * @param   string   $file
      * @return  boolean
      */
-    protected function _isTar($file)
+    protected function isTar($file)
     {
         $ext = Helpers\Html::getFileExtension($file);
         return in_array($ext, ['tar', 'gz']) ? true : false;

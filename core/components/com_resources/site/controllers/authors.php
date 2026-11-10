@@ -43,7 +43,7 @@ class Authors extends SiteController
      * @param   integer  $id  Resource ID
      * @return  Entry
      */
-    protected function _authorizeResource($id)
+    protected function authorizeResource($id)
     {
         if (!$id) {
             App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
@@ -99,7 +99,7 @@ class Authors extends SiteController
         }
 
         // Only a resource editor may change its authors
-        $this->_authorizeResource($id);
+        $this->authorizeResource($id);
 
         // Incoming authors
         $authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
@@ -266,7 +266,7 @@ class Authors extends SiteController
         }
 
         // Only a resource editor may change its authors
-        $this->_authorizeResource($pid);
+        $this->authorizeResource($pid);
 
         // Ensure we have the contributor's ID ($id)
         if ($id) {
@@ -325,7 +325,7 @@ class Authors extends SiteController
         }
 
         // Only a resource editor may change its authors
-        $this->_authorizeResource($pid);
+        $this->authorizeResource($pid);
 
         // Ensure we have the contributor's ID ($id)
         if ($ids) {
@@ -376,7 +376,7 @@ class Authors extends SiteController
         }
 
         // Only a resource editor may reorder its authors
-        $this->_authorizeResource($pid);
+        $this->authorizeResource($pid);
 
         switch ($move) {
             case 'up':

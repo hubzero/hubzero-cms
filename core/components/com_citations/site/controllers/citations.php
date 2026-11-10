@@ -61,10 +61,10 @@ class Citations extends SiteController
     public function displayTask()
     {
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Instantiate a new view
         $this->view->title = Lang::txt(strtoupper($this->option));
@@ -311,10 +311,10 @@ class Citations extends SiteController
                 }
                 */
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Pass any error messages to the view
         foreach ($this->getErrors() as $error) {
@@ -1096,7 +1096,7 @@ class Citations extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -1117,7 +1117,7 @@ class Citations extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->task) {

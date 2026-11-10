@@ -85,7 +85,7 @@ class License extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = "FROM $this->tableName AS c";
 
@@ -116,7 +116,7 @@ class License extends Table
     {
         $filters['limit'] = 0;
 
-        $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+        $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
         $this->db->setQuery($query);
         return $this->db->loadResult();
@@ -131,7 +131,7 @@ class License extends Table
     public function getRecords($filters = [])
     {
         $query  = "SELECT c.*";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (!isset($filters['sort']) || !$filters['sort']) {
             $filters['sort'] = 'title';

@@ -134,7 +134,7 @@ class Entriesv1r0 extends ApiController
 
         // order by the date created
         if ($order == 'asc') {
-            usort($whatsnew, [$this, "sorter_asc"]);
+            usort($whatsnew, [$this, "sorterAsc"]);
         } else {
             usort($whatsnew, [$this, "sorter"]);
         }
@@ -175,7 +175,7 @@ class Entriesv1r0 extends ApiController
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function sorter_asc($a, $b)
+    public function sorterAsc($a, $b)
     {
         return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;
     }

@@ -158,15 +158,15 @@ class Team extends Plugin
 
                 case 'changerole':
                 case 'assignrole':
-                    $arr['html'] = $this->_changeRole();
+                    $arr['html'] = $this->changeRole();
                     break;
 
                 case 'changeowner':
-                    $arr['html'] = $this->_changeOwner();
+                    $arr['html'] = $this->changeOwner();
                     break;
 
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
 
                 case 'sync':
@@ -174,11 +174,11 @@ class Team extends Plugin
                     break;
 
                 case 'choose':
-                    $arr['html'] = $this->_choose();
+                    $arr['html'] = $this->choose();
                     break;
 
                 case 'quit':
-                    $arr['html'] = $this->_quit();
+                    $arr['html'] = $this->quit();
                     break;
 
                 case 'view':
@@ -191,10 +191,10 @@ class Team extends Plugin
                     $arr['html'] = $this->select();
                     break;
                 case 'approvemembership':
-                    $arr['html'] = $this->_approveMembership();
+                    $arr['html'] = $this->approveMembership();
                     break;
                 case 'denymembership':
-                    $arr['html'] = $this->_denyMembership();
+                    $arr['html'] = $this->denyMembership();
                     break;
             }
         }
@@ -336,7 +336,7 @@ class Team extends Plugin
      *
      * @return  string
      */
-    protected function _choose()
+    protected function choose()
     {
         $no_html = (Request::getInt('no_html', 0) || Request::getInt('ajax', 0));
 
@@ -483,7 +483,7 @@ class Team extends Plugin
     /**
      * Save member
      */
-    protected function _save()
+    protected function save()
     {
         // Managing team membership is a manager/owner action
         if (!$this->model->access('manager')) {
@@ -833,7 +833,7 @@ class Team extends Plugin
      *
      * @return mixed
      */
-    protected function _approveMembership()
+    protected function approveMembership()
     {
         // Both Approve buttons post the token
         Request::checkToken();
@@ -867,7 +867,7 @@ class Team extends Plugin
      *
      * @return mixed
      */
-    protected function _denyMembership()
+    protected function denyMembership()
     {
         $projectId = $this->model->get('id');
         $userId = User::getInstance()->get('id');
@@ -940,7 +940,7 @@ class Team extends Plugin
      *
      * @return  mixed
      */
-    protected function _changeOwner()
+    protected function changeOwner()
     {
         // Role and ownership changes are manager actions
         if (!$this->model->access('manager')) {
@@ -1034,7 +1034,7 @@ class Team extends Plugin
      *
      * @return  mixed
      */
-    protected function _quit()
+    protected function quit()
     {
         // Incoming
         $confirm = Request::getInt('confirm', 0, 'post');
@@ -1111,7 +1111,7 @@ class Team extends Plugin
      *
      * @return  string
      */
-    protected function _changeRole()
+    protected function changeRole()
     {
         // Role and ownership changes are manager actions
         if (!$this->model->access('manager')) {

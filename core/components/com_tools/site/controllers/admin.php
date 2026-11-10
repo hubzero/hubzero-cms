@@ -473,7 +473,7 @@ class Admin extends SiteController
 
         // Run finalizetool
         if (!$this->getError()) {
-            if ($this->_finalizeTool($out)) {
+            if ($this->finalizeTool($out)) {
                 $this->setMessage(Lang::txt('COM_TOOLS_Version finalized.'));
             } else {
                 $this->setError($out);
@@ -615,7 +615,7 @@ class Admin extends SiteController
                 $this->setError(Lang::txt('COM_TOOLS_ERROR_UPDATING_INSTANCE'));
                 $result = false;
             } else {
-                $this->_setTracAccess($new_hztv->toolname, $new_hztv->codeaccess, $new_hztv->wikiaccess);
+                $this->setTracAccess($new_hztv->toolname, $new_hztv->codeaccess, $new_hztv->wikiaccess);
 
                 // update tool entry
                 $hzt = \Components\Tools\Models\Tool::getInstance($this->toolid);
@@ -695,7 +695,7 @@ class Admin extends SiteController
      * @param      string &$out Output messages container
      * @return     boolean True on success, False if errors
      */
-    protected function _finalizeTool(&$out = '')
+    protected function finalizeTool(&$out = '')
     {
         Log::debug("finalizeTool(): checkpoint 1");
 
@@ -817,7 +817,7 @@ class Admin extends SiteController
      * @param      string  $wikiaccess Wiki access level
      * @return     boolean True on success
      */
-    protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
+    protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
         if (!($hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $toolname))) {
             return false;

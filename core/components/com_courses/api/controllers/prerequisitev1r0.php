@@ -62,7 +62,7 @@ class Prerequisitev1r0 extends Base
     public function newTask()
     {
         // The outline builder does not send a course id; take it from the section
-        $this->_setCourseFromSection(Request::getInt('section_id', 0));
+        $this->setCourseFromSection(Request::getInt('section_id', 0));
         $this->authorizeOrFail();
 
         $db  = App::get('db');
@@ -105,7 +105,7 @@ class Prerequisitev1r0 extends Base
         $tbl->load($id);
 
         // Authorize against the course that owns this prerequisite
-        $this->_setCourseFromSection((int) $tbl->get('section_id'));
+        $this->setCourseFromSection((int) $tbl->get('section_id'));
         $this->authorizeOrFail();
         $tbl->delete();
 
@@ -123,7 +123,7 @@ class Prerequisitev1r0 extends Base
      * @param   integer  $sectionId
      * @return  void
      */
-    protected function _setCourseFromSection($sectionId)
+    protected function setCourseFromSection($sectionId)
     {
         $db = App::get('db');
         $db->setQuery("SELECT o.course_id FROM `#__courses_offering_sections` AS s JOIN `#__courses_offerings` AS o ON o.id = s.offering_id WHERE s.id = " . (int) $sectionId);

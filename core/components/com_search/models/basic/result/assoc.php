@@ -20,5 +20,5 @@ abstract class Assoc extends SearchResult
      *
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    abstract public function is_scalar();
+    abstract public function isScalar();
 }

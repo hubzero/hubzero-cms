@@ -164,7 +164,7 @@ class Tags extends Base
 
         $tagsHelper = new \Components\Publications\Helpers\Tags($this->parent->db);
         $tags = trim(Request::getString('tags', '', 'post'));
-        $tagsHelper->tag_object($actor, $pub->version->id, $tags, 1);
+        $tagsHelper->tagObject($actor, $pub->version->id, $tags, 1);
 
         // Reflect the update in curation record
         $this->parent->set('_update', 1);

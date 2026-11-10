@@ -148,7 +148,7 @@ class Codemirror extends Plugin
         }
 
         // Must pass the field id to the buttons in this editor.
-        $buttons = $this->_displayButtons($id, $buttons, $asset, $author);
+        $buttons = $this->displayButtons($id, $buttons, $asset, $author);
 
         $compressed = Config::get('debug') ? '-uncompressed' : '';
 
@@ -238,7 +238,7 @@ class Codemirror extends Plugin
      * @return string HTML
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _displayButtons($name, $buttons, $asset, $author)
+    protected function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');

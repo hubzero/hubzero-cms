@@ -313,7 +313,7 @@ class Cloud extends \Hubzero\Base\Obj
             return false;
         }
 
-        foreach ($this->_parse($tags, 1) as $tg => $raw) {
+        foreach ($this->splitTags($tags, 1) as $tg => $raw) {
             $tag = Tag::oneByTag((string) $tg);
 
             // Does the tag already exist?
@@ -357,7 +357,7 @@ class Cloud extends \Hubzero\Base\Obj
             return false;
         }
 
-        foreach ($this->_parse($tags) as $tg) {
+        foreach ($this->splitTags($tags) as $tg) {
             $tag = Tag::oneByTag((string) $tg);
 
             // Does the tag exist?
@@ -503,8 +503,8 @@ class Cloud extends \Hubzero\Base\Obj
             $tagger_id = User::get('id');
         }
 
-        $tagArray  = $this->_parse($tag_string);    // array of normalized tags
-        $tagArray2 = $this->_parse($tag_string, 1); // array of normalized => raw tags
+        $tagArray  = $this->splitTags($tag_string);    // array of normalized tags
+        $tagArray2 = $this->splitTags($tag_string, 1); // array of normalized => raw tags
 
         $filters = [];
         if ($label) {
@@ -563,7 +563,7 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   integer  $keep  Use normalized tag as array key
      * @return  array
      */
-    protected function _parse($tags, $keep = 0)
+    protected function splitTags($tags, $keep = 0)
     {
         if (is_string($tags)) {
             $tags = trim($tags);

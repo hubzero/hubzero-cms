@@ -121,7 +121,7 @@ class Project extends Model
         $paramsRegistry = new \Hubzero\Config\Registry($this->table->get('params'));
 
         if (empty($paramsRegistry->toArray())) {
-            $parsedParams = $this->_getParsedParams();
+            $parsedParams = $this->getParsedParams();
             $paramsRegistry = new \Hubzero\Config\Registry($parsedParams);
         }
 
@@ -133,7 +133,7 @@ class Project extends Model
      *
      * @return array
      */
-    protected function _getParsedParams()
+    protected function getParsedParams()
     {
         $parsedParams = [];
         $splitParams = explode("\n", $this->table->get('params', ''));
@@ -228,7 +228,7 @@ class Project extends Model
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -239,7 +239,7 @@ class Project extends Model
      */
     public function modified($as = '')
     {
-        return $this->_date('modified', $as);
+        return $this->date('modified', $as);
     }
 
     /**
@@ -249,7 +249,7 @@ class Project extends Model
      * @param   string  $as   What data to return
      * @return  string
      */
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         if ($this->get($key) == $this->db->getNullDate()) {
             return null;
@@ -264,7 +264,7 @@ class Project extends Model
                 break;
 
             case 'datetime':
-                return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+                return $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
                 break;
 
             case 'timeago':

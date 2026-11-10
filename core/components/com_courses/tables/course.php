@@ -187,7 +187,7 @@ class Course extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         if (isset($filters['tag']) && $filters['tag'] != '') {
             $query  = " FROM #__tags_object AS rta";
@@ -272,7 +272,7 @@ class Course extends Table
 
         $query  = "SELECT COUNT(*) ";
         $query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", COUNT(DISTINCT t.tag) AS uniques " : " ";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->db->setQuery($query);
         return $this->db->loadResult();
@@ -292,7 +292,7 @@ class Course extends Table
             ? ", t.tag, t.raw_tag, COUNT(DISTINCT t.tag) AS uniques "
             : " ";
         $query .= $tagFields;
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
             if (!isset($filters['start'])) {

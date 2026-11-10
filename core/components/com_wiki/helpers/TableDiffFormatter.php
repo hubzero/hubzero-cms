@@ -40,7 +40,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      unknown $ylen Parameter description (if any) ...
      * @return     string Return description (if any) ...
      */
-    public function _block_header($xbeg, $xlen, $ybeg, $ylen)
+    public function blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
         $r  = "\t\t" . '<tr>' . "\n";
         $r .= "\t\t\t" . '<td colspan="2" class="diff-lineno"><!--LINE ' . $xbeg . '--></td>' . "\n";
@@ -58,7 +58,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      unknown $header Parameter description (if any) ...
      * @return     void
      */
-    public function _start_block($header)
+    public function startBlock($header)
     {
         echo $header;
     }
@@ -70,7 +70,7 @@ class TableDiffFormatter extends DiffFormatter
      *
      * @return     void
      */
-    public function _end_block()
+    public function endBlock()
     {
         //echo '</table>';
     }
@@ -85,7 +85,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      string $color Parameter description (if any) ...
      * @return     void
      */
-    public function _lines($lines, $prefix = ' ', $color = 'white')
+    public function lines($lines, $prefix = ' ', $color = 'white')
     {
     }
 
@@ -175,7 +175,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      array $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _added($lines)
+    public function added($lines)
     {
         foreach ($lines as $line) {
             $this->i++;
@@ -194,7 +194,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      array $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _deleted($lines)
+    public function deleted($lines)
     {
         foreach ($lines as $line) {
             $this->i++;
@@ -213,7 +213,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      unknown $lines Parameter description (if any) ...
      * @return     void
      */
-    public function _context($lines)
+    public function context($lines)
     {
         /*foreach ($lines as $line)
         {
@@ -232,7 +232,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      unknown $closing Parameter description (if any) ...
      * @return     void
      */
-    public function _changed($orig, $closing)
+    public function changed($orig, $closing)
     {
         $diff = new WordLevelDiff($orig, $closing);
         $del = $diff->orig();

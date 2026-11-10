@@ -31,10 +31,10 @@ class Reports extends Base
     public function displayTask()
     {
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $tblStats = new Tables\Stats($this->database);
 
@@ -92,7 +92,7 @@ class Reports extends Base
         if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
-                $this->_login();
+                $this->login();
                 return;
             }
 
@@ -161,16 +161,16 @@ class Reports extends Base
     public function customTask()
     {
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Check authorization
         if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
-                $this->_login();
+                $this->login();
                 return;
             }
 

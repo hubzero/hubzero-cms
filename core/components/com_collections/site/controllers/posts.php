@@ -111,7 +111,7 @@ class Posts extends SiteController
      * @param   object  $current  The post's current board, or null
      * @return  \Hubzero\Base\ItemList
      */
-    protected function _postableBoards($current = null)
+    protected function postableBoards($current = null)
     {
         $boards = [];
         $seen   = [];
@@ -187,10 +187,10 @@ class Posts extends SiteController
         // groups', the same two sources collectTask()'s repost form draws on.
         // saveTask() enforces canBePostedToBy() on whatever is submitted, so
         // this closes the listing, not the write.
-        $this->view->collections = $this->_postableBoards($this->view->collection);
+        $this->view->collections = $this->postableBoards($this->view->collection);
         if (!$this->view->collections->total()) {
             $this->view->collection->setup(User::get('id'), 'member');
-            $this->view->collections = $this->_postableBoards($this->view->collection);
+            $this->view->collections = $this->postableBoards($this->view->collection);
 
             // A board named in the request only if the post did not already
             // resolve one -- re-resolving unconditionally would discard it.

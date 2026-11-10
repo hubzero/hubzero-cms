@@ -62,7 +62,7 @@ class Wishlists extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));
 
@@ -84,7 +84,7 @@ class Wishlists extends SiteController
      * @param   object  $wishlist  Wishlist
      * @return  void
      */
-    protected function _buildPathway($wishlist)
+    protected function buildPathway($wishlist)
     {
         Pathway::clear();
 
@@ -220,7 +220,7 @@ class Wishlists extends SiteController
         $this->listid = isset($this->listid) ? $this->listid : $id;
 
         // get admin privileges
-        $this->authorize_admin();
+        $this->authorizeAdmin();
 
         // Authorize list owners
         if (!User::isGuest()) {
@@ -238,10 +238,10 @@ class Wishlists extends SiteController
         // Set page title
         $this->_list_title = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2)) ? $model->get('title') : '';
         $this->_subtitle   = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2)) ? $model->get('title') : '';
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway($model);
+        $this->buildPathway($model);
 
         // need to log in to private list
         if (!$model->isPublic() && User::isGuest()) {
@@ -479,7 +479,7 @@ class Wishlists extends SiteController
         $wish->set('referenceid', $wishlist->get('referenceid'));
 
         // get admin privileges
-        $this->authorize_admin();
+        $this->authorizeAdmin();
 
         // Set page title
         $this->_list_title = $wishlist->title();
@@ -487,12 +487,12 @@ class Wishlists extends SiteController
         if (!$wishlist->isPublic() && !$this->_admin) {
             $this->_list_title = '';
         }
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
         $this->_wishpath  = $wish->link();
         $this->_wishtitle = Str::truncate($wish->get('subject'), 80);
-        $this->_buildPathway($wishlist);
+        $this->buildPathway($wishlist);
 
         // Go through some access checks
         if (User::isGuest()) {
@@ -717,11 +717,11 @@ class Wishlists extends SiteController
         if (!$wishlist->isPublic() && !$wishlist->access('manage')) {
             $this->_list_title = '';
         }
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
         $this->_listid = $id;
-        $this->_buildPathway($wishlist);
+        $this->buildPathway($wishlist);
 
         // Login required
         if (User::isGuest()) {
@@ -777,10 +777,10 @@ class Wishlists extends SiteController
             if (!$wishlist->isPublic() && !$wishlist->access('manage')) {
                 $this->_list_title = '';
             }
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
             return $this->loginTask();
         }
 
@@ -934,7 +934,7 @@ class Wishlists extends SiteController
 
         // Build page title
         $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage'))) ? $wishlist->get('title') : '';
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
         $this->_taskpath = $wish->get('id')
@@ -943,7 +943,7 @@ class Wishlists extends SiteController
         $this->_taskname = $wish->get('id')
                             ? Lang::txt('COM_WISHLIST_EDITWISH')
                             : Lang::txt('COM_WISHLIST_ADD');
-        $this->_buildPathway($wishlist);
+        $this->buildPathway($wishlist);
 
         // Login required
         if (User::isGuest()) {
@@ -1116,7 +1116,7 @@ class Wishlists extends SiteController
             $this->_taskname = $wishid
                                 ? Lang::txt('COM_WISHLIST_EDITWISH')
                                 : Lang::txt('COM_WISHLIST_ADD');
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
 
             // Get URL to page explaining virtual economy
             $aconfig = Component::params('com_answers');
@@ -1270,12 +1270,12 @@ class Wishlists extends SiteController
         if (User::isGuest()) {
             // Set page title
             $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
             $this->_taskpath = $wish->link();
             $this->_taskname = Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
             return $this->loginTask();
         }
 
@@ -1329,7 +1329,7 @@ class Wishlists extends SiteController
                     if ($this->banking) {
                         // Distribute bonus and earned points
                         $WE = new Economy($this->database);
-                        $WE->distribute_points($wish->get('id'));
+                        $WE->distributePoints($wish->get('id'));
                     }
                     break;
             }
@@ -1628,10 +1628,10 @@ class Wishlists extends SiteController
             if (!$wishlist->isPublic() && !$wishlist->access('manage')) {
                 $this->_list_title = '';
             }
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
             return $this->loginTask();
         }
 
@@ -1696,10 +1696,10 @@ class Wishlists extends SiteController
             if (!$wishlist->isPublic() && !$wishlist->access('manage')) {
                 $this->_list_title = '';
             }
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
 
             // Return to the wish, which can be requested with GET, not to this task
             return $this->loginTask(Route::url($wish->link(), false, true));
@@ -1785,10 +1785,10 @@ class Wishlists extends SiteController
             if (!$wishlist->isPublic() && !$wishlist->access('manage')) {
                 $this->_list_title = '';
             }
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_RANK');
             return $this->loginTask();
         }
@@ -1877,10 +1877,10 @@ class Wishlists extends SiteController
         $this->_list_title = $wishlist->get('title');
 
         // Build page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway($wishlist);
+        $this->buildPathway($wishlist);
 
         if (!$id && !$ajax) {
             // cannot proceed
@@ -2199,10 +2199,10 @@ class Wishlists extends SiteController
 
             // Set page title
             $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
             return $this->loginTask();
         }
@@ -2231,10 +2231,10 @@ class Wishlists extends SiteController
         if (User::isGuest()) {
             // Get List Title
             $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage'))) ? $wishlist->get('title') : '';
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway($wishlist);
+            $this->buildPathway($wishlist);
 
             $this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
 
@@ -2335,7 +2335,7 @@ class Wishlists extends SiteController
      * @param   integer  $admin   If the use ris an admin
      * @return  void
      */
-    public function authorize_admin($listid = 0, $admin = 0)
+    public function authorizeAdmin($listid = 0, $admin = 0)
     {
         // Check if they're a site admin
         if (User::authorise('core.manage', $this->option)) {

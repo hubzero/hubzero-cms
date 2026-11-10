@@ -260,7 +260,7 @@ class Html
      * @param   string   $base  Base path to prepend
      * @return  string
      */
-    public static function build_url($id, $base)
+    public static function buildUrl($id, $base)
     {
         $dir_id = self::niceidformat($id);
 
@@ -275,7 +275,7 @@ class Html
      * @param   string   $base  Base path to prepend
      * @return  string
      */
-    public static function build_path($date, $id, $base)
+    public static function buildPath($date, $id, $base)
     {
         $dir_id = self::niceidformat($id);
 
@@ -681,7 +681,7 @@ class Html
      * @param   string  $xact        Extra parameters to add
      * @return  string
      */
-    public static function primary_child($option, $resource, $firstChild, $xact = '')
+    public static function primaryChild($option, $resource, $firstChild, $xact = '')
     {
         $database = App::get('db');
 

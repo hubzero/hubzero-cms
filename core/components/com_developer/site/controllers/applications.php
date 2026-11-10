@@ -82,8 +82,8 @@ class Applications extends SiteController
             ->rows();
 
         // build pathway
-        $this->_buildPathway();
-        $this->_buildTitle();
+        $this->buildPathway();
+        $this->buildTitle();
 
         // render view
         $this->view
@@ -135,7 +135,7 @@ class Applications extends SiteController
         }
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         $this->view
@@ -199,7 +199,7 @@ class Applications extends SiteController
         // redirect URIs and team roster. saveTask() resolves ownership the same
         // way, so this refuses exactly who it refuses. $id stays 0 when a bound
         // model is handed in from a failed save, which is the caller's own.
-        if ($id > 0 && !$this->_ownsApplication($id)) {
+        if ($id > 0 && !$this->ownsApplication($id)) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -217,7 +217,7 @@ class Applications extends SiteController
         }
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         // forcing edit view
@@ -243,7 +243,7 @@ class Applications extends SiteController
         $id   = (int) (isset($data['id']) ? $data['id'] : 0);
 
         // For an existing application, require ownership of that exact app
-        if (!User::isGuest() && $id > 0 && !$this->_ownsApplication($id)) {
+        if (!User::isGuest() && $id > 0 && !$this->ownsApplication($id)) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -430,7 +430,7 @@ class Applications extends SiteController
         $id = Request::getInt('id', 0);
 
         // Only the application owner or a team member may act on it
-        if (!User::isGuest() && !$this->_ownsApplication($id)) {
+        if (!User::isGuest() && !$this->ownsApplication($id)) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -503,7 +503,7 @@ class Applications extends SiteController
 
         // The application's owner/team may revoke any of its tokens; anyone may
         // revoke a grant they issued themselves ("authorized applications" list)
-        if (!$this->_ownsApplication($id) && (int) $accessToken->get('uidNumber') !== (int) User::get('id')) {
+        if (!$this->ownsApplication($id) && (int) $accessToken->get('uidNumber') !== (int) User::get('id')) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -544,7 +544,7 @@ class Applications extends SiteController
         $id = Request::getInt('id', 0);
 
         // Only the application owner or a team member may act on it
-        if (!User::isGuest() && !$this->_ownsApplication($id)) {
+        if (!User::isGuest() && !$this->ownsApplication($id)) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -592,7 +592,7 @@ class Applications extends SiteController
         $id = Request::getInt('id', 0);
 
         // Only the application owner or a team member may act on it
-        if (!User::isGuest() && !$this->_ownsApplication($id)) {
+        if (!User::isGuest() && !$this->ownsApplication($id)) {
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
@@ -718,7 +718,7 @@ class Applications extends SiteController
      * @param   integer  $id  Application ID
      * @return  boolean
      */
-    protected function _ownsApplication($id)
+    protected function ownsApplication($id)
     {
         $id = (int) $id;
         if ($id <= 0) {
@@ -775,7 +775,7 @@ class Applications extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         // create breadcrumbs
         if (Pathway::count() <= 0) {
@@ -830,7 +830,7 @@ class Applications extends SiteController
         }
     }
 
-    public function _buildTitle()
+    public function buildTitle()
     {
     }
 }

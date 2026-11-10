@@ -164,7 +164,7 @@ class Categories
 
         // If this $id has not been processed yet, execute the _load method
         if ((!isset($this->nodes[$id]) && !isset($this->checkedCategories[$id])) || $forceload) {
-            $this->_load($id);
+            $this->load($id);
         }
 
         // If we already have a value in _nodes for this $id, then use it.
@@ -185,7 +185,7 @@ class Categories
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _load($id)
+    protected function load($id)
     {
         $db = App::get('db');
 

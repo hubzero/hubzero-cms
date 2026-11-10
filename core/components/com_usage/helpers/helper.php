@@ -262,7 +262,7 @@ class Helper
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function array_unique_reindex($somearray)
+    public static function arrayUniqueReindex($somearray)
     {
         $tmparr = array_unique($somearray);
         $i = 0;
@@ -282,7 +282,7 @@ class Helper
      * @return     boolean True if data is found
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function check_for_data($db, $yearmonth, $period)
+    public static function checkForData($db, $yearmonth, $period)
     {
         if (!$db->tableExists('totalvals')) {
             Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
@@ -309,7 +309,7 @@ class Helper
      * @return     boolean True if data is found
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function check_for_classdata($db, $yearmonth)
+    public static function checkForClassdata($db, $yearmonth)
     {
         if (!$db->tableExists('classvals')) {
             Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
@@ -335,7 +335,7 @@ class Helper
      * @return     boolean True if data is found
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function check_for_regiondata($db, $yearmonth)
+    public static function checkForRegiondata($db, $yearmonth)
     {
         if (!$db->tableExists('regionvals')) {
             Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
@@ -405,7 +405,7 @@ class Helper
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function dateformat_plot($seldate)
+    public static function dateformatPlot($seldate)
     {
         $year  = substr($seldate, 0, 4);
         $month = substr($seldate, 5, 2);
@@ -427,7 +427,7 @@ class Helper
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_value($valarray, $seldate, $valkey = 'value')
+    public static function seldateValue($valarray, $seldate, $valkey = 'value')
     {
         if ($valarray) {
             foreach ($valarray as $val) {
@@ -450,9 +450,9 @@ class Helper
      * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_next($seldate, $period)
+    public static function seldateNext($seldate, $period)
     {
-        return self::seldate_shift($seldate, $period, 1);
+        return self::seldateShift($seldate, $period, 1);
     }
 
     /**
@@ -465,9 +465,9 @@ class Helper
      * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function seldate_prev($seldate, $period)
+    public function seldatePrev($seldate, $period)
     {
-        return self::seldate_shift($seldate, $period, 0);
+        return self::seldateShift($seldate, $period, 0);
     }
 
     /**
@@ -479,11 +479,11 @@ class Helper
      * @return     unknown Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_nextyear($seldate)
+    public static function seldateNextyear($seldate)
     {
         $date = $seldate;
         for ($i = 0; $i < 12; $i++) {
-            $date = self::seldate_shift($date, 'month', 1);
+            $date = self::seldateShift($date, 'month', 1);
         }
         return $date;
     }
@@ -497,11 +497,11 @@ class Helper
      * @return     unknown Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_prevyear($seldate)
+    public static function seldatePrevyear($seldate)
     {
         $date = $seldate;
         for ($i = 0; $i < 12; $i++) {
-            $date = self::seldate_shift($date, 'month', 0);
+            $date = self::seldateShift($date, 'month', 0);
         }
         return $date;
     }
@@ -516,7 +516,7 @@ class Helper
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_fix($seldate, $period)
+    public static function seldateFix($seldate, $period)
     {
         $year  = substr($seldate, 0, 4);
         $month = substr($seldate, 5, 2);
@@ -558,7 +558,7 @@ class Helper
      * @return  mixed    Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_shift($seldate, $period, $right)
+    public static function seldateShift($seldate, $period, $right)
     {
         $year  = substr($seldate, 0, 4);
         $month = substr($seldate, 5, 2);
@@ -623,7 +623,7 @@ class Helper
      * @return  array    Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_valuedescsortkey(&$arr, $date)
+    public static function seldateValuedescsortkey(&$arr, $date)
     {
         $reversealpha = [
             ',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
@@ -634,7 +634,7 @@ class Helper
         $dmax = 0;
         $tmax = 0;
         for ($i = 0; $i < count($arr); $i++) {
-            $dateval = self::seldate_value($arr[$i], $date);
+            $dateval = self::seldateValue($arr[$i], $date);
             $len = strlen($dateval);
             if ($len > $dmax) {
                 $dmax = $len;
@@ -647,7 +647,7 @@ class Helper
         $format = "%0" . $dmax . "d%0" . $tmax . "d";
         for ($i = 0; $i < count($arr); $i++) {
             $arr[$i]['sortkey'] = '';
-            $dateval = self::seldate_value($arr[$i], $date);
+            $dateval = self::seldateValue($arr[$i], $date);
             if (!$dateval) {
                 $dateval = "0";
             }
@@ -667,7 +667,7 @@ class Helper
      * @return  mixed    Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public static function seldate_valuedescsort(&$arr)
+    public static function seldateValuedescsort(&$arr)
     {
         return usort($arr, "arraykeyeddesccmp");
     }

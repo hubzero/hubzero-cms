@@ -290,7 +290,7 @@ class Pages extends SiteController
      *
      * @return  boolean
      */
-    protected function _canSuggest()
+    protected function canSuggest()
     {
         return !User::isGuest()
             && $this->page->exists()
@@ -319,7 +319,7 @@ class Pages extends SiteController
         // ownership (core.edit, or the creator via core.edit.own). A knowledge
         // page with "allow changes" on also takes suggestions (access 'modify'):
         // those are saved as unapproved revisions for an author to approve.
-        if (!$this->page->access('edit') && !$this->page->access('manage') && !$this->_canSuggest()) {
+        if (!$this->page->access('edit') && !$this->page->access('manage') && !$this->canSuggest()) {
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
@@ -566,7 +566,7 @@ class Pages extends SiteController
         // itself -- title, access, params -- is left as stored
         $suggestOnly = !$this->page->isNew()
             && !$this->page->access('edit') && !$this->page->access('manage')
-            && $this->_canSuggest();
+            && $this->canSuggest();
 
         if (!$this->page->isNew()) {
             if (!$this->page->access('edit') && !$this->page->access('manage') && !$suggestOnly) {

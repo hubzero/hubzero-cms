@@ -224,7 +224,7 @@ class Wish extends Relational
      */
     public function proposed($rtrn = '')
     {
-        return $this->_date('proposed', $rtrn);
+        return $this->date('proposed', $rtrn);
     }
 
     /**
@@ -235,7 +235,7 @@ class Wish extends Relational
      */
     public function granted($rtrn = '')
     {
-        return $this->_date('granted', $rtrn);
+        return $this->date('granted', $rtrn);
     }
 
     /**
@@ -246,7 +246,7 @@ class Wish extends Relational
      */
     public function due($rtrn = '')
     {
-        return $this->_date('due', $rtrn);
+        return $this->date('due', $rtrn);
     }
 
     /**
@@ -257,7 +257,7 @@ class Wish extends Relational
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _date($key, $rtrn = '')
+    public function date($key, $rtrn = '')
     {
         $rtrn = strtolower($rtrn);
 

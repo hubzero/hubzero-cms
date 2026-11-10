@@ -168,7 +168,7 @@ class Projects extends Base
         // When logging in
         if (User::isGuest() && $action == 'login') {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_YOUR_PROJECTS');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -180,14 +180,14 @@ class Projects extends Base
         $this->view->set('filters', $filters);
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
         $this->view->set('title', $this->title);
 
         // Log activity
-        $this->_logActivity();
+        $this->logActivity();
 
         // Output HTML
         $this->view->set('option', $this->option);
@@ -195,7 +195,7 @@ class Projects extends Base
         $this->view->set('publishing', $this->_publishing);
         $this->view->set('msg', isset($this->_msg) && $this->_msg
                                 ? $this->_msg
-                                : $this->_getNotifications('success'));
+                                : $this->getNotifications('success'));
 
         if ($this->getError()) {
             $this->view->setError($this->getError());
@@ -213,14 +213,14 @@ class Projects extends Base
     public function featuresTask()
     {
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
         $this->view->set('title', $this->title);
 
         // Log activity
-        $this->_logActivity();
+        $this->logActivity();
 
         // Output HTML
         $this->view->set('option', $this->option);
@@ -246,15 +246,15 @@ class Projects extends Base
 
         // Set the pathway
         $this->task = 'browse';
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Check reviewer authorization
         if ($reviewer && User::isGuest()) {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_REVIEWER');
-            $this->_login();
+            $this->login();
             return;
         }
         if ($reviewer && !$this->model->reviewerAccess($reviewer)) {
@@ -314,12 +314,12 @@ class Projects extends Base
         // Login for private projects
         if (User::isGuest() && $action == 'login') {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PRIVATE_PROJECTS');
-            $this->_login();
+            $this->login();
             return;
         }
 
         // Log activity
-        $this->_logActivity(0, 'general', 'browse');
+        $this->logActivity(0, 'general', 'browse');
 
         // Output HTML
         $this->view->set('model', $this->model);
@@ -327,7 +327,7 @@ class Projects extends Base
         $this->view->set('config', $this->config);
         $this->view->set('title', $this->title);
         $this->view->set('reviewer', $reviewer);
-        $this->view->set('msg', $this->_getNotifications('success'));
+        $this->view->set('msg', $this->getNotifications('success'));
         if ($this->getError()) {
             $this->view->setError($this->getError());
         }
@@ -360,8 +360,8 @@ class Projects extends Base
         // Is this a group project?
         $this->group = $this->model->groupOwner();
         if ($this->model->get('owned_by_group') && !$this->group) {
-            $this->_buildPathway();
-            $this->_buildTitle();
+            $this->buildPathway();
+            $this->buildTitle();
 
             // Options for project creator
             if ($this->model->access('owner')) {
@@ -377,7 +377,7 @@ class Projects extends Base
                 // Error
                 $this->setError(Lang::txt('COM_PROJECTS_PROJECT_OWNER_DELETED'));
                 $this->title = Lang::txt('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
-                $this->_showError();
+                $this->showError();
                 return;
             }
         }
@@ -425,7 +425,7 @@ class Projects extends Base
         // Do we need to login?
         if (User::isGuest() && $action == 'login') {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -501,7 +501,7 @@ class Projects extends Base
                 } else {
                     // Error - different email
                     $this->setError(Lang::txt('COM_PROJECTS_INVITE_DIFFERENT_EMAIL'));
-                    $this->_showError();
+                    $this->showError();
                     return;
                 }
             }
@@ -517,7 +517,7 @@ class Projects extends Base
             // Login required
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
-                $this->_login();
+                $this->login();
                 return;
             }
             if (!$this->model->access('member') && !$reviewer) {
@@ -611,10 +611,10 @@ class Projects extends Base
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Output HTML
         $this->view->set('params', $this->model->params);
@@ -625,7 +625,7 @@ class Projects extends Base
         $this->view->set('task', $this->task);
         $this->view->set('option', $this->option);
         $this->view->set('config', $this->config);
-        $this->view->set('msg', $this->_getNotifications('success'));
+        $this->view->set('msg', $this->getNotifications('success'));
 
         /// Info block moved to info plugin
         $this->view->set('info', []);
@@ -636,7 +636,7 @@ class Projects extends Base
             $this->view->set('email', $email);
         }
 
-        $error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
+        $error = $this->getError() ? $this->getError() : $this->getNotifications('error');
         if ($error) {
             $this->view->setError($error);
         }
@@ -707,10 +707,10 @@ class Projects extends Base
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Display page
         if (!$confirm || $this->getError()) {
@@ -729,7 +729,7 @@ class Projects extends Base
             $this->view->set('task', $this->task);
             $this->view->set('authorized', 1);
             $this->view->set('option', $this->option);
-            $this->view->set('msg', $this->_getNotifications('success'));
+            $this->view->set('msg', $this->getNotifications('success'));
 
             if ($this->getError()) {
                 $this->view->setError($this->getError());
@@ -776,7 +776,7 @@ class Projects extends Base
         }
 
         // Log activity
-        $this->_logActivity($this->model->get('id'), 'provisioned', 'activate', 'save', 1);
+        $this->logActivity($this->model->get('id'), 'provisioned', 'activate', 'save', 1);
 
         // Send to continue setup
         App::redirect(Route::url($this->model->link('setup')));
@@ -811,7 +811,7 @@ class Projects extends Base
         // Login required
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -880,7 +880,7 @@ class Projects extends Base
         }
 
         // Log activity
-        $this->_logActivity($this->model->get('id'), 'project', 'status', $this->task, 1);
+        $this->logActivity($this->model->get('id'), 'project', 'status', $this->task, 1);
 
         if ($this->task != 'fixownership') {
             // Add activity
@@ -954,7 +954,7 @@ class Projects extends Base
             $error =  $error == 'access_denied'
                 ? Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_PERMISSION')
                 : Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_NOW');
-            $this->_setNotification($error, 'error');
+            $this->setNotification($error, 'error');
             $return = isset($json->return) ? $json->return : '';
         }
 
@@ -993,10 +993,10 @@ class Projects extends Base
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Get project params
         $params = $this->model->params;
@@ -1132,27 +1132,27 @@ class Projects extends Base
 
             // Pass success or error message
             if ($this->getError()) {
-                $this->_setNotification($this->getError(), 'error');
+                $this->setNotification($this->getError(), 'error');
             } else {
                 if (in_array($apvSens, [0, 1]) || $apvSpon) {
                     if ($reviewer == 'sensitive') {
                         if ($apvSens == 1) {
-                            $this->_setNotification(Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG'));
+                            $this->setNotification(Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG'));
                         } elseif ($apvSens == 0) {
-                            $this->_setNotification(Lang::txt('COM_PROJECTS_PROJECT_REJECTED_HIPAA_MSG'));
+                            $this->setNotification(Lang::txt('COM_PROJECTS_PROJECT_REJECTED_HIPAA_MSG'));
                         }
 
                         // Send out emails to team members
-                        $this->_notifyTeam();
+                        $this->notifyTeam();
                     }
                     if ($reviewer == 'sponsored') {
                         $notification =  $apvSpon == 2
                                 ? Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS_MSG')
                                 : Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS_MSG');
-                        $this->_setNotification($notification);
+                        $this->setNotification($notification);
                     }
                 } elseif ($comment) {
-                    $this->_setNotification(Lang::txt('COM_PROJECTS_REVIEWER_COMMENT_POSTED'));
+                    $this->setNotification(Lang::txt('COM_PROJECTS_REVIEWER_COMMENT_POSTED'));
                 }
 
                 // Add to project activity feed
@@ -1216,7 +1216,7 @@ class Projects extends Base
             $this->view->set('action', $action);
             $this->view->set('filterby', $filterby);
             $this->view->set('uid', User::get('id'));
-            $this->view->set('msg', $this->_getNotifications('success'));
+            $this->view->set('msg', $this->getNotifications('success'));
             if ($this->getError()) {
                 $this->view->setError($this->getError());
             }

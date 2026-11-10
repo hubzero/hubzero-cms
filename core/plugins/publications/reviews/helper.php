@@ -408,7 +408,7 @@ class Helper extends \Hubzero\Base\Obj
         $tags = trim(Request::getString('review_tags', ''));
         if ($tags) {
             $rt = new \Components\Publications\Helpers\Tags($database);
-            $rt->tag_object($row->created_by, $publication->get('id'), $tags, 1, 0);
+            $rt->tagObject($row->created_by, $publication->get('id'), $tags, 1, 0);
         }
 
         // Get version authors

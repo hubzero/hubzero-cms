@@ -462,7 +462,7 @@ class Question extends Relational
 
             $AE = new Economy($db);
 
-            $this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
+            $this->set('marketvalue', round($AE->calculateMarketvalue($this->get('id'), 'maxaward')));
             $this->set('maxaward', round(2 * $this->get('marketvalue', 0) / 3 + $this->get('reward', 0)));
 
             $this->set('totalmarketvalue', $this->get('marketvalue', 0) + $this->get('reward', 0));
@@ -603,7 +603,7 @@ class Question extends Relational
 
                 // Calculate and distribute earned points
                 $AE = new Economy($db);
-                $AE->distribute_points(
+                $AE->distributePoints(
                     $this->get('id'),
                     $this->get('created_by'),
                     $answer->get('created_by'),

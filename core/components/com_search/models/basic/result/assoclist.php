@@ -37,7 +37,7 @@ class AssocList extends Assoc implements Iterator, Countable
      * @return  boolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function is_scalar()
+    public function isScalar()
     {
         return false;
     }
@@ -50,10 +50,10 @@ class AssocList extends Assoc implements Iterator, Countable
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function set_plugin($plugin, $skip_cleanup = false)
+    public function setPlugin($plugin, $skip_cleanup = false)
     {
         foreach ($this->rows as $row) {
-            $row->set_plugin($plugin, $skip_cleanup);
+            $row->setPlugin($plugin, $skip_cleanup);
         }
     }
 
@@ -71,15 +71,15 @@ class AssocList extends Assoc implements Iterator, Countable
         foreach ($this->rows as $idx => &$row) {
             if (!($row instanceof SearchResult)) {
                 $row = new AssocScalar($row);
-                $row->set_plugin($plugin);
+                $row->setPlugin($plugin);
             }
 
-            if ($idx == 0 && ($weight = $row->get_weight()) > 1) {
+            if ($idx == 0 && ($weight = $row->getWeight()) > 1) {
                 $scale = $weight;
             }
 
             if ($scale > 1) {
-                $row->scale_weight($scale, 'normalizing within plugin');
+                $row->scaleWeight($scale, 'normalizing within plugin');
             }
         }
     }
@@ -101,7 +101,7 @@ class AssocList extends Assoc implements Iterator, Countable
      * @return  object
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function to_associative()
+    public function toAssociative()
     {
         return $this;
     }
@@ -112,7 +112,7 @@ class AssocList extends Assoc implements Iterator, Countable
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_items()
+    public function getItems()
     {
         return $this->rows;
     }

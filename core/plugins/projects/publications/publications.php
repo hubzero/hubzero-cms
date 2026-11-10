@@ -286,7 +286,7 @@ class Publications extends Plugin
 
             case 'suggest_license':
             case 'save_license':
-                $arr['html'] = $this->_suggestLicense();
+                $arr['html'] = $this->suggestLicense();
                 break;
 
                 // Show all publication versions
@@ -306,7 +306,7 @@ class Publications extends Plugin
 
                 // Show stats
             case 'stats':
-                $arr['html'] = $this->_stats();
+                $arr['html'] = $this->stats();
                 break;
 
             case 'diskspace':
@@ -1184,7 +1184,7 @@ class Publications extends Plugin
 
         // Initizalize Git repo and transfer files from member dir
         if ($this->model->isProvisioned()) {
-            if (!$this->_prepDir()) {
+            if (!$this->prepDir()) {
                 // Roll back
                 $this->model->delete();
                 $objP->delete();
@@ -1356,7 +1356,7 @@ class Publications extends Plugin
         $view->task             = $this->task;
 
         // Append breadcrumbs
-        $this->_appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
+        $this->appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
 
         // Get messages and errors
         $view->msg = $this->msg;
@@ -1464,7 +1464,7 @@ class Publications extends Plugin
      * @param   string  $version
      * @return  void
      */
-    protected function _appendBreadcrumbs($title, $url, $version = 'default')
+    protected function appendBreadcrumbs($title, $url, $version = 'default')
     {
         // Append breadcrumbs
         $url = $version != 'default' ? $url . '&version=' . $version : $url;
@@ -1479,7 +1479,7 @@ class Publications extends Plugin
      *
      * @return     string
      */
-    protected function _stats()
+    protected function stats()
     {
         // Incoming
         $pid = $this->pid ? $this->pid : Request::getInt('pid', 0);
@@ -1527,7 +1527,7 @@ class Publications extends Plugin
      *
      * @return     string
      */
-    protected function _suggestLicense()
+    protected function suggestLicense()
     {
         // Incoming
         $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
@@ -1809,7 +1809,7 @@ class Publications extends Plugin
      *
      * @return     string
      */
-    protected function _overQuota()
+    protected function overQuota()
     {
         // Instantiate a publication object
         $pub_model = new \Components\Publications\Models\Publication();
@@ -1879,7 +1879,7 @@ class Publications extends Plugin
         }
 
         // Check against quota
-        if ($this->_overQuota()) {
+        if ($this->overQuota()) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE'), 'projects');
             App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
             return;
@@ -2671,7 +2671,7 @@ class Publications extends Plugin
      *
      * @return     string
      */
-    protected function _getMemberPath()
+    protected function getMemberPath()
     {
         // Get members config
         $mconfig = Component::params('com_members');
@@ -2696,7 +2696,7 @@ class Publications extends Plugin
      * @param      boolean  $force
      * @return     boolean
      */
-    protected function _prepDir($force = true)
+    protected function prepDir($force = true)
     {
         if (!$this->model->exists()) {
             $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
@@ -2704,7 +2704,7 @@ class Publications extends Plugin
         }
 
         // Get member files path
-        $memberPath = $this->_getMemberPath();
+        $memberPath = $this->getMemberPath();
 
         // Create and initialize local repo
         if (!$this->model->repo()->iniLocal()) {

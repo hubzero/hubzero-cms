@@ -49,7 +49,7 @@ class Feedback extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -71,7 +71,7 @@ class Feedback extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->task && in_array($this->task, ['story', 'poll', 'sendstory', 'suggestions'])) {
@@ -95,10 +95,10 @@ class Feedback extends SiteController
         $poll = Component::isEnabled('com_poll', true);
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view
@@ -161,10 +161,10 @@ class Feedback extends SiteController
         ];
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Get the curent user's profile
         $user = Member::oneOrNew(User::get('id'));
@@ -195,10 +195,10 @@ class Feedback extends SiteController
     public function pollTask()
     {
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view
@@ -314,10 +314,10 @@ class Feedback extends SiteController
         $path = substr($row->filespace(), strlen(PATH_ROOT)) . DS . $row->get('id');
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view

@@ -157,7 +157,7 @@ class Author extends Table
      * @param   boolean  $incSubmitter
      * @return  mixed    Object or array
      */
-    public function _getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
+    public function getAuthorsWithProfiles($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
     {
         if (!$vid) {
             $vid = $this->publication_version_id;

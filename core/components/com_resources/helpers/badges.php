@@ -60,16 +60,16 @@ class Badges
             $taggerId = User::get('id');
         }
 
-        $rawTagNames = $this->_parseBadgesString($newBadgesString);
+        $rawTagNames = $this->parseBadgesString($newBadgesString);
 
         $existingTagIds = $this->allBadgesAs('id');
-        $updatedTagIds = $this->_translateRawNamesToIds($rawTagNames, $taggerId, $admin);
+        $updatedTagIds = $this->translateRawNamesToIds($rawTagNames, $taggerId, $admin);
 
         $addedTagIds = array_diff($updatedTagIds, $existingTagIds);
         $removedTagIds = array_diff($existingTagIds, $updatedTagIds);
 
-        $this->_addBadges($addedTagIds, $taggerId, $admin, $strength);
-        $this->_removeBadges($removedTagIds);
+        $this->addBadges($addedTagIds, $taggerId, $admin, $strength);
+        $this->removeBadges($removedTagIds);
     }
 
     /**
@@ -79,7 +79,7 @@ class Badges
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _parseBadgesString($newBadgesString)
+    protected function parseBadgesString($newBadgesString)
     {
         $rawTagNames = explode(',', $newBadgesString);
         $rawTagNames = array_map(function ($rawTagName) {
@@ -98,7 +98,7 @@ class Badges
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _translateRawNamesToIds($rawTagNames, $taggerId, $admin)
+    protected function translateRawNamesToIds($rawTagNames, $taggerId, $admin)
     {
         $nameFormatter = Tag::blank();
 
@@ -107,7 +107,7 @@ class Badges
             $tag = Tag::oneByTag($tagName);
 
             if ($tag->isNew()) {
-                $this->_createTag($tag, $tagName, $rawTagName, $taggerId, $admin);
+                $this->createTag($tag, $tagName, $rawTagName, $taggerId, $admin);
             }
 
             return $tag->get('id');
@@ -127,7 +127,7 @@ class Badges
      * @return  boolean
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
+    protected function createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
     {
         $tagData = [
             'tag' => $tagName,
@@ -153,10 +153,10 @@ class Badges
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addBadges($tagIds, $taggerId, $admin, $strength)
+    protected function addBadges($tagIds, $taggerId, $admin, $strength)
     {
         foreach ($tagIds as $tagId) {
-            $this->_addBadge($tagId, $taggerId, $admin, $strength);
+            $this->addBadge($tagId, $taggerId, $admin, $strength);
         }
     }
 
@@ -170,7 +170,7 @@ class Badges
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addBadge($tagId, $taggerId, $admin, $strength)
+    protected function addBadge($tagId, $taggerId, $admin, $strength)
     {
         $taggedOn = Date::toSql();
         $tagAssociation = Objct::blank();
@@ -194,10 +194,10 @@ class Badges
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _removeBadges($tagIds)
+    protected function removeBadges($tagIds)
     {
         foreach ($tagIds as $tagId) {
-            $this->_removeBadge($tagId);
+            $this->removeBadge($tagId);
         }
     }
 
@@ -208,7 +208,7 @@ class Badges
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _removeBadge($tagId)
+    protected function removeBadge($tagId)
     {
         $tagAssociationId = Objct::all()
             ->select('id')
@@ -269,7 +269,7 @@ class Badges
     {
         switch ($format) {
             case 'string':
-                $output = $this->_renderString();
+                $output = $this->renderString();
                 return $output;
         }
 
@@ -282,7 +282,7 @@ class Badges
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _renderString()
+    protected function renderString()
     {
         $output = '';
         $badges = $this->all();

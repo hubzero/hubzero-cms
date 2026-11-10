@@ -90,7 +90,7 @@ abstract class DocumentMetadata
      * @return  boolean
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function is_stop_word($word)
+    public static function isStopWord($word)
     {
         return array_key_exists($word, self::$stop_words);
     }

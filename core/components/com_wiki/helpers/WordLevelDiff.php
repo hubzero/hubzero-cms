@@ -33,8 +33,8 @@ class WordLevelDiff extends MappedDiff
      */
     public function __construct($orig_lines, $closing_lines)
     {
-        list($orig_words, $orig_stripped) = $this->_split($orig_lines);
-        list($closing_words, $closing_stripped) = $this->_split($closing_lines);
+        list($orig_words, $orig_stripped) = $this->split($orig_lines);
+        list($closing_words, $closing_stripped) = $this->split($closing_lines);
 
         parent::__construct($orig_words, $closing_words, $orig_stripped, $closing_stripped);
     }
@@ -47,7 +47,7 @@ class WordLevelDiff extends MappedDiff
      * @param      array $lines Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    public function _split($lines)
+    public function split($lines)
     {
         $words = [];
         $stripped = [];

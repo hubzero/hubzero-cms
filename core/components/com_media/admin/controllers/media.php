@@ -68,7 +68,7 @@ class Media extends AdminController
 
         array_unshift($folders, $fold);
 
-        $folderTree = MediaHelper::_buildFolderTree($folders, -1);
+        $folderTree = MediaHelper::buildFolderTree($folders, -1);
 
         $folderTree[0]['name'] = basename(COM_MEDIA_BASE);
 

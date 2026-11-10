@@ -66,7 +66,7 @@ class Storage extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -89,7 +89,7 @@ class Storage extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title  = Lang::txt('COM_MEMBERS');
         $this->_title .= ': ' . stripslashes(User::get('name'));
@@ -103,7 +103,7 @@ class Storage extends SiteController
      *
      * @return  void
      */
-    protected function _login($rtrn = null)
+    protected function login($rtrn = null)
     {
         if (!$rtrn) {
             $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
@@ -135,17 +135,17 @@ class Storage extends SiteController
     {
         // Check that the user is logged in
         if (User::isGuest()) {
-            $this->_login();
+            $this->login();
             return;
         }
 
         $this->view->setLayout('display');
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Get their disk space usage
         $this->percent = 0;
@@ -195,7 +195,7 @@ class Storage extends SiteController
     {
         // Check that the user is logged in
         if (User::isGuest()) {
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -247,7 +247,7 @@ class Storage extends SiteController
     {
         // Check that the user is logged in
         if (User::isGuest()) {
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -298,7 +298,7 @@ class Storage extends SiteController
     {
         // Check that the user is logged in
         if (User::isGuest()) {
-            $this->_login();
+            $this->login();
             return;
         }
 

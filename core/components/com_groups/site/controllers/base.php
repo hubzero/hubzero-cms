@@ -100,7 +100,7 @@ class Base extends SiteController
      * @return      void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway($pages = [])
+    public function buildPathway($pages = [])
     {
         //add 'groups' item to pathway
         if (Pathway::count() <= 0) {
@@ -187,7 +187,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildTitle($pages = [])
+    public function buildTitle($pages = [])
     {
         $this->_title = Lang::txt(strtoupper($this->option));
 
@@ -268,7 +268,7 @@ class Base extends SiteController
      * @return  boolean
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _authorizedForTask($task)
+    public function authorizedForTask($task)
     {
         $group = Group::getInstance($this->cn);
         if (!is_object($group)) {

@@ -51,7 +51,7 @@ class UserLocalizer
     public function getTimezone()
     {
         if (!User::isGuest()) {
-            $timezone = $this->_getUserTimezone();
+            $timezone = $this->getUserTimezone();
         } else {
             $timezone = $this->systemTimezone;
         }
@@ -65,7 +65,7 @@ class UserLocalizer
      * @return string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getUserTimezone()
+    protected function getUserTimezone()
     {
         $userParams = json_decode(User::get('params', '[]'), 1);
 

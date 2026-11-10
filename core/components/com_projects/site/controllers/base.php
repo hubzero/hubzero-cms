@@ -44,7 +44,7 @@ class Base extends SiteController
         $this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
         // Include scripts
-        $this->_includeScripts();
+        $this->includeScripts();
 
         // Incoming project identifier
         $id    = Request::getInt('id', 0);
@@ -68,7 +68,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _includeScripts()
+    protected function includeScripts()
     {
         // No need in some controllers
         if ($this->controller == 'media') {
@@ -90,7 +90,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _setNotification($message, $type = 'success')
+    protected function setNotification($message, $type = 'success')
     {
         // If message is set push to notifications
         if ($message) {
@@ -105,7 +105,7 @@ class Base extends SiteController
      * @return  mixed   message if they exist
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getNotifications($type = 'success')
+    protected function getNotifications($type = 'success')
     {
         // Get messages in queue
         if (!isset($this->messages)) {
@@ -130,7 +130,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _login()
+    protected function login()
     {
         $task = (isset($this->task) && !empty($this->task))
             ? '&task=' . $this->task
@@ -166,7 +166,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _showError($layout = 'default')
+    protected function showError($layout = 'default')
     {
         // Need to be project creator
         $view = new \Hubzero\Component\View(
@@ -184,7 +184,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $active  = isset($this->active) ? $this->active : null;
 
@@ -244,7 +244,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         $group_tasks = ['start', 'setup', 'view'];
         $group       = isset($this->group) ? $this->group : null;
@@ -388,7 +388,7 @@ class Base extends SiteController
      * @return void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
+    protected function logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
     {
         // Is logging enabled?
         $enabled = $this->config->get('logging', 0);
@@ -424,7 +424,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _notifyTeam($managers_only = 0)
+    protected function notifyTeam($managers_only = 0)
     {
         // Is messaging turned on?
         if ($this->config->get('messaging') != 1) {

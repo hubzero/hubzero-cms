@@ -59,7 +59,7 @@ class Job extends Table
      * @return  array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_my_openings($uid = null, $current = 0, $admin = 0, $active = 0)
+    public function getMyOpenings($uid = null, $current = 0, $admin = 0, $active = 0)
     {
         if ($uid === null) {
             $uid = User::get('id');
@@ -120,7 +120,7 @@ class Job extends Table
      * @return  object
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_openings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
+    public function getOpenings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
     {
         $defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
         $category    = isset($filters['category']) ? $filters['category'] : 'all';
@@ -309,7 +309,7 @@ class Job extends Table
      * @return  boolean  True upon success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function delete_opening($jid)
+    public function deleteOpening($jid)
     {
         if ($jid === null) {
             $jid == $this->id;
@@ -337,7 +337,7 @@ class Job extends Table
      * @return  mixed    False if errors, array if records found, null if not
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_opening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
+    public function getOpening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
     {
         if ($jid === null && $jobcode == '') {
             return false;

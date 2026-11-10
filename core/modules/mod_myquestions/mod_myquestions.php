@@ -179,7 +179,7 @@ class Myquestions extends Module
 
             foreach ($results as $result) {
                 // Calculate max award
-                $result->set('marketvalue', round($AE->calculate_marketvalue($result->get('id'), 'maxaward')));
+                $result->set('marketvalue', round($AE->calculateMarketvalue($result->get('id'), 'maxaward')));
                 $result->set('maxaward', round(2 * ($result->get('marketvalue', 0) / 3)));
                 if ($kind != 'mine') {
                     $result->set('maxaward', $result->get('maxaward') + $result->get('reward'));

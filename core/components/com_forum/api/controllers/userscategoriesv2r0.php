@@ -45,13 +45,13 @@ class UsersCategoriesv2r0 extends ApiController
         $userId = Request::getInt('userId');
         $currentUserId = User::get('id');
 
-        $this->_requiresMatchingUser($currentUserId, $userId);
+        $this->requiresMatchingUser($currentUserId, $userId);
 
         $categoriesIds = Request::getArray('categoriesIds');
 
-        $usersCategories = $this->_instantiateUsersCategories($categoriesIds, $currentUserId);
+        $usersCategories = $this->instantiateUsersCategories($categoriesIds, $currentUserId);
 
-        $errors = $this->_saveUsersCategories($usersCategories);
+        $errors = $this->saveUsersCategories($usersCategories);
 
         $arrayCategories = array_map(function ($usersCategory) {
             return $usersCategory->toArray();
@@ -75,7 +75,7 @@ class UsersCategoriesv2r0 extends ApiController
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _instantiateUsersCategories($categoriesIds, $currentUserId)
+    protected function instantiateUsersCategories($categoriesIds, $currentUserId)
     {
         $usersCategories = array_map(function ($categoryId) use ($currentUserId) {
             $usersCategory = UsersCategory::blank();
@@ -96,7 +96,7 @@ class UsersCategoriesv2r0 extends ApiController
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _saveUsersCategories($usersCategories)
+    protected function saveUsersCategories($usersCategories)
     {
         $errors = [];
 
@@ -136,7 +136,7 @@ class UsersCategoriesv2r0 extends ApiController
         $userId = Request::getInt('userId');
         $currentUserId = User::get('id');
 
-        $this->_requiresMatchingUser($currentUserId, $userId);
+        $this->requiresMatchingUser($currentUserId, $userId);
 
         $categoriesIds = Request::getArray('categoriesIds');
 
@@ -144,7 +144,7 @@ class UsersCategoriesv2r0 extends ApiController
             ->whereEquals('user_id', $userId)
             ->whereIn('category_id', $categoriesIds);
 
-        $errors = $this->_destroyUsersCategories($usersCategories);
+        $errors = $this->destroyUsersCategories($usersCategories);
 
         $arrayCategories = $usersCategories->rows()->toArray();
 
@@ -165,7 +165,7 @@ class UsersCategoriesv2r0 extends ApiController
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _destroyUsersCategories($usersCategories)
+    protected function destroyUsersCategories($usersCategories)
     {
         $errors = [];
 
@@ -187,7 +187,7 @@ class UsersCategoriesv2r0 extends ApiController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _requiresMatchingUser($currentUserId, $userId)
+    protected function requiresMatchingUser($currentUserId, $userId)
     {
         if ((int) $currentUserId !== (int) $userId) {
             throw new \Exception('User ID mismatch, unable to proceed.', 403);

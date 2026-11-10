@@ -725,7 +725,7 @@ class Html
      * @return     unknown Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function txt_unpee($pee)
+    public static function txtUnpee($pee)
     {
         $pee = str_replace("\t", '', $pee);
         $pee = str_replace('</p><p>', '', $pee);

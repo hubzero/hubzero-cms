@@ -72,7 +72,7 @@ class Form extends SiteController
      *
      * @return  void
      */
-    public function _buildPathway()
+    public function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -104,7 +104,7 @@ class Form extends SiteController
      *
      * @return  void
      */
-    public function _buildTitle($append = '')
+    public function buildTitle($append = '')
     {
         // Set the title used in the view
         $this->_title = Lang::txt('COM_COURSES_FORMS');
@@ -129,8 +129,8 @@ class Form extends SiteController
         $this->requireFormAccess();
 
         // Set the title and pathway
-        $this->_buildTitle('Upload a PDF');
-        $this->_buildPathway();
+        $this->buildTitle('Upload a PDF');
+        $this->buildPathway();
 
         if (!isset($this->view->errors)) {
             $this->view->errors = [];
@@ -195,8 +195,8 @@ class Form extends SiteController
         $this->requireFormAccess();
 
         // Set the title and pathway
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view->pdf        = new PdfForm($this->assertFormId());
         $this->view->title      = $this->view->pdf->getTitle();
@@ -247,8 +247,8 @@ class Form extends SiteController
         $this->requireFormAccess();
 
         // Set the title and pathway
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view->pdf   = $this->assertExistentForm();
         $this->view->dep   = ($dep) ? $dep : new PdfFormDeployment();
@@ -349,8 +349,8 @@ class Form extends SiteController
         }
 
         // Set the title and pathway
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view->pdf   = $this->assertExistentForm();
         $this->view->title = $this->view->pdf->getTitle();
@@ -397,8 +397,8 @@ class Form extends SiteController
                 $this->setView('results', $dep->getResultsClosed());
 
                 // Set the title and pathway
-                $this->_buildTitle();
-                $this->_buildPathway();
+                $this->buildTitle();
+                $this->buildPathway();
 
                 $this->view->dep   = $dep;
                 $this->view->resp  = $dep->getRespondent($this->member, $attempt);
@@ -426,8 +426,8 @@ class Form extends SiteController
                     $this->setView('results', $dep->getResultsOpen());
 
                     // Set the title and pathway
-                    $this->_buildTitle();
-                    $this->_buildPathway();
+                    $this->buildTitle();
+                    $this->buildPathway();
 
                     $this->view->incomplete = [];
                     $this->view->pdf        = $dep->getForm();
@@ -440,8 +440,8 @@ class Form extends SiteController
                     return;
                 } else {
                     // Set the title and pathway
-                    $this->_buildTitle();
-                    $this->_buildPathway();
+                    $this->buildTitle();
+                    $this->buildPathway();
 
                     $this->view->pdf        = $dep->getForm();
                     $this->view->title      = $this->view->pdf->getTitle();

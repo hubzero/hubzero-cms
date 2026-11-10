@@ -44,7 +44,7 @@ class Medialist extends AdminController
         //$session = App::get('session');
         $state = User::getState('folder');
         $folders = Filesystem::directoryTree(COM_MEDIA_BASE);
-        $folderTree = MediaHelper::_buildFolderTree($folders);
+        $folderTree = MediaHelper::buildFolderTree($folders);
 
         $children = MediaHelper::getChildren(COM_MEDIA_BASE, $folder);
         $parent = MediaHelper::getParent($folder);

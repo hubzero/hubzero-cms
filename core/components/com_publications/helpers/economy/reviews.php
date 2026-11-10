@@ -77,7 +77,7 @@ class Reviews extends Obj
      * @return  mixed   False if errors, integer on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function calculate_marketvalue($review, $type = 'royalty')
+    public function calculateMarketvalue($review, $type = 'royalty')
     {
         if (!is_object($review)) {
             return false;
@@ -106,14 +106,14 @@ class Reviews extends Obj
      * @return  boolean  False if errors, true on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function distribute_points($review, $type = 'royalty')
+    public function distributePoints($review, $type = 'royalty')
     {
         if (!is_object($review)) {
             return false;
         }
         $cat = 'review';
 
-        $points = $this->calculate_marketvalue($review, $type);
+        $points = $this->calculateMarketvalue($review, $type);
 
         // Get qualifying users
         $user = User::getInstance($review->author);

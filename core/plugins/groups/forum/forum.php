@@ -391,7 +391,7 @@ class Forum extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    protected function _authorize($assetType = 'component', $assetId = null)
+    protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->params->set('access-view', true);
 
@@ -490,8 +490,8 @@ class Forum extends Plugin
         $categories = $this->forum->categories()->rows();
 
         //get authorization
-        $this->_authorize('section');
-        $this->_authorize('category');
+        $this->authorize('section');
+        $this->authorize('category');
 
         if (
             !$sections->count()
@@ -616,7 +616,7 @@ class Forum extends Plugin
         $section->set('scope_id', $this->forum->get('scope_id'));
 
         // Managers manage forum structure
-        $this->_authorize('category', $section->get('id'));
+        $this->authorize('category', $section->get('id'));
         if (!$this->params->get('access-edit-category')) {
             App::redirect(Route::url($this->base));
         }
@@ -710,7 +710,7 @@ class Forum extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('section', $section->get('id'));
+        $this->authorize('section', $section->get('id'));
 
         if (!$this->params->get('access-delete-section')) {
             App::redirect(
@@ -836,8 +836,8 @@ class Forum extends Plugin
         }
 
         //get authorization
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         if ($category->get('access') == 5 && !$this->params->get('access-view-category')) {
             App::abort(403, Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
@@ -928,8 +928,8 @@ class Forum extends Plugin
         $filters['search'] = Request::getString('q', '');
 
         //get authorization
-        $this->_authorize('category');
-        $this->_authorize('thread');
+        $this->authorize('category');
+        $this->authorize('thread');
 
         return $this->view('search', 'categories')
             ->set('option', $this->option)
@@ -983,7 +983,7 @@ class Forum extends Plugin
                 ->row();
         }
 
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if ($category->isNew()) {
             $category->set('created_by', User::get('id'));
@@ -1070,7 +1070,7 @@ class Forum extends Plugin
         }
 
         // Double-check that the user is authorized
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->params->get('access-edit-category')) {
             // Set the redirect
@@ -1164,7 +1164,7 @@ class Forum extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('category', $category->get('id'));
+        $this->authorize('category', $category->get('id'));
 
         if (!$this->params->get('access-delete-category')) {
             App::redirect(
@@ -1289,9 +1289,9 @@ class Forum extends Plugin
         $filters['state'] = [1, 3];
 
         // Get authorization
-        $this->_authorize('category', $category->get('id'));
-        $this->_authorize('thread', $thread->get('id'));
-        $this->_authorize('post');
+        $this->authorize('category', $category->get('id'));
+        $this->authorize('thread', $thread->get('id'));
+        $this->authorize('post');
 
         // Get all the likes of this thread
         $db = App::get('db');
@@ -1393,7 +1393,7 @@ class Forum extends Plugin
         }
 
         // Get authorization
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         // Post::oneOrNew() resolves any row of #__forum_posts, so a post reached
         // by id has to sit in the category this request resolved -- that one was
@@ -1466,7 +1466,7 @@ class Forum extends Plugin
         $post = Post::oneOrNew($fields['id']);
         $isNew = !$post->get('id');
 
-        $this->_authorize('thread', intval($fields['id']));
+        $this->authorize('thread', intval($fields['id']));
         $asset = 'thread';
         if ($fields['parent']) {
             //$asset = 'post';
@@ -1720,7 +1720,7 @@ class Forum extends Plugin
                 // Figure out who should be notified about this comment. Only members
                 // authorised to view the content (section/category/thread/post
                 // access levels) are emailed (ticket 307).
-                $userIDsToEmail = $this->_getEmailRecipientIds($category, [
+                $userIDsToEmail = $this->getEmailRecipientIds($category, [
                     $section->get('access'),
                     $category->get('access'),
                     $thread->get('access'),
@@ -1938,12 +1938,12 @@ class Forum extends Plugin
      *                                  authorised to view every one of them.
      * @return  array
      */
-    protected function _getEmailRecipientIds($category, $accessLevels = [])
+    protected function getEmailRecipientIds($category, $accessLevels = [])
     {
         $userIDsToEmail = [];
-        $memberoptions = $this->_loadMemberOptions();
+        $memberoptions = $this->loadMemberOptions();
         $categorySubscriptionsEnabled = Component::params('com_groups')->get('enable_forum_email_categories', 0);
-        $users = $this->_loadExistingUsers($this->members);
+        $users = $this->loadExistingUsers($this->members);
 
         // Normalize the content's access levels to a unique list of ints
         $accessLevels = array_unique(array_filter(array_map('intval', (array) $accessLevels)));
@@ -1969,7 +1969,7 @@ class Forum extends Plugin
                 }
             }
 
-            $sendEmail = $this->_shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category);
+            $sendEmail = $this->shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category);
 
             if ($sendEmail == 1) {
                 $userIDsToEmail[] = $userId;
@@ -1984,7 +1984,7 @@ class Forum extends Plugin
      *
      * @return  bool
      */
-    protected function _loadMemberOptions()
+    protected function loadMemberOptions()
     {
         $memberoptions = false;
 
@@ -2003,7 +2003,7 @@ class Forum extends Plugin
      * @param   array  $userIds
      * @return  array
      */
-    protected function _loadExistingUsers($userIds)
+    protected function loadExistingUsers($userIds)
     {
         $users = array_map(function ($userId) {
             return User::getInstance($userId);
@@ -2027,7 +2027,7 @@ class Forum extends Plugin
      * @param   object   $category
      * @return  array
      */
-    protected function _shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
+    protected function shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
     {
         $categoryId = $category->get('id');
 
@@ -2120,7 +2120,7 @@ class Forum extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('thread', $id);
+        $this->authorize('thread', $id);
 
         if (!$this->params->get('access-delete-thread') && $post->get('created_by') != User::get('id')) {
             App::redirect(
@@ -2324,7 +2324,7 @@ class Forum extends Plugin
         }
 
         // Load ACL
-        $this->_authorize('thread', $post->get('thread'));
+        $this->authorize('thread', $post->get('thread'));
 
         // Ensure the user is authorized to view this file
         if (!$this->params->get('access-view-thread')) {

@@ -80,8 +80,8 @@ class Collections extends SiteController
             'state'      => 1,
         ]);
 
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view
             ->setLayout('posts')
@@ -123,8 +123,8 @@ class Collections extends SiteController
         $this->view->filters['count'] = false;
         $this->view->rows = $model->collections($this->view->filters);
 
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view
             ->setLayout('collections')
@@ -163,8 +163,8 @@ class Collections extends SiteController
             'access' => (!User::isGuest() ? [0, 1] : 0),
         ]);
 
-        $this->_buildTitle();
-        $this->_buildPathway();
+        $this->buildTitle();
+        $this->buildPathway();
 
         $this->view
             ->setLayout('about')
@@ -212,7 +212,7 @@ class Collections extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -234,7 +234,7 @@ class Collections extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));
         if ($this->task) {

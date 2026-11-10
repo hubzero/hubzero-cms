@@ -69,7 +69,7 @@ class Economy extends Obj
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function calculate_marketvalue($id, $type = 'regular')
+    public function calculateMarketvalue($id, $type = 'regular')
     {
         if ($id === null) {
             $id = $this->qid;
@@ -137,14 +137,14 @@ class Economy extends Obj
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function distribute_points($qid, $Q_owner, $BA_owner, $type)
+    public function distributePoints($qid, $Q_owner, $BA_owner, $type)
     {
         if ($qid === null) {
             $qid = $this->qid;
         }
         $cat = 'answers';
 
-        $points = $this->calculate_marketvalue($qid, $type);
+        $points = $this->calculateMarketvalue($qid, $type);
 
         $reward = Transaction::getAmount($cat, 'hold', $qid);
         $reward = ($reward) ? $reward : '0';

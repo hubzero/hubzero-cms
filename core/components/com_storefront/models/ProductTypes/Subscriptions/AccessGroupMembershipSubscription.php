@@ -30,7 +30,7 @@ class AccessGroupMembershipSubscription extends BaseSubscription
      * @throws  Exception
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _getExpiration()
+    public function getAccessGroupExpiration()
     {
         // This will get expiration from the correct place
         throw new \Exception('not implemented');

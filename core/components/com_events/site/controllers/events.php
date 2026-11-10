@@ -74,7 +74,7 @@ class Events extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -157,7 +157,7 @@ class Events extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->name));
         switch ($this->task) {
@@ -359,10 +359,10 @@ class Events extends SiteController
         $categories = $this->getCategories();
 
         // Build the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HMTL
         $this->view->setLayout('year')->setName('browse');
@@ -427,10 +427,10 @@ class Events extends SiteController
         $categories = $this->getCategories();
 
         // Build the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view->setLayout('month')->setName('browse');
@@ -522,10 +522,10 @@ class Events extends SiteController
         $authorized = $this->authorize('core.create');
 
         // Build the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML;
         $this->view->setLayout('week')->setName('browse');
@@ -605,10 +605,10 @@ class Events extends SiteController
         $categories = $this->getCategories();
 
         // Build the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view->setLayout('day')->setName('browse');

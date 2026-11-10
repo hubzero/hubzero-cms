@@ -67,7 +67,7 @@ class Curation extends SiteController
         // Must be logged in to be a curator
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
-            $this->_login();
+            $this->login();
             return;
         }
 
@@ -116,10 +116,10 @@ class Curation extends SiteController
         );
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // push the stylesheet to the view
         $this->view->css('curation.css', 'plg_projects_publications');
@@ -139,7 +139,7 @@ class Curation extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         if (!$this->_title) {
             $this->_title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->option . '_' . $this->controller));
@@ -152,7 +152,7 @@ class Curation extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -211,7 +211,7 @@ class Curation extends SiteController
         if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
-                $this->_login();
+                $this->login();
                 return;
             }
 
@@ -228,10 +228,10 @@ class Curation extends SiteController
         $history = $this->pub->_curationModel->getLastHistoryRecord();
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view
             ->set('history', $history)
@@ -296,10 +296,10 @@ class Curation extends SiteController
 
         if (!$ajax) {
             // Set page title
-            $this->_buildTitle();
+            $this->buildTitle();
 
             // Set the pathway
-            $this->_buildPathway();
+            $this->buildPathway();
 
             // Add plugin style
             $this->view->css('curation.css', 'plg_projects_publications');
@@ -419,10 +419,10 @@ class Curation extends SiteController
         } else {
             if (!$ajax) {
                 // Set page title
-                $this->_buildTitle();
+                $this->buildTitle();
 
                 // Set the pathway
-                $this->_buildPathway();
+                $this->buildPathway();
 
                 // Add plugin style
                 $this->view->css('curation.css', 'plg_projects_publications');
@@ -471,7 +471,7 @@ class Curation extends SiteController
         if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
-                $this->_login();
+                $this->login();
                 return;
             }
 
@@ -678,7 +678,7 @@ class Curation extends SiteController
         if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
-                $this->_login();
+                $this->login();
                 return;
             }
 
@@ -942,7 +942,7 @@ class Curation extends SiteController
      *
      * @return  void
      */
-    protected function _login()
+    protected function login()
     {
         $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
 

@@ -95,7 +95,7 @@ class MysqliStatement
 
         if ($success) {
             // Get result set for metadata or fetching
-            $this->result = $this->stmt->get_result();
+            $this->result = $this->stmt->getResult();
         }
 
         return $success;

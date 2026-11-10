@@ -71,9 +71,9 @@ class PublicationUsageHelper
      */
     public function totalViews()
     {
-        $totalViewsQuery = $this->_generateColumnSumQuery('page_views');
+        $totalViewsQuery = $this->generateColumnSumQuery('page_views');
 
-        return (int) $this->_runQuery($totalViewsQuery);
+        return (int) $this->runQuery($totalViewsQuery);
     }
 
     /**
@@ -83,9 +83,9 @@ class PublicationUsageHelper
      */
     public function totalDownloads()
     {
-        $totalDownloadsQuery = $this->_generateColumnSumQuery('primary_accesses');
+        $totalDownloadsQuery = $this->generateColumnSumQuery('primary_accesses');
 
-        return (int) $this->_runQuery($totalDownloadsQuery);
+        return (int) $this->runQuery($totalDownloadsQuery);
     }
 
     /**
@@ -95,10 +95,10 @@ class PublicationUsageHelper
      * @return   string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateColumnSumQuery($column)
+    protected function generateColumnSumQuery($column)
     {
-        $publicationId = $this->_getPublicationId();
-        $versionId = $this->_getVersionId();
+        $publicationId = $this->getPublicationId();
+        $versionId = $this->getVersionId();
 
         $sumQuery = "SELECT SUM($column)
 			FROM `$this->logsTable`
@@ -115,7 +115,7 @@ class PublicationUsageHelper
      * @return   mixed
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _runQuery($query)
+    protected function runQuery($query)
     {
         $this->db->setQuery($query);
 
@@ -128,7 +128,7 @@ class PublicationUsageHelper
      * @return   int
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getPublicationId()
+    protected function getPublicationId()
     {
         if (!isset($this->publicationId)) {
             $publicationId = $this->publication->id;
@@ -144,7 +144,7 @@ class PublicationUsageHelper
      * @return   int
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getVersionId()
+    protected function getVersionId()
     {
         if (!isset($this->versionId)) {
             $versionId = $this->publication->version->id;

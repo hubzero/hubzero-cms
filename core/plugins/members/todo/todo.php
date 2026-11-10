@@ -133,11 +133,11 @@ class Todo extends Plugin
 
             switch ($this->task) {
                 case 'new':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
 
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
 
                 case 'browse':
@@ -182,7 +182,7 @@ class Todo extends Plugin
      * @return string
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _new()
+    protected function new()
     {
         $view = $this->view('default', 'new');
         $view->option = $this->option;
@@ -209,7 +209,7 @@ class Todo extends Plugin
      * Save item
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _save()
+    protected function save()
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));

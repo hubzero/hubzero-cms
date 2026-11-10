@@ -63,7 +63,7 @@ class Economy extends Obj
      * @return     boolean False if errors, true on success
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function distribute_points($con, $type = 'royalty')
+    public function distributePoints($con, $type = 'royalty')
     {
         if (!is_object($con)) {
             return false;

@@ -93,10 +93,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Instantiate a new registration object
         $xregistration = new \Components\Members\Models\Registration();
@@ -314,10 +314,10 @@ class Register extends SiteController
         ]);
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Instantiate a new registration object
         $xregistration = new \Components\Members\Models\Registration();
@@ -968,10 +968,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         return $this->showRegistrationForm($xregistration, 'create');
     }
@@ -1167,8 +1167,8 @@ class Register extends SiteController
         // per-session throttle, and the response is deliberately neutral so the
         // form can't be used to discover which addresses have accounts.
         if (User::isGuest()) {
-            $this->_buildPathway();
-            $this->_buildTitle();
+            $this->buildPathway();
+            $this->buildTitle();
 
             // First visit (or a bad token) -- just show the request form.
             if (Request::getMethod() != 'POST') {
@@ -1274,10 +1274,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         $this->view
             ->set('title', Lang::txt('COM_MEMBERS_REGISTER_RESEND'))
@@ -1477,10 +1477,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Output the view
         $this->view
@@ -1537,8 +1537,8 @@ class Register extends SiteController
                     // in a message before its recipient does, and one opening
                     // it must not spend the code the recipient then clicks.
                     if (Request::getMethod() != 'POST') {
-                        $this->_buildPathway();
-                        $this->_buildTitle();
+                        $this->buildPathway();
+                        $this->buildTitle();
 
                         $this->view
                             ->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
@@ -1583,8 +1583,8 @@ class Register extends SiteController
                     }
                     $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($dest), false);
 
-                    $this->_buildPathway();
-                    $this->_buildTitle();
+                    $this->buildPathway();
+                    $this->buildTitle();
 
                     $this->view
                         ->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
@@ -1663,8 +1663,8 @@ class Register extends SiteController
                 $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_CONFIRMATION'));
             }
 
-            $this->_buildPathway();
-            $this->_buildTitle();
+            $this->buildPathway();
+            $this->buildTitle();
 
             $this->view
                 ->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
@@ -1749,10 +1749,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Instantiate a new view
         $this->view
@@ -1810,10 +1810,10 @@ class Register extends SiteController
         }
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Set the page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Instantiate a new view
         $this->view
@@ -1830,7 +1830,7 @@ class Register extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -1851,7 +1851,7 @@ class Register extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         if ($this->task) {
             $title = Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->task));

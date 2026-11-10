@@ -22,7 +22,7 @@ class UrlHelper extends Obj
     public static function updatePerMembership($url, $userIsMember)
     {
         if (!$userIsMember) {
-            $url = self::_appendQueryCharacter($url);
+            $url = self::appendQueryCharacter($url);
             $url .= 'subdir=public';
         }
 
@@ -36,7 +36,7 @@ class UrlHelper extends Obj
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _appendQueryCharacter($url)
+    protected static function appendQueryCharacter($url)
     {
         if (!preg_match('/\?.+$/', $url)) {
             $url .= '?';

@@ -22,7 +22,7 @@ class Adapter extends Obj
      * @return  mixed   to be parsed
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _exec($call = '')
+    protected function exec($call = '')
     {
         if (!$call) {
             return false;

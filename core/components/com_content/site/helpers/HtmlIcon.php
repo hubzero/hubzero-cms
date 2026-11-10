@@ -163,7 +163,7 @@ class HtmlIcon
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function print_popup($article, $params, $attribs = [])
+    public static function printPopup($article, $params, $attribs = [])
     {
         $url  = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $article->slug,
@@ -195,7 +195,7 @@ class HtmlIcon
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function print_screen($article, $params, $attribs = [])
+    public static function printScreen($article, $params, $attribs = [])
     {
         $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT')
             . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');

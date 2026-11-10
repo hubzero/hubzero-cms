@@ -60,7 +60,7 @@ class Tools extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildTitle($title = null)
+    protected function buildTitle($title = null)
     {
         $this->_title = ($title) ? $title : Lang::txt(strtoupper($this->option));
         if ($this->task && $this->task != 'display') {
@@ -75,7 +75,7 @@ class Tools extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -120,10 +120,10 @@ class Tools extends SiteController
         $this->view->forgeName = Config::get('sitename') . ' FORGE';
 
         // Set the page title
-        $this->_buildTitle($this->view->forgeName);
+        $this->buildTitle($this->view->forgeName);
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

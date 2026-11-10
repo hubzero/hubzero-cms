@@ -208,19 +208,19 @@ class Projects extends Plugin
 
             switch ($task) {
                 case 'all':
-                    $arr['html'] = $this->_view('all');
+                    $arr['html'] = $this->renderView('all');
                     break;
                 case 'owned':
-                    $arr['html'] = $this->_view('owned');
+                    $arr['html'] = $this->renderView('owned');
                     break;
                 case 'updates':
-                    $arr['html'] = $this->_updates();
+                    $arr['html'] = $this->updates();
                     break;
                 case 'update':
-                    $arr['html'] = $this->_update();
+                    $arr['html'] = $this->update();
                     break;
                 default:
-                    $arr['html'] = $this->_view('all');
+                    $arr['html'] = $this->renderView('all');
                     break;
             }
         }
@@ -316,7 +316,7 @@ class Projects extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _view($which = 'owned')
+    protected function renderView($which = 'owned')
     {
         $which = strtolower($which);
 
@@ -360,7 +360,7 @@ class Projects extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _updates()
+    protected function updates()
     {
         $filters = [
             'limit' => Request::getInt('limit', 25),
@@ -406,7 +406,7 @@ class Projects extends Plugin
      * Update one or all projects
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _update()
+    protected function update()
     {
         // Check for request forgeries
         Request::checkToken(['post']);

@@ -34,10 +34,10 @@ class Sortevents extends Plugin
             return 0;
         }
 
-        if ($a->get_plugin() !== 'events' || $b->get_plugin() !== 'events' || $a->get_date() === $b->get_date()) {
+        if ($a->getPlugin() !== 'events' || $b->getPlugin() !== 'events' || $a->getDate() === $b->getDate()) {
             return 0;
         }
 
-        return $a->get_date() > $b->get_date() ? 1 : -1;
+        return $a->getDate() > $b->getDate() ? 1 : -1;
     }
 }

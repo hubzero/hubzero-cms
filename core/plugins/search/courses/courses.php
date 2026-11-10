@@ -31,7 +31,7 @@ class Courses extends Plugin
     {
         $authorization = 'state = 1';
 
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = '(match(c.alias, c.title, c.blurb) against (\'' . join(' ', $terms['stemmed']) . '\'))';
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -57,7 +57,7 @@ class Courses extends Plugin
 				$weight > 0"
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
-        if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
+        if (($rows = $rows->toAssociative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
             return;
         }
 

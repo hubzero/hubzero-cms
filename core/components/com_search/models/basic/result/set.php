@@ -190,7 +190,7 @@ class Set extends Obj implements Iterator
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_tags()
+    public function getTags()
     {
         return ($this->tags instanceof Blank) ? [] : $this->tags;
     }
@@ -203,7 +203,7 @@ class Set extends Obj implements Iterator
      * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_limit()
+    public function getLimit()
     {
         return $this->limit;
     }
@@ -216,7 +216,7 @@ class Set extends Obj implements Iterator
      * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_offset()
+    public function getOffset()
     {
         return $this->offset;
     }
@@ -230,7 +230,7 @@ class Set extends Obj implements Iterator
      * @return     void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function set_limit($limit)
+    public function setLimit($limit)
     {
         $this->limit = $limit;
     }
@@ -244,7 +244,7 @@ class Set extends Obj implements Iterator
      * @return     void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function set_offset($offset)
+    public function setOffset($offset)
     {
         $this->offset = $offset;
     }
@@ -257,7 +257,7 @@ class Set extends Obj implements Iterator
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_widgets()
+    public function getWidgets()
     {
         return $this->widgets;
     }
@@ -270,7 +270,7 @@ class Set extends Obj implements Iterator
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_shown_results()
+    public function getShownResults()
     {
         return $this->shown_results;
     }
@@ -283,7 +283,7 @@ class Set extends Obj implements Iterator
      * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_shown_count()
+    public function getShownCount()
     {
         return count($this->shown_results);
     }
@@ -296,7 +296,7 @@ class Set extends Obj implements Iterator
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_result_counts()
+    public function getResultCounts()
     {
         return $this->result_counts;
     }
@@ -309,7 +309,7 @@ class Set extends Obj implements Iterator
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function get_tag_weight_modifier()
+    public static function getTagWeightModifier()
     {
         return array_key_exists('tagmod', self::$plugin_weights) ? self::$plugin_weights['tagmod'] : 1.3;
     }
@@ -322,7 +322,7 @@ class Set extends Obj implements Iterator
      * @return     string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_custom_title()
+    public function getCustomTitle()
     {
         return $this->custom_title;
     }
@@ -337,13 +337,13 @@ class Set extends Obj implements Iterator
      */
     public function collect($force_generic = false)
     {
-        if (!$this->terms->any() || !($positive_terms = $this->terms->get_positive_chunks())) {
+        if (!$this->terms->any() || !($positive_terms = $this->terms->getPositiveChunks())) {
             return;
         }
 
         $authz = new Authorization();
         $req = new Request($this->terms);
-        $this->tags = $req->get_tags();
+        $this->tags = $req->getTags();
 
         $weighters = ['all' => []];
         $plugins = Plugin::byType('search');
@@ -439,33 +439,33 @@ class Set extends Obj implements Iterator
         }
         $this->current_plugin = null;
 
-        $this->highlighter = $this->terms->get_word_regex();
+        $this->highlighter = $this->terms->getWordRegex();
         foreach ($this->results as $res) {
             $this->processResult($res);
         }
 
         // call weighters
         $any_all_weighters = !!count($weighters['all']);
-        @list($term_plugin, $term_section) = $this->terms->get_section();
+        @list($term_plugin, $term_section) = $this->terms->getSection();
         $flat_results = $this->processed_results;
         foreach ($flat_results as $res) {
-            $pluginName = ucfirst($res->get_plugin());
+            $pluginName = ucfirst($res->getPlugin());
             $fc_child_flag = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName . '::FIRST_CLASS_CHILDREN';
             if (!defined($fc_child_flag) || constant($fc_child_flag)) {
-                foreach ($res->get_children() as $child) {
+                foreach ($res->getChildren() as $child) {
                     $flat_results[] = $child;
                 }
             }
         }
 
         foreach ($flat_results as $res) {
-            $plugin = $res->get_plugin();
+            $plugin = $res->getPlugin();
             $this->result_counts[$plugin]['count']++;
             $pluginMatch = !$term_plugin || $term_plugin == $plugin;
-            $sectionMatch = !$term_section || $term_section == $res->get_section_key();
+            $sectionMatch = !$term_section || $term_section == $res->getSectionKey();
             if ($pluginMatch && $sectionMatch) {
                 if (array_key_exists($plugin, self::$plugin_weights)) {
-                    $res->adjust_weight(self::$plugin_weights[$plugin], $plugin . ' base weight');
+                    $res->adjustWeight(self::$plugin_weights[$plugin], $plugin . ' base weight');
                 }
                 $used = [];
                 $pluginWeighters = array_key_exists($plugin, $weighters)
@@ -480,7 +480,7 @@ class Set extends Obj implements Iterator
                             // weight is 0..1
                             $adj *= (0.5 + self::$plugin_weights[$name]);
                         }
-                        $res->adjust_weight($adj, $name);
+                        $res->adjustWeight($adj, $name);
                     }
                 }
                 $this->shown_results[] = $res;
@@ -490,7 +490,7 @@ class Set extends Obj implements Iterator
 
         $links = [];
         foreach ($this->shown_results as $res) {
-            $links[] = [spl_object_hash($res), $res->has_parent(), $res->get_links()];
+            $links[] = [spl_object_hash($res), $res->hasParent(), $res->getLinks()];
         }
 
         $link_map = [];
@@ -528,16 +528,16 @@ class Set extends Obj implements Iterator
             // remove dupes
             $custom_links = [];
             foreach ($this->custom as $custom) {
-                $plugin = $custom->get_plugin();
+                $plugin = $custom->getPlugin();
                 $this->result_counts[$plugin]['count']++;
                 $custom->highlight($this->highlighter);
-                $custom_links[$custom->get_link()] = $custom->get_link();
+                $custom_links[$custom->getLink()] = $custom->getLink();
             }
 
             foreach ($this->shown_results as $idx => $res) {
-                if (array_key_exists($res->get_link(), $custom_links)) {
+                if (array_key_exists($res->getLink(), $custom_links)) {
                     unset($this->shown_results[$idx]);
-                    --$this->result_counts[$res->get_plugin()]['count'];
+                    --$this->result_counts[$res->getPlugin()]['count'];
                     --$this->total_count;
                 }
             }
@@ -561,9 +561,9 @@ class Set extends Obj implements Iterator
         // determine section counts and adjust plugin counts to account for
         // folded-together results
         foreach ($this->processed_results as $parent) {
-            $plugin = $parent->get_plugin();
+            $plugin = $parent->getPlugin();
 
-            $ccount = count($parent->get_children());
+            $ccount = count($parent->getChildren());
             $this->total_list_count -= $ccount;
             $this->result_counts[$plugin]['list_count'] -= $ccount;
 
@@ -571,13 +571,13 @@ class Set extends Obj implements Iterator
                 $this->result_counts[$plugin]['sections'] = [];
             }
 
-            foreach (array_merge([$parent], $parent->get_children()) as $idx => $res) {
+            foreach (array_merge([$parent], $parent->getChildren()) as $idx => $res) {
                 if ($idx > 0) {
                     --$this->total_list_count;
                     --$this->result_counts[$plugin]['list_count'];
                 }
 
-                $section = $res->get_section();
+                $section = $res->getSection();
                 if (!trim($section)) {
                     $section = 'Uncategorized';
                 }
@@ -619,10 +619,10 @@ class Set extends Obj implements Iterator
             'a' => 0,
             'b' => 0,
         ];
-        if (($relevance_diff = $a->get_weight() - $b->get_weight())) {
+        if (($relevance_diff = $a->getWeight() - $b->getWeight())) {
             $weight[$relevance_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortrelevance'];
         }
-        if (($date_diff = $a->get_date() - $b->get_date())) {
+        if (($date_diff = $a->getDate() - $b->getDate())) {
             $weight[$date_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortnewer'];
         }
 
@@ -654,7 +654,7 @@ class Set extends Obj implements Iterator
         if (is_array($res)) {
             $res = array_key_exists(0, $res) ? new AssocList($res) : new AssocScalar($res);
         }
-        $res->set_plugin($this->current_plugin);
+        $res->setPlugin($this->current_plugin);
 
         if ($this->custom_mode) {
             $this->custom[] = $res;
@@ -673,13 +673,13 @@ class Set extends Obj implements Iterator
      */
     private function processResult($res)
     {
-        $res = $res->to_associative();
+        $res = $res->toAssociative();
 
         if ($res instanceof Blank) {
             return;
         }
 
-        if ($res->is_scalar()) {
+        if ($res->isScalar()) {
             $res->highlight($this->highlighter);
             $this->processed_results[] = $res;
         } else {
@@ -697,7 +697,7 @@ class Set extends Obj implements Iterator
      * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_total_count()
+    public function getTotalCount()
     {
         return $this->total_count;
     }
@@ -710,7 +710,7 @@ class Set extends Obj implements Iterator
      * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_total_list_count()
+    public function getTotalListCount()
     {
         return $this->total_list_count;
     }
@@ -723,9 +723,9 @@ class Set extends Obj implements Iterator
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_plugin_list_count()
+    public function getPluginListCount()
     {
-        @list($term_plugin, $term_section) = $this->terms->get_section();
+        @list($term_plugin, $term_section) = $this->terms->getSection();
 
         if ($term_plugin && $term_section) {
             return $this->result_counts[$term_plugin]['sections'][$term_section]['count'];
@@ -745,9 +745,9 @@ class Set extends Obj implements Iterator
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_plugin_count()
+    public function getPluginCount()
     {
-        list($term_plugin, $term_section) = $this->terms->get_section();
+        list($term_plugin, $term_section) = $this->terms->getSection();
 
         if ($term_plugin) {
             return $this->result_counts[$term_plugin]['count'];
@@ -763,7 +763,7 @@ class Set extends Obj implements Iterator
      * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_shown()
+    public function getShown()
     {
         return $this->shown_results;
     }

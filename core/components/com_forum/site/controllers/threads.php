@@ -295,7 +295,7 @@ class Threads extends SiteController
             $post->set('created_by', User::get('id'));
         } elseif (
             $post->get('created_by') != User::get('id')
-            && !$this->_moderates('core.edit', 'thread', $id)
+            && !$this->moderates('core.edit', 'thread', $id)
         ) {
             // access-edit-thread cannot carry this check: authorize() sets it
             // true for every logged-in user and only overrides it when
@@ -414,7 +414,7 @@ class Threads extends SiteController
         if (
             !$isNew
             && $post->get('created_by') != User::get('id')
-            && !$this->_moderates('core.edit', $assetType, intval($fields['id']))
+            && !$this->moderates('core.edit', $assetType, intval($fields['id']))
         ) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
@@ -724,7 +724,7 @@ class Threads extends SiteController
         // Deleting requires ownership or moderator rights
         if (
             $post->get('created_by') != User::get('id')
-            && !$this->_moderates('core.delete', 'thread', $id)
+            && !$this->moderates('core.delete', 'thread', $id)
         ) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category),
@@ -993,7 +993,7 @@ class Threads extends SiteController
      * @param   integer  $assetId    Asset id, if any
      * @return  boolean
      */
-    protected function _moderates($action, $assetType = 'component', $assetId = null)
+    protected function moderates($action, $assetType = 'component', $assetId = null)
     {
         if (
             User::authorise('core.admin', $this->option)

@@ -38,7 +38,7 @@ class Sitemap extends Plugin
      */
     public static function onSearch($request, &$results)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $weight = 'match(s.title, s.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];

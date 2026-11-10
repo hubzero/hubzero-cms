@@ -285,7 +285,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
             throw new \Geocoder\Exception\UnsupportedOperation(Lang::txt('The LocalProvider does not support "%s".', $this->type));
         }
 
-        $retriever = '_get' . ucfirst($this->type);
+        $retriever = 'get' . ucfirst($this->type);
 
         return $this->$retriever($address);
     }
@@ -296,7 +296,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $code Two letter country code
      * @return array
      */
-    protected function _getCountry($code)
+    protected function getCountry($code)
     {
         if ($code) {
             $code = strtoupper($code);
@@ -321,7 +321,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $address Address
      * @return array
      */
-    protected function _getCountries($address)
+    protected function getCountries($address)
     {
         $address = strtolower(trim($address));
 
@@ -365,7 +365,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $address
      * @return string
      */
-    protected function _getContinent($address)
+    protected function getContinent($address)
     {
         $address = trim($address);
 

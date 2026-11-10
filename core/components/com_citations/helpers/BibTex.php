@@ -292,8 +292,8 @@ class BibTex
         for ($i = 0; $i < strlen($this->content); $i++) {
             $char = substr($this->content, $i, 1);
             if ((0 != $open) && ('@' == $char)) {
-                if (!$this->_checkAt($buffer)) {
-                    $this->_generateWarning('WARNING_MISSING_END_BRACE', '', $buffer);
+                if (!$this->checkAt($buffer)) {
+                    $this->generateWarning('WARNING_MISSING_END_BRACE', '', $buffer);
                     //To correct the data we need to insert a closing brace
                     $char     = '}';
                     $i--;
@@ -313,7 +313,7 @@ class BibTex
                 }
                 if (0 == $open) { //End of entry
                     $entry     = false;
-                    $entrydata = $this->_parseEntry($buffer);
+                    $entrydata = $this->parseEntry($buffer);
                     if (!$entrydata) {
                         /**
                          * This is not yet used.
@@ -334,7 +334,7 @@ class BibTex
         }
         //If open is one it may be possible that the last ending brace is missing
         if (1 == $open) {
-            $entrydata = $this->_parseEntry($buffer);
+            $entrydata = $this->parseEntry($buffer);
             if (!$entrydata) {
                 $valid = false;
             } else {
@@ -361,7 +361,7 @@ class BibTex
                         $notuniques[] = $cites[$i];
                     }
                 }
-                $this->_generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',', $notuniques));
+                $this->generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',', $notuniques));
             }
         }
         if ($valid) {
@@ -393,7 +393,7 @@ class BibTex
      * @return array   The representation of the entry or false if there is a problem
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _parseEntry($entry)
+    public function parseEntry($entry)
     {
         $entrycopy = '';
         if ($this->options['validate']) {
@@ -403,12 +403,12 @@ class BibTex
         if ('@string' ==  strtolower(substr($entry, 0, 7))) {
             //String are not yet supported!
             if ($this->options['validate']) {
-                $this->_generateWarning('STRING_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
+                $this->generateWarning('STRING_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
             }
         } elseif ('@preamble' ==  strtolower(substr($entry, 0, 9))) {
             //Preamble not yet supported!
             if ($this->options['validate']) {
-                $this->_generateWarning('PREAMBLE_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
+                $this->generateWarning('PREAMBLE_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
             }
         } else {
             //Parsing all fields
@@ -420,7 +420,7 @@ class BibTex
                     $proceed = false;
                 }
                 if ($proceed) {
-                    $proceed = $this->_checkEqualSign($entry, $position);
+                    $proceed = $this->checkEqualSign($entry, $position);
                 }
                 while (!$proceed) {
                     $substring = substr($entry, 0, $position);
@@ -430,7 +430,7 @@ class BibTex
                         $proceed = false;
                     }
                     if ($proceed) {
-                        $proceed = $this->_checkEqualSign($entry, $position);
+                        $proceed = $this->checkEqualSign($entry, $position);
                     }
                 }
 
@@ -441,16 +441,16 @@ class BibTex
                     $value = substr($value, 0, -1);
                 }
                 if ($this->options['validate']) {
-                    $this->_validateValue($value, $entrycopy);
+                    $this->validateValue($value, $entrycopy);
                 }
                 if ($this->options['stripDelimiter']) {
-                    $value = $this->_stripDelimiter($value);
+                    $value = $this->stripDelimiter($value);
                 }
                 if ($this->options['unwrap']) {
-                    $value = $this->_unwrap($value);
+                    $value = $this->unwrap($value);
                 }
                 if ($this->options['removeCurlyBraces']) {
-                    $value = $this->_removeCurlyBraces($value);
+                    $value = $this->removeCurlyBraces($value);
                 }
                 $position    = strrpos($entry, ',');
                 $field       = strtolower(trim(substr($entry, $position + 1)));
@@ -465,13 +465,13 @@ class BibTex
                 $ret['type'] = substr($ret['type'], 1);
             }
             if ($this->options['validate']) {
-                if (!$this->_checkAllowedType($ret['type'])) {
-                    $this->_generateWarning('WARNING_NOT_ALLOWED_TYPE', $ret['type'], $entry . '}');
+                if (!$this->checkAllowedType($ret['type'])) {
+                    $this->generateWarning('WARNING_NOT_ALLOWED_TYPE', $ret['type'], $entry . '}');
                 }
             }
             //Handling the authors
             if (in_array('author', array_keys($ret)) && $this->options['extractAuthors']) {
-                $ret['author'] = $this->_extractAuthors($ret['author']);
+                $ret['author'] = $this->extractAuthors($ret['author']);
             }
         }
         return $ret;
@@ -490,7 +490,7 @@ class BibTex
      * @return bool    true if the '=' is correct, false if it contains to an equation
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _checkEqualSign($entry, $position)
+    public function checkEqualSign($entry, $position)
     {
         $ret = true;
         //This is getting tricky
@@ -550,7 +550,7 @@ class BibTex
      * @return bool    true if allowed, false otherwise
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _checkAllowedType($entry)
+    public function checkAllowedType($entry)
     {
         return in_array($entry, $this->allowedTypes);
     }
@@ -567,7 +567,7 @@ class BibTex
      * @return bool    true if the at is correct, false if the at is likely to begin the next entry.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _checkAt($entry)
+    public function checkAt($entry)
     {
         $ret     = false;
         $opening = array_keys($this->delimiters);
@@ -616,7 +616,7 @@ class BibTex
      * @return string  Stripped entry
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _stripDelimiter($entry)
+    public function stripDelimiter($entry)
     {
         $beginningdels = array_keys($this->delimiters);
         $length        = strlen($entry);
@@ -642,7 +642,7 @@ class BibTex
      * @return string  unwrapped entry
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _unwrap($entry)
+    public function unwrap($entry)
     {
         $entry = preg_replace('/\s+/', ' ', $entry);
         return trim($entry);
@@ -656,7 +656,7 @@ class BibTex
      * @return string  wrapped entry
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _wordwrap($entry)
+    public function wordwrap($entry)
     {
         if (('' != $entry) && (is_string($entry))) {
             $width = $this->options['wordWrapWidth'];
@@ -675,9 +675,9 @@ class BibTex
      * @return array   the extracted authors
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _extractAuthors($entry)
+    public function extractAuthors($entry)
     {
-        $entry       = $this->_unwrap($entry);
+        $entry       = $this->unwrap($entry);
         $authorarray = [];
         $authorarray = preg_split('# and #', $entry);
 
@@ -706,14 +706,14 @@ class BibTex
                         if ($inlast) {
                             $last .= ' ' . $tmparray[$j];
                         } elseif ($invon) {
-                            $case = $this->_determineCase($tmparray[$j]);
+                            $case = $this->determineCase($tmparray[$j]);
                             if ($case instanceof \Exception) {
                                 // IGNORE?
                             } elseif ((0 == $case) || (-1 == $case)) { //Change from von to last
                                 //You only change when there is no more lower case there
                                 $islast = true;
                                 for ($k = ($j + 1); $k < ($size - 1); $k++) {
-                                    $futurecase = $this->_determineCase($tmparray[$k]);
+                                    $futurecase = $this->determineCase($tmparray[$k]);
                                     if ($case instanceof \Exception) {
                                         // IGNORE?
                                     } elseif (0 == $futurecase) {
@@ -734,7 +734,7 @@ class BibTex
                                 $von .= ' ' . $tmparray[$j];
                             }
                         } else {
-                            $case = $this->_determineCase($tmparray[$j]);
+                            $case = $this->determineCase($tmparray[$j]);
                             if ($case instanceof \Exception) {
                                 // IGNORE?
                             } elseif (0 == $case) { //Change from first to von
@@ -763,11 +763,11 @@ class BibTex
                         if ($inlast) {
                             $last .= ' ' . $vonlastarray[$j];
                         } else {
-                            if (0 != ($this->_determineCase($vonlastarray[$j]))) { //Change from von to last
+                            if (0 != ($this->determineCase($vonlastarray[$j]))) { //Change from von to last
                                 $islast = true;
                                 for ($k = ($j + 1); $k < ($size - 1); $k++) {
-                                    $this->_determineCase($vonlastarray[$k]);
-                                    $case = $this->_determineCase($vonlastarray[$k]);
+                                    $this->determineCase($vonlastarray[$k]);
+                                    $case = $this->determineCase($vonlastarray[$k]);
                                     if ($case instanceof \Exception) {
                                         // IGNORE?
                                     } elseif (0 == $case) {
@@ -818,7 +818,7 @@ class BibTex
      * @return int     The Case or Exception if there was a problem
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _determineCase($word)
+    public function determineCase($word)
     {
         $ret         = -1;
         $trimmedword = trim($word);
@@ -866,15 +866,15 @@ class BibTex
      * @return void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _validateValue($entry, $wholeentry)
+    public function validateValue($entry, $wholeentry)
     {
         //There is no @ allowed if the entry is enclosed by braces
         if (preg_match('/^{.*@.*}$/', $entry)) {
-            $this->_generateWarning('WARNING_AT_IN_BRACES', $entry, $wholeentry);
+            $this->generateWarning('WARNING_AT_IN_BRACES', $entry, $wholeentry);
         }
         //No escaped " allowed if the entry is enclosed by double quotes
         if (preg_match('/^\".*\\".*\"$/', $entry)) {
-            $this->_generateWarning('WARNING_ESCAPED_DOUBLE_QUOTE_INSIDE_DOUBLE_QUOTES', $entry, $wholeentry);
+            $this->generateWarning('WARNING_ESCAPED_DOUBLE_QUOTE_INSIDE_DOUBLE_QUOTES', $entry, $wholeentry);
         }
         //Amount of Braces is not correct
         $open     = 0;
@@ -891,7 +891,7 @@ class BibTex
             $lastchar = $char;
         }
         if (0 != $open) {
-            $this->_generateWarning('WARNING_UNBALANCED_AMOUNT_OF_BRACES', $entry, $wholeentry);
+            $this->generateWarning('WARNING_UNBALANCED_AMOUNT_OF_BRACES', $entry, $wholeentry);
         }
     }
 
@@ -903,7 +903,7 @@ class BibTex
      * @param  string  Value  with removed curly braces
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _removeCurlyBraces($value)
+    public function removeCurlyBraces($value)
     {
         //First we save the delimiters
         $beginningdels = array_keys($this->delimiters);
@@ -940,7 +940,7 @@ class BibTex
      * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _generateWarning($type, $entry, $wholeentry = '')
+    public function generateWarning($type, $entry, $wholeentry = '')
     {
         $warning['warning']    = $type;
         $warning['entry']      = $entry;
@@ -994,7 +994,7 @@ class BibTex
      * @return string  the formatted author string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _formatAuthor($array)
+    public function formatAuthor($array)
     {
         if (!array_key_exists('von', $array)) {
             $array['von'] = '';
@@ -1041,7 +1041,7 @@ class BibTex
             //Other fields except author
             foreach ($entry as $key => $val) {
                 if ($this->options['wordWrapWidth'] > 0) {
-                    $val = $this->_wordWrap($val);
+                    $val = $this->wordwrap($val);
                 }
                 if (!in_array($key, ['cite', 'type', 'author'])) {
                     $bibtex .= "\t" . $key . ' = {' . $val . "},\n";
@@ -1052,7 +1052,7 @@ class BibTex
                 if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
-                        $tmparray[] = $this->_formatAuthor($authorentry);
+                        $tmparray[] = $this->formatAuthor($authorentry);
                     }
                     $author = join(' and ', $tmparray);
                 } else {
@@ -1126,19 +1126,19 @@ class BibTex
             $year    = '';
             $authors = '';
             if (array_key_exists('title', $entry)) {
-                $title = $this->_unwrap($entry['title']);
+                $title = $this->unwrap($entry['title']);
             }
             if (array_key_exists('journal', $entry)) {
-                $journal = $this->_unwrap($entry['journal']);
+                $journal = $this->unwrap($entry['journal']);
             }
             if (array_key_exists('year', $entry)) {
-                $year = $this->_unwrap($entry['year']);
+                $year = $this->unwrap($entry['year']);
             }
             if (array_key_exists('author', $entry)) {
                 if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
-                        $tmparray[] = $this->_formatAuthor($authorentry);
+                        $tmparray[] = $this->formatAuthor($authorentry);
                     }
                     $authors = join(', ', $tmparray);
                 } else {
@@ -1153,7 +1153,7 @@ class BibTex
                 $line .= "\n\\par\n";
                 $ret  .= $line;
             } else {
-                $this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
+                $this->generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
             }
         }
         $ret .= '}';
@@ -1183,28 +1183,28 @@ class BibTex
             $year    = '';
             $authors = '';
             if (array_key_exists('title', $entry)) {
-                $title = $this->_unwrap($entry['title']);
+                $title = $this->unwrap($entry['title']);
             }
             if (array_key_exists('journal', $entry)) {
-                $journal = $this->_unwrap($entry['journal']);
+                $journal = $this->unwrap($entry['journal']);
             }
             if (array_key_exists('year', $entry)) {
-                $year = $this->_unwrap($entry['year']);
+                $year = $this->unwrap($entry['year']);
             }
             if (array_key_exists('volume', $entry)) {
-                $volume = $this->_unwrap($entry['volume']);
+                $volume = $this->unwrap($entry['volume']);
             }
             if (array_key_exists('pages', $entry)) {
-                $pages = $this->_unwrap($entry['pages']);
+                $pages = $this->unwrap($entry['pages']);
             }
             if (array_key_exists('publisher', $entry)) {
-                $publisher = $this->_unwrap($entry['publisher']);
+                $publisher = $this->unwrap($entry['publisher']);
             }
             if (array_key_exists('author', $entry)) {
                 if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
-                        $tmparray[] = $this->_formatAuthor($authorentry);
+                        $tmparray[] = $this->formatAuthor($authorentry);
                     }
                     $authors = join(', ', $tmparray);
                 } else {
@@ -1237,7 +1237,7 @@ class BibTex
                 }
                 $ret  .= $line;
             } else {
-                $this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
+                $this->generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
             }
         }
         $ret  .= "</table>";

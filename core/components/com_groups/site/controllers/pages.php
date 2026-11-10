@@ -58,7 +58,7 @@ class Pages extends Base
 
         // Check authorization
         $notAuthorized = $this->authorize() != 'manager'
-            && !$this->_authorizedForTask('group.pages');
+            && !$this->authorizedForTask('group.pages');
         if ($this->group->published == 2 || $notAuthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
@@ -103,10 +103,10 @@ class Pages extends Base
         $this->view->filter = Request::getInt('filer', 0);
 
         //build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         //build title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         //set view vars
         $this->view->title  = Lang::txt('COM_GROUPS_PAGES_MANAGE') . ': ' . $this->group->get('description');
@@ -207,10 +207,10 @@ class Pages extends Base
         $this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
 
         // build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // get view notifications
         $this->view->notifications = $this->getNotifications();
@@ -470,10 +470,10 @@ class Pages extends Base
         }
 
         // build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // get view notifications
         $this->view->notifications = $this->getNotifications();

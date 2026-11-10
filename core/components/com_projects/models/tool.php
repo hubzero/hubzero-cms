@@ -251,7 +251,7 @@ class Tool extends Model
         if ($property) {
             if ($property == 'recorded') {
                 $this->set('recorded', $this->lastUpdate->recorded);
-                return $this->_date('recorded', $as);
+                return $this->date('recorded', $as);
             }
             if ($property == 'actor') {
                 if (!isset($this->actor) || !($this->actor instanceof \Hubzero\User\User)) {
@@ -317,7 +317,7 @@ class Tool extends Model
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -328,7 +328,7 @@ class Tool extends Model
      */
     public function statusChanged($as = '')
     {
-        return $this->_date('status_changed', $as);
+        return $this->date('status_changed', $as);
     }
 
     /**
@@ -356,7 +356,7 @@ class Tool extends Model
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         if ($this->get($key) == '0000-00-00 00:00:00') {
             return null;
@@ -371,7 +371,7 @@ class Tool extends Model
                 break;
 
             case 'datetime':
-                return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+                return $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
                 break;
 
             case 'timeago':

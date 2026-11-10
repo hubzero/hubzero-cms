@@ -98,7 +98,7 @@ class Post extends Table
 
         switch ($what) {
             case 'count':
-                $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
@@ -156,7 +156,7 @@ class Post extends Table
                 if (isset($filters['user_id']) && $filters['user_id']) {
                     $query .= ", v.id AS item_voted ";
                 }
-                $query .= $this->_buildQuery($filters);
+                $query .= $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'p.created';
@@ -185,7 +185,7 @@ class Post extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS p";
         $query .= " INNER JOIN #__collections AS c ON c.id=p.collection_id";

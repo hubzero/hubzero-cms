@@ -390,7 +390,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -401,7 +401,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function modified($as = '')
     {
-        return $this->_date('modified', $as);
+        return $this->date('modified', $as);
     }
 
     /**
@@ -417,9 +417,9 @@ class Version extends Relational implements \Hubzero\Search\Searchable
             && $this->get('accepted') != '0000-00-00 00:00:00'
             && $this->get('accepted') > $this->get('published_up')
         ) {
-            return $this->_date('accepted', $as);
+            return $this->date('accepted', $as);
         }
-        return $this->_date('published_up', $as);
+        return $this->date('published_up', $as);
     }
 
     /**
@@ -430,7 +430,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function unpublished($as = '')
     {
-        return $this->_date('published_down', $as);
+        return $this->date('published_down', $as);
     }
 
     /**
@@ -441,7 +441,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function submitted($as = '')
     {
-        return $this->_date('submitted', $as);
+        return $this->date('submitted', $as);
     }
 
     /**
@@ -452,7 +452,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function accepted($as = '')
     {
-        return $this->_date('accepted', $as);
+        return $this->date('accepted', $as);
     }
 
     /**
@@ -463,7 +463,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function archived($as = '')
     {
-        return $this->_date('archived', $as);
+        return $this->date('archived', $as);
     }
 
     /**
@@ -474,7 +474,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function released($as = '')
     {
-        return $this->_date('released', $as);
+        return $this->date('released', $as);
     }
 
     /**
@@ -485,7 +485,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         if (!$this->get($key) || $this->get($key) == '0000-00-00 00:00:00') {
             return '';
@@ -503,7 +503,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
                 break;
 
             case 'datetime':
-                $dt = $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+                $dt = $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
                 break;
 
             case 'timeago':

@@ -267,71 +267,71 @@ class Files extends Plugin
             switch ($this->task) {
                 // Basic file management
                 case 'upload':
-                    $arr['html'] = $this->_upload();
+                    $arr['html'] = $this->upload();
                     break;
 
                 case 'save':
                 case 'saveprov':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
 
                 case 'delete':
                 case 'removeit':
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
 
                 case 'move':
                 case 'moveit':
-                    $arr['html'] = $this->_move();
+                    $arr['html'] = $this->move();
                     break;
 
                 case 'rename':
                 case 'renameit':
-                    $arr['html'] = $this->_rename();
+                    $arr['html'] = $this->rename();
                     break;
 
                 case 'share':
                 case 'shareit':
-                    $arr['html'] = $this->_share();
+                    $arr['html'] = $this->share();
                     break;
 
                     // History
                 case 'history':
-                    $arr['html'] = $this->_history();
+                    $arr['html'] = $this->history();
                     break;
                 case 'diff':
-                    $arr['html'] = $this->_diff();
+                    $arr['html'] = $this->diff();
                     break;
 
                     // Serve/preview
                 case 'compile':
-                    $arr['html'] = $this->_compile();
+                    $arr['html'] = $this->compile();
                     break;
                 case 'serve':
                     $arr['html'] = $this->serve();
                     break;
                 case 'download':
                 case 'open':
-                    $arr['html'] = $this->_download();
+                    $arr['html'] = $this->download();
                     break;
 
                     // Manage directory
                 case 'newdir':
-                    $arr['html'] = $this->_newDir();
+                    $arr['html'] = $this->newDir();
                     break;
                 case 'deletedir':
-                    $arr['html'] = $this->_deleteDir();
+                    $arr['html'] = $this->deleteDir();
                     break;
                 case 'savedir':
-                    $arr['html'] = $this->_saveDir();
+                    $arr['html'] = $this->saveDir();
                     break;
 
                     // Manage deleted
                 case 'trash':
-                    $arr['html'] = $this->_showTrash();
+                    $arr['html'] = $this->showTrash();
                     break;
                 case 'restore':
-                    $arr['html'] = $this->_restore();
+                    $arr['html'] = $this->restore();
                     break;
 
                     // Disk space management
@@ -353,18 +353,18 @@ class Files extends Plugin
                     // Publishing selectors
                 case 'select':
                 case 'filter':
-                    $arr['html'] = $this->_select();
+                    $arr['html'] = $this->select();
                     break;
 
                     // Connections
                 case 'connect':
                 case 'disconnect':
-                    $arr['html'] = $this->_connect();
+                    $arr['html'] = $this->connect();
                     break;
 
                     // Sync with remote
                 case 'sync':
-                    $arr['html'] = $this->_iniSync();
+                    $arr['html'] = $this->iniSync();
                     break;
                 case 'sync_status':
                     $arr['html'] = $this->syncStatus();
@@ -381,7 +381,7 @@ class Files extends Plugin
                     // File browser
                 case 'browse':
                 default:
-                    $arr['html'] = $this->_browse();
+                    $arr['html'] = $this->browse();
                     break;
             }
         }
@@ -431,7 +431,7 @@ class Files extends Plugin
      * @param   integer  $sync
      * @return  string
      */
-    protected function _browse($sync = 0)
+    protected function browse($sync = 0)
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -510,7 +510,7 @@ class Files extends Plugin
      *
      * @return  string
      */
-    protected function _select()
+    protected function select()
     {
         // Incoming
         $props     = Request::getString('p', '');
@@ -801,7 +801,7 @@ class Files extends Plugin
     /**
      * Upload view
      */
-    protected function _upload()
+    protected function upload()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -841,7 +841,7 @@ class Files extends Plugin
     /**
      * Upload file(s) and add to repository
      */
-    protected function _save()
+    protected function save()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -935,7 +935,7 @@ class Files extends Plugin
     /**
      * New directory form
      */
-    protected function _newDir()
+    protected function newDir()
     {
         // Incoming
         $newdir = Request::getString('newdir', '', 'post');
@@ -964,7 +964,7 @@ class Files extends Plugin
     /**
      * Save new directory
      */
-    protected function _saveDir()
+    protected function saveDir()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1013,7 +1013,7 @@ class Files extends Plugin
     /**
      * Delete directory
      */
-    protected function _deleteDir()
+    protected function deleteDir()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1062,7 +1062,7 @@ class Files extends Plugin
     /**
      * Delete items
      */
-    protected function _delete()
+    protected function delete()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1070,10 +1070,10 @@ class Files extends Plugin
         }
 
         // Get incoming array of items
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections();
+        $remotes = $this->getRemoteConnections();
 
         // Params for repo call
         $params = [
@@ -1189,7 +1189,7 @@ class Files extends Plugin
     /**
      * Rename
      */
-    protected function _rename()
+    protected function rename()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1199,7 +1199,7 @@ class Files extends Plugin
         // Confirm request
         if ($this->task == 'rename') {
             // Get incoming array of items
-            $items = $this->_sortIncoming();
+            $items = $this->sortIncoming();
 
             // Output HTML
             $view = new \Hubzero\Plugin\View([
@@ -1271,7 +1271,7 @@ class Files extends Plugin
     /**
      * Move file(s)
      */
-    protected function _move()
+    protected function move()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1279,10 +1279,10 @@ class Files extends Plugin
         }
 
         // Get incoming array of items
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections();
+        $remotes = $this->getRemoteConnections();
 
         // Confirmation screen
         if ($this->task == 'move') {
@@ -1402,13 +1402,13 @@ class Files extends Plugin
     /**
      * Show file history
      */
-    protected function _history()
+    protected function history()
     {
         // Combine file and folder data
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections();
+        $remotes = $this->getRemoteConnections();
 
         // Params for repo call
         $params = [
@@ -1532,10 +1532,10 @@ class Files extends Plugin
     /**
      * Show revision diffs
      */
-    protected function _diff()
+    protected function diff()
     {
         // Combine file and folder data
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Repo call params
         $params = ['subdir' => $this->subdir];
@@ -1686,7 +1686,7 @@ class Files extends Plugin
     /**
      * Restore deleted files
      */
-    protected function _restore()
+    protected function restore()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1733,7 +1733,7 @@ class Files extends Plugin
     /**
      * Download file(s)
      */
-    protected function _download()
+    protected function download()
     {
         // Incoming
         $render = Request::getString('render', 'download');
@@ -1743,10 +1743,10 @@ class Files extends Plugin
         $collector = [];
 
         // Combine file and folder data
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections(false);
+        $remotes = $this->getRemoteConnections(false);
 
         // Params for repo call
         $params = [
@@ -1986,13 +1986,13 @@ class Files extends Plugin
      *
      * @return  mixed  array or false
      */
-    protected function _compile()
+    protected function compile()
     {
         // Combine file and folder data
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections();
+        $remotes = $this->getRemoteConnections();
 
         // Params for repo call
         $params = [
@@ -2262,7 +2262,7 @@ class Files extends Plugin
      * Send file back or from to remote service for remote editing
      * Local repo only
      */
-    protected function _share()
+    protected function share()
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -2276,7 +2276,7 @@ class Files extends Plugin
         $shared    = 0;
 
         // Get stored remote connections
-        $remotes = $this->_getRemoteConnections(false);
+        $remotes = $this->getRemoteConnections(false);
 
         // Params for repo call
         $params = [
@@ -2285,7 +2285,7 @@ class Files extends Plugin
         ];
 
         // Combine file and folder data
-        $items = $this->_sortIncoming();
+        $items = $this->sortIncoming();
 
         if (empty($items)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
@@ -2649,7 +2649,7 @@ class Files extends Plugin
      *
      * @return  string
      */
-    protected function _showTrash()
+    protected function showTrash()
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -2685,7 +2685,7 @@ class Files extends Plugin
      * @param   string  $callback  URL to return to after authorization
      * @return  string
      */
-    protected function _connect($service = '', $callback = '')
+    protected function connect($service = '', $callback = '')
     {
         // Incoming
         $service    = $service ? $service : Request::getString('service', '');
@@ -2769,7 +2769,7 @@ class Files extends Plugin
     /**
      * Initiate sync
      */
-    protected function _iniSync()
+    protected function iniSync()
     {
         // Incoming
         $ajax  = Request::getInt('ajax', 0);
@@ -2820,9 +2820,9 @@ class Files extends Plugin
         $this->rSync->set('auto', $auto);
 
         if (!$ajax) {
-            return $this->_browse();
+            return $this->browse();
         } else {
-            $this->rSync->set('output', $this->_browse());
+            $this->rSync->set('output', $this->browse());
             return json_encode($this->rSync->getStatus());
         }
     }
@@ -2878,7 +2878,7 @@ class Files extends Plugin
             // Refresh view if sync happened recently
             $timecheck = date('c', time() - (1 * 1 * 60));
             if ($synced >= $timecheck) {
-                $status['output'] = $this->_browse(2);
+                $status['output'] = $this->browse(2);
             }
 
             // Timed sync?
@@ -2990,7 +2990,7 @@ class Files extends Plugin
      * @param   bool   $remoteEdit
      * @return  array
      */
-    protected function _getRemoteConnections($remoteEdit = true)
+    protected function getRemoteConnections($remoteEdit = true)
     {
         $remotes = [];
         if (!empty($this->remoteService)) {
@@ -3036,7 +3036,7 @@ class Files extends Plugin
      * @param   boolean  $recurse
      * @return  array
      */
-    protected function _getMemberFiles($recurse = true)
+    protected function getMemberFiles($recurse = true)
     {
         // Check path format
         $subdir = trim($this->subdir, DS);
@@ -3269,7 +3269,7 @@ class Files extends Plugin
      *
      * @return  void
      */
-    protected function _cleanData()
+    protected function cleanData()
     {
         // Clean up empty values
         $checked = Request::getArray('asset', []);
@@ -3304,10 +3304,10 @@ class Files extends Plugin
      *
      * @return  array
      */
-    protected function _sortIncoming()
+    protected function sortIncoming()
     {
         // Clean incoming data
-        $this->_cleanData();
+        $this->cleanData();
 
         // Incoming
         $checked = Request::getArray('asset', []);

@@ -311,7 +311,7 @@ class Wishlist extends Relational
      */
     public function removeOwner($what, $data)
     {
-        $data = $this->_toArray($data);
+        $data = $this->splitList($data);
 
         $what = strtolower($what);
 
@@ -376,7 +376,7 @@ class Wishlist extends Relational
      */
     public function addOwner($what, $data)
     {
-        $data = $this->_toArray($data);
+        $data = $this->splitList($data);
 
         $what = strtolower($what);
 
@@ -587,7 +587,7 @@ class Wishlist extends Relational
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _toArray($data = '')
+    public function splitList($data = '')
     {
         if (is_array($data)) {
             return $data;

@@ -101,7 +101,7 @@ class SectionCode extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = [])
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->tableName AS c";
 
@@ -151,7 +151,7 @@ class SectionCode extends Table
     {
         $filters['limit'] = 0;
 
-        $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+        $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
         $this->db->setQuery($query);
         return $this->db->loadResult();
@@ -165,7 +165,7 @@ class SectionCode extends Table
      */
     public function find($filters = [])
     {
-        $query = "SELECT c.*" . $this->_buildQuery($filters);
+        $query = "SELECT c.*" . $this->buildQuery($filters);
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
             $query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);

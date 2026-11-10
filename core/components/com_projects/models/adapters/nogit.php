@@ -114,7 +114,7 @@ class Nogit extends Models\Adapter
             }
             // Load basic file metadata
             $file = new Models\File($item, $this->path);
-            if ($this->_shouldSkipFile($file)) {
+            if ($this->shouldSkipFile($file)) {
                 continue;
             }
             // Add to list
@@ -147,7 +147,7 @@ class Nogit extends Models\Adapter
         array_multisort($sorting, $sortdir, $items);
 
         // Apply start and limit, get complete metadata and return
-        return $this->_list($items, $params);
+        return $this->list($items, $params);
     }
 
     /**
@@ -157,7 +157,7 @@ class Nogit extends Models\Adapter
      * @return  bool
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _shouldSkipFile($file)
+    protected function shouldSkipFile($file)
     {
         $fileName = $file->get('name');
         $filesToSkip = ['.git', '.gitignore'];
@@ -205,7 +205,7 @@ class Nogit extends Models\Adapter
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _list($items, $params, $folders = [])
+    protected function list($items, $params, $folders = [])
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
         $limit    = isset($params['limit']) ? $params['limit'] : 0;
@@ -369,7 +369,7 @@ class Nogit extends Models\Adapter
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _file($file, $dirPath, $property = null)
+    protected function file($file, $dirPath, $property = null)
     {
         if (isset($this->files[$file->get('localPath')])) {
             return $property

@@ -164,7 +164,7 @@ class Usage
      * @return  string  HTML
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function display_substats()
+    public function displaySubstats()
     {
         $html  = '<table class="usagestats" summary="Review and Citation statistics for this publication">' . "\n";
         $html .= ' <caption>Reviews &amp; Citations</caption>' . "\n";

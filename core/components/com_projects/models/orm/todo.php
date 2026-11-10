@@ -216,7 +216,7 @@ class Todo extends Relational
      */
     public function created($as = '')
     {
-        return $this->_date('created', $as);
+        return $this->date('created', $as);
     }
 
     /**
@@ -227,7 +227,7 @@ class Todo extends Relational
      */
     public function due($as = '')
     {
-        return $this->_date('duedate', $as);
+        return $this->date('duedate', $as);
     }
 
     /**
@@ -238,7 +238,7 @@ class Todo extends Relational
      */
     public function closed($as = '')
     {
-        return $this->_date('closed', $as);
+        return $this->date('closed', $as);
     }
 
     /**
@@ -249,7 +249,7 @@ class Todo extends Relational
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _date($key, $as = '')
+    protected function date($key, $as = '')
     {
         $dt = $this->get($key);
 

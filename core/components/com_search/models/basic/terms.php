@@ -76,7 +76,7 @@ class Terms extends Obj
     {
         // The search page builds this with no terms (null) on a bare visit
         $this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', (string) $raw));
-        if ($this->is_set()) {
+        if ($this->isSet()) {
             $this->parseSearchableChunks();
         }
     }
@@ -87,7 +87,7 @@ class Terms extends Obj
      * @param   integer  $idx
      * @return  mixed
      */
-    public function is_quoted($idx)
+    public function isQuoted($idx)
     {
         return isset($this->quoted[$idx]) ? $this->quoted[$idx] : false;
     }
@@ -97,7 +97,7 @@ class Terms extends Obj
      *
      * @return  string
      */
-    public function get_raw()
+    public function getRaw()
     {
         return $this->raw;
     }
@@ -107,7 +107,7 @@ class Terms extends Obj
      *
      * @return  string
      */
-    public function get_raw_without_section()
+    public function getRawWithoutSection()
     {
         if (!$this->section) {
             return $this->raw;
@@ -121,7 +121,7 @@ class Terms extends Obj
      *
      * @return  string
      */
-    public function get_section()
+    public function getSection()
     {
         // Callers unpack [plugin, section]; "blogs:fossil" names only the plugin
         return is_array($this->section) ? array_pad($this->section, 2, null) : $this->section;
@@ -132,7 +132,7 @@ class Terms extends Obj
      *
      * @return  array
      */
-    public function get_optional_chunks()
+    public function getOptionalChunks()
     {
         return $this->optional_chunks;
     }
@@ -142,7 +142,7 @@ class Terms extends Obj
      *
      * @return  array
      */
-    public function get_forbidden_chunks()
+    public function getForbiddenChunks()
     {
         return $this->forbidden_chunks;
     }
@@ -152,7 +152,7 @@ class Terms extends Obj
      *
      * @return  array
      */
-    public function get_mandatory_chunks()
+    public function getMandatoryChunks()
     {
         return $this->mandatory_chunks;
     }
@@ -162,7 +162,7 @@ class Terms extends Obj
      *
      * @return  array
      */
-    public function get_positive_chunks()
+    public function getPositiveChunks()
     {
         if (!$this->positive_chunks) {
             $this->positive_chunks = array_unique(array_merge($this->mandatory_chunks, $this->optional_chunks));
@@ -175,9 +175,9 @@ class Terms extends Obj
      *
      * @return  array
      */
-    public function get_stemmed_chunks()
+    public function getStemmedChunks()
     {
-        $chunks = $this->get_positive_chunks();
+        $chunks = $this->getPositiveChunks();
         foreach ($chunks as $term) {
             while (($stemmed = Basic::stem($term)) != $term) {
                 $chunks[] = $stemmed;
@@ -195,7 +195,7 @@ class Terms extends Obj
      *
      * @return  boolean
      */
-    public function is_set()
+    public function isSet()
     {
         return !!$this->raw;
     }
@@ -270,7 +270,7 @@ class Terms extends Obj
             return;
         }
 
-        if (DocumentMetadata::is_stop_word($partial)) {
+        if (DocumentMetadata::isStopWord($partial)) {
             $partial = '';
             $sign = '';
             return;
@@ -294,9 +294,9 @@ class Terms extends Obj
      *
      * @return  string
      */
-    public function get_word_regex()
+    public function getWordRegex()
     {
-        $chunks = $this->get_stemmed_chunks();
+        $chunks = $this->getStemmedChunks();
         usort($chunks, function ($a, $b) {
             $al = strlen($a);
             $bl = strlen($b);

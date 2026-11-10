@@ -50,7 +50,7 @@ class Projects extends AdminController
         $this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
         // Include scripts
-        $this->_includeScripts();
+        $this->includeScripts();
 
         $this->registerTask('querygrantagency', 'getGrantAgency');
 
@@ -62,7 +62,7 @@ class Projects extends AdminController
      *
      * @return  void
      */
-    protected function _includeScripts()
+    protected function includeScripts()
     {
         // Enable publication management
         if ($this->_publishing) {
@@ -502,10 +502,10 @@ class Projects extends AdminController
 
         // Add members if specified
         $this->model = $model;
-        $this->_saveMember();
+        $this->saveMember();
 
         // Change ownership
-        $this->_changeOwnership();
+        $this->changeOwnership();
 
         // Allow plugins to respond to changes
         Event::trigger('projects.onProjectAfterSave', [$this->model]);
@@ -559,7 +559,7 @@ class Projects extends AdminController
      *
      * @return  void
      */
-    protected function _saveMember()
+    protected function saveMember()
     {
         // New member added?
         $members = urldecode(trim(Request::getString('newmember', '', 'post')));
@@ -591,7 +591,7 @@ class Projects extends AdminController
      *
      * @return  void
      */
-    protected function _changeOwnership()
+    protected function changeOwnership()
     {
         // Incoming
         $user    = Request::getInt('owned_by_user', $this->model->get('owned_by_user'), 'post');

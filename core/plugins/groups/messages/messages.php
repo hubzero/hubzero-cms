@@ -170,17 +170,17 @@ class Messages extends Plugin
 
             switch ($task) {
                 case 'send':
-                    $arr['html'] = $this->_send();
+                    $arr['html'] = $this->send();
                     break;
                 case 'new':
-                    $arr['html'] = $this->_create();
+                    $arr['html'] = $this->create();
                     break;
                 case 'viewmessage':
-                    $arr['html'] = $this->_view();
+                    $arr['html'] = $this->renderView();
                     break;
                 case 'sent':
                 default:
-                    $arr['html'] = $this->_sent();
+                    $arr['html'] = $this->sent();
                     break;
             }
         }
@@ -195,7 +195,7 @@ class Messages extends Plugin
      * @return     string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _sent()
+    protected function sent()
     {
         // Set the page title
         $pageTitle = Lang::txt(strtoupper($this->pluginName)) . ': ' . $this->group->get('description');
@@ -245,14 +245,14 @@ class Messages extends Plugin
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _view($layout = 'default', $name = '')
+    public function renderView($layout = 'default', $name = '')
     {
         //get the message id
         $message = Request::getInt('msg', 0, 'get');
 
         //if there is no message id show all sent messages
         if (!$message) {
-            return $this->_sent();
+            return $this->sent();
         }
 
         //insantiate db
@@ -313,7 +313,7 @@ class Messages extends Plugin
      * @return     string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _create()
+    protected function create()
     {
         // Ensure only admins and group managers can create messages
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -359,7 +359,7 @@ class Messages extends Plugin
      * @return     mixed
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _send()
+    protected function send()
     {
         // Only group managers/admins may send group messages
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -445,7 +445,7 @@ class Messages extends Plugin
         // Ensure we have a message
         if (!$s || !$m) {
             $html  = '<p class="error">You must enter all required fields</p>';
-            $html .= $this->_create();
+            $html .= $this->create();
             return $html;
         }
 
@@ -517,7 +517,7 @@ class Messages extends Plugin
 
         if (!count($recipients)) {
             $html  = '<p class="error">' . Lang::txt('PLG_GROUPS_MESSAGES_ERROR_NO_RECIPIENTS') . '</p>';
-            $html .= $this->_create();
+            $html .= $this->create();
             return $html;
         }
 
@@ -559,7 +559,7 @@ class Messages extends Plugin
             if ($this->getError()) {
                 $html .= '<p class="error">' . $this->getError() . '</p>';
             }
-            $html .= $this->_sent();
+            $html .= $this->sent();
 
             return $html;
         }

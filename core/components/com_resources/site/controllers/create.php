@@ -66,10 +66,10 @@ class Create extends SiteController
         $row = Entry::oneOrNew(Request::getInt('id', 0));
 
         // Build the title
-        $this->_buildTitle($row);
+        $this->buildTitle($row);
 
         // Build the pathway
-        $this->_buildPathway($row);
+        $this->buildPathway($row);
 
         parent::execute();
     }
@@ -80,7 +80,7 @@ class Create extends SiteController
      * @param   object  $row
      * @return  void
      */
-    public function _buildPathway($row)
+    public function buildPathway($row)
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -120,7 +120,7 @@ class Create extends SiteController
      * @param   object  $row
      * @return  void
      */
-    public function _buildTitle($row)
+    public function buildTitle($row)
     {
         $this->_title = Lang::txt(strtoupper($this->option)) . ': ';
         if ($row->id && $row->published == 1) {
@@ -170,7 +170,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  void
      */
-    protected function _checkProgress($id)
+    protected function checkProgress($id)
     {
         $steps = $this->steps;
         $laststep = (count($steps) - 1);
@@ -178,7 +178,7 @@ class Create extends SiteController
 
         $progress['submitted'] = 0;
         for ($i = 1, $n = count($steps); $i < $n; $i++) {
-            $check = 'step_' . strtolower($steps[$i]) . '_check';
+            $check = 'step' . ucfirst(strtolower($steps[$i])) . 'Check';
             $stepchecks[$steps[$i]] = $this->$check($id);
 
             if ($stepchecks[$steps[$i]]) {
@@ -211,8 +211,8 @@ class Create extends SiteController
         $pre = ($step > 0) ? $step - 1 : 0;
 
         // Build name for methods
-        $preprocess = 'step_' . strtolower($steps[$pre]) . '_process';
-        $activestep = 'step_' . strtolower($steps[$step]);
+        $preprocess = 'step' . ucfirst(strtolower($steps[$pre])) . 'Process';
+        $activestep = 'step' . ucfirst(strtolower($steps[$step]));
 
         if (!method_exists($this, $activestep)) {
             App::abort(404, Lang::txt('Unknown step.'));
@@ -249,12 +249,12 @@ class Create extends SiteController
             // The step forms render the resource's title, text, attachments and
             // authors, so an existing (non-temp) id must be one the caller may edit
             $id = Request::getInt('id', 0);
-            if ($id && !preg_match('/^9999[0-9]{4,5}$/', (string) $id) && !$this->_authorizeResource($id)) {
+            if ($id && !preg_match('/^9999[0-9]{4,5}$/', (string) $id) && !$this->authorizeResource($id)) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
 
             // Check the progress
-            $this->_checkProgress(Request::getInt('id', 0));
+            $this->checkProgress(Request::getInt('id', 0));
 
             $this->view->progress = $this->progress;
 
@@ -268,7 +268,7 @@ class Create extends SiteController
      *
      * @return  void
      */
-    public function step_type()
+    public function stepType()
     {
         $step = $this->step;
         $step++;
@@ -289,7 +289,7 @@ class Create extends SiteController
      *
      * @param   object  $row  Resource
      */
-    public function step_compose($row = null)
+    public function stepCompose($row = null)
     {
         $group = Request::getString('group', '');
         $type = Request::getInt('type', '');
@@ -340,7 +340,7 @@ class Create extends SiteController
      * @param   boolean  $check
      * @return  void
      */
-    public function step_attach($check = false)
+    public function stepAttach($check = false)
     {
         if ($this->view->getName() != 'steps') {
             $this->setView('steps', 'attachments');
@@ -389,7 +389,7 @@ class Create extends SiteController
     /**
      * Show form for adding authors to a resource
      */
-    public function step_authors()
+    public function stepAuthors()
     {
         // Incoming
         $id = Request::getInt('id', 0);
@@ -405,7 +405,7 @@ class Create extends SiteController
         // Get groups
         $groups = User::groups('members');
 
-        $this->_checkProgress($id);
+        $this->checkProgress($id);
 
         // Output HTML
         $this->view
@@ -482,7 +482,7 @@ class Create extends SiteController
      *
      * @param   array  $existing
      */
-    public function step_tags($existing = [])
+    public function stepTags($existing = [])
     {
         if ($this->view->getName() != 'steps') {
             $this->setView('steps', 'tags');
@@ -497,7 +497,7 @@ class Create extends SiteController
         }
 
         // Check the progress
-        $this->_checkProgress($id);
+        $this->checkProgress($id);
 
         // Load the resource
         $row = Entry::oneOrFail($id);
@@ -548,7 +548,7 @@ class Create extends SiteController
     /**
      * Show final review form for setting license and agreeing to terms of submission
      */
-    public function step_review()
+    public function stepReview()
     {
         if ($this->view->getName() != 'steps') {
             $this->setView('steps', 'review');
@@ -624,7 +624,7 @@ class Create extends SiteController
      *
      * @return  void
      */
-    public function step_type_process()
+    public function stepTypeProcess()
     {
         // do nothing
     }
@@ -641,7 +641,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  boolean
      */
-    protected function _authorizeResource($id)
+    protected function authorizeResource($id)
     {
         $id = (int) $id;
         if (!$id) {
@@ -658,7 +658,7 @@ class Create extends SiteController
         return ($row->access('edit') || $row->access('edit-own'));
     }
 
-    public function step_compose_process()
+    public function stepComposeProcess()
     {
         // Initiate extended database class
         $fields = Request::getArray('fields', [], 'post');
@@ -677,7 +677,7 @@ class Create extends SiteController
         $isTempId = ($rid < 1 || preg_match('/^9999[0-9]{4,5}$/', (string) $rid));
 
         // Only the owner/author (or an admin) may edit an existing resource
-        if ($rid && !$isTempId && !$this->_authorizeResource($rid)) {
+        if ($rid && !$isTempId && !$this->authorizeResource($rid)) {
             App::abort(403, Lang::txt('Forbidden'));
             return;
         }
@@ -792,7 +792,7 @@ class Create extends SiteController
             $this->step--;
             $this->view->step = $this->step;
             $this->view->setLayout('compose');
-            return $this->step_compose($row);
+            return $this->stepCompose($row);
         }
 
         // reset id
@@ -806,13 +806,13 @@ class Create extends SiteController
             $this->step--;
             $this->view->step = $this->step;
             $this->view->setLayout('compose');
-            return $this->step_compose($row);
+            return $this->stepCompose($row);
         }
 
         // build path to temp upload folder and future permanent folder
         $session = App::get('session');
         $created = Date::format('Y-m-d 00:00:00');
-        $oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'), '');
+        $oldPath = $row->basepath() . Html::buildPath($created, $session->get('resources_temp_id'), '');
         $newPath = $row->filespace();
 
         // if we have a temp dir, move it to permanent location
@@ -871,7 +871,7 @@ class Create extends SiteController
      *
      * @return  void
      */
-    public function step_attach_process()
+    public function stepAttachProcess()
     {
         // do nothing
     }
@@ -881,7 +881,7 @@ class Create extends SiteController
      *
      * @return  void
      */
-    public function step_authors_process()
+    public function stepAuthorsProcess()
     {
         // Incoming
         $id = Request::getInt('id', 0);
@@ -895,7 +895,7 @@ class Create extends SiteController
         $row = Entry::oneOrFail($id);
 
         // Only the owner/author (or an admin) may change ownership/access
-        if (!$this->_authorizeResource($id)) {
+        if (!$this->authorizeResource($id)) {
             App::abort(403, Lang::txt('Forbidden'));
             return;
         }
@@ -912,7 +912,7 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('authors');
-            return $this->step_authors();
+            return $this->stepAuthors();
         }
 
         // Store new content
@@ -921,7 +921,7 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('authors');
-            return $this->step_authors();
+            return $this->stepAuthors();
         }
 
         // Supporting documents follow the resource's access and group
@@ -990,7 +990,7 @@ class Create extends SiteController
      *
      * @return  void
      */
-    public function step_tags_process()
+    public function stepTagsProcess()
     {
         $id = Request::getInt('id', 0);
 
@@ -1122,14 +1122,14 @@ class Create extends SiteController
                 --$this->step;
                 $this->view->step = $this->step;
                 $this->view->setLayout('tags');
-                return $this->step_tags($push);
+                return $this->stepTags($push);
             }
         }
 
-        $resourceTagsDiff = $this->_diffResourceTags($id, $push);
+        $resourceTagsDiff = $this->diffResourceTags($id, $push);
 
-        $this->_destroyRemovedTags($resourceTagsDiff['removed']);
-        $this->_addNewTags($id, $resourceTagsDiff['added']);
+        $this->destroyRemovedTags($resourceTagsDiff['removed']);
+        $this->addNewTags($id, $resourceTagsDiff['added']);
     }
 
     /*
@@ -1139,7 +1139,7 @@ class Create extends SiteController
      * @param    array     $associationData   Tag association data
      * @return   array
      */
-    protected function _diffResourceTags($resourceId, $associationData)
+    protected function diffResourceTags($resourceId, $associationData)
     {
         $diff = [];
 
@@ -1147,8 +1147,8 @@ class Create extends SiteController
             return $tag[1];
         }, $associationData);
 
-        $diff['removed'] = $this->_calculateRemovedTagAssociations($resourceId, $normalizedTagNames);
-        $diff['added'] = $this->_calculateNewTagAssociations($resourceId, $normalizedTagNames, $associationData);
+        $diff['removed'] = $this->calculateRemovedTagAssociations($resourceId, $normalizedTagNames);
+        $diff['added'] = $this->calculateNewTagAssociations($resourceId, $normalizedTagNames, $associationData);
 
         return $diff;
     }
@@ -1160,7 +1160,7 @@ class Create extends SiteController
      * @param   array     $tagNames     Normalized tag names
      * @return  HUBzero\Rows
      */
-    protected function _calculateRemovedTagAssociations($resourceId, $tagNames)
+    protected function calculateRemovedTagAssociations($resourceId, $tagNames)
     {
         $tagNamesString = "'" . implode("','", $tagNames) . "'";
 
@@ -1184,7 +1184,7 @@ class Create extends SiteController
      * @param   array     $associationData   Tag association data
      * @return  array
      */
-    protected function _calculateNewTagAssociations($resourceId, $tagNames, $associationData)
+    protected function calculateNewTagAssociations($resourceId, $tagNames, $associationData)
     {
         $newTags = [];
 
@@ -1212,7 +1212,7 @@ class Create extends SiteController
      * @param    HUBzero\Rows  $removedTagAssociations   Removed tag association records
      * @return   void
      */
-    protected function _destroyRemovedTags($removedTagAssociations)
+    protected function destroyRemovedTags($removedTagAssociations)
     {
         $removedTagAssociations->destroyAll();
     }
@@ -1224,7 +1224,7 @@ class Create extends SiteController
      * @param    array     $newTags      Data for new tag associations
      * @return   void
      */
-    protected function _addNewTags($resourceId, $newTags)
+    protected function addNewTags($resourceId, $newTags)
     {
         $currentUserId = User::get('id');
         $tagHelper = new Tags($resourceId);
@@ -1250,7 +1250,7 @@ class Create extends SiteController
         }
 
         // Only the owner/author (or an admin) may submit this resource
-        if (!$this->_authorizeResource($id)) {
+        if (!$this->authorizeResource($id)) {
             App::abort(403, Lang::txt('Forbidden'));
         }
 
@@ -1267,8 +1267,8 @@ class Create extends SiteController
         $authorized = Request::getInt('authorization', 0);
         if (!$authorized && !$published) {
             $this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
-            $this->_checkProgress($id);
-            return $this->step_review();
+            $this->checkProgress($id);
+            return $this->stepReview();
         }
 
         // Allow for any other validation
@@ -1277,8 +1277,8 @@ class Create extends SiteController
         foreach ($results as $result) {
             if ($result) {
                 $this->setError($result);
-                $this->_checkProgress($id);
-                return $this->step_review();
+                $this->checkProgress($id);
+                return $this->stepReview();
             }
         }
 
@@ -1293,7 +1293,7 @@ class Create extends SiteController
                 if ($this->config->get('autoapprove_content_check') == 1) {
                     if ($resource->children()->total() < 1) {
                         $this->setError(Lang::txt('COM_CONTRIBUTE_NO_CONTENT'));
-                        return $this->step_review();
+                        return $this->stepReview();
                     }
                 }
 
@@ -1322,8 +1322,8 @@ class Create extends SiteController
 
             if ($authors->count() <= 0) {
                 $this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
-                $this->_checkProgress($id);
-                return $this->step_review();
+                $this->checkProgress($id);
+                return $this->stepReview();
             }
 
             // Get any set emails that should be notified of ticket submission
@@ -1415,8 +1415,8 @@ class Create extends SiteController
 
                 if ($licenseText == '[ENTER LICENSE HERE]') {
                     $this->setError(Lang::txt('Please enter a license.'));
-                    $this->_checkProgress($id);
-                    return $this->step_review();
+                    $this->checkProgress($id);
+                    return $this->stepReview();
                 }
 
                 $rl = License::oneOrNew($license);
@@ -1480,7 +1480,7 @@ class Create extends SiteController
         }
 
         // Only the owner/author (or an admin) may delete this resource
-        if (!$this->_authorizeResource($id)) {
+        if (!$this->authorizeResource($id)) {
             App::abort(403, Lang::txt('Forbidden'));
             return;
         }
@@ -1495,7 +1495,7 @@ class Create extends SiteController
         switch ($step) {
             case 1:
                 // Check progress
-                $this->_checkProgress($id);
+                $this->checkProgress($id);
 
                 // Output HTML
                 $this->view
@@ -1518,7 +1518,7 @@ class Create extends SiteController
                     $this->setError(Lang::txt('Please confirm.'));
 
                     // Check progress
-                    $this->_checkProgress($id);
+                    $this->checkProgress($id);
 
                     // Output HTML
                     $this->view
@@ -1598,7 +1598,7 @@ class Create extends SiteController
             $resource = Entry::oneOrFail($id);
 
             // Only the owner/author (or an admin) may retract this resource
-            if (!$this->_authorizeResource($id)) {
+            if (!$this->authorizeResource($id)) {
                 App::abort(403, Lang::txt('Forbidden'));
                 return;
             }
@@ -1625,7 +1625,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  void
      */
-    public function step_type_check($id)
+    public function stepTypeCheck($id)
     {
         // do nothing
     }
@@ -1636,7 +1636,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  integer  # > 1 = step completed, 0 = not completed
      */
-    public function step_compose_check($id)
+    public function stepComposeCheck($id)
     {
         return $id;
     }
@@ -1647,7 +1647,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  integer  # > 1 = step completed, 0 = not completed
      */
-    public function step_attach_check($id)
+    public function stepAttachCheck($id)
     {
         $total = 0;
 
@@ -1665,7 +1665,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  integer  # > 1 = step completed, 0 = not completed
      */
-    public function step_authors_check($id)
+    public function stepAuthorsCheck($id)
     {
         $contributors = 0;
 
@@ -1683,7 +1683,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  integer  1 = step completed, 0 = not completed
      */
-    public function step_tags_check($id)
+    public function stepTagsCheck($id)
     {
         if ($id) {
             $rt = new Tags($id);
@@ -1703,7 +1703,7 @@ class Create extends SiteController
      * @param   integer  $id  Resource ID
      * @return  integer  1 = step completed, 0 = not completed
      */
-    public function step_review_check($id)
+    public function stepReviewCheck($id)
     {
         $resource = Entry::oneOrNew($id);
 

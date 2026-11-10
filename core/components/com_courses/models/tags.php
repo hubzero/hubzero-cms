@@ -36,7 +36,7 @@ class Tags extends Cloud
         if (is_array($tag)) {
             $bunch = $tag;
         } else {
-            $bunch = $this->_parse($tag);
+            $bunch = $this->splitTags($tag);
         }
 
         $tags = [];

@@ -119,7 +119,7 @@ class Economy extends Obj
      * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function distribute_points($wishid, $type = 'grant', $points = 0)
+    public function distributePoints($wishid, $type = 'grant', $points = 0)
     {
         if (!$wishid) {
             return null;

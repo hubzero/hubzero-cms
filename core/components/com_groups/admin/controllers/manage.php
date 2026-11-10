@@ -221,12 +221,12 @@ class Manage extends AdminController
      * @param   array   $arr   Array to process
      * @return  array
      */
-    protected function _multiArrayMap($func, $arr)
+    protected function multiArrayMap($func, $arr)
     {
         $newArr = [];
 
         foreach ($arr as $key => $value) {
-            $newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
+            $newArr[$key] = (is_array($value) ? $this->multiArrayMap($func, $value) : $func($value));
         }
 
         return $newArr;
@@ -244,7 +244,7 @@ class Manage extends AdminController
 
         // Incoming
         $g = Request::getArray('group', [], 'post');
-        $g = $this->_multiArrayMap('trim', $g);
+        $g = $this->multiArrayMap('trim', $g);
 
         $customFields = Field::all()->rows();
         $customFieldForm = Request::getArray('customfields', []);

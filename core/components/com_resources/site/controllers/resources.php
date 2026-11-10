@@ -92,7 +92,7 @@ class Resources extends SiteController
      *
      * @return  void
      */
-    protected function _buildPathway()
+    protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -133,7 +133,7 @@ class Resources extends SiteController
      *
      * @return  void
      */
-    protected function _buildTitle()
+    protected function buildTitle()
     {
         if (!$this->_title) {
             $this->_title = Lang::txt(strtoupper($this->option));
@@ -163,10 +163,10 @@ class Resources extends SiteController
     public function displayTask()
     {
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Get major types
         $categories = Type::getMajorTypes();
@@ -350,10 +350,10 @@ class Resources extends SiteController
         }
 
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view
@@ -481,10 +481,10 @@ class Resources extends SiteController
             $this->_task_title = Lang::txt('COM_RESOURCES_ALL');
         }
         // Set page title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Set the pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view
@@ -537,7 +537,7 @@ class Resources extends SiteController
                 $rt = new Tags($bits['id']);
 
                 // Get tags that have been assigned
-                $bits['tags'] = $rt->get_tags_with_objects($bits['id'], $bits['type'], $bits['tg2']);
+                $bits['tags'] = $rt->getTagsWithObjects($bits['id'], $bits['type'], $bits['tg2']);
 
                 $bits['type'] = Type::oneOrNew($bits['type']);
                 break;
@@ -569,7 +569,7 @@ class Resources extends SiteController
                 $bits['rt'] = $rt;
 
                 // Get resources assigned to this tag
-                $bits['tools'] = $rt->get_objects_on_tag(
+                $bits['tools'] = $rt->getObjectsOnTag(
                     $bits['tag'],
                     $bits['id'],
                     $bits['type'],
@@ -616,7 +616,7 @@ class Resources extends SiteController
                 // Get the first child
                 if ($firstChild || $model->isTool()) {
                     $xact = 'data-pop-out="true"';
-                    $bits['primary_child'] = Html::primary_child($this->option, $model, $firstChild, $xact);
+                    $bits['primary_child'] = Html::primaryChild($this->option, $model, $firstChild, $xact);
                 }
 
                 // Get the sections
@@ -1960,7 +1960,7 @@ class Resources extends SiteController
      */
     private function checkForImage($filename, $upath, $created, $id)
     {
-        $path = Html::build_path($created, $id, '');
+        $path = Html::buildPath($created, $id, '');
 
         // Ensure the path has format of /path
         $path = DS . trim($path, DS);
@@ -2535,7 +2535,7 @@ class Resources extends SiteController
         fwrite($fp, $doc);
         fclose($fp);
 
-        $this->_serveup(false, $path, $file, $mime);
+        $this->serveup(false, $path, $file, $mime);
 
         die; // REQUIRED
     }
@@ -2549,7 +2549,7 @@ class Resources extends SiteController
      * @param   string   $mime    Mimetype
      * @return  void
      */
-    protected function _serveup($inline, $p, $f, $mime)
+    protected function serveup($inline, $p, $f, $mime)
     {
         $user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
                     ? $_SERVER["HTTP_USER_AGENT"]
@@ -2580,7 +2580,7 @@ class Resources extends SiteController
 
         // No encoding - we aren't using compression... (RFC1945)
 
-        $this->_readfileChunked($p . $f);
+        $this->readfileChunked($p . $f);
         // The caller MUST 'die();'
     }
 
@@ -2591,7 +2591,7 @@ class Resources extends SiteController
      * @param   boolean  $retbytes
      * @return  mixed
      */
-    protected function _readfileChunked($filename, $retbytes = true)
+    protected function readfileChunked($filename, $retbytes = true)
     {
         $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
         $buffer = '';

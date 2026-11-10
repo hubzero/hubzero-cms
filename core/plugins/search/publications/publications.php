@@ -40,7 +40,7 @@ class Publications extends Plugin
 
         $database = App::get('db');
 
-        $groups = array_map([$database, 'escape'], $authz->get_group_names());
+        $groups = array_map([$database, 'escape'], $authz->getGroupNames());
         $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
         /*if ($groups)
@@ -54,11 +54,11 @@ class Publications extends Plugin
         $access = '(p.access IN (0, ' . $viewlevels . '))';
         //}
 
-        $term_parser = $request->get_terms();
-        $terms = $request->get_term_ar();
+        $term_parser = $request->getTerms();
+        $terms = $request->getTermAr();
         $quoted_terms = [];
         foreach ($terms['optional'] as $idx => $term) {
-            if ($term_parser->is_quoted($idx)) {
+            if ($term_parser->isQuoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
                     if (strpos($term, $stem) === 0 || strpos($stem, $term) === 0) {
                         unset($terms['stemmed'][$sidx]);
@@ -69,7 +69,7 @@ class Publications extends Plugin
         }
 
         $tag_map = [];
-        foreach ($request->get_tagged_ids('publications') as $id) {
+        foreach ($request->getTaggedIds('publications') as $id) {
             if (array_key_exists($id, $tag_map)) {
                 ++$tag_map[$id];
             } else {
@@ -153,7 +153,7 @@ class Publications extends Plugin
 				$whereClause
 				AND a.status = 1 AND $weight_authors",
         );
-        $assoc = $sql->to_associative();
+        $assoc = $sql->toAssociative();
 
         $id_assoc = [];
         foreach ($assoc as $row) {
@@ -166,7 +166,7 @@ class Publications extends Plugin
             foreach ($assoc as $row) {
                 $id = (int) $row->get('id');
                 if (array_key_exists($id, $tag_map)) {
-                    $row->add_weight((1 + $tag_map[$id]) / 12, 'tag bonus from publications plugin');
+                    $row->addWeight((1 + $tag_map[$id]) / 12, 'tag bonus from publications plugin');
                     unset($tag_map[$id]);
                 }
             }
@@ -196,12 +196,12 @@ class Publications extends Plugin
 						$whereClause
 						AND p.id in (" . $tagIds . ")" . $addtlWhereSql,
                 );
-                foreach ($sql->to_associative() as $row) {
-                    $rows = $sql->to_associative();
+                foreach ($sql->toAssociative() as $row) {
+                    $rows = $sql->toAssociative();
                     foreach ($rows as $row) {
                         if ($tag_map[$row->get('id')] > 1) {
                             $tagBonus = 'tag bonus for non-matching but tagged publications';
-                            $row->adjust_weight($tag_map[$row->get('id')] / 8, $tagBonus);
+                            $row->adjustWeight($tag_map[$row->get('id')] / 8, $tagBonus);
                         }
                         $id_assoc[$row->get('id')] = $row;
                     }
@@ -213,17 +213,17 @@ class Publications extends Plugin
         $rows = [];
         foreach ($id_assoc as $id => $row) {
             if (!array_key_exists((int) $id, $placed)) {
-                $row->sort_children([$sorter, 'sort']);
+                $row->sortChildren([$sorter, 'sort']);
                 $rows[] = $row;
             }
         }
 
         usort($rows, function ($a, $b) {
-            $res = $a->get_weight() - $b->get_weight();
+            $res = $a->getWeight() - $b->getWeight();
             return $res == 0 ? 0 : ($res > 0 ? -1 : 1);
         });
         foreach ($rows as $row) {
-            $row->set_link(Route::url($row->get_raw_link()));
+            $row->setLink(Route::url($row->getRawLink()));
             $results->add($row);
         }
     }

@@ -63,7 +63,7 @@ class Courses extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway($course_pages = [])
+    public function buildPathway($course_pages = [])
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -85,7 +85,7 @@ class Courses extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildTitle()
+    public function buildTitle()
     {
         //set title used in view
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -107,10 +107,10 @@ class Courses extends SiteController
     public function introTask()
     {
         //build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         //build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Push some needed scripts to the template
         $model = Models\Courses::getInstance();
@@ -202,10 +202,10 @@ class Courses extends SiteController
         $this->view->courses = $model->courses($this->view->filters);
 
         //build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         //build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Output HTML
         $this->view->model  = $model;

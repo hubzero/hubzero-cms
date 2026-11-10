@@ -167,7 +167,7 @@ class None extends Plugin
             $height .= 'px';
         }
 
-        $buttons = $this->_displayButtons($id, $buttons, $asset, $author);
+        $buttons = $this->displayButtons($id, $buttons, $asset, $author);
         $editor  = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\""
             . " style=\"width: $width; height: $height;\">"
             . "$content</textarea>" . $buttons;
@@ -176,7 +176,7 @@ class None extends Plugin
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _displayButtons($name, $buttons, $asset, $author)
+    protected function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');

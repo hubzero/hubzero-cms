@@ -28,7 +28,7 @@ class Collections extends Plugin
      */
     public static function onSearch($request, &$results, $authz)
     {
-        $terms = $request->get_term_ar();
+        $terms = $request->getTermAr();
         $stemmed = join(' ', $terms['stemmed']);
         $weight = '(match(p.description) AGAINST (\'' . $stemmed . '\') '
             . '+ match(i.title, i.description) AGAINST (\'' . $stemmed . '\'))';

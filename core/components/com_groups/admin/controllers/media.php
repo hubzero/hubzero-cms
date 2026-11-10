@@ -57,7 +57,7 @@ class Media extends AdminController
      * @param   string  $rel
      * @return  string
      */
-    protected function _containRelativePath($rel)
+    protected function containRelativePath($rel)
     {
         $rel = preg_replace('#\p{C}+#u', '', (string) $rel);
         $out = [];
@@ -129,7 +129,7 @@ class Media extends AdminController
         Request::checkToken();
 
         // Incoming
-        $dir  = $this->_containRelativePath(urldecode(Request::getString('dir', '')));
+        $dir  = $this->containRelativePath(urldecode(Request::getString('dir', '')));
 
         // Build upload path
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
@@ -237,8 +237,8 @@ class Media extends AdminController
         Request::checkToken('get');
 
         // Incoming directory to delete
-        $dir    = $this->_containRelativePath(urldecode(Request::getString('dir', '')));
-        $folder = trim($this->_containRelativePath(urldecode(Request::getString('folder', ''))), DS);
+        $dir    = $this->containRelativePath(urldecode(Request::getString('dir', '')));
+        $folder = trim($this->containRelativePath(urldecode(Request::getString('folder', ''))), DS);
 
         if (!$folder) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_NO_DIRECTORY'));
@@ -278,14 +278,14 @@ class Media extends AdminController
         // Check for request forgeries
         Request::checkToken('get');
 
-        $dir  = $this->_containRelativePath(urldecode(Request::getString('dir', '')));
+        $dir  = $this->containRelativePath(urldecode(Request::getString('dir', '')));
 
         // Build upload path
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
         $path = Util::normalizePath($path);
 
         // Incoming file to delete
-        $file = trim($this->_containRelativePath(urldecode(Request::getString('file', ''))), DS);
+        $file = trim($this->containRelativePath(urldecode(Request::getString('file', ''))), DS);
 
         if (!$file) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_NO_FILE'));
@@ -314,7 +314,7 @@ class Media extends AdminController
      */
     public function displayTask()
     {
-        $dir  = $this->_containRelativePath(urldecode(Request::getString('dir', '')));
+        $dir  = $this->containRelativePath(urldecode(Request::getString('dir', '')));
 
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
         $path = Util::normalizePath($path);
@@ -364,7 +364,7 @@ class Media extends AdminController
      */
     public function listTask()
     {
-        $dir  = $this->_containRelativePath(Request::getString('dir', ''));
+        $dir  = $this->containRelativePath(Request::getString('dir', ''));
 
         // Build upload path
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');

@@ -98,10 +98,10 @@ $saveOrder = $listOrder == 'ordering';
                 $stateTxt = Lang::txt('COM_INSTALLER_VALUE_STATE_SELECT');
                 $typeTxt = Lang::txt('COM_INSTALLER_VALUE_TYPE_SELECT');
                 $folderTxt = Lang::txt('COM_INSTALLER_VALUE_FOLDER_SELECT');
-                $locationOpts = $helpers::LocationOptions();
-                $statusOpts = $helpers::StatusOptions();
-                $typeOpts = $helpers::TypeOptions();
-                $groupOpts = $helpers::GroupOptions();
+                $locationOpts = $helpers::locationOptions();
+                $statusOpts = $helpers::statusOptions();
+                $typeOpts = $helpers::typeOptions();
+                $groupOpts = $helpers::groupOptions();
                 ?>
 
                 <label for="filter_location"><?php echo $clientTxt; ?></label>

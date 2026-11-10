@@ -904,7 +904,7 @@ class Html
      * @param   integer  $quotes  Include quotes?
      * @return  string
      */
-    public static function encode_html($str, $quotes = 1)
+    public static function encodeHtml($str, $quotes = 1)
     {
         $str = stripslashes($str);
         $a = [
@@ -980,7 +980,7 @@ class Html
      * @param      string $pee Text to unparagraph
      * @return     string
      */
-    public static function _txtUnpee($pee)
+    public static function txtUnpee($pee)
     {
         $pee = str_replace("\t", '', $pee);
         $pee = str_replace('</p><p>', '', $pee);

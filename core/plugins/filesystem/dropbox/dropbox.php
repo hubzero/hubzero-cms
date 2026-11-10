@@ -33,7 +33,7 @@ class Dropbox extends Plugin
         if (isset($params['app_token'])) {
             $accessToken = $params['app_token']->access_token;
         } else {
-            self::_getAccessToken($params);
+            self::getAccessToken($params);
         }
 
         // Create the client
@@ -52,13 +52,13 @@ class Dropbox extends Plugin
      * @return  void
      **/
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _getAccessToken($params)
+    protected static function getAccessToken($params)
     {
         $oauthClient = new DropboxOauthClient();
         $authUrl = $oauthClient->getAuthorizationUrl();
         $oauthState = $oauthClient->getState();
 
-        self::_setLocalOauthData($oauthState);
+        self::setLocalOauthData($oauthState);
 
         $oauthClient->getAuthorizationCode($authUrl);
     }
@@ -70,7 +70,7 @@ class Dropbox extends Plugin
      * @return  void
      **/
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _setLocalOauthData($state)
+    protected static function setLocalOauthData($state)
     {
         $connectionId = Request::getInt('connection', 0);
         $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);

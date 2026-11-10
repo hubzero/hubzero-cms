@@ -29,8 +29,8 @@ class Weighttitle extends Plugin
      */
     public static function onSearchWeightAll($terms, $res)
     {
-        $title = strtolower($res->get_title());
-        $strterms = strtolower($terms->get_raw_without_section());
+        $title = strtolower($res->getTitle());
+        $strterms = strtolower($terms->getRawWithoutSection());
         if (preg_replace('/[^a-z]/', '', $title) == preg_replace('/[^a-z]/', '', $terms)) {
             return 10;
         }
@@ -42,8 +42,8 @@ class Weighttitle extends Plugin
 
         $term_stems = [];
         $quoted_weight = 0;
-        foreach ($terms->get_positive_chunks() as $idx => $chunk) {
-            if ($terms->is_quoted($idx)) {
+        foreach ($terms->getPositiveChunks() as $idx => $chunk) {
+            if ($terms->isQuoted($idx)) {
                 if (strpos($title, $chunk) !== false) {
                     $quoted_weight += count(explode(' ', $chunk));
                 }
@@ -78,7 +78,7 @@ class Weighttitle extends Plugin
         }
         $stems = [];
         foreach (array_unique(preg_split('/\s+/', trim($str))) as $word) {
-            if (!\Components\Search\Models\Basic\DocumentMetadata::is_stop_word($word)) {
+            if (!\Components\Search\Models\Basic\DocumentMetadata::isStopWord($word)) {
                 $stems[] = $stemmer->stem(preg_replace('/[^[:alnum:]]/', '', $word));
             }
         }

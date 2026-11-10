@@ -43,7 +43,7 @@ class Newsletters extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name to title
      * @return  void
      */
-    public function _buildTitle($newsletter = null)
+    public function buildTitle($newsletter = null)
     {
         //default if no campaign
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -64,7 +64,7 @@ class Newsletters extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
-    public function _buildPathway($newsletter = null)
+    public function buildPathway($newsletter = null)
     {
         //add 'newlsetters' item to pathway
         if (Pathway::count() <= 0) {
@@ -138,10 +138,10 @@ class Newsletters extends SiteController
             ->rows();
 
         //build title
-        $this->_buildTitle($current);
+        $this->buildTitle($current);
 
         //build pathway
-        $this->_buildPathway($current);
+        $this->buildPathway($current);
 
         //set vars for view
         $title = $current->get('name', "No Newsletters");

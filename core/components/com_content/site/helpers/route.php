@@ -66,7 +66,7 @@ abstract class Route
             }
         }
 
-        if ($item = self::_findItem($needles)) {
+        if ($item = self::findItem($needles)) {
             $link .= '&Itemid=' . $item;
         }
 
@@ -101,7 +101,7 @@ abstract class Route
             $needles['category']   = $catids;
             $needles['categories'] = $catids;
 
-            if ($item = self::_findItem($needles)) {
+            if ($item = self::findItem($needles)) {
                 $link .= '&Itemid=' . $item;
             }
         }
@@ -158,7 +158,7 @@ abstract class Route
      * @return  mixed
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _findItem($needles = null)
+    protected static function findItem($needles = null)
     {
         $menus = App::get('menu');
         $language = isset($needles['language']) ? $needles['language'] : '*';
@@ -197,7 +197,7 @@ abstract class Route
 
         if ($language != '*') {
             $needles['language'] = '*';
-            return self::_findItem($needles);
+            return self::findItem($needles);
         }
 
         $active = $menus->getActive();

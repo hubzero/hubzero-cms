@@ -97,7 +97,7 @@ class Offering extends SiteController
      * @return     void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway()
+    public function buildPathway()
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -132,7 +132,7 @@ class Offering extends SiteController
      * @return     void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildTitle()
+    public function buildTitle()
     {
         //set title used in view
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -206,10 +206,10 @@ class Offering extends SiteController
         }
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // If an active area was specified
         // check that it's a valid plugin
@@ -274,10 +274,10 @@ class Offering extends SiteController
         $this->view->course = $this->course;
 
         // Build the title
-        $this->_buildTitle();
+        $this->buildTitle();
 
         // Build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // Can the user enroll?
         if (!$offering->section()->canEnroll()) {

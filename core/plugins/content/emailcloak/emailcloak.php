@@ -33,10 +33,10 @@ class Emailcloak extends Plugin
         }
 
         if (is_object($row)) {
-            return $this->_cloak($row->text, $params);
+            return $this->cloakText($row->text, $params);
         }
 
-        return $this->_cloak($row, $params);
+        return $this->cloakText($row, $params);
     }
 
     /**
@@ -47,7 +47,7 @@ class Emailcloak extends Plugin
      * @return  string  A regular expression that matches a link containing the parameters.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getPattern($link, $text)
+    protected function getPattern($link, $text)
     {
         $pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
         return $pattern;
@@ -62,7 +62,7 @@ class Emailcloak extends Plugin
      * @return  string  Js cloaked email with attributes.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addAttributesToEmail($email, $before, $after)
+    protected function addAttributesToEmail($email, $before, $after)
     {
         if ($before !== '') {
             $before  = str_replace("'", "\'", $before);
@@ -85,7 +85,7 @@ class Emailcloak extends Plugin
      * @return  boolean  True on success.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _cloak(&$text, &$params)
+    protected function cloakText(&$text, &$params)
     {
         /*
          * Check for presence of {emailcloak=off} which is explicits disables this
@@ -127,7 +127,7 @@ class Emailcloak extends Plugin
          * >email@email.com</a>. This happens when inserting an email in TinyMCE, cancelling its suggestion to add
          * the mailto: prefix...
          */
-        $pattern = $this->_getPattern($searchEmail, $searchEmail);
+        $pattern = $this->getPattern($searchEmail, $searchEmail);
         $pattern = str_replace('"mailto:', '"http://mce_host([\x20-\x7f][^<>]+/)', $pattern);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[3][0];
@@ -137,7 +137,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -154,7 +154,7 @@ class Emailcloak extends Plugin
          * >anytext</a>. This happens when inserting an email in TinyMCE, cancelling its suggestion to add
          * the mailto: prefix...
          */
-        $pattern = $this->_getPattern($searchEmail, $searchText);
+        $pattern = $this->getPattern($searchEmail, $searchText);
         $pattern = str_replace('"mailto:', '"http://mce_host([\x20-\x7f][^<>]+/)', $pattern);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[3][0];
@@ -164,7 +164,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -180,7 +180,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com"
          * >email@amail.com</a>
          */
-        $pattern = $this->_getPattern($searchEmail, $searchEmail);
+        $pattern = $this->getPattern($searchEmail, $searchEmail);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0];
@@ -188,7 +188,7 @@ class Emailcloak extends Plugin
             // Check to see if mail text is different from mail addy
             $replacement = $this->cloak($mail, $mode, $mailText);
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -204,7 +204,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com"
          * ><anyspan >email@amail.com</anyspan></a>
          */
-        $pattern = $this->_getPattern($searchEmail, $searchEmailSpan);
+        $pattern = $this->getPattern($searchEmail, $searchEmailSpan);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . $regs[5][0] . $regs[6][0];
@@ -213,7 +213,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -229,7 +229,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com">
          * <anyspan >anytext</anyspan></a>
          */
-        $pattern = $this->_getPattern($searchEmail, $searchTextSpan);
+        $pattern = $this->getPattern($searchEmail, $searchTextSpan);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . addslashes($regs[5][0]) . $regs[6][0];
@@ -237,7 +237,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -253,7 +253,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com">
          * anytext</a>
          */
-        $pattern = $this->_getPattern($searchEmail, $searchText);
+        $pattern = $this->getPattern($searchEmail, $searchText);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = addslashes($regs[4][0]);
@@ -261,7 +261,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -277,7 +277,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com">
          * <img anything></a>
          */
-        $pattern = $this->_getPattern($searchEmail, $searchImage);
+        $pattern = $this->getPattern($searchEmail, $searchImage);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0];
@@ -285,7 +285,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -301,7 +301,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@example.org">
          * <img anything>email@example.org</a>
          */
-        $pattern = $this->_getPattern($searchEmail, ($searchImage . $searchEmail));
+        $pattern = $this->getPattern($searchEmail, ($searchImage . $searchEmail));
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . ($regs[5][0]);
@@ -309,7 +309,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -325,7 +325,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@example.org">
          * <img anything>any text</a>
          */
-        $pattern = $this->_getPattern($searchEmail, ($searchImage . $searchText));
+        $pattern = $this->getPattern($searchEmail, ($searchImage . $searchText));
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . addslashes($regs[5][0]);
@@ -333,7 +333,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -349,7 +349,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com?
          * subject=Text">email@amail.com</a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, $searchEmail);
+        $pattern = $this->getPattern($searchEmailLink, $searchEmail);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0] . $regs[3][0];
             $mailText = $regs[5][0];
@@ -361,7 +361,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -377,7 +377,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com?
          * subject=Text">anytext</a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, $searchText);
+        $pattern = $this->getPattern($searchEmailLink, $searchText);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0] . $regs[3][0];
             $mailText = addslashes($regs[5][0]);
@@ -388,7 +388,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
+            $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -404,7 +404,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com?subject= Text"
          * ><anyspan >email@amail.com</anyspan></a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, $searchEmailSpan);
+        $pattern = $this->getPattern($searchEmailLink, $searchEmailSpan);
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0] . $regs[3][0];
@@ -414,7 +414,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -430,7 +430,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code <a href="mailto:email@amail.com?subject= Text">
          * <anyspan >anytext</anyspan></a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, $searchTextSpan);
+        $pattern = $this->getPattern($searchEmailLink, $searchTextSpan);
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[2][0] . $regs[3][0];
@@ -439,7 +439,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -455,7 +455,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code
          * <a href="mailto:email@amail.com?subject=Text"><img anything></a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, $searchImage);
+        $pattern = $this->getPattern($searchEmailLink, $searchImage);
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[1][0] . $regs[2][0] . $regs[3][0];
             $mailText = $regs[5][0];
@@ -467,7 +467,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -483,7 +483,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code
          * <a href="mailto:email@amail.com?subject=Text"><img anything>email@amail.com</a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, ($searchImage . $searchEmail));
+        $pattern = $this->getPattern($searchEmailLink, ($searchImage . $searchEmail));
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[1][0] . $regs[2][0] . $regs[3][0];
@@ -496,7 +496,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));
@@ -512,7 +512,7 @@ class Emailcloak extends Plugin
          * Search for derivatives of link code
          * <a href="mailto:email@amail.com?subject=Text"><img anything>any text</a>
          */
-        $pattern = $this->_getPattern($searchEmailLink, ($searchImage . $searchText));
+        $pattern = $this->getPattern($searchEmailLink, ($searchImage . $searchText));
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[1][0] . $regs[2][0] . $regs[3][0];
@@ -525,7 +525,7 @@ class Emailcloak extends Plugin
             $replacement = $this->cloak($mail, $mode, $mailText, 0);
 
             // Ensure that attributes is not stripped out by email cloaking
-            $replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
+            $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
 
             // Replace the found address with the js cloaked email
             $newtext = substr_replace($text, $replacement, $regs[0][1], strlen($regs[0][0]));

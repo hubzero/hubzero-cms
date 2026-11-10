@@ -57,7 +57,7 @@ class Member extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->base . '?' . (string) $this->_build($this->segments);
+                return $this->base . '?' . (string) $this->toQueryString($this->segments);
                 break;
 
             case 'edit':
@@ -102,7 +102,7 @@ class Member extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->toQueryString($segments) . (string) $anchor;
     }
 
     /**
