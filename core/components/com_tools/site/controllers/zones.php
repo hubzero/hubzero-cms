@@ -31,7 +31,7 @@ class Zones extends SiteController
         header("HTTP/1.1 404 Not Found");
         echo "Not Found";
         ob_end_flush();
-        exit;
+        exit();
     }
 
     /**
@@ -106,6 +106,6 @@ class Zones extends SiteController
             App::abort(404, Lang::txt('COM_TOOLS_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 }

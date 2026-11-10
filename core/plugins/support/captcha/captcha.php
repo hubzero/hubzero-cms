@@ -389,7 +389,7 @@ class Captcha extends Plugin
         $imageFunction = (!method_exists($this, $imageFunction)) ? 'createImageAdv' : $imageFunction;
 
         $this->$imageFunction();
-        exit;
+        exit();
 
         return true;
     }

@@ -871,7 +871,7 @@ class File extends Base
                     // Should only get here on error
                     throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE'), 404);
                 } else {
-                    exit;
+                    exit();
                 }
             } else {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOWNLOAD'));

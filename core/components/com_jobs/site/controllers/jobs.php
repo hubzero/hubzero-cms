@@ -1931,7 +1931,7 @@ class Jobs extends SiteController
             if (!$result) {
                 throw new Exception(Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'), 500);
             } else {
-                exit;
+                exit();
             }
         } else {
             App::redirect(

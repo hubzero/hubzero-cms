@@ -381,7 +381,7 @@ class ResourceMapGenerator
 
         // Push the data for download
         echo $rdfa;
-        exit;
+        exit();
     }
 
     /**

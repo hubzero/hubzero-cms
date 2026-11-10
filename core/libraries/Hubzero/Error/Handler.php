@@ -190,7 +190,7 @@ class Handler
 
             $this->renderer->render($exception);
 
-            exit; // failsafe, render() should exit
+            exit(); // failsafe, render() should exit
         }
 
         return true;

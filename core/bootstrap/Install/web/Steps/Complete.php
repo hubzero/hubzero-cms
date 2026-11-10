@@ -43,7 +43,7 @@ class Complete implements StepInterface
         // Redirect to site (session already cleared by cleanup in render)
         $url = $this->getSiteUrl();
         header('Location: ' . $url);
-        exit;
+        exit();
     }
 
     /**

@@ -69,7 +69,7 @@ class Media extends AdminController
             throw new Exception(Lang::txt('COM_COLLECTIONS_SERVER_ERROR'), 500);
         }
 
-        exit;
+        exit();
     }
 
     /**

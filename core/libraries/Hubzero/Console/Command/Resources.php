@@ -91,7 +91,7 @@ class Resources extends Base implements CommandInterface
 
             file_put_contents('/var/log/muselog', serialize($statsfullpath) . "\n", FILE_APPEND | LOCK_EX);
         }
-        exit;
+        exit();
     }
 
     /**
@@ -176,7 +176,7 @@ class Resources extends Base implements CommandInterface
             fputcsv($file, $record, ',');
         }
         fclose($file);
-        exit;
+        exit();
     }
 
     /**
@@ -312,7 +312,7 @@ class Resources extends Base implements CommandInterface
             $i++;
         }
         $xml->asXML(Config::get('tmp_path') . DS . 'resources_export_' . date("Ymd") . '.xml');
-        exit;
+        exit();
     }
 
     /**

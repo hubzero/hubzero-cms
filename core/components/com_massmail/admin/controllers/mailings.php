@@ -553,7 +553,7 @@ class Mailings extends AdminController
 
         header('Content-Type: application/json');
         echo json_encode($out);
-        exit;
+        exit();
     }
 
     /**
@@ -586,7 +586,7 @@ class Mailings extends AdminController
 
         header('Content-Type: application/json');
         echo json_encode($out);
-        exit;
+        exit();
     }
 
     /**
@@ -621,7 +621,7 @@ class Mailings extends AdminController
 
         header('Content-Type: application/json');
         echo json_encode($out);
-        exit;
+        exit();
     }
 
     /**
@@ -641,7 +641,7 @@ class Mailings extends AdminController
             'count' => $count,
             'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count)),
         ]);
-        exit;
+        exit();
     }
 
     /**

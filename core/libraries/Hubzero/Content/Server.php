@@ -328,7 +328,7 @@ class Server extends Obj
             if (($first > $last) || ($last == '')) { // unsatisfiable range
                 header("Status: 416 Requested range not satisfiable");
                 header("Content-Range: */$filesize");
-                exit;
+                exit();
             }
 
             $result[$range]['first'] = $first;

@@ -709,7 +709,7 @@ class InertiaService
             echo $body;
         }
 
-        exit;
+        exit();
     }
 
     /**

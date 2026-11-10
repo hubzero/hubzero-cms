@@ -83,7 +83,7 @@ class Batchcreate extends AdminController
                 // Should only get here on error
                 throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
             } else {
-                exit;
+                exit();
             }
         }
 

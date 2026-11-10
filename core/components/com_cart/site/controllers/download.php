@@ -197,7 +197,7 @@ class Download extends ComponentController
         $xserver = new \Hubzero\Content\Server();
         $xserver->filename($file);
         $xserver->serveAttachment($file); // Firefox and Chrome fail if served inline
-        exit;
+        exit();
     }
 
     /**

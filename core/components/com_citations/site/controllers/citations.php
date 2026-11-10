@@ -866,7 +866,7 @@ class Citations extends SiteController
 
         $this->serveup(false, $path, $file, $mime);
 
-        die; // REQUIRED
+        die(); // REQUIRED
     }
 
     /**

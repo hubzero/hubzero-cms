@@ -36,6 +36,6 @@ class ConfigCurrent
         SiteDvConfig::$dv_conf = array_merge(SiteDvConfig::$dv_conf, $db_dv_conf);
 
         print \Components\Dataviewer\Admin\Libs\JsonFormat::jsonFormat(json_encode(SiteDvConfig::$dv_conf));
-        exit;
+        exit();
     }
 }

@@ -645,6 +645,6 @@ class Imports extends AdminController
 
         echo $this->quoteCsvRow($fields);
         echo $this->quoteCsvRow($row);
-        exit;
+        exit();
     }
 }

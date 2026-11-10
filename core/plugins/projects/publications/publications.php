@@ -2862,6 +2862,6 @@ class Publications extends Plugin
             throw new \Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
         }
 
-        exit;
+        exit();
     }
 }

@@ -779,6 +779,6 @@ class Resume extends Plugin
             App::abort(500, Lang::txt('SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 }

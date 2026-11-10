@@ -684,7 +684,7 @@ class Posts extends SiteController
         $no_html = Request::getInt('no_html', 0);
         if ($no_html) {
             echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive'));
-            exit;
+            exit();
         }
 
         // Display the main listing
@@ -837,7 +837,7 @@ class Posts extends SiteController
         // Display updated item stats if called via AJAX
         if ($no_html) {
             echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
-            exit;
+            exit();
         }
 
         // Display the main listing

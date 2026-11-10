@@ -717,6 +717,6 @@ class Media extends SiteController
             return;
         }
 
-        exit;
+        exit();
     }
 }

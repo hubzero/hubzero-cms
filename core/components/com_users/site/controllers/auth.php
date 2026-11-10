@@ -492,7 +492,7 @@ class Auth extends SiteController
                     'success'  => true,
                     'redirect' => Route::url($return, false),
                 ]);
-                exit;
+                exit();
             } else {
                 App::redirect(Route::url(User::getState('login.form.return'), false));
             }
@@ -524,7 +524,7 @@ class Auth extends SiteController
                     'error'   => $error,
                     'freturn' => Route::url($return, false),
                 ]);
-                exit;
+                exit();
             } else {
                 // Redirect to a login form
                 App::redirect(Route::url($return, false), $error, 'error');

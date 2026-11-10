@@ -878,7 +878,7 @@ class Threads extends SiteController
             App::abort(500, Lang::txt('COM_FORUM_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

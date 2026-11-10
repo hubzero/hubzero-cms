@@ -710,7 +710,7 @@ class Connections
             // Should only get here on error
             throw new \Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
         } else {
-            exit;
+            exit();
         }
     }
 
@@ -1043,15 +1043,15 @@ class Connections
                     $hash = md5_file($chunk_file);
                     if (strcmp($hash, $_GET['flowChunkHash']) === 0) {
                         header("HTTP/1.0 200 OK");
-                        exit;
+                        exit();
                     } else {
                         unlink($chunk_file);
                         header("HTTP/1.0 204 Not Found");
-                        exit;
+                        exit();
                     }
                 } else {
                     header("HTTP/1.0 204 Not Found");
-                    exit;
+                    exit();
                 }
             }
 
@@ -1081,7 +1081,7 @@ class Connections
                     // Move the temporary file
                     if (!move_uploaded_file($file['tmp_name'], $dest_file)) {
                         header("HTTP/1.0 404 Error Uploading File");
-                        exit;
+                        exit();
                     } else {
                         // Check if all the parts present, and create the final destination file
                         $results = $this->createFileFromChunks(

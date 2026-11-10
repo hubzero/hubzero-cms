@@ -431,7 +431,7 @@ class Downloads extends AdminController
         }
         // close stream and die
         fclose($output);
-        die;
+        die();
     }
 
     /**
@@ -503,6 +503,6 @@ class Downloads extends AdminController
             fputcsv($output, $row);
         }
         fclose($output);
-        die;
+        die();
     }
 }

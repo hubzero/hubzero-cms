@@ -118,7 +118,7 @@ class Media extends SiteController
             throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
         }
 
-        exit;
+        exit();
     }
 
     /**

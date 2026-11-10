@@ -1532,7 +1532,7 @@ class Groups extends Base
             App::abort(404, Lang::txt('COM_GROUPS_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

@@ -542,7 +542,7 @@ class Publication extends Table
         $this->db->setQuery("UPDATE $this->tableName SET rating=" . $this->db->quote($this->rating) . ", times_rated=" . $this->db->quote($this->times_rated) . " WHERE id=" . $this->db->quote($this->id));
         if (!$this->db->query()) {
             echo $this->db->getErrorMsg();
-            exit;
+            exit();
         }
     }
 
@@ -562,7 +562,7 @@ class Publication extends Table
         $this->db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($id));
         if (!$this->db->query()) {
             echo $this->db->getErrorMsg();
-            exit;
+            exit();
         }
     }
 

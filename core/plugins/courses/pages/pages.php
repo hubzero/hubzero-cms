@@ -900,7 +900,7 @@ class Pages extends Plugin
             App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
             return;
         } else {
-            exit;
+            exit();
         }
     }
 }

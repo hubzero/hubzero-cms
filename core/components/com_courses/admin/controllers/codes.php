@@ -408,6 +408,6 @@ class Codes extends AdminController
             echo $this->quoteCsvRow($row);
         }
 
-        exit;
+        exit();
     }
 }

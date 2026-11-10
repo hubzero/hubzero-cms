@@ -46,7 +46,7 @@ class Credentials extends SiteController
                 'success' => !in_array($type, ['error', 'warning'], true),
                 'message' => $message,
             ]);
-            exit;
+            exit();
         }
 
         App::redirect($url, $message, $type);

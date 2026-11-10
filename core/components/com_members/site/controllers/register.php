@@ -1149,7 +1149,7 @@ class Register extends SiteController
         $usernamechecked = $xregistration->checkusername($username);
 
         echo json_encode($usernamechecked);
-        die;
+        die();
     }
 
     /**

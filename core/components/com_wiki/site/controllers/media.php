@@ -174,7 +174,7 @@ class Media extends SiteController
             App::abort(500, Lang::txt('COM_WIKI_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

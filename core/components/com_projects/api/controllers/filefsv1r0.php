@@ -742,7 +742,7 @@ class Filefsv1r0 extends ApiController
                 $server = new \Hubzero\Content\Server();
                 $server->filename($image);
                 $server->serveInline($image);
-                exit;
+                exit();
             }
         }
 
@@ -791,7 +791,7 @@ class Filefsv1r0 extends ApiController
             }
             // Cannot download zero byte files
             if (filesize($downloadPath) == 0) {
-                exit;
+                exit();
             }
 
             // Proceed with download
@@ -815,7 +815,7 @@ class Filefsv1r0 extends ApiController
                     Filesystem::delete($downloadPath);
                 }
 
-                exit;
+                exit();
             }
         }
 

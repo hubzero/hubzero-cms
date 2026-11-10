@@ -330,6 +330,6 @@ class Exports extends AdminController
             App::abort(500, Lang::txt('Error serving file.'));
         }
 
-        exit;
+        exit();
     }
 }

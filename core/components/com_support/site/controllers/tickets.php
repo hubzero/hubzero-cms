@@ -1973,7 +1973,7 @@ class Tickets extends SiteController
             App::abort(500, Lang::txt('COM_SUPPORT_ERROR_SERVING_FILE'));
         }
 
-        exit;
+        exit();
     }
 
     /**

@@ -395,7 +395,7 @@ class Asset extends Base
             // Should only get here on error
             App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
         } else {
-            exit;
+            exit();
         }
         return;
     }

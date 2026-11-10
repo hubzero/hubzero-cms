@@ -168,6 +168,6 @@ class Csv
             }
             echo self::quoteRow($row);
         }
-        exit;
+        exit();
     }
 }

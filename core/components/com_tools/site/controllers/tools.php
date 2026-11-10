@@ -145,7 +145,7 @@ class Tools extends SiteController
             ob_clean();
             header("HTTP/1.1 404 Not Found");
             ob_end_flush();
-            exit;
+            exit();
         }
 
         if ($type == 'css') {
@@ -182,13 +182,13 @@ class Tools extends SiteController
             header("Content-Type: image/png");
             readfile($image);
             ob_end_flush();
-            exit;
+            exit();
         }
 
         ob_clean();
         header("HTTP/1.1 404 Not Found");
         ob_end_flush();
-        exit;
+        exit();
     }
 
     /**
@@ -222,13 +222,13 @@ class Tools extends SiteController
             header("Content-Type: text/css");
             readfile($file);
             ob_end_flush();
-            exit;
+            exit();
         }
 
         ob_clean();
         header("HTTP/1.1 404 Not Found");
         ob_end_flush();
-        exit;
+        exit();
     }
 
     /**

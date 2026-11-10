@@ -16,7 +16,7 @@ class Security
             return true;
         }
 
-        exit;
+        exit();
     }
 
     public static function dvIdentifier($value, $label = 'identifier')

@@ -787,7 +787,7 @@ class Media extends AdminController
             App::abort(500, Lang::txt('COM_MEDIA_ERROR_SERVING_FILE'));
         }
 
-        exit;
+        exit();
     }
 
     /**

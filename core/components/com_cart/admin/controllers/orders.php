@@ -581,7 +581,7 @@ class Orders extends AdminController
             fputcsv($output, $row);
         }
         fclose($output);
-        die;
+        die();
     }
 
     /**
@@ -680,7 +680,7 @@ class Orders extends AdminController
             fputcsv($output, $row);
         }
         fclose($output);
-        die;
+        die();
     }
 
     /**

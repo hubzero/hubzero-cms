@@ -182,7 +182,7 @@ class Installer
                     'redirect' => '?step=verify',
                     'security_error' => true,
                 ]);
-                exit;
+                exit();
             }
             if ($this->isInstalled()) {
                 $this->security->logSecurityEvent(
@@ -322,7 +322,7 @@ class Installer
                     'error' => $validation['error'],
                     'security_error' => true,
                 ]);
-                exit;
+                exit();
             }
         }
 
@@ -355,7 +355,7 @@ class Installer
                 echo json_encode(['error' => 'Unknown action']);
                 break;
         }
-        exit;
+        exit();
     }
 
     /**
@@ -596,7 +596,7 @@ class Installer
     {
         $url = $this->getBaseUrl() . '?step=' . $step;
         header('Location: ' . $url);
-        exit;
+        exit();
     }
 
     /**

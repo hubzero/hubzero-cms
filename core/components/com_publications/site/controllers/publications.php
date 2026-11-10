@@ -516,7 +516,7 @@ class Publications extends SiteController
 
         // Create download headers
         $resourceMap->pushDownload($this->config->get('webpath'));
-        exit;
+        exit();
     }
 
     /**
@@ -821,7 +821,7 @@ class Publications extends SiteController
                 throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
             }
 
-            exit;
+            exit();
         }
 
         $this->model->attachments();
@@ -1054,7 +1054,7 @@ class Publications extends SiteController
 
         header('Content-Type: application/json');
         echo json_encode($out);
-        exit;
+        exit();
     }
 
     /**
@@ -1204,7 +1204,7 @@ class Publications extends SiteController
 
         $this->serveup(false, $path, $file, $mime);
 
-        die; // REQUIRED
+        die(); // REQUIRED
     }
 
     /**

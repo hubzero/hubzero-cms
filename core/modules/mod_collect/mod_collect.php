@@ -132,7 +132,7 @@ class Collect extends Module
 
             ob_clean();
             require $this->getLayoutPath('collect');
-            exit;
+            exit();
         }
 
         // Check for request forgeries
@@ -230,6 +230,6 @@ class Collect extends Module
         ob_clean();
         header('Content-type: text/plain');
         echo json_encode($response);
-        exit;
+        exit();
     }
 }

@@ -2550,7 +2550,7 @@ class Wishlists extends SiteController
             App::abort(500, Lang::txt('COM_WISHLIST_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

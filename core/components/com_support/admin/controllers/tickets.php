@@ -1064,7 +1064,7 @@ class Tickets extends AdminController
             throw new Exception(Lang::txt('COM_SUPPORT_SERVER_ERROR'), 404);
         }
 
-        exit;
+        exit();
     }
 
     /**

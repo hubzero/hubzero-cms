@@ -372,7 +372,7 @@ class Certificate extends Base
 
         if (!$path) {
             $pdf->Output();
-            die;
+            die();
         }
 
         $pdf->Output($path, 'F');

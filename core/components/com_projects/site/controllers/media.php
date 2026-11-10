@@ -412,7 +412,7 @@ class Media extends Base
             $server = new \Hubzero\Content\Server();
             $server->filename($source);
             $server->serveInline($source);
-            exit;
+            exit();
         } elseif ($redirect) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),

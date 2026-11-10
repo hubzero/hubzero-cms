@@ -1030,7 +1030,7 @@ class Databases extends Plugin
                 $objPD->loadRecord($db_id);
 
                 if ($objPD->project != $this->model->get('id')) {
-                    exit;
+                    exit();
                 }
 
                 $objPD->title = $title;

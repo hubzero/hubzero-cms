@@ -677,6 +677,6 @@ class Imports extends AdminController
 
         echo $this->quoteCsvRow($fields); //array_map('ucfirst', $fields));
         echo $this->quoteCsvRow($row);
-        exit;
+        exit();
     }
 }

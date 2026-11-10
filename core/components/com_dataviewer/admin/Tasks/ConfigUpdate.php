@@ -29,6 +29,6 @@ class ConfigUpdate
         $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
         $url .= "/administrator/index.php?option=com_" . DvConfig::$conf['com_name'] . "&task=config&db=$db_id";
         header("Location: $url");
-        exit;
+        exit();
     }
 }

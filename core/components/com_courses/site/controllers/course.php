@@ -874,7 +874,7 @@ class Course extends SiteController
             App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**
@@ -933,7 +933,7 @@ class Course extends SiteController
             App::abort(500, Lang::txt('COM_COURSES_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

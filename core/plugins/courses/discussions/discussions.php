@@ -2766,7 +2766,7 @@ class Discussions extends Plugin
             App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

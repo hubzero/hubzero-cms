@@ -34,12 +34,12 @@ class File
 
         if (!$file || !file_exists($full_path)) {
             header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-            exit;
+            exit();
         }
 
         if ($full_path !== realpath($full_path)) {
             header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-            exit;
+            exit();
         }
 
         if (is_file($full_path)) {
@@ -79,6 +79,6 @@ class File
             readfile($full_path);
         }
 
-        exit;
+        exit();
     }
 }

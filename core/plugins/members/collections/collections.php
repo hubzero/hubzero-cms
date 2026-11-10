@@ -597,7 +597,7 @@ class Collections extends Plugin
                 $response->error = $this->getError();
             }
             echo json_encode($response);
-            exit;
+            exit();
         } else {
             return $this->feed();
         }
@@ -664,7 +664,7 @@ class Collections extends Plugin
                 $response->error = $this->getError();
             }
             echo json_encode($response);
-            exit;
+            exit();
         } else {
             return $this->feed();
         }
@@ -847,7 +847,7 @@ class Collections extends Plugin
 
         if ($no_html) {
             $view->display();
-            exit;
+            exit();
         }
 
         return $view->loadTemplate();
@@ -968,7 +968,7 @@ class Collections extends Plugin
 
         if ($no_html) {
             $view->display();
-            exit;
+            exit();
         }
 
         return $view->loadTemplate();
@@ -1244,7 +1244,7 @@ class Collections extends Plugin
 
             if ($no_html) {
                 $view->display();
-                exit;
+                exit();
             }
 
             return $view->loadTemplate();
@@ -1335,7 +1335,7 @@ class Collections extends Plugin
         // Display updated item stats if called via AJAX
         if ($no_html) {
             echo Lang::txt('%s reposts', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
-            exit;
+            exit();
         }
 
         // Display the main listing
@@ -1413,7 +1413,7 @@ class Collections extends Plugin
 
         if (Request::getInt('no_html', 0)) {
             echo $route;
-            exit;
+            exit();
         }
 
         App::redirect($route, $msg, $type);
@@ -1472,7 +1472,7 @@ class Collections extends Plugin
 
         if (Request::getInt('no_html', 0)) {
             echo $route;
-            exit;
+            exit();
         }
 
         App::redirect($route);
@@ -1533,7 +1533,7 @@ class Collections extends Plugin
                 $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_ERROR_CONFIRM_DELETION'));
                 if ($no_html) {
                     echo '';
-                    exit;
+                    exit();
                 }
             }
 
@@ -1605,7 +1605,7 @@ class Collections extends Plugin
 
         if ($no_html) {
             echo $route;
-            exit;
+            exit();
         }
 
         App::redirect($route, $msg, $type);
@@ -1832,7 +1832,7 @@ class Collections extends Plugin
         $no_html = Request::getInt('no_html', 0);
         if ($no_html) {
             echo Lang::txt('%s likes', $post->item()->get('positive'));
-            exit;
+            exit();
         }
 
         // ($collection is resolved and access-checked above)
@@ -1939,7 +1939,7 @@ class Collections extends Plugin
 
         if ($view->no_html) {
             $view->display();
-            exit;
+            exit();
         }
 
         return $view->loadTemplate();
@@ -2142,7 +2142,7 @@ class Collections extends Plugin
 
         if ($no_html) {
             echo $route;
-            exit;
+            exit();
         }
 
         App::redirect($route);

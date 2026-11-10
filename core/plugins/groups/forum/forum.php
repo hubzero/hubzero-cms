@@ -2362,7 +2362,7 @@ class Forum extends Plugin
             App::abort(500, Lang::txt('PLG_GROUPS_FORUM_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**

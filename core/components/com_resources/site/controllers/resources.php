@@ -2291,7 +2291,7 @@ class Resources extends SiteController
             App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**
@@ -2351,7 +2351,7 @@ class Resources extends SiteController
             App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
         }
 
-        exit;
+        exit();
     }
 
     /**
@@ -2552,7 +2552,7 @@ class Resources extends SiteController
 
         $this->serveup(false, $path, $file, $mime);
 
-        die; // REQUIRED
+        die(); // REQUIRED
     }
 
     /**

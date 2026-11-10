@@ -1669,7 +1669,7 @@ class Files extends Plugin
             // Should only get here on error
             App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
         } else {
-            exit;
+            exit();
         }
 
         return;
@@ -1817,7 +1817,7 @@ class Files extends Plugin
                 $server = new \Hubzero\Content\Server();
                 $server->filename($image);
                 $server->serveInline($image);
-                exit;
+                exit();
             }
         }
 
@@ -1953,7 +1953,7 @@ class Files extends Plugin
                         Filesystem::delete($downloadPath);
                     }
 
-                    exit;
+                    exit();
                 }
             }
         }
@@ -2175,7 +2175,7 @@ class Files extends Plugin
                     // Should only get here on error
                     App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
                 } else {
-                    exit;
+                    exit();
                 }
             }
 

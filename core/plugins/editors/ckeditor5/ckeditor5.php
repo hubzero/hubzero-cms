@@ -18,7 +18,7 @@ use Hubzero\Facades\Document;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Request;
 
-defined('_HZEXEC_') or die;
+defined('_HZEXEC_') or die();
 
 /**
  * CKEditor Plugin

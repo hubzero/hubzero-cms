@@ -658,7 +658,7 @@ class Media extends SiteController
             App::abort(404, Lang::txt('An error occurred while trying to output the file'));
         }
 
-        exit;
+        exit();
     }
 
     /**

@@ -1370,7 +1370,7 @@ class Members extends AdminController
             App::abort(404, Lang::txt('COM_MEMBERS_MEDIA_ERROR_SERVING_FILE'));
         }
 
-        exit;
+        exit();
     }
 
     /**

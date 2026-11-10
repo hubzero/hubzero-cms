@@ -1045,6 +1045,6 @@ class Account extends Plugin
         }
 
         // Exit - don't go any further (i.e. no template stuff)
-        exit;
+        exit();
     }
 }
