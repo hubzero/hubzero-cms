@@ -13,7 +13,6 @@ use Plugins\Wiki\Parserdefault\WikiMacro;
 /**
  * Wiki macro for unreferenced page
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Unreferenced extends WikiMacro
 {
     /**

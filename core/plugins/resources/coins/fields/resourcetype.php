@@ -17,7 +17,6 @@ use Hubzero\Facades\Request;
 /**
  * Renders a list of resource types
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Resourcetype extends Select
 {
     /**

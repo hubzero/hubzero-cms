@@ -13,7 +13,6 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for changing DATETIME fields default to NULL for `#__resource_sponsors` table
  **/
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Migration20190307114147PlgResourcesReviews extends Base
 {
     /**

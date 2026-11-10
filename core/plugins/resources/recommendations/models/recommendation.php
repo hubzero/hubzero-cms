@@ -13,7 +13,6 @@ use Hubzero\Database\Relational;
 /**
  * Model class for resource Recommendation
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Recommendation extends Relational
 {
     /**
