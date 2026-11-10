@@ -248,16 +248,15 @@ class Quotas extends AdminController
      */
     public function syncQuotasToSystemTask()
     {
-        {
-            // Check for request forgeries
-            Request::checkToken();
+        // Check for request forgeries
+        Request::checkToken();
 
-            // Incoming
-            $ids = Request::getArray('id', []);
-            $ids = (!is_array($ids) ? [$ids] : $ids);
-            $i = 0;
+        // Incoming
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
+        $i = 0;
 
-            // Do we have any IDs?
+        // Do we have any IDs?
         if (!empty($ids)) {
             // Loop through each ID and delete the necessary items
             foreach ($ids as $id) {
@@ -288,10 +287,9 @@ class Quotas extends AdminController
             return $this->cancelTask();
         }
 
-            // Output messsage and redirect
-            Notify::success(Lang::txt('Quotas Successfully Synced to System'));
-            return $this->cancelTask();
-        }
+        // Output messsage and redirect
+        Notify::success(Lang::txt('Quotas Successfully Synced to System'));
+        return $this->cancelTask();
     }
 
     /* ------------- */
@@ -481,7 +479,7 @@ class Quotas extends AdminController
                 Quota::restoreDefaultClass($id);
             }
         } else { // no rows were selected
-        // Output message and redirect
+            // Output message and redirect
             Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
             return $this->cancelClassTask();
         }

@@ -283,43 +283,43 @@ class Skus extends AdminController
                 $sIds = Request::getInt('sId', 0);
 
                 // Make sure we have an ID to work with
-            if (empty($sIds)) {
-                App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                    Lang::txt('COM_STOREFRONT_NO_ID'),
-                    'error',
-                );
-                return;
-            }
+                if (empty($sIds)) {
+                    App::redirect(
+                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                        Lang::txt('COM_STOREFRONT_NO_ID'),
+                        'error',
+                    );
+                    return;
+                }
 
                 $delete = Request::getInt('delete', 0);
 
                 $msg = "Delete canceled";
                 $type = 'error';
-            if ($delete) {
-                // Do the delete
-                $obj = new Archive();
+                if ($delete) {
+                    // Do the delete
+                    $obj = new Archive();
 
-                foreach ($sIds as $sId) {
-                    // Delete SKU
-                    try {
-                        $sku = Sku::getInstance($sId);
-                        $sku->delete();
-                    } catch (\Exception $e) {
-                        $url = 'index.php?option=' . $this->_option . '&controller='
-                            . $this->_controller . '&task=dispaly&id=' . $pId;
-                        App::redirect(
-                            Route::url($url, false),
-                            $e->getMessage(),
-                            $type,
-                        );
-                        return;
+                    foreach ($sIds as $sId) {
+                        // Delete SKU
+                        try {
+                            $sku = Sku::getInstance($sId);
+                            $sku->delete();
+                        } catch (\Exception $e) {
+                            $url = 'index.php?option=' . $this->_option . '&controller='
+                                . $this->_controller . '&task=dispaly&id=' . $pId;
+                            App::redirect(
+                                Route::url($url, false),
+                                $e->getMessage(),
+                                $type,
+                            );
+                            return;
+                        }
                     }
-                }
 
-                $msg = "SKU(s) deleted";
-                $type = 'message';
-            }
+                    $msg = "SKU(s) deleted";
+                    $type = 'message';
+                }
 
                 // Set the redirect
                 $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
