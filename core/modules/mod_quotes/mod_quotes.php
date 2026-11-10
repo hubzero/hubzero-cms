@@ -57,8 +57,8 @@ class Quotes extends Module
     {
         // Push the module CSS to the template
         $this
-             ->css()
-             ->js();
+            ->css()
+            ->js();
 
         if ($content = $this->getCacheContent()) {
             echo $content;

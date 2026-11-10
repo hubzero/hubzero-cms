@@ -66,8 +66,8 @@ class OneShiftsToMany extends OneToMany
     public function constrain()
     {
         $query = $this->related
-                    ->whereEquals($this->relatedKey, $this->model->{$this->localKey})
-                    ->whereEquals($this->shifter, strtolower($this->model->getModelName()));
+            ->whereEquals($this->relatedKey, $this->model->{$this->localKey})
+            ->whereEquals($this->shifter, strtolower($this->model->getModelName()));
 
         // Apply any default conditions
         return $this->applyDefaultConditions($query);
@@ -90,7 +90,7 @@ class OneShiftsToMany extends OneToMany
         }
 
         return $this->related
-                    ->whereIn($this->relatedKey, array_unique($keys))
-                    ->whereEquals($this->shifter, strtolower($this->model->getModelName()));
+            ->whereIn($this->relatedKey, array_unique($keys))
+            ->whereEquals($this->shifter, strtolower($this->model->getModelName()));
     }
 }

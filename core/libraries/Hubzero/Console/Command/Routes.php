@@ -43,13 +43,13 @@ class Routes extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview(
-                 'The addresses a hub\'s components answer at. "check" says what is out'
-                 . ' of step; "fix" puts it right.',
-             )
-             ->addTasks($this)
-             ->render();
+            ->getHelpOutput()
+            ->addOverview(
+                'The addresses a hub\'s components answer at. "check" says what is out'
+                . ' of step; "fix" puts it right.',
+            )
+            ->addTasks($this)
+            ->render();
     }
 
     /**

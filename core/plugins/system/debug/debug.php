@@ -188,18 +188,18 @@ class Debug extends Plugin
         $html .= '<h1>' . Lang::txt('PLG_DEBUG_TITLE')
 
 
-                 . '</h1>';
+            . '</h1>';
         $html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE')
 
 
-                 . '</span></a>';
+            . '</span></a>';
 
         if (Config::get('debug')) {
             if ($this->params->get('memory', 1)) {
                 $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="' . Lang::txt('PLG_DEBUG_MEMORY_USAGE')
 
 
-                 . '">' . $this->displayMemoryUsage() . '</span></span>';
+                    . '">' . $this->displayMemoryUsage() . '</span></span>';
             }
 
             $dumper = \Hubzero\Debug\Dumper::getInstance();
@@ -207,7 +207,7 @@ class Debug extends Plugin
                 $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE')
 
 
-                 . '</span>';
+                    . '</span>';
                 $html .= '<span class="badge">' . count($dumper->messages())
 
 
@@ -218,33 +218,33 @@ class Debug extends Plugin
             $html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">' . Lang::txt('PLG_DEBUG_REQUEST_DATA')
 
 
-                 . '</span></a>';
+                . '</span></a>';
             $html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">' . Lang::txt('PLG_DEBUG_SESSION')
 
 
-                 . '</span></a>';
+                . '</span></a>';
             if ($this->params->get('profile', 1)) {
                 $html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE')
 
 
-                 . '</span></a>';
+                    . '</span></a>';
             }
             if ($this->params->get('queries', 1)) {
                 $html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES')
 
 
-                 . '</span><span class="badge">' . App::get('db')->getCount()
+                    . '</span><span class="badge">' . App::get('db')->getCount()
 
 
-                 . '</span></a>';
+                    . '</span></a>';
             }
             $html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS')
 
 
-                 . '</span><span class="badge">' . count(Event::getCalledListeners())
+                . '</span><span class="badge">' . count(Event::getCalledListeners())
 
 
-                 . '</span></a>';
+                . '</span></a>';
         }
 
         if (Config::get('debug_lang')) {
@@ -252,7 +252,7 @@ class Debug extends Plugin
                 $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS')
 
 
-                 . '</span>';
+                    . '</span>';
                 $html .= '<span class="badge">' . count(Lang::getErrorFiles())
 
 
@@ -268,7 +268,7 @@ class Debug extends Plugin
                 $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED')
 
 
-                 . '</span>';
+                    . '</span>';
                 $html .= '<span class="badge">' . $total
 
 
@@ -280,7 +280,7 @@ class Debug extends Plugin
                 $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">' . Lang::txt('PLG_DEBUG_UNTRANSLATED')
 
 
-                 . '</span>';
+                    . '</span>';
                 $html .= '<span class="badge">' . count(Lang::getOrphans())
 
 
@@ -332,7 +332,7 @@ class Debug extends Plugin
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<script type="text/javascript" src="' . Request::root()
-                 . '/core/plugins/system/debug/assets/js/debug.js"></script>';
+            . '/core/plugins/system/debug/assets/js/debug.js"></script>';
 
         echo str_replace('</body>', $html . '</body>', $contents);
     }
@@ -433,14 +433,14 @@ class Debug extends Plugin
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
-                     . '</code> <code class="op">=></code> <code class="vl">' . $this->arr($val) . '</code>';
+                    . '</code> <code class="op">=></code> <code class="vl">' . $this->arr($val) . '</code>';
             } elseif (is_object($val)) {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
-                     . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
+                    . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
             } else {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
-                     . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8')
-                     . '</code>';
+                    . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8')
+                    . '</code>';
             }
         }
         $html .= implode(", \n", $a) . "\n" . ' )' . "\n";
@@ -509,7 +509,7 @@ class Debug extends Plugin
                 if (is_string($entries)) {
                     $html .= '<code>';
                     $html .= '<span class="ky">' . $sKey . '</span> <span class="op">&rArr;</span> <span class="vl">'
-                             . $entries . '</span><br />';
+                        . $entries . '</span><br />';
                     $html .= '</code>';
                 }
             }
@@ -651,16 +651,16 @@ class Debug extends Plugin
             $html .= '<h5>' . Lang::txt('PLG_DEBUG_SELECT_QUERIES')
 
 
-                 . '</h5>';
+                . '</h5>';
             $html .= '<ol>';
             foreach ($selectQueryTypeTicker as $query => $occurrences) {
                 $html .= '<li><code>'
 
 
-                     . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
+                    . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
 
 
-                     . '</code></li>';
+                    . '</code></li>';
             }
             $html .= '</ol>';
         }
@@ -671,16 +671,16 @@ class Debug extends Plugin
             $html .= '<h5>' . Lang::txt('PLG_DEBUG_OTHER_QUERIES')
 
 
-                 . '</h5>';
+                . '</h5>';
             $html .= '<ol>';
             foreach ($otherQueryTypeTicker as $query => $occurrences) {
                 $html .= '<li><code>'
 
 
-                     . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
+                    . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
 
 
-                     . '</code></li>';
+                    . '</code></li>';
             }
             $html .= '</ol>';
         }
@@ -701,7 +701,7 @@ class Debug extends Plugin
             return '<p>' . Lang::txt('JNONE')
 
 
-                 . '</p>';
+                . '</p>';
         }
 
         $html  = '<ul>';
@@ -717,10 +717,10 @@ class Debug extends Plugin
                 $html .= '<span class="vl">' . $info['function'] . '</span>';
             } elseif ($info['type'] == 'Method') {
                 $html .= '<span class="ky">' . $info['class'] . '</span><span class="op">::</span><span class="vl">'
-                         . $info['method'] . '</span>';
+                    . $info['method'] . '</span>';
             }
             $html .= ' <span class="op">&rarr;</span> <span class="op">' . $file
-                     . ':<span class="tm">' . $line . '</span></span>';
+                . ':<span class="tm">' . $line . '</span></span>';
             $html .= '</code></li>';
         }
 
@@ -742,7 +742,7 @@ class Debug extends Plugin
             return '<p>' . Lang::txt('JNONE')
 
 
-                 . '</p>';
+                . '</p>';
         }
 
         $html  = '<ul>';
@@ -773,11 +773,11 @@ class Debug extends Plugin
                     ? '<span class="debug-loaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_LOADED')
 
 
-                 . '</strong>'
+                    . '</strong>'
                     : '<span class="debug-notloaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_NOT_LOADED')
 
 
-                 . '</strong>';
+                    . '</strong>';
 
                 $html .= ' ';
                 $html .= $this->formatLink($file) . '</span>';
@@ -807,7 +807,7 @@ class Debug extends Plugin
             return '<p>' . Lang::txt('JNONE')
 
 
-                 . '</p>';
+                . '</p>';
         }
 
         $html = '';
@@ -865,8 +865,8 @@ class Debug extends Plugin
 
         foreach ($guesses as $file => $keys) {
             $html .= '<ul class="debug-untrans debug-varlist"><li># '
-                     . ($file ? $this->formatLink($file) : Lang::txt('PLG_DEBUG_UNKNOWN_FILE'))
-                     . '</li>';
+                . ($file ? $this->formatLink($file) : Lang::txt('PLG_DEBUG_UNKNOWN_FILE'))
+                . '</li>';
             $html .= implode("\n", $keys) . '</ul>';
         }
 

@@ -45,12 +45,12 @@ class Migration20130916080500ComWiki extends Base
             if ($pages) {
                 foreach ($pages as $page) {
                     $created = $this->db
-                         ->getQuery(true)
-                         ->select('created')
-                         ->from('#__wiki_version')
-                         ->where('pageid', '=', $page->id)
-                         ->order('version', 'ASC')
-                         ->value('created');
+                        ->getQuery(true)
+                        ->select('created')
+                        ->from('#__wiki_version')
+                        ->where('pageid', '=', $page->id)
+                        ->order('version', 'ASC')
+                        ->value('created');
 
                     if ($created) {
                         $this->db

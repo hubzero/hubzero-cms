@@ -1639,18 +1639,18 @@ class Publication extends Obj
             $pubVerTbl = $this->version->getTableName();
 
             $this->citationsForMetadataSet = $citations
-            ->select('jca.type', 'relationType')
-            ->select('jct.type_desc', 'resourceTypeGeneral')
-            ->select($citations->getQualifiedFieldName('doi'), 'relatedIdentifier')
-            ->select($citations->getQualifiedFieldName('url'))
-            ->select($citations->getQualifiedFieldName('eprint'))
-            ->join($typesTbl . ' AS jct', $citations->getQualifiedFieldName('type'), 'jct.id', 'left')
-            ->join($assocTbl . ' AS jca', $citations->getQualifiedFieldName('id'), 'jca.cid', 'left')
-            ->join($pubVerTbl . ' AS jpv', 'jca.oid', 'jpv.id', 'left')
-            ->whereEquals('jca.tbl', 'publication')
-            ->where('jpv.id', '=', $this->version->id)
-            ->where('jpv.state', '=', self::STATE_PUBLISHED)
-            ->rows();
+                ->select('jca.type', 'relationType')
+                ->select('jct.type_desc', 'resourceTypeGeneral')
+                ->select($citations->getQualifiedFieldName('doi'), 'relatedIdentifier')
+                ->select($citations->getQualifiedFieldName('url'))
+                ->select($citations->getQualifiedFieldName('eprint'))
+                ->join($typesTbl . ' AS jct', $citations->getQualifiedFieldName('type'), 'jct.id', 'left')
+                ->join($assocTbl . ' AS jca', $citations->getQualifiedFieldName('id'), 'jca.cid', 'left')
+                ->join($pubVerTbl . ' AS jpv', 'jca.oid', 'jpv.id', 'left')
+                ->whereEquals('jca.tbl', 'publication')
+                ->where('jpv.id', '=', $this->version->id)
+                ->where('jpv.state', '=', self::STATE_PUBLISHED)
+                ->rows();
         }
 
         return $this->citationsForMetadataSet;

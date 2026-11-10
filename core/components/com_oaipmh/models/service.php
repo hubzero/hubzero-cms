@@ -89,10 +89,10 @@ class Service extends Obj
             . 'http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd';
         $this->response
             ->element('OAI-PMH')
-                ->attr('xmlns', 'http://www.openarchives.org/OAI/2.0/')
-                ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                ->attr('xsi:schemaLocation', $schemaLoc)
-                ->element('responseDate', gmdate('c', time()))->end();
+            ->attr('xmlns', 'http://www.openarchives.org/OAI/2.0/')
+            ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+            ->attr('xsi:schemaLocation', $schemaLoc)
+            ->element('responseDate', gmdate('c', time()))->end();
 
         $this->loadSchemas();
 
@@ -287,7 +287,7 @@ class Service extends Obj
         $this->response
             ->end()
             ->element('error', $message)
-                ->attr('code', ($error ?: self::ERROR_BAD_ARGUMENT))
+            ->attr('code', ($error ?: self::ERROR_BAD_ARGUMENT))
             ->end();
 
         return $this;
@@ -302,7 +302,7 @@ class Service extends Obj
     {
         $this->response
             ->element('request', $this->get('baseURL') . '/oaipmh')
-                ->attr('verb', 'Identify')
+            ->attr('verb', 'Identify')
             ->end()
             ->element('Identify');
 
@@ -336,16 +336,16 @@ class Service extends Obj
     {
         $this->response
             ->element('request', $this->get('repositoryName') . '/oaipmh')
-                ->attr('verb', 'ListMetadataFormats')
+            ->attr('verb', 'ListMetadataFormats')
             ->end()
             ->element('ListMetadataFormats');
 
         foreach ($this->schemas as $schema) {
             $this->response
                 ->element('metadataFormat')
-                    ->element('metadataPrefix', $schema::$prefix)->end()
-                    ->element('schema', $schema::$schema)->end()
-                    ->element('metadataNamespace', $schema::$ns)->end()
+                ->element('metadataPrefix', $schema::$prefix)->end()
+                ->element('schema', $schema::$schema)->end()
+                ->element('metadataNamespace', $schema::$ns)->end()
                 ->end();
         }
 
@@ -391,7 +391,7 @@ class Service extends Obj
 
         $this->response
             ->element('request', $this->get('baseURL') . '/oaipmh')
-                ->attr('verb', 'ListSets')
+            ->attr('verb', 'ListSets')
             ->end()
             ->element('ListSets');
 
@@ -413,8 +413,8 @@ class Service extends Obj
             }
 
             $this->response
-                    ->element('set')
-                        ->element('setSpec', $spec)->end();
+                ->element('set')
+                ->element('setSpec', $spec)->end();
 
             if (!empty($set[1])) {
                 $this->response->element('setName', $set[1])->end();
@@ -434,7 +434,7 @@ class Service extends Obj
             }
 
             $this->response
-                    ->end();
+                ->end();
         }
 
         // Write resumption token if needed
@@ -450,8 +450,8 @@ class Service extends Obj
 
             $this->response
                 ->element('resumptionToken', $resumption)
-                    ->attr('completeListSize', $total)
-                    ->attr('cursor', ($start + $limit))
+                ->attr('completeListSize', $total)
+                ->attr('cursor', ($start + $limit))
                 ->end();
         }
 
@@ -524,7 +524,7 @@ class Service extends Obj
         // Write schema
         $this->response
             ->element('request', $this->get('baseURL') . '/oaipmh')
-                ->attr('verb', $verb)
+            ->attr('verb', $verb)
             ->end()
             ->element($verb);
 
@@ -543,8 +543,8 @@ class Service extends Obj
 
             $this->response
                 ->element('resumptionToken', $resumption)
-                    ->attr('completeListSize', $total)
-                    ->attr('cursor', ($start + $limit))
+                ->attr('completeListSize', $total)
+                ->attr('cursor', ($start + $limit))
                 ->end();
         }
 
@@ -632,9 +632,9 @@ class Service extends Obj
 
         $this->response
             ->element('request', $this->get('baseURL') . '/oaipmh')
-                ->attr('verb', 'GetRecord')
-                ->attr('identifier', $identifier)
-                ->attr('metadataPrefix', $this->get('metadataPrefix'))
+            ->attr('verb', 'GetRecord')
+            ->attr('identifier', $identifier)
+            ->attr('metadataPrefix', $this->get('metadataPrefix'))
             ->end()
             ->element('GetRecord');
 

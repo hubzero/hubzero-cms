@@ -231,13 +231,13 @@ class DublinCore implements Schema
                     ->end();
         }*/
         $this->response
-                ->element('oai_dc:dc')
-                    ->attr('xmlns:' . self::$prefix, self::$ns)
-                    ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-                    ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                    ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema)
-                    ->element('dc:description', $this->escape($set[2]))->end()
-                ->end();
+            ->element('oai_dc:dc')
+            ->attr('xmlns:' . self::$prefix, self::$ns)
+            ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+            ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+            ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema)
+            ->element('dc:description', $this->escape($set[2]))->end()
+            ->end();
 
         return $this;
     }
@@ -276,7 +276,7 @@ class DublinCore implements Schema
         if ($metadata) {
             $this->response
                 ->element('record')
-                    ->element('header');
+                ->element('header');
         } else {
             $this->response
                 ->element('header');
@@ -306,11 +306,11 @@ class DublinCore implements Schema
         if ($metadata) {
             $this->response
                 ->element('metadata')
-                    ->element('oai_dc:dc')
-                        ->attr('xmlns:' . self::$prefix, self::$ns)
-                        ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-                        ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                        ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
+                ->element('oai_dc:dc')
+                ->attr('xmlns:' . self::$prefix, self::$ns)
+                ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+                ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+                ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
 
             $dcs = [
                 'title',
@@ -356,8 +356,8 @@ class DublinCore implements Schema
             }
 
             $this->response
-                        ->end() // End oai_dc:dc
-                        ->end(); // End metadata
+                ->end() // End oai_dc:dc
+                ->end(); // End metadata
 
             $this->response->end(); // End record
         }

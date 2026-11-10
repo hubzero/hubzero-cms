@@ -1008,8 +1008,8 @@ class Project extends Model
                 ->whereEquals('scope', 'project')
                 ->whereEquals('scope_id', $this->get('id'))
                 ->where('viewed', 'IS', null, 'and', 1)
-                    ->orWhereEquals('viewed', '0000-00-00 00:00:00', 1)
-                    ->resetDepth()
+                ->orWhereEquals('viewed', '0000-00-00 00:00:00', 1)
+                ->resetDepth()
                 ->whereEquals('state', 1)
                 ->total();
         }

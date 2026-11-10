@@ -659,11 +659,11 @@ class MysqlDriver extends BaseSqlDriver
 
         try {
             $sql = "SELECT OBJECT_SCHEMA as db, OBJECT_NAME as table_name, "
-                   . "COUNT_READ as reads, COUNT_WRITE as writes, "
-                   . "SUM_TIMER_READ/1000000000000 as read_time_sec, "
-                   . "SUM_TIMER_WRITE/1000000000000 as write_time_sec "
-                   . "FROM performance_schema.table_io_waits_summary_by_table "
-                   . "WHERE OBJECT_SCHEMA NOT IN ('mysql', 'performance_schema', 'information_schema', 'sys')";
+                . "COUNT_READ as reads, COUNT_WRITE as writes, "
+                . "SUM_TIMER_READ/1000000000000 as read_time_sec, "
+                . "SUM_TIMER_WRITE/1000000000000 as write_time_sec "
+                . "FROM performance_schema.table_io_waits_summary_by_table "
+                . "WHERE OBJECT_SCHEMA NOT IN ('mysql', 'performance_schema', 'information_schema', 'sys')";
 
             if ($table) {
                 $table = $this->replacePrefix($table);
@@ -1679,9 +1679,9 @@ class MysqlDriver extends BaseSqlDriver
         $security = strtoupper($options['security'] ?? 'INVOKER');
 
         $sql = 'CREATE OR REPLACE ALGORITHM=' . $algorithm
-             . ' DEFINER=' . $definer
-             . ' SQL SECURITY ' . $security
-             . ' VIEW ' . $this->quoteName($viewName) . ' AS ' . $selectSql;
+            . ' DEFINER=' . $definer
+            . ' SQL SECURITY ' . $security
+            . ' VIEW ' . $this->quoteName($viewName) . ' AS ' . $selectSql;
         $this->setQuery($sql);
         $this->execute();
 

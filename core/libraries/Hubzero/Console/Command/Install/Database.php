@@ -621,7 +621,7 @@ class Database
                 self::output("Check that MySQL is running and the socket path is correct.\n", $ansi);
             } elseif (
                 stripos($message, 'Connection refused') !== false
-                      || in_array($code, [2002, 2003])
+                || in_array($code, [2002, 2003])
             ) {
                 self::output("\e[31mConnection refused.\e[39m\n", $ansi);
                 self::output("Check that MySQL is running and accepting connections.\n", $ansi);
@@ -1626,7 +1626,7 @@ class Database
 
             try {
                 $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
-                               . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
+                    . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
                 $adminPdo->exec("FLUSH PRIVILEGES");
                 self::output("\e[32mDone.\e[39m\n", $ansi);
             } catch (\PDOException $e) {
@@ -1722,7 +1722,7 @@ class Database
 
                 try {
                     $adminPdo->exec("ALTER USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
-                                   . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
+                        . " IDENTIFIED BY " . $adminPdo->quote($newPassword));
                     $adminPdo->exec("FLUSH PRIVILEGES");
                     self::output("\e[32mDone.\e[39m\n", $ansi);
                 } catch (\PDOException $e) {
@@ -1798,20 +1798,20 @@ class Database
 
             // Create the user
             $adminPdo->exec("CREATE USER " . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost)
-                           . " IDENTIFIED BY " . $adminPdo->quote($password));
+                . " IDENTIFIED BY " . $adminPdo->quote($password));
 
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Create the database
             self::output("Creating database '\e[32m{$database}\e[39m'... ", $ansi);
             $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database)
-                           . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Grant privileges
             self::output("Granting privileges... ", $ansi);
             $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO "
-                           . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
+                . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
             $adminPdo->exec("FLUSH PRIVILEGES");
             self::output("\e[32mDone.\e[39m\n", $ansi);
 
@@ -2616,9 +2616,9 @@ class Database
     {
         $host = strtolower(trim($host));
         return $host === 'localhost'
-               || $host === '127.0.0.1'
-               || $host === '::1'
-               || $host === '';
+            || $host === '127.0.0.1'
+            || $host === '::1'
+            || $host === '';
     }
 
     /**
@@ -2657,13 +2657,13 @@ class Database
             // Create the database
             self::output("Creating database '\e[32m{$database}\e[39m'... ", $ansi);
             $adminPdo->exec("CREATE DATABASE IF NOT EXISTS " . self::quoteIdentifier($adminPdo, $database)
-                           . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             self::output("\e[32mCreated.\e[39m\n", $ansi);
 
             // Grant privileges
             self::output("Granting privileges... ", $ansi);
             $adminPdo->exec("GRANT ALL PRIVILEGES ON " . self::quoteIdentifier($adminPdo, $database) . ".* TO "
-                           . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
+                . $adminPdo->quote($username) . "@" . $adminPdo->quote($userHost));
             $adminPdo->exec("FLUSH PRIVILEGES");
             self::output("\e[32mDone.\e[39m\n", $ansi);
 

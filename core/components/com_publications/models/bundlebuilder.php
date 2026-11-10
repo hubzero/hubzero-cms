@@ -2018,8 +2018,8 @@ class BundleBuilder
         $out = '';
         foreach ($byRole as $role => $items) {
             $label    = isset($elemByRole[$role]['label']) && $elemByRole[$role]['label'] !== ''
-                      ? $elemByRole[$role]['label']
-                      : ('Role ' . $role);
+                ? $elemByRole[$role]['label']
+                : ('Role ' . $role);
             $multiZip = isset($elemByRole[$role]['multiZip']) ? (int) $elemByRole[$role]['multiZip'] : 1;
 
             $out .= "\n" . $label . ': ' . "\n";

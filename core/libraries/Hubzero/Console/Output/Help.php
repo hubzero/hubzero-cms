@@ -160,14 +160,14 @@ class Help extends Output
         }
         if (isset($example)) {
             $this
-            ->addLine(
-                $example,
-                [
-                    'color'       => 'green',
-                    'indentation' => 4,
-                ],
-            )
-            ->addSpacer();
+                ->addLine(
+                    $example,
+                    [
+                        'color'       => 'green',
+                        'indentation' => 4,
+                    ],
+                )
+                ->addSpacer();
         }
 
         return $this;

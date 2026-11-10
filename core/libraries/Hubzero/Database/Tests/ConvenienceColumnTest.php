@@ -289,11 +289,11 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
 
         $builder = new TableBuilder($driver, 'convtest_users');
         $builder
-                ->id()
-                ->string('email', 255)
-                ->rememberToken()
-                ->softDeletes()
-                ->timestamps();
+            ->id()
+            ->string('email', 255)
+            ->rememberToken()
+            ->softDeletes()
+            ->timestamps();
 
         $result = $builder->execute();
         $this->assertTrue($result);
@@ -444,9 +444,9 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         // Add network address columns using addColumn() + string()
         $builder = new AlterTableBuilder($driver, 'altertest_sessions');
         $builder
-                ->addColumn('client_ip')
-                ->string(45)
-                ->addColumn('device_mac')->string(17);
+            ->addColumn('client_ip')
+            ->string(45)
+            ->addColumn('device_mac')->string(17);
 
         $builder->execute();
         $this->assertTrue($driver->tableHasField('altertest_sessions', 'client_ip'));

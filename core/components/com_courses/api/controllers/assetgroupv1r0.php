@@ -149,13 +149,13 @@ class Assetgroupv1r0 extends Base
             $query = $db->getQuery();
 
             $query
-                  ->select('folder AS type, element AS name, params')
-                  ->from('#__extensions')
-                  ->where('enabled', '>=', 1)
-                  ->where('type', '=', $db->quote('plugin'))
-                  ->where('state', '>=', 0)
-                  ->where('folder', '=', $db->quote('courses'))
-                  ->order('ordering', 'asc');
+                ->select('folder AS type, element AS name, params')
+                ->from('#__extensions')
+                ->where('enabled', '>=', 1)
+                ->where('type', '=', $db->quote('plugin'))
+                ->where('state', '>=', 0)
+                ->where('folder', '=', $db->quote('courses'))
+                ->order('ordering', 'asc');
 
             if ($plugins = $db->setQuery($query)->loadObjectList()) {
                 foreach ($plugins as $plugin) {

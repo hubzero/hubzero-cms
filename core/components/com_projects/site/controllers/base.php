@@ -202,8 +202,8 @@ class Base extends SiteController
                 $reviewer = Request::getString('reviewer', '');
                 if ($reviewer == 'sponsored' || $reviewer == 'sensitive') {
                     $this->title = $reviewer == 'sponsored'
-                                 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
-                                 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
+                        ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+                        : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
                 } else {
                     $this->title .= ($this->task)
                         ? ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task))

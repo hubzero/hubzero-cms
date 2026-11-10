@@ -69,9 +69,9 @@ class SearchPlugin extends Scaffolding
         }
 
         $this
-             ->addTemplateFile("{$this->getType()}.tmpl", $destination)
-             ->addReplacement('class_name', $classname)
-             ->make();
+            ->addTemplateFile("{$this->getType()}.tmpl", $destination)
+            ->addReplacement('class_name', $classname)
+            ->make();
     }
 
     /**

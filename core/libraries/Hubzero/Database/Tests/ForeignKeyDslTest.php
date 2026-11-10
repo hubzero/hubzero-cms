@@ -134,9 +134,9 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
         $fk = new ForeignKeyBuilder($builder, 'user_id');
         $fk
-           ->constrained()
-           ->cascadeOnDelete()
-           ->cascadeOnUpdate();
+            ->constrained()
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
 
         $this->assertEquals('CASCADE', $fk->getOnDelete());
         $this->assertEquals('CASCADE', $fk->getOnUpdate());
@@ -200,9 +200,9 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
         $fk = new ForeignKeyBuilder($builder, 'user_id');
         $fk
-           ->constrained()
-           ->onDelete('cascade')
-           ->onUpdate('set null');
+            ->constrained()
+            ->onDelete('cascade')
+            ->onUpdate('set null');
 
         $this->assertEquals('CASCADE', $fk->getOnDelete());
         $this->assertEquals('SET NULL', $fk->getOnUpdate());
@@ -248,13 +248,13 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
-                ->id()
-                ->string('title', 255)
-                ->integer('user_id', true)
-                ->foreign('user_id')
-                    ->references('id')
-                    ->on('fkdsl_users')
-                    ->cascadeOnDelete();
+            ->id()
+            ->string('title', 255)
+            ->integer('user_id', true)
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->cascadeOnDelete();
 
         $sql = $builder->toSql();
 
@@ -270,9 +270,9 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
-                ->id()
-                ->string('title', 255)
-                ->foreignId('user_id')->constrained('fkdsl_users');
+            ->id()
+            ->string('title', 255)
+            ->foreignId('user_id')->constrained('fkdsl_users');
 
         $sql = $builder->toSql();
         $sqlLower = strtolower($sql);
@@ -289,12 +289,12 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
-                ->id()
-                ->integer('user_id', true)
-                ->foreign('user_id')
-                    ->references('id')
-                    ->on('fkdsl_users')
-                    ->name('fk_posts_author');
+            ->id()
+            ->integer('user_id', true)
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->name('fk_posts_author');
 
         $sql = $builder->toSql();
 
@@ -309,13 +309,13 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
-                ->id()
-                ->string('title', 255)
-                ->integer('user_id', true)
-                ->foreign('user_id')
-                    ->references('id')
-                    ->on('fkdsl_users')
-                    ->cascadeOnDelete();
+            ->id()
+            ->string('title', 255)
+            ->integer('user_id', true)
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->cascadeOnDelete();
 
         try {
             $result = $builder->execute();
@@ -390,10 +390,10 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
         $builder = new AlterTableBuilder($driver, 'fkdsl_comments');
         $builder
-                ->foreign('user_id')
-                ->references('id')
-                ->on('fkdsl_users')
-                ->cascadeOnDelete();
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->cascadeOnDelete();
 
         $statements = $builder->toSql();
         $this->assertIsArray($statements);
@@ -412,13 +412,13 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
         $builder = new TableBuilder($driver, 'fkdsl_orders');
 
         $builder
-                ->id()
-                ->integer('user_id', true)
-                ->foreign('user_id')
-                    ->references('id')
-                    ->on('fkdsl_users')
-                    ->cascadeOnDelete()
-                ->string('status', 50);
+            ->id()
+            ->integer('user_id', true)
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->cascadeOnDelete()
+            ->string('status', 50);
 
         $sql = $builder->toSql();
         $sqlLower = strtolower($sql);
@@ -440,18 +440,18 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
         $builder = new TableBuilder($driver, 'fkdsl_products');
         $builder
-                ->id()
-                ->string('name', 255)
-                ->integer('user_id', true)
-                ->integer('category_id', true)
-                ->foreign('user_id')
-                    ->references('id')
-                    ->on('fkdsl_users')
-                    ->cascadeOnDelete()
-                ->foreign('category_id')
-                    ->references('id')
-                    ->on('fkdsl_categories')
-                    ->onDelete('SET NULL');
+            ->id()
+            ->string('name', 255)
+            ->integer('user_id', true)
+            ->integer('category_id', true)
+            ->foreign('user_id')
+            ->references('id')
+            ->on('fkdsl_users')
+            ->cascadeOnDelete()
+            ->foreign('category_id')
+            ->references('id')
+            ->on('fkdsl_categories')
+            ->onDelete('SET NULL');
 
         try {
             $result = $builder->execute();

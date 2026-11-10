@@ -2008,13 +2008,13 @@ class Calendar extends Plugin
 
         // set message details and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($to)
-                ->addPart($body, 'text/plain')
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', 'Group Calendar Event Registration')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($to)
+            ->addPart($body, 'text/plain')
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', 'Group Calendar Event Registration')
+            ->send();
 
         // add good
         return true;

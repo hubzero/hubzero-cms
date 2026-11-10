@@ -37,9 +37,9 @@ class Utilities
 
         $message = new Message();
         $message
-                ->setSubject(Config::get('sitename') . ' ' . $subject)
-                ->addFrom($from['email'], $from['name'])
-                ->addTo($email);
+            ->setSubject(Config::get('sitename') . ' ' . $subject)
+            ->addFrom($from['email'], $from['name'])
+            ->addTo($email);
 
         if ($replyto) {
             $message->addReplyTo($replyto, $from['name']);
@@ -81,8 +81,8 @@ class Utilities
             }
 
             $message
-                    ->addPart($contents['plaintext'], 'text/plain')
-                    ->addPart($contents['multipart'], 'text/html');
+                ->addPart($contents['plaintext'], 'text/plain')
+                ->addPart($contents['multipart'], 'text/html');
         } else {
             $message->setBody($contents);
         }

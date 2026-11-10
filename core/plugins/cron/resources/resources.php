@@ -376,11 +376,11 @@ class Resources extends Plugin
         // Build message
         $message = App::get('mailer');
         $message
-                ->setSubject($params->get('digest_subject', Lang::txt('PLG_CRON_RESOURCES_EMAIL_DIGEST_SUBJECT')))
-                ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
-                ->addTo($user->get('email'), $user->get('name'))
-                ->addHeader('X-Component', 'com_resources')
-                ->addHeader('X-Component-Object', 'members_activity_email_digest');
+            ->setSubject($params->get('digest_subject', Lang::txt('PLG_CRON_RESOURCES_EMAIL_DIGEST_SUBJECT')))
+            ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            ->addTo($user->get('email'), $user->get('name'))
+            ->addHeader('X-Component', 'com_resources')
+            ->addHeader('X-Component-Object', 'members_activity_email_digest');
 
         $message->addPart($plain, 'text/plain');
         $message->addPart($html, 'text/html');

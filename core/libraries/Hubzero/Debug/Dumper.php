@@ -212,9 +212,9 @@ class Dumper
         }
 
         return $this
-                    ->setRenderer($renderer)
-                    ->getRenderer()
-                    ->render($this->messages());
+            ->setRenderer($renderer)
+            ->getRenderer()
+            ->render($this->messages());
     }
 
     /**

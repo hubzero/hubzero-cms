@@ -72,22 +72,22 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $recordIdField = $records->getQualifiedFieldName('id');
 
         $records
-                ->select($records->getQualifiedFieldName('*'))
-                ->select('u.username')
-                ->select('F.format', 'template')
-                ->select('CS.sec_cits_cnt', 'sec_cnt')
-                ->including(['relatedAuthors', function ($author) {
-                    $author->order('ordering', 'asc');
-                }])
-                ->including('assignedFormat')
-                ->including('sponsors')
-                ->including('tags')
-                ->including(['resources', function ($resource) {
-                    $resource->whereEquals('#__citations_assoc.tbl', 'resource');
-                }])
-                ->join('#__users AS u', $records->getQualifiedFieldName('uid'), 'u.id', 'left')
-                ->join('#__citations_secondary AS CS', $recordIdField, 'CS.cid', 'left')
-                ->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left');
+            ->select($records->getQualifiedFieldName('*'))
+            ->select('u.username')
+            ->select('F.format', 'template')
+            ->select('CS.sec_cits_cnt', 'sec_cnt')
+            ->including(['relatedAuthors', function ($author) {
+                $author->order('ordering', 'asc');
+            }])
+            ->including('assignedFormat')
+            ->including('sponsors')
+            ->including('tags')
+            ->including(['resources', function ($resource) {
+                $resource->whereEquals('#__citations_assoc.tbl', 'resource');
+            }])
+            ->join('#__users AS u', $records->getQualifiedFieldName('uid'), 'u.id', 'left')
+            ->join('#__citations_secondary AS CS', $recordIdField, 'CS.cid', 'left')
+            ->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left');
         //->group($recordIdField);
 
         // scope & scope Id

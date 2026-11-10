@@ -161,8 +161,8 @@ class Messages extends Plugin
 
             //push styles to the view
             $this
-                 ->css()
-                 ->js();
+                ->css()
+                ->js();
 
             $task = strtolower(trim($action));
 
@@ -489,9 +489,9 @@ class Messages extends Plugin
 
         // set message details and send
         $message
-                ->setSubject($subject)
-                ->setFrom([$from['email'] => $from['name']])
-                ->addPart($plain, 'text/plain');
+            ->setSubject($subject)
+            ->setFrom([$from['email'] => $from['name']])
+            ->addPart($plain, 'text/plain');
 
         // Send one at a time, and count: send() logs a transport failure and
         // returns false, and an empty recipient list sends nothing at all -

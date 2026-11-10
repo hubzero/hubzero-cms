@@ -60,10 +60,10 @@ class Resources extends Base implements CommandInterface
     public function gitstats()
     {
         $entries = Entry::all()
-                    ->whereEquals('standalone', 1)
-                    ->whereEquals('type', 7)
-                    ->ordered()
-                    ->rows();
+            ->whereEquals('standalone', 1)
+            ->whereEquals('type', 7)
+            ->ordered()
+            ->rows();
 
         foreach ($entries as $entry) {
             // Determine if entry/resource has a git repo on the host in /opt/git or /opt/gitExternal

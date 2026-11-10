@@ -88,13 +88,13 @@ class Forum extends GenericItem
         $clean = \Hubzero\Utility\Str::truncate($clean, 200);
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $thread->get('id'))
-             ->set('created', $thread->get('created'))
-             ->set('created_by', $thread->get('created_by'))
-             ->set('title', $thread->get('title'))
-             ->set('description', $clean)
-             ->set('url', $thread->link());
+            ->set('type', $this->type)
+            ->set('object_id', $thread->get('id'))
+            ->set('created', $thread->get('created'))
+            ->set('created_by', $thread->get('created_by'))
+            ->set('title', $thread->get('title'))
+            ->set('description', $clean)
+            ->set('url', $thread->link());
 
         if (!$this->store()) {
             return false;

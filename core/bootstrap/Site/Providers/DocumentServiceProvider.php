@@ -40,12 +40,12 @@ class DocumentServiceProvider extends Middleware
 
             $manager = new Manager();
             $manager
-                    ->setType($type)
-                    ->setLanguage($options['language'])
-                    ->setCharset($options['charset'])
-                    ->setDirection($options['direction'])
-                    ->setTab($options['tab'])
-                    ->setLineEnd($options['lineend']);
+                ->setType($type)
+                ->setLanguage($options['language'])
+                ->setCharset($options['charset'])
+                ->setDirection($options['direction'])
+                ->setTab($options['tab'])
+                ->setLineEnd($options['lineend']);
 
             return $manager;
         };

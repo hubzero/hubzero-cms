@@ -156,9 +156,9 @@ class ManyToMany extends OneToManyThrough
         if (is_array($ids) && count($ids) > 0) {
             $query = $this->model->getQuery();
             $query
-                  ->delete($this->associativeTable)
-                  ->whereEquals($this->associativeLocal, $this->model->getPkValue())
-                  ->whereIn($this->associativeRelated, $ids);
+                ->delete($this->associativeTable)
+                ->whereEquals($this->associativeLocal, $this->model->getPkValue())
+                ->whereIn($this->associativeRelated, $ids);
 
             if (isset($constraint) && is_callable($constraint)) {
                 call_user_func_array($constraint, [$query]);
@@ -188,19 +188,19 @@ class ManyToMany extends OneToManyThrough
 
             // Get any existing entries
             $existing = $query
-                              ->select($this->associativeRelated)
-                              ->from($this->associativeTable)
-                              ->whereEquals($this->associativeLocal, $localKeyValue)
-                              ->fetch('column');
+                ->select($this->associativeRelated)
+                ->from($this->associativeTable)
+                ->whereEquals($this->associativeLocal, $localKeyValue)
+                ->fetch('column');
 
             // See if there's anything to delete
             $deletes = array_diff($existing, $ids);
             if (!empty($deletes)) {
                 $query
-                      ->delete($this->associativeTable)
-                      ->whereEquals($this->associativeLocal, $localKeyValue)
-                      ->whereIn($this->associativeRelated, $deletes)
-                      ->execute();
+                    ->delete($this->associativeTable)
+                    ->whereEquals($this->associativeLocal, $localKeyValue)
+                    ->whereIn($this->associativeRelated, $deletes)
+                    ->execute();
             }
 
             // Now see if there's anything to add

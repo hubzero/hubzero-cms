@@ -109,10 +109,10 @@ class Announcements extends Plugin
             ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
             ->whereEquals('sticky', 1)
             ->where('publish_up', 'IS', null, 'and', 1)
-                ->orWhere('publish_up', '<=', Date::toSql(), 1)
-                ->resetDepth()
+            ->orWhere('publish_up', '<=', Date::toSql(), 1)
+            ->resetDepth()
             ->where('publish_down', 'IS', null, 'and', 1)
-                ->orWhere('publish_down', '>=', Date::toSql(), 1)
+            ->orWhere('publish_down', '>=', Date::toSql(), 1)
             ->rows();
 
         // Create view and assign data
@@ -658,13 +658,13 @@ class Announcements extends Plugin
 
             // Set message details and send
             $message
-                    ->setSubject($subject)
-                    ->addReplyTo($from['email'], $from['name'])
-                    ->addFrom($from['email'], $from['name'])
-                    ->setTo($email, $name)
-                    ->addPart($plain, 'text/plain')
-                    ->addPart($html, 'text/html')
-                    ->send();
+                ->setSubject($subject)
+                ->addReplyTo($from['email'], $from['name'])
+                ->addFrom($from['email'], $from['name'])
+                ->setTo($email, $name)
+                ->addPart($plain, 'text/plain')
+                ->addPart($html, 'text/html')
+                ->send();
         }
 
         // All good

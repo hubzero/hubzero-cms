@@ -38,18 +38,18 @@ class Migration extends Scaffolding
                 }
 
                 $this
-                     ->addReplacement('description', "creating table {$table}")
-                     ->addReplacement('table_name', str_replace($prefix, '#__', $table))
-                     ->addReplacement('up', '$^create.table^$')
-                     ->addReplacement('down', '$^drop.table^$')
-                     ->addReplacement('create_table', $this->showCreateTable($table));
+                    ->addReplacement('description', "creating table {$table}")
+                    ->addReplacement('table_name', str_replace($prefix, '#__', $table))
+                    ->addReplacement('up', '$^create.table^$')
+                    ->addReplacement('down', '$^drop.table^$')
+                    ->addReplacement('create_table', $this->showCreateTable($table));
                 break;
 
             default:
                 $this
-                     ->addReplacement('description', '...')
-                     ->addReplacement('up', '')
-                     ->addReplacement('down', '');
+                    ->addReplacement('description', '...')
+                    ->addReplacement('up', '')
+                    ->addReplacement('down', '');
                 break;
         }
 
@@ -100,9 +100,9 @@ class Migration extends Scaffolding
         $destination = $installDir . DS . $classname . '.php';
 
         $this
-             ->addTemplateFile("{$this->getType()}.tmpl", $destination)
-             ->addReplacement('class_name', $classname)
-             ->make();
+            ->addTemplateFile("{$this->getType()}.tmpl", $destination)
+            ->addReplacement('class_name', $classname)
+            ->make();
 
         // Open in editor
         system("{$editor} {$destination} > `tty`");

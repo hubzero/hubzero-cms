@@ -51,9 +51,9 @@ class SchemaBuilderTest extends AbstractDriverTestCase
         $column = new Column('email', 'string', ['length' => 255]);
 
         $column
-               ->nullable()
-               ->unique()
-               ->default('test@example.com');
+            ->nullable()
+            ->unique()
+            ->default('test@example.com');
 
         $this->assertEquals('email', $column->getName());
         $this->assertEquals('string', $column->getType());

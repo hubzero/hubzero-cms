@@ -202,10 +202,10 @@ class QueryTest extends AbstractDriverTestCase
 
         // Try to actually fetch some rows
         $rows = $query
-                      ->select('*')
-                      ->from('users')
-                      ->whereEquals('id', '1')
-                      ->fetch();
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->fetch();
 
         // Basically, as long as we don't get false here, we're good
         $this->assertCount(1, $rows, 'Query should have returned one result');
@@ -247,10 +247,10 @@ class QueryTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
         $rows = $query
-                      ->select(['id', 'email'])
-                      ->from('users')
-                      ->order('id', 'asc')
-                      ->fetch();
+            ->select(['id', 'email'])
+            ->from('users')
+            ->order('id', 'asc')
+            ->fetch();
 
         $this->assertCount(4, $rows);
         $this->assertEquals(1, $rows[0]->id);
@@ -356,9 +356,9 @@ class QueryTest extends AbstractDriverTestCase
 
         // Build query with table alias
         $query
-              ->select('*')
-              ->from('users', 'u')
-              ->whereEquals('u.name', 'Sam Wilson');
+            ->select('*')
+            ->from('users', 'u')
+            ->whereEquals('u.name', 'Sam Wilson');
 
         // Execute and verify functional behavior
         $results = $query->fetch();
@@ -380,9 +380,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereRaw with lowercase match
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereRaw("LOWER({$nameCol})=?", ['sam wilson']);
+            ->select('*')
+            ->from('users')
+            ->whereRaw("LOWER({$nameCol})=?", ['sam wilson']);
 
         $results = $query->fetch();
         $this->assertCount(1, $results, 'whereRaw should match case-insensitively');
@@ -391,10 +391,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereRaw
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('name', 'Sally Smith')
-              ->orWhereRaw("LOWER({$nameCol})=?", ['sam wilson']);
+            ->select('*')
+            ->from('users')
+            ->whereEquals('name', 'Sally Smith')
+            ->orWhereRaw("LOWER({$nameCol})=?", ['sam wilson']);
 
         $results = $query->fetch();
         $this->assertCount(2, $results, 'orWhereRaw should return two results');
@@ -413,9 +413,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereLike - match users with 'Sam' or 'Sally' in name
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereLike('name', 'Sa');
+            ->select('*')
+            ->from('users')
+            ->whereLike('name', 'Sa');
 
         $results = $query->fetch();
         $this->assertCount(3, $results, 'whereLike should match Sam, Sally, Sarah');
@@ -428,10 +428,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereLike - match 'Steve' OR names with 'Sa'
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereLike('name', 'Steve')
-              ->orWhereLike('name', 'Sally');
+            ->select('*')
+            ->from('users')
+            ->whereLike('name', 'Steve')
+            ->orWhereLike('name', 'Sally');
 
         $results = $query->fetch();
         $this->assertCount(2, $results, 'orWhereLike should match Steve and Sally');
@@ -454,9 +454,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereIsNull
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereIsNull('email');
+            ->select('*')
+            ->from('users')
+            ->whereIsNull('email');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(1, count($results), 'whereIsNull should find users with NULL email');
@@ -473,10 +473,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereIsNull - find users with specific name OR NULL email
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('name', 'Sam Wilson')
-              ->orWhereIsNull('email');
+            ->select('*')
+            ->from('users')
+            ->whereEquals('name', 'Sam Wilson')
+            ->orWhereIsNull('email');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(
@@ -499,9 +499,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereIsNotNull - all original users have non-null names
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereIsNotNull('name');
+            ->select('*')
+            ->from('users')
+            ->whereIsNotNull('name');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(4, count($results), 'whereIsNotNull should find all users with non-null names');
@@ -513,10 +513,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereIsNotNull
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('id', 1)
-              ->orWhereIsNotNull('name');
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', 1)
+            ->orWhereIsNotNull('name');
 
         $results = $query->fetch();
         // Should get all users with non-null names (which is all of them) plus id=1 (which is also included)
@@ -532,9 +532,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereIn with actual user names
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereIn('name', ['Sam Wilson', 'Sally Smith', 'Steve Rogers']);
+            ->select('*')
+            ->from('users')
+            ->whereIn('name', ['Sam Wilson', 'Sally Smith', 'Steve Rogers']);
 
         $results = $query->fetch();
         $this->assertCount(3, $results, 'whereIn should match three users');
@@ -548,10 +548,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereIn
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('name', 'Sarah Connor')
-              ->orWhereIn('name', ['Sam Wilson', 'Sally Smith']);
+            ->select('*')
+            ->from('users')
+            ->whereEquals('name', 'Sarah Connor')
+            ->orWhereIn('name', ['Sam Wilson', 'Sally Smith']);
 
         $results = $query->fetch();
         $this->assertCount(3, $results, 'orWhereIn should match three users');
@@ -564,9 +564,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test whereNotIn - should exclude Sam and Sally
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereNotIn('name', ['Sam Wilson', 'Sally Smith']);
+            ->select('*')
+            ->from('users')
+            ->whereNotIn('name', ['Sam Wilson', 'Sally Smith']);
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(2, count($results), 'whereNotIn should exclude Sam and Sally');
@@ -580,10 +580,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test orWhereNotIn
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('id', 1)  // Sam Wilson
-              ->orWhereNotIn('name', ['Sally Smith', 'Steve Rogers', 'Sarah Connor']);
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', 1)  // Sam Wilson
+            ->orWhereNotIn('name', ['Sally Smith', 'Steve Rogers', 'Sarah Connor']);
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(
@@ -605,13 +605,13 @@ class QueryTest extends AbstractDriverTestCase
         // Test nested where: (name = Sam OR name = Sally) AND (email LIKE %example% OR email LIKE %gmail%)
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->whereEquals('name', 'Sam Wilson', 1)
-              ->orWhereEquals('name', 'Sally Smith', 1)
-              ->resetDepth(0)
-              ->whereLike('email', 'example.com', 1)
-              ->orWhereLike('email', 'test.com', 1);
+            ->select('*')
+            ->from('users')
+            ->whereEquals('name', 'Sam Wilson', 1)
+            ->orWhereEquals('name', 'Sally Smith', 1)
+            ->resetDepth(0)
+            ->whereLike('email', 'example.com', 1)
+            ->orWhereLike('email', 'test.com', 1);
 
         $results = $query->fetch();
 
@@ -642,9 +642,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test INNER JOIN (alias: join) - let builder handle quoting/casing
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->join('posts', 'users.id', 'posts.user_id');
+            ->select('*')
+            ->from('users')
+            ->join('posts', 'users.id', 'posts.user_id');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(3, count($results), 'INNER JOIN should match users with posts');
@@ -652,9 +652,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test explicit innerJoin
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->innerJoin('posts', 'users.id', 'posts.user_id');
+            ->select('*')
+            ->from('users')
+            ->innerJoin('posts', 'users.id', 'posts.user_id');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(3, count($results), 'innerJoin should match users with posts');
@@ -662,18 +662,18 @@ class QueryTest extends AbstractDriverTestCase
         // Test LEFT JOIN - should include all users even without posts
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->leftJoin('posts', 'users.id', 'posts.user_id');
+            ->select('*')
+            ->from('users')
+            ->leftJoin('posts', 'users.id', 'posts.user_id');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(4, count($results), 'LEFT JOIN should include all users');
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->rightJoin('posts', 'users.id', 'posts.user_id');
+            ->select('*')
+            ->from('users')
+            ->rightJoin('posts', 'users.id', 'posts.user_id');
 
         $results = $query->fetch();
         $this->assertGreaterThanOrEqual(3, count($results), 'RIGHT JOIN should include all posts');
@@ -694,9 +694,9 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->fullJoin('posts', 'users.id', 'posts.user_id');
+            ->select('*')
+            ->from('users')
+            ->fullJoin('posts', 'users.id', 'posts.user_id');
 
         // FULL JOIN should include all users and all posts
         $results = $query->fetch();
@@ -713,13 +713,13 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->fullJoin('posts', 'users.id', 'posts.user_id')
-              ->fullJoin('groups', 'users.id', 'groups.created_by')
-              ->where('users.id', '>=', 1)
-              ->order('users.id', 'asc')
-              ->limit(10);
+            ->select('*')
+            ->from('users')
+            ->fullJoin('posts', 'users.id', 'posts.user_id')
+            ->fullJoin('groups', 'users.id', 'groups.created_by')
+            ->where('users.id', '>=', 1)
+            ->order('users.id', 'asc')
+            ->limit(10);
 
         $query->fetch();
     }
@@ -741,13 +741,13 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-              ->select('*')
-              ->from('users')
-              ->fullJoin('posts', 'users.id', 'posts.user_id')
-              ->leftJoin('groups', 'users.id', 'groups.created_by')
-              ->innerJoin('posts p2', 'users.id', 'p2.user_id')
-              ->where('users.id', '>=', 1)
-              ->fetch();
+            ->select('*')
+            ->from('users')
+            ->fullJoin('posts', 'users.id', 'posts.user_id')
+            ->leftJoin('groups', 'users.id', 'groups.created_by')
+            ->innerJoin('posts p2', 'users.id', 'p2.user_id')
+            ->where('users.id', '>=', 1)
+            ->fetch();
 
         $this->assertNotEmpty($rows, 'FULL JOIN with additional LEFT/INNER joins should return rows');
     }
@@ -765,10 +765,10 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('*')
-                      ->from('users')
-                      ->fullJoin('posts', 'id', 'user_id')
-                      ->fetch();
+            ->select('*')
+            ->from('users')
+            ->fullJoin('posts', 'id', 'user_id')
+            ->fetch();
 
         // 4 rows: 2 matched (users 1,2) + 2 unmatched users (3,4)
         $this->assertCount(4, $rows, "[$dbName]");
@@ -787,14 +787,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['or', 'users.email', '=', 'posts.title'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['or', 'users.email', '=', 'posts.title'],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
         $userIds = array_map(function ($row) {
@@ -818,14 +818,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.title')
-                      ->from('users')
-                      ->joinBuilder('posts', 'left')
-                          ->on('users.id', '=', 'posts.user_id')
-                          ->andWhere('posts.title', '=', 'active')
-                          ->end()
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.title')
+            ->from('users')
+            ->joinBuilder('posts', 'left')
+            ->on('users.id', '=', 'posts.user_id')
+            ->andWhere('posts.title', '=', 'active')
+            ->end()
+            ->fetch();
 
         $this->assertCount(4, $rows);
         $activeTitles = array_filter(array_map(function ($row) {
@@ -850,18 +850,18 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.title')
-                      ->from('users')
-                      ->joinBuilder('posts')
-                          ->on('users.id', '=', 'posts.user_id')
-                          ->group(function ($join) {
-                              $join
-                                   ->on('users.email', '=', 'posts.title')
-                                   ->orWhere('posts.title', '=', 'active');
-                          })
-                          ->end()
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.title')
+            ->from('users')
+            ->joinBuilder('posts')
+            ->on('users.id', '=', 'posts.user_id')
+            ->group(function ($join) {
+                $join
+                    ->on('users.email', '=', 'posts.title')
+                    ->orWhere('posts.title', '=', 'active');
+            })
+            ->end()
+            ->fetch();
 
         $this->assertCount(2, $rows);
         $titles = array_map(function ($row) {
@@ -885,15 +885,15 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.title')
-                      ->from('users')
-                      ->leftJoin('posts', function ($join) {
-                          $join
-                               ->on('users.id', '=', 'posts.user_id')
-                               ->andWhere('posts.title', '=', 'active');
-                      })
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.title')
+            ->from('users')
+            ->leftJoin('posts', function ($join) {
+                $join
+                    ->on('users.id', '=', 'posts.user_id')
+                    ->andWhere('posts.title', '=', 'active');
+            })
+            ->fetch();
 
         $this->assertCount(4, $rows);
         $activeTitles = array_filter(array_map(function ($row) {
@@ -916,14 +916,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.name', 'operator' => '=', 'value' => 'Sam Wilson'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.name', 'operator' => '=', 'value' => 'Sam Wilson'],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -941,14 +941,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.email', 'operator' => 'is', 'value' => null],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.email', 'operator' => 'is', 'value' => null],
+            ])
+            ->fetch();
 
         $this->assertCount(0, $rows);
     }
@@ -966,14 +966,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left_value' => 1, 'operator' => '=', 'right' => 'posts.user_id'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left_value' => 1, 'operator' => '=', 'right' => 'posts.user_id'],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -992,14 +992,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'in', 'value' => [1, 2]],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'in', 'value' => [1, 2]],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -1019,14 +1019,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'between', 'value' => [1, 3]],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'between', 'value' => [1, 3]],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
     }
@@ -1044,14 +1044,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.name', 'operator' => 'like', 'value' => 'Sam%'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.name', 'operator' => 'like', 'value' => 'Sam%'],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -1070,14 +1070,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.email', 'operator' => 'is distinct from', 'right' => 'posts.title'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.email', 'operator' => 'is distinct from', 'right' => 'posts.title'],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(2, $rows[0]->user_id);
@@ -1099,14 +1099,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['operator' => 'exists', 'value' => 'SELECT 1'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['operator' => 'exists', 'value' => 'SELECT 1'],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
     }
@@ -1123,14 +1123,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['operator' => 'not exists', 'value' => 'SELECT 1'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['operator' => 'not exists', 'value' => 'SELECT 1'],
+            ])
+            ->fetch();
 
         $this->assertCount(0, $rows);
     }
@@ -1148,14 +1148,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.email', 'operator' => 'is not distinct from', 'right' => 'posts.title'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.email', 'operator' => 'is not distinct from', 'right' => 'posts.title'],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -1175,14 +1175,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.name', 'operator' => 'not like', 'value' => 'Sam%'],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.name', 'operator' => 'not like', 'value' => 'Sam%'],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
     }
@@ -1201,14 +1201,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'not in', 'value' => [1, 2]],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'not in', 'value' => [1, 2]],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(3, $rows[0]->user_id);
@@ -1227,14 +1227,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'not between', 'value' => [1, 3]],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'not between', 'value' => [1, 3]],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(4, $rows[0]->user_id);
@@ -1253,14 +1253,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.email', 'operator' => 'is not', 'value' => null],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.email', 'operator' => 'is not', 'value' => null],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
     }
@@ -1277,14 +1277,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'in', 'value' => []],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'in', 'value' => []],
+            ])
+            ->fetch();
 
         $this->assertCount(0, $rows);
     }
@@ -1302,14 +1302,14 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['left' => 'users.id', 'operator' => 'not in', 'value' => []],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'not in', 'value' => []],
+            ])
+            ->fetch();
 
         $this->assertCount(2, $rows);
     }
@@ -1330,20 +1330,20 @@ class QueryTest extends AbstractDriverTestCase
 
         $subquery = new Query($driver);
         $subquery
-                 ->select('1')
-                 ->from('groups')
-                 ->whereRaw('groups.created_by = users.id');
+            ->select('1')
+            ->from('groups')
+            ->whereRaw('groups.created_by = users.id');
 
         $query = new Query($driver);
         $rows = $query
-                      ->select('users.id', 'user_id')
-                      ->select('posts.id', 'post_id')
-                      ->from('users')
-                      ->joinOn('posts', [
-                          ['users.id', '=', 'posts.user_id'],
-                          ['operator' => 'exists', 'value' => $subquery->toSql()],
-                      ])
-                      ->fetch();
+            ->select('users.id', 'user_id')
+            ->select('posts.id', 'post_id')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['operator' => 'exists', 'value' => $subquery->toSql()],
+            ])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals(1, $rows[0]->user_id);
@@ -1359,12 +1359,12 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->joinOn('posts', [
-                  ['users.id', '=', 'posts.user_id'],
-                  ['too', 'many', 'parts', 'in', 'condition'],
-              ]);
+            ->select('*')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['too', 'many', 'parts', 'in', 'condition'],
+            ]);
     }
 
     /**
@@ -1377,12 +1377,12 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->joinOn('posts', [
-                  ['users.id', '=', 'posts.user_id'],
-                  ['left' => 'users.id', 'operator' => 'between', 'value' => [1]],
-              ]);
+            ->select('*')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left' => 'users.id', 'operator' => 'between', 'value' => [1]],
+            ]);
 
         $query->fetch();
     }
@@ -1397,12 +1397,12 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->joinOn('posts', [
-                  ['users.id', '=', 'posts.user_id'],
-                  ['operator' => 'exists'],
-              ]);
+            ->select('*')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['operator' => 'exists'],
+            ]);
     }
 
     /**
@@ -1415,12 +1415,12 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->joinOn('posts', [
-                  ['users.id', '=', 'posts.user_id'],
-                  ['left_value' => [1, 2], 'operator' => '=', 'right' => 'posts.user_id'],
-              ]);
+            ->select('*')
+            ->from('users')
+            ->joinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['left_value' => [1, 2], 'operator' => '=', 'right' => 'posts.user_id'],
+            ]);
     }
 
     /**
@@ -1433,12 +1433,12 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->fullJoinOn('posts', [
-                  ['users.id', '=', 'posts.user_id'],
-                  ['users.email', '=', 'posts.title'],
-              ]);
+            ->select('*')
+            ->from('users')
+            ->fullJoinOn('posts', [
+                ['users.id', '=', 'posts.user_id'],
+                ['users.email', '=', 'posts.title'],
+            ]);
 
         $query->fetch();
     }
@@ -1460,10 +1460,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test JOIN with additional WHERE condition
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->join('posts', 'users.id', 'posts.user_id')
-              ->where('users.id', '>', 1);
+            ->select('*')
+            ->from('users')
+            ->join('posts', 'users.id', 'posts.user_id')
+            ->where('users.id', '>', 1);
 
         $results = $query->fetch();
 
@@ -1576,18 +1576,18 @@ class QueryTest extends AbstractDriverTestCase
         // Test clearing multiple parts and rebuilding
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->join('groups', 'created_by', 'id', 'inner')
-              ->whereIsNotNull('name')
-              ->group('cn', 'id')
-              ->having('foo', '=', 3)
-              ->clear('from')
-              ->clear('where')
-              ->clear('join')
-              ->clear('group')
-              ->clear('having')
-              ->from('groups');
+            ->select('*')
+            ->from('users')
+            ->join('groups', 'created_by', 'id', 'inner')
+            ->whereIsNotNull('name')
+            ->group('cn', 'id')
+            ->having('foo', '=', 3)
+            ->clear('from')
+            ->clear('where')
+            ->clear('join')
+            ->clear('group')
+            ->clear('having')
+            ->from('groups');
 
         // Execute and verify we're now querying groups, not users
         $results = $query->fetch();
@@ -1596,11 +1596,11 @@ class QueryTest extends AbstractDriverTestCase
         // Test deselect and reselect
         $query = new Query($driver);
         $query
-              ->select('name')
-              ->from('users')
-              ->whereIsNotNull('name')
-              ->deselect()
-              ->select('id');
+            ->select('name')
+            ->from('users')
+            ->whereIsNotNull('name')
+            ->deselect()
+            ->select('id');
 
         $results = $query->fetch();
         $this->assertGreaterThan(0, count($results), 'deselect/reselect should work');
@@ -1612,13 +1612,13 @@ class QueryTest extends AbstractDriverTestCase
         // Test clearing INSERT - build query for groups, then clear and switch to users
         $query = new Query($driver);
         $query
-              ->insert('groups')
-              ->values(['cn' => 'lorem'])
-              ->clear('insert')
-              ->clear('values')
-              ->insert('users')
-              ->values(['name' => 'Jimmy', 'email' => 'jimmy@test.com'])
-              ->execute();
+            ->insert('groups')
+            ->values(['cn' => 'lorem'])
+            ->clear('insert')
+            ->clear('values')
+            ->insert('users')
+            ->values(['name' => 'Jimmy', 'email' => 'jimmy@test.com'])
+            ->execute();
 
         // Verify insert went to users table, not groups
         $result = $driver->setQuery("SELECT * FROM users WHERE name = 'Jimmy'")->loadObject();
@@ -1627,13 +1627,13 @@ class QueryTest extends AbstractDriverTestCase
         // Test clearing DELETE
         $query = new Query($driver);
         $query
-              ->delete('groups')
-              ->whereEquals('cn', 'lorem')
-              ->clear('delete')
-              ->clear('where')
-              ->delete('users')
-              ->whereEquals('name', 'Jimmy')
-              ->execute();
+            ->delete('groups')
+            ->whereEquals('cn', 'lorem')
+            ->clear('delete')
+            ->clear('where')
+            ->delete('users')
+            ->whereEquals('name', 'Jimmy')
+            ->execute();
 
         // Verify Jimmy was deleted
         $result = $driver->setQuery("SELECT * FROM users WHERE name = 'Jimmy'")->loadObject();
@@ -1642,15 +1642,15 @@ class QueryTest extends AbstractDriverTestCase
         // Test clearing UPDATE
         $query = new Query($driver);
         $query
-              ->update('groups')
-              ->set(['cn' => 'lorem'])
-              ->whereEquals('cn', 'lorem')
-              ->clear('update')
-              ->clear('where')
-              ->update('users')
-              ->set(['name' => 'Frank'])
-              ->whereEquals('id', 2)
-              ->execute();
+            ->update('groups')
+            ->set(['cn' => 'lorem'])
+            ->whereEquals('cn', 'lorem')
+            ->clear('update')
+            ->clear('where')
+            ->update('users')
+            ->set(['name' => 'Frank'])
+            ->whereEquals('id', 2)
+            ->execute();
 
         // Verify user 2 was updated
         $result = $driver->setQuery("SELECT * FROM users WHERE id = 2")->loadObject();
@@ -1674,10 +1674,10 @@ class QueryTest extends AbstractDriverTestCase
         // Test LIMIT only - should get first 10 results
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('groups')
-              ->order('id', 'asc')
-              ->limit(10);
+            ->select('*')
+            ->from('groups')
+            ->order('id', 'asc')
+            ->limit(10);
 
         $results = $query->fetch();
         $this->assertCount(10, $results, 'LIMIT should restrict to 10 results');
@@ -1686,11 +1686,11 @@ class QueryTest extends AbstractDriverTestCase
         // Test LIMIT with START - should skip first 5, get next 10
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('groups')
-              ->order('id', 'asc')
-              ->limit(10)
-              ->start(5);
+            ->select('*')
+            ->from('groups')
+            ->order('id', 'asc')
+            ->limit(10)
+            ->start(5);
 
         $results = $query->fetch();
         $this->assertCount(10, $results, 'LIMIT with START should still return 10 results');
@@ -1707,9 +1707,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test that non-numeric start is ignored at Query level (casts to 0)
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->start('beginning');
+            ->select('*')
+            ->from('users')
+            ->start('beginning');
 
         // Should execute without START/OFFSET clause (non-numeric becomes 0)
         $results = $query->fetch();
@@ -1737,9 +1737,9 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query
-              ->select('*')
-              ->from('groups')
-              ->start(-50);
+            ->select('*')
+            ->from('groups')
+            ->start(-50);
     }
 
     /**
@@ -1751,9 +1751,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test that non-numeric limit is ignored at Query level (casts to 0)
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->limit('all');
+            ->select('*')
+            ->from('users')
+            ->limit('all');
 
         // Should execute without LIMIT clause (non-numeric becomes 0, ignored)
         $results = $query->fetch();
@@ -1781,9 +1781,9 @@ class QueryTest extends AbstractDriverTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $query
-              ->select('*')
-              ->from('groups')
-              ->limit(-50);
+            ->select('*')
+            ->from('groups')
+            ->limit(-50);
     }
 
     /**
@@ -1795,9 +1795,9 @@ class QueryTest extends AbstractDriverTestCase
         // Test ORDER BY ASC - users should be ordered by id ascending
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->order('id', 'asc');
+            ->select('*')
+            ->from('users')
+            ->order('id', 'asc');
 
         $results = $query->fetch();
         $this->assertGreaterThan(0, count($results), 'ORDER BY should return results');
@@ -1812,11 +1812,11 @@ class QueryTest extends AbstractDriverTestCase
         // Test unorder and reorder with DESC (new query object)
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->order('id', 'asc')  // Set initial order
-              ->unorder()           // Clear it
-              ->order('name', 'desc');  // Set new order
+            ->select('*')
+            ->from('users')
+            ->order('id', 'asc')  // Set initial order
+            ->unorder()           // Clear it
+            ->order('name', 'desc');  // Set new order
 
         $results = $query->fetch();
         $this->assertGreaterThan(0, count($results), 'Reordered query should return results');
@@ -1833,9 +1833,9 @@ class QueryTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from('users')
-              ->order('id', 'foo');
+            ->select('*')
+            ->from('users')
+            ->order('id', 'foo');
     }
 
     /**

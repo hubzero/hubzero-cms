@@ -866,14 +866,14 @@ class Publications extends Plugin
         // What's next?
         $nextnum     = $pub->_curationModel->getNextBlock($block, $blockId);
         $nextsection = isset($pub->_curationModel->blocks->$nextnum)
-                     ? $pub->_curationModel->blocks->$nextnum->name
-                     : 'status';
+            ? $pub->_curationModel->blocks->$nextnum->name
+            : 'status';
 
         // Get previous section
         $prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
         $prevsection = isset($pub->_curationModel->blocks->$prevnum)
-                     ? $pub->_curationModel->blocks->$prevnum->name
-                     : 'status';
+            ? $pub->_curationModel->blocks->$prevnum->name
+            : 'status';
 
         // Build route
         $route  = $pub->link('edit');

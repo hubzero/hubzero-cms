@@ -67,9 +67,9 @@ class Email extends Plugin
 
         $message = new \Hubzero\Mail\Message();
         $message
-                ->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
-                ->addFrom($from['email'], $from['name'])
-                ->addTo($user->get('email'), $name);
+            ->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
+            ->addFrom($from['email'], $from['name'])
+            ->addTo($user->get('email'), $name);
 
         // In case a different reply to email address is specified
         if (array_key_exists('replytoemail', $from)) {
@@ -92,8 +92,8 @@ class Email extends Plugin
 
         //set mail additional args (mail return path - used for bounces)
         $message
-                ->addHeader('X-Component', $xmessage->component)
-                ->addHeader('X-Component-Object', $xmessage->type);
+            ->addHeader('X-Component', $xmessage->component)
+            ->addHeader('X-Component-Object', $xmessage->type);
 
         // Want to add some extra headers? We put them into the from array
         // If none are there, this breaks nothing
@@ -127,8 +127,8 @@ class Email extends Plugin
             }
 
             $message
-                    ->addPart($m['plaintext'], 'text/plain')
-                    ->addPart($m['multipart'], 'text/html');
+                ->addPart($m['plaintext'], 'text/plain')
+                ->addPart($m['multipart'], 'text/html');
         } else {
             $message->setBody($m);
         }

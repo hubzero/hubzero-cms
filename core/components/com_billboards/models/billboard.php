@@ -62,11 +62,11 @@ class Billboard extends Relational
     {
         $instance = self::blank();
         $result = $instance
-                           ->select('MAX(ordering) + 1', 'ordering')
-                           ->whereEquals('collection_id', $this->collection_id)
-                           ->rows()
-                           ->first()
-                           ->ordering;
+            ->select('MAX(ordering) + 1', 'ordering')
+            ->whereEquals('collection_id', $this->collection_id)
+            ->rows()
+            ->first()
+            ->ordering;
 
         return $result ? $result : 1;
     }

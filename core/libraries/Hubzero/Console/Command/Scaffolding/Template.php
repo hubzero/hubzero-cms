@@ -79,29 +79,29 @@ class Template extends Scaffolding
 
         // Make component
         $this
-             ->addTemplateFile($pathFrom . DS . 'templates' . DS . $from, $pathTo . DS . 'templates' . DS . $to, true)
-             ->addTemplateFile($pathFrom
-                 . DS
-                 . 'language'
-                 . DS
-                 . 'en-GB'
-                 . DS
-                 . 'en-GB.tpl_'
-                 . $from
-                 . '.ini', $pathTo
-                 . DS
-                 . 'language'
-                 . DS
-                 . 'en-GB'
-                 . DS
-                 . 'en-GB.tpl_'
-                 . $to
-                 . '.ini', true)
-             ->addReplacement(strtoupper($from), strtoupper($to))
-             ->addReplacement(ucfirst($from), ucfirst($to))
-             ->addReplacement($from, $to)
-             ->doBlindReplacements()
-             ->make();
+            ->addTemplateFile($pathFrom . DS . 'templates' . DS . $from, $pathTo . DS . 'templates' . DS . $to, true)
+            ->addTemplateFile($pathFrom
+                . DS
+                . 'language'
+                . DS
+                . 'en-GB'
+                . DS
+                . 'en-GB.tpl_'
+                . $from
+                . '.ini', $pathTo
+                . DS
+                . 'language'
+                . DS
+                . 'en-GB'
+                . DS
+                . 'en-GB.tpl_'
+                . $to
+                . '.ini', true)
+            ->addReplacement(strtoupper($from), strtoupper($to))
+            ->addReplacement(ucfirst($from), ucfirst($to))
+            ->addReplacement($from, $to)
+            ->doBlindReplacements()
+            ->make();
     }
 
     /**

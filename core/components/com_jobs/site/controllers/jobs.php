@@ -368,14 +368,14 @@ class Jobs extends SiteController
             // Show latest jobs
             $view = new View(['name' => 'jobs', 'layout' => 'latest']);
             $view
-             ->set('option', $this->option)
-             ->set('filters', $filters)
-             ->set('config', $this->config)
-             ->set('task', $this->task)
-             ->set('emp', $this->_emp)
-             ->set('jobs', $jobs)
-             ->set('admin', $this->_admin)
-             ->display();
+                ->set('option', $this->option)
+                ->set('filters', $filters)
+                ->set('config', $this->config)
+                ->set('task', $this->task)
+                ->set('emp', $this->_emp)
+                ->set('jobs', $jobs)
+                ->set('admin', $this->_admin)
+                ->display();
         } else {
             // Jobs list
             $view = new View([
@@ -474,9 +474,9 @@ class Jobs extends SiteController
             $this->view->emp         = $this->_emp;
             $this->view->option      = $this->option;
             $this->view
-                        ->setName('resumes')
-                        ->setLayout('default')
-                        ->display();
+                ->setName('resumes')
+                ->setLayout('default')
+                ->display();
         } elseif ($this->_allowSubscriptions) {
             // need to subscribe first
             $employer = new Employer($this->database);
@@ -611,9 +611,9 @@ class Jobs extends SiteController
         }
 
         $this->view
-                    ->setName('subscribe')
-                    ->setLayout('default')
-                    ->display();
+            ->setName('subscribe')
+            ->setLayout('default')
+            ->display();
     }
 
     /**
@@ -973,9 +973,9 @@ class Jobs extends SiteController
         }
 
         $this->view
-                    ->setName('dashboard')
-                    ->setLayout('default')
-                    ->display();
+            ->setName('dashboard')
+            ->setLayout('default')
+            ->display();
     }
 
     /**
@@ -1307,9 +1307,9 @@ class Jobs extends SiteController
         }
 
         $this->view
-                    ->setName('job')
-                    ->setLayout('default')
-                    ->display();
+            ->setName('job')
+            ->setLayout('default')
+            ->display();
     }
 
     /**
@@ -1653,9 +1653,9 @@ class Jobs extends SiteController
         }
 
         $this->view
-                    ->setName('editjob')
-                    ->setLayout('default')
-                    ->display();
+            ->setName('editjob')
+            ->setLayout('default')
+            ->display();
     }
 
     /**
@@ -1849,18 +1849,18 @@ class Jobs extends SiteController
         // jobs filters
         if ($jobs) {
             $filters['sortby']   = $this->getProperty('sortby') && $checkstored
-                                 ? $this->getProperty('sortby', 'title')
-                                 : trim(Request::getWord('sortby', 'title'));
+                ? $this->getProperty('sortby', 'title')
+                : trim(Request::getWord('sortby', 'title'));
             $filters['category'] = $this->getProperty('category') && $checkstored
-                                 ? $this->getProperty('category')
-                                 : Request::getInt('category', 'all');
+                ? $this->getProperty('category')
+                : Request::getInt('category', 'all');
         } else {
             $filters['sortby']   = $this->getProperty('sortby') && $checkstored
-                                 ? $this->getProperty('sortby')
-                                 : trim(Request::getString('sortby', 'lastupdate'));
+                ? $this->getProperty('sortby')
+                : trim(Request::getString('sortby', 'lastupdate'));
             $filters['category'] = $this->getProperty('category') && $checkstored
-                                 ? $this->getProperty('category')
-                                 : Request::getInt('category', 0);
+                ? $this->getProperty('category')
+                : Request::getInt('category', 0);
         }
 
         $filters['type']     = $this->getProperty('type') && $checkstored ? $this->getProperty('type') : Request::getInt('type', 0);

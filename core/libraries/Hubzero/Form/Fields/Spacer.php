@@ -74,7 +74,7 @@ class Spacer extends Field
                             . ($this
                                 ->translateDescription ? App::get('language')
                                 ->txt($this
-                                ->description) : $this
+                                    ->description) : $this
                                 ->description),
                         ENT_COMPAT,
                         'UTF-8',

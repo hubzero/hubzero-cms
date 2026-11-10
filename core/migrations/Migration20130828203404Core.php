@@ -112,14 +112,14 @@ class Migration20130828203404Core extends Base
                 ->from('#__xprofiles', 'm')
                 ->join('#__author_assoc AS AA', function ($join) {
                     $join
-                         ->on('AA.authorid', '=', 'm.uidNumber')
-                         ->where('AA.subtable', '=', 'resources');
+                        ->on('AA.authorid', '=', 'm.uidNumber')
+                        ->where('AA.subtable', '=', 'resources');
                 }, 'left')
                 ->join('#__resources AS R', function ($join) {
                     $join
-                         ->on('R.id', '=', 'AA.subid')
-                         ->where('R.published', '=', 1)
-                         ->where('R.standalone', '=', 1);
+                        ->on('R.id', '=', 'AA.subid')
+                        ->where('R.published', '=', 1)
+                        ->where('R.standalone', '=', 1);
                 }, 'inner')
                 ->where('m.public', '=', 1)
                 ->group('m.uidNumber');
@@ -150,16 +150,16 @@ class Migration20130828203404Core extends Base
                 ->from('#__xprofiles', 'm')
                 ->join('#__wiki_page AS w', function ($join) use ($likePattern) {
                     $join
-                         ->on('w.access', '<>', 1)
-                         ->where(function ($where) use ($likePattern) {
-                             $where
-                                   ->where('w.created_by', '=', Expression::column('m.uidNumber'))
-                                   ->orWhere(function ($where) use ($likePattern) {
-                                       $where
-                                             ->where('m.username', '<>', '')
-                                             ->where('w.authors', 'LIKE', $likePattern);
-                                   });
-                         });
+                        ->on('w.access', '<>', 1)
+                        ->where(function ($where) use ($likePattern) {
+                            $where
+                                ->where('w.created_by', '=', Expression::column('m.uidNumber'))
+                                ->orWhere(function ($where) use ($likePattern) {
+                                    $where
+                                        ->where('m.username', '<>', '')
+                                        ->where('w.authors', 'LIKE', $likePattern);
+                                });
+                        });
                 }, 'left')
                 ->where('m.public', '=', 1)
                 ->whereNotNull('w.id')

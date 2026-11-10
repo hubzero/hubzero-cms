@@ -55,8 +55,8 @@ class OnCondPost extends Relational
             ->oneToMany(OnCondComment::class, 'post_id')
             ->onCondition(function ($query) {
                 $query
-                      ->whereEquals('status', 1)
-                      ->whereEquals('type', 'general');
+                    ->whereEquals('status', 1)
+                    ->whereEquals('type', 'general');
             });
     }
 }

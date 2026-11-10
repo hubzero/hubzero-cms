@@ -570,13 +570,13 @@ class Course extends Base
         // After SQL is done and has no errors, fire off onCourseUserEnrolledEvents
         // for every user added to this course
         $this
-             ->importPlugin('courses')
-             ->trigger('onCourseSave', [$this]);
+            ->importPlugin('courses')
+            ->trigger('onCourseSave', [$this]);
 
         if ($affected > 0) {
             $this
-                 ->importPlugin('user')
-                 ->trigger('onAfterStoreCourse', [$this]);
+                ->importPlugin('user')
+                ->trigger('onAfterStoreCourse', [$this]);
         }
 
         if ($isNew) {
@@ -594,8 +594,8 @@ class Course extends Base
     public function delete()
     {
         $this
-             ->importPlugin('courses')
-             ->trigger('onCourseDelete', [$this]);
+            ->importPlugin('courses')
+            ->trigger('onCourseDelete', [$this]);
 
         return parent::delete();
     }

@@ -310,10 +310,10 @@ class Database extends Base implements CommandInterface
             // Determine if this is a SELECT query (returns results)
             $trimmedSql = ltrim(strtoupper($sql));
             $isSelect = strpos($trimmedSql, 'SELECT') === 0
-                     || strpos($trimmedSql, 'SHOW') === 0
-                     || strpos($trimmedSql, 'DESCRIBE') === 0
-                     || strpos($trimmedSql, 'DESC') === 0
-                     || strpos($trimmedSql, 'EXPLAIN') === 0;
+                || strpos($trimmedSql, 'SHOW') === 0
+                || strpos($trimmedSql, 'DESCRIBE') === 0
+                || strpos($trimmedSql, 'DESC') === 0
+                || strpos($trimmedSql, 'EXPLAIN') === 0;
 
             if ($isSelect) {
                 $results = $db->loadAssocList();

@@ -56,20 +56,20 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Update user access to 2 where profile is public
         $query = new Query($driver);
         $query
-              ->update('update_test_users')
-              ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
-              ->set(['update_test_users.access' => 2])
-              ->whereEquals('update_test_profiles.public', 1);
+            ->update('update_test_users')
+            ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
+            ->set(['update_test_users.access' => 2])
+            ->whereEquals('update_test_profiles.public', 1);
 
         $affected = $query->execute();
 
         // Verify records were updated
         $verifyQuery = new Query($driver);
         $updated = $verifyQuery
-                              ->from('update_test_users')
-                              ->select('*')
-                              ->whereEquals('access', 2)
-                              ->fetch('rows');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('access', 2)
+            ->fetch('rows');
 
         // Alice (id=1) and Charlie (id=3) have public profiles
         $this->assertCount(2, $updated, "Should update 2 users with public profiles");
@@ -77,10 +77,10 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Verify Bob (private profile) was not updated
         $bobQuery = new Query($driver);
         $bob = $bobQuery
-                      ->from('update_test_users')
-                      ->select('access')
-                      ->whereEquals('id', 2)
-                      ->fetch('row');
+            ->from('update_test_users')
+            ->select('access')
+            ->whereEquals('id', 2)
+            ->fetch('row');
         $this->assertEquals(1, $bob->access, "Bob should still have access=1 (private profile)");
 
         // Cleanup
@@ -103,21 +103,21 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Update verified=1 for active users with public profiles
         $query = new Query($driver);
         $query
-              ->update('update_test_users')
-              ->leftJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
-              ->set(['update_test_users.verified' => 1])
-              ->whereEquals('update_test_users.status', 'active')
-              ->whereEquals('update_test_profiles.public', 1);
+            ->update('update_test_users')
+            ->leftJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
+            ->set(['update_test_users.verified' => 1])
+            ->whereEquals('update_test_users.status', 'active')
+            ->whereEquals('update_test_profiles.public', 1);
 
         $query->execute();
 
         // Verify only Alice was updated (active + public profile)
         $verifyQuery = new Query($driver);
         $verified = $verifyQuery
-                               ->from('update_test_users')
-                               ->select('*')
-                               ->whereEquals('verified', 1)
-                               ->fetch('rows');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('verified', 1)
+            ->fetch('rows');
 
         $this->assertCount(1, $verified, "Only Alice should be verified (active + public)");
         $this->assertEquals('Alice', $verified[0]->name);
@@ -143,22 +143,22 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Update access for users in admin group with public profiles
         $query = new Query($driver);
         $query
-              ->update('update_test_users')
-              ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
-              ->innerJoin('update_test_groups', 'update_test_users.group_id', 'update_test_groups.id')
-              ->set(['update_test_users.access' => 3])
-              ->whereEquals('update_test_groups.type', 'admin')
-              ->whereEquals('update_test_profiles.public', 1);
+            ->update('update_test_users')
+            ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
+            ->innerJoin('update_test_groups', 'update_test_users.group_id', 'update_test_groups.id')
+            ->set(['update_test_users.access' => 3])
+            ->whereEquals('update_test_groups.type', 'admin')
+            ->whereEquals('update_test_profiles.public', 1);
 
         $query->execute();
 
         // Verify Alice was updated (admin group + public profile)
         $verifyQuery = new Query($driver);
         $updated = $verifyQuery
-                              ->from('update_test_users')
-                              ->select('*')
-                              ->whereEquals('access', 3)
-                              ->fetch('rows');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('access', 3)
+            ->fetch('rows');
 
         $this->assertCount(1, $updated, "Alice should be updated (admin + public)");
         $this->assertEquals('Alice', $updated[0]->name);
@@ -183,34 +183,34 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Update both access and verified for users with public profiles
         $query = new Query($driver);
         $query
-              ->update('update_test_users')
-              ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
-              ->set([
-                  'update_test_users.access' => 2,
-                  'update_test_users.verified' => 1,
-              ])
-              ->whereEquals('update_test_profiles.public', 1);
+            ->update('update_test_users')
+            ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
+            ->set([
+                'update_test_users.access' => 2,
+                'update_test_users.verified' => 1,
+            ])
+            ->whereEquals('update_test_profiles.public', 1);
 
         $query->execute();
 
         // Verify both columns were updated
         $verifyQuery = new Query($driver);
         $updated = $verifyQuery
-                              ->from('update_test_users')
-                              ->select('*')
-                              ->whereEquals('access', 2)
-                              ->whereEquals('verified', 1)
-                              ->fetch('rows');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('access', 2)
+            ->whereEquals('verified', 1)
+            ->fetch('rows');
 
         $this->assertCount(2, $updated, "2 users should have both columns updated");
 
         // Verify Bob was not updated
         $bobQuery = new Query($driver);
         $bob = $bobQuery
-                      ->from('update_test_users')
-                      ->select('*')
-                      ->whereEquals('id', 2)
-                      ->fetch('row');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('id', 2)
+            ->fetch('row');
         $this->assertEquals(1, $bob->access, "Bob's access should still be 1");
         $this->assertEquals(0, $bob->verified, "Bob should not be verified");
 
@@ -233,28 +233,28 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
         // Get original values
         $beforeQuery = new Query($driver);
         $before = $beforeQuery
-                             ->from('update_test_users')
-                             ->select('*')
-                             ->whereEquals('id', 2)
-                             ->fetch('row');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('id', 2)
+            ->fetch('row');
 
         // Execute UPDATE that shouldn't match Bob
         $query = new Query($driver);
         $query
-              ->update('update_test_users')
-              ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
-              ->set(['update_test_users.access' => 2])
-              ->whereEquals('update_test_profiles.public', 1);
+            ->update('update_test_users')
+            ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
+            ->set(['update_test_users.access' => 2])
+            ->whereEquals('update_test_profiles.public', 1);
 
         $query->execute();
 
         // Verify Bob's row is unchanged (has private profile)
         $afterQuery = new Query($driver);
         $after = $afterQuery
-                          ->from('update_test_users')
-                          ->select('*')
-                          ->whereEquals('id', 2)
-                          ->fetch('row');
+            ->from('update_test_users')
+            ->select('*')
+            ->whereEquals('id', 2)
+            ->fetch('row');
 
         $this->assertEquals($before->access, $after->access, "Bob's access should be unchanged");
         $this->assertEquals($before->verified, $after->verified, "Bob's verified should be unchanged");

@@ -76,7 +76,7 @@ class Jsonld extends Plugin
             // trailing slash and the route a leading one, so concatenating
             // them puts two in the middle of every identifier.
             $link = rtrim(Request::root(), '/') . '/'
-                  . ltrim(Route::url($publication->link()), '/');
+                . ltrim(Route::url($publication->link()), '/');
 
             $data['identifier'] = $link;
             $data['@id'] = $link;

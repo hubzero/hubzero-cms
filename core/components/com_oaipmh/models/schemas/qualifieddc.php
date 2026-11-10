@@ -80,7 +80,7 @@ class QualifiedDC extends DublinCore
         if ($metadata) {
             $this->response
                 ->element('record')
-                    ->element('header');
+                ->element('header');
         } else {
             $this->response
                 ->element('header');
@@ -113,12 +113,12 @@ class QualifiedDC extends DublinCore
                 . ' http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd';
             $this->response
                 ->element('metadata')
-                    ->element('oai_qdc:qualifieddc')
-                        ->attr('xmlns:' . self::$prefix, self::$ns)
-                        ->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
-                        ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-                        ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                        ->attr('xsi:schemaLocation', $schemaLoc);
+                ->element('oai_qdc:qualifieddc')
+                ->attr('xmlns:' . self::$prefix, self::$ns)
+                ->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
+                ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+                ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+                ->attr('xsi:schemaLocation', $schemaLoc);
 
             $dcs = [
                 'title'   => [
@@ -207,8 +207,8 @@ class QualifiedDC extends DublinCore
             }
 
             $this->response
-                        ->end() // End oai_dc:dc
-                        ->end(); // End metadata
+                ->end() // End oai_dc:dc
+                ->end(); // End metadata
 
             $this->response->end(); // End record
         }

@@ -30,8 +30,8 @@ class Migration20170822120311ComCitations extends Base
                 ->set(['type' => 'referencedby'])
                 ->whereEquals('tbl', 'resource')
                 ->beginAndGroup()
-                    ->whereEquals('type', '')
-                    ->orWhereIsNull('type')
+                ->whereEquals('type', '')
+                ->orWhereIsNull('type')
                 ->endGroup()
                 ->execute();
         }

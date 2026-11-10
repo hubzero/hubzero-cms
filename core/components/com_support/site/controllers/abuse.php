@@ -229,13 +229,13 @@ class Abuse extends SiteController
 
             $message = new \Hubzero\Mail\Message();
             $message
-                    ->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
-                    ->addFrom(
-                        Config::get('mailfrom'),
-                        Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
-                    )
-                    ->addHeader('X-Component', 'com_support')
-                    ->addHeader('X-Component-Object', 'abuse_item_report');
+                ->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
+                ->addFrom(
+                    Config::get('mailfrom'),
+                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
+                )
+                ->addHeader('X-Component', 'com_support')
+                ->addHeader('X-Component-Object', 'abuse_item_report');
 
             // Plain text email
             $eview = new \Hubzero\Mail\View([

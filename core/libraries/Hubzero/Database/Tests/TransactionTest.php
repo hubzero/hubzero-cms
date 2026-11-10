@@ -192,9 +192,9 @@ class TransactionTest extends AbstractDriverTestCase
         // Verify the data was committed
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('COUNT(*) as cnt')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('COUNT(*) as cnt')
+            ->fetch('row');
 
         $this->assertEquals(1, $result->cnt);
 
@@ -225,9 +225,9 @@ class TransactionTest extends AbstractDriverTestCase
         // Verify the data was rolled back
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('COUNT(*) as cnt')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('COUNT(*) as cnt')
+            ->fetch('row');
 
         $this->assertEquals(0, $result->cnt);
 
@@ -348,9 +348,9 @@ class TransactionTest extends AbstractDriverTestCase
         // Both should be committed
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('COUNT(*) as cnt')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('COUNT(*) as cnt')
+            ->fetch('row');
 
         $this->assertEquals(2, $result->cnt);
 
@@ -382,18 +382,18 @@ class TransactionTest extends AbstractDriverTestCase
         // Only outer should be committed
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('COUNT(*) as cnt')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('COUNT(*) as cnt')
+            ->fetch('row');
 
         $this->assertEquals(1, $result->cnt);
 
         // Verify it's the outer value
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('value')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('value')
+            ->fetch('row');
 
         $this->assertEquals('outer', $result->value);
 
@@ -425,9 +425,9 @@ class TransactionTest extends AbstractDriverTestCase
         // Nothing should be committed
         $query = new Query($driver);
         $result = $query
-                       ->from('test_transactions')
-                       ->select('COUNT(*) as cnt')
-                       ->fetch('row');
+            ->from('test_transactions')
+            ->select('COUNT(*) as cnt')
+            ->fetch('row');
 
         $this->assertEquals(0, $result->cnt);
 

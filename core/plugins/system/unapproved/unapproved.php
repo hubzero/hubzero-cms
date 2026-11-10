@@ -56,7 +56,7 @@ class Unapproved extends Plugin
             // match and left unapproved users unable to confirm at all.
             $isRegister = (Request::getWord('option') == 'com_members'
                 && (Request::getWord('controller') == 'register'
-                 || (Request::getWord('view') == 'register' && !Request::getWord('controller'))));
+                    || (Request::getWord('view') == 'register' && !Request::getWord('controller'))));
 
             // Pull current user data from DB rather than cached session value.
             // Proper fix should reload the session value

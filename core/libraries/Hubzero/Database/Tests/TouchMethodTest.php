@@ -334,14 +334,14 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->insert('touch_test_items')
-              ->values([
-                  'title' => $title,
-                  'content' => 'Test content',
-                  'modified' => $modified,
-                  'created' => $modified,
-              ])
-              ->execute();
+            ->insert('touch_test_items')
+            ->values([
+                'title' => $title,
+                'content' => 'Test content',
+                'modified' => $modified,
+                'created' => $modified,
+            ])
+            ->execute();
 
         return $driver->insertid();
     }

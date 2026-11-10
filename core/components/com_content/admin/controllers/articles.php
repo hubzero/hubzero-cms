@@ -229,9 +229,9 @@ class Articles extends AdminController
         }
 
         $articles
-                 ->including('accessLevel')
-                 ->including('category')
-                 ->including('author');
+            ->including('accessLevel')
+            ->including('category')
+            ->including('author');
         if (strtolower($filters['sort']) == 'ordering') {
             $articles->order('catid', 'asc');
         }

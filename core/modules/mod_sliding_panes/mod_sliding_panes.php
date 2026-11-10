@@ -104,8 +104,8 @@ class SlidingPanes extends Module
         if (self::$instances <= 1) {
             // Push some CSS to the template
             $this
-                 ->css($type . '.css')
-                 ->js();
+                ->css($type . '.css')
+                ->js();
         }
 
         $id = rand();

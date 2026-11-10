@@ -263,9 +263,9 @@ class GlobalScopesTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $articles = ScopedArticle::blank()
-                                 ->withoutGlobalScope('active')
-                                 ->withoutGlobalScope('tenant')
-                                 ->rows();
+            ->withoutGlobalScope('active')
+            ->withoutGlobalScope('tenant')
+            ->rows();
 
         // Should return all 6 articles
         $this->assertCount(6, $articles);

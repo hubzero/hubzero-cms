@@ -61,8 +61,8 @@ class Country extends Select
                 (string) $option->code,
                 App::get('language')
                     ->alt(trim((string) $option
-                    ->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                    ->fieldname)),
+                        ->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
+                        ->fieldname)),
                 'value',
                 'text',
             );

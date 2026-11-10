@@ -139,11 +139,11 @@ class Db2Driver extends BaseSqlDriver
                 } else {
                     // ODBC fallback
                     $options['dsn'] = "odbc:DRIVER={IBM DB2 ODBC DRIVER};"
-                                      . "DATABASE={$database};"
-                                      . "HOSTNAME={$host};"
-                                      . "PORT={$port};"
-                                      . "PROTOCOL=TCPIP;"
-                                      . "VALIDATE=RUN";
+                        . "DATABASE={$database};"
+                        . "HOSTNAME={$host};"
+                        . "PORT={$port};"
+                        . "PROTOCOL=TCPIP;"
+                        . "VALIDATE=RUN";
                 }
             } elseif (isset($options['database'])) {
                 // Cataloged database name
@@ -1323,8 +1323,8 @@ class Db2Driver extends BaseSqlDriver
 
         try {
             $this
-                 ->setQuery($grammar->compileDrop($tableName, $ifExists))
-                 ->execute();
+                ->setQuery($grammar->compileDrop($tableName, $ifExists))
+                ->execute();
         } catch (\Exception $e) {
             if (
                 $ifExists
@@ -2252,11 +2252,11 @@ class Db2Driver extends BaseSqlDriver
 
         // Use MERGE with ROW_NUMBER()
         $query = "MERGE INTO {$quotedTable} t "
-                 . "USING (SELECT RID_BIT(t2) AS rid, "
-                 . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
-                 . "FROM {$quotedTable} t2) s "
-                 . "ON (RID_BIT(t) = s.rid) "
-                 . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
+            . "USING (SELECT RID_BIT(t2) AS rid, "
+            . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
+            . "FROM {$quotedTable} t2) s "
+            . "ON (RID_BIT(t) = s.rid) "
+            . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

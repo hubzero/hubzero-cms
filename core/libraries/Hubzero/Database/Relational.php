@@ -3705,11 +3705,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // the 'order by' clause to avoid referenced fields in the aforementioned 'select' clauses
         // that mgiht have been removed. Neither of these should have any effect on a count.
         $first = $this
-                              ->deselect()
-                              ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', $count)
-                      ->unordered()
-                      ->rows(false)
-                      ->first();
+            ->deselect()
+            ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', $count)
+            ->unordered()
+            ->rows(false)
+            ->first();
         //->count;
 
         $total = $first ? (int) $first->count : 0;
@@ -6844,8 +6844,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Build and execute bulk DELETE query
         $query = $relatedModel->getQuery();
         $query
-              ->delete($relatedModel->getTableName())
-              ->whereEquals($relatedKey, $localValue);
+            ->delete($relatedModel->getTableName())
+            ->whereEquals($relatedKey, $localValue);
 
         $query->execute();
 

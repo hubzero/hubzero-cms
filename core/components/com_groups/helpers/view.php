@@ -621,11 +621,11 @@ class View
         ob_start();
         $template = new Template();
         $template
-                 ->set('group', \Hubzero\User\Group::getInstance(Request::getString('cn', '')))
-                 ->set('tab', Request::getCmd('active', 'overview'))
-                 ->set('error', $lerror)
-                 ->parse()
-                 ->render();
+            ->set('group', \Hubzero\User\Group::getInstance(Request::getString('cn', '')))
+            ->set('tab', Request::getCmd('active', 'overview'))
+            ->set('error', $lerror)
+            ->parse()
+            ->render();
 
         // output content
         $template->output(true);

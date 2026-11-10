@@ -30,8 +30,8 @@ class Html
         $out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
         foreach ($array as $avalue => $alabel) {
             $selected = ($avalue == $value || $alabel == $value)
-                      ? ' selected="selected"'
-                      : '';
+                ? ' selected="selected"'
+                : '';
             $out .= ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
         }
         $out .= '</select>' . "\n";

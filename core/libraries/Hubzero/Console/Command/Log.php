@@ -364,9 +364,9 @@ class Log extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('Log management functions')
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('Log management functions')
+            ->render();
     }
 
     /**

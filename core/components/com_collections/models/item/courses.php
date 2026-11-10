@@ -96,13 +96,13 @@ class Courses extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $course->get('id'))
-             ->set('created', $course->get('created'))
-             ->set('created_by', $course->get('created_by'))
-             ->set('title', $course->get('title'))
-             ->set('description', Str::truncate($course->get('blurb'), 200))
-             ->set('url', Route::url($course->link()));
+            ->set('type', $this->type)
+            ->set('object_id', $course->get('id'))
+            ->set('created', $course->get('created'))
+            ->set('created_by', $course->get('created_by'))
+            ->set('title', $course->get('title'))
+            ->set('description', Str::truncate($course->get('blurb'), 200))
+            ->set('url', Route::url($course->link()));
 
         if (!$this->store()) {
             return false;

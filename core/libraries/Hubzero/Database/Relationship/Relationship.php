@@ -274,13 +274,13 @@ class Relationship
         // We do a left outer join here because we're not trying to limit the primary table's results
         // This function is primarily used when needing to sort by a field in the joined table
         $this->model
-                    ->select($this->model->getQualifiedFieldName('*'))
-                    ->join(
-                        $this->related->getTableName(),
-                        $this->model->getQualifiedFieldName($this->localKey),
-                        $this->related->getQualifiedFieldName($this->relatedKey),
-                        'LEFT OUTER',
-                    );
+            ->select($this->model->getQualifiedFieldName('*'))
+            ->join(
+                $this->related->getTableName(),
+                $this->model->getQualifiedFieldName($this->localKey),
+                $this->related->getQualifiedFieldName($this->relatedKey),
+                'LEFT OUTER',
+            );
 
         return $this;
     }

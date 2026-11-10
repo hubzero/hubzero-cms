@@ -27,12 +27,12 @@ class Migration20141110232014ComMembers extends Base
             ->select(['uidNumber', 'username', 'name', 'surname', 'givenName', 'middleName'])
             ->from('#__xprofiles')
             ->beginOrGroup()
-                ->where('givenName', '=', '')
-                ->orWhereIsNull('givenName')
+            ->where('givenName', '=', '')
+            ->orWhereIsNull('givenName')
             ->endAndGroup()
             ->beginOrGroup()
-                ->where('surname', '=', '')
-                ->orWhereIsNull('surname')
+            ->where('surname', '=', '')
+            ->orWhereIsNull('surname')
             ->endAndGroup()
             ->loadObjectList();
 

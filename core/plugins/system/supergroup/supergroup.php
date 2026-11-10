@@ -56,7 +56,7 @@ class Supergroup extends Plugin
             //$uploadPath      = $this->filespace($group);
             $params = App::get('component')->params('com_groups');
             $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS)
-                                     . DS . $group->get('gidNumber');
+                . DS . $group->get('gidNumber');
             $componentPath   = $uploadPath . DS . 'components';
             $componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -166,7 +166,7 @@ class Supergroup extends Plugin
 
                 // get com_groups params to get upload path
                 $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS)
-                                     . DS . $group->get('gidNumber');
+                    . DS . $group->get('gidNumber');
                 //$this->filespace($group);
                 $componentPath   = $uploadPath . DS . 'components';
                 $componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';

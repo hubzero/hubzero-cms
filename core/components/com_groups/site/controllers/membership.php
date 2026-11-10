@@ -359,16 +359,16 @@ class Membership extends Base
 
             // build message object and send
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->setTo($from['email'], $from['name'])
-                    ->setBcc($groupInvitees)
-                    ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                    ->addHeader('X-Component', 'com_groups')
-                    ->addHeader('X-Component-Object', 'group_invite')
-                    ->addPart($plain, 'text/plain')
-                    ->addPart($html, 'text/html')
-                    ->send();
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->setTo($from['email'], $from['name'])
+                ->setBcc($groupInvitees)
+                ->addHeader('X-Mailer', 'PHP/' . phpversion())
+                ->addHeader('X-Component', 'com_groups')
+                ->addHeader('X-Component-Object', 'group_invite')
+                ->addPart($plain, 'text/plain')
+                ->addPart($html, 'text/html')
+                ->send();
         }
 
         // Log activity
@@ -446,15 +446,15 @@ class Membership extends Base
 
             // build message object and send
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->setTo([$mbr['email']])
-                    ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                    ->addHeader('X-Component', 'com_groups')
-                    ->addHeader('X-Component-Object', 'group_inviteemail')
-                    ->addPart($plain, 'text/plain')
-                    ->addPart($html, 'text/html')
-                    ->send();
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->setTo([$mbr['email']])
+                ->addHeader('X-Mailer', 'PHP/' . phpversion())
+                ->addHeader('X-Component', 'com_groups')
+                ->addHeader('X-Component-Object', 'group_inviteemail')
+                ->addPart($plain, 'text/plain')
+                ->addPart($html, 'text/html')
+                ->send();
         }
 
         // Push all invitees together
@@ -696,15 +696,15 @@ class Membership extends Base
 
         // build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($from['email'], $from['name'])
-                ->setBcc($managers)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', 'group_invite_accepted')
-                ->addPart($body, 'text/plain')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'], $from['name'])
+            ->setBcc($managers)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', 'group_invite_accepted')
+            ->addPart($body, 'text/plain')
+            ->send();
 
         //set notification fro user
         $this->setNotification(Lang::txt('COM_GROUPS_INVITE_ACCEPTED_SUCCESS'), 'passed');
@@ -1149,15 +1149,15 @@ class Membership extends Base
 
         // build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($from['email'], $from['name'])
-                ->setBcc($managers)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', 'group_membership_requested')
-                ->addPart($html, 'text/plain')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'], $from['name'])
+            ->setBcc($managers)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', 'group_membership_requested')
+            ->addPart($html, 'text/plain')
+            ->send();
 
         //tell the user they just did good
         $this->setNotification(Lang::txt('COM_GROUPS_INVITE_REQUEST_FORWARDED'), 'passed');

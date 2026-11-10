@@ -37,9 +37,9 @@ class Css extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('Cache Management')
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('Cache Management')
+            ->render();
     }
 
     /**

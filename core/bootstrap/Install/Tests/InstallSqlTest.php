@@ -323,7 +323,7 @@ class InstallSqlTest extends Basic
 
         foreach ($articles as $row) {
             $body = (isset($row['introtext']) ? $row['introtext'] : '')
-                  . (isset($row['fulltext']) ? $row['fulltext'] : '');
+                . (isset($row['fulltext']) ? $row['fulltext'] : '');
 
             foreach ($unfinished as $phrase) {
                 $this->assertStringNotContainsStringIgnoringCase(
@@ -358,7 +358,7 @@ class InstallSqlTest extends Basic
 
         foreach ($articles as $row) {
             $body = (isset($row['introtext']) ? $row['introtext'] : '')
-                  . (isset($row['fulltext']) ? $row['fulltext'] : '');
+                . (isset($row['fulltext']) ? $row['fulltext'] : '');
 
             $this->assertStringNotContainsString(
                 'hubShortURL',

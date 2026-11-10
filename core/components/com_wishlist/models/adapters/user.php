@@ -41,9 +41,9 @@ class User extends Base
     public function __construct($referenceid = 0)
     {
         $this
-             ->set('referenceid', $referenceid)
-             ->set('category', 'user')
-             ->set('option', $this->segments['option']);
+            ->set('referenceid', $referenceid)
+            ->set('category', 'user')
+            ->set('option', $this->segments['option']);
 
         $this->segments['id']     = $referenceid;
         $this->segments['active'] = 'wishlist';

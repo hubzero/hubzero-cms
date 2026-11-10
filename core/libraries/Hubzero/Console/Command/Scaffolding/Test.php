@@ -81,8 +81,8 @@ class Test extends Scaffolding
 
         // Make test
         $this
-             ->addTemplateFile("{$this->getType()}.{$type}.tmpl", $path . DS . 'Example' . ucfirst($type) . 'Test.php')
-             ->make();
+            ->addTemplateFile("{$this->getType()}.{$type}.tmpl", $path . DS . 'Example' . ucfirst($type) . 'Test.php')
+            ->make();
     }
 
     /**

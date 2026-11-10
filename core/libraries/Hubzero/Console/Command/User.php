@@ -54,10 +54,10 @@ class User extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('General user functions for manipulating hub users.')
-             ->addTasks($this)
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('General user functions for manipulating hub users.')
+            ->addTasks($this)
+            ->render();
     }
 
     /**

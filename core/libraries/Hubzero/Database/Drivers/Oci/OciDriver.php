@@ -2358,11 +2358,11 @@ class OciDriver extends BaseSqlDriver
 
         // Use MERGE with ROW_NUMBER()
         $query = "MERGE INTO {$quotedTable} t "
-                 . "USING (SELECT ROWID AS rid, "
-                 . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
-                 . "FROM {$quotedTable}) s "
-                 . "ON (t.ROWID = s.rid) "
-                 . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
+            . "USING (SELECT ROWID AS rid, "
+            . "ROW_NUMBER() OVER (ORDER BY {$orderClause}) AS rn "
+            . "FROM {$quotedTable}) s "
+            . "ON (t.ROWID = s.rid) "
+            . "WHEN MATCHED THEN UPDATE SET t.{$quotedColumn} = s.rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

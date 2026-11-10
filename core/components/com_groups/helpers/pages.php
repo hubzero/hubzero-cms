@@ -43,23 +43,23 @@ class Pages
         // create page object
         $home = new Page(0);
         $home
-             ->set('id', 0)
-             ->set('gidNumber', $group->get('gidNumber'))
-             ->set('title', 'Home')
-             ->set('alias', 'overview')
-             ->set('ordering', 0)
-             ->set('state', 1)
-             ->set('privacy', 'default')
-             ->set('home', 1)
-             ->set('parent', 0);
+            ->set('id', 0)
+            ->set('gidNumber', $group->get('gidNumber'))
+            ->set('title', 'Home')
+            ->set('alias', 'overview')
+            ->set('ordering', 0)
+            ->set('state', 1)
+            ->set('privacy', 'default')
+            ->set('home', 1)
+            ->set('parent', 0);
 
         // create page version object
         $homeVersion = new Page\Version(0);
         $homeVersion
-                    ->set('pageid', 0)
-                    ->set('version', 1)
-                    ->set('approved', 1)
-                    ->set('content', self::getDefaultHomePage($group));
+            ->set('pageid', 0)
+            ->set('version', 1)
+            ->set('approved', 1)
+            ->set('content', self::getDefaultHomePage($group));
 
         // add the version to home page object
         $home->versions()->add($homeVersion);
@@ -312,16 +312,16 @@ class Pages
 
         // build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($from['email'], $from['name'])
-                ->setBcc($approvers)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', $type . '_approval')
-                ->addPart($plain, 'text/plain')
-                ->addPart($html, 'text/html')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'], $from['name'])
+            ->setBcc($approvers)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', $type . '_approval')
+            ->addPart($plain, 'text/plain')
+            ->addPart($html, 'text/html')
+            ->send();
     }
 
     /**
@@ -381,15 +381,15 @@ class Pages
 
         // build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($from['email'], $from['name'])
-                ->setBcc($managers)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', $type . '_approved')
-                ->addPart($html, 'text/html')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'], $from['name'])
+            ->setBcc($managers)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', $type . '_approved')
+            ->addPart($html, 'text/html')
+            ->send();
     }
 
     /**
@@ -754,11 +754,11 @@ class Pages
         // set group doc needed props
         // parse and render content
         $groupDocument
-                      ->set('group', $group)
-                      ->set('page', $page)
-                      ->set('document', $document)
-                      ->parse()
-                      ->render();
+            ->set('group', $group)
+            ->set('page', $page)
+            ->set('document', $document)
+            ->parse()
+            ->render();
 
         // get doc content
         $document = $groupDocument->output();
@@ -822,11 +822,11 @@ class Pages
         // set group doc needed props
         // parse and render content
         $groupDocument
-                      ->set('group', $group)
-                      ->set('page', $page)
-                      ->set('document', $content)
-                      ->parse()
-                      ->render();
+            ->set('group', $group)
+            ->set('page', $page)
+            ->set('document', $content)
+            ->parse()
+            ->render();
 
         // get doc content
         $content = $groupDocument->output();

@@ -150,8 +150,8 @@ class Data extends Base
 
         $attachments = $pub->_attachments;
         $attachments = isset($attachments['elements'][$elementId])
-                     ? $attachments['elements'][$elementId]
-                     : null;
+            ? $attachments['elements'][$elementId]
+            : null;
 
         // Sort out attachments for this element
         $attachments = $this->parent->getElementAttachments(

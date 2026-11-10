@@ -129,15 +129,15 @@ class Helper
                             // Create a profile image
                             $imageData = $identicon
                                 ->getImageData($member
-                                ->get('email'), 200, $config
-                                ->get('identicon_color', null));
+                                    ->get('email'), 200, $config
+                                    ->get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon.png', $imageData);
 
                             // Create a thumbnail image
                             $imageData = $identicon
                                 ->getImageData($member
-                                ->get('email'), 50, $config
-                                ->get('identicon_color', null));
+                                    ->get('email'), 50, $config
+                                    ->get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon_thumb.png', $imageData);
 
                             // Save image to profile

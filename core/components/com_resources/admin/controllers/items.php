@@ -129,9 +129,9 @@ class Items extends AdminController
                 $filters['search'] = strtolower((string) $filters['search']);
 
                 $query
-                        ->whereLike('title', $filters['search'], 1)
-                        ->orWhereLike('fulltxt', $filters['search'], 1)
-                        ->resetDepth();
+                    ->whereLike('title', $filters['search'], 1)
+                    ->orWhereLike('fulltxt', $filters['search'], 1)
+                    ->resetDepth();
             }
         }
 
@@ -232,9 +232,9 @@ class Items extends AdminController
                 $filters['search'] = strtolower((string) $filters['search']);
 
                 $query
-                        ->whereLike('title', $filters['search'], 1)
-                        ->orWhereLike('fulltxt', $filters['search'], 1)
-                        ->resetDepth();
+                    ->whereLike('title', $filters['search'], 1)
+                    ->orWhereLike('fulltxt', $filters['search'], 1)
+                    ->resetDepth();
             }
         }
 
@@ -304,9 +304,9 @@ class Items extends AdminController
                 $filters['search'] = strtolower((string) $filters['search']);
 
                 $query
-                        ->whereLike('title', $filters['search'], 1)
-                        ->orWhereLike('fulltxt', $filters['search'], 1)
-                        ->resetDepth();
+                    ->whereLike('title', $filters['search'], 1)
+                    ->orWhereLike('fulltxt', $filters['search'], 1)
+                    ->resetDepth();
             }
         }
 

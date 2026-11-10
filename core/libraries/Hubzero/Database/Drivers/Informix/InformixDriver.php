@@ -1073,8 +1073,8 @@ class InformixDriver extends BaseSqlDriver
         $newTable = $this->replacePrefix($newTable);
 
         $this
-             ->setQuery('RENAME TABLE ' . $this->quoteName($oldTable) . ' TO ' . $this->quoteName($newTable))
-             ->execute();
+            ->setQuery('RENAME TABLE ' . $this->quoteName($oldTable) . ' TO ' . $this->quoteName($newTable))
+            ->execute();
         return true;
     }
 
@@ -1088,8 +1088,8 @@ class InformixDriver extends BaseSqlDriver
         }
 
         $this
-             ->setQuery($this->getSchemaGrammar()->compileDrop($table, false))
-             ->execute();
+            ->setQuery($this->getSchemaGrammar()->compileDrop($table, false))
+            ->execute();
         return $this;
     }
 
@@ -1441,7 +1441,7 @@ class InformixDriver extends BaseSqlDriver
         // If renaming is needed
         if ($oldColumn !== $newColumn) {
             $renameSql = 'RENAME COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($oldColumn)
-                       . ' TO ' . $this->quoteName($newColumn);
+                . ' TO ' . $this->quoteName($newColumn);
             $this->setQuery($renameSql)->execute();
         }
 
@@ -1515,8 +1515,8 @@ class InformixDriver extends BaseSqlDriver
     public function dropIndex(string $table, string $name): bool
     {
         $this
-             ->setQuery('DROP INDEX ' . $this->quoteName($name))
-             ->execute();
+            ->setQuery('DROP INDEX ' . $this->quoteName($name))
+            ->execute();
         return true;
     }
 
@@ -2216,8 +2216,8 @@ class InformixDriver extends BaseSqlDriver
 
         // Informix syntax: constraint name goes at the end
         $sql = 'ALTER TABLE ' . $this->quoteName($table)
-             . ' ADD CONSTRAINT FOREIGN KEY (' . $columnList . ')'
-             . ' REFERENCES ' . $this->quoteName($foreignTable) . ' (' . $foreignColumnList . ')';
+            . ' ADD CONSTRAINT FOREIGN KEY (' . $columnList . ')'
+            . ' REFERENCES ' . $this->quoteName($foreignTable) . ' (' . $foreignColumnList . ')';
 
         // Informix syntax for referential actions
         if ($onDelete !== 'RESTRICT') {
@@ -2576,8 +2576,8 @@ class InformixDriver extends BaseSqlDriver
 
         try {
             $sql = 'CREATE SEQUENCE ' . $this->quoteName($name)
-                 . ' START WITH ' . (int) $start
-                 . ' INCREMENT BY ' . (int) $increment;
+                . ' START WITH ' . (int) $start
+                . ' INCREMENT BY ' . (int) $increment;
 
             if (isset($options['minvalue'])) {
                 $sql .= ' MINVALUE ' . (int) $options['minvalue'];

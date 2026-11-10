@@ -93,9 +93,9 @@ class Helper
         }
 
         $query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE '
-                 . '#__xdomains.domain_id=#__xdomain_users.domain_id AND '
-                 . '#__xdomains.domain=' . $db->quote($domain) . ' AND '
-                 . '#__xdomain_users.domain_username=' . $db->quote($domain_username);
+            . '#__xdomains.domain_id=#__xdomain_users.domain_id AND '
+            . '#__xdomains.domain=' . $db->quote($domain) . ' AND '
+            . '#__xdomain_users.domain_username=' . $db->quote($domain_username);
         $db->setQuery($query);
 
         $result = $db->loadObject();
@@ -174,7 +174,7 @@ class Helper
         }
 
         $query = 'SELECT domain_id FROM `#__xdomains` WHERE '
-                 . '#__xdomains.domain=' . $db->quote($domain);
+            . '#__xdomains.domain=' . $db->quote($domain);
 
         $db->setQuery($query);
 
@@ -225,7 +225,7 @@ class Helper
         }
 
         $query = 'SELECT domain_id FROM `#__xdomains` WHERE '
-                 . '#__xdomains.domain=' . $db->quote($domain);
+            . '#__xdomains.domain=' . $db->quote($domain);
 
         $db->setQuery($query);
 

@@ -312,9 +312,9 @@ class SiteController extends Obj implements ControllerInterface
 
         // Set some commonly used vars
         $this->view
-                    ->set('option', $this->option)
-                    ->set('task', $doTask)
-                    ->set('controller', $this->controller);
+            ->set('option', $this->option)
+            ->set('task', $doTask)
+            ->set('controller', $this->controller);
 
         // Record the actual task being fired
         $doTask .= 'Task';

@@ -162,8 +162,8 @@ class Migration20130924000001ComContent extends Base
             ->select(['id', 'attribs'])
             ->from('#__content')
             ->beginOrGroup()
-                ->whereIsNotNull('attribs')
-                ->orWhere('attribs', '!=', '')
+            ->whereIsNotNull('attribs')
+            ->orWhere('attribs', '!=', '')
             ->endAndGroup()
             ->loadObjectList();
 

@@ -59,13 +59,13 @@ class Upgrade extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview(
-                 'Finish an upgrade once the new code is in place: install the
+            ->getHelpOutput()
+            ->addOverview(
+                'Finish an upgrade once the new code is in place: install the
                  libraries it needs with Composer, bring the database up to date
                  with the migrations, and clear the cache. Run it after
                  muse repository update -f.',
-             )
-             ->render();
+            )
+            ->render();
     }
 }

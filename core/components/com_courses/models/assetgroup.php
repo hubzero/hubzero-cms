@@ -355,8 +355,8 @@ class Assetgroup extends Base
 
         if ($value) {
             $this
-                 ->importPlugin('courses')
-                 ->trigger('onAssetgroupSave', [$this]);
+                ->importPlugin('courses')
+                ->trigger('onAssetgroupSave', [$this]);
         }
 
         return $value;
@@ -393,8 +393,8 @@ class Assetgroup extends Base
         }
 
         $this
-             ->importPlugin('courses')
-             ->trigger('onAssetgroupDelete', [$this]);
+            ->importPlugin('courses')
+            ->trigger('onAssetgroupDelete', [$this]);
 
         // Remove this record from the database and log the event
         return parent::delete();

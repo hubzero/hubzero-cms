@@ -181,9 +181,9 @@ class Questions extends Plugin
             $this->filters['search'] = strtolower((string) $this->filters['search']);
 
             $records
-                    ->whereLike('subject', $this->filters['search'], 1)
-                    ->orWhereLike('question', $this->filters['search'], 1)
-                    ->resetDepth();
+                ->whereLike('subject', $this->filters['search'], 1)
+                ->orWhereLike('question', $this->filters['search'], 1)
+                ->resetDepth();
         }
 
         if ($this->filters['filterby'] == 'open') {

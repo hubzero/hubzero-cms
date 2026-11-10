@@ -151,8 +151,8 @@ class BlockElements extends Obj
         }
 
         $nextElement = isset($collector[$lastComplete + 1])
-                     ? $collector[$lastComplete + 1]
-                     : $collector[$lastComplete];
+            ? $collector[$lastComplete + 1]
+            : $collector[$lastComplete];
 
         if ($lastIncomplete) {
             $showElement = $collector[$lastIncomplete];

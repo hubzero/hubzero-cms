@@ -195,10 +195,10 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Execute query with remember
         $rows = $query
-                      ->select('*')
-                      ->from('users')
-                      ->remember(60)
-                      ->fetch();
+            ->select('*')
+            ->from('users')
+            ->remember(60)
+            ->fetch();
 
         // Check that something was stored in the mock cache
         $this->assertGreaterThan(0, $this->mockCache->putCount, 'Cache put() should have been called');
@@ -220,10 +220,10 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Execute query with rememberForever
         $rows = $query
-                      ->select('*')
-                      ->from('users')
-                      ->rememberForever()
-                      ->fetch();
+            ->select('*')
+            ->from('users')
+            ->rememberForever()
+            ->fetch();
 
         // Check that something was stored with 0 TTL
         $this->assertGreaterThan(0, $this->mockCache->putCount, 'Cache put() should have been called');
@@ -244,10 +244,10 @@ class QueryCachingTest extends AbstractDriverTestCase
         // First query - should hit database
         $query1 = new Query($driver);
         $rows1 = $query1
-                        ->select('*')
-                        ->from('users')
-                        ->remember(60)
-                        ->fetch();
+            ->select('*')
+            ->from('users')
+            ->remember(60)
+            ->fetch();
 
         // Purge in-memory cache to force persistent cache lookup
         Query::purgeCache();
@@ -255,10 +255,10 @@ class QueryCachingTest extends AbstractDriverTestCase
         // Second query (same) - should hit cache
         $query2 = new Query($driver);
         $rows2 = $query2
-                        ->select('*')
-                        ->from('users')
-                        ->remember(60)
-                        ->fetch();
+            ->select('*')
+            ->from('users')
+            ->remember(60)
+            ->fetch();
 
         // Cache should have been checked
         $this->assertGreaterThan(0, $this->mockCache->getCount, 'Cache get() should have been called');
@@ -282,10 +282,10 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Execute query with custom prefix
         $rows = $query
-                      ->select('*')
-                      ->from('users')
-                      ->remember(60, 'custom_prefix_')
-                      ->fetch();
+            ->select('*')
+            ->from('users')
+            ->remember(60, 'custom_prefix_')
+            ->fetch();
 
         // Check that the key starts with custom prefix
         $this->assertStringStartsWith(
@@ -333,18 +333,18 @@ class QueryCachingTest extends AbstractDriverTestCase
         // First query
         $query1 = new Query($driver);
         $rows1 = $query1
-                        ->select('*')
-                        ->from('users')
-                        ->whereEquals('id', '1')
-                        ->fetch();
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->fetch();
 
         // Second identical query should use in-memory cache
         $query2 = new Query($driver);
         $rows2 = $query2
-                        ->select('*')
-                        ->from('users')
-                        ->whereEquals('id', '1')
-                        ->fetch();
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->fetch();
 
         // Results should match (in-memory cache working)
         $this->assertEquals($rows1, $rows2, 'In-memory cached results should match');
@@ -364,20 +364,20 @@ class QueryCachingTest extends AbstractDriverTestCase
         // First query with cache
         $query1 = new Query($driver);
         $rows1 = $query1
-                        ->select('*')
-                        ->from('users')
-                        ->remember(60)
-                        ->fetch();
+            ->select('*')
+            ->from('users')
+            ->remember(60)
+            ->fetch();
 
         $putCountAfterFirst = $this->mockCache->putCount;
 
         // Second query with noCache=true
         $query2 = new Query($driver);
         $rows2 = $query2
-                        ->select('*')
-                        ->from('users')
-                        ->remember(60)
-                        ->fetch('rows', true);  // noCache = true
+            ->select('*')
+            ->from('users')
+            ->remember(60)
+            ->fetch('rows', true);  // noCache = true
 
         // Another put should have happened since noCache was true
         $this->assertGreaterThan(
@@ -401,22 +401,22 @@ class QueryCachingTest extends AbstractDriverTestCase
         // First query
         $query1 = new Query($driver);
         $query1
-               ->select('*')
-               ->from('users')
-               ->whereEquals('id', '1')
-               ->remember(60)
-               ->fetch();
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->remember(60)
+            ->fetch();
 
         $key1 = $this->mockCache->lastKey;
 
         // Different query
         $query2 = new Query($driver);
         $query2
-               ->select('*')
-               ->from('users')
-               ->whereEquals('id', '2')
-               ->remember(60)
-               ->fetch();
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '2')
+            ->remember(60)
+            ->fetch();
 
         $key2 = $this->mockCache->lastKey;
 

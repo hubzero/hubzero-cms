@@ -294,9 +294,9 @@ class Resources extends SiteController
             $filters['search'] = strtolower((string) $filters['search']);
 
             $query
-                    ->whereLike($r . '.title', $filters['search'], 1)
-                    ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
-                    ->resetDepth();
+                ->whereLike($r . '.title', $filters['search'], 1)
+                ->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+                ->resetDepth();
         }
 
         if ($filters['type']) {

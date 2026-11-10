@@ -258,8 +258,8 @@ class Blocks extends Obj
     {
         // Allow changes in non-draft version?
         $freeze = isset($blockParams->published_editing)
-                     && $blockParams->published_editing == 0
-                     && ($pub->state == 1 || $pub->state == 5)
+            && $blockParams->published_editing == 0
+            && ($pub->state == 1 || $pub->state == 5)
                     ? true
                     : false;
 

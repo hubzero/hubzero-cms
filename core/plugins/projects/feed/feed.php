@@ -703,9 +703,9 @@ class Feed extends Plugin
             }
 
             $recipient
-                    ->orWhereEquals($r . '.scope_id', $project_id, 1)
-                    ->whereIn($r . '.scope', $scopes, 1)
-                    ->resetDepth();
+                ->orWhereEquals($r . '.scope_id', $project_id, 1)
+                ->whereIn($r . '.scope', $scopes, 1)
+                ->resetDepth();
         }
 
         $recipient

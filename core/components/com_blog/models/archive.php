@@ -136,20 +136,20 @@ class Archive extends Obj
             }
 
             $results
-                    ->where('publish_up', '>=', $startdate)
-                    ->where('publish_up', '<', $enddate);
+                ->where('publish_up', '>=', $startdate)
+                ->where('publish_up', '<', $enddate);
         } else {
             $results
-                        ->where('publish_up', 'IS', null, 'and', 1)
-                        ->orWhere('publish_up', '<=', Date::toSql(), 1)
-                        ->resetDepth();
+                ->where('publish_up', 'IS', null, 'and', 1)
+                ->orWhere('publish_up', '<=', Date::toSql(), 1)
+                ->resetDepth();
         }
 
         if (!isset($filters['authorized']) || !$filters['authorized']) {
             $results
-                        ->where('publish_down', 'IS', null, 'and', 1)
-                        ->orWhere('publish_down', '>=', Date::toSql(), 1)
-                        ->resetDepth();
+                ->where('publish_down', 'IS', null, 'and', 1)
+                ->orWhere('publish_down', '>=', Date::toSql(), 1)
+                ->resetDepth();
         }
 
         if (isset($filters['search']) && $filters['search']) {

@@ -82,9 +82,9 @@ class Maps extends Plugin
     private function getCount(&$db, $domain, $location)
     {
         $query = "SELECT COUNT(DISTINCT username) FROM `#__xsession`,`#__session`"
-               . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '0'"
-               . " AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "'"
-               . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+            . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '0'"
+            . " AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "'"
+            . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
         $db->setQuery($query);
         $users = $db->loadResult();

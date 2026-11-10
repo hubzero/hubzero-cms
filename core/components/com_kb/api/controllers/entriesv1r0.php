@@ -176,8 +176,8 @@ class Entriesv1r0 extends ApiController
             }
         } else {
             $query
-                  ->whereEquals('state', Article::STATE_PUBLISHED)
-                  ->whereIn('access', User::getAuthorisedViewLevels());
+                ->whereEquals('state', Article::STATE_PUBLISHED)
+                ->whereIn('access', User::getAuthorisedViewLevels());
         }
 
         // By id, alias or path. A category that does not exist, or that the
@@ -197,9 +197,9 @@ class Entriesv1r0 extends ApiController
 
         if ($search = Request::getString('search', '')) {
             $query
-                  ->whereLike('title', $search, 1)
-                  ->orWhereLike('fulltxt', $search, 1)
-                  ->resetDepth();
+                ->whereLike('title', $search, 1)
+                ->orWhereLike('fulltxt', $search, 1)
+                ->resetDepth();
         }
 
         // ordered() treats a dotted sort as relationship.field, so the
@@ -616,8 +616,8 @@ class Entriesv1r0 extends ApiController
             }
         } else {
             $query
-                  ->whereEquals('published', 1)
-                  ->whereIn('access', User::getAuthorisedViewLevels());
+                ->whereEquals('published', 1)
+                ->whereIn('access', User::getAuthorisedViewLevels());
         }
 
         if ($parent = Request::getInt('parent', 0)) {

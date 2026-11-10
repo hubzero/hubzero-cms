@@ -123,8 +123,8 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
             }
         } elseif (
             $this
-            ->storage
-            ->checkClientCredentials($clientData['client_id'], $clientData['client_secret']) === false
+                ->storage
+                ->checkClientCredentials($clientData['client_id'], $clientData['client_secret']) === false
         ) {// if we do have a secret lets verify them
             $response->setError(400, 'invalid_client', 'The client credentials are invalid');
             return false;

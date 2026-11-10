@@ -35,10 +35,10 @@ class Cache extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('Cache Management')
-             ->addTasks($this)
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('Cache Management')
+            ->addTasks($this)
+            ->render();
     }
 
     /**

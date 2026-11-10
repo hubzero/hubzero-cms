@@ -59,10 +59,10 @@ class Component extends Scaffolding
 
         // Make component
         $this
-             ->addTemplateFile("{$this->getType()}.tmpl", $install_dir . DS . 'com_' . $name)
-             ->addReplacement('component_name', $name)
-             ->addReplacement('option', 'com_' . $name)
-             ->make();
+            ->addTemplateFile("{$this->getType()}.tmpl", $install_dir . DS . 'com_' . $name)
+            ->addReplacement('component_name', $name)
+            ->addReplacement('option', 'com_' . $name)
+            ->make();
     }
 
     /**

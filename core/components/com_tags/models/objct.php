@@ -228,11 +228,11 @@ class Objct extends Relational
     public static function associationExists($tagAssocData)
     {
         $matchingTagsCount = self::all()
-          ->whereEquals('tbl', $tagAssocData['tbl'])
-          ->whereEquals('objectid', $tagAssocData['objectid'])
-          ->whereEquals('tagid', $tagAssocData['tagid'])
-          ->rows()
-          ->count();
+            ->whereEquals('tbl', $tagAssocData['tbl'])
+            ->whereEquals('objectid', $tagAssocData['objectid'])
+            ->whereEquals('tagid', $tagAssocData['tagid'])
+            ->rows()
+            ->count();
 
         return (bool) $matchingTagsCount;
     }

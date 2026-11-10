@@ -405,11 +405,11 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
                 $q
-                  ->select('id')
-                  ->select('password_hash')
-                  ->select('email')
-                  ->from('iis_source_users')
-                  ->where('active', '=', 1);
+                    ->select('id')
+                    ->select('password_hash')
+                    ->select('email')
+                    ->from('iis_source_users')
+                    ->where('active', '=', 1);
             })
             ->execute();
 
@@ -433,10 +433,10 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
                 $q
-                  ->select('id')
-                  ->select('password_hash')
-                  ->select('email')
-                  ->from('iis_source_users');
+                    ->select('id')
+                    ->select('password_hash')
+                    ->select('email')
+                    ->from('iis_source_users');
             })
             ->execute();
 
@@ -484,11 +484,11 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->columns(['user_id', 'passhash', 'email'])
             ->fromSelect(function ($q) {
                 $q
-                  ->select('id')
-                  ->select('password_hash')
-                  ->select('email')
-                  ->from('iis_source_users')
-                  ->where('active', '=', 1);
+                    ->select('id')
+                    ->select('password_hash')
+                    ->select('email')
+                    ->from('iis_source_users')
+                    ->where('active', '=', 1);
             })
             ->execute();
 

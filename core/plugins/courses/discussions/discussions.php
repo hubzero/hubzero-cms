@@ -988,11 +988,11 @@ class Discussions extends Plugin
         if ($rows->count()) {
             foreach ($rows as $key => $row) {
                 $threads->lastid = $row->get('id') > $threads->lastid
-                                 ? $row->get('id')
-                                 : $threads->lastid;
+                    ? $row->get('id')
+                    : $threads->lastid;
                 $threads->lastchange = ($row->get('created') > $threads->lastchange)
-                                     ? $row->get('created')
-                                     : $threads->lastchange;
+                    ? $row->get('created')
+                    : $threads->lastchange;
 
                 $cview = $this
                     ->view('_thread', 'threads')

@@ -93,9 +93,9 @@ class Questions extends AdminController
             $filters['search'] = strtolower((string) $filters['search']);
 
             $records
-                    ->whereLike('subject', $filters['search'], 1)
-                    ->orWhereLike('question', $filters['search'], 1)
-                    ->resetDepth();
+                ->whereLike('subject', $filters['search'], 1)
+                ->orWhereLike('question', $filters['search'], 1)
+                ->resetDepth();
         }
 
         if ($filters['state'] >= 0) {

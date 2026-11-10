@@ -81,14 +81,14 @@ class Novnc extends Plugin
         ]);
 
         return $view
-                    ->set('option', Request::getCmd('option', 'com_tools'))
-                    ->set('controller', Request::getWord('controller', 'sessions'))
-                    ->set('output', $session)
-                    ->set('app', $tool)
-                    ->set('readOnly', $readOnly)
-                    ->set('clipboard', $this->clipboardAllowed($tool))
-                    ->set('params', $this->params)
-                    ->loadTemplate();
+            ->set('option', Request::getCmd('option', 'com_tools'))
+            ->set('controller', Request::getWord('controller', 'sessions'))
+            ->set('output', $session)
+            ->set('app', $tool)
+            ->set('readOnly', $readOnly)
+            ->set('clipboard', $this->clipboardAllowed($tool))
+            ->set('params', $this->params)
+            ->loadTemplate();
     }
 
     /**

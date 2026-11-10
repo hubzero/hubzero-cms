@@ -117,10 +117,10 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table);
 
         $driver
-               ->alterTable($table)
-               ->addColumn('email', 'VARCHAR(255)')
-               ->nullable()
-               ->execute();
+            ->alterTable($table)
+            ->addColumn('email', 'VARCHAR(255)')
+            ->nullable()
+            ->execute();
 
         $this->assertTrue(
             $driver->tableHasField($table, 'email'),
@@ -174,9 +174,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->assertTrue($driver->tableHasField($table, 'email'));
 
         $driver
-               ->alterTable($table)
-               ->dropColumn('email')
-               ->execute();
+            ->alterTable($table)
+            ->dropColumn('email')
+            ->execute();
 
         $this->assertFalse($driver->tableHasField($table, 'email'));
 
@@ -206,9 +206,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         }
 
         $driver
-               ->alterTable($table)
-               ->addIndex('idx_email', 'email')
-               ->execute();
+            ->alterTable($table)
+            ->addIndex('idx_email', 'email')
+            ->execute();
 
         $this->assertTrue($driver->tableHasKey($table, 'idx_email'));
 
@@ -239,16 +239,16 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table, ['email' => 'string']);
 
         $driver
-               ->alterTable($table)
-               ->addIndex('idx_email', 'email')
-               ->execute();
+            ->alterTable($table)
+            ->addIndex('idx_email', 'email')
+            ->execute();
 
         $this->assertTrue($driver->tableHasKey($table, 'idx_email'));
 
         $driver
-               ->alterTable($table)
-               ->dropIndex('idx_email')
-               ->execute();
+            ->alterTable($table)
+            ->dropIndex('idx_email')
+            ->execute();
 
         $this->assertFalse($driver->tableHasKey($table, 'idx_email'));
 
@@ -423,10 +423,10 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table);
 
         $driver
-               ->alterTable($table)
-               ->addColumn('status', 'INTEGER')
-               ->default(0)
-               ->execute();
+            ->alterTable($table)
+            ->addColumn('status', 'INTEGER')
+            ->default(0)
+            ->execute();
 
         $this->assertTrue($driver->tableHasField($table, 'status'));
 
@@ -450,9 +450,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
 
         if (!$driver->tableHasField($table, 'newcol')) {
             $driver
-                   ->alterTable($table)
-                   ->addColumn('newcol', 'VARCHAR(255)')
-                   ->execute();
+                ->alterTable($table)
+                ->addColumn('newcol', 'VARCHAR(255)')
+                ->execute();
 
             $this->assertTrue($driver->tableHasField($table, 'newcol'));
         }
@@ -476,10 +476,10 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table, ['email' => 'text', 'phone' => 'text']);
 
         $driver
-               ->alterTable($table)
-               ->dropColumn('email')
-               ->dropColumn('phone')
-               ->execute();
+            ->alterTable($table)
+            ->dropColumn('email')
+            ->dropColumn('phone')
+            ->execute();
 
         $this->assertFalse($driver->tableHasField($table, 'email'));
         $this->assertFalse($driver->tableHasField($table, 'phone'));
@@ -508,9 +508,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table);
 
         $driver
-               ->alterTable($table)
-               ->modifyColumn('name', 'VARCHAR(255) NOT NULL')
-               ->execute();
+            ->alterTable($table)
+            ->modifyColumn('name', 'VARCHAR(255) NOT NULL')
+            ->execute();
 
         $this->assertTrue($driver->tableHasField($table, 'name'));
 
@@ -535,9 +535,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
 
         if ($driver->tableHasField($table, 'name')) {
             $driver
-                   ->alterTable($table)
-                   ->modifyColumn('name', 'VARCHAR(500)')
-                   ->execute();
+                ->alterTable($table)
+                ->modifyColumn('name', 'VARCHAR(500)')
+                ->execute();
 
             $columns = $driver->getTableColumns($table, false);
             $this->assertArrayHasKey('name', $columns);
@@ -562,9 +562,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table, ['old_name' => 'text']);
 
         $driver
-               ->alterTable($table)
-               ->renameColumn('old_name', 'new_name', 'TEXT')
-               ->execute();
+            ->alterTable($table)
+            ->renameColumn('old_name', 'new_name', 'TEXT')
+            ->execute();
 
         $this->assertFalse($driver->tableHasField($table, 'old_name'));
         $this->assertTrue($driver->tableHasField($table, 'new_name'));
@@ -616,9 +616,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         }
 
         $driver
-               ->alterTable($table)
-               ->addUniqueIndex('uidx_username', 'username')
-               ->execute();
+            ->alterTable($table)
+            ->addUniqueIndex('uidx_username', 'username')
+            ->execute();
 
         $this->assertTrue($driver->tableHasKey($table, 'uidx_username'));
 
@@ -665,9 +665,9 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
         $this->createTestTable($driver, $table, ['content' => 'string']);
 
         $driver
-               ->alterTable($table)
-               ->addFulltextIndex('ft_content', 'content')
-               ->execute();
+            ->alterTable($table)
+            ->addFulltextIndex('ft_content', 'content')
+            ->execute();
 
         $this->assertTrue($driver->tableHasKey($table, 'ft_content'));
 

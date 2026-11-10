@@ -532,8 +532,8 @@ class Db2Grammar extends BaseSchemaGrammar
         // 9. Add Foreign Keys
         foreach ($builder->getAddForeignKeys() as $fk) {
             $fkName = !empty($fk['name'])
-               ? $fk['name']
-               : "FK_" . strtoupper($table) . "_" . strtoupper($fk['column']);
+                ? $fk['name']
+                : "FK_" . strtoupper($table) . "_" . strtoupper($fk['column']);
             $refTable = $this->wrap(
                 $this->driver->replacePrefix($fk['referencedTable']),
             );

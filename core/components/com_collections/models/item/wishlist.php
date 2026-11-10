@@ -86,13 +86,13 @@ class Wishlist extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $wish->get('id'))
-             ->set('created', $wish->get('proposed'))
-             ->set('created_by', $wish->get('proposed_by'))
-             ->set('title', $wish->get('subject'))
-             ->set('description', \Hubzero\Utility\Str::truncate(strip_tags((string) $wish->content), 200))
-             ->set('url', Route::url($wish->link()));
+            ->set('type', $this->type)
+            ->set('object_id', $wish->get('id'))
+            ->set('created', $wish->get('proposed'))
+            ->set('created_by', $wish->get('proposed_by'))
+            ->set('title', $wish->get('subject'))
+            ->set('description', \Hubzero\Utility\Str::truncate(strip_tags((string) $wish->content), 200))
+            ->set('url', Route::url($wish->link()));
 
         if (!$this->store()) {
             return false;

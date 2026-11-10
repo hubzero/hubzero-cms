@@ -680,8 +680,8 @@ class Events extends SiteController
         $event_up = new EventsDate($row->publish_up);
         $row->start_date = Html::getDateFormat($event_up->year, $event_up->month, $event_up->day, 0);
         $row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES')
-                         ? $event_up->get12hrTime()
-                         : $event_up->get24hrTime();
+            ? $event_up->get12hrTime()
+            : $event_up->get24hrTime();
 
         $event_down = new EventsDate($row->publish_down);
         $row->stop_date = Html::getDateFormat($event_down->year, $event_down->month, $event_down->day, 0);

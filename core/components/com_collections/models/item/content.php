@@ -96,13 +96,13 @@ class Content extends GenericItem
         $url = trim($url, '&');
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $article->id)
-             ->set('created', $article->created)
-             ->set('created_by', $article->created_by)
-             ->set('title', $article->title)
-             ->set('description', Str::truncate($text, 300, ['html' => true]))
-             ->set('url', $url);
+            ->set('type', $this->type)
+            ->set('object_id', $article->id)
+            ->set('created', $article->created)
+            ->set('created_by', $article->created_by)
+            ->set('title', $article->title)
+            ->set('description', Str::truncate($text, 300, ['html' => true]))
+            ->set('url', $url);
 
         if (!$this->store()) {
             return false;

@@ -170,8 +170,8 @@ class Members extends Plugin
             //Document::setTitle(Lang::txt(strtoupper($this->_option)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
             $this
-                 ->css('members.css')
-                 ->js('members.js');
+                ->css('members.css')
+                ->js('members.js');
 
             $gparams = new \Hubzero\Config\Registry($group->get('params'));
             $this->membership_control = $gparams->get('membership_control', 1);
@@ -2060,11 +2060,11 @@ class Members extends Plugin
 
         // set message details and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($targetuser->get('email'))
-                ->addPart($plain, 'text/plain')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($targetuser->get('email'))
+            ->addPart($plain, 'text/plain')
+            ->send();
     }
 
     /**
@@ -2109,11 +2109,11 @@ class Members extends Plugin
 
             // set message details and send
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->setTo($email)
-                    ->addPart($plain, 'text/plain')
-                    ->send();
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->setTo($email)
+                ->addPart($plain, 'text/plain')
+                ->send();
         }
 
         // all good

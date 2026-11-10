@@ -565,10 +565,10 @@ class Member extends User implements \Hubzero\Search\Searchable
 
         // @TODO: Add more fields to the SOLR core.
         $fields = $this
-          ->profiles()
-          ->whereIn('profile_key', ['organization', 'bio'])
-          ->rows()
-          ->toObject();
+            ->profiles()
+            ->whereIn('profile_key', ['organization', 'bio'])
+            ->rows()
+            ->toObject();
         $description = '';
         foreach ($fields as $field) {
             if ($field->access == 1) {

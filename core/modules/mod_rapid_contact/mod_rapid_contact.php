@@ -170,11 +170,11 @@ class RapidContact extends Module
 
                 $mailSender = new Message();
                 $mailSender
-                           ->setSubject($mySubject)
-                           ->addFrom($this->from_email, $this->from_name)
-                           ->addTo($this->recipient)
-                           ->addReplyTo($this->posted['email'], $this->posted['name'])
-                           ->setBody($myMessage);
+                    ->setSubject($mySubject)
+                    ->addFrom($this->from_email, $this->from_name)
+                    ->addTo($this->recipient)
+                    ->addReplyTo($this->posted['email'], $this->posted['name'])
+                    ->setBody($myMessage);
 
                 if (!$mailSender->send()) {
                     $this->error = $this->error_text;

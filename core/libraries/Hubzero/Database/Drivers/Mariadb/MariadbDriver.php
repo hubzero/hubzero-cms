@@ -297,12 +297,12 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
         $cycleStr = $cycle ? 'CYCLE' : 'NOCYCLE';
 
         $sql = "CREATE SEQUENCE IF NOT EXISTS `$name` "
-               . "START WITH $start "
-               . "INCREMENT BY $increment "
-               . "MINVALUE $minValue "
-               . "MAXVALUE $maxValue "
-               . "$cycleStr "
-               . "CACHE $cache";
+            . "START WITH $start "
+            . "INCREMENT BY $increment "
+            . "MINVALUE $minValue "
+            . "MAXVALUE $maxValue "
+            . "$cycleStr "
+            . "CACHE $cache";
 
         $this->setQuery($sql);
         $this->execute();

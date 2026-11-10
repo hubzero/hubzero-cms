@@ -164,11 +164,11 @@ class Groups extends Plugin
                 try {
                     $message = new \Hubzero\Mail\Message();
                     $message
-                            ->setSubject($subject)
-                            ->addFrom($from, $site)
-                            ->addTo($user->get('email'), $user->get('name'))
-                            ->addPart($body, 'text/plain')
-                            ->send();
+                        ->setSubject($subject)
+                        ->addFrom($from, $site)
+                        ->addTo($user->get('email'), $user->get('name'))
+                        ->addPart($body, 'text/plain')
+                        ->send();
                 } catch (\Exception $e) {
                     // A mail failure must not stall the queue or re-warn
                     // everyone tomorrow; the stamp below still applies

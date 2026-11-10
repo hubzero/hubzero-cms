@@ -107,13 +107,13 @@ class Wiki extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $page->get('id'))
-             ->set('created', $page->get('created'))
-             ->set('created_by', $page->get('created_by'))
-             ->set('title', $page->title)
-             ->set('description', strip_tags($page->version->content($page)))
-             ->set('url', Route::url($page->link()));
+            ->set('type', $this->type)
+            ->set('object_id', $page->get('id'))
+            ->set('created', $page->get('created'))
+            ->set('created_by', $page->get('created_by'))
+            ->set('title', $page->title)
+            ->set('description', strip_tags($page->version->content($page)))
+            ->set('url', Route::url($page->link()));
 
         if (!$this->store()) {
             return false;

@@ -398,13 +398,13 @@ class Paginator extends Obj
             $view = new View();
         }
         $view
-             ->set('limit', $this->limit)
-             ->set('start', $this->limitstart)
-             ->set('total', $this->total)
-             ->set('pages', $data)
-             ->set('viewall', $this->viewall)
-             ->set('limits', $this->limits)
-             ->set('prefix', $this->prefix);
+            ->set('limit', $this->limit)
+            ->set('start', $this->limitstart)
+            ->set('total', $this->total)
+            ->set('pages', $data)
+            ->set('viewall', $this->viewall)
+            ->set('limits', $this->limits)
+            ->set('prefix', $this->prefix);
 
         return $view->loadTemplate();
     }

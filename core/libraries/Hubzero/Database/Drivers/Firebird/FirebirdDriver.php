@@ -1474,8 +1474,8 @@ class FirebirdDriver extends BaseSqlDriver
             $columnName = strtoupper(trim($result));
             $restartValue = $value - 1;  // Subtract 1 because next value = restart + 1
             $this->setQuery("ALTER TABLE " . $this->quoteName($table)
-                           . " ALTER COLUMN " . $this->quoteName($columnName)
-                           . " RESTART WITH " . $restartValue);
+                . " ALTER COLUMN " . $this->quoteName($columnName)
+                . " RESTART WITH " . $restartValue);
             $this->execute();
 
             // Commit to ensure the change takes effect
@@ -1740,7 +1740,7 @@ class FirebirdDriver extends BaseSqlDriver
             return $this->quoteName($col->name);
         }, $columns);
         $copySql = 'INSERT INTO ' . $this->quoteName($newTable) . ' (' . implode(', ', $colNames) . ') '
-                   . 'SELECT ' . implode(', ', $colNames) . ' FROM ' . $this->quoteName($oldTable);
+            . 'SELECT ' . implode(', ', $colNames) . ' FROM ' . $this->quoteName($oldTable);
         $this->setQuery($copySql);
         $this->execute();
 
@@ -1792,7 +1792,7 @@ class FirebirdDriver extends BaseSqlDriver
 
             try {
                 $this->setQuery('CREATE ' . $unique . 'INDEX ' . $this->quoteName($newIndexName)
-                               . ' ON ' . $this->quoteName($newTable) . ' (' . implode(', ', $indexCols) . ')');
+                    . ' ON ' . $this->quoteName($newTable) . ' (' . implode(', ', $indexCols) . ')');
                 $this->execute();
             } catch (\Exception $e) {
                 // Continue even if index creation fails
@@ -1807,10 +1807,10 @@ class FirebirdDriver extends BaseSqlDriver
 
             try {
                 $this->setQuery('ALTER TABLE ' . $this->quoteName($newTable)
-                               . ' ADD CONSTRAINT ' . $this->quoteName($newFkName)
-                               . ' FOREIGN KEY (' . implode(', ', $fkCols) . ')'
-                               . ' REFERENCES ' . $this->quoteName($fk->foreign_table)
-                               . ' (' . implode(', ', $refCols) . ')');
+                    . ' ADD CONSTRAINT ' . $this->quoteName($newFkName)
+                    . ' FOREIGN KEY (' . implode(', ', $fkCols) . ')'
+                    . ' REFERENCES ' . $this->quoteName($fk->foreign_table)
+                    . ' (' . implode(', ', $refCols) . ')');
                 $this->execute();
             } catch (\Exception $e) {
                 // Continue even if FK creation fails
@@ -3109,14 +3109,14 @@ class FirebirdDriver extends BaseSqlDriver
         if ($count == 1) {
             // Get everything before the first delimiter
             return "CASE WHEN POSITION(" . $quotedDelim . " IN " . $str . ") > 0 "
-                 . "THEN SUBSTRING(" . $str . " FROM 1 FOR POSITION(" . $quotedDelim . " IN " . $str . ") - 1) "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTRING(" . $str . " FROM 1 FOR POSITION(" . $quotedDelim . " IN " . $str . ") - 1) "
+                . "ELSE " . $str . " END";
         } elseif ($count == -1) {
             // Get everything after the last delimiter
             return "CASE WHEN POSITION(" . $quotedDelim . " IN " . $str . ") > 0 "
-                 . "THEN SUBSTRING(" . $str . " FROM POSITION("
-                 . $quotedDelim . " IN " . $str . ") + " . $delimLen . ") "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTRING(" . $str . " FROM POSITION("
+                . $quotedDelim . " IN " . $str . ") + " . $delimLen . ") "
+                . "ELSE " . $str . " END";
         }
 
         // For other counts, return the full string (limited support)
@@ -3199,8 +3199,8 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Execute ALTER COLUMN TYPE
         $query = 'ALTER TABLE ' . $this->quoteName($table)
-                 . ' ALTER COLUMN ' . $this->quoteName($column)
-                 . ' TYPE ' . $definition;
+            . ' ALTER COLUMN ' . $this->quoteName($column)
+            . ' TYPE ' . $definition;
 
         $this->setQuery($query);
         if (!$this->execute()) {
@@ -3210,16 +3210,16 @@ class FirebirdDriver extends BaseSqlDriver
         // Handle NOT NULL constraint separately
         if ($notNull === 'NOT NULL') {
             $query = 'ALTER TABLE ' . $this->quoteName($table)
-                     . ' ALTER COLUMN ' . $this->quoteName($column)
-                     . ' SET NOT NULL';
+                . ' ALTER COLUMN ' . $this->quoteName($column)
+                . ' SET NOT NULL';
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
             }
         } elseif ($notNull === 'NULL') {
             $query = 'ALTER TABLE ' . $this->quoteName($table)
-                     . ' ALTER COLUMN ' . $this->quoteName($column)
-                     . ' DROP NOT NULL';
+                . ' ALTER COLUMN ' . $this->quoteName($column)
+                . ' DROP NOT NULL';
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
@@ -3229,8 +3229,8 @@ class FirebirdDriver extends BaseSqlDriver
         // Handle DEFAULT value separately
         if ($defaultValue !== null) {
             $query = 'ALTER TABLE ' . $this->quoteName($table)
-                     . ' ALTER COLUMN ' . $this->quoteName($column)
-                     . ' SET DEFAULT ' . $defaultValue;
+                . ' ALTER COLUMN ' . $this->quoteName($column)
+                . ' SET DEFAULT ' . $defaultValue;
             $this->setQuery($query);
             if (!$this->execute()) {
                 return false;
@@ -3329,8 +3329,8 @@ class FirebirdDriver extends BaseSqlDriver
         // Firebird: rename column first if needed
         if ($oldColumn !== $newColumn) {
             $query = 'ALTER TABLE ' . $this->quoteName($table)
-                     . ' ALTER COLUMN ' . $this->quoteName($oldColumn)
-                     . ' TO ' . $this->quoteName($newColumn);
+                . ' ALTER COLUMN ' . $this->quoteName($oldColumn)
+                . ' TO ' . $this->quoteName($newColumn);
             $this->setQuery($query);
             $this->execute();
         }
@@ -3520,7 +3520,7 @@ class FirebirdDriver extends BaseSqlDriver
         }
 
         $query = 'ALTER TABLE ' . $this->quoteName($table)
-                 . ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName ?? ''));
+            . ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName ?? ''));
 
         $this->setQuery($query);
         return (bool) $this->execute();
@@ -3560,7 +3560,7 @@ class FirebirdDriver extends BaseSqlDriver
             // If NULL_FLAG is null or 0, column is nullable - make it NOT NULL
             if (!$nullFlag) {
                 $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
-                               . ' ALTER COLUMN ' . $quotedCol . ' SET NOT NULL');
+                    . ' ALTER COLUMN ' . $quotedCol . ' SET NOT NULL');
                 $this->execute();
             }
         }
@@ -3570,7 +3570,7 @@ class FirebirdDriver extends BaseSqlDriver
         }, $columns));
 
         $query = 'ALTER TABLE ' . $this->quoteName($table)
-                 . ' ADD PRIMARY KEY (' . $columnList . ')';
+            . ' ADD PRIMARY KEY (' . $columnList . ')';
 
         $this->setQuery($query);
         return (bool) $this->execute();
@@ -3646,14 +3646,14 @@ END';
 
             // Step 3: Make column NOT NULL
             $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
-                           . ' ALTER COLUMN ' . $this->quoteName($column) . ' SET NOT NULL');
+                . ' ALTER COLUMN ' . $this->quoteName($column) . ' SET NOT NULL');
             if (!$this->execute()) {
                 return false;
             }
 
             // Step 4: Add primary key constraint
             $this->setQuery('ALTER TABLE ' . $this->quoteName($table)
-                           . ' ADD PRIMARY KEY (' . $this->quoteName($column) . ')');
+                . ' ADD PRIMARY KEY (' . $this->quoteName($column) . ')');
             if (!$this->execute()) {
                 return false;
             }
@@ -3720,8 +3720,8 @@ END';
         $value = 1;
         foreach ($rows as $pkValue) {
             $this->setQuery('UPDATE ' . $this->quoteName($table)
-                           . ' SET ' . $this->quoteName($column) . ' = ' . $value
-                           . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($pkValue));
+                . ' SET ' . $this->quoteName($column) . ' = ' . $value
+                . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($pkValue));
             $this->execute();
             $value++;
         }

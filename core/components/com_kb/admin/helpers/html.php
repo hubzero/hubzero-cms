@@ -30,8 +30,8 @@ class Html
         $out .= '<option value="">' . Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
         foreach ($categories as $category) {
             $selected = ($category->get('id') == $val)
-                      ? ' selected="selected"'
-                      : '';
+                ? ' selected="selected"'
+                : '';
             $prfx = '';
 
             if ($category->get('level') > 1) {

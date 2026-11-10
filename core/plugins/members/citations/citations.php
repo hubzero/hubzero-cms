@@ -834,10 +834,10 @@ class Citations extends Plugin
 
             // get formats
             $view->formats = \Components\Citations\Models\Format::all()
-                    ->where('style', 'NOT LIKE', '%custom-member-%')
-                    ->where('style', 'NOT LIKE', '%custom-group-%')
-                    ->orWhere('style', '=', $name)
-                    ->rows()->toObject();
+                ->where('style', 'NOT LIKE', '%custom-member-%')
+                ->where('style', 'NOT LIKE', '%custom-group-%')
+                ->orWhere('style', '=', $name)
+                ->rows()->toObject();
 
             $view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
 

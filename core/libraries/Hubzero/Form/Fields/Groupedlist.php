@@ -49,7 +49,7 @@ class Groupedlist extends Field
                         ($element['value']) ? (string) $element['value'] : trim((string) $element),
                         App::get('language')
                             ->alt(trim((string) $element), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                            ->fieldname)),
+                                ->fieldname)),
                         'value',
                         'text',
                         ((string) $element['disabled'] == 'true'),

@@ -263,16 +263,16 @@ class Helper
 
         // build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setReplyTo($replyto['email'], $replyto['name'])
-                ->setTo($emailAddress)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_newsletter')
-                ->addHeader('X-Component-Object', 'Mailinglist')
-                ->addHeader('X-Component-ObjectId', $mailinglistObject->id)
-                ->addPart($body, 'text/plain')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setReplyTo($replyto['email'], $replyto['name'])
+            ->setTo($emailAddress)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_newsletter')
+            ->addHeader('X-Component-Object', 'Mailinglist')
+            ->addHeader('X-Component-ObjectId', $mailinglistObject->id)
+            ->addPart($body, 'text/plain')
+            ->send();
 
         return true;
     }

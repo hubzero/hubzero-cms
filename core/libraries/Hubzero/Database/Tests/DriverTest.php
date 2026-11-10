@@ -238,8 +238,8 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test User', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test User', 'test@example.com')";
 
         $driver->setQuery($sql);
         $result = $driver->execute();
@@ -257,8 +257,8 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test User', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test User', 'test@example.com')";
 
         $driver->setQuery($sql);
         $driver->execute();
@@ -275,15 +275,15 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test User', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test User', 'test@example.com')";
 
         $driver->setQuery($sql);
         $driver->execute();
         $id = $driver->insertid();
 
         $driver->setQuery("SELECT * FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
+            . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
         $result = $driver->loadObject();
 
         $this->assertIsObject($result, 'Result should be an object');
@@ -299,19 +299,19 @@ class DriverTest extends AbstractDriverTestCase
 
         // Insert 2 records
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('User 1', 'user1@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('User 1', 'user1@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('User 2', 'user2@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('User 2', 'user2@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
         $driver->setQuery("SELECT * FROM " . $driver->quoteName($table)
-                         . " ORDER BY " . $driver->quoteName('id'));
+            . " ORDER BY " . $driver->quoteName('id'));
         $result = $driver->loadObjectList();
 
         $this->assertIsArray($result, 'Result should be an array');
@@ -326,15 +326,15 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test User', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test User', 'test@example.com')";
 
         $driver->setQuery($sql);
         $driver->execute();
         $id = $driver->insertid();
 
         $driver->setQuery("SELECT * FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
+            . " WHERE " . $driver->quoteName('id') . " = " . (int) $id);
         $result = $driver->loadAssoc();
 
         $this->assertIsArray($result, 'Result should be an array');
@@ -350,20 +350,20 @@ class DriverTest extends AbstractDriverTestCase
 
         // Insert 2 records
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('User 1', 'user1@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('User 1', 'user1@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('User 2', 'user2@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('User 2', 'user2@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
         $driver->setQuery("SELECT " . $driver->quoteName('name')
-                         . " FROM " . $driver->quoteName($table)
-                         . " ORDER BY " . $driver->quoteName('id'));
+            . " FROM " . $driver->quoteName($table)
+            . " ORDER BY " . $driver->quoteName('id'));
         $result = $driver->loadColumn();
 
         $this->assertIsArray($result, 'Result should be an array');
@@ -379,8 +379,8 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test User', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test User', 'test@example.com')";
 
         $driver->setQuery($sql);
         $driver->execute();
@@ -475,8 +475,8 @@ class DriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Transaction Test', 'txn@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Transaction Test', 'txn@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
@@ -484,7 +484,7 @@ class DriverTest extends AbstractDriverTestCase
 
         // Verify data was committed
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('name') . " = 'Transaction Test'");
+            . " WHERE " . $driver->quoteName('name') . " = 'Transaction Test'");
         $count = (int) $driver->loadResult();
 
         $this->assertEquals(1, $count, 'Transaction should have been committed');
@@ -499,8 +499,8 @@ class DriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
 
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Rollback Test', 'rollback@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Rollback Test', 'rollback@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 
@@ -508,7 +508,7 @@ class DriverTest extends AbstractDriverTestCase
 
         // Verify data was rolled back
         $driver->setQuery("SELECT COUNT(*) FROM " . $driver->quoteName($table)
-                         . " WHERE " . $driver->quoteName('name') . " = 'Rollback Test'");
+            . " WHERE " . $driver->quoteName('name') . " = 'Rollback Test'");
         $count = (int) $driver->loadResult();
 
         $this->assertEquals(0, $count, 'Transaction should have been rolled back');
@@ -608,8 +608,8 @@ class DriverTest extends AbstractDriverTestCase
 
             // Insert with sqlNow()
             $sql = "INSERT INTO " . $driver->quoteName($tempTable)
-                   . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('created_at') . ")"
-                   . " VALUES ('Test', " . $driver->sqlNow() . ")";
+                . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('created_at') . ")"
+                . " VALUES ('Test', " . $driver->sqlNow() . ")";
             $driver->setQuery($sql);
             $driver->execute();
 
@@ -655,8 +655,8 @@ class DriverTest extends AbstractDriverTestCase
 
         // Insert test data
         $sql = "INSERT INTO " . $driver->quoteName($table)
-               . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
-               . " VALUES ('Test', 'test@example.com')";
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES ('Test', 'test@example.com')";
         $driver->setQuery($sql);
         $driver->execute();
 

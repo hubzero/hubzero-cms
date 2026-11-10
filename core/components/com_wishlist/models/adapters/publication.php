@@ -42,9 +42,9 @@ class Publication extends Base
     public function __construct($referenceid = 0)
     {
         $this
-             ->set('referenceid', $referenceid)
-             ->set('category', 'publication')
-             ->set('option', $this->segments['option']);
+            ->set('referenceid', $referenceid)
+            ->set('category', 'publication')
+            ->set('option', $this->segments['option']);
 
         $database = App::get('db');
         $objP = new \Components\Publications\Tables\Publication($database);

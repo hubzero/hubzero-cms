@@ -56,8 +56,8 @@ class Newsletter extends Module
 
         // Add stylesheets and scripts
         $this
-             ->css()
-             ->js();
+            ->css()
+            ->js();
 
         // Display module
         require $this->getLayoutPath();

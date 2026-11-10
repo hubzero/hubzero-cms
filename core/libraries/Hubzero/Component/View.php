@@ -134,9 +134,9 @@ class View extends AbstractView
             'layout'    => $layout,
         ]);
         $view
-             ->set('option', $this->option)
-             ->set('controller', $this->controller)
-             ->set('task', $this->task);
+            ->set('option', $this->option)
+            ->set('controller', $this->controller)
+            ->set('task', $this->task);
 
         return $view;
     }

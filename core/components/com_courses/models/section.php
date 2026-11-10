@@ -540,8 +540,8 @@ class Section extends Base
         $value = parent::store($check);
 
         $this
-             ->importPlugin('courses')
-             ->trigger('onAfterSaveSection', [$this, $isNew]);
+            ->importPlugin('courses')
+            ->trigger('onAfterSaveSection', [$this, $isNew]);
 
         if ($isNew) {
             $this->log($this->get('id'), $this->scope, 'create');
@@ -575,8 +575,8 @@ class Section extends Base
         $value = parent::delete();
 
         $this
-             ->importPlugin('courses')
-             ->trigger('onAfterDeleteSection', [$this]);
+            ->importPlugin('courses')
+            ->trigger('onAfterDeleteSection', [$this]);
 
         return $value;
     }

@@ -148,8 +148,8 @@ class Cloud extends \Hubzero\Base\Obj
             !$this->cache['tags.one']
             || (
                 $id !== null
-             && (int) $this->cache['tags.one']->get('id') != $id
-             && (string) $this->cache['tags.one']->get('tag') != $this->normalize($id)
+                && (int) $this->cache['tags.one']->get('id') != $id
+                && (string) $this->cache['tags.one']->get('tag') != $this->normalize($id)
             )
         ) {
             $this->cache['tags.one'] = is_numeric($id) ? Tag::oneOrNew($id) : Tag::oneByTag($id);
@@ -478,8 +478,8 @@ class Cloud extends \Hubzero\Base\Obj
                         'layout'    => '_cloud',
                     ]);
                     $view
-                         ->set('config', Component::params('com_tags'))
-                         ->set('tags', $this->tags('list', $filters, $clear));
+                        ->set('config', Component::params('com_tags'))
+                        ->set('tags', $this->tags('list', $filters, $clear));
 
                     $this->cache['tags.cloud'] = $view->loadTemplate();
                 }

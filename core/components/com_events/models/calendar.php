@@ -162,9 +162,9 @@ class Calendar extends Model
                             // create transformmer & generate occurences
                             $transformer = new \Recurr\Transformer\ArrayTransformer();
                             $occurrences = $transformer
-                                                       ->transform($rule, null)
-                                                       ->startsAfter($publish_up, true)
-                                                       ->endsAfter($publish_up, true);
+                                ->transform($rule, null)
+                                ->startsAfter($publish_up, true)
+                                ->endsAfter($publish_up, true);
 
                             // calculate diff so we can create down
                             $diff = new DateInterval('P0Y0DT0H0M');

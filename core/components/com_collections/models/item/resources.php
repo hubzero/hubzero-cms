@@ -99,13 +99,13 @@ class Resources extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $resource->id)
-             ->set('created', $resource->created)
-             ->set('created_by', $resource->created_by)
-             ->set('title', $resource->title)
-             ->set('description', $resource->introtext)
-             ->set('url', Route::url('index.php?option=com_resources&id=' . $resource->id));
+            ->set('type', $this->type)
+            ->set('object_id', $resource->id)
+            ->set('created', $resource->created)
+            ->set('created_by', $resource->created_by)
+            ->set('title', $resource->title)
+            ->set('description', $resource->introtext)
+            ->set('url', Route::url('index.php?option=com_resources&id=' . $resource->id));
 
         if (!$this->store()) {
             return false;

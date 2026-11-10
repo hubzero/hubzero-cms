@@ -236,7 +236,7 @@ class Overview extends Plugin
         $sql = "SELECT value
 			FROM `summary_user_vals`
 			WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period) . " AND datetime="
-           . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
+            . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
         $db->setQuery($sql);
         $result = $db->loadResult();
@@ -345,7 +345,7 @@ class Overview extends Plugin
         $sql = "SELECT value
 			FROM `summary_user_vals`
 			WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period) . " AND datetime="
-           . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
+            . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
         $db->setQuery($sql);
         $result = $db->loadResult();

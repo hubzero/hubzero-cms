@@ -123,15 +123,15 @@ class Scaffolding extends Base implements CommandInterface
 
         if (!$user_name || !$user_email) {
             $this->output
-                 ->addSpacer()
-                 ->addLine('You can specify your name and email via:')
-                 ->addLine(
-                     'muse configuration set --user_name="John Doe"',
-                     [
-                         'indentation' => '2',
-                         'color'       => 'blue',
-                     ],
-                 )
+                ->addSpacer()
+                ->addLine('You can specify your name and email via:')
+                ->addLine(
+                    'muse configuration set --user_name="John Doe"',
+                    [
+                        'indentation' => '2',
+                        'color'       => 'blue',
+                    ],
+                )
                 ->addLine(
                     'muse configuration set --user_email=john.doe@gmail.com',
                     [

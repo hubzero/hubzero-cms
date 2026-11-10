@@ -2282,9 +2282,9 @@ class SqlsrvDriver extends BaseSqlDriver
 
         // Use SQL Server's CTE with ROW_NUMBER() to update in place
         $query = "WITH cte AS ("
-                 . "SELECT $quotedColumn, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn "
-                 . "FROM $quotedTable) "
-                 . "UPDATE cte SET $quotedColumn = rn";
+            . "SELECT $quotedColumn, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn "
+            . "FROM $quotedTable) "
+            . "UPDATE cte SET $quotedColumn = rn";
 
         $this->setQuery($query);
         return (bool) $this->execute();

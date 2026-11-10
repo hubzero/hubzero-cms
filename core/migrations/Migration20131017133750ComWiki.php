@@ -35,8 +35,8 @@ class Migration20131017133750ComWiki extends Base
                 ->innerJoin('#__wiki_version AS wv', 'wp.id', 'wv.pageid')
                 ->where('wp.pagename', '=', 'MainPage')
                 ->beginOrGroup()
-                    ->where('wp.group_cn', '=', '')
-                    ->orWhereIsNull('wp.group_cn')
+                ->where('wp.group_cn', '=', '')
+                ->orWhereIsNull('wp.group_cn')
                 ->endAndGroup()
                 ->order('wv.version', 'DESC')
                 ->first();

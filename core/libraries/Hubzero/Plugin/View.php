@@ -247,8 +247,8 @@ class View extends AbstractView
             'layout'  => $layout,
         ]);
         $view
-             ->set('folder', $this->pluginFolder)
-             ->set('element', $this->pluginElement);
+            ->set('folder', $this->pluginFolder)
+            ->set('element', $this->pluginElement);
 
         return $view;
     }

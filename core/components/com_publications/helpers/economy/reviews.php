@@ -121,8 +121,8 @@ class Reviews extends Obj
 
             if (intval($points) > 0) {
                 $msg = ($type == 'royalty')
-                     ? Lang::txt('Royalty payment for posting a review on publication #%s', $review->pid)
-                     : Lang::txt('Commission for posting a review on publication #%s', $review->pid);
+                    ? Lang::txt('Royalty payment for posting a review on publication #%s', $review->pid)
+                    : Lang::txt('Commission for posting a review on publication #%s', $review->pid);
                 $BTL->deposit($points, $msg, $cat, $review->id);
             }
         }

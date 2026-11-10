@@ -258,9 +258,9 @@ class Oauth
         ];
 
         $this->http
-                   ->setUrl($url)
-                   ->setPostFields($fields)
-                   ->setHeader(['Accept' => 'application/json']);
+            ->setUrl($url)
+            ->setPostFields($fields)
+            ->setHeader(['Accept' => 'application/json']);
 
         $data = json_decode($this->http->execute());
 

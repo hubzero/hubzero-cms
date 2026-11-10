@@ -30,8 +30,8 @@ class Migration20141112191247ComCourses extends Base
             ->leftJoin('#__courses_assets AS ca', 'cf.asset_id', 'ca.id')
             ->join('#__courses_asset_associations AS caa', function ($join) {
                 $join
-                     ->on('ca.id', '=', 'caa.asset_id')
-                     ->where('caa.scope', '=', 'asset_group');
+                    ->on('ca.id', '=', 'caa.asset_id')
+                    ->where('caa.scope', '=', 'asset_group');
             }, 'left')
             ->leftJoin('#__courses_asset_groups AS cag', 'caa.scope_id', 'cag.id')
             ->leftJoin('#__courses_units AS cu', 'cag.unit_id', 'cu.id')

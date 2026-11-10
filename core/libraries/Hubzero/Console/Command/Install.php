@@ -1078,10 +1078,10 @@ class Install extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('Hubzero Fresh Installation')
-             ->addTasks($this)
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('Hubzero Fresh Installation')
+            ->addTasks($this)
+            ->render();
     }
 
     /**

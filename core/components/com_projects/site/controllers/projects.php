@@ -202,8 +202,8 @@ class Projects extends Base
         }
 
         $this->view
-                    ->setLayout('intro')
-                    ->display();
+            ->setLayout('intro')
+            ->display();
     }
 
     /**
@@ -262,8 +262,8 @@ class Projects extends Base
             $this->view = new \Hubzero\Component\View(['name' => 'error', 'layout' => 'default']);
             $this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
             $this->view->title = $reviewer == 'sponsored'
-                         ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
-                         : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
+                ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+                : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
             $this->view->display();
             return;
         }

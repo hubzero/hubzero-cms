@@ -156,8 +156,8 @@ class Usage extends Plugin
 
             //add datepicker stylesheet to view
             $this
-            ->css('jquery.datepicker.css', 'system')
-            ->css('jquery.timepicker.css', 'system');
+                ->css('jquery.datepicker.css', 'system')
+                ->css('jquery.timepicker.css', 'system');
 
             //add google charts loader (modern API, replaces deprecated jsapi)
             Document::addScript('https://www.gstatic.com/charts/loader.js');

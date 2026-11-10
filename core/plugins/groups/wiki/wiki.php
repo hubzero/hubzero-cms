@@ -291,8 +291,8 @@ class Wiki extends Plugin
             ob_end_clean();
 
             $this
-                 ->css()
-                 ->js();
+                ->css()
+                ->js();
 
             // Return the content
             $arr['html'] = $content;

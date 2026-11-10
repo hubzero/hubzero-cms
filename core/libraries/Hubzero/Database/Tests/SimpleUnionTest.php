@@ -101,10 +101,10 @@ class SimpleUnionTest extends AbstractDriverTestCase
         // Test basic fetch with WHERE clause
         $query = new Query($driver);
         $rows = $query
-                      ->select('*')
-                      ->from('TEST_USERS')
-                      ->whereEquals('id', '1')
-                      ->fetch();
+            ->select('*')
+            ->from('TEST_USERS')
+            ->whereEquals('id', '1')
+            ->fetch();
 
         // Assert
         $this->assertCount(1, $rows, 'Query should have returned one result');

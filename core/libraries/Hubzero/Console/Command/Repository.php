@@ -421,15 +421,15 @@ class Repository extends Base implements CommandInterface
             // Base standards directory
             if (!$standards = Config::get('repository_standards_dir')) {
                 $this->output
-                     ->addSpacer()
-                     ->addLine('You must specify your standards directory first via:')
-                     ->addLine(
-                         'muse configuration set --repository_standards_dir=/path/to/standards',
-                         [
-                             'indentation' => '2',
-                             'color'       => 'blue',
-                         ],
-                     )
+                    ->addSpacer()
+                    ->addLine('You must specify your standards directory first via:')
+                    ->addLine(
+                        'muse configuration set --repository_standards_dir=/path/to/standards',
+                        [
+                            'indentation' => '2',
+                            'color'       => 'blue',
+                        ],
+                    )
                     ->addSpacer()
                     ->error("Error: failed to retrieve standards directory.");
             } else {

@@ -413,11 +413,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             } elseif ($this->isTool()) {
                 $db = App::get('db');
                 $sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
-                     . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
-                     . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $db->quote($this->get('id'))
-                     . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
-                     . " AND t.revision=" . $db->quote($this->get('revision'))
-                     . " ORDER BY t.ordering";
+                    . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
+                    . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $db->quote($this->get('id'))
+                    . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
+                    . " AND t.revision=" . $db->quote($this->get('revision'))
+                    . " ORDER BY t.ordering";
                 $db->setQuery($sql);
                 if ($cons = $db->loadObjectList()) {
                     foreach ($cons as $k => $c) {
@@ -1535,14 +1535,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         if (isset($filters['now'])) {
             $query
-                    ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
-                    ->orWhere($r . '.publish_up', 'IS', null, 1)
-                    ->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
-                    ->resetDepth()
+                ->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+                ->orWhere($r . '.publish_up', 'IS', null, 1)
+                ->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
+                ->resetDepth()
                 ->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
-                    ->orWhere($r . '.publish_down', 'IS', null, 1)
-                    ->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
-                    ->resetDepth();
+                ->orWhere($r . '.publish_down', 'IS', null, 1)
+                ->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
+                ->resetDepth();
         }
 
         if (isset($filters['startdate']) && $filters['startdate']) {

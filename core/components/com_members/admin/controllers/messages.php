@@ -402,8 +402,8 @@ class Messages extends AdminController
             $out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]" '
                 . 'class="opt-' . $notimethod . '" value="' . $notimethod . '"';
             $out .= (in_array($notimethod, $values))
-                          ? ' checked="checked"'
-                          : '';
+                ? ' checked="checked"'
+                : '';
             $out .= ' />' . "\n";
             $out .= "\t" . '<input type="hidden" name="ids[' . $name . '][' . $notimethod . ']" value="';
             if (isset($ids[$notimethod])) {

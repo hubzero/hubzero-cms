@@ -71,19 +71,19 @@ class Xml extends SiteController
         $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->option . '&task=stylesheet&metadataPrefix=' . $metadata));
 
         $service
-                ->set('metadataPrefix', $metadata)
-                ->set('repositoryName', $this->config->get('repository_name', Config::get('sitename')))
-                ->set('baseURL', $hubname)
-                ->set('protocolVersion', '2.0')
-                ->set('adminEmail', $this->config->get('email', Config::get('mailfrom')))
-                ->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
-                ->set('deletedRecord', $this->config->get('del'))
-                ->set('granularity', $igran)
-                ->set('limit', $this->config->get('limit', 50))
-                ->set('start', 0)
-                ->set('allow_ore', $this->config->get('allow_ore', 0))
-                ->set('gran', $this->config->get('gran', 'c'))
-                ->set('resumption', $resumption);
+            ->set('metadataPrefix', $metadata)
+            ->set('repositoryName', $this->config->get('repository_name', Config::get('sitename')))
+            ->set('baseURL', $hubname)
+            ->set('protocolVersion', '2.0')
+            ->set('adminEmail', $this->config->get('email', Config::get('mailfrom')))
+            ->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
+            ->set('deletedRecord', $this->config->get('del'))
+            ->set('granularity', $igran)
+            ->set('limit', $this->config->get('limit', 50))
+            ->set('start', 0)
+            ->set('allow_ore', $this->config->get('allow_ore', 0))
+            ->set('gran', $this->config->get('gran', 'c'))
+            ->set('resumption', $resumption);
 
         $verb = Request::getString('verb');
 

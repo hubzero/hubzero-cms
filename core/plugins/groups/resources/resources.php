@@ -545,22 +545,22 @@ class Resources extends Plugin
 
             if (isset($filters['group_cn'])) {
                 $rows = Entry::allWithFilters($filters)
-                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
-                ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'], 1)
-                ->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'], 1)
-                ->resetDepth()
-                ->order($filters['sortby'], $filters['sortdir'])
-                ->limit($limit)
-                ->start($limitstart)
-                ->rows();
+                    ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                    ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'], 1)
+                    ->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'], 1)
+                    ->resetDepth()
+                    ->order($filters['sortby'], $filters['sortdir'])
+                    ->limit($limit)
+                    ->start($limitstart)
+                    ->rows();
             } else {
                 $rows = Entry::allWithFilters($filters)
-                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
-                ->whereEquals('#__resource_acl_group.group_id', $filters['group_id'])
-                ->order($filters['sortby'], $filters['sortdir'])
-                ->limit($limit)
-                ->start($limitstart)
-                ->rows();
+                    ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                    ->whereEquals('#__resource_acl_group.group_id', $filters['group_id'])
+                    ->order($filters['sortby'], $filters['sortdir'])
+                    ->limit($limit)
+                    ->start($limitstart)
+                    ->rows();
             }
 
             // Did we get any results?
@@ -600,8 +600,8 @@ class Resources extends Plugin
                         if ($limitstart == -1) {
                             if ($i == 0) {
                                 $counts[] = self::allWithFilters($filters)
-                                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
-                                ->total(true);
+                                    ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                                    ->total(true);
                             } else {
                                 $counts[] = 0;
                             }
@@ -610,8 +610,8 @@ class Resources extends Plugin
 
                             // Execute a count query for each area/category
                             $counts[] = self::allWithFilters($filters)
-                            ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
-                            ->total(true);
+                                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                                ->total(true);
                         }
                         $i++;
                     }

@@ -80,10 +80,10 @@ class ManyShiftsToMany extends ManyToMany
             $operator,
         ) {
             $related
-                    ->whereEquals($associativeTable . '.' . $shifter, strtolower($model->getModelName()))
-                    ->group($shifter)
-                    ->group($associativeLocal)
-                    ->having('COUNT(*)', $operator, $count);
+                ->whereEquals($associativeTable . '.' . $shifter, strtolower($model->getModelName()))
+                ->group($shifter)
+                ->group($associativeLocal)
+                ->having('COUNT(*)', $operator, $count);
         });
     }
 

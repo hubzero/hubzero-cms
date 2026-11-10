@@ -52,11 +52,11 @@ class Jobs extends Base implements CommandInterface
             $jobs = Job::all()
                 ->whereEquals('state', Job::STATE_PUBLISHED)
                 ->where('next_run', 'IS', null, 'and', 1)
-                    ->orWhere('next_run', '<=', $now, 1)
-                    ->resetDepth()
+                ->orWhere('next_run', '<=', $now, 1)
+                ->resetDepth()
                 ->where('publish_up', 'IS', null, 'and', 1)
-                    ->orWhere('publish_up', '<=', $now, 1)
-                    ->resetDepth()
+                ->orWhere('publish_up', '<=', $now, 1)
+                ->resetDepth()
                 ->where('publish_down', 'IS', null, 'and', 1)
                 ->orWhere('publish_down', '>', $now, 1)
                 ->rows();
@@ -245,11 +245,11 @@ class Jobs extends Base implements CommandInterface
             $jobs = Job::all()
                 ->whereEquals('state', Job::STATE_PUBLISHED)
                 ->where('next_run', 'IS', null, 'and', 1)
-                    ->orWhere('next_run', '<=', $now, 1)
-                    ->resetDepth()
+                ->orWhere('next_run', '<=', $now, 1)
+                ->resetDepth()
                 ->where('publish_up', 'IS', null, 'and', 1)
-                    ->orWhere('publish_up', '<=', $now, 1)
-                    ->resetDepth()
+                ->orWhere('publish_up', '<=', $now, 1)
+                ->resetDepth()
                 ->where('publish_down', 'IS', null, 'and', 1)
                 ->orWhere('publish_down', '>', $now, 1)
                 ->rows();
@@ -350,7 +350,7 @@ class Jobs extends Base implements CommandInterface
     {
         $this->output
             ->getHelpOutput()
-             ->addOverview('Run scheduled jobs')
+            ->addOverview('Run scheduled jobs')
             ->addTasks($this)
             ->addArgument(
                 '--job: run a provided job ID',

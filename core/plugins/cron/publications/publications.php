@@ -186,11 +186,11 @@ class Publications extends Plugin
             // Build message
             $message = new \Hubzero\Mail\Message();
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->addTo($user->get('email'), $user->get('name'))
-                    ->addHeader('X-Component', 'com_publications')
-                    ->addHeader('X-Component-Object', 'publications');
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->addTo($user->get('email'), $user->get('name'))
+                ->addHeader('X-Component', 'com_publications')
+                ->addHeader('X-Component-Object', 'publications');
 
             $message->addPart($plain, 'text/plain');
             $message->addPart($html, 'text/html');
@@ -348,11 +348,11 @@ class Publications extends Plugin
                     }
                     $message = new \Hubzero\Mail\Message();
                     $message
-                            ->setSubject($subject)
-                            ->addFrom($from['email'], $from['name'])
-                            ->addTo($user->get('email'), $user->get('name'))
-                            ->addHeader('X-Component', 'com_publications')
-                            ->addHeader('X-Component-Object', 'publications');
+                        ->setSubject($subject)
+                        ->addFrom($from['email'], $from['name'])
+                        ->addTo($user->get('email'), $user->get('name'))
+                        ->addHeader('X-Component', 'com_publications')
+                        ->addHeader('X-Component-Object', 'publications');
 
                     $message->addPart($body, 'text/plain');
                     $message->send();

@@ -212,7 +212,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     public function getTableExistsQuery($table)
     {
         return "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = "
-               . $this->connection->quote($table);
+            . $this->connection->quote($table);
     }
 
     /**

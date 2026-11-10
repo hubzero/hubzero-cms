@@ -113,11 +113,11 @@ class Vote extends Relational
     public static function find($object_id = null, $user_id = null, $ip = null, $type = null)
     {
         return self::all()
-                ->whereEquals('object_id', $object_id)
-                ->whereEquals('user_id', $user_id)
-                ->whereEquals('ip', $ip)
-                ->whereEquals('type', $type)
-                ->limit(1)
-                ->row();
+            ->whereEquals('object_id', $object_id)
+            ->whereEquals('user_id', $user_id)
+            ->whereEquals('ip', $ip)
+            ->whereEquals('type', $type)
+            ->limit(1)
+            ->row();
     }
 }

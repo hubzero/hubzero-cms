@@ -310,11 +310,11 @@ class Watch extends Plugin
         // Build message
         $message = new \Hubzero\Mail\Message();
         $message
-                ->setSubject($subject)
-                ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
-                ->addTo($email, $name)
-                ->addHeader('X-Component', 'com_publications')
-                ->addHeader('X-Component-Object', 'publications_watch_email');
+            ->setSubject($subject)
+            ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            ->addTo($email, $name)
+            ->addHeader('X-Component', 'com_publications')
+            ->addHeader('X-Component-Object', 'publications_watch_email');
 
         $message->addPart($plain, 'text/plain');
         $message->addPart($html, 'text/html');

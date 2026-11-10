@@ -97,13 +97,13 @@ class Blog extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $post->get('id'))
-             ->set('created', $post->get('created'))
-             ->set('created_by', $post->get('created_by'))
-             ->set('title', $post->get('title'))
-             ->set('description', \Hubzero\Utility\Str::truncate(strip_tags($post->content()), 200))
-             ->set('url', Route::url($post->link()));
+            ->set('type', $this->type)
+            ->set('object_id', $post->get('id'))
+            ->set('created', $post->get('created'))
+            ->set('created_by', $post->get('created_by'))
+            ->set('title', $post->get('title'))
+            ->set('description', \Hubzero\Utility\Str::truncate(strip_tags($post->content()), 200))
+            ->set('url', Route::url($post->link()));
 
         if (!$this->store()) {
             return false;

@@ -106,8 +106,8 @@ class Migration
         // Try to determine the document root if none provided
         if (is_null($docroot)) {
             $this
-                 ->addSearchPath(PATH_CORE)
-                 ->addSearchPath(PATH_APP);
+                ->addSearchPath(PATH_CORE)
+                ->addSearchPath(PATH_APP);
 
             $nodes = [
                 PATH_CORE . DS . 'templates',
@@ -757,7 +757,7 @@ class Migration
                         }
                         $this
                             ->log("Error: running {$direction}() resulted in\n\n{$e
-                            ->getMessage()}\n\nin {$scope}/{$file}", 'error');
+                                ->getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     } catch (\PDOException $e) {
                         // Rollback transaction on failure
@@ -769,7 +769,7 @@ class Migration
                         }
                         $this
                             ->log("Error: running {$direction}() resulted in\n\n{$e
-                            ->getMessage()}\n\nin {$scope}/{$file}", 'error');
+                                ->getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     }
                 }
@@ -1078,7 +1078,7 @@ class Migration
         try {
             // Find the most recent entry for this file/scope
             $query = "SELECT `id` FROM " . $this->db->quoteName($this->get('tbl_name'))
-                   . " WHERE `file` = " . $this->db->quote($file);
+                . " WHERE `file` = " . $this->db->quote($file);
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
                 if ($scope == 'core/migrations') {
@@ -1102,7 +1102,7 @@ class Migration
 
             // Delete the entry
             $deleteQuery = "DELETE FROM " . $this->db->quoteName($this->get('tbl_name'))
-                         . " WHERE `id` = " . (int) $entry->id;
+                . " WHERE `id` = " . (int) $entry->id;
 
             $this->db->setQuery($deleteQuery);
             $this->db->query();
@@ -1143,7 +1143,7 @@ class Migration
 
         try {
             $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
-                   . " WHERE `file` = " . $this->db->quote($file);
+                . " WHERE `file` = " . $this->db->quote($file);
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
                 if ($scope == 'core/migrations') {
@@ -1187,7 +1187,7 @@ class Migration
         // Get all executed migrations from database
         try {
             $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
-                   . " ORDER BY `date` DESC";
+                . " ORDER BY `date` DESC";
             $this->db->setQuery($query);
             $history = $this->db->loadObjectList();
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
@@ -1240,7 +1240,7 @@ class Migration
                 $pending[] = $file;
             } elseif (
                 isset($executed[$key]->status)
-                      && in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])
+                && in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])
             ) {
                 $pending[] = $file;
             }
@@ -1344,9 +1344,9 @@ class Migration
         // Get execution history
         try {
             $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
-                   . " WHERE `direction` = 'up'"
-                   . " AND (`status` IS NULL OR `status` IN ('success', 'warning'))"
-                   . " ORDER BY `date` DESC";
+                . " WHERE `direction` = 'up'"
+                . " AND (`status` IS NULL OR `status` IN ('success', 'warning'))"
+                . " ORDER BY `date` DESC";
             $this->db->setQuery($query);
             $history = $this->db->loadObjectList();
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {

@@ -80,12 +80,12 @@ class Collectionsv1r0 extends ApiController
         }
 
         $billboards = $collection
-                                 ->billboards()
-                                 ->select('name')
-                                 ->select('learn_more_target')
-                                 ->select('background_img')
-                                 ->whereEquals('published', 1)
-                                 ->rows();
+            ->billboards()
+            ->select('name')
+            ->select('learn_more_target')
+            ->select('background_img')
+            ->whereEquals('published', 1)
+            ->rows();
 
         foreach ($billboards as $billboard) {
             $image = $billboard->get('background_img');

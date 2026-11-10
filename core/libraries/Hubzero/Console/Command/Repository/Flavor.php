@@ -202,36 +202,36 @@ class Flavor extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview(
-                 'Shape the hub with a flavor: a JSON description of the levers that '
-                 . 'make one hub differ from another - components and modules to enable '
-                 . 'or disable, parameters to set, the default template, the member '
-                 . 'dashboard tiles, knowledge base and content articles to publish or '
-                 . 'not, resource types to open or close. Nothing is added or removed; '
-                 . 'a flavor is a set of switches, and setting another flavor moves them. '
-                 . 'The CMS ships default (the CMS without simulation tools) and full '
-                 . '(with them) in core/flavors. A hub adds its own in app/flavors, or in '
-                 . 'a directory named with --path or HUBZERO_FLAVORS; a flavor there with '
-                 . 'a shipped name replaces it, and any flavor may extend another.',
-             )
-             ->noArgsSection()
-             ->addSection('Usage')
-             ->addArgument('muse repository:flavor list [--path=<dir>]')
-             ->addArgument('muse repository:flavor show <name> [--path=<dir>]')
-             ->addArgument('muse repository:flavor set <name> [--path=<dir>]')
-             ->addArgument('muse repository:flavor status [<name>] [--path=<dir>]')
-             ->addSpacer()
-             ->addSection('Flavor files')
-             ->addArgument(
-                 '<dir>/*.json, *.yml, *.yaml',
-                 'An object of flavor names, each an object of levers: description, extends, '
-                 . 'template, components {enable, disable}, modules {enable, disable, params, items}, '
-                 . 'plugins {enable, disable, params} (named folder/element), dashboard {tiles}, '
-                 . 'kb {categories, articles}, content {articles}, menu {items, by path}, '
-                 . 'resource_types. JSON and YAML read alike; YAML can carry a comment.',
-             )
-             ->render();
+            ->getHelpOutput()
+            ->addOverview(
+                'Shape the hub with a flavor: a JSON description of the levers that '
+                . 'make one hub differ from another - components and modules to enable '
+                . 'or disable, parameters to set, the default template, the member '
+                . 'dashboard tiles, knowledge base and content articles to publish or '
+                . 'not, resource types to open or close. Nothing is added or removed; '
+                . 'a flavor is a set of switches, and setting another flavor moves them. '
+                . 'The CMS ships default (the CMS without simulation tools) and full '
+                . '(with them) in core/flavors. A hub adds its own in app/flavors, or in '
+                . 'a directory named with --path or HUBZERO_FLAVORS; a flavor there with '
+                . 'a shipped name replaces it, and any flavor may extend another.',
+            )
+            ->noArgsSection()
+            ->addSection('Usage')
+            ->addArgument('muse repository:flavor list [--path=<dir>]')
+            ->addArgument('muse repository:flavor show <name> [--path=<dir>]')
+            ->addArgument('muse repository:flavor set <name> [--path=<dir>]')
+            ->addArgument('muse repository:flavor status [<name>] [--path=<dir>]')
+            ->addSpacer()
+            ->addSection('Flavor files')
+            ->addArgument(
+                '<dir>/*.json, *.yml, *.yaml',
+                'An object of flavor names, each an object of levers: description, extends, '
+                . 'template, components {enable, disable}, modules {enable, disable, params, items}, '
+                . 'plugins {enable, disable, params} (named folder/element), dashboard {tiles}, '
+                . 'kb {categories, articles}, content {articles}, menu {items, by path}, '
+                . 'resource_types. JSON and YAML read alike; YAML can carry a comment.',
+            )
+            ->render();
     }
 
     /**

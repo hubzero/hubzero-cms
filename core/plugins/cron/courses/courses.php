@@ -251,11 +251,11 @@ class Courses extends Plugin
                                 // Build message
                                 $message = new \Hubzero\Mail\Message();
                                 $message
-                                        ->setSubject($subject)
-                                        ->addFrom($from['email'], $from['name'])
-                                        ->addTo($user->get('email'), $user->get('name'))
-                                        ->addHeader('X-Component', 'com_courses')
-                                        ->addHeader('X-Component-Object', 'courses_instructor_digest');
+                                    ->setSubject($subject)
+                                    ->addFrom($from['email'], $from['name'])
+                                    ->addTo($user->get('email'), $user->get('name'))
+                                    ->addHeader('X-Component', 'com_courses')
+                                    ->addHeader('X-Component-Object', 'courses_instructor_digest');
 
                                 $message->addPart($plain, 'text/plain');
                                 $message->addPart($html, 'text/html');

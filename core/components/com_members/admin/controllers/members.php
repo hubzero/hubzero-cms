@@ -518,8 +518,8 @@ class Members extends AdminController
         if ($newpass) {
             // Get password rules and validate
             $password_rules = \Hubzero\Password\Rule::all()
-                    ->whereEquals('enabled', 1)
-                    ->rows();
+                ->whereEquals('enabled', 1)
+                ->rows();
 
             $validated = \Hubzero\Password\Rule::verify($newpass, $password_rules, $user->get('id'));
 

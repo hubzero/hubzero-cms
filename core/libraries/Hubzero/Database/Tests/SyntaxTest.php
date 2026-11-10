@@ -151,8 +151,8 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable);
+            ->select('*')
+            ->from(self::$testTable);
 
         $sql = $query->toString();
 
@@ -172,9 +172,9 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->whereEquals('status', 1);
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereEquals('status', 1);
 
         $rows = $query->fetch();
 
@@ -188,9 +188,9 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->order('id', 'asc');
+            ->select('*')
+            ->from(self::$testTable)
+            ->order('id', 'asc');
 
         $sql = $query->toString();
         $this->assertStringContainsString('ORDER BY', $sql);
@@ -206,9 +206,9 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->limit(2);
+            ->select('*')
+            ->from(self::$testTable)
+            ->limit(2);
 
         $sql = $query->toString();
 
@@ -225,11 +225,11 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->order('id', 'asc')
-              ->limit(2)
-              ->start(1);
+            ->select('*')
+            ->from(self::$testTable)
+            ->order('id', 'asc')
+            ->limit(2)
+            ->start(1);
 
         $rows = $query->fetch();
         $this->assertCount(2, $rows);
@@ -246,8 +246,8 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->insert(self::$testTable)
-              ->values(['name' => 'New User', 'email' => 'new@example.com', 'status' => 1]);
+            ->insert(self::$testTable)
+            ->values(['name' => 'New User', 'email' => 'new@example.com', 'status' => 1]);
 
         $sql = $query->toString();
 
@@ -261,26 +261,26 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->insert(self::$testTable)
-              ->values(['name' => 'Inserted User', 'email' => 'inserted@example.com', 'status' => 1])
-              ->execute();
+            ->insert(self::$testTable)
+            ->values(['name' => 'Inserted User', 'email' => 'inserted@example.com', 'status' => 1])
+            ->execute();
 
         // Verify it was inserted
         $query2 = new Query($driver);
         $rows = $query2
-                       ->select('*')
-                       ->from(self::$testTable)
-                       ->whereLike('email', 'inserted@example.com')
-                       ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereLike('email', 'inserted@example.com')
+            ->fetch();
 
         $this->assertCount(1, $rows, 'Should find the inserted user');
 
         // Clean up
         $query3 = new Query($driver);
         $query3
-               ->delete(self::$testTable)
-               ->whereLike('email', 'inserted@example.com')
-               ->execute();
+            ->delete(self::$testTable)
+            ->whereLike('email', 'inserted@example.com')
+            ->execute();
     }
 
     #[Test]
@@ -294,36 +294,36 @@ class SyntaxTest extends AbstractDriverTestCase
         // Get the inserted row's id
         $query2 = new Query($driver);
         $row = $query2
-                      ->select('*')
-                      ->from(self::$testTable)
-                      ->whereLike('email', 'ignore@example.com')
-                      ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereLike('email', 'ignore@example.com')
+            ->fetch();
         $this->assertCount(1, $row);
         $id = $row[0]->id;
 
         // Insert again with the same id using ignore — should not throw
         $query3 = new Query($driver);
         $query3
-               ->insert(self::$testTable, true)
-               ->values(['id' => $id, 'name' => 'Duplicate', 'email' => 'dup@example.com'])
-               ->execute();
+            ->insert(self::$testTable, true)
+            ->values(['id' => $id, 'name' => 'Duplicate', 'email' => 'dup@example.com'])
+            ->execute();
 
         // Verify original row is unchanged
         $query4 = new Query($driver);
         $verify = $query4
-                         ->select('*')
-                         ->from(self::$testTable)
-                         ->whereEquals('id', $id)
-                         ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereEquals('id', $id)
+            ->fetch();
         $this->assertCount(1, $verify);
         $this->assertEquals('Ignore Test', $verify[0]->name);
 
         // Clean up
         $query5 = new Query($driver);
         $query5
-               ->delete(self::$testTable)
-               ->whereLike('email', 'ignore@example.com')
-               ->execute();
+            ->delete(self::$testTable)
+            ->whereLike('email', 'ignore@example.com')
+            ->execute();
     }
 
     // =========================================================================
@@ -337,9 +337,9 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->update(self::$testTable)
-              ->set(['name' => 'Updated'])
-              ->whereEquals('id', 1);
+            ->update(self::$testTable)
+            ->set(['name' => 'Updated'])
+            ->whereEquals('id', 1);
 
         $sql = $query->toString();
 
@@ -355,11 +355,11 @@ class SyntaxTest extends AbstractDriverTestCase
         // Get the first user's ID
         $query = new Query($driver);
         $user = $query
-                      ->select('*')
-                      ->from(self::$testTable)
-                      ->order('id', 'asc')
-                      ->limit(1)
-                      ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->order('id', 'asc')
+            ->limit(1)
+            ->fetch();
 
         $this->assertNotEmpty($user);
         $userId = $user[0]->id;
@@ -368,28 +368,28 @@ class SyntaxTest extends AbstractDriverTestCase
         // Update the name
         $query2 = new Query($driver);
         $query2
-               ->update(self::$testTable)
-               ->set(['name' => 'Updated Name'])
-               ->whereEquals('id', $userId)
-               ->execute();
+            ->update(self::$testTable)
+            ->set(['name' => 'Updated Name'])
+            ->whereEquals('id', $userId)
+            ->execute();
 
         // Verify update
         $query3 = new Query($driver);
         $updated = $query3
-                          ->select('*')
-                          ->from(self::$testTable)
-                          ->whereEquals('id', $userId)
-                          ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereEquals('id', $userId)
+            ->fetch();
 
         $this->assertEquals('Updated Name', $updated[0]->name);
 
         // Restore original name
         $query4 = new Query($driver);
         $query4
-               ->update(self::$testTable)
-               ->set(['name' => $originalName])
-               ->whereEquals('id', $userId)
-               ->execute();
+            ->update(self::$testTable)
+            ->set(['name' => $originalName])
+            ->whereEquals('id', $userId)
+            ->execute();
     }
 
     // =========================================================================
@@ -403,8 +403,8 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->delete(self::$testTable)
-              ->whereEquals('id', 999);
+            ->delete(self::$testTable)
+            ->whereEquals('id', 999);
 
         $sql = $query->toString();
 
@@ -424,26 +424,26 @@ class SyntaxTest extends AbstractDriverTestCase
         // Verify it exists
         $query2 = new Query($driver);
         $rows = $query2
-                       ->select('*')
-                       ->from(self::$testTable)
-                       ->whereLike('email', 'delete@example.com')
-                       ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereLike('email', 'delete@example.com')
+            ->fetch();
         $this->assertCount(1, $rows);
 
         // Delete it
         $query3 = new Query($driver);
         $query3
-               ->delete(self::$testTable)
-               ->whereLike('email', 'delete@example.com')
-               ->execute();
+            ->delete(self::$testTable)
+            ->whereLike('email', 'delete@example.com')
+            ->execute();
 
         // Verify deleted
         $query4 = new Query($driver);
         $rows = $query4
-                       ->select('*')
-                       ->from(self::$testTable)
-                       ->whereLike('email', 'delete@example.com')
-                       ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereLike('email', 'delete@example.com')
+            ->fetch();
         $this->assertCount(0, $rows);
     }
 
@@ -459,9 +459,9 @@ class SyntaxTest extends AbstractDriverTestCase
 
         // Use alias parameter (database-agnostic)
         $query
-              ->select('*')
-              ->from(self::$testTable, 't1')
-              ->join(self::$testTable . ' t2', 't1.id', 't2.id', 'inner');
+            ->select('*')
+            ->from(self::$testTable, 't1')
+            ->join(self::$testTable . ' t2', 't1.id', 't2.id', 'inner');
 
         $sql = $query->toString();
 
@@ -476,9 +476,9 @@ class SyntaxTest extends AbstractDriverTestCase
 
         // Use alias parameter (database-agnostic)
         $query
-              ->select('*')
-              ->from(self::$testTable, 't1')
-              ->leftJoin(self::$testTable . ' t2', 't1.id', 't2.id');
+            ->select('*')
+            ->from(self::$testTable, 't1')
+            ->leftJoin(self::$testTable . ' t2', 't1.id', 't2.id');
 
         $sql = $query->toString();
 
@@ -494,10 +494,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $results = $query
-              ->select('t2.*')
-              ->from(self::$testTable, 't1')
-              ->rightJoin(self::$testTable2 . ' AS t2', 't1.id', 't2.id')
-              ->fetch();
+            ->select('t2.*')
+            ->from(self::$testTable, 't1')
+            ->rightJoin(self::$testTable2 . ' AS t2', 't1.id', 't2.id')
+            ->fetch();
 
         $this->assertCount(2, $results, 'RIGHT JOIN should return all rows from right table');
     }
@@ -513,10 +513,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->whereEquals('status', 1)
-              ->whereLike('name', '%User%');
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereEquals('status', 1)
+            ->whereLike('name', '%User%');
 
         $rows = $query->fetch();
 
@@ -530,10 +530,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->whereIn('id', [1, 2])
-              ->order('id', 'asc');
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereIn('id', [1, 2])
+            ->order('id', 'asc');
 
         $rows = $query->fetch();
 
@@ -547,9 +547,9 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('status, COUNT(*) as cnt')
-              ->from(self::$testTable)
-              ->group('status');
+            ->select('status, COUNT(*) as cnt')
+            ->from(self::$testTable)
+            ->group('status');
 
         $sql = $query->toString();
         $this->assertStringContainsString('GROUP BY', $sql);
@@ -565,10 +565,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('status, COUNT(*) as cnt')
-              ->from(self::$testTable)
-              ->group('status')
-              ->havingRaw('COUNT(*) > ?', [1]);
+            ->select('status, COUNT(*) as cnt')
+            ->from(self::$testTable)
+            ->group('status')
+            ->havingRaw('COUNT(*) > ?', [1]);
 
         $sql = $query->toString();
         $this->assertStringContainsString('HAVING', $sql);
@@ -588,10 +588,10 @@ class SyntaxTest extends AbstractDriverTestCase
         // This tests that the SQL generation works and executes without error
         $query = new Query($driver);
         $results = $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->fullJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
-              ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->fullJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
+            ->fetch();
 
         // Functional test: FULL JOIN should execute without error and return results
         // Seed data has 3 rows in table1 and 2 rows in table2
@@ -608,12 +608,12 @@ class SyntaxTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->fullJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
-              ->fullJoin(self::$testTable3, self::$testTable . '.id', self::$testTable3 . '.id')
-              ->order(self::$testTable . '.id', 'asc')
-              ->limit(10);
+            ->select('*')
+            ->from(self::$testTable)
+            ->fullJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
+            ->fullJoin(self::$testTable3, self::$testTable . '.id', self::$testTable3 . '.id')
+            ->order(self::$testTable . '.id', 'asc')
+            ->limit(10);
 
         $query->toString();
     }
@@ -624,9 +624,9 @@ class SyntaxTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
         $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->fullJoin(self::$testTable2, self::$testTable2 . '.id', self::$testTable . '.id');
+            ->select('*')
+            ->from(self::$testTable)
+            ->fullJoin(self::$testTable2, self::$testTable2 . '.id', self::$testTable . '.id');
 
         $sql = $query->toString();
         $this->assertNotEmpty($sql, 'FULL JOIN should accept reversed join keys');
@@ -639,10 +639,10 @@ class SyntaxTest extends AbstractDriverTestCase
         // Smart resolution: left key prefers FROM table, right key prefers JOIN table
         $query = new Query($driver);
         $sql = $query
-              ->select('*')
-              ->from(self::$testTable)
-              ->fullJoin(self::$testTable2, 'id', 'id')
-              ->toString();
+            ->select('*')
+            ->from(self::$testTable)
+            ->fullJoin(self::$testTable2, 'id', 'id')
+            ->toString();
 
         // Should generate valid SQL with qualified column names
         $this->assertNotEmpty($sql, "[$dbName] Smart resolution should generate valid SQL");
@@ -662,10 +662,10 @@ class SyntaxTest extends AbstractDriverTestCase
         // RIGHT JOIN preserves all rows from the right table (syntax_test_2)
         $query = new Query($driver);
         $results = $query
-              ->select(self::$testTable2 . '.name')
-              ->from(self::$testTable)
-              ->rightJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
-              ->fetch();
+            ->select(self::$testTable2 . '.name')
+            ->from(self::$testTable)
+            ->rightJoin(self::$testTable2, self::$testTable . '.id', self::$testTable2 . '.id')
+            ->fetch();
 
         $names = array_column($results, 'name');
         $this->assertCount(2, $names);
@@ -727,10 +727,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $rows = $query
-                      ->select('*')
-                      ->from(self::$testTable)
-                      ->whereRaw('name = ?', ['User 1'])
-                      ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereRaw('name = ?', ['User 1'])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals('User 1', $rows[0]->name);
@@ -743,10 +743,10 @@ class SyntaxTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $rows = $query
-                      ->select('*')
-                      ->from(self::$testTable)
-                      ->whereRaw('name = :name', ['name' => 'User 2'])
-                      ->fetch();
+            ->select('*')
+            ->from(self::$testTable)
+            ->whereRaw('name = :name', ['name' => 'User 2'])
+            ->fetch();
 
         $this->assertCount(1, $rows);
         $this->assertEquals('User 2', $rows[0]->name);

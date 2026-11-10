@@ -331,7 +331,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
         // Safe SQL should not remove the FK
         $safeSqlString = implode(' ', $safeSql);
         $hasDropFk = stripos($safeSqlString, 'DROP') !== false
-                     && (stripos($safeSqlString, 'FOREIGN') !== false || stripos($safeSqlString, 'fk_user') !== false);
+            && (stripos($safeSqlString, 'FOREIGN') !== false || stripos($safeSqlString, 'fk_user') !== false);
         $this->assertFalse($hasDropFk, "[$dbName] Safe mode should not drop foreign key");
     }
 

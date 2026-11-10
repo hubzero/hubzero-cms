@@ -774,11 +774,11 @@ class Hubzero extends Plugin
 
         // Determine whether user's secret is different from null
         $foundSecret = $query
-                    ->select('*')
-                    ->from('#__users')
-                    ->whereEquals('id', $userId)
-                    ->whereIsNotNull('secret')
-                    ->fetch();
+            ->select('*')
+            ->from('#__users')
+            ->whereEquals('id', $userId)
+            ->whereIsNotNull('secret')
+            ->fetch();
 
         // User has secret set if one row was returned:
         if (is_array($foundSecret) && count($foundSecret) == 1) {
@@ -817,10 +817,10 @@ class Hubzero extends Plugin
 
         // Set the secret generated for this user:
         $query
-                ->update('#__users')
-                ->set(['secret' => $secret])
-                ->whereEquals('id', $userId)
-                ->execute();
+            ->update('#__users')
+            ->set(['secret' => $secret])
+            ->whereEquals('id', $userId)
+            ->execute();
 
         return true;
     }

@@ -219,7 +219,7 @@ class Asset extends Relational
     {
         if ($this->isLink()) {
             $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
-                     . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+                . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
             if (preg_match("/$UrlPtn/", $this->get('filename'))) {
                 return true;

@@ -390,11 +390,11 @@ class Support extends Plugin
                     // Build message
                     $message = new \Hubzero\Mail\Message();
                     $message
-                            ->setSubject($subject)
-                            ->addFrom($from['email'], $from['name'])
-                            ->addTo($email, $name)
-                            ->addHeader('X-Component', 'com_support')
-                            ->addHeader('X-Component-Object', 'support_ticket_comment');
+                        ->setSubject($subject)
+                        ->addFrom($from['email'], $from['name'])
+                        ->addTo($email, $name)
+                        ->addHeader('X-Component', 'com_support')
+                        ->addHeader('X-Component-Object', 'support_ticket_comment');
 
                     $message->addPart($plain, 'text/plain');
 
@@ -538,11 +538,11 @@ class Support extends Plugin
             // Build message
             $message = new \Hubzero\Mail\Message();
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->addTo($user->get('email'), $user->get('name'))
-                    ->addHeader('X-Component', 'com_support')
-                    ->addHeader('X-Component-Object', 'support_ticket_reminder');
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->addTo($user->get('email'), $user->get('name'))
+                ->addHeader('X-Component', 'com_support')
+                ->addHeader('X-Component-Object', 'support_ticket_reminder');
 
             $message->addPart($plain, 'text/plain');
 
@@ -909,11 +909,11 @@ class Support extends Plugin
             // Build message
             $message = new \Hubzero\Mail\Message();
             $message
-                    ->setSubject($subject)
-                    ->addFrom($from['email'], $from['name'])
-                    ->addTo($email, $name)
-                    ->addHeader('X-Component', 'com_support')
-                    ->addHeader('X-Component-Object', 'support_ticket_list');
+                ->setSubject($subject)
+                ->addFrom($from['email'], $from['name'])
+                ->addTo($email, $name)
+                ->addHeader('X-Component', 'com_support')
+                ->addHeader('X-Component-Object', 'support_ticket_list');
 
             $message->addPart($plain, 'text/plain');
 

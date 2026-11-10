@@ -123,13 +123,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // status = 1 AND (featured = 1 OR sticky = 1)
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->beginAndGroup()
-                  ->whereEquals('featured', 1)
-                  ->orWhereEquals('sticky', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereEquals('sticky', 1)
+            ->endGroup();
 
         $sql = $query->toSql();
 
@@ -152,13 +152,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // published = 1 OR (author_id = 1 AND status = 1)
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('published', 1)
-              ->beginOrGroup()
-                  ->whereEquals('author_id', 1)
-                  ->whereEquals('status', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('published', 1)
+            ->beginOrGroup()
+            ->whereEquals('author_id', 1)
+            ->whereEquals('status', 1)
+            ->endGroup();
 
         $sql = $query->toSql();
 
@@ -181,13 +181,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         // status = 1 AND (featured = 1 OR sticky = 1)
         // Should match rows 1, 2 (status=1 and either featured or sticky)
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->beginAndGroup()
-                  ->whereEquals('featured', 1)
-                  ->orWhereEquals('sticky', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereEquals('sticky', 1)
+            ->endGroup();
 
         $results = $query->fetch('rows');
 
@@ -211,13 +211,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         // Note: Deeply nested groups require careful tracking.
         // This tests basic nesting which is the primary use case.
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->beginAndGroup()
-                  ->whereEquals('featured', 1)
-                  ->orWhereEquals('sticky', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereEquals('sticky', 1)
+            ->endGroup();
 
         // Execute to verify it works
         $results = $query->fetch('rows');
@@ -279,9 +279,9 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query
-              ->beginAndGroup()
-              ->endGroup()
-              ->endGroup(); // One too many
+            ->beginAndGroup()
+            ->endGroup()
+            ->endGroup(); // One too many
     }
 
     // =========================================================================
@@ -321,15 +321,15 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // This should be a valid, complete query
         $result = $query
-                        ->select('*')
-                        ->from('cond_group_test')
-                        ->whereEquals('status', 1)
-                        ->beginAndGroup()
-                            ->whereEquals('featured', 1)
-                            ->orWhereEquals('sticky', 1)
-                        ->endGroup()
-                        ->order('id', 'asc')
-                        ->limit(10);
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereEquals('sticky', 1)
+            ->endGroup()
+            ->order('id', 'asc')
+            ->limit(10);
 
         $this->assertSame($query, $result);
 
@@ -352,13 +352,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereIn('status', [1, 2])
-              ->beginAndGroup()
-                  ->whereEquals('featured', 1)
-                  ->orWhereIn('author_id', [1, 2])
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereIn('status', [1, 2])
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereIn('author_id', [1, 2])
+            ->endGroup();
 
         $sql = $query->toSql();
         $this->assertStringContainsString('IN', $sql);
@@ -375,13 +375,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->beginAndGroup()
-                  ->whereRaw('featured = ?', [1])
-                  ->orWhereRaw('sticky = ?', [1])
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginAndGroup()
+            ->whereRaw('featured = ?', [1])
+            ->orWhereRaw('sticky = ?', [1])
+            ->endGroup();
 
         $results = $query->fetch('rows');
         $this->assertIsArray($results);
@@ -397,12 +397,12 @@ class ConditionGroupsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->beginAndGroup()
-                  ->whereIsNull('author_id')
-                  ->orWhereEquals('status', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->beginAndGroup()
+            ->whereIsNull('author_id')
+            ->orWhereEquals('status', 1)
+            ->endGroup();
 
         // Execute to verify it works - all rows have author_id set,
         // but all status=1 rows should match
@@ -426,12 +426,12 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // Using old-style explicit depth
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1, 0)
-              ->whereEquals('featured', 1, 1)
-              ->orWhereEquals('sticky', 1, 1)
-              ->resetDepth(0);
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1, 0)
+            ->whereEquals('featured', 1, 1)
+            ->orWhereEquals('sticky', 1, 1)
+            ->resetDepth(0);
 
         $results = $query->fetch('rows');
         $this->assertIsArray($results);
@@ -449,10 +449,10 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // Simple query without groups
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->whereEquals('published', 1);
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->whereEquals('published', 1);
 
         $results = $query->fetch('rows');
         $this->assertIsArray($results);
@@ -473,13 +473,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // "Show published articles that are either featured OR written by author 1"
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('published', 1)
-              ->beginAndGroup()
-                  ->whereEquals('featured', 1)
-                  ->orWhereEquals('author_id', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('published', 1)
+            ->beginAndGroup()
+            ->whereEquals('featured', 1)
+            ->orWhereEquals('author_id', 1)
+            ->endGroup();
 
         $results = $query->fetch('rows');
         $this->assertIsArray($results);
@@ -501,13 +501,13 @@ class ConditionGroupsTest extends AbstractDriverTestCase
 
         // "Show records that are either status=1 OR (status=2 AND author_id=1)"
         $query
-              ->select('*')
-              ->from('cond_group_test')
-              ->whereEquals('status', 1)
-              ->beginOrGroup()
-                  ->whereEquals('status', 2)
-                  ->whereEquals('author_id', 1)
-              ->endGroup();
+            ->select('*')
+            ->from('cond_group_test')
+            ->whereEquals('status', 1)
+            ->beginOrGroup()
+            ->whereEquals('status', 2)
+            ->whereEquals('author_id', 1)
+            ->endGroup();
 
         $results = $query->fetch('rows');
         $this->assertIsArray($results);

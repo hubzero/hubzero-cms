@@ -38,9 +38,9 @@ class Nested extends Relational
             $pos => new Value\Raw($pos . ($add ? '+' : '-') . '2'),
         ]);
         $query
-              ->where($pos, '>=', $base)
-              ->where('id', '!=', $this->id)
-              ->execute();
+            ->where($pos, '>=', $base)
+            ->where('id', '!=', $this->id)
+            ->execute();
 
         return $this;
     }
@@ -54,8 +54,8 @@ class Nested extends Relational
     private function resolveTrailing($base, $add = true)
     {
         return $this
-                    ->updateTrailing('lft', $base, $add)
-                    ->updateTrailing('rgt', $base, $add);
+            ->updateTrailing('lft', $base, $add)
+            ->updateTrailing('rgt', $base, $add);
     }
 
     /**
@@ -125,8 +125,8 @@ class Nested extends Relational
     public function saveAsChildOf($parent)
     {
         $this
-             ->establishIsModel($parent)
-             ->establishBaseParametersFromParent($parent);
+            ->establishIsModel($parent)
+            ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
         $this->set('lft', $parent->rgt);
@@ -152,8 +152,8 @@ class Nested extends Relational
     public function saveAsFirstChildOf($parent)
     {
         $this
-             ->establishIsModel($parent)
-             ->establishBaseParametersFromParent($parent);
+            ->establishIsModel($parent)
+            ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
         $this->set('lft', $parent->lft + 1);
@@ -255,17 +255,17 @@ class Nested extends Relational
     {
         $instance = self::blank();
         $instance
-                 ->where('level', '>', $this->level)
-                 ->order('lft', 'asc');
+            ->where('level', '>', $this->level)
+            ->order('lft', 'asc');
 
         if (isset($level)) {
             $instance->where('level', '<=', $this->level + $level);
         }
 
         return $instance
-                        ->where('lft', '>', $this->lft)
-                        ->where('rgt', '<', $this->rgt)
-                        ->applyScopesWhere($this);
+            ->where('lft', '>', $this->lft)
+            ->where('rgt', '<', $this->rgt)
+            ->applyScopesWhere($this);
     }
 
     /**

@@ -148,9 +148,9 @@ class Emailtoken extends Plugin
         $auths     = new \Hubzero\User\Log\Auth();
 
         $auths
-              ->whereEquals('username', $user->username)
-              ->whereEquals('status', 'failure')
-              ->where('logged', '>=', $threshold);
+            ->whereEquals('username', $user->username)
+            ->whereEquals('status', 'failure')
+            ->where('logged', '>=', $threshold);
 
         if ($auths->count() < $limit - 1) {
             $result = false;
@@ -190,12 +190,12 @@ class Emailtoken extends Plugin
 
             // Select all usernames which are blocked
             $auths = $auths
-                        ->whereEquals('status', 'blocked')
-                        ->select('username')
-                        ->whereEquals('ip', $ip)
-                  ->where('logged', '>=', $threshold)
-                        ->rows()
-                        ->fieldsByKey('username');
+                ->whereEquals('status', 'blocked')
+                ->select('username')
+                ->whereEquals('ip', $ip)
+                ->where('logged', '>=', $threshold)
+                ->rows()
+                ->fieldsByKey('username');
 
             // Only unique blocked entries
             $auths = array_unique($auths);

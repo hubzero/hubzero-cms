@@ -40,9 +40,9 @@ class Terms extends Base implements CommandInterface
     public function help()
     {
         $this->output
-             ->getHelpOutput()
-             ->addOverview('Functions for updating hub user terms of use.')
-             ->render();
+            ->getHelpOutput()
+            ->addOverview('Functions for updating hub user terms of use.')
+            ->render();
     }
 
     /**

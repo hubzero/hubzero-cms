@@ -1626,23 +1626,23 @@ class SqliteDriver extends BaseSqlDriver
         if ($count == -1) {
             // Get everything after the first occurrence of delimiter
             return "CASE WHEN INSTR(" . $str . ", " . $quotedDelim . ") > 0 "
-                 . "THEN SUBSTR(" . $str . ", INSTR(" . $str . ", " . $quotedDelim . ") + " . $delimLen . ") "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTR(" . $str . ", INSTR(" . $str . ", " . $quotedDelim . ") + " . $delimLen . ") "
+                . "ELSE " . $str . " END";
         } elseif ($count == 1) {
             // Get everything before the first occurrence of delimiter
             return "CASE WHEN INSTR(" . $str . ", " . $quotedDelim . ") > 0 "
-                 . "THEN SUBSTR(" . $str . ", 1, INSTR(" . $str . ", " . $quotedDelim . ") - 1) "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTR(" . $str . ", 1, INSTR(" . $str . ", " . $quotedDelim . ") - 1) "
+                . "ELSE " . $str . " END";
         } elseif ($count > 1) {
             // For count > 1, fall back to getting everything before first occurrence (approximate)
             return "CASE WHEN INSTR(" . $str . ", " . $quotedDelim . ") > 0 "
-                 . "THEN SUBSTR(" . $str . ", 1, INSTR(" . $str . ", " . $quotedDelim . ") - 1) "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTR(" . $str . ", 1, INSTR(" . $str . ", " . $quotedDelim . ") - 1) "
+                . "ELSE " . $str . " END";
         } else {
             // count < -1: Fall back to getting everything after first occurrence (approximate)
             return "CASE WHEN INSTR(" . $str . ", " . $quotedDelim . ") > 0 "
-                 . "THEN SUBSTR(" . $str . ", INSTR(" . $str . ", " . $quotedDelim . ") + " . $delimLen . ") "
-                 . "ELSE " . $str . " END";
+                . "THEN SUBSTR(" . $str . ", INSTR(" . $str . ", " . $quotedDelim . ") + " . $delimLen . ") "
+                . "ELSE " . $str . " END";
         }
     }
 
@@ -2758,9 +2758,9 @@ class SqliteDriver extends BaseSqlDriver
 
         // Use SQLite's rowid and ROW_NUMBER() window function (requires SQLite 3.25+)
         $query = "UPDATE `$table` SET `$column` = ("
-                 . "SELECT rn FROM ("
-                 . "SELECT rowid, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn FROM `$table`"
-                 . ") sub WHERE sub.rowid = `$table`.rowid)";
+            . "SELECT rn FROM ("
+            . "SELECT rowid, ROW_NUMBER() OVER (ORDER BY $orderClause) AS rn FROM `$table`"
+            . ") sub WHERE sub.rowid = `$table`.rowid)";
 
         $this->setQuery($query);
         return (bool) $this->execute();

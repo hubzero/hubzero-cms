@@ -64,9 +64,9 @@ class Reportproblems extends Module
         $jsInit = 'jQuery(document).ready(function(jq) { '
             . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
         $this
-             ->css()
-             ->js()
-             ->js($jsInit);
+            ->css()
+            ->js()
+            ->js($jsInit);
 
         $this->supportParams = Component::params('com_support');
 

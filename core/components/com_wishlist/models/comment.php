@@ -55,12 +55,12 @@ class Comment extends ItemComment
             // case has always built the delete URL; there is no edit-reply task.)
             case 'edit':
                 $link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id')
-                      . '&' . \Session::getFormToken() . '=1';
+                . '&' . \Session::getFormToken() . '=1';
                 break;
 
             case 'delete':
                 $link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id')
-                      . '&' . \Session::getFormToken() . '=1';
+                . '&' . \Session::getFormToken() . '=1';
                 break;
 
             case 'reply':

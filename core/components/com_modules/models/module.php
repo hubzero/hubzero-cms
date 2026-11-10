@@ -649,9 +649,9 @@ class Module extends Relational
     {
         if (!$this->isNew()) {
             $this
-                 ->set('checked_out', 0)
-                 ->set('checked_out_time', null)
-                 ->save();
+                ->set('checked_out', 0)
+                ->set('checked_out_time', null)
+                ->save();
         }
     }
 }

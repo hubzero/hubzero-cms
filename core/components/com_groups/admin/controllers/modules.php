@@ -447,12 +447,12 @@ class Modules extends AdminController
         // set group doc needed props
         // parse and render content
         $groupDocument
-                      ->set('group', $this->group)
-                      ->set('page', $page)
-                      ->set('document', $content)
-                      ->set('allMods', true)
-                      ->parse()
-                      ->render();
+            ->set('group', $this->group)
+            ->set('page', $page)
+            ->set('document', $content)
+            ->set('allMods', true)
+            ->parse()
+            ->render();
 
         // get doc content
         $content = $groupDocument->output();

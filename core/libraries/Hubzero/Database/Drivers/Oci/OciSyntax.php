@@ -851,11 +851,11 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         $sql = 'MERGE INTO ' . $this->connection->quoteName($this->upsertTable) . ' t '
-               . 'USING (SELECT ' . implode(', ', $sourceColumns) . ' FROM DUAL) s '
-               . 'ON (' . implode(' AND ', $onConditions) . ') '
-               . 'WHEN MATCHED THEN UPDATE SET ' . implode(', ', $updateSets) . ' '
-               . 'WHEN NOT MATCHED THEN INSERT (' . implode(', ', $quotedColumns) . ') '
-               . 'VALUES (' . implode(', ', array_map(fn($c) => 's.' . $this->connection->quoteName($c), $columns)) . ')';
+            . 'USING (SELECT ' . implode(', ', $sourceColumns) . ' FROM DUAL) s '
+            . 'ON (' . implode(' AND ', $onConditions) . ') '
+            . 'WHEN MATCHED THEN UPDATE SET ' . implode(', ', $updateSets) . ' '
+            . 'WHEN NOT MATCHED THEN INSERT (' . implode(', ', $quotedColumns) . ') '
+            . 'VALUES (' . implode(', ', array_map(fn($c) => 's.' . $this->connection->quoteName($c), $columns)) . ')';
 
         return $sql;
     }

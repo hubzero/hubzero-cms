@@ -366,12 +366,12 @@ class Groups extends Base
             // parse & render
             $superGroupTemplate = new Helpers\Template();
             $superGroupTemplate
-                               ->set('group', $this->view->group)
-                               ->set('tab', $this->view->trueTab)
-                               ->set('content', $this->view->content)
-                               ->set('page', $this->view->activePage)
-                               ->parse()
-                               ->render();
+                ->set('group', $this->view->group)
+                ->set('tab', $this->view->trueTab)
+                ->set('content', $this->view->content)
+                ->set('page', $this->view->activePage)
+                ->parse()
+                ->render();
 
             // Echo content & stop execution
             return $superGroupTemplate->output(true);
@@ -1124,16 +1124,16 @@ class Groups extends Base
 
         // Build message object and send
         $message
-                ->setSubject($subject)
-                ->addFrom($from['email'], $from['name'])
-                ->setTo($from['email'], $from['name'])
-                ->setBcc($groupMembers)
-                ->addHeader('X-Mailer', 'PHP/' . phpversion())
-                ->addHeader('X-Component', 'com_groups')
-                ->addHeader('X-Component-Object', 'group_deleted')
-                ->addHeader('X-Component-ObjectId', $deletedgroup->get('gidNumber'))
-                ->addPart($html, 'text/plain')
-                ->send();
+            ->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'], $from['name'])
+            ->setBcc($groupMembers)
+            ->addHeader('X-Mailer', 'PHP/' . phpversion())
+            ->addHeader('X-Component', 'com_groups')
+            ->addHeader('X-Component-Object', 'group_deleted')
+            ->addHeader('X-Component-ObjectId', $deletedgroup->get('gidNumber'))
+            ->addPart($html, 'text/plain')
+            ->send();
 
         // Log deleted group
         Log::log([

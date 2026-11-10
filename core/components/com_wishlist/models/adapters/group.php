@@ -41,9 +41,9 @@ class Group extends Base
     public function __construct($referenceid = 0)
     {
         $this
-             ->set('referenceid', $referenceid)
-             ->set('category', 'group')
-             ->set('option', $this->segments['option']);
+            ->set('referenceid', $referenceid)
+            ->set('category', 'group')
+            ->set('option', $this->segments['option']);
 
         $this->item = \Hubzero\User\Group::getInstance($referenceid);
         if (!$this->item) {

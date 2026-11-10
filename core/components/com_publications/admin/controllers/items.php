@@ -1221,10 +1221,10 @@ class Items extends AdminController
 
                 // Add activity
                 $activity .= ' ' . strtolower(Lang::txt('version'))
-                          . ' ' . $this->model->version->version_label . ' '
-                          . Lang::txt('COM_PUBLICATIONS_OF') . ' '
-                          . strtolower(Lang::txt('publication')) . ' "'
-                          . $pubtitle . '" ';
+                    . ' ' . $this->model->version->version_label . ' '
+                    . Lang::txt('COM_PUBLICATIONS_OF') . ' '
+                    . strtolower(Lang::txt('publication')) . ' "'
+                    . $pubtitle . '" ';
 
                 // Build return url
                 $link = '/projects/' . $project->get('alias') . '/publications/' . $id . '/?version=' . $this->model->version->version_number;

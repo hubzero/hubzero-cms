@@ -178,13 +178,13 @@ trait Orderable
         if ($delta < 0) {
             // Moving up: find record with ordering just below target
             $query
-                  ->where($orderingCol, '<', $currentOrdering)
-                  ->order($orderingCol, 'desc');
+                ->where($orderingCol, '<', $currentOrdering)
+                ->order($orderingCol, 'desc');
         } else {
             // Moving down: find record with ordering just above target
             $query
-                  ->where($orderingCol, '>', $currentOrdering)
-                  ->order($orderingCol, 'asc');
+                ->where($orderingCol, '>', $currentOrdering)
+                ->order($orderingCol, 'asc');
         }
 
         $query->limit(abs($delta));

@@ -270,9 +270,9 @@ class NamedParametersTest extends AbstractDriverTestCase
         // This triggers conversion because we have named inline params,
         // but :other is not in the params array
         $query
-              ->select('*')
-              ->from('np_users')
-              ->whereRaw('name = :name AND email = :other', ['name' => 'Test']); // Missing :other
+            ->select('*')
+            ->from('np_users')
+            ->whereRaw('name = :name AND email = :other', ['name' => 'Test']); // Missing :other
     }
 
     /**
@@ -286,8 +286,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->setParameters(['id' => 1])
-              ->setParameters(['name' => 'Test User']); // Adds to existing
+            ->setParameters(['id' => 1])
+            ->setParameters(['name' => 'Test User']); // Adds to existing
 
         $params = $query->getNamedParameters();
         $this->assertCount(2, $params);
@@ -306,8 +306,8 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->setParameter('id', 1)
-              ->setParameter('id', 2);
+            ->setParameter('id', 1)
+            ->setParameter('id', 2);
 
         $params = $query->getNamedParameters();
         $this->assertEquals(2, $params['id']);
@@ -353,12 +353,12 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         $query
-              ->select('*')
-              ->from('np_users')
-              ->whereRaw('name = :name AND email = :email', [
-                  'name' => 'Test User',
-                  'email' => 'test@test.com',
-              ]);
+            ->select('*')
+            ->from('np_users')
+            ->whereRaw('name = :name AND email = :email', [
+                'name' => 'Test User',
+                'email' => 'test@test.com',
+            ]);
 
         $bindings = $query->getBindings();
 
@@ -384,13 +384,13 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('*')
-              ->from('np_users')
-              ->whereRaw('name = :name AND email = :email', [
-                  'name' => 'Test User',
-                  'email' => 'test@test.com',
-              ])
-              ->fetch('rows');
+            ->select('*')
+            ->from('np_users')
+            ->whereRaw('name = :name AND email = :email', [
+                'name' => 'Test User',
+                'email' => 'test@test.com',
+            ])
+            ->fetch('rows');
 
         $this->assertCount(1, $results);
         $this->assertEquals('Test User', $results[0]->name);
@@ -409,12 +409,12 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->setParameter('name', 'Test User')
-              ->setParameter('email', 'test@test.com')
-              ->select('*')
-              ->from('np_users')
-              ->whereRaw('name = :name AND email = :email')
-              ->fetch('rows');
+            ->setParameter('name', 'Test User')
+            ->setParameter('email', 'test@test.com')
+            ->select('*')
+            ->from('np_users')
+            ->whereRaw('name = :name AND email = :email')
+            ->fetch('rows');
 
         $this->assertCount(1, $results);
         $this->assertEquals('Test User', $results[0]->name);
@@ -434,12 +434,12 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
         // Set name to 'Test User' via stored param
         $results = $query
-              ->setParameter('name', 'Test User')
-              ->select('*')
-              ->from('np_users')
+            ->setParameter('name', 'Test User')
+            ->select('*')
+            ->from('np_users')
               // Override with 'Admin' via inline
-              ->whereRaw('name = :name', ['name' => 'Admin'])
-              ->fetch('rows');
+            ->whereRaw('name = :name', ['name' => 'Admin'])
+            ->fetch('rows');
 
         $this->assertCount(1, $results);
         $this->assertEquals('Admin', $results[0]->name);
@@ -457,10 +457,10 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('*')
-              ->from('np_posts')
-              ->whereRaw('user_id = :uid OR user_id = :uid', ['uid' => 1])
-              ->fetch('rows');
+            ->select('*')
+            ->from('np_posts')
+            ->whereRaw('user_id = :uid OR user_id = :uid', ['uid' => 1])
+            ->fetch('rows');
 
         // user_id = 1 has 2 posts
         $this->assertCount(2, $results);
@@ -478,11 +478,11 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('*')
-              ->from('np_users')
-              ->whereEquals('id', 1)
-              ->orWhereRaw('name = :name', ['name' => 'Admin'])
-              ->fetch('rows');
+            ->select('*')
+            ->from('np_users')
+            ->whereEquals('id', 1)
+            ->orWhereRaw('name = :name', ['name' => 'Admin'])
+            ->fetch('rows');
 
         // id=1 (Test User) OR name='Admin' => 2 results
         $this->assertCount(2, $results);
@@ -500,10 +500,10 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('*')
-              ->from('np_users')
-              ->whereRaw('name = ? AND email = ?', ['Test User', 'test@test.com'])
-              ->fetch('rows');
+            ->select('*')
+            ->from('np_users')
+            ->whereRaw('name = ? AND email = ?', ['Test User', 'test@test.com'])
+            ->fetch('rows');
 
         $this->assertCount(1, $results);
         $this->assertEquals('Test User', $results[0]->name);
@@ -528,9 +528,9 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
         $results = $query
-              ->selectRaw("id + CAST(:offset AS $cast)", ['offset' => 100])
-              ->from('np_users')
-              ->fetch('rows');
+            ->selectRaw("id + CAST(:offset AS $cast)", ['offset' => 100])
+            ->from('np_users')
+            ->fetch('rows');
 
         $this->assertCount(3, $results);
 
@@ -556,10 +556,10 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
         $results = $query
-              ->setParameter('offset', 100)
-              ->selectRaw("id + CAST(:offset AS $cast)")
-              ->from('np_users')
-              ->fetch('rows');
+            ->setParameter('offset', 100)
+            ->selectRaw("id + CAST(:offset AS $cast)")
+            ->from('np_users')
+            ->fetch('rows');
 
         $this->assertCount(3, $results);
 
@@ -581,9 +581,9 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->selectRaw('COUNT(*)')
-              ->from('np_users')
-              ->fetch('rows');
+            ->selectRaw('COUNT(*)')
+            ->from('np_users')
+            ->fetch('rows');
 
         $this->assertCount(1, $results);
 
@@ -605,9 +605,9 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->selectRaw('COALESCE(id, ?)', [0])
-              ->from('np_users')
-              ->fetch('rows');
+            ->selectRaw('COALESCE(id, ?)', [0])
+            ->from('np_users')
+            ->fetch('rows');
 
         $this->assertCount(3, $results);
 
@@ -633,12 +633,12 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('user_id')
-              ->selectRaw('COUNT(*)', [], 'cnt')
-              ->from('np_posts')
-              ->group('user_id')
-              ->havingRaw('COUNT(*) >= :min_count', ['min_count' => 2])
-              ->fetch('rows');
+            ->select('user_id')
+            ->selectRaw('COUNT(*)', [], 'cnt')
+            ->from('np_posts')
+            ->group('user_id')
+            ->havingRaw('COUNT(*) >= :min_count', ['min_count' => 2])
+            ->fetch('rows');
 
         // Only user_id=1 has 2 posts, user_id=2 has 1 post
         $this->assertCount(1, $results);
@@ -657,13 +657,13 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->setParameter('min_count', 2)
-              ->select('user_id')
-              ->selectRaw('COUNT(*)', [], 'cnt')
-              ->from('np_posts')
-              ->group('user_id')
-              ->havingRaw('COUNT(*) >= :min_count')
-              ->fetch('rows');
+            ->setParameter('min_count', 2)
+            ->select('user_id')
+            ->selectRaw('COUNT(*)', [], 'cnt')
+            ->from('np_posts')
+            ->group('user_id')
+            ->havingRaw('COUNT(*) >= :min_count')
+            ->fetch('rows');
 
         // Only user_id=1 has 2 posts
         $this->assertCount(1, $results);
@@ -682,12 +682,12 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('user_id')
-              ->selectRaw('COUNT(*)', [], 'cnt')
-              ->from('np_posts')
-              ->group('user_id')
-              ->havingRaw('COUNT(*) >= ?', [2])
-              ->fetch('rows');
+            ->select('user_id')
+            ->selectRaw('COUNT(*)', [], 'cnt')
+            ->from('np_posts')
+            ->group('user_id')
+            ->havingRaw('COUNT(*) >= ?', [2])
+            ->fetch('rows');
 
         // Only user_id=1 has 2 posts
         $this->assertCount(1, $results);
@@ -706,13 +706,13 @@ class NamedParametersTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $results = $query
-              ->select('user_id')
-              ->selectRaw('COUNT(*)', [], 'cnt')
-              ->from('np_posts')
-              ->group('user_id')
-              ->havingRaw('COUNT(*) >= :min', ['min' => 1])
-              ->orHavingRaw('COUNT(*) < :max', ['max' => 10])
-              ->fetch('rows');
+            ->select('user_id')
+            ->selectRaw('COUNT(*)', [], 'cnt')
+            ->from('np_posts')
+            ->group('user_id')
+            ->havingRaw('COUNT(*) >= :min', ['min' => 1])
+            ->orHavingRaw('COUNT(*) < :max', ['max' => 10])
+            ->fetch('rows');
 
         // Both groups (user_id=1 with 2 posts, user_id=2 with 1 post)
         // match COUNT(*) >= 1 OR COUNT(*) < 10
@@ -737,14 +737,14 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query = new Query($driver);
         // Named parameter in selectRaw arithmetic expression (CAST keyword is driver-specific)
         $results = $query
-              ->setParameter('offset', 100)
-              ->setParameter('user_id', 1)
-              ->setParameter('name', 'Test User')
-              ->selectRaw("id + CAST(:offset AS $cast)")
-              ->from('np_users')
-              ->whereRaw('id = :user_id')
-              ->whereRaw('name = :name')
-              ->fetch('rows');
+            ->setParameter('offset', 100)
+            ->setParameter('user_id', 1)
+            ->setParameter('name', 'Test User')
+            ->selectRaw("id + CAST(:offset AS $cast)")
+            ->from('np_users')
+            ->whereRaw('id = :user_id')
+            ->whereRaw('name = :name')
+            ->fetch('rows');
 
         // Should match exactly 1 user (id=1, name='Test User')
         $this->assertCount(1, $results);

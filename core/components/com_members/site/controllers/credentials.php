@@ -161,13 +161,13 @@ class Credentials extends SiteController
         // Build message
         $message = new \Hubzero\Mail\Message();
         $message
-                ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_REMIND_SUBJECT', Config::get('sitename')))
-                ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
-                ->addTo($email, $users->first()->name)
-                ->addHeader('X-Component', $this->option)
-                ->addHeader('X-Component-Object', 'username_reminder')
-                ->addPart($plain, 'text/plain')
-                ->addPart($html, 'text/html');
+            ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_REMIND_SUBJECT', Config::get('sitename')))
+            ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
+            ->addTo($email, $users->first()->name)
+            ->addHeader('X-Component', $this->option)
+            ->addHeader('X-Component-Object', 'username_reminder')
+            ->addPart($plain, 'text/plain')
+            ->addPart($html, 'text/html');
 
         // Send mail
         if (!$message->send()) {
@@ -421,8 +421,8 @@ class Credentials extends SiteController
     public function setpasswordTask()
     {
         $rules = \Hubzero\Password\Rule::all()
-                    ->whereEquals('enabled', 1)
-                    ->rows();
+            ->whereEquals('enabled', 1)
+            ->rows();
 
         $password_rules = [];
 
@@ -487,8 +487,8 @@ class Credentials extends SiteController
         }
 
         $password_rules = \Hubzero\Password\Rule::all()
-                    ->whereEquals('enabled', 1)
-                    ->rows();
+            ->whereEquals('enabled', 1)
+            ->rows();
 
         $password1 = trim(Request::getString('password1', null));
         $password2 = trim(Request::getString('password2', null));
@@ -639,13 +639,13 @@ class Credentials extends SiteController
 
         $message = new \Hubzero\Mail\Message();
         $message
-                ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
-                ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
-                ->addTo($user->get('email'), $user->get('name'))
-                ->addHeader('X-Component', $this->option)
-                ->addHeader('X-Component-Object', $object)
-                ->addPart($plain, 'text/plain')
-                ->addPart($html, 'text/html');
+            ->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
+            ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
+            ->addTo($user->get('email'), $user->get('name'))
+            ->addHeader('X-Component', $this->option)
+            ->addHeader('X-Component-Object', $object)
+            ->addPart($plain, 'text/plain')
+            ->addPart($html, 'text/html');
 
         return $message->send();
     }

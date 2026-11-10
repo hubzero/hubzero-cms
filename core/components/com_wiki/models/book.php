@@ -267,8 +267,8 @@ class Book extends Obj
             !isset($this->page)
             || (
                 $id !== null
-             && (int) $this->page->get('id') != $id
-             && (string) $this->page->get('pagename') != Page::normalize($id)
+                && (int) $this->page->get('id') != $id
+                && (string) $this->page->get('pagename') != Page::normalize($id)
             )
         ) {
             $this->page = Page::oneByPath($id, $this->get('scope'), $this->get('scope_id'));

@@ -4301,8 +4301,8 @@ class Query
     {
         // Add insert statement
         $this
-             ->insert($table, $ignore)
-             ->values($data);
+            ->insert($table, $ignore)
+            ->values($data);
 
         $result = $this->execute();
 
@@ -4581,8 +4581,8 @@ class Query
     {
         // Add insert statement
         $this
-             ->update($table)
-             ->set($data);
+            ->update($table)
+            ->set($data);
 
         // Where primary key is...
         $this->whereEquals($pkField, $pkValue);
@@ -4667,8 +4667,8 @@ class Query
 
         // Add delete statement
         $this
-             ->delete($table)
-             ->whereEquals($pkField, $pkValue);
+            ->delete($table)
+            ->whereEquals($pkField, $pkValue);
 
         // Return result of the query
         return $this->execute();
@@ -4794,9 +4794,9 @@ class Query
     public function loadAssoc()
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadAssoc();
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadAssoc();
     }
 
     /**
@@ -4810,9 +4810,9 @@ class Query
     public function loadAssocList($key = null, $column = null)
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadAssocList($key, $column);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadAssocList($key, $column);
     }
 
     /**
@@ -4824,9 +4824,9 @@ class Query
     public function loadColumn($offset = 0)
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadColumn($offset);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadColumn($offset);
     }
 
     /**
@@ -4838,9 +4838,9 @@ class Query
     public function loadNextObject($class = 'stdClass')
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadNextObject($class);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadNextObject($class);
     }
 
     /**
@@ -4851,9 +4851,9 @@ class Query
     public function loadNextRow()
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadNextRow();
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadNextRow();
     }
 
     /**
@@ -4865,9 +4865,9 @@ class Query
     public function loadObject($class = 'stdClass')
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadObject($class);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadObject($class);
     }
 
     /**
@@ -4880,9 +4880,9 @@ class Query
     public function loadObjectList($key = '', $class = 'stdClass')
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadObjectList($key, $class);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadObjectList($key, $class);
     }
 
     /**
@@ -4893,9 +4893,9 @@ class Query
     public function loadResult()
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadResult();
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadResult();
     }
 
     /**
@@ -5048,9 +5048,9 @@ class Query
     public function loadRow()
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadRow();
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadRow();
     }
 
     /**
@@ -5062,9 +5062,9 @@ class Query
     public function loadRowList($key = null)
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->loadRowList($key);
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->loadRowList($key);
     }
 
     /**
@@ -5102,9 +5102,9 @@ class Query
     public function toString()
     {
         return $this->connection
-                    ->prepare($this->buildQuery($this->type))
-                    ->bind($this->syntax->getBindings())
-                    ->toString();
+            ->prepare($this->buildQuery($this->type))
+            ->bind($this->syntax->getBindings())
+            ->toString();
     }
 
     /**

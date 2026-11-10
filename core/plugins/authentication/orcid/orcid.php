@@ -125,19 +125,19 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         if ($this->params->get('use_member_api', false)) {
             $oauth
-                  ->useMembersApi()
-                  ->setScope('/authenticate%20/read-limited');
+                ->useMembersApi()
+                ->setScope('/authenticate%20/read-limited');
         } else {
             $oauth
-                  ->usePublicApi()
-                  ->setScope('/authenticate');
+                ->usePublicApi()
+                ->setScope('/authenticate');
         }
 
         $oauth
-              ->setClientId($this->params->get('client_id'))
-              ->setState($view->return)
-              ->showLogin()
-              ->setRedirectUri(self::getRedirectUri('orcid'));
+            ->setClientId($this->params->get('client_id'))
+            ->setState($view->return)
+            ->showLogin()
+            ->setRedirectUri(self::getRedirectUri('orcid'));
 
         // If we're linking an account, set any info that we might already know
         if (!User::isGuest()) {
@@ -169,18 +169,18 @@ class Orcid extends \Hubzero\Plugin\OauthClient
         }
         if ($this->params->get('use_member_api', false)) {
             $oauth
-                  ->useMembersApi()
-                  ->setScope('/authenticate%20/read-limited');
+                ->useMembersApi()
+                ->setScope('/authenticate%20/read-limited');
         } else {
             $oauth
-                  ->usePublicApi()
-                  ->setScope('/authenticate');
+                ->usePublicApi()
+                ->setScope('/authenticate');
         }
 
         $oauth
-              ->setClientId($this->params->get('client_id'))
-              ->setClientSecret($this->params->get('client_secret'))
-              ->setRedirectUri(self::getRedirectUri('orcid'));
+            ->setClientId($this->params->get('client_id'))
+            ->setClientSecret($this->params->get('client_secret'))
+            ->setRedirectUri(self::getRedirectUri('orcid'));
 
         // Authenticate the user
         $oauth->authenticate(Request::getString('code'));
@@ -321,18 +321,18 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         if ($this->params->get('use_member_api', false)) {
             $oauth
-                  ->useMembersApi()
-                  ->setScope('/authenticate%20/read-limited');
+                ->useMembersApi()
+                ->setScope('/authenticate%20/read-limited');
         } else {
             $oauth
-                  ->usePublicApi()
-                  ->setScope('/authenticate');
+                ->usePublicApi()
+                ->setScope('/authenticate');
         }
 
         $oauth
-              ->setClientId($this->params->get('client_id'))
-              ->setClientSecret($this->params->get('client_secret'))
-              ->setRedirectUri(self::getRedirectUri('orcid'));
+            ->setClientId($this->params->get('client_id'))
+            ->setClientSecret($this->params->get('client_secret'))
+            ->setRedirectUri(self::getRedirectUri('orcid'));
 
         // If we have a code coming back, the user has authorized our app, and we can authenticate
         if (!Request::getString('code')) {

@@ -53,12 +53,12 @@ class Filelist extends Select
         if (!$hideNone) {
             $options[] = Dropdown::option('-1', App::get('filesystem')
                 ->alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                ->fieldname)));
+                    ->fieldname)));
         }
         if (!$hideDefault) {
             $options[] = Dropdown::option('', App::get('filesystem')
                 ->alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                ->fieldname)));
+                    ->fieldname)));
         }
 
         // Get a list of files in the search path with the given filter.

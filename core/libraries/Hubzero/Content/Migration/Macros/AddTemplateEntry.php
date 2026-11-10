@@ -55,9 +55,9 @@ class AddTemplateEntry extends Macro
                 ->from('#__extensions')
                 ->whereEquals('type', 'template')
                 ->whereEquals('client_id', $client)
-                    ->whereEquals('element', $element, 1)
-                    ->orWhereLike('element', $name, 1)
-                    ->resetDepth()
+                ->whereEquals('element', $element, 1)
+                ->orWhereLike('element', $name, 1)
+                ->resetDepth()
                 ->toString();
             $this->db->setQuery($query);
 

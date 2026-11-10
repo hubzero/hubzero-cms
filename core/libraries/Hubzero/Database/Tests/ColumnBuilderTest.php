@@ -119,10 +119,10 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
         $query2 = new Query($driver);
         $rows = $query2
-                       ->from('coltest_integers')
-                       ->select('*')
-                       ->order('id', 'asc')
-                       ->fetch('rows');
+            ->from('coltest_integers')
+            ->select('*')
+            ->order('id', 'asc')
+            ->fetch('rows');
 
         $this->assertCount(3, $rows);
         $this->assertGreaterThan(0, (int) $rows[0]->id);
@@ -526,20 +526,20 @@ class ColumnBuilderTest extends AbstractDriverTestCase
         // Verify Row 1
         $q1 = new Query($driver);
         $row1 = $q1
-                    ->from('coltest_combined')
-                    ->select('*')
-                    ->whereEquals('label', 'Row1')
-                    ->fetch('row');
+            ->from('coltest_combined')
+            ->select('*')
+            ->whereEquals('label', 'Row1')
+            ->fetch('row');
         $this->assertEquals(50, (int) $row1->score);
         $this->assertNull($row1->status);
 
         // Verify Row 2 (defaults applied)
         $q2 = new Query($driver);
         $row2 = $q2
-                    ->from('coltest_combined')
-                    ->select('*')
-                    ->whereEquals('label', 'Row2')
-                    ->fetch('row');
+            ->from('coltest_combined')
+            ->select('*')
+            ->whereEquals('label', 'Row2')
+            ->fetch('row');
         $this->assertEquals(0, (int) $row2->score);
         $this->assertEquals('pending', $row2->status);
 

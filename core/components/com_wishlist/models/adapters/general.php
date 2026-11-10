@@ -41,9 +41,9 @@ class General extends Base
     public function __construct($referenceid = 0)
     {
         $this
-             ->set('referenceid', $referenceid)
-             ->set('category', 'general')
-             ->set('option', $this->segments['option']);
+            ->set('referenceid', $referenceid)
+            ->set('category', 'general')
+            ->set('option', $this->segments['option']);
     }
 
     /**

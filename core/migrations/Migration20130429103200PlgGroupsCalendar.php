@@ -54,8 +54,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
                 ->update('#__events')
                 ->set(['scope' => 'event'])
                 ->beginOrGroup()
-                    ->whereIsNull('scope')
-                    ->orWhere('scope', '=', '')
+                ->whereIsNull('scope')
+                ->orWhere('scope', '=', '')
                 ->endAndGroup()
                 ->execute();
         }

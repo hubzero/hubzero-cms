@@ -69,9 +69,9 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             $client->useSandboxEnvironment();
         }
         $client
-               ->setClientId($this->params->get('app_id'))
-               ->setClientSecret($this->params->get('app_secret'))
-               ->setRedirectUri(self::getRedirectUri('scistarter'));
+            ->setClientId($this->params->get('app_id'))
+            ->setClientSecret($this->params->get('app_secret'))
+            ->setRedirectUri(self::getRedirectUri('scistarter'));
 
         // A code this browser did not ask for is not redeemed (see
         // OauthClient::beginAuthorization()).
@@ -115,8 +115,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             $client->useSandboxEnvironment();
         }
         $client
-               ->setClientId($this->params->get('app_id'))
-               ->setRedirectUri(self::getRedirectUri('scistarter'));
+            ->setClientId($this->params->get('app_id'))
+            ->setRedirectUri(self::getRedirectUri('scistarter'));
 
         // Redirect to the login URL
         self::beginAuthorization('scistarter');
@@ -150,9 +150,9 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             $client->useSandboxEnvironment();
         }
         $client
-               ->setClientId($this->params->get('app_id'))
-               ->setClientSecret($this->params->get('app_secret'))
-               ->setRedirectUri(self::getRedirectUri('scistarter'));
+            ->setClientId($this->params->get('app_id'))
+            ->setClientSecret($this->params->get('app_secret'))
+            ->setRedirectUri(self::getRedirectUri('scistarter'));
 
         if (App::get('session')->get('scistarter.token', null)) {
             $client->setAccessToken(App::get('session')->get('scistarter.token'));
@@ -256,9 +256,9 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             $client->useSandboxEnvironment();
         }
         $client
-               ->setClientId($this->params->get('app_id'))
-               ->setClientSecret($this->params->get('app_secret'))
-               ->setRedirectUri(self::getRedirectUri('scistarter'));
+            ->setClientId($this->params->get('app_id'))
+            ->setClientSecret($this->params->get('app_secret'))
+            ->setRedirectUri(self::getRedirectUri('scistarter'));
 
         // A code this browser did not ask for is not redeemed: redeemed in a
         // victim's session it would link someone else's SciStarter account to theirs.

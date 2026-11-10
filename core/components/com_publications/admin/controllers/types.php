@@ -775,8 +775,8 @@ class Types extends AdminController
 
         // Output the HTML
         $this->view
-             ->setLayout('curation')
-             ->display();
+            ->setLayout('curation')
+            ->display();
     }
 
     /**

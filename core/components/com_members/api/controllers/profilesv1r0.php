@@ -471,8 +471,8 @@ class Profilesv1r0 extends ApiController
 
         // Get the password rules
         $password_rules = \Hubzero\Password\Rule::all()
-                    ->whereEquals('enabled', 1)
-                    ->rows();
+            ->whereEquals('enabled', 1)
+            ->rows();
 
         $pw_rules = [];
 

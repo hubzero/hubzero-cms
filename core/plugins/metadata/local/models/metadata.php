@@ -80,10 +80,10 @@ class Metadata extends Relational
         $instance = self::blank();
 
         return $instance
-                        ->getQuery()
-                        ->update($instance->getTableName())
-                        ->set(['path' => $newPath])
-                        ->whereEquals('path', $oldPath)
-                        ->execute();
+            ->getQuery()
+            ->update($instance->getTableName())
+            ->set(['path' => $newPath])
+            ->whereEquals('path', $oldPath)
+            ->execute();
     }
 }

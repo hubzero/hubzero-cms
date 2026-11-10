@@ -95,13 +95,13 @@ class Publications extends GenericItem
         }
 
         $this
-             ->set('type', $this->type)
-             ->set('object_id', $uid)
-             ->set('created', $resource->created)
-             ->set('created_by', $resource->created_by)
-             ->set('title', $resource->title)
-             ->set('description', $resource->abstract)
-             ->set('url', Route::url('index.php?option=com_publications&id=' . $id . '&v=' . $v));
+            ->set('type', $this->type)
+            ->set('object_id', $uid)
+            ->set('created', $resource->created)
+            ->set('created_by', $resource->created_by)
+            ->set('title', $resource->title)
+            ->set('description', $resource->abstract)
+            ->set('url', Route::url('index.php?option=com_publications&id=' . $id . '&v=' . $v));
 
         if (!$this->store()) {
             return false;

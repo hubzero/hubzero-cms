@@ -54,8 +54,8 @@ class Migration20140305142845Core extends Base
 
         if (!$need_to_run) {
             $this->setError('The timezone conversion appears to have already run. '
-               . 'You should confirm this and mark this migration as run if necessary '
-               . '(muse migration -fm --file=Migration20140305142845Core.php)', 'fatal');
+                . 'You should confirm this and mark this migration as run if necessary '
+                . '(muse migration -fm --file=Migration20140305142845Core.php)', 'fatal');
             return false;
         }
 

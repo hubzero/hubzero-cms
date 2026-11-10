@@ -583,7 +583,7 @@ class Project
         }
 
         $query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES "
-             . $values
+            . $values
             . ";";
 
         $db->setQuery($query);
@@ -628,7 +628,7 @@ class Project
         }
 
         $query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES "
-             . $values
+            . $values
             . ";";
 
         $db->setQuery($query);

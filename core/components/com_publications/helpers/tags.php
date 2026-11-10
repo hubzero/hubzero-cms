@@ -510,8 +510,8 @@ class Tags extends \Hubzero\Base\Obj
             . "OR V.published_down >= '" . $now . "') AND ";
 
         $query .= (!User::isGuest())
-               ? "(C.access=0 OR C.access=1) "
-               : "(C.access=0) ";
+            ? "(C.access=0 OR C.access=1) "
+            : "(C.access=0) ";
 
         if ($tag || $tag2) {
             if ($tag && !$tag2) {

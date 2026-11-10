@@ -66,7 +66,7 @@ class Migration20190221000000ComCitations extends Base
                     && $this->db->tableHasField($table, $field)
                 ) {
                     $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  "
-                           . "DEFAULT '0000-00-00 00:00:00'";
+                        . "DEFAULT '0000-00-00 00:00:00'";
 
                     $this->db->setQuery($query);
                     $this->db->query();

@@ -258,10 +258,10 @@ class Windows extends AdminController
         // Get a list of all apps for the filters bar
         $apps
             = Entry::all()
-            ->whereEquals('type', $this->config->get('windows_type'))
+                ->whereEquals('type', $this->config->get('windows_type'))
             //->ordered('filter_order', 'filter_order_Dir')
             //->paginated('limitstart', 'limit')
-            ->rows();
+                ->rows();
 
         // Get a list of all active sessions for specified app
         $appname = Request::getString('appname', '');

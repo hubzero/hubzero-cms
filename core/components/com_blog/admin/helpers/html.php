@@ -41,8 +41,8 @@ class Html
             }
 
             $selected = ($adapter == $val)
-                      ? ' selected="selected"'
-                      : '';
+                ? ' selected="selected"'
+                : '';
 
             $out .= '<option value="' . $adapter . '"' . $selected . '>' . $adapter . '</option>';
         }

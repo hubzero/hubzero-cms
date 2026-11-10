@@ -1394,8 +1394,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
             ->from('conv_users')
             ->whereNot(function ($q) {
                 $q
-                  ->whereEquals('login_count', 0)
-                  ->orWhereEquals('login_count', 3);
+                    ->whereEquals('login_count', 0)
+                    ->orWhereEquals('login_count', 3);
             })
             ->fetch('rows');
 

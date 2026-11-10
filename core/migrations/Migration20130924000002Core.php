@@ -152,11 +152,11 @@ class Migration20130924000002Core extends Base
                     // Make sure it isn't already in there
                     if (
                         $this->db
-                        ->getQuery(true)
-                        ->select('id')
-                        ->from('#__assets')
-                        ->where('name', '=', $com->option)
-                        ->exists()
+                            ->getQuery(true)
+                            ->select('id')
+                            ->from('#__assets')
+                            ->where('name', '=', $com->option)
+                            ->exists()
                     ) {
                         continue;
                     }
@@ -187,11 +187,11 @@ class Migration20130924000002Core extends Base
                     $catName = $cat->extension . '.category.' . $cat->id;
                     if (
                         $this->db
-                        ->getQuery(true)
-                        ->select('id')
-                        ->from('#__assets')
-                        ->where('name', '=', $catName)
-                        ->exists()
+                            ->getQuery(true)
+                            ->select('id')
+                            ->from('#__assets')
+                            ->where('name', '=', $catName)
+                            ->exists()
                     ) {
                         continue;
                     }
@@ -297,12 +297,12 @@ class Migration20130924000002Core extends Base
                         // We didn't find a parent id, so just use the 'uncategorised' category
                         if (
                             !$result = $this->db
-                            ->getQuery(true)
-                            ->select('asset_id')
-                            ->from('#__categories')
-                            ->where('extension', '=', 'com_content')
-                            ->where('alias', '=', 'uncategorised')
-                            ->value('asset_id')
+                                ->getQuery(true)
+                                ->select('asset_id')
+                                ->from('#__categories')
+                                ->where('extension', '=', 'com_content')
+                                ->where('alias', '=', 'uncategorised')
+                                ->value('asset_id')
                         ) {
                             continue;
                         }
@@ -313,8 +313,8 @@ class Migration20130924000002Core extends Base
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
                         ->values([$result, '', '', $level, 'com_content.article.' . $art
-                        ->id, $art
-                        ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
+                            ->id, $art
+                            ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
                         ->execute();
 
                     // Now, update the content table with the asset id

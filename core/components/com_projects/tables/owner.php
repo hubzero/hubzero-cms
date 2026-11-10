@@ -934,7 +934,7 @@ class Owner extends Table
 
         $query = "UPDATE $this->tableName SET groupid = '0'
 				  WHERE projectid = " . $this->db->quote($projectid)
-                 . " AND groupid = " . $this->db->quote($groupid);
+            . " AND groupid = " . $this->db->quote($groupid);
         $this->db->setQuery($query);
         if ($this->db->query()) {
             return true;

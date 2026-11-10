@@ -884,11 +884,11 @@ class Newsletters extends AdminController
 
                 // build message object and send
                 $message
-                        ->setSubject('[SENDING TEST] - ' . $mailSubject)
-                        ->setTo($contact)
-                        ->addPart($mailHtmlBody, 'text/html')
-                        ->addPart($mailPlainBody, 'text/plain')
-                        ->send();
+                    ->setSubject('[SENDING TEST] - ' . $mailSubject)
+                    ->setTo($contact)
+                    ->addPart($mailHtmlBody, 'text/html')
+                    ->addPart($mailPlainBody, 'text/plain')
+                    ->send();
             }
 
             return true;
