@@ -64,12 +64,9 @@ jQuery(function($) {
 			// to wait on the form submission
 			setTimeout(function() {
 				var eid = sel.val();
-				if (eid && eid[0] && sa.attr('data-login-url')) {
-					// administrator login: the plugin supplies the com_login URL
-					location = sa.attr('data-login-url') + encodeURIComponent(eid[0]);
-				}
-				else if (eid && eid[0]) {
-					location = location.protocol + '//' + location.host + (location.port ? ':' + location.port : '') + '/login?authenticator=shibboleth&idp=' + encodeURIComponent(eid);
+				if (eid && eid[0]) {
+					// in the administrator the plugin supplies the com_login URL
+					location = (sa.attr('data-login-url') || '/login?authenticator=shibboleth&idp=') + encodeURIComponent(eid[0]);
 				}
 			}, 0);
 		});

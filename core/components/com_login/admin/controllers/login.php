@@ -119,7 +119,11 @@ class Login extends AdminController
 
 				if (class_exists($className))
 				{
-					if (method_exists($className, 'login'))
+					// Same check as displayTask(): a plugin not enabled for the administrator
+					// gets no say here (the Guard refuses its logins anyway)
+					$params = json_decode($plugin->params);
+
+					if (method_exists($className, 'login') && !empty($params->admin_login))
 					{
 						$myplugin = new $className($this, (array)$plugin);
 
@@ -130,8 +134,6 @@ class Login extends AdminController
 							$return = $options['return'];
 						}
 					}
-
-					$options['authenticator'] = $authenticator;
 
 					break;
 				}

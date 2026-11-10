@@ -255,8 +255,52 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 		// if we couldn't figure out where they want to go to log in, we can't really help, so we redirect them with ?reset to get the full log-in provider list
 		list($service, $com_user, $task) = self::getLoginParams();
-		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
-		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+		$return = self::returnQuery(isset($_COOKIE['shib-return']) ? $_COOKIE['shib-return'] : $return);
+		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&view=login'.$return);
+		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&view=login'.$return);
+	}
+
+	/**
+	 * The base64 return value in $value, or '' if it is not one
+	 *
+	 * @param   mixed   $value  Base64, or "&return=<base64>" as the login views pass it
+	 * @return  string
+	 */
+	private static function returnValue($value)
+	{
+		if (!is_string($value))
+		{
+			return '';
+		}
+		if (strpos($value, '&return=') === 0)
+		{
+			$value = substr($value, strlen('&return='));
+		}
+		return preg_match('#^[A-Za-z0-9+/=]+$#', $value) ? $value : '';
+	}
+
+	/**
+	 * "&return=<base64>" for a query string, or '' if $value is not a return value.
+	 * Encoded, because a raw "+" in base64 would be read back as a space.
+	 *
+	 * @param   mixed   $value  Base64, or "&return=<base64>"
+	 * @return  string
+	 */
+	private static function returnQuery($value)
+	{
+		$value = self::returnValue($value);
+		return $value === '' ? '' : '&return=' . rawurlencode($value);
+	}
+
+	/**
+	 * Cookie path of the administrator, e.g. "/administrator"
+	 *
+	 * @return  string
+	 */
+	private static function adminCookiePath()
+	{
+		$path = rtrim((string) Request::base(true), '/');
+		return $path === '' ? '/' : $path;
 	}
 
 	private static function htmlify()
@@ -292,9 +336,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		$admin = App::isAdmin();
+
 		// Attach style and scripts
 		$assets = array('bootstrap-select.min.js', 'shibboleth.js', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css');
-		if (App::isAdmin())
+		if ($admin)
 		{
 			// The admin template lacks the Bootstrap dropdown CSS that bootstrap-select relies on
 			$assets[] = 'adminlogin.css';
@@ -310,11 +356,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// In the administrator, a selection must log in through com_login so that the
 		// session it creates is an administrator one. shibboleth.js appends the entityID
 		// to data-login-url; without it, it uses the frontend /login route.
-		$admin = App::isAdmin();
 		$loginAttr = '';
+		$loginUrl  = '';
 		if ($admin)
 		{
-			$loginUrl  = Route::url('index.php?option=com_login&task=display&authenticator=shibboleth', false) . '&idp=';
+			// mod_adminlogin passes $return as "&return=<base64 URL>". Carry it so that
+			// display() can send the admin back to that page after the login.
+			$loginUrl  = Route::url('index.php?option=com_login&task=display&authenticator=shibboleth', false) . self::returnQuery($return) . '&idp=';
 			$loginAttr = ' data-login-url="' . htmlspecialchars($loginUrl, ENT_QUOTES) . '"';
 		}
 
@@ -322,9 +370,9 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$html = ['<div class="shibboleth account incommon-color" data-placeholder="'.$a($title).'"'.$loginAttr.'>'];
 		$html[] = '<h3>Select Institutional Credentials</h3>';
 		$html[] = '<ol>';
-		$html = array_merge($html, array_map(function($idp) use($h, $a, $admin) {
+		$html = array_merge($html, array_map(function($idp) use($h, $a, $admin, $loginUrl) {
 			$href = $admin
-				? Route::url('index.php?option=com_login&task=display&authenticator=shibboleth&idp='.urlencode($idp['entity_id']))
+				? htmlspecialchars($loginUrl . rawurlencode($idp['entity_id']), ENT_QUOTES)
 				: Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id']));
 			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.$href.'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
@@ -385,7 +433,20 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = Request::getString('return', ''))
+		$return = Request::getString('return', '');
+
+		// In the administrator, display() sent the browser to mod_shib without a query
+		// string and kept the page to return to in a cookie. Use it once.
+		if (App::isAdmin() && isset($_COOKIE['shib-return']))
+		{
+			if (!$return)
+			{
+				$return = (string) $_COOKIE['shib-return'];
+			}
+			setcookie('shib-return', '', time() - 3600, self::adminCookiePath());
+		}
+
+		if ($return)
 		{
 			$return = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($return))
@@ -394,6 +455,15 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			}
 		}
 		$options['return'] = $return;
+
+		// Already logged in to the administrator: there is nothing to link here (account
+		// linking is a frontend com_users task), so go back to the administrator
+		if (!User::get('guest') && App::isAdmin())
+		{
+			self::log('already logged in to the administrator, redirect');
+			list($service) = self::getLoginParams();
+			App::redirect($return ? $return : $service . '/index.php');
+		}
 
 		// If someone is logged in already, then we're linking an account
 		if (!User::get('guest'))
@@ -493,7 +563,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	public function display($view, $tpl)
 	{
 		list($service, $com_user, $task) = self::getLoginParams();
-		$return = $view->return ? '&return='.$view->return : '';
+		$return = self::returnQuery($view->return);
 
 		// Discovery service for mod_shib to feed back the appropriate id provider
 		// entityID. See below for more info
@@ -504,9 +574,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				self::log('wayf passthru', $_COOKIE['shib-entity-id']);
 				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
 			}
-			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			if (isset($_COOKIE['shib-return']))
+			{
+				$return = self::returnQuery($_COOKIE['shib-return']);
+			}
+			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&view=login'.$return);
 			// Invalid request, back to the login page with you
-			App::redirect($service.'/index.php?option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			App::redirect($service.'/index.php?option='.$com_user.'&view=login'.$return);
 		}
 
 		// Invalid idp in request, send back to login landing
@@ -525,6 +599,20 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		if (isset($_GET['idp']))
 		{
 			setcookie('shib-entity-id', $_GET['idp'], time()+60*60*24, '/');
+		}
+		// The redirect below carries no query string, so the administrator's login() reads
+		// the return page from this cookie. Scoped to the administrator's path. Without a
+		// return page, drop the cookie of an earlier, unfinished attempt.
+		if (App::isAdmin())
+		{
+			if (($returnValue = self::returnValue($view->return)) !== '')
+			{
+				setcookie('shib-return', $returnValue, 0, self::adminCookiePath(), '', false, true);
+			}
+			elseif (isset($_COOKIE['shib-return']))
+			{
+				setcookie('shib-return', '', time() - 3600, self::adminCookiePath());
+			}
 		}
 		// Send the request to mod_shib.
 		//
@@ -601,7 +689,10 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		if (isset($options['shibboleth']['eppn']))
 		{
 			self::log('auth with', $options['shibboleth']);
-			$method = (\Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			// Only create a link when the caller allows registration: the administrator's
+			// com_login passes autoregister=false, and the frontend does not set it
+			$autoregister = !isset($options['autoregister']) || $options['autoregister'];
+			$method = ($autoregister && \Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'shibboleth', $options['shibboleth']['idp'], $options['shibboleth']['eppn']);
 
 			if ($hzal === false)
