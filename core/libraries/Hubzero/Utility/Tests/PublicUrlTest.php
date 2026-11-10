@@ -25,7 +25,7 @@ class PublicUrlTest extends Basic
      */
     public function testInternalAddressesAreRefused()
     {
-        foreach ([
+        $urls = [
             'http://127.0.0.1/',
             'http://[::1]/',
             'http://[::ffff:127.0.0.1]/',
@@ -35,7 +35,8 @@ class PublicUrlTest extends Basic
             'http://10.0.0.1/',
             'http://100.100.100.200/',
             'http://[fd00::1]/',
-        ] as $url) {
+        ];
+        foreach ($urls as $url) {
             $this->assertFalse(PublicUrl::check($url), $url);
         }
     }
@@ -47,12 +48,13 @@ class PublicUrlTest extends Basic
      */
     public function testConfusableUrlsAreRefused()
     {
-        foreach ([
+        $urls = [
             'http://127.0.0.1:80\\@1.1.1.1/',
             'http://1.1.1.1@127.0.0.1/',
             'http://user:pass@1.1.1.1/',
             'http://1.1.1.1\\x/',
-        ] as $url) {
+        ];
+        foreach ($urls as $url) {
             $this->assertFalse(PublicUrl::check($url), $url);
         }
     }

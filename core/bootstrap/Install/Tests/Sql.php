@@ -244,8 +244,10 @@ class Sql
                 $same = true;
 
                 foreach ($key as $column) {
-                    if (!array_key_exists($column, $row) || !array_key_exists($column, $existing)
-                        || (string) $row[$column] !== (string) $existing[$column]) {
+                    if (
+                        !array_key_exists($column, $row) || !array_key_exists($column, $existing)
+                        || (string) $row[$column] !== (string) $existing[$column]
+                    ) {
                         $same = false;
                         break;
                     }
