@@ -17,6 +17,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+
 defined('_HZEXEC_') or die();
 
 $this->js('jquery.editable.min.js', 'system');

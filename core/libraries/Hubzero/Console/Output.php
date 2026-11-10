@@ -323,7 +323,7 @@ class Output
      * Shortcut function to print an error, render the error, and halt execution
      *
      * @param   string  $message  Line of text used in error
-     * @return  void
+     * @return  never
      **/
     public function error($message)
     {

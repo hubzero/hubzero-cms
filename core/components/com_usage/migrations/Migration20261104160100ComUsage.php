@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Usage\Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Hubzero\Database\Exception\QueryFailedException;
-
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 /**
  * Migration script to make the usage tables' IP columns wide enough for IPv6
@@ -119,16 +120,14 @@ class Migration20261104160100ComUsage extends Base
             return null;
         }
 
-        include_once dirname(__DIR__) . '/helpers/helper.php';
-
         $statsDb = \Components\Usage\Helpers\Helper::getUDBO();
 
-        $config     = \Component::params('com_usage');
+        $config     = Component::params('com_usage');
         $configured = $config->get('statsDBDatabase') != ''
             || $config->get('statsDBUsername') != ''
             || $config->get('statsDBPassword') != '';
 
-        if (!$statsDb || ($configured && $statsDb === \App::get('db'))) {
+        if (!$statsDb || ($configured && $statsDb === App::get('db'))) {
             $this->setError('Unable to connect to the metrics database, will try again on the next run.', 'skipped');
             return null;
         }

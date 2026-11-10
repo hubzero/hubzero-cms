@@ -14,8 +14,6 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-require_once Component::path('com_tools') . '/helpers/iprange.php';
-
 Html::behavior('modal');
 
 $this->js('locations.js');

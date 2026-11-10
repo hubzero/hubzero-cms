@@ -158,8 +158,6 @@ class Sessions extends SiteController
 
         // Resolve the tool version to learn its display proxy type (VNC vs
         // weber) and title. This is a plain CMS DB read -- no middleware call.
-        require_once \Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
-
         $tv = new \Components\Tools\Tables\Version($this->database);
 
         switch ($version) {
@@ -403,7 +401,8 @@ class Sessions extends SiteController
         // single switch point, so it catches the launch button, direct invoke
         // URLs and old bookmarks alike. &launch=legacy forces the classic path.
         if ($this->useAsyncLaunch()) {
-            return $this->launchTask();
+            $this->launchTask();
+            return;
         }
 
         $params = Request::getString('params', '');

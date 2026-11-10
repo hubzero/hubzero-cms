@@ -989,7 +989,7 @@ class User extends \Hubzero\Database\Relational
             }
 
             // No password row and no profile to create one from yet
-            $db = \App::get('db');
+            $db = App::get('db');
             $db->setQuery("INSERT IGNORE INTO `#__users_password` (user_id, passhash) VALUES (" . $db->quote($id) . ", '')");
             $db->query();
 

@@ -10,8 +10,8 @@ namespace Plugins\User\Us;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
-use Request;
 
 /**
  * Plugin for automatically adding users to the location_us group based on IP country lookup
@@ -33,7 +33,7 @@ class Us extends Plugin
     public function onUserLogin($user, $options = array())
     {
         if (!($uid = $this->userId($user))) {
-            return;
+            return true;
         }
         $username = isset($user['username']) ? $user['username'] : $uid;
 
@@ -75,7 +75,6 @@ class Us extends Plugin
     {
         \Hubzero\User\Group::setMember('location_us', (int) $user['id'], false);
     }
-
 
     /**
      * The ID of the user signing in

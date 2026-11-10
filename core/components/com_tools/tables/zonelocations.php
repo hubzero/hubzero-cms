@@ -12,8 +12,6 @@ use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Table;
 use Hubzero\Facades\Lang;
 
-require_once dirname(__DIR__) . '/helpers/iprange.php';
-
 /**
  * Middleware zone locations table class
  */

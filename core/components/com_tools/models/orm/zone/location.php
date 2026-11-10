@@ -12,8 +12,6 @@ use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Relational;
 use Hubzero\Facades\Lang;
 
-require_once dirname(dirname(dirname(__DIR__))) . '/helpers/iprange.php';
-
 /**
  * Tool zone location model
  *

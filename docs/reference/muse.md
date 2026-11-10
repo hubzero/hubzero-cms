@@ -24,7 +24,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse help`](#muse-help) | 0 | Help class for rendering utility-wide help documentation |
 | [`muse htmx`](#muse-htmx) | 2 | HTMX developer tooling command. |
 | [`muse inertia`](#muse-inertia) | 2 | Inertia developer tooling command. |
-| [`muse install`](#muse-install) | 11 | Install  - fresh Hubzero installation |
+| [`muse install`](#muse-install) | 12 | Install  - fresh Hubzero installation |
 | [`muse log:post`](#muse-log-post) | 0 | Post log class |
 | [`muse log:profile`](#muse-log-profile) | 0 | Profile log class |
 | [`muse log:sql`](#muse-log-sql) | 0 | Sql log class |

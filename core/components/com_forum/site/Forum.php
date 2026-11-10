@@ -34,8 +34,12 @@ class Forum extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         if (!User::authorise('core.access', 'com_forum')) {
+            // Signing in is the answer only for a guest; sent to the login page, a
+            // signed-in user without access is sent straight back, round and round
+            if (!User::isGuest()) {
+                App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            }
             $return = base64_encode(Request::getString('REQUEST_URI', '', 'server'));
-                //$return = base64_encode($_SERVER['REQUEST_URI']);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),

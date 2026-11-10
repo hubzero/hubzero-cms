@@ -1261,8 +1261,6 @@ class Sessionsv1r0 extends ApiController
             throw new Exception(Lang::txt('Middleware is not available.'), 503);
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-
         // Ownership is taken from the session row itself, NOT from viewperm --
         // viewperm does not exist until the first view() call, which is exactly
         // what the interstitial is waiting to make.
@@ -1409,8 +1407,6 @@ class Sessionsv1r0 extends ApiController
         if (!$mwdb) {
             throw new Exception(Lang::txt('Middleware is not available.'), 503);
         }
-
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
 
         // Ownership comes from the session row itself (see stateTask)
         $row = new \Components\Tools\Tables\Session($mwdb);

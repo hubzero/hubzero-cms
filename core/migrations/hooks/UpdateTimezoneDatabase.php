@@ -158,7 +158,7 @@ class UpdateTimezoneDatabase extends Base
         try {
             $this->db->setQuery("SELECT CONVERT_TZ('2000-01-01 00:00:00', 'UTC', 'America/New_York')");
             return $this->db->loadResult() !== null;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

@@ -9,7 +9,7 @@ namespace Plugins\Cron\Members\Tests;
 
 use Hubzero\Database\Driver;
 use Hubzero\Test\Basic;
-use Migration20261029000001PlgCronMembersServiceAccounts;
+use Plugins\Cron\Members\Migrations\Migration20261029000001PlgCronMembersServiceAccounts;
 use PDO;
 
 require_once dirname(__DIR__) . DS . 'migrations' . DS . 'Migration20261029000001PlgCronMembersServiceAccounts.php';

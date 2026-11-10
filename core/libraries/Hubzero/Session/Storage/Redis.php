@@ -14,6 +14,7 @@ use Exception;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
 
 /**
  * Redis Session Storage class
@@ -121,7 +122,7 @@ class Redis extends Store
             'userid'     => User::get('id'),
             'username'   => User::get('username'),
             'usertype'   => null,
-            'ip'         => (string) \Request::ip()
+            'ip'         => (string) Request::ip()
         );
 
         $saved = $this->database->hmset($this->key($id), $data);

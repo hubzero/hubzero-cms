@@ -1205,7 +1205,7 @@ class Group extends Obj
      */
     public static function hasMember($cn, $uid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (!is_object($db) || !is_numeric($uid)) {
             return false;

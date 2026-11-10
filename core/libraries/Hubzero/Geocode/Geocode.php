@@ -10,6 +10,8 @@ namespace Hubzero\Geocode;
 
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Event;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Log;
 
 /**
  * Helper class for getting geolocation information
@@ -483,7 +485,7 @@ class Geocode
             self::$unusable[$table] = true;
 
             try {
-                \App::get('cache')->put($key, 1, 5);
+                App::get('cache')->put($key, 1, 5);
             } catch (\Exception $e) {
             }
 
@@ -492,7 +494,7 @@ class Geocode
 
         if (!isset(self::$unusable[$table])) {
             try {
-                self::$unusable[$table] = (bool) \App::get('cache')->get($key);
+                self::$unusable[$table] = (bool) App::get('cache')->get($key);
             } catch (\Exception $e) {
                 self::$unusable[$table] = false;
             }
@@ -570,7 +572,7 @@ class Geocode
 
             self::unusable($table, true);
 
-            \Log::warning('Geocode: IPv6 lookups skipped for five minutes, querying ' . $table . ' failed: ' . $e->getMessage());
+            Log::warning('Geocode: IPv6 lookups skipped for five minutes, querying ' . $table . ' failed: ' . $e->getMessage());
 
             return null;
         }

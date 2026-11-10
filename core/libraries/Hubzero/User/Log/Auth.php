@@ -10,6 +10,7 @@ namespace Hubzero\User\Log;
 
 use Hubzero\Database\Relational;
 use Hubzero\Facades\Date;
+use Hubzero\Facades\Request;
 
 /**
  * User authentication log database model
@@ -54,6 +55,6 @@ class Auth extends Relational
      **/
     public function automaticIp($data)
     {
-        return (string) \Request::ip();
+        return (string) Request::ip();
     }
 }

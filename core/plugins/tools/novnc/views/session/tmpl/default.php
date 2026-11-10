@@ -156,10 +156,10 @@ if (!$this->app->sess) {
         </div>
     </div>
 
-    <?php
-    $refreshTxt = Lang::txt('PLG_TOOLS_NOVNC_REFRESH');
-    $resizeTxt = Lang::txt('PLG_TOOLS_NOVNC_RESIZE');
-    ?>
+        <?php
+        $refreshTxt = Lang::txt('PLG_TOOLS_NOVNC_REFRESH');
+        $resizeTxt = Lang::txt('PLG_TOOLS_NOVNC_RESIZE');
+        ?>
     <script type="text/javascript">
         //JS globals for noVNC
         var host     = '<?php echo $this->output->wsproxy_host; ?>',

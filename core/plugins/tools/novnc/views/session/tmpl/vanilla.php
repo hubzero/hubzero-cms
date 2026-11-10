@@ -17,6 +17,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 defined('_HZEXEC_') or die();
 
 // Shared recovery overlay: registers assets and emits #novnc-reconnect-config

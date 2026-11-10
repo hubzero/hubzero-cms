@@ -10,8 +10,8 @@ namespace Plugins\User\D1;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
-use Request;
 
 /**
  * Plugin for automatically adding users to the d1_nation group based on IP country group lookup
@@ -33,7 +33,7 @@ class D1 extends Plugin
     public function onUserLogin($user, $options = array())
     {
         if (!($uid = $this->userId($user))) {
-            return;
+            return true;
         }
         $username = isset($user['username']) ? $user['username'] : $uid;
 
@@ -86,7 +86,6 @@ class D1 extends Plugin
     {
         \Hubzero\User\Group::setMember('d1_nation', (int) $user['id'], false);
     }
-
 
     /**
      * The ID of the user signing in

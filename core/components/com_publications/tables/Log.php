@@ -194,7 +194,7 @@ class Log extends Table
                 if ($network) {
                     $networks[] = $network;
                 } else {
-                    \Log::debug('Publications: exclude_list entry not used for IPv6: ' . $filter);
+                    \Hubzero\Facades\Log::debug('Publications: exclude_list entry not used for IPv6: ' . $filter);
                 }
             }
         }

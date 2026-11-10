@@ -9,6 +9,7 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Log;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
 
 /**
  * @package    hubzero-cms

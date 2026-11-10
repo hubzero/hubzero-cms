@@ -13,6 +13,7 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\System\PrivilegeManager;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Component;
 
 /**
  * User class for general user functions
@@ -422,7 +423,7 @@ class User extends Base implements CommandInterface
         }
 
         // The group new accounts join, as registration picks it
-        $group = \Component::params('com_members')->get('new_usertype');
+        $group = Component::params('com_members')->get('new_usertype');
         if (!$group) {
             $db = \App::get('db');
             $db->setQuery("SELECT id FROM `#__usergroups` WHERE title='Registered'");
@@ -444,7 +445,7 @@ class User extends Base implements CommandInterface
         $user->set('accessgroups', array($group));
         $user->set('registerDate', Date::of('now')->toSql());
         $user->set('registerIP', '127.0.0.1');
-        $user->set('access', (int) \Component::params('com_members')->get('privacy', 1));
+        $user->set('access', (int) Component::params('com_members')->get('privacy', 1));
         $user->set('activation', 1);
         $user->set('approved', 1);
         $user->set('params', '{}');

@@ -14,8 +14,6 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once Component::path('com_tools') . '/helpers/iprange.php';
-
 Toolbar::title(
     Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES') . ': ' . Lang::txt('COM_TOOLS_LOCATIONS'),
     'tools'

@@ -272,7 +272,8 @@ class Credentials extends SiteController
         // reveals nothing about the account.
         if (\Hubzero\User\Password::isInactive($user->get('id'))) {
             $this->sendInactiveNotice($user);
-            return $this->pretendSent();
+            $this->pretendSent();
+            return;
         }
 
         // Set the confirmation token

@@ -10,19 +10,17 @@ namespace Components\Tools\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Exception;
-use Component;
-use Request;
-use Lang;
-use User;
-
-$componentPath = Component::path('com_tools');
-
-include_once "$componentPath/helpers/utils.php";
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
 
 /**
  * API controller for a member's tool-storage quota.
  */
-class Storagev1_0 extends ApiController
+class Storagev1r0 extends ApiController
 {
     /**
      * Current disk-usage / quota for the authenticated member (read-only).
@@ -39,7 +37,7 @@ class Storagev1_0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $profile = User::getInstance(\App::get('authn')['user_id']);
+        $profile = User::getInstance(App::get('authn')['user_id']);
         if (!$profile->get('id')) {
             throw new Exception(Lang::txt('Unable to find user.'), 404);
         }
@@ -188,7 +186,7 @@ class Storagev1_0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $method = strtoupper(\App::get('request')->method());
+        $method = strtoupper(App::get('request')->method());
         if ($method !== 'DELETE' && $method !== 'POST') {
             throw new Exception(Lang::txt('Method not allowed.'), 405);
         }
@@ -222,14 +220,14 @@ class Storagev1_0 extends ApiController
             if (!is_dir($target) && !is_link($target)) {
                 throw new Exception(Lang::txt('Folder not found.'), 404);
             }
-            if (!\Filesystem::deleteDirectory($target)) {
+            if (!Filesystem::deleteDirectory($target)) {
                 throw new Exception(Lang::txt('Unable to delete the folder.'), 500);
             }
         } else {
             if (!file_exists($target) && !is_link($target)) {
                 throw new Exception(Lang::txt('File not found.'), 404);
             }
-            if (!\Filesystem::delete($target)) {
+            if (!Filesystem::delete($target)) {
                 throw new Exception(Lang::txt('Unable to delete the file.'), 500);
             }
         }
@@ -410,7 +408,7 @@ class Storagev1_0 extends ApiController
      */
     protected function requirePost()
     {
-        if (strtoupper(\App::get('request')->method()) !== 'POST') {
+        if (strtoupper(App::get('request')->method()) !== 'POST') {
             throw new Exception(Lang::txt('Method not allowed.'), 405);
         }
     }
@@ -441,7 +439,7 @@ class Storagev1_0 extends ApiController
      */
     protected function member()
     {
-        $profile = User::getInstance(\App::get('authn')['user_id']);
+        $profile = User::getInstance(App::get('authn')['user_id']);
         if (!$profile->get('id')) {
             throw new Exception(Lang::txt('Unable to find user.'), 404);
         }

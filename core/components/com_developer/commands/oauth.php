@@ -15,9 +15,6 @@ use Hubzero\Console\Arguments;
 use Components\Developer\Models\Application;
 use Hubzero\User\User;
 
-// Component models are not on the CLI autoloader.
-require_once dirname(__DIR__) . DS . 'models' . DS . 'application.php';
-
 /**
  * Manage OAuth client applications from the command line.
  *
@@ -53,7 +50,8 @@ class Oauth extends Base implements CommandInterface
         $id = $this->arguments->getOpt('id');
 
         if ($id) {
-            return $this->detail($id);
+            $this->detail($id);
+            return;
         }
 
         $query = Application::all();

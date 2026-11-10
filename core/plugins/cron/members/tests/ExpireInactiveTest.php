@@ -9,7 +9,7 @@ namespace Plugins\Cron\Members\Tests;
 
 use Hubzero\Test\Basic;
 use PDO;
-use plgCronMembers;
+use Plugins\Cron\Members\Members;
 
 require_once dirname(__DIR__) . DS . 'members.php';
 
@@ -33,14 +33,14 @@ class ExpireInactiveTest extends Basic
 	 */
 	public function testInactivityMonths()
 	{
-		$this->assertSame(36, plgCronMembers::inactivityMonths('36'));
-		$this->assertSame(36, plgCronMembers::inactivityMonths(36));
-		$this->assertSame(12, plgCronMembers::inactivityMonths(' 12 '));
-		$this->assertSame(1, plgCronMembers::inactivityMonths('1'));
+		$this->assertSame(36, Members::inactivityMonths('36'));
+		$this->assertSame(36, Members::inactivityMonths(36));
+		$this->assertSame(12, Members::inactivityMonths(' 12 '));
+		$this->assertSame(1, Members::inactivityMonths('1'));
 
 		foreach (array('0', 0, '-1', '1.5', 'abc', '', null) as $bad)
 		{
-			$this->assertSame(0, plgCronMembers::inactivityMonths($bad), var_export($bad, true) . ' must be refused');
+			$this->assertSame(0, Members::inactivityMonths($bad), var_export($bad, true) . ' must be refused');
 		}
 	}
 
@@ -135,7 +135,7 @@ class ExpireInactiveTest extends Basic
 
 		$select = function ($exemptGroup) use ($db, $cutoff, $cutoffDay)
 		{
-			$query = plgCronMembers::inactiveAccountsQuery($db->quote($cutoff), $cutoffDay, $exemptGroup === null ? null : $db->quote($exemptGroup));
+			$query = Members::inactiveAccountsQuery($db->quote($cutoff), $cutoffDay, $exemptGroup === null ? null : $db->quote($exemptGroup));
 			$ids   = array_map('intval', $db->query(str_replace('#__', 'jos_', $query))->fetchAll(PDO::FETCH_COLUMN));
 			sort($ids);
 			return $ids;

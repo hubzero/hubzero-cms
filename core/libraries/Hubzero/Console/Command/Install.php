@@ -10,6 +10,8 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Component;
 
 /**
  * Install command class - fresh Hubzero installation
@@ -576,9 +578,11 @@ class Install extends Base implements CommandInterface
         $left = $applier->check($flavor);
 
         $this->say("\n");
-        $this->say($left
-            ? "\033[33mApplied, but the hub still differs: " . implode('; ', $left) . "\033[39m\n"
-            : "\033[32mThe hub is the {$flavor->name()} flavor.\033[39m\n");
+        $this->say(
+            $left
+                ? "\033[33mApplied, but the hub still differs: " . implode('; ', $left) . "\033[39m\n"
+                : "\033[32mThe hub is the {$flavor->name()} flavor.\033[39m\n"
+        );
     }
 
     /**
@@ -780,7 +784,7 @@ class Install extends Base implements CommandInterface
         $this->say("\n\033[33mChecking the Hub\033[39m\n");
         $this->say("----------------\n");
 
-        $live = rtrim((string) \Config::get('live_site'), '/');
+        $live = rtrim((string) Config::get('live_site'), '/');
 
         if ($live === '') {
             $passed = $this->report(
@@ -965,12 +969,12 @@ class Install extends Base implements CommandInterface
             $this->report('warn', 'Could not read the database server\'s settings: ' . $e->getMessage());
         }
 
-        $usage = \Component::params('com_usage');
+        $usage = Component::params('com_usage');
 
         if (!$usage->get('statsDBDatabase')) {
             $this->report(
                 'warn',
-                'The usage statistics have no database. Create ' . \Config::get('db') . '_metrics'
+                'The usage statistics have no database. Create ' . Config::get('db') . '_metrics'
                 . ' for the hub\'s account, then run: muse migration run -f'
             );
             return;
@@ -998,11 +1002,11 @@ class Install extends Base implements CommandInterface
      **/
     private function checkMail()
     {
-        $mailer = (string) \Config::get('mailer', 'mail');
+        $mailer = (string) Config::get('mailer', 'mail');
 
         if ($mailer === 'smtp') {
-            $host = (string) \Config::get('smtphost', 'localhost');
-            $port = (int) \Config::get('smtpport', 25);
+            $host = (string) Config::get('smtphost', 'localhost');
+            $port = (int) Config::get('smtpport', 25);
 
             $socket = @fsockopen($host, $port, $errno, $errstr, 5);
 
@@ -1016,7 +1020,7 @@ class Install extends Base implements CommandInterface
         }
 
         $command = $mailer === 'sendmail'
-            ? (string) \Config::get('sendmail', '/usr/sbin/sendmail')
+            ? (string) Config::get('sendmail', '/usr/sbin/sendmail')
             : (string) ini_get('sendmail_path');
         $program = strtok($command, ' ');
 

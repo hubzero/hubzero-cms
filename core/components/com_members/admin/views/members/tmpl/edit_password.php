@@ -130,8 +130,15 @@ defined('_HZEXEC_') or die();
         ?>
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?>">
             <label for="expiresOn"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
-            <input type="text" name="expiresOn" id="expiresOn" value="<?php echo $this->escape($expiresOn); ?>" />
-            <input type="hidden" name="expiresOnShown" value="<?php echo $this->escape($expiresOn); ?>" />
+            <input
+                type="text"
+                name="expiresOn"
+                id="expiresOn"
+                value="<?php echo $this->escape($expiresOn); ?>"/>
+            <input
+                type="hidden"
+                name="expiresOnShown"
+                value="<?php echo $this->escape($expiresOn); ?>"/>
             <span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?></span>
         </div>
         <?php if (\Hubzero\User\Password::isInactive($this->password)) : ?>

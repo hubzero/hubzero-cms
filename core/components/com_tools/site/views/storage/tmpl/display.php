@@ -9,6 +9,7 @@
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
 
 // No direct access.
 defined('_HZEXEC_') or die();

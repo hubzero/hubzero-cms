@@ -9,8 +9,8 @@
 namespace Plugins\User\Geo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
-use Request;
 
 // No direct access
 

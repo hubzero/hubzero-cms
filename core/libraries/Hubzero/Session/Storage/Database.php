@@ -11,6 +11,7 @@ namespace Hubzero\Session\Storage;
 use Hubzero\Session\Store;
 use Exception;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Database session storage handler
@@ -120,7 +121,7 @@ class Database extends Store
                     ->set(array(
                         'data' => $data,
                         'time' => (int) time(),
-                        'ip'   => (string) \Request::ip()
+                        'ip'   => (string) Request::ip()
                     ))
                     ->whereEquals('session_id', $id);
 

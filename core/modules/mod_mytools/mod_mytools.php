@@ -25,6 +25,7 @@ class Mytools extends Module
     protected $fav;
     protected $favs;
     protected $favtools;
+    protected $launch_page;
     protected $no_html;
     protected $rectools;
     protected $rt;
@@ -187,8 +188,8 @@ class Mytools extends Module
                     if ($this->can_launch && $tool->middleware != 'download') {
                         $launchTitle = Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption);
                         $html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool"'
-                            . (!empty($this->launch_page) ? ' data-launch="page"' : '')
-                            . ' title="' . $launchTitle . '">' . $launchTitle . '</a>' . "\n";
+                            . (!empty($this->launch_page) ? ' data-launch="page"' : '') . ' title="'
+                            . $launchTitle . '">' . $launchTitle . '</a>' . "\n";
                     }
                     $html .= "\t\t" . ' </li>' . "\n";
                 }

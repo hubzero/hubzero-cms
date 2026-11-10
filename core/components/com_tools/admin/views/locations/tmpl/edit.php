@@ -14,8 +14,6 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-require_once Component::path('com_tools') . '/helpers/iprange.php';
-
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 if (!$this->tmpl) {
     Toolbar::title(
