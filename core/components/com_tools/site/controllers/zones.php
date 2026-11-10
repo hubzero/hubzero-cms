@@ -41,7 +41,6 @@ class Zones extends SiteController
      * @param   boolean  $isFile
      * @return  mixed
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private static function normalizePath($path, $isFile = false)
     {
         if (!isset($path[0]) || $path[0] != '/') {

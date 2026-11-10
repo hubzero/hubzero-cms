@@ -338,7 +338,6 @@ class Tool
      *
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function sqlRead()
     {
         $db = App::get('db');
@@ -805,7 +804,6 @@ class Tool
      * @param     integer $level Parameter description (if any) ...
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();

@@ -93,7 +93,6 @@ class Date extends DateTime
      * @throws  Exception
      */
     #[\ReturnTypeWillChange]
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($datetime = 'now', $timezone = null, $ignoreDst = false)
     {
         // Create the base GMT and server time zone objects.
@@ -124,7 +123,6 @@ class Date extends DateTime
      * @param   string  $name  The name of the property.
      * @return  mixed   A value if the property name is valid, null otherwise.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __get($name)
     {
         $value = null;
@@ -200,7 +198,6 @@ class Date extends DateTime
      *
      * @return  string  The date as a formatted string.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return (string) parent::format(self::$format);

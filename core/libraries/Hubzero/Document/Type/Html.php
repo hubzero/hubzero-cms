@@ -96,7 +96,6 @@ class Html extends Base
      * @param   array  $options  Associative array of options
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = [])
     {
         parent::__construct($options);

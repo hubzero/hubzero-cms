@@ -37,7 +37,6 @@ class Member extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $badge = null;
 
     /**
@@ -45,7 +44,6 @@ class Member extends Base
      *
      * @var object
      **/
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $prerequisites = null;
 
     /**

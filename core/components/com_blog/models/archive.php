@@ -190,7 +190,6 @@ class Archive extends Obj
      * @return  object
      * @since   1.3.1
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function adapter()
     {
         if (!$this->_adapter) {

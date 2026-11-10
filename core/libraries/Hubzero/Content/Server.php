@@ -65,7 +65,6 @@ class Server extends Obj
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct()
     {
         $this->disposition('inline');

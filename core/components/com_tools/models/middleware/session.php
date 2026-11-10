@@ -32,7 +32,6 @@ class Session extends Base
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $cache = [
         'shared.count' => null,
         'shared.list'  => null,

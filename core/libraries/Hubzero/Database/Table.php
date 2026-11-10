@@ -287,7 +287,6 @@ abstract class Table extends \stdClass
      * @param  string  $key    Name of the primary key field in the table.
      * @param  object  &$db    Database connector object.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($table, $key, $db)
     {
         // Set internal variables.

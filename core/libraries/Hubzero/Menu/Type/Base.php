@@ -83,7 +83,6 @@ class Base extends Obj
      * @param   array  $options  An array of configuration options.
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = [])
     {
         parent::__construct($options);

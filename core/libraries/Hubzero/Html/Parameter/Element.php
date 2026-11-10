@@ -43,7 +43,6 @@ class Element extends Obj
      * @param   string  $parent  Element parent
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($parent = null)
     {
         $this->_parent = $parent;

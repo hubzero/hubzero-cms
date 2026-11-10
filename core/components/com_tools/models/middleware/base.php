@@ -23,7 +23,6 @@ class Base extends Model
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $config = null;
 
     /**

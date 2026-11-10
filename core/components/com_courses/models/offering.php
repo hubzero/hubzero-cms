@@ -47,7 +47,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $units = null;
 
     /**
@@ -55,7 +54,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $unit = null;
 
     /**
@@ -63,7 +61,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $page = null;
 
     /**
@@ -71,7 +68,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $pages = null;
 
     /**
@@ -79,7 +75,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $announcements = null;
 
     /**
@@ -87,7 +82,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $roles = null;
 
     /**
@@ -95,7 +89,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $members = null;
 
     /**
@@ -103,7 +96,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $member = null;
 
     /**
@@ -111,7 +103,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $manager = null;
 
     /**
@@ -119,7 +110,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $managers = null;
 
     /**
@@ -127,7 +117,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $student = null;
 
     /**
@@ -135,7 +124,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $gradebook = null;
 
     /**
@@ -143,7 +131,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $sections = null;
 
     /**
@@ -151,7 +138,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $section = null;
 
     /**
@@ -159,7 +145,6 @@ class Offering extends Base
      *
      * @var object
      **/
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $assets = null;
 
     /**
@@ -167,7 +152,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $permissions = null;
 
     /**
@@ -175,7 +159,6 @@ class Offering extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $link = null;
 
     /**
@@ -183,7 +166,6 @@ class Offering extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $params = null;
 
     /**

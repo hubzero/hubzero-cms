@@ -52,7 +52,6 @@ class Guard
      * @param   object  $app
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Container $app)
     {
         $this->app = $app;

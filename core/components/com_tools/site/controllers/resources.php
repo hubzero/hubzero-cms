@@ -541,7 +541,6 @@ class Resources extends SiteController
      * @param   array  $groups  User's groups
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function getUsersGroups($groups)
     {
         $arr = [];
@@ -563,7 +562,6 @@ class Resources extends SiteController
      * @param   boolean  $allowAuthors  Allow authors access?
      * @return  boolean  True if they have access
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object

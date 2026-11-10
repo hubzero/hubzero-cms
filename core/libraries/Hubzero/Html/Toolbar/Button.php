@@ -40,7 +40,6 @@ abstract class Button extends Obj
      * @param   object  $parent  The parent
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($parent = null)
     {
         $this->_parent = $parent;

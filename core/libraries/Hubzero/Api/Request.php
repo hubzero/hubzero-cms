@@ -94,7 +94,6 @@ class Request
      *
      * @return     void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = [])
     {
         if (($options == '_SERVER') || (in_array('_SERVER', $options))) {

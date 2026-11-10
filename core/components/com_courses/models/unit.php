@@ -58,7 +58,6 @@ class Unit extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $asset = null;
 
     /**
@@ -66,7 +65,6 @@ class Unit extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $assets = null;
 
     /**
@@ -74,7 +72,6 @@ class Unit extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $siblings = null;
 
     /**

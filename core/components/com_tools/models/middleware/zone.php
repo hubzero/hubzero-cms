@@ -31,7 +31,6 @@ class Zone extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $cache = [
         'locations.count' => null,
         'locations.list'  => null,

@@ -205,7 +205,6 @@ class Gitlab
      * @param   string  $url
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function getRequest($resource, $ResourceName)
     {
         // Get response restricted by maintainer access of the current Gitlab API key bot
@@ -223,7 +222,6 @@ class Gitlab
      * @param  array  $params   [description]
      * @return [type]           [description]
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function postRequest($resource, $params = [])
     {
         // init post request

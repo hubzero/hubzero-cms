@@ -90,7 +90,6 @@ class Composer
      *
      * @return  bool
      **/
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function init()
     {
         //Set environment up for composer
@@ -123,7 +122,6 @@ class Composer
      *
      * @return  object  Composer\Factory object in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getFactory()
     {
         self::init();
@@ -135,7 +133,6 @@ class Composer
      *
      * @return  object  Composer\Composer object representing this composer instance
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getComposer()
     {
         self::init();
@@ -148,7 +145,6 @@ class Composer
      *
      * @return  boolean Indicates success or failure
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function resetComposer()
     {
         self::$composer = null;
@@ -167,7 +163,6 @@ class Composer
      *
      * @return  object  Composer\IO object in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getIO()
     {
         self::init();
@@ -179,7 +174,6 @@ class Composer
      *
      * @return  object  Composer\Repository\RepositoryManager in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getRepositoryManager()
     {
         self::init();
@@ -194,7 +188,6 @@ class Composer
      *
      * @return  object  Composer\Repository\RepositoryInterface containing the local repository
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getLocalRepository()
     {
         self::init();
@@ -209,7 +202,6 @@ class Composer
      *
      * @return  array   Array of Composer\Repository\RepositoryInterfaces containing remote packages
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getRemoteRepositories()
     {
         self::init();
@@ -224,7 +216,6 @@ class Composer
      *
      * @return  object  Composer\Installer object in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getInstaller()
     {
         self::init();
@@ -239,7 +230,6 @@ class Composer
      *
      * @return  object  Composer\EventDispatcher\EventDispatcher in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getDispatcher()
     {
         self::init();
@@ -254,7 +244,6 @@ class Composer
      *
      * @return  object  Composer\Json\JsonFile in use
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getComposerJson()
     {
         self::init();
@@ -271,7 +260,6 @@ class Composer
      * @param   string  $command    Command message being dispatched
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function dispatch($command)
     {
         $dispatcher = self::getDispatcher();
@@ -287,7 +275,6 @@ class Composer
      *                                      See: https://getcomposer.org/doc/articles/versions.md
      * @return  boolean Indicates if the operation succeeded
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function requirePackage($packageName, $constraint = 'dev-master')
     {
         if (empty($packageName)) {
@@ -310,7 +297,6 @@ class Composer
      * @param       string  $apackageName   The package name in the form of vendor/pacakage
      * @return  boolean Indicates if the operation succeeded
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function unrequirePackage($packageName)
     {
         if (empty($packageName)) {
@@ -334,7 +320,6 @@ class Composer
      * @param       array   $packages   List of packages to be updated
      * @return  boolean Indicates success or failure
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function runUpdate($packageName)
     {
         self::init();
@@ -358,7 +343,6 @@ class Composer
      *
      * @return  object  Composer\Config object in use by composer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getConfig()
     {
         self::init();

@@ -23,7 +23,6 @@ class QueryDropColumnStatement
      * @param    array   $args   Instantiation state
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($args = [])
     {
         $this->_name = $args['name'];

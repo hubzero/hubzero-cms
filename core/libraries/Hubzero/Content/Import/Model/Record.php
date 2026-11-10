@@ -80,7 +80,6 @@ class Record extends Obj
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($raw, $options = [], $mode = 'UPDATE')
     {
         // Store our incoming data
@@ -144,7 +143,6 @@ class Record extends Obj
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return $this->toString();

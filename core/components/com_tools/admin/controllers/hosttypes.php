@@ -141,7 +141,6 @@ class Hosttypes extends AdminController
      * @param   mixed    $value
      * @return  integer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function refs($value)
     {
         $refs = 0;

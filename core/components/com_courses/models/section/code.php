@@ -39,7 +39,6 @@ class Code extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $redeemer = null;
 
     /**

@@ -52,7 +52,6 @@ class Teller extends Obj
      * @param   integer  $user_id  User ID
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($user_id)
     {
         $this->uid      = $user_id;

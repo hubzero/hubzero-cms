@@ -82,7 +82,6 @@ class Plugin
      * @param   array   $config   Optional configurations to be used
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($subject, $config)
     {
         // Set the subject to observe

@@ -481,7 +481,6 @@ class Screenshots extends SiteController
      * @param      string  $save_name Name to save file as
      * @return     boolean False if errors, True if successful
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $imorig = imagecreatefromjpeg(dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
@@ -516,7 +515,6 @@ class Screenshots extends SiteController
      * @param      string  $save_name Name to save file as
      * @return     boolean False if errors, True if successful
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function createThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $save_dir = rtrim($save_dir, DS) . DS;
@@ -789,7 +787,6 @@ class Screenshots extends SiteController
      * @param      string $subdir  Sub-directory
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
@@ -828,7 +825,6 @@ class Screenshots extends SiteController
      * @param      boolean $allowAuthors Allow authors access?
      * @return     boolean True if they have access
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object

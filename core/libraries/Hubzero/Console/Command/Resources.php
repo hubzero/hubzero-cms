@@ -34,7 +34,6 @@ class Resources extends Base implements CommandInterface
      * @param   \Hubzero\Console\Arguments $arguments  The command arguments
      * @return  void
      **/
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Output $output, Arguments $arguments)
     {
         parent::__construct($output, $arguments);

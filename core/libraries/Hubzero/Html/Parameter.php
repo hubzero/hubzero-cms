@@ -57,7 +57,6 @@ class Parameter extends Registry
      * @param   string  $path  Path to the XML setup file.
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($data = '', $path = '')
     {
         parent::__construct('_default');

@@ -61,7 +61,6 @@ class View extends AbstractView
      * @param   array  $config  A named configuration array for object construction.<br/>
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($config = [])
     {
         // Look for overrides under the component that owns the view, not
@@ -151,7 +150,6 @@ class View extends AbstractView
      * @throws  \BadMethodCallException
      * @since   1.3.1
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __call($method, $parameters)
     {
         if (!static::hasHelper($method)) {

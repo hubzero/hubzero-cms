@@ -109,7 +109,6 @@ class Question extends Relational
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $base = 'index.php?option=com_answers';
 
     /**

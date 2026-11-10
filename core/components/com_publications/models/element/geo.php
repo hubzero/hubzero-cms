@@ -119,7 +119,6 @@ class Geo extends Base
      * @param   string  $text Data
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";

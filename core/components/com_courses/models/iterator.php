@@ -18,7 +18,6 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $pos = 0;
 
     /**
@@ -26,7 +25,6 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $total = 0;
 
     /**
@@ -34,7 +32,6 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $data = [];
 
     /**

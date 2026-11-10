@@ -37,7 +37,6 @@ class View extends AbstractView
      * @param   array  $config
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($config = [])
     {
         parent::__construct($config);

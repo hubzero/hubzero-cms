@@ -38,7 +38,6 @@ class Assetgroup extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $asset = null;
 
     /**
@@ -46,7 +45,6 @@ class Assetgroup extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $assets = null;
 
     /**
@@ -61,7 +59,6 @@ class Assetgroup extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $parent = null;
 
     /**
@@ -77,7 +74,6 @@ class Assetgroup extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $params = null;
 
     /**

@@ -87,7 +87,6 @@ abstract class Model extends Obj
      * @param   mixed  $oid  Integer (ID), string (alias), object or array
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($oid = null)
     {
         $this->_db = $this->initDbo();
@@ -462,7 +461,6 @@ abstract class Model extends Obj
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return $this->toString();
@@ -487,7 +485,6 @@ abstract class Model extends Obj
      * @param   array    $refChain  Reference chain
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function printR($subject, $ignore = [], $depth = 1, $refChain = [])
     {
         $str = '';
@@ -571,7 +568,6 @@ abstract class Model extends Obj
      * @param   array   $parameters
      * @return  mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __call($method, $parameters)
     {
         throw new \BadMethodCallException(sprintf(__CLASS__ . '; Method [%s] does not exist.', $method));

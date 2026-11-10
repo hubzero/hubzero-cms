@@ -758,7 +758,6 @@ class Detector
      * @param   string  $accept     The HTTP_ACCEPT settings to use.
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($userAgent = null, $accept = null)
     {
         $this->match($userAgent, $accept);

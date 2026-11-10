@@ -56,7 +56,6 @@ class Toolbar extends Obj
      * @param   string  $name  The toolbar name
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($name = 'toolbar')
     {
         $this->_name = $name;

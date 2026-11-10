@@ -20,7 +20,6 @@ class Dns
      *
      * @return string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getConfig()
     {
         return Config::get('app.fqdn', '');
@@ -31,7 +30,6 @@ class Dns
      *
      * @return array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function getConfigArray()
     {
         return explode('.', self::getConfig());

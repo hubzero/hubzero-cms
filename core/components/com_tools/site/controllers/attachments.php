@@ -378,7 +378,6 @@ class Attachments extends SiteController
      * @param      string $subdir  Sub directory of $listdir
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
@@ -409,7 +408,6 @@ class Attachments extends SiteController
      * @param   string   $filename  File name
      * @return  integer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function getChildType($filename)
     {
         $ftype = strtolower(Filesystem::extension($filename));
@@ -457,7 +455,6 @@ class Attachments extends SiteController
      * @param   boolean  $allowAuthors  Allow tool authors?
      * @return  boolean  True if user has access, False if not
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function checkAccess($toolid, $allowAuthors = false)
     {
         // allow to view if admin

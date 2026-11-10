@@ -21,16 +21,16 @@ use Hubzero\Utility\Network;
  */
 class Domainrestriction extends Plugin
 {
-    private $tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $emails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $allowed; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $tlds;
+    private $domains;
+    private $emails;
+    private $badtlds;
+    private $baddomains;
+    private $bademails;
+    private $email;
+    private $domain;
+    private $tld;
+    private $allowed;
 
     /**
      * Utility method to act on a user before it has been saved.

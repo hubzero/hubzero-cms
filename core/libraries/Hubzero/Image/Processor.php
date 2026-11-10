@@ -60,7 +60,6 @@ class Processor extends Obj
      * @param   array   $config        Optional configurations
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($image_source = null, $config = [], $isRemoteImage = false)
     {
         $this->source = $image_source;
@@ -474,7 +473,6 @@ class Processor extends Obj
      * @param   string   $str  Fraction to convert
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geoFrac2dec($str)
     {
         list($n, $d) = explode('/', $str);
@@ -492,7 +490,6 @@ class Processor extends Obj
      * @param   array   $fracs  Fractions to convert
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geoPrettyFracs2dec($fracs)
     {
         return $this->geoFrac2dec($fracs[0])
@@ -509,7 +506,6 @@ class Processor extends Obj
      * @param   array    $fracs  Fractions to convert
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geoSingleFracs2dec($fracs)
     {
         return $this

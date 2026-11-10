@@ -293,7 +293,6 @@ class Media extends SiteController
      * @param      string $base Directory to scan
      * @return     array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function recursiveListDir($base)
     {
         static $filelist = [];

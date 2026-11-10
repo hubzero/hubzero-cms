@@ -42,7 +42,6 @@ class Guard
      * @param   object  $app  Container
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Container $app)
     {
         $this->app = $app;
@@ -64,7 +63,6 @@ class Guard
      *
      * @return void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function clearSession()
     {
         // @TODO: Ultimately I don't think any of this is necessary

@@ -40,7 +40,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $offering = null;
 
     /**
@@ -48,7 +47,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $offerings = null;
 
     /**
@@ -56,7 +54,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $permissions = null;
 
     /**
@@ -64,7 +61,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $manager = null;
 
     /**
@@ -72,7 +68,6 @@ class Course extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $managers = null;
 
     /**
@@ -80,7 +75,6 @@ class Course extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $students = null;
 
     /**
@@ -88,7 +82,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $page = null;
 
     /**
@@ -96,7 +89,6 @@ class Course extends Base
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $pages = null;
 
     /**
@@ -104,7 +96,6 @@ class Course extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $plugins = [];
 
     /**
@@ -112,7 +103,6 @@ class Course extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $base = null;
 
     /**
@@ -120,7 +110,6 @@ class Course extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $certificate = null;
 
     /**

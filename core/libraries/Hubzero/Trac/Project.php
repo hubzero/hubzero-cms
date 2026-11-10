@@ -379,7 +379,6 @@ class Project
      * @param   string  $property
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -420,7 +419,6 @@ class Project
      * @param   string  $property
      * @param   mixed   $value
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -452,7 +450,6 @@ class Project
      * @param   string  $property  Property name
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -473,7 +470,6 @@ class Project
      * @param   string  $property  Property name
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {

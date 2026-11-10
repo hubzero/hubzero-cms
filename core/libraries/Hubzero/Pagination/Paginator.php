@@ -82,7 +82,6 @@ class Paginator extends Obj
      * @param   string   $prefix      The prefix used for request variables.
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($total, $limitstart, $limit, $prefix = '')
     {
         // Value/type checking.
@@ -418,7 +417,6 @@ class Paginator extends Obj
      *
      * @return  string  The entire pagination footer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return $this->render();
