@@ -22,7 +22,6 @@ class Courses extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $tbl = null;
 
     /**
@@ -30,7 +29,6 @@ class Courses extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $db = null;
 
     /**
@@ -38,7 +36,6 @@ class Courses extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $courses = null;
 
     /**
@@ -46,7 +43,6 @@ class Courses extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $course = null;
 
     /**

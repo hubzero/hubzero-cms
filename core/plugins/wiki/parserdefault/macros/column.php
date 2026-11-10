@@ -20,7 +20,6 @@ class Column extends WikiMacro
      *
      * @var integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected static $columns = 0;
 
     /**
@@ -28,7 +27,6 @@ class Column extends WikiMacro
      *
      * @var integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected static $cursor = 0;
 
     /**

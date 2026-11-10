@@ -16,7 +16,6 @@ use Hubzero\Facades\App;
 /**
  * Group module menu model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Menu extends Model
 {

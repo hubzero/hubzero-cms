@@ -82,7 +82,6 @@ class Resume extends Table
      * @param   integer  $id  Resume ID
      * @return  boolean  False if errors, True upon success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function deleteResume($id = null)
     {
         if ($id === null) {

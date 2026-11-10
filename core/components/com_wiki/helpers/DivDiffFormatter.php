@@ -23,8 +23,6 @@ namespace Components\Wiki\Helpers;
  *
  * Long description (if any) ...
  *
- * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DivDiffFormatter extends DiffFormatter
 {

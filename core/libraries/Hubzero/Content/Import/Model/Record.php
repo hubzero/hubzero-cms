@@ -45,7 +45,6 @@ class Record extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $mode;
 
     /**
@@ -53,7 +52,6 @@ class Record extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $options;
 
     /**
@@ -61,7 +59,6 @@ class Record extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
 
     /**
@@ -69,7 +66,6 @@ class Record extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $user;
 
     /**

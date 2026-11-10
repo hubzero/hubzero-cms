@@ -25,45 +25,26 @@ use Hubzero\Facades\Request;
  */
 class Project extends Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $base;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $creator;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $groupOwner;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $member;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $newCount;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $objPub;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $owner;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $project;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $publication;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $repo;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblActivity;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblBlog;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblComment;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     // Read and written from outside the class: the projects controller
     // reconciles groups, matches invitations and loads the team through it.
     public $tblOwner;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblTodo;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblType;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $team;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $type;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $userGroups;
 
     // Read from outside the class throughout the setup and project views,

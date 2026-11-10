@@ -27,7 +27,6 @@ class Help extends Button
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'Help';
 
     /**
@@ -99,7 +98,6 @@ class Help extends Button
      * @param   string   $component  Name of component to get Help (null for current component)
      * @return  string   JavaScript command string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getCommand($ref, $com, $override, $component)
     {
         // Get Help URL

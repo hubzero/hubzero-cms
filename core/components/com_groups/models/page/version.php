@@ -20,7 +20,6 @@ use Hubzero\Facades\Route;
 /**
  * Group page version model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Version extends Model
 {

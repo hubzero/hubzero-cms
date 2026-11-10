@@ -56,7 +56,6 @@ class Import extends Relational
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $currentRun = null;
 
     /**

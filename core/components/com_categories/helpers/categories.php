@@ -30,7 +30,6 @@ class Categories
      *
      * @var  mixed
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $nodes;
 
     /**
@@ -38,7 +37,6 @@ class Categories
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $checkedCategories;
 
     /**
@@ -46,7 +44,6 @@ class Categories
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $extension = null;
 
     /**
@@ -54,7 +51,6 @@ class Categories
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $table = null;
 
     /**
@@ -62,7 +58,6 @@ class Categories
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $field = null;
 
     /**
@@ -70,7 +65,6 @@ class Categories
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $key = null;
 
     /**
@@ -78,7 +72,6 @@ class Categories
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $statefield = null;
 
     /**
@@ -86,7 +79,6 @@ class Categories
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $options = null;
 
     /**
@@ -184,7 +176,6 @@ class Categories
      * @param   integer  $id  Id of category to load
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function load($id)
     {
         $db = App::get('db');

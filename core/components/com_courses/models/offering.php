@@ -21,9 +21,7 @@ use Hubzero\Facades\Request;
  */
 class Offering extends Base
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $membership;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $plugins;
 
     /**
@@ -31,7 +29,6 @@ class Offering extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\Offering';
 
     /**
@@ -39,7 +36,6 @@ class Offering extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'offering';
 
     /**

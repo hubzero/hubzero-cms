@@ -21,7 +21,6 @@ class Student extends Member
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'student';
 
     /**

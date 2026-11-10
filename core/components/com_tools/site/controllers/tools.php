@@ -59,7 +59,6 @@ class Tools extends SiteController
      * @param   string  $title
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildTitle($title = null)
     {
         $this->_title = ($title) ? $title : Lang::txt(strtoupper($this->option));
@@ -74,7 +73,6 @@ class Tools extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -267,7 +265,6 @@ class Tools extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

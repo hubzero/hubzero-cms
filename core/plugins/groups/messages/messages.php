@@ -23,7 +23,6 @@ use Hubzero\Facades\User;
  */
 class Messages extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
     protected $action;
     protected $authorized;
@@ -34,7 +33,6 @@ class Messages extends Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var    boolean
-     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $autoloadLanguage = true;
 
@@ -194,7 +192,6 @@ class Messages extends Plugin
      *
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function sent()
     {
         // Set the page title
@@ -244,7 +241,6 @@ class Messages extends Plugin
      * @param   string  $name    View name (unused, for parent compatibility)
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function renderView($layout = 'default', $name = '')
     {
         //get the message id
@@ -312,7 +308,6 @@ class Messages extends Plugin
      *
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function create()
     {
         // Ensure only admins and group managers can create messages
@@ -358,7 +353,6 @@ class Messages extends Plugin
      *
      * @return     mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function send()
     {
         // Only group managers/admins may send group messages

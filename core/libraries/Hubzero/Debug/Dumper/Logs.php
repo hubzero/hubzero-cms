@@ -18,7 +18,6 @@ class Logs extends AbstractRenderer
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $logger = null;
 
     /**
@@ -69,7 +68,6 @@ class Logs extends AbstractRenderer
      * @param   array  $arr
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function deflate($arr)
     {
         $output = 'Array( ' . "\n";

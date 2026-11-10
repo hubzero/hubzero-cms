@@ -26,9 +26,7 @@ class Publications extends Plugin
      *
      * @var  boolean
      */
-    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
-    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Resource types and "all" category

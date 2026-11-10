@@ -26,7 +26,6 @@ use Hubzero\Facades\Component;
  */
 class Warehouse extends \Hubzero\Base\Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
 
     // Product categories to look at (to define scope)

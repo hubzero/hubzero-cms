@@ -24,7 +24,6 @@ class Codemirror extends Plugin
     /**
      * Base path for editor files
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $basePath = 'core/plugins/editors/codemirror/';
 
     /**
@@ -237,7 +236,6 @@ class Codemirror extends Plugin
      *
      * @return string HTML
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior

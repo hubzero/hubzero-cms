@@ -99,7 +99,6 @@ class Base extends SiteController
      * @param       array $pages    Array of group pages, if any
      * @return      void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildPathway($pages = [])
     {
         //add 'groups' item to pathway
@@ -186,7 +185,6 @@ class Base extends SiteController
      * @param   array  $pages  Array of group pages, if any
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildTitle($pages = [])
     {
         $this->_title = Lang::txt(strtoupper($this->option));
@@ -250,7 +248,6 @@ class Base extends SiteController
      * @param   boolean  $checkOnlyMembership  Do we want to check admin
      * @return  boolean  True if authorized, false if not
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function authorize($checkOnlyMembership = true)
     {
         $group = Group::getInstance($this->cn);
@@ -267,7 +264,6 @@ class Base extends SiteController
      * @param   string   $task  Task to be performed
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function authorizedForTask($task)
     {
         $group = Group::getInstance($this->cn);

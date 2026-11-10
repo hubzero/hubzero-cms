@@ -97,7 +97,6 @@ abstract class Result
      * @param      unknown $plugin Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function isInSection($section, $plugin = null)
     {
         if (is_null($plugin)) {
@@ -122,7 +121,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getWeightLog()
     {
         return $this->weight_log;
@@ -135,7 +133,6 @@ abstract class Result
      *
      * @return     boolean Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function hasParent()
     {
         return $this->has_parent;
@@ -149,7 +146,6 @@ abstract class Result
      * @param      unknown $bool Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setHasParent($bool)
     {
         $this->has_parent = $bool;
@@ -163,7 +159,6 @@ abstract class Result
      * @param      object $child Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function addChild($child)
     {
         $this->children[] = $child;
@@ -177,7 +172,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getChildren()
     {
         return $this->children;
@@ -191,7 +185,6 @@ abstract class Result
      * @param      unknown $callback Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sortChildren($callback)
     {
         usort($this->children, $callback);
@@ -217,7 +210,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTitle()
     {
         return $this->title;
@@ -230,7 +222,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getHighlightedTitle()
     {
         // return $this->title_highlighted; @FIXME: this property no longer seems to exist
@@ -244,7 +235,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getRawLink()
     {
         return $this->link;
@@ -257,7 +247,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getLink()
     {
         if (!$this->canonicalized_link) {
@@ -279,7 +268,6 @@ abstract class Result
      *
      * @return     array Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getLinks()
     {
         $links = [$this->getLink()];
@@ -297,7 +285,6 @@ abstract class Result
      * @param      unknown $link Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setLink($link)
     {
         $this->link = $link;
@@ -311,7 +298,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getDescription()
     {
         return $this->description;
@@ -325,7 +311,6 @@ abstract class Result
      * @param      unknown $descr Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setDescription($descr)
     {
         $this->description = $descr;
@@ -338,7 +323,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getHighlightedDescription()
     {
         return $this->description_highlighted;
@@ -351,7 +335,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getAuthor()
     {
         return $this->author;
@@ -364,7 +347,6 @@ abstract class Result
      *
      * @return     integer Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getWeight()
     {
         return is_null($this->weight) ? 1 : $this->weight;
@@ -377,7 +359,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getSection()
     {
         return ucwords($this->section);
@@ -390,7 +371,6 @@ abstract class Result
      *
      * @return     string Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getSectionKey()
     {
         return trim($this->section) ? str_replace(' ', '_', strtolower(trim($this->section))) : 'uncategorized';
@@ -403,7 +383,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getDate()
     {
         return $this->date;
@@ -416,7 +395,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getContributors()
     {
         return $this->contributors;
@@ -429,7 +407,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getContributorIds()
     {
         return $this->contributor_ids;
@@ -442,7 +419,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function hasMetadata()
     {
         return !!($this->section || $this->date || $this->contributors);
@@ -455,7 +431,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getHighlightedExcerpt()
     {
         return $this->getExcerpt();
@@ -470,7 +445,6 @@ abstract class Result
      * @param      string $reason Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function adjustWeight($weight, $reason = 'unknown')
     {
         $this->weight *= $weight;
@@ -486,7 +460,6 @@ abstract class Result
      * @param      string $reason Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function scaleWeight($scale, $reason = 'unknown')
     {
         if ($scale != 0) {
@@ -504,7 +477,6 @@ abstract class Result
      * @param      string $reason Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function addWeight($weight, $reason = 'unknown')
     {
         $this->weight += $weight;
@@ -518,7 +490,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getPlugin()
     {
         return $this->plugin;
@@ -533,7 +504,6 @@ abstract class Result
      * @param      boolean $skip_cleanup Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setPlugin($plg, $skip_cleanup = false)
     {
         $this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', (string) $plg));
@@ -573,7 +543,6 @@ abstract class Result
      *
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getExcerpt()
     {
         if (!$this->excerpt) {
@@ -605,6 +574,5 @@ abstract class Result
      * Long description (if any) ...
      *
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract public function toAssociative();
 }

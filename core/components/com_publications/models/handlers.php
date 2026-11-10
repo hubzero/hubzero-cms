@@ -23,7 +23,6 @@ class Handlers extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $db = null;
 
     /**
@@ -31,7 +30,6 @@ class Handlers extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $types = [];
 
     /**
@@ -39,7 +37,6 @@ class Handlers extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $path = [];
 
     /**
@@ -47,7 +44,6 @@ class Handlers extends Obj
      *
      * @var
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $configs = null;
 
     /**

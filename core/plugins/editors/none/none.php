@@ -175,7 +175,6 @@ class None extends Plugin
         return $editor;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior

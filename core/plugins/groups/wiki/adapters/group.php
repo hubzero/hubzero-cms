@@ -21,7 +21,6 @@ class Group extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $segments = [
         'option' => 'com_groups',
         'cn'     => '',

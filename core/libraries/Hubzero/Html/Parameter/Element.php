@@ -26,7 +26,6 @@ class Element extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = null;
 
     /**
@@ -34,7 +33,6 @@ class Element extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parent = null;
 
     /**

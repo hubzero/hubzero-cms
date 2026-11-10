@@ -96,7 +96,6 @@ class Offering extends SiteController
      * @param      array $course_pages List of roup pages
      * @return     void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -131,7 +130,6 @@ class Offering extends SiteController
      *
      * @return     void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildTitle()
     {
         //set title used in view

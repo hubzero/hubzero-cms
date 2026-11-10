@@ -12,15 +12,10 @@ use Hubzero\Utility\Arr;
 
 class QueryAddColumnStatement
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $asString;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $defaultValue;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $restriction;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $type;
 
     /**
@@ -59,7 +54,6 @@ class QueryAddColumnStatement
      *
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateBaseString()
     {
         $this->asString = 'ADD COLUMN';
@@ -70,7 +64,6 @@ class QueryAddColumnStatement
      *
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addName()
     {
         $this->asString .= " $this->name";
@@ -81,7 +74,6 @@ class QueryAddColumnStatement
      *
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addType()
     {
         $this->asString .= " $this->type";
@@ -92,7 +84,6 @@ class QueryAddColumnStatement
      *
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addRestriction()
     {
         $restriction = rtrim(" $this->restriction");
@@ -105,7 +96,6 @@ class QueryAddColumnStatement
      *
      * @return   void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addDefault()
     {
         $default = '';

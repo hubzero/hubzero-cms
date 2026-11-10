@@ -8,9 +8,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 
-// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-// @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.

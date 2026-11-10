@@ -24,7 +24,6 @@ class Asset extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $tableClass = '\\Components\\Collections\\Tables\\Asset';
 
     /**
@@ -32,7 +31,6 @@ class Asset extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $size = null;
 
     /**
@@ -40,7 +38,6 @@ class Asset extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $dimensions = null;
 
     /**

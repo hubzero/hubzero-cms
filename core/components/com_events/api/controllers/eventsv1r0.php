@@ -13,8 +13,6 @@ use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
 
-// phpcs:disable PSR1.Methods.CamelCapsMethodName
-
 /**
  * API controller class for events
  */

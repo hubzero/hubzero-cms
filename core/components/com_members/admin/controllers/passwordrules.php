@@ -252,7 +252,6 @@ class PasswordRules extends AdminController
      *
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function toggleEnabledTask()
     {
         // Check for request forgeries
@@ -298,7 +297,6 @@ class PasswordRules extends AdminController
      *
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function restoreDefaultContentTask()
     {
         if (

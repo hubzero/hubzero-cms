@@ -28,7 +28,6 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**

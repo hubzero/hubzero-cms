@@ -20,7 +20,6 @@ class AbstractRenderer implements Renderable
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $messages = [];
 
     /**
@@ -104,7 +103,6 @@ class AbstractRenderer implements Renderable
      * @param   array  $arr
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function deflate($arr)
     {
         $arr = str_replace(["\n", "\r", "\t"], ' ', $arr);

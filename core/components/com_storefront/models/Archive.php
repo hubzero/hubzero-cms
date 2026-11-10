@@ -17,9 +17,7 @@ use Hubzero\Facades\App;
  */
 class Archive extends \Hubzero\Base\Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $count;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**

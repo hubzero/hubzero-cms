@@ -26,17 +26,11 @@ use voku\helper\HtmlDomParser;
  */
 class Links extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pubconfig;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
     protected $model;
 

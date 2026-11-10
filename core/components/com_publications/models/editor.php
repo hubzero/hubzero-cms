@@ -30,7 +30,6 @@ class Editor extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $db = null;
 
     /**

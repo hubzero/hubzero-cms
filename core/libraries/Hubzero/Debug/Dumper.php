@@ -19,7 +19,6 @@ class Dumper
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $renderer = null;
 
     /**
@@ -27,7 +26,6 @@ class Dumper
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $messages = [];
 
     /**
@@ -35,7 +33,6 @@ class Dumper
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $nameReplacements = [
         '-'  => '',
         '_'  => '',

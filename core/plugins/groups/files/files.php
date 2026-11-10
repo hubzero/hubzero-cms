@@ -23,7 +23,6 @@ use Hubzero\Facades\User;
 
 class Files extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
     protected $action;
     protected $authorized;

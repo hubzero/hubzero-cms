@@ -19,6 +19,5 @@ abstract class Assoc extends SearchResult
      * Is the result a scalar?
      *
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     abstract public function isScalar();
 }

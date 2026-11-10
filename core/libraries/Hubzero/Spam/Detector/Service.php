@@ -27,7 +27,6 @@ abstract class Service extends Obj implements DetectorInterface
      *
      * @var mixed
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $value;
 
     /**

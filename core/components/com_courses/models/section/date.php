@@ -20,7 +20,6 @@ class Date extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionDate';
 
     /**
@@ -28,6 +27,5 @@ class Date extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'section_date';
 }

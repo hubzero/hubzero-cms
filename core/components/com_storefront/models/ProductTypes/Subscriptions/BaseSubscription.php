@@ -32,7 +32,6 @@ class BaseSubscription
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**

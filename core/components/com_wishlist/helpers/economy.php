@@ -28,7 +28,6 @@ class Economy extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $db = null;
 
     /**
@@ -118,7 +117,6 @@ class Economy extends Obj
      * @param   number   $points  Points to distribute
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distributePoints($wishid, $type = 'grant', $points = 0)
     {
         if (!$wishid) {

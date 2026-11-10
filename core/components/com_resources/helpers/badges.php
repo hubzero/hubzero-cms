@@ -78,7 +78,6 @@ class Badges
      * @param   string   $rawTagNames   Comma separated list of raw_tag names
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function parseBadgesString($newBadgesString)
     {
         $rawTagNames = explode(',', $newBadgesString);
@@ -97,7 +96,6 @@ class Badges
      * @param   boolean  $admin         Mark tags as admin?
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function translateRawNamesToIds($rawTagNames, $taggerId, $admin)
     {
         $nameFormatter = Tag::blank();
@@ -126,7 +124,6 @@ class Badges
      * @param   boolean  $admin       Mark tags as admin?
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
     {
         $tagData = [
@@ -152,7 +149,6 @@ class Badges
      * @param   integer  $strength    Association strength
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addBadges($tagIds, $taggerId, $admin, $strength)
     {
         foreach ($tagIds as $tagId) {
@@ -169,7 +165,6 @@ class Badges
      * @param   integer  $strength    Badge strength
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addBadge($tagId, $taggerId, $admin, $strength)
     {
         $taggedOn = Date::toSql();
@@ -193,7 +188,6 @@ class Badges
      * @param   array    $tagIds      IDs of tags
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function removeBadges($tagIds)
     {
         foreach ($tagIds as $tagId) {
@@ -207,7 +201,6 @@ class Badges
      * @param   integer  $tagId       ID of tag record
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function removeBadge($tagId)
     {
         $tagAssociationId = Objct::all()
@@ -281,7 +274,6 @@ class Badges
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function renderString()
     {
         $output = '';

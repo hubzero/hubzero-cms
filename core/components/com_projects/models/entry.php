@@ -20,7 +20,6 @@ use Hubzero\Facades\User;
  */
 class Entry extends Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $project;
 
     /**
@@ -28,7 +27,6 @@ class Entry extends Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 
     /**
@@ -36,7 +34,6 @@ class Entry extends Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_projects.todo.details';
 
     /**
@@ -217,7 +214,6 @@ class Entry extends Model
      * @param   string  $as   What data to return
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function date($key, $as = '')
     {
         if ($this->get($key) == $this->db->getNullDate()) {

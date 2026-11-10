@@ -27,11 +27,8 @@ use Hubzero\Facades\Component;
  */
 class Curation extends Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $curationVersion;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tbl;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tblHistory;
 
     /**

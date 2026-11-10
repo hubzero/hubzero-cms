@@ -622,7 +622,6 @@ class Pipeline extends SiteController
      * @param   boolean  $append
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function writeToFile($content = '', $file = '', $append = false)
     {
         $place   = $append == true ? 'a' : 'w';
@@ -782,7 +781,6 @@ class Pipeline extends SiteController
      * @param   string   $wikiaccess
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
         if (!($hztrac = \Hubzero\Trac\Project::findOrCreate('app:' . $toolname))) {
@@ -1186,7 +1184,6 @@ class Pipeline extends SiteController
      * @param   array    $toolinfo  Tool information
      * @return  boolean  False if errors, True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addRepo(&$output, $toolinfo = [])
     {
         if (!$this->_toolid) {
@@ -1624,7 +1621,6 @@ class Pipeline extends SiteController
      * @param   array   $toolinfo  Array of tool information
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function email($toolid, $summary, $comment, $access, $action, $toolinfo = [])
     {
         $headline = '';
@@ -1764,7 +1760,6 @@ class Pipeline extends SiteController
      * @param   integer  $action
      * @return  boolean  False if errors, True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function newUpdateTicket(
         $toolid,
         $ticketid,
@@ -1997,7 +1992,6 @@ class Pipeline extends SiteController
      * @param   integer  $action
      * @return  boolean  False if errors, True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function updateTicket(
         $toolid,
         $oldstuff,
@@ -2313,7 +2307,6 @@ class Pipeline extends SiteController
      * @param   integer  $success     Was the exec successful?
      * @return  boolean  True if no errors
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function invokescript($command, $successmsg, &$output, $success = 1)
     {
         $output['class'] = 'passed';
@@ -2383,7 +2376,6 @@ class Pipeline extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

@@ -53,7 +53,6 @@ abstract class Model extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = null;
 
     /**
@@ -61,7 +60,6 @@ abstract class Model extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $table = null;
 
     /**
@@ -69,7 +67,6 @@ abstract class Model extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db = null;
 
     /**
@@ -78,7 +75,6 @@ abstract class Model extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = null;
 
     /**
@@ -314,7 +310,6 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function logError($message)
     {
         return $this->writeLog('error', $message);
@@ -326,7 +321,6 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function logDebug($message)
     {
         return $this->writeLog('debug', $message);
@@ -338,7 +332,6 @@ abstract class Model extends Obj
      * @param   string  $message  Message type to log
      * @param   string  $message  Message to log
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function writeLog($type, $message)
     {
         if (!$message) {

@@ -80,7 +80,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 
     /**
@@ -88,7 +87,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $mdate = '';
 
     /**
@@ -96,7 +94,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $tab = "\11";
 
     /**
@@ -104,7 +101,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $lineEnd = "\12";
 
     /**
@@ -112,7 +108,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $charset = 'utf-8';
 
     /**
@@ -120,7 +115,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $mime = '';
 
     /**
@@ -128,7 +122,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $namespace = '';
 
     /**
@@ -136,7 +129,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $profile = '';
 
     /**
@@ -144,7 +136,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $scripts = [];
 
     /**
@@ -152,7 +143,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $script = [];
 
     /**
@@ -160,7 +150,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $styleSheets = [];
 
     /**
@@ -168,7 +157,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $style = [];
 
     /**
@@ -176,7 +164,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $metaTags = [];
 
     /**
@@ -184,7 +171,6 @@ class Base extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $engine = null;
 
     /**
@@ -192,7 +178,6 @@ class Base extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $type = null;
 
     /**
@@ -200,7 +185,6 @@ class Base extends Obj
      *
      * @var  mixed (depends on the renderer)
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public static $buffer = null;
 
     /**
@@ -735,7 +719,6 @@ class Base extends Obj
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function getLineEnd()
     {
         return $this->lineEnd;
@@ -759,7 +742,6 @@ class Base extends Obj
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function getTab()
     {
         return $this->tab;

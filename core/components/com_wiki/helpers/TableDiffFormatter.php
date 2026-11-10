@@ -11,8 +11,6 @@ namespace Components\Wiki\Helpers;
 /**
  * Wikipedia Table style diff formatter.
  *
- * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class TableDiffFormatter extends DiffFormatter
 {

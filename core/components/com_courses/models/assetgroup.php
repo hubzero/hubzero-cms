@@ -22,7 +22,6 @@ class Assetgroup extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\AssetGroup';
 
     /**
@@ -30,7 +29,6 @@ class Assetgroup extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'asset_group';
 
     /**
@@ -66,7 +64,6 @@ class Assetgroup extends Base
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $siblings = null;
 
     /**

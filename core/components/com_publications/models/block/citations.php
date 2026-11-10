@@ -25,7 +25,6 @@ class Citations extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'citations';
 
     /**
@@ -33,7 +32,6 @@ class Citations extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parentname = null;
 
     /**
@@ -41,7 +39,6 @@ class Citations extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $manifest = null;
 
     /**
@@ -49,7 +46,6 @@ class Citations extends Base
      *
      * @var  integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $blockId = 0;
 
     /**

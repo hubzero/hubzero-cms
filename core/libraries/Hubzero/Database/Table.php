@@ -30,7 +30,6 @@ abstract class Table extends \stdClass
      *
      * @public string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableName = '';
 
     /**
@@ -38,7 +37,6 @@ abstract class Table extends \stdClass
      *
      * @public string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableKey = '';
 
     /**
@@ -46,7 +44,6 @@ abstract class Table extends \stdClass
      *
      * @public object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**
@@ -54,7 +51,6 @@ abstract class Table extends \stdClass
      *
      * @public boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $trackAssets = false;
 
     /**
@@ -62,7 +58,6 @@ abstract class Table extends \stdClass
      *
      * @public object  A Access Rules object.
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $assetRules;
 
     /**
@@ -70,7 +65,6 @@ abstract class Table extends \stdClass
      *
      * @public boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableLocked = false;
 
     /**
@@ -117,7 +111,6 @@ abstract class Table extends \stdClass
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $errors = [];
 
     /**
@@ -441,7 +434,6 @@ abstract class Table extends \stdClass
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetName()
     {
         $k = $this->tableKey;
@@ -457,7 +449,6 @@ abstract class Table extends \stdClass
      *
      * @return  string  The string to use as the title in the asset table.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetTitle()
     {
         return $this->getAssetName();
@@ -474,7 +465,6 @@ abstract class Table extends \stdClass
      * @param   integer  $id     Id to look up
      * @return  integer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetParentId($table = null, $id = null)
     {
         // For simple cases, parent to the asset root.
@@ -1572,7 +1562,6 @@ abstract class Table extends \stdClass
      * @return  boolean  True on success.
      * @throws  Exception
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function lock()
     {
         $this->db->lockTable($this->tableName);
@@ -1586,7 +1575,6 @@ abstract class Table extends \stdClass
      *
      * @return  boolean  True on success.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function unlock()
     {
         $this->db->unlockTables();

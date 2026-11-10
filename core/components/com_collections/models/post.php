@@ -22,7 +22,6 @@ class Post extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Collections\\Tables\\Post';
 
     /**
@@ -30,7 +29,6 @@ class Post extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_collections.post.description';
 
     /**

@@ -8,7 +8,6 @@
 
 namespace Components\Storefront\Models\ProductTypes\Subscriptions;
 
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class AccessGroupMembershipSubscription extends BaseSubscription
 {
     /**
@@ -29,7 +28,6 @@ class AccessGroupMembershipSubscription extends BaseSubscription
      * @return  void
      * @throws  Exception
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function getAccessGroupExpiration()
     {
         // This will get expiration from the correct place

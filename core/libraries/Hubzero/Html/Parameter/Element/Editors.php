@@ -22,7 +22,6 @@ class Editors extends Element
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'Editors';
 
     /**

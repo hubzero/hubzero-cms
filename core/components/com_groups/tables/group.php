@@ -34,7 +34,6 @@ class Group extends Table
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetName()
     {
         $k = $this->tableKey;
@@ -46,7 +45,6 @@ class Group extends Table
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetTitle()
     {
         return $this->title;
@@ -59,7 +57,6 @@ class Group extends Table
      * @param   integer  $id     The id for the asset
      * @return  integer  The id of the asset's parent
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.

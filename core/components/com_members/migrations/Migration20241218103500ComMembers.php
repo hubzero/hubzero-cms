@@ -38,7 +38,6 @@ class Migration20241218103500ComMembers extends Base
                 reset jos_xprofile fields to match.
     */
 
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanUnicodeProperNames()
     {
         $query = 'SELECT id FROM #__users where surname REGEXP "\\\\p{C}" '
@@ -72,7 +71,6 @@ class Migration20241218103500ComMembers extends Base
         }
     }
 
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanInvaldCharsProperNames()
     {
         foreach (['#__users', '#__xprofiles'] as $table) {

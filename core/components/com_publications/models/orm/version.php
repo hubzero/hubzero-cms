@@ -484,7 +484,6 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * @param   string  $as   What data to return
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function date($key, $as = '')
     {
         if (!$this->get($key) || $this->get($key) == '0000-00-00 00:00:00') {

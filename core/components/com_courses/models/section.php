@@ -21,7 +21,6 @@ use Hubzero\Facades\User;
  */
 class Section extends Base
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $permissions;
 
     /**

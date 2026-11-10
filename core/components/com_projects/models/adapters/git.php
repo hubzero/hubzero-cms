@@ -20,15 +20,10 @@ use Hubzero\Facades\User;
  */
 class Git extends Models\Adapter
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $fileLog;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $files;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $git;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $gitpath;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $profileAssoc;
 
     /**

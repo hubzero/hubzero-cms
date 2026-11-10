@@ -445,7 +445,6 @@ class Debug extends Plugin
      * @param   array  $arr
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function arr($arr)
     {
         $html = 'Array( ' . "\n";

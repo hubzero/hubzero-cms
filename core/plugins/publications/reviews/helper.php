@@ -22,7 +22,6 @@ use Hubzero\Facades\User;
  */
 class Helper extends \Hubzero\Base\Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     // Set and read from outside the class: the plugin hands the helper the
     // publication and the option it is working on, and the views read the
     // reviewer's own review back off it. The same is true of the resources

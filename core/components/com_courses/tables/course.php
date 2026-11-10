@@ -36,7 +36,6 @@ class Course extends Table
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetName()
     {
         $k = $this->tableKey;
@@ -48,7 +47,6 @@ class Course extends Table
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetTitle()
     {
         return $this->title;
@@ -61,7 +59,6 @@ class Course extends Table
      * @param   integer  $id     The id for the asset
      * @return  integer  The id of the asset's parent
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.
@@ -186,7 +183,6 @@ class Course extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildQuery($filters = [])
     {
         if (isset($filters['tag']) && $filters['tag'] != '') {

@@ -92,7 +92,6 @@ class Template extends Html
      * @param   string  $filename   The actual filename
      * @return  string  The contents of the template
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function loadTemplate($directory, $filename)
     {
         $contents = '';

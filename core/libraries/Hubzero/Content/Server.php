@@ -35,7 +35,6 @@ class Server extends Obj
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static $allowXsendfile = false;
 
     /**
@@ -57,7 +56,6 @@ class Server extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static $contentType;
 
     /**
@@ -221,7 +219,6 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function serveAttachment($filename, $saveas = null, $acceptranges = true)
     {
         return self::serveFile($filename, $saveas, 'attachment', $acceptranges);
@@ -235,7 +232,6 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function serveInline($filename, $acceptranges = true)
     {
         return self::serveFile($filename, null, 'inline', $acceptranges);
@@ -250,7 +246,6 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function serveFile($filename, $saveas = null, $disposition = 'inline', $acceptranges = true)
     {
         if (!self::valid($filename)) {

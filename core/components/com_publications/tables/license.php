@@ -84,7 +84,6 @@ class License extends Table
      * @param   array   $filters  Filters to build query from
      * @return  string  SQL
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildQuery($filters = [])
     {
         $query  = "FROM $this->tableName AS c";

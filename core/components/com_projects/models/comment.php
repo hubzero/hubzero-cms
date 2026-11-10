@@ -22,7 +22,6 @@ class Comment extends Model
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\Comment';
 
     /**
@@ -30,7 +29,6 @@ class Comment extends Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_projects.comment.comment';
 
     /**

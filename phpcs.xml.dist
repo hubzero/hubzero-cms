@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="HubZero">
-    <description>PSR-12, minus the two method-name sniffs the legacy API cannot satisfy</description>
+    <description>PSR-12</description>
 
     <file>core/bootstrap</file>
     <file>core/components</file>
@@ -19,11 +19,5 @@
     <arg value="np"/>
     <ini name="memory_limit" value="-1"/>
 
-    <rule ref="PSR12">
-        <!-- Hundreds of _prefixed and snake_case methods are public API that
-             hub-specific code and templates call; renaming them is a
-             compatibility break, not a style fix. -->
-        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
-        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
-    </rule>
+    <rule ref="PSR12"/>
 </ruleset>

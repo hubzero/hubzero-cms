@@ -23,7 +23,6 @@ class Popup extends Button
      *
      * @public string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'Popup';
 
     /**
@@ -91,7 +90,6 @@ class Popup extends Button
      * @param   integer  $left    Unused formerly left attribure.
      * @return  string   Command string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getCommand($name, $url, $width, $height, $top, $left)
     {
         if (substr($url, 0, 4) !== 'http') {

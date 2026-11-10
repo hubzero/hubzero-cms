@@ -18,7 +18,6 @@ use Hubzero\Facades\Request;
 /**
  * Group page archive model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Obj
 {

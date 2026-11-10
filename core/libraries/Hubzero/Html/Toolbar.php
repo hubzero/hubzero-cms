@@ -23,7 +23,6 @@ class Toolbar extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = '';
 
     /**
@@ -31,7 +30,6 @@ class Toolbar extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $bar = [];
 
     /**
@@ -39,7 +37,6 @@ class Toolbar extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $buttons = [];
 
     /**
@@ -47,7 +44,6 @@ class Toolbar extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $buttonPath = [];
 
     /**

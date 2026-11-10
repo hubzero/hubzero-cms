@@ -48,7 +48,6 @@ class Feedback extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -70,7 +69,6 @@ class Feedback extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->option));

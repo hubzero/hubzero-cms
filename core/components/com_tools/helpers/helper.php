@@ -58,7 +58,6 @@ class Helper
      * @param   string   $field
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function checkValidInput($field)
     {
         if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field == '') {
@@ -130,7 +129,6 @@ class Helper
      * @param   integer  $ticketid
      * @return  mixed
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function recordView($database, $ticketid)
     {
         $when = Date::toSql();

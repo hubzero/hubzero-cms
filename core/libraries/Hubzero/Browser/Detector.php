@@ -851,7 +851,6 @@ class Detector
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function setPlatform()
     {
         $this->device = 'computer';

@@ -24,7 +24,6 @@ class Economy extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db = null;
 
     /**
@@ -62,7 +61,6 @@ class Economy extends Obj
      * @param      string $type Point calculation type
      * @return     boolean False if errors, true on success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distributePoints($con, $type = 'royalty')
     {
         if (!is_object($con)) {

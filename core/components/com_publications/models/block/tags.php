@@ -23,7 +23,6 @@ class Tags extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'tags';
 
     /**
@@ -31,7 +30,6 @@ class Tags extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parentname = null;
 
     /**
@@ -39,7 +37,6 @@ class Tags extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $manifest = null;
 
     /**
@@ -47,7 +44,6 @@ class Tags extends Base
      *
      * @var  integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $blockId = 0;
 
     /**

@@ -12,9 +12,6 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
-// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-// @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +23,6 @@ use Hubzero\Facades\User;
  */
 class Watch extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
     protected $action;
     protected $database;

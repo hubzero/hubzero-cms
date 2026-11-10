@@ -22,9 +22,7 @@ use Hubzero\Facades\User;
  */
 class Impact extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
 
     /**
@@ -32,7 +30,6 @@ class Impact extends Plugin
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**
@@ -47,7 +44,6 @@ class Impact extends Plugin
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $stats = null;
 
     /**
@@ -166,7 +162,6 @@ class Impact extends Plugin
      * @param  integer  $uid
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function renderView($uid = 0)
     {
         // Build the final HTML

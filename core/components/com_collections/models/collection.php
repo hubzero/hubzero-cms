@@ -23,7 +23,6 @@ use Hubzero\Facades\Component;
  */
 class Collection extends Base
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $counts;
 
     /**
@@ -38,7 +37,6 @@ class Collection extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Collections\\Tables\\Collection';
 
     /**
@@ -46,7 +44,6 @@ class Collection extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_collections.collection.description';
 
     /**

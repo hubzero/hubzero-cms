@@ -29,7 +29,6 @@ class Certificate extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\Certificate';
 
     /**
@@ -37,7 +36,6 @@ class Certificate extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'certificate';
 
     /**
@@ -45,7 +43,6 @@ class Certificate extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $properties = null;
 
     /**
@@ -53,7 +50,6 @@ class Certificate extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $base = null;
 
     /**

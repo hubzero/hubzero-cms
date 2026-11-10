@@ -31,9 +31,7 @@ use Components\Groups\Tables\Reason;
  */
 class Members extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $output;
     protected $action;
     protected $authorized;

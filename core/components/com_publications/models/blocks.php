@@ -22,7 +22,6 @@ class Blocks extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $db = null;
 
     /**
@@ -30,7 +29,6 @@ class Blocks extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $objBlock = null;
 
     /**
@@ -38,7 +36,6 @@ class Blocks extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $blocks = [];
 
     /**
@@ -46,7 +43,6 @@ class Blocks extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $blockPath = [];
 
     /**

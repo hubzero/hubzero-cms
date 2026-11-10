@@ -70,7 +70,6 @@ class Geshi extends Plugin
      * @param   array   $matches  An array of matches (see preg_match_all)
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function replace(&$matches)
     {
         $args = self::parseAttributes($matches[1]);

@@ -12,7 +12,6 @@ use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
 use Hubzero\Facades\User;
 
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class MembershipAuditor extends BaseAuditor
 {
     /**

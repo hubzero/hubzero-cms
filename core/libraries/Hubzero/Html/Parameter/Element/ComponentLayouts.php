@@ -21,7 +21,6 @@ class ComponentLayouts extends Select
     /**
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'ComponentLayouts';
 
     /**
@@ -30,7 +29,6 @@ class ComponentLayouts extends Select
      * @param   object  &$node  XMLElement node object containing the settings for the element
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getOptions(&$node)
     {
         $options = [];

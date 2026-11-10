@@ -20,7 +20,6 @@ use Hubzero\Facades\Component;
 /**
  * Extension model
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class CustomExtensions extends Relational
 {
     /**

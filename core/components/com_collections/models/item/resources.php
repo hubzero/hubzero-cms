@@ -24,7 +24,6 @@ class Resources extends GenericItem
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $type = 'resource';
 
     /**

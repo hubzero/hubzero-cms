@@ -147,7 +147,6 @@ class Toolbar extends Facade
      * @param   string  $alt        An override for the alt text.
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function mediaManager($directory = '', $alt = 'JTOOLBAR_UPLOAD')
     {
         static::getRoot()->appendButton(

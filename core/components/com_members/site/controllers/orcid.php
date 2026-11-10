@@ -29,7 +29,6 @@ class Orcid extends SiteController
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $userName;
 
     /**
@@ -37,7 +36,6 @@ class Orcid extends SiteController
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $userOrcidID;
 
     /**
@@ -45,7 +43,6 @@ class Orcid extends SiteController
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $accessToken;
 
     /**
@@ -53,7 +50,6 @@ class Orcid extends SiteController
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $services = [
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
@@ -66,7 +62,6 @@ class Orcid extends SiteController
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $oauthToken = [
         'members' => 'https://orcid.org/oauth/token',
         'sandbox' => 'https://sandbox.orcid.org/oauth/token',

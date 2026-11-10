@@ -26,7 +26,6 @@ class Archive extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $config;
 
     /**
@@ -34,7 +33,6 @@ class Archive extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $adapter;
 
     /**

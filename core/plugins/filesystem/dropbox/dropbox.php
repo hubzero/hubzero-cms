@@ -51,7 +51,6 @@ class Dropbox extends Plugin
      * @param   array   $params  Client application data
      * @return  void
      **/
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function getAccessToken($params)
     {
         $oauthClient = new DropboxOauthClient();
@@ -69,7 +68,6 @@ class Dropbox extends Plugin
      * @param   array   $state  OAuth state
      * @return  void
      **/
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function setLocalOauthData($state)
     {
         $connectionId = Request::getInt('connection', 0);

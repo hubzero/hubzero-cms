@@ -49,7 +49,6 @@ class Authorization
      *
      * @return  bolean
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function isGuest()
     {
         return is_null($this->uid);
@@ -60,7 +59,6 @@ class Authorization
      *
      * @return  boolean
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function isSuperAdmin()
     {
         return $this->super_admin;
@@ -71,7 +69,6 @@ class Authorization
      *
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getGroups()
     {
         if (is_null($this->groups)) {
@@ -101,7 +98,6 @@ class Authorization
      *
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getGroupIds()
     {
         return array_keys($this->getGroups());
@@ -112,7 +108,6 @@ class Authorization
      *
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getGroupNames()
     {
         return array_values($this->getGroups());

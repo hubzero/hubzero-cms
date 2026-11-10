@@ -248,7 +248,6 @@ class Todo extends Relational
      * @param   string  $as   What data to return
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function date($key, $as = '')
     {
         $dt = $this->get($key);

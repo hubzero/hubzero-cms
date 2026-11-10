@@ -20,7 +20,6 @@ class View extends AbstractView
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $viewName = 'pagination';
 
     /**
@@ -28,7 +27,6 @@ class View extends AbstractView
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $layoutName = 'paginator';
 
     /**

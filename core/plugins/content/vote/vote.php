@@ -16,7 +16,6 @@ use Hubzero\Facades\Request;
 /**
  * Vote plugin.
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Vote extends Plugin
 {

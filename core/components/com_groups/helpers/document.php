@@ -13,7 +13,6 @@ use Hubzero\Utility\Str;
 use Hubzero\Facades\App;
 
 /**
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Document extends Obj
 {

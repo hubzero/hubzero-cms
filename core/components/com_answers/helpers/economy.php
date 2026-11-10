@@ -30,7 +30,6 @@ class Economy extends Obj
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db = null;
 
     /**
@@ -68,7 +67,6 @@ class Economy extends Obj
      * @param   string   $type  Transaction type
      * @return  mixed
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function calculateMarketvalue($id, $type = 'regular')
     {
         if ($id === null) {
@@ -136,7 +134,6 @@ class Economy extends Obj
      * @param   string   $type      Transaction type
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distributePoints($qid, $Q_owner, $BA_owner, $type)
     {
         if ($qid === null) {

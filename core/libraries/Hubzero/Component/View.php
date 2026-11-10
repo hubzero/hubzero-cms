@@ -24,7 +24,6 @@ class View extends AbstractView
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $layoutName = 'display';
 
     /**

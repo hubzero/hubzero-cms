@@ -28,13 +28,11 @@ class Tinymce extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**
      * Base path for editor files
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
     /**

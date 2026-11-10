@@ -23,7 +23,6 @@ trait ErrorBag
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $errors = [];
 
     /**

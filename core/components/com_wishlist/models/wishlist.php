@@ -586,7 +586,6 @@ class Wishlist extends Relational
      * @param   mixed  $data
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function splitList($data = '')
     {
         if (is_array($data)) {

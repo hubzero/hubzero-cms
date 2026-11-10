@@ -22,7 +22,6 @@ class Blank extends SearchResult
      * @return  void
      * @throws  Exception  Exception description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function toAssociative()
     {
         throw new Exception('empty result -> to_associative');

@@ -26,7 +26,6 @@ class Link extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'link';
 
     /**
@@ -34,7 +33,6 @@ class Link extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $connector  = ['path'];
 
     /**

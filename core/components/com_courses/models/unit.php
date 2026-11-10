@@ -18,7 +18,6 @@ use Hubzero\Facades\App;
  */
 class Unit extends Base
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $assetgroupsBackup;
 
     protected $course_id = 0;
@@ -28,7 +27,6 @@ class Unit extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\Unit';
 
     /**
@@ -36,7 +34,6 @@ class Unit extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'unit';
 
     /**

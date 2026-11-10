@@ -42,7 +42,6 @@ use Components\Citations\Models\Importer;
  */
 class Citations extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
     protected $access;
     protected $action;

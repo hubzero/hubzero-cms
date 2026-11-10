@@ -18,7 +18,6 @@ use stdClass;
 /**
  * Member importer
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Import extends Base
 {

@@ -23,7 +23,6 @@ class Boosts extends AdminController
     protected $factory;
     protected $typeHelper;
 
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $taskMap = [
         '__default' => 'list',
     ];

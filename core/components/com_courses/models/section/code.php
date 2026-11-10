@@ -23,7 +23,6 @@ class Code extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionCode';
 
     /**
@@ -31,7 +30,6 @@ class Code extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'section_code';
 
     /**

@@ -20,7 +20,6 @@ class MemberBadge extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\MemberBadge';
 
     /**
@@ -28,7 +27,6 @@ class MemberBadge extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'memberbadge';
 
     /**

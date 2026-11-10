@@ -28,7 +28,6 @@ class Tool extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'tool';
 
     /**
@@ -36,7 +35,6 @@ class Tool extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $connector  = ['object_name', 'object_instance'];
 
     /**

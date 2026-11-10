@@ -20,15 +20,10 @@ use Hubzero\Facades\User;
  */
 class Sync extends \Hubzero\Base\Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $connect;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $logPath;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $path;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
     protected $model;
     protected $params;

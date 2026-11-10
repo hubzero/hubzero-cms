@@ -23,7 +23,6 @@ class Help extends Base implements CommandInterface
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $commands = [];
 
     /**

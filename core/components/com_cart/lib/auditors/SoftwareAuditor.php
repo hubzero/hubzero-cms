@@ -13,7 +13,6 @@ use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\Download;
 use Hubzero\Facades\User;
 
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class SoftwareAuditor extends BaseAuditor
 {
     /**

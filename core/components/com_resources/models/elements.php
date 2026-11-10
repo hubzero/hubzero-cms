@@ -23,7 +23,6 @@ class Elements
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $raw = null;
 
     /**
@@ -31,7 +30,6 @@ class Elements
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $schema = null;
 
     /**
@@ -39,7 +37,6 @@ class Elements
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $elements = [];
 
     /**
@@ -47,7 +44,6 @@ class Elements
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $elementPath = [];
 
     /**

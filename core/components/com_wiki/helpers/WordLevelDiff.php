@@ -13,7 +13,6 @@ namespace Components\Wiki\Helpers;
  *
  * Long description (if any) ...
  *
- * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  */
 class WordLevelDiff extends MappedDiff
 {

@@ -39,7 +39,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $this->queryIfTableExists($announcementsTable, $query);
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateSafeAddColumns($table, $columns)
     {
         $query = $this->generateSafeAlterTableColumnOperation(
@@ -51,7 +50,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -65,7 +63,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $addColumnStatement;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateSafeDropColumns($table, $columns)
     {
         $query = $this->generateSafeAlterTableColumnOperation(
@@ -77,7 +74,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -91,7 +87,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $dropColumnStatement;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
@@ -105,7 +100,6 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function queryIfTableExists($tableName, $query)
     {
         if ($this->db->tableExists($tableName)) {

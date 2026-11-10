@@ -22,15 +22,10 @@ use Hubzero\Facades\Route;
  */
 class Projects extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $filters;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $total;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $user;
     protected $model;
 
@@ -39,7 +34,6 @@ class Projects extends Plugin
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**
@@ -197,7 +191,6 @@ class Projects extends Plugin
      * @param  string  $which  The type of entries to display
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function renderView($which = 'all')
     {
         // Build the final HTML
@@ -243,7 +236,6 @@ class Projects extends Plugin
      *
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function updates()
     {
         // Build the final HTML

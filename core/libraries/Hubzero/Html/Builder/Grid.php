@@ -314,7 +314,6 @@ class Grid
      * @param   boolean  $tooltip  True if an overlib with checkout information should be created.
      * @return  string   HTML for the icon and tooltip
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function checkedOutIcon(&$row, $tooltip = 1)
     {
         $hover = '<span class="checkedout">';

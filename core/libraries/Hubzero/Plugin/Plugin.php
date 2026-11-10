@@ -26,7 +26,6 @@ class Plugin
      * @var  object
      * @deprecated
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $subject = null;
 
     /**
@@ -41,7 +40,6 @@ class Plugin
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pluginName = null;
 
     /**
@@ -49,7 +47,6 @@ class Plugin
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pluginType = null;
 
     /**
@@ -65,7 +62,6 @@ class Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = false;
 
     /**

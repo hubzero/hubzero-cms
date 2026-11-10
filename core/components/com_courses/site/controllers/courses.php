@@ -62,7 +62,6 @@ class Courses extends SiteController
      * @param   array  $course_pages  List of roup pages
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildPathway($course_pages = [])
     {
         if (Pathway::count() <= 0) {
@@ -84,7 +83,6 @@ class Courses extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildTitle()
     {
         //set title used in view
@@ -247,7 +245,6 @@ class Courses extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, false);

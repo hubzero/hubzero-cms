@@ -16,7 +16,6 @@ use Hubzero\Facades\User;
  */
 class Collection extends Base
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $creator;
 
     /**

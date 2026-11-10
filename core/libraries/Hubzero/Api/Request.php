@@ -352,7 +352,6 @@ class Request
      * @param      unknown $input Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore,PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function parseAccept($input)
     {
         static $_types = [

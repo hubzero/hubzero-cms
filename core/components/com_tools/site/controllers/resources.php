@@ -596,7 +596,6 @@ class Resources extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

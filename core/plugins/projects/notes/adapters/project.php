@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms

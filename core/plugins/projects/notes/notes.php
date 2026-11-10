@@ -27,15 +27,10 @@ use Hubzero\Facades\User;
  */
 class Notes extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
     protected $model;
     protected $note;

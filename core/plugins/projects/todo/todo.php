@@ -30,17 +30,11 @@ use Hubzero\Utility\Arr;
  */
 class Todo extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $mine;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $todoid;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
     protected $model;
     protected $todo;

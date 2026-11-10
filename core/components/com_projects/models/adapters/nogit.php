@@ -19,11 +19,8 @@ use Hubzero\Facades\User;
  */
 class Nogit extends Models\Adapter
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $files;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $nogit;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $profileAssoc;
 
     /**
@@ -156,7 +153,6 @@ class Nogit extends Models\Adapter
      * @param   object  $file  Models\File
      * @return  bool
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function shouldSkipFile($file)
     {
         $fileName = $file->get('name');
@@ -204,7 +200,6 @@ class Nogit extends Models\Adapter
      * @param   array  $folders
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function list($items, $params, $folders = [])
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
@@ -368,7 +363,6 @@ class Nogit extends Models\Adapter
      * @param   string  $property
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function file($file, $dirPath, $property = null)
     {
         if (isset($this->files[$file->get('localPath')])) {

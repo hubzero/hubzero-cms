@@ -27,7 +27,6 @@ class Publication extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'publication';
 
     /**
@@ -35,7 +34,6 @@ class Publication extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $connector = ['path'];
 
     /**

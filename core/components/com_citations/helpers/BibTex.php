@@ -100,7 +100,6 @@ class BibTex
      * @access private
      * @var    array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $delimiters;
 
     /**
@@ -117,7 +116,6 @@ class BibTex
      * @access private
      * @var    array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $options;
 
     /**
@@ -152,9 +150,7 @@ class BibTex
      */
     public $authorstring;
 
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $oldpos;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pos;
 
     /**
@@ -392,7 +388,6 @@ class BibTex
      * @param  string  $entry The entry
      * @return array   The representation of the entry or false if there is a problem
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function parseEntry($entry)
     {
         $entrycopy = '';
@@ -489,7 +484,6 @@ class BibTex
      * @param  int     the    current used place of the '='
      * @return bool    true if the '=' is correct, false if it contains to an equation
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function checkEqualSign($entry, $position)
     {
         $ret = true;
@@ -549,7 +543,6 @@ class BibTex
      * @param  string  $entry The entry to check
      * @return bool    true if allowed, false otherwise
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function checkAllowedType($entry)
     {
         return in_array($entry, $this->allowedTypes);
@@ -566,7 +559,6 @@ class BibTex
      * @param  string  $entry The text of the entry until the at
      * @return bool    true if the at is correct, false if the at is likely to begin the next entry.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function checkAt($entry)
     {
         $ret     = false;
@@ -615,7 +607,6 @@ class BibTex
      * @param  string  $entry The entry where the Delimiter should be stripped from
      * @return string  Stripped entry
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function stripDelimiter($entry)
     {
         $beginningdels = array_keys($this->delimiters);
@@ -641,7 +632,6 @@ class BibTex
      * @param  string  $entry The entry to unwrap
      * @return string  unwrapped entry
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function unwrap($entry)
     {
         $entry = preg_replace('/\s+/', ' ', $entry);
@@ -655,7 +645,6 @@ class BibTex
      * @param  string  $entry The entry to wrap
      * @return string  wrapped entry
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function wordwrap($entry)
     {
         if (('' != $entry) && (is_string($entry))) {
@@ -674,7 +663,6 @@ class BibTex
      * @param  string  $entry The entry with the authors
      * @return array   the extracted authors
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function extractAuthors($entry)
     {
         $entry       = $this->unwrap($entry);
@@ -817,7 +805,6 @@ class BibTex
      * @param  string  $word
      * @return int     The Case or Exception if there was a problem
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function determineCase($word)
     {
         $ret         = -1;
@@ -865,7 +852,6 @@ class BibTex
      * @param  string  $wholeentry The whole BibTex Entry which the one line is part of
      * @return void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function validateValue($entry, $wholeentry)
     {
         //There is no @ allowed if the entry is enclosed by braces
@@ -902,7 +888,6 @@ class BibTex
      * @param  string  $value The value in which curly braces to be removed
      * @param  string  Value  with removed curly braces
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function removeCurlyBraces($value)
     {
         //First we save the delimiters
@@ -939,7 +924,6 @@ class BibTex
      * @param  string  $entry      The line of the entry where the warning occurred
      * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function generateWarning($type, $entry, $wholeentry = '')
     {
         $warning['warning']    = $type;
@@ -993,7 +977,6 @@ class BibTex
      * @param  array   $array Author array
      * @return string  the formatted author string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function formatAuthor($array)
     {
         if (!array_key_exists('von', $array)) {

@@ -21,7 +21,6 @@ use Hubzero\Facades\App;
  */
 class Set extends Obj implements Iterator
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
     protected $terms;
 
@@ -189,7 +188,6 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTags()
     {
         return ($this->tags instanceof Blank) ? [] : $this->tags;
@@ -202,7 +200,6 @@ class Set extends Obj implements Iterator
      *
      * @return     integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getLimit()
     {
         return $this->limit;
@@ -215,7 +212,6 @@ class Set extends Obj implements Iterator
      *
      * @return     integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getOffset()
     {
         return $this->offset;
@@ -229,7 +225,6 @@ class Set extends Obj implements Iterator
      * @param      unknown $limit Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setLimit($limit)
     {
         $this->limit = $limit;
@@ -243,7 +238,6 @@ class Set extends Obj implements Iterator
      * @param      unknown $offset Parameter description (if any) ...
      * @return     void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function setOffset($offset)
     {
         $this->offset = $offset;
@@ -256,7 +250,6 @@ class Set extends Obj implements Iterator
      *
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getWidgets()
     {
         return $this->widgets;
@@ -269,7 +262,6 @@ class Set extends Obj implements Iterator
      *
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getShownResults()
     {
         return $this->shown_results;
@@ -282,7 +274,6 @@ class Set extends Obj implements Iterator
      *
      * @return     integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getShownCount()
     {
         return count($this->shown_results);
@@ -295,7 +286,6 @@ class Set extends Obj implements Iterator
      *
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getResultCounts()
     {
         return $this->result_counts;
@@ -308,7 +298,6 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function getTagWeightModifier()
     {
         return array_key_exists('tagmod', self::$plugin_weights) ? self::$plugin_weights['tagmod'] : 1.3;
@@ -321,7 +310,6 @@ class Set extends Obj implements Iterator
      *
      * @return     string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getCustomTitle()
     {
         return $this->custom_title;
@@ -696,7 +684,6 @@ class Set extends Obj implements Iterator
      *
      * @return     integer Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTotalCount()
     {
         return $this->total_count;
@@ -709,7 +696,6 @@ class Set extends Obj implements Iterator
      *
      * @return     integer Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTotalListCount()
     {
         return $this->total_list_count;
@@ -722,7 +708,6 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getPluginListCount()
     {
         @list($term_plugin, $term_section) = $this->terms->getSection();
@@ -744,7 +729,6 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getPluginCount()
     {
         list($term_plugin, $term_section) = $this->terms->getSection();
@@ -762,7 +746,6 @@ class Set extends Obj implements Iterator
      *
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getShown()
     {
         return $this->shown_results;

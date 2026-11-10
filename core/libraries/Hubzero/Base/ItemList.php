@@ -26,7 +26,6 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pos = 0;
 
     /**
@@ -34,7 +33,6 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $total = 0;
 
     /**
@@ -42,7 +40,6 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $data = [];
 
     /**

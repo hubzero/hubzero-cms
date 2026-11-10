@@ -29,7 +29,6 @@ use Hubzero\Facades\Date;
  */
 class Connect extends Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     // Read from outside the class: the project files plugin asks the
     // connection which services are active.
     public $active;

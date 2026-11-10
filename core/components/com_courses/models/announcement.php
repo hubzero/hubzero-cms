@@ -24,7 +24,6 @@ class Announcement extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\Announcement';
 
     /**
@@ -32,7 +31,6 @@ class Announcement extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_courses.announcement.content';
 
     /**
@@ -40,7 +38,6 @@ class Announcement extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'announcement';
 
     /**

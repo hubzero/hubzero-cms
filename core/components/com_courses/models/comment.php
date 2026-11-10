@@ -28,9 +28,7 @@ class Comment extends ItemComment
      *
      * @var  string
      */
-    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     private $base = null;
-    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Generate and return various links to the entry

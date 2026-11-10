@@ -22,7 +22,6 @@ class Download
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $formatter;
 
     /**
@@ -30,7 +29,6 @@ class Download
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $format = 'Bibtex';
 
     /**
@@ -38,7 +36,6 @@ class Download
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $reference = null;
 
     /**
@@ -46,7 +43,6 @@ class Download
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $formatters = [];
 
     /**
@@ -54,7 +50,6 @@ class Download
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $mime = '';
 
     /**
@@ -62,7 +57,6 @@ class Download
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $extension = '';
 
     /**

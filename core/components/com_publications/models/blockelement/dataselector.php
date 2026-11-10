@@ -21,7 +21,6 @@ class Dataselector extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'dataselector';
 
     /**
@@ -29,7 +28,6 @@ class Dataselector extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $git = null;
 
     /**

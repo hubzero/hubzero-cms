@@ -26,7 +26,6 @@ class Html extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $links = [];
 
     /**
@@ -34,7 +33,6 @@ class Html extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $custom = [];
 
     /**
@@ -63,7 +61,6 @@ class Html extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $file = null;
 
     /**
@@ -71,7 +68,6 @@ class Html extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parsedTemplate = '';
 
     /**
@@ -79,7 +75,6 @@ class Html extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $templateTags = [];
 
     /**
@@ -87,7 +82,6 @@ class Html extends Base
      *
      * @var  integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $caching = null;
 
     /**
@@ -492,7 +486,6 @@ class Html extends Base
      * @param   string  $filename   The actual filename
      * @return  string  The contents of the template
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function loadTemplate($directory, $filename)
     {
         $contents = '';
@@ -541,7 +534,6 @@ class Html extends Base
      * @param   array   $params  Parameters to determine the template
      * @return  object  instance of $this to allow chaining
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function fetchTemplate($params = [])
     {
         // Check
@@ -601,7 +593,6 @@ class Html extends Base
      *
      * @return  object  instance of $this to allow chaining
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function parseTemplate()
     {
         $matches = [];
@@ -664,7 +655,6 @@ class Html extends Base
      *
      * @return  string  rendered template
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function renderTemplate()
     {
         $replace = [];

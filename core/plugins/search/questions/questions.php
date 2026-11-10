@@ -14,7 +14,6 @@ use Hubzero\Facades\App;
 /**
  * Search questions
  *
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class Questions extends Plugin
 {

@@ -19,7 +19,6 @@ use Hubzero\Facades\User;
  */
 class Permissions extends Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**
@@ -27,7 +26,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $config = null;
 
     /**
@@ -35,7 +33,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $managers = null;
 
     /**
@@ -43,7 +40,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $manager = null;
 
     /**
@@ -51,7 +47,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $students = null;
 
     /**
@@ -59,7 +54,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $student = null;
 
     /**
@@ -67,7 +61,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $courseId = null;
 
     /**
@@ -75,7 +68,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $offeringId = null;
 
     /**
@@ -83,7 +75,6 @@ class Permissions extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $sectionId = null;
 
     /**

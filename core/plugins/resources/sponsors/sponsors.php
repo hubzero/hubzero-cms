@@ -21,11 +21,8 @@ use Hubzero\Facades\Route;
  */
 class Sponsors extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $controller;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
     protected $database;
 
@@ -34,7 +31,6 @@ class Sponsors extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**

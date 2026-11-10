@@ -53,7 +53,6 @@ class Paginator extends Obj
      *
      * @public boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $viewall = false;
 
     /**
@@ -61,7 +60,6 @@ class Paginator extends Obj
      *
      * @public array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $limits = [];
 
     /**
@@ -70,7 +68,6 @@ class Paginator extends Obj
      *
      * @public array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $additionalUrlParams = [];
 
     /**
@@ -299,7 +296,6 @@ class Paginator extends Obj
      *
      * @return  object  Pagination data object.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildDataObject()
     {
         $this->setAdditionalUrlParam('limit', $this->limit);

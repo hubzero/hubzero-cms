@@ -74,7 +74,6 @@ class UsersCategoriesv2r0 extends ApiController
      * @param   integer  $currentUserId
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function instantiateUsersCategories($categoriesIds, $currentUserId)
     {
         $usersCategories = array_map(function ($categoryId) use ($currentUserId) {
@@ -95,7 +94,6 @@ class UsersCategoriesv2r0 extends ApiController
      * @param   array  $usersCategories
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function saveUsersCategories($usersCategories)
     {
         $errors = [];
@@ -164,7 +162,6 @@ class UsersCategoriesv2r0 extends ApiController
      * @param   array  $usersCategories
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function destroyUsersCategories($usersCategories)
     {
         $errors = [];
@@ -186,7 +183,6 @@ class UsersCategoriesv2r0 extends ApiController
      * @param   integer  $userId
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function requiresMatchingUser($currentUserId, $userId)
     {
         if ((int) $currentUserId !== (int) $userId) {

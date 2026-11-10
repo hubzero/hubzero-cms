@@ -23,7 +23,6 @@ class TemplateStyle extends Element
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'TemplateStyle';
 
     /**
@@ -65,7 +64,6 @@ class TemplateStyle extends Element
      *
      * @return  integer  The template style id.
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getSelected()
     {
         $id = Request::getVar('cid', 0);

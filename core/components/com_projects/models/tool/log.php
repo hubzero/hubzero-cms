@@ -19,9 +19,7 @@ use Hubzero\Facades\User;
  */
 class Log extends Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $actor;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $creator;
 
     /**
@@ -29,7 +27,6 @@ class Log extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolLog';
 
     /**

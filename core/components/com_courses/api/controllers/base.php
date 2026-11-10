@@ -16,7 +16,6 @@ use Hubzero\Facades\App;
 /**
  * API controller for the courses component
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Base extends ApiController
 {
     protected $course_id = null;

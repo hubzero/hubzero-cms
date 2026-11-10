@@ -67,7 +67,6 @@ class Base extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function includeScripts()
     {
         // No need in some controllers
@@ -89,7 +88,6 @@ class Base extends SiteController
      * @param   string  $type
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function setNotification($message, $type = 'success')
     {
         // If message is set push to notifications
@@ -104,7 +102,6 @@ class Base extends SiteController
      * @param   string  $type
      * @return  mixed   message if they exist
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getNotifications($type = 'success')
     {
         // Get messages in queue
@@ -129,7 +126,6 @@ class Base extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function login()
     {
         $task = (isset($this->task) && !empty($this->task))
@@ -165,7 +161,6 @@ class Base extends SiteController
      * @param   string  $layout
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function showError($layout = 'default')
     {
         // Need to be project creator
@@ -183,7 +178,6 @@ class Base extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildTitle()
     {
         $active  = isset($this->active) ? $this->active : null;
@@ -243,7 +237,6 @@ class Base extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildPathway()
     {
         $group_tasks = ['start', 'setup', 'view'];
@@ -387,7 +380,6 @@ class Base extends SiteController
      * @param  int     $owner    Project owner ID if project owner
      * @return void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
     {
         // Is logging enabled?
@@ -423,7 +415,6 @@ class Base extends SiteController
      * @param   integer  $managers_only
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function notifyTeam($managers_only = 0)
     {
         // Is messaging turned on?

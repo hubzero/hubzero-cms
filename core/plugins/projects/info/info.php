@@ -5,9 +5,6 @@ namespace Plugins\Projects\Info;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Lang;
 
-// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-// @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +16,6 @@ use Hubzero\Facades\Lang;
  */
 class Info extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
 
     /**

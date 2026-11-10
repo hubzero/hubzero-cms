@@ -24,11 +24,8 @@ use Hubzero\Facades\User;
  */
 class Projects extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $filters;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $projects;
     protected $action;
     protected $authorized;
@@ -40,7 +37,6 @@ class Projects extends Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
-     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $autoloadLanguage = true;
 
@@ -315,7 +311,6 @@ class Projects extends Plugin
      * @param   string  $which  The type of entries to display
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function renderView($which = 'owned')
     {
         $which = strtolower($which);
@@ -359,7 +354,6 @@ class Projects extends Plugin
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function updates()
     {
         $filters = [
@@ -405,7 +399,6 @@ class Projects extends Plugin
     /**
      * Update one or all projects
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function update()
     {
         // Check for request forgeries

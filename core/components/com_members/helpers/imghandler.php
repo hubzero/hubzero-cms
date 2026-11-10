@@ -85,7 +85,6 @@ class ImgHandler extends Obj
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $memoryTOALLOCATE = '100M';
 
     /**

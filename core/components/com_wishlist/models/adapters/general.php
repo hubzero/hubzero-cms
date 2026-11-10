@@ -21,7 +21,6 @@ class General extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $segments = [
         'option' => 'com_wishlist',
     ];
@@ -31,7 +30,6 @@ class General extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'general';
 
     /**

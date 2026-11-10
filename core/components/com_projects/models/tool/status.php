@@ -17,7 +17,6 @@ use Hubzero\Facades\App;
  */
 class Status extends Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $statuses;
 
     /**
@@ -25,7 +24,6 @@ class Status extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolStatus';
 
     /**

@@ -227,7 +227,6 @@ class Comment extends Relational
      * @param   array   $matches  Macro info
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getAttachment($matches)
     {
         $tokens = explode('#', $matches[0]);

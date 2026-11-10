@@ -20,7 +20,6 @@ use Hubzero\Facades\Request;
  *
  * Inspired by work from Jan Pavelka (www.phoca.cz)
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Opengraph extends Plugin
 {

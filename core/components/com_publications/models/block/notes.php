@@ -21,7 +21,6 @@ class Notes extends Base
   *
   * @var        string
   */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name              = 'notes';
 
     /**
@@ -29,7 +28,6 @@ class Notes extends Base
   *
   * @var        string
   */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parentname        = 'description';
 
     /**
@@ -37,7 +35,6 @@ class Notes extends Base
   *
   * @var        string
   */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $manifest          = null;
 
     /**
@@ -45,7 +42,6 @@ class Notes extends Base
   *
   * @var        integer
   */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $blockId           = 0;
 
     /**

@@ -58,7 +58,6 @@ class Job extends Table
      * @param   integer  $active   Active openings?
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getMyOpenings($uid = null, $current = 0, $admin = 0, $active = 0)
     {
         if ($uid === null) {
@@ -119,7 +118,6 @@ class Job extends Table
      * @param   string   $subscription  Subscription code
      * @return  object
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getOpenings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
     {
         $defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
@@ -308,7 +306,6 @@ class Job extends Table
      * @param   integer  $jid  Job ID
      * @return  boolean  True upon success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function deleteOpening($jid)
     {
         if ($jid === null) {
@@ -336,7 +333,6 @@ class Job extends Table
      * @param   string   $jobcode  Job code
      * @return  mixed    False if errors, array if records found, null if not
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getOpening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
     {
         if ($jid === null && $jobcode == '') {

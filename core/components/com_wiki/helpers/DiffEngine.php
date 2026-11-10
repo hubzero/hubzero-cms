@@ -28,8 +28,6 @@ namespace Components\Wiki\Helpers;
  * Line length limits for robustness added by Tim Starling, 2005-08-31
  *
  * @author Geoffrey T. Dairiki, Tim Starling
- * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DiffEngine
 {

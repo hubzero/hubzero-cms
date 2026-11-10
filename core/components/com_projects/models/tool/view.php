@@ -22,7 +22,6 @@ class View extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolView';
 
     /**

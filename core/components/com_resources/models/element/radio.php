@@ -21,7 +21,6 @@ class Radio extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'Radio boxes';
 
     /**

@@ -21,7 +21,6 @@ class Usage
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $db = null;
 
     /**
@@ -29,7 +28,6 @@ class Usage
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $pubid = null;
 
     /**
@@ -37,7 +35,6 @@ class Usage
      *
      * @var unknown
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $type = null;
 
     /**
@@ -163,7 +160,6 @@ class Usage
      *
      * @return  string  HTML
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function displaySubstats()
     {
         $html  = '<table class="usagestats" summary="Review and Citation statistics for this publication">' . "\n";

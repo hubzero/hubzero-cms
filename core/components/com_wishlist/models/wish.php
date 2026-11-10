@@ -256,7 +256,6 @@ class Wish extends Relational
      * @param   string  $rtrn  What data to return
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function date($key, $rtrn = '')
     {
         $rtrn = strtolower($rtrn);

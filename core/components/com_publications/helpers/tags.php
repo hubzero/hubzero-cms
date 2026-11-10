@@ -24,7 +24,6 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var unknown
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $db  = null;
 
     /**
@@ -32,7 +31,6 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $tbl = 'tags';
 
     /**
@@ -40,7 +38,6 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var unknown
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $oid = null;
 
     /**
@@ -48,7 +45,6 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $tagTbl = '#__tags';
 
     /**
@@ -56,7 +52,6 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $objTbl = '#__tags_object';
 
     /**
@@ -83,7 +78,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Has admin access?
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTagsOnObject(
         $object_id,
         $offset = 0,
@@ -113,7 +107,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $strength  Tag strength
      * @return     boolean True on success, false if errors
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function safeTag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
     {
         if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
@@ -181,7 +174,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string  $tag  Parameter description (if any) ...
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTagsWithObjects($id = 0, $category = 0, $tag = '')
     {
         $now = Date::toSql();
@@ -257,7 +249,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      boolean $admin      Has admin access?
      * @return     boolean True on success, false if errors
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function tagObject($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
     {
         $cloud = new Cloud($object_id, $this->tbl);
@@ -273,7 +264,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Has admin access?
      * @return     boolean True on success, false if errors
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function removeTag($tagger_id, $object_id, $tag, $admin)
     {
         $cloud = new Cloud($object_id, $this->tbl);
@@ -286,7 +276,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $object_id Object ID
      * @return     boolean True on success, false if errors
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function removeAllTags($object_id)
     {
         $cloud = new Cloud($object_id, $this->tbl);
@@ -300,7 +289,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Raw tag
      * @return     string Normalized tag
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function normalizeTag($tag)
     {
         $t = \Components\Tags\Models\Tag::blank();
@@ -313,7 +301,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Normalized tag
      * @return     mixed False if errors, integer on success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTagId($tag)
     {
         if (!isset($tag)) {
@@ -331,7 +318,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Raw tag
      * @return     mixed False if errors, integer on success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getRawTagId($tag)
     {
         if (!isset($tag)) {
@@ -347,7 +333,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Show admin tags?
      * @return     integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function countAllTags($admin = 0)
     {
         $t = \Components\Tags\Models\Tag::all();
@@ -365,7 +350,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $objectid  Object ID
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTagCloud($showsizes = 0, $admin = 0, $objectid = null)
     {
         $cloud = new Cloud($objectid, $this->tbl);
@@ -384,7 +368,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Admin tags?
      * @return     string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTagString(
         $oid,
         $offset = 0,
@@ -405,7 +388,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $keep       Use normalized tag as array key
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
     public function parseTags($tag_string, $keep = 0)
     {
         $newwords = [];
@@ -471,7 +453,6 @@ class Tags extends \Hubzero\Base\Obj
      * @param      array   $filterby Extra, optional filters
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getObjectsOnTag(
         $tag = '',
         $id = 0,

@@ -21,7 +21,6 @@ use Hubzero\Facades\Date;
  */
 class Changelog extends Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $raw;
 
     /**

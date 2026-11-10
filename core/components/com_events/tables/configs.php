@@ -8,8 +8,6 @@
 
 namespace Components\Events\Tables;
 
-// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-
 /**
  * Events class for getting all configurations
  */

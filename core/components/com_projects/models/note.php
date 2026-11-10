@@ -19,11 +19,8 @@ use Hubzero\Facades\Request;
  */
 class Note extends \Components\Wiki\Models\Book
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $cache;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope;
 
     /**

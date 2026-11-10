@@ -24,25 +24,15 @@ use Hubzero\Facades\User;
 /** @phpstan-consistent-constructor */
 class Tool extends Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $actor;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentConfig;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $creator;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $lastUpdate;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $lastView;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $log;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $status;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $statusChanger;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $version;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $viewLog;
 
     /**
@@ -50,7 +40,6 @@ class Tool extends Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Projects\\Tables\\Tool';
 
     /**
@@ -355,7 +344,6 @@ class Tool extends Model
      * @param   string  $as   What data to return
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function date($key, $as = '')
     {
         if ($this->get($key) == '0000-00-00 00:00:00') {

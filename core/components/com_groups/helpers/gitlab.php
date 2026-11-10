@@ -239,7 +239,6 @@ class Gitlab
      * @param  array  $params   [description]
      * @return [type]           [description]
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function putRequest($resource, $params = [])
     {
         $requestOptions = array_merge(['form_params' => $params], $this->options);

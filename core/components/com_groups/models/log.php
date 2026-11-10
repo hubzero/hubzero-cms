@@ -16,7 +16,6 @@ use Hubzero\Facades\App;
 /**
  * Group log model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Log extends Model
 {

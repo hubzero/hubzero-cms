@@ -86,7 +86,6 @@ class Teller extends Obj
      *
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function creditSummary()
     {
         return $this->credit;
@@ -189,7 +188,6 @@ class Teller extends Obj
      * @param   integer  $amount  Amount to credit
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function creditAdjustment($amount)
     {
         $amount = intval($amount);
@@ -216,7 +214,6 @@ class Teller extends Obj
      * @param   number   $amount  Amount to subtract from balance
      * @return  boolean  True if they have enough credit
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function creditCheck($amount)
     {
         $b = $this->balance;
@@ -238,7 +235,6 @@ class Teller extends Obj
      * @param   integer  $amount  Amount to check
      * @return  integer
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function amountCheck($amount)
     {
         $amount = intval($amount);
@@ -260,7 +256,6 @@ class Teller extends Obj
      * @param   integer  $ref     ID of item transaction references
      * @return  boolean  True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function save($type, $amount, $desc, $cat, $ref)
     {
         if (!$this->saveBalance($type)) {
@@ -280,7 +275,6 @@ class Teller extends Obj
      * @param   string   $type  Record type (inserting or updating)
      * @return  boolean  True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function saveBalance($type)
     {
         if ($type == 'creation') {
@@ -315,7 +309,6 @@ class Teller extends Obj
      * @param   integer  $ref     ID of item transaction references
      * @return  boolean  True on success
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function saveTransaction($type, $amount, $desc, $cat, $ref)
     {
         $transaction = Transaction::blank()->set([

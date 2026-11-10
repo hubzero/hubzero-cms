@@ -31,21 +31,13 @@ use Components\Projects\Models\Orm\Project;
  */
 class Files extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $connect;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $publishing;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $rSync;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $remoteService;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
     protected $forceSync;
     protected $model;

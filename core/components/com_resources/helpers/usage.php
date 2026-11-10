@@ -20,7 +20,6 @@ class Usage
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $db = null;
 
     /**
@@ -28,7 +27,6 @@ class Usage
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $resid = null;
 
     /**
@@ -36,7 +34,6 @@ class Usage
      *
      * @var unknown
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $type = null;
 
     /**

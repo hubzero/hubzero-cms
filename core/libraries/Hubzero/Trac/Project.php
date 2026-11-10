@@ -143,7 +143,6 @@ class Project
      * @param   string  $name  Project name
      * @return  mixed
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function findOrCreate($name)
     {
         $hztp = new self();
@@ -551,7 +550,6 @@ class Project
      * @param   string  $action
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function addUserPermission($user, $action)
     {
         $db =  App::get('db');
@@ -599,7 +597,6 @@ class Project
      * @param   string  $action
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function addGroupPermission($group, $action)
     {
         $db =  App::get('db');
@@ -645,7 +642,6 @@ class Project
      * @param   string  $action
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function removeUserPermission($user, $action)
     {
         $db =  App::get('db');
@@ -698,7 +694,6 @@ class Project
      * @param   string  $action
      * @return  void
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function removeGroupPermission($group, $action)
     {
         $db =  App::get('db');
@@ -748,7 +743,6 @@ class Project
      * @param   string  $user
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getUserPermission($user)
     {
         $db =  App::get('db');
@@ -779,7 +773,6 @@ class Project
      * @param   string  $group
      * @return  array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getGroupPermission($group)
     {
         $db =  App::get('db');

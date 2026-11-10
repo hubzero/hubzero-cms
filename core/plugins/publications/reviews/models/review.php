@@ -20,7 +20,6 @@ use Hubzero\Facades\Request;
  */
 class Review extends \Hubzero\Base\Model
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $base;
 
     /**
@@ -28,7 +27,6 @@ class Review extends \Hubzero\Base\Model
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Publications\\Tables\\Review';
 
     /**
@@ -36,7 +34,6 @@ class Review extends \Hubzero\Base\Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_publications.review.comment';
 
     /**

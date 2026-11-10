@@ -17,7 +17,6 @@ class PublicationUsageHelper
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**
@@ -25,7 +24,6 @@ class PublicationUsageHelper
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $publication;
 
     /**
@@ -33,7 +31,6 @@ class PublicationUsageHelper
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $logsTable = '#__publication_logs';
 
     /**
@@ -41,7 +38,6 @@ class PublicationUsageHelper
      *
      * @var int
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $versionId;
 
     /**
@@ -49,7 +45,6 @@ class PublicationUsageHelper
      *
      * @var int
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $publicationId;
 
     /**
@@ -94,7 +89,6 @@ class PublicationUsageHelper
      * @param    string   $column   Name of column to sum
      * @return   string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateColumnSumQuery($column)
     {
         $publicationId = $this->getPublicationId();
@@ -114,7 +108,6 @@ class PublicationUsageHelper
      * @param    string   $query   Query to execute
      * @return   mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function runQuery($query)
     {
         $this->db->setQuery($query);
@@ -127,7 +120,6 @@ class PublicationUsageHelper
      *
      * @return   int
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getPublicationId()
     {
         if (!isset($this->publicationId)) {
@@ -143,7 +135,6 @@ class PublicationUsageHelper
      *
      * @return   int
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function getVersionId()
     {
         if (!isset($this->versionId)) {

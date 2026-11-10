@@ -24,7 +24,6 @@ class Badge extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionBadge';
 
     /**
@@ -32,7 +31,6 @@ class Badge extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'sectionbadge';
 
     /**

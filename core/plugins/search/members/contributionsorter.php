@@ -11,7 +11,6 @@ namespace Plugins\Search\Members;
 /**
  * Contributions sorter
  *
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class ContributionSorter
 {

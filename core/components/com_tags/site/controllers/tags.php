@@ -873,7 +873,6 @@ class Tags extends SiteController
      * @param   array  $tags  Tags currently viewing
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildPathway($tags = null)
     {
         if (Pathway::count() <= 0) {
@@ -909,7 +908,6 @@ class Tags extends SiteController
      * @param   array  $tags  Tags currently viewing
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function buildTitle($tags = null)
     {
         $this->view->title = Lang::txt(strtoupper($this->option));
@@ -932,7 +930,6 @@ class Tags extends SiteController
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function authorize($assetType = 'tag', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

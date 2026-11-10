@@ -8,8 +8,6 @@
 
 namespace Plugins\Tags\Resources;
 
-// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
 use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
 use Hubzero\Facades\App;
@@ -28,7 +26,6 @@ class Resources extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**

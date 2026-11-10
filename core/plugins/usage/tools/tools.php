@@ -20,9 +20,7 @@ use Hubzero\Facades\Route;
 
 class Tools extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
     protected $totals;
 

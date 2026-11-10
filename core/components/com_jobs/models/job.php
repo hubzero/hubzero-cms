@@ -24,7 +24,6 @@ class Job extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Jobs\\Tables\\Job';
 
     /**
@@ -32,7 +31,6 @@ class Job extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_jobs.job.description';
 
     /**

@@ -183,7 +183,6 @@ class Version extends Table
      * @param   string   $version  Version (dev, current, or specific number)
      * @return  mixed    False on error, object on success
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function loadVersion($toolid = null, $version = 'dev')
     {
         if ($toolid === null) {

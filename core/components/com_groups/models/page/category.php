@@ -17,7 +17,6 @@ use Hubzero\Facades\App;
 /**
  * Group page category model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Category extends Model
 {

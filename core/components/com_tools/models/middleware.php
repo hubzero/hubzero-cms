@@ -21,7 +21,6 @@ use Hubzero\Facades\Component;
  */
 class Middleware extends Obj
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $db;
 
     /**
@@ -29,7 +28,6 @@ class Middleware extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $cache = [
         'zones.count' => null,
         'zones.list'  => null,
@@ -43,7 +41,6 @@ class Middleware extends Obj
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $config = null;
 
     /**

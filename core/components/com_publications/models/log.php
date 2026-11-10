@@ -23,7 +23,6 @@ class Log extends Model
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Publications\\Tables\\Log';
 
     /**

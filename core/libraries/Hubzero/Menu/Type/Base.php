@@ -23,7 +23,6 @@ class Base extends Obj
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $items = [];
 
     /**
@@ -31,7 +30,6 @@ class Base extends Obj
      *
      * @var  integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $defaultItem = [];
 
     /**
@@ -39,7 +37,6 @@ class Base extends Obj
      *
      * @var  integer
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $active = 0;
 
     /**

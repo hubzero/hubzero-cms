@@ -12,9 +12,7 @@ use Hubzero\Utility\Arr;
 
 class QueryDropColumnStatement
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $asString;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name;
 
     /**
@@ -42,13 +40,11 @@ class QueryDropColumnStatement
         return $this->asString;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function generateBaseString()
     {
         $this->asString = 'DROP COLUMN';
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function addName()
     {
         $this->asString .= " $this->name";

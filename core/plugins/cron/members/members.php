@@ -21,7 +21,6 @@ use Hubzero\Facades\Log;
 
 class Members extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $message;
     protected $database;
 

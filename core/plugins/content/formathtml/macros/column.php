@@ -13,7 +13,6 @@ use Plugins\Content\Formathtml\Macro;
 /**
  * Macro class for creating columns
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Column extends Macro
 {

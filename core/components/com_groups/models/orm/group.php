@@ -21,7 +21,6 @@ use Hubzero\Facades\User;
 /**
  * Group model
  *
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class Group extends Relational implements \Hubzero\Search\Searchable
 {

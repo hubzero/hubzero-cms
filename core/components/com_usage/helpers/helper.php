@@ -261,7 +261,6 @@ class Helper
      * @param      array $somearray
      * @return     array
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function arrayUniqueReindex($somearray)
     {
         $tmparr = array_unique($somearray);
@@ -281,7 +280,6 @@ class Helper
      * @param      string $period    Time period to check for
      * @return     boolean True if data is found
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function checkForData($db, $yearmonth, $period)
     {
         if (!$db->tableExists('totalvals')) {
@@ -308,7 +306,6 @@ class Helper
      * @param      string $yearmonth YYYY-MM
      * @return     boolean True if data is found
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function checkForClassdata($db, $yearmonth)
     {
         if (!$db->tableExists('classvals')) {
@@ -334,7 +331,6 @@ class Helper
      * @param      string $yearmonth YYYY-MM
      * @return     boolean True if data is found
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function checkForRegiondata($db, $yearmonth)
     {
         if (!$db->tableExists('regionvals')) {
@@ -404,7 +400,6 @@ class Helper
      * @param   string  $seldate
      * @return  string
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function dateformatPlot($seldate)
     {
         $year  = substr($seldate, 0, 4);
@@ -426,7 +421,6 @@ class Helper
      * @param   string  $valkey
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateValue($valarray, $seldate, $valkey = 'value')
     {
         if ($valarray) {
@@ -449,7 +443,6 @@ class Helper
      * @param      unknown $period Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateNext($seldate, $period)
     {
         return self::seldateShift($seldate, $period, 1);
@@ -464,7 +457,6 @@ class Helper
      * @param      unknown $period Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function seldatePrev($seldate, $period)
     {
         return self::seldateShift($seldate, $period, 0);
@@ -478,7 +470,6 @@ class Helper
      * @param      unknown $seldate Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateNextyear($seldate)
     {
         $date = $seldate;
@@ -496,7 +487,6 @@ class Helper
      * @param      unknown $seldate Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldatePrevyear($seldate)
     {
         $date = $seldate;
@@ -515,7 +505,6 @@ class Helper
      * @param      string $period Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateFix($seldate, $period)
     {
         $year  = substr($seldate, 0, 4);
@@ -557,7 +546,6 @@ class Helper
      * @param   unknown  $right    Parameter description (if any) ...
      * @return  mixed    Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateShift($seldate, $period, $right)
     {
         $year  = substr($seldate, 0, 4);
@@ -622,7 +610,6 @@ class Helper
      * @param   unknown  $date  Parameter description (if any) ...
      * @return  array    Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateValuedescsortkey(&$arr, $date)
     {
         $reversealpha = [
@@ -666,7 +653,6 @@ class Helper
      * @param   unknown  &$arr  Parameter description (if any) ...
      * @return  mixed    Return description (if any) ...
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldateValuedescsort(&$arr)
     {
         return usort($arr, "arraykeyeddesccmp");

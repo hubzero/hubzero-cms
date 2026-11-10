@@ -24,7 +24,6 @@ class Page extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tableClass = '\\Components\\Courses\\Tables\\Page';
 
     /**
@@ -32,7 +31,6 @@ class Page extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $context = 'com_courses.page.content';
 
     /**
@@ -40,7 +38,6 @@ class Page extends Base
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = 'page';
 
     /**

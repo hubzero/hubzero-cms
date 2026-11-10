@@ -174,7 +174,6 @@ class Entriesv1r0 extends ApiController
      * @param   array    $b
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sorterAsc($a, $b)
     {
         return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;

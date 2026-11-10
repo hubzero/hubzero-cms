@@ -22,7 +22,6 @@ class Endnote extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
 
     /**
@@ -390,7 +389,6 @@ class Endnote extends Plugin
      * @param   string  $string
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);

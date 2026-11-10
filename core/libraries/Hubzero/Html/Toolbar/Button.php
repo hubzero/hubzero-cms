@@ -23,7 +23,6 @@ abstract class Button extends Obj
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = null;
 
     /**
@@ -31,7 +30,6 @@ abstract class Button extends Obj
      *
      * @var  object  Button
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $parent = null;
 
     /**

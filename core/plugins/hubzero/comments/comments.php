@@ -25,7 +25,6 @@ use Hubzero\Facades\User;
 
 class Comments extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $componentOption;
     protected $action;
     protected $comment;

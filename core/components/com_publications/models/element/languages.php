@@ -22,7 +22,6 @@ class Languages extends Base
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $name = 'Language List';
 
     /**
@@ -30,7 +29,6 @@ class Languages extends Base
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $codes = [
         "aa" => "Afar",
         "ab" => "Abkhazian",

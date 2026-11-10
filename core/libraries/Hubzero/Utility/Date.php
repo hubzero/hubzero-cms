@@ -80,7 +80,6 @@ class Date extends DateTime
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $tz;
 
     /**
@@ -569,7 +568,6 @@ class Date extends DateTime
      * @param   number  $timestamp  Date to convert
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function ago($timestamp, $current_time = null)
     {
         // Store the current time

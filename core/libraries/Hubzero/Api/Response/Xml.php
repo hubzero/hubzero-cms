@@ -158,7 +158,6 @@ class Xml
      * @param   integer  $id  Error number
      * @return  integer
      */
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function lastError($id)
     {
         static $last_error = 0;

@@ -25,9 +25,7 @@ class Content extends Plugin
      *
      * @var  boolean
      */
-    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $autoloadLanguage = true;
-    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Return the alias and name for this category of content

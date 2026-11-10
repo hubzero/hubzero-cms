@@ -13,7 +13,6 @@ use Components\Tags\Models\Cloud;
 /**
  * Groups Tagging class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Tags extends Cloud
 {

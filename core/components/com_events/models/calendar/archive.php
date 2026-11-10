@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.

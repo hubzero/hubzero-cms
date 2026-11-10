@@ -20,7 +20,6 @@ class Guard
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $observers = [];
 
     /**
@@ -28,7 +27,6 @@ class Guard
      *
      * @var  mixed
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $state = null;
 
     /**
@@ -36,7 +34,6 @@ class Guard
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $methods = [];
 
     /**

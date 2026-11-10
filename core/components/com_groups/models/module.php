@@ -18,7 +18,6 @@ use Hubzero\Facades\Component;
 /**
  * Group module model class
  *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Module extends Model
 {

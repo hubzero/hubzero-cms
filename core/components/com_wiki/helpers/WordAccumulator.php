@@ -19,8 +19,6 @@ if (!defined('NBSP')) {
  * Additions by Axel Boldt follow,
  * partly taken from diff.php, phpwiki-1.3.3
  *
- * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class WordAccumulator
 {

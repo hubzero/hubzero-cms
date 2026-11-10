@@ -36,25 +36,15 @@ use Hubzero\Facades\User;
  */
 class Publications extends Plugin
 {
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $activity;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $area;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $database;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $imageExt;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pid;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $pubconfig;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $task;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $uid;
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $videoExt;
     protected $model;
 

@@ -36,7 +36,6 @@ class Mailinglists extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildTitle($newsletter = null)
     {
         //default if no campaign
@@ -67,7 +66,6 @@ class Mailinglists extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function buildPathway($newsletter = null)
     {
         //add 'newlsetters' item to pathway

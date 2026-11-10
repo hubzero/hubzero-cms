@@ -31,7 +31,6 @@ abstract class Base extends Model
      *
      * @var string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $scope = null;
 
     /**
@@ -39,7 +38,6 @@ abstract class Base extends Model
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $creator = null;
 
     /**
@@ -48,7 +46,6 @@ abstract class Base extends Model
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public static $sectionKeys = [
         //'section_id',
         'publish_up',
@@ -60,7 +57,6 @@ abstract class Base extends Model
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $config = null;
 
     /**

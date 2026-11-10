@@ -103,7 +103,6 @@ class Tool
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $listKeys = ['version'];
 
     /**
@@ -111,7 +110,6 @@ class Tool
      *
      * @var boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $updateAll = false;
 
     /**
@@ -119,7 +117,6 @@ class Tool
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected static $propertyattrmap = [
         'toolname' => 'toolName',
         'title' => 'cn',
@@ -131,7 +128,6 @@ class Tool
      *
      * @var array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $updatedkeys = [];
 
     /**
@@ -263,7 +259,6 @@ class Tool
      *
      * @return   boolean Return description (if any) ...
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sqlCreate()
     {
         $db = App::get('db');
@@ -430,7 +425,6 @@ class Tool
      * @param     boolean $all Parameter description (if any) ...
      * @return   boolean Return description (if any) ...
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sqlUpdate($all = false)
     {
         $db = App::get('db');
@@ -603,7 +597,6 @@ class Tool
      *
      * @return   boolean Return description (if any) ...
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sqlDelete()
     {
         if (!isset($this->toolname) && !isset($this->id)) {

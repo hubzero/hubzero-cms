@@ -210,7 +210,6 @@ class Pagebreak extends Plugin
      * @param   integer  $page
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function createTOC(&$row, &$matches, &$page)
     {
         $heading    = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
@@ -290,7 +289,6 @@ class Pagebreak extends Plugin
      * @param   integer  $n
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function createNavigation(&$row, $page, $n)
     {
         $pnSpace = '';
