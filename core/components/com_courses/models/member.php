@@ -38,7 +38,7 @@ class Member extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_badge = null;
+    private $badge = null;
 
     /**
      * \Components\Courses\Models\Prerequisites
@@ -46,7 +46,7 @@ class Member extends Base
      * @var object
      **/
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_prerequisites = null;
+    private $prerequisites = null;
 
     /**
      * Constructor
@@ -110,11 +110,11 @@ class Member extends Base
      */
     public function badge()
     {
-        if (!isset($this->_badge)) {
-            $this->_badge = MemberBadge::loadByMemberId($this->get('id'));
+        if (!isset($this->badge)) {
+            $this->badge = MemberBadge::loadByMemberId($this->get('id'));
         }
 
-        return $this->_badge;
+        return $this->badge;
     }
 
     /**
@@ -125,11 +125,11 @@ class Member extends Base
      */
     public function prerequisites($gradebook)
     {
-        if (!isset($this->_prerequisites)) {
-            $this->_prerequisites = new Prerequisite($this->get('section_id'), $gradebook, $this->get('id'));
+        if (!isset($this->prerequisites)) {
+            $this->prerequisites = new Prerequisite($this->get('section_id'), $gradebook, $this->get('id'));
         }
 
-        return $this->_prerequisites;
+        return $this->prerequisites;
     }
 
     /**
