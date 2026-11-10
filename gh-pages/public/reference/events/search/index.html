@@ -189,12 +189,15 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Search events</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#search-onaddindex">search.onAddIndex</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onaddpermissionset">search.onAddPermissionSet</a></li>
+<li class="toc__item toc__item--l2"><a href="#search-onbeforesearchrender">search.onBeforeSearchRender</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onbeforesearchrendermembers">search.onBeforeSearchRenderMembers</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onextensionafterdelete">search.onExtensionAfterDelete</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onformatresult">search.onFormatResult</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-ongettypes">search.onGetTypes</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onindex">search.onIndex</a></li>
 <li class="toc__item toc__item--l2"><a href="#search-onremoveindex">search.onRemoveIndex</a></li>
+<li class="toc__item toc__item--l2"><a href="#search-onsearchadministrate">search.onSearchAdministrate</a></li>
+<li class="toc__item toc__item--l2"><a href="#search-onsearchtask">search.onSearchTask</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../system/index.html">System events</a></li>
@@ -241,6 +244,12 @@
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L428"><code>core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:428</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
+<h2 id="search-onbeforesearchrender"><code>search.onBeforeSearchRender</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/site/views/basic/tmpl/default.php#L73"><code>core/components/com_search/site/views/basic/tmpl/default.php:73</code></a></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
 <h2 id="search-onbeforesearchrendermembers"><code>search.onBeforeSearchRenderMembers</code></h2>
 <p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
 <p>Listeners:</p>
@@ -256,13 +265,13 @@
 <h2 id="search-onformatresult"><code>search.onFormatResult</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/site/controllers/solr.php#L311"><code>core/components/com_search/site/controllers/solr.php:311</code></a> with <code>[$result['hubtype'], &amp;$result, $terms, $highlightOptions]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/site/controllers/solr.php#L325"><code>core/components/com_search/site/controllers/solr.php:325</code></a> with <code>[$result['hubtype'], &amp;$result, $terms, $highlightOptions]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="search-ongettypes"><code>search.onGetTypes</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/api/controllers/searchv1r0.php#L274"><code>core/components/com_search/api/controllers/searchv1r0.php:274</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/api/controllers/searchv1r0.php#L283"><code>core/components/com_search/api/controllers/searchv1r0.php:283</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -318,6 +327,18 @@
 <ul>
 <li><code>plg_search_solr</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/search/solr/solr.php"><code>onRemoveIndex($table, $model)</code></a></li>
 </ul>
+<h2 id="search-onsearchadministrate"><code>search.onSearchAdministrate</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/admin/views/basic/tmpl/display.php#L37"><code>core/components/com_search/admin/views/basic/tmpl/display.php:37</code></a> with <code>[$context]</code></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
+<h2 id="search-onsearchtask"><code>search.onSearchTask</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_search/admin/views/basic/tmpl/display.php#L26"><code>core/components/com_search/admin/views/basic/tmpl/display.php:26</code></a></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
 
         </div>
         <p class="stamp">Generated from the source tree.</p>

@@ -43,7 +43,7 @@ API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/c
 
 Create an entry
 
-API version 1.1, task `create` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L322).
+API version 1.1, task `create` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L330).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -101,7 +101,7 @@ API version 1.1, task `list` in [`entriesv1r1.php`](../../../core/components/com
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L596).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L600).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -111,7 +111,7 @@ API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/c
 
 Delete an entry
 
-API version 1.1, task `delete` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L803).
+API version 1.1, task `delete` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L815).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -121,7 +121,7 @@ API version 1.1, task `delete` in [`entriesv1r1.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L348).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L350).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -131,7 +131,7 @@ API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com
 
 Retrieve an entry
 
-API version 1.1, task `read` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L539).
+API version 1.1, task `read` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L549).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -141,7 +141,7 @@ API version 1.1, task `read` in [`entriesv1r1.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L381).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_activity/api/controllers/entriesv1r0.php#L383).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -161,7 +161,7 @@ API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/c
 
 Update an entry
 
-API version 1.1, task `update` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L579).
+API version 1.1, task `update` in [`entriesv1r1.php`](../../../core/components/com_activity/api/controllers/entriesv1r1.php#L589).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

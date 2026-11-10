@@ -49,7 +49,7 @@ Endpoints under `/api/projects`, from the `com_projects` API controllers. Authen
 
 Create a project
 
-API version 2.0, task `create` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L220).
+API version 2.0, task `create` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L224).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -120,7 +120,7 @@ API version 2.0, task `list` in [`projectsv2r0.php`](../../../core/components/co
 
 Delete a project
 
-API version 2.0, task `delete` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L1126).
+API version 2.0, task `delete` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L1154).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -150,7 +150,7 @@ API version 1.1, task `get` in [`projectsv1r1.php`](../../../core/components/com
 
 Get project info (if user is in project)
 
-API version 2.0, task `read` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L638).
+API version 2.0, task `read` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L654).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -160,7 +160,7 @@ API version 2.0, task `read` in [`projectsv2r0.php`](../../../core/components/co
 
 Update a project
 
-API version 2.0, task `update` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L696).
+API version 2.0, task `update` in [`projectsv2r0.php`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L712).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -232,7 +232,7 @@ API version 1.0, task `list` in [`publicationsv1r0.php`](../../../core/component
 
 Get a list of project files connections
 
-API version 1.0, task `connections` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1351).
+API version 1.0, task `connections` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1379).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -242,7 +242,7 @@ API version 1.0, task `connections` in [`filesv1r0.php`](../../../core/component
 
 Uploads file chunk(s) and combines them before adding the final file to repository
 
-API version 1.0, task `chunkedUpload` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L660).
+API version 1.0, task `chunkedUpload` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L675).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -261,7 +261,7 @@ API version 1.0, task `chunkedUpload` in [`filesv1r0.php`](../../../core/compone
 
 Download file or folder from project (non-default connection providers only)
 
-API version 1.0, task `download` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L861).
+API version 1.0, task `download` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L880).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -275,7 +275,7 @@ API version 1.0, task `download` in [`filesv1r0.php`](../../../core/components/c
 
 Get file annotation
 
-API version 1.0, task `getmetadata` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1019).
+API version 1.0, task `getmetadata` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1038).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -289,7 +289,7 @@ API version 1.0, task `getmetadata` in [`filesv1r0.php`](../../../core/component
 
 Set file annotation
 
-API version 1.0, task `setmetadata` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1101).
+API version 1.0, task `setmetadata` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1123).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -303,7 +303,7 @@ API version 1.0, task `setmetadata` in [`filesv1r0.php`](../../../core/component
 
 upload/replace a project file (only for non-default connection providers)
 
-API version 1.0, task `upload` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L588).
+API version 1.0, task `upload` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L600).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -329,7 +329,7 @@ API version 1.0, task `delete` in [`filefsv1r0.php`](../../../core/components/co
 
 Delete file or folder from project
 
-API version 1.0, task `delete` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L322).
+API version 1.0, task `delete` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L328).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -342,7 +342,7 @@ API version 1.0, task `delete` in [`filesv1r0.php`](../../../core/components/com
 
 Download file or folder from project (non-default connection providers only)
 
-API version 1.0, task `download` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L613).
+API version 1.0, task `download` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L615).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -379,7 +379,7 @@ API version 1.0, task `get` in [`filesv1r0.php`](../../../core/components/com_pr
 
 Get file annotation
 
-API version 1.0, task `getmetadata` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L916).
+API version 1.0, task `getmetadata` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L920).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -392,7 +392,7 @@ API version 1.0, task `getmetadata` in [`filefsv1r0.php`](../../../core/componen
 
 Insert/update a project file
 
-API version 1.0, task `save` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L831).
+API version 1.0, task `save` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L835).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -404,7 +404,7 @@ API version 1.0, task `save` in [`filefsv1r0.php`](../../../core/components/com_
 
 Insert/update a project file
 
-API version 1.0, task `save` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L934).
+API version 1.0, task `save` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L953).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -428,7 +428,7 @@ API version 1.0, task `makedirectory` in [`filefsv1r0.php`](../../../core/compon
 
 Create a folder in project local repo
 
-API version 1.0, task `makedirectory` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L258).
+API version 1.0, task `makedirectory` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L261).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -453,7 +453,7 @@ API version 1.0, task `move` in [`filefsv1r0.php`](../../../core/components/com_
 
 Move file or folder in project
 
-API version 1.0, task `move` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L413).
+API version 1.0, task `move` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L422).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -480,7 +480,7 @@ API version 1.0, task `rename` in [`filefsv1r0.php`](../../../core/components/co
 
 Move file or folder in project
 
-API version 1.0, task `rename` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L507).
+API version 1.0, task `rename` in [`filesv1r0.php`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L516).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -494,7 +494,7 @@ API version 1.0, task `rename` in [`filesv1r0.php`](../../../core/components/com
 
 Set file annotation
 
-API version 1.0, task `setmetadata` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L997).
+API version 1.0, task `setmetadata` in [`filefsv1r0.php`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L1004).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -86,7 +86,7 @@ includes when there is no class.
 
 The entry class picks a controller from the request and runs it:
 
-<!--include: core/components/com_blog/site/Blog.php:24-35-->
+<!--include: core/components/com_blog/site/Blog.php:24-40-->
 
 A component with neither falls through to
 `Hubzero\Component\Loader::executeDefault()`, which instantiates

@@ -220,7 +220,11 @@
         <div class="prose">
 <p>Events in the <code>antispam</code> group. A plugin in <code>core/plugins/antispam/</code> receives an event by defining a public method with the event's name; the arguments are those the call site passes, in order.</p>
 <h2 id="antispam-onantispamdetector"><code>antispam.onAntispamDetector</code></h2>
-<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/admin/controllers/abusereports.php#L390"><code>core/components/com_support/admin/controllers/abusereports.php:390</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/antispam/antispam.php#L85"><code>core/plugins/content/antispam/antispam.php:85</code></a></li>
+</ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_antispam_akismet</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/antispam/akismet/akismet.php"><code>onAntispamDetector()</code></a></li>

@@ -198,7 +198,7 @@ That is the minimum: a class, a controller, `execute()`. The administrator
 entry point does more, because the administrator needs an authorisation gate
 and a sub-menu:
 
-<!--include: core/components/com_kb/admin/Kb.php:9-56-->
+<!--include: core/components/com_kb/admin/Kb.php:9-61-->
 
 Three things are worth copying from it. The `core.manage` check is what keeps
 non-managers out of the whole client — no controller sees the request without

@@ -92,7 +92,7 @@ API version 1.0, task `create` in [`postsv1r0.php`](../../../core/components/com
 
 Delete a post
 
-API version 1.0, task `delete` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L629).
+API version 1.0, task `delete` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L633).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -132,7 +132,7 @@ API version 1.0, task `update` in [`postsv1r0.php`](../../../core/components/com
 
 Delete a collection
 
-API version 1.0, task `delete` in [`collectionsv1r0.php`](../../../core/components/com_collections/api/controllers/collectionsv1r0.php#L442).
+API version 1.0, task `delete` in [`collectionsv1r0.php`](../../../core/components/com_collections/api/controllers/collectionsv1r0.php#L445).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

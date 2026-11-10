@@ -90,7 +90,7 @@ Write the first form: 41 of the core components do. The class extends
 `Hubzero\Component\AbstractComponent`, and its `execute()` picks the
 controller and hands off to it:
 
-<!--include: core/components/com_blog/site/Blog.php:9-36-->
+<!--include: core/components/com_blog/site/Blog.php:9-41-->
 
 A module's entry point is `mod_{name}.php`; `Hubzero\Module\Loader` `include`s
 the file. A plugin's entry point is `{name}.php`, holding a class whose public

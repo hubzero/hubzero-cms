@@ -9,7 +9,10 @@ Events in the `antispam` group. A plugin in `core/plugins/antispam/` receives an
 
 ## `antispam.onAntispamDetector`
 
-No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+Fired from:
+
+- [`core/components/com_support/admin/controllers/abusereports.php:390`](../../../core/components/com_support/admin/controllers/abusereports.php#L390)
+- [`core/plugins/content/antispam/antispam.php:85`](../../../core/plugins/content/antispam/antispam.php#L85)
 
 Listeners:
 

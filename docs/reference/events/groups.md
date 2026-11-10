@@ -55,9 +55,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:418`](../../../core/components/com_groups/admin/controllers/manage.php#L418) with `[$before, $group]`
-- [`core/components/com_groups/admin/controllers/manage.php:1149`](../../../core/components/com_groups/admin/controllers/manage.php#L1149) with `[$before, $group]`
-- [`core/components/com_groups/site/controllers/groups.php:753`](../../../core/components/com_groups/site/controllers/groups.php#L753) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:427`](../../../core/components/com_groups/admin/controllers/manage.php#L427) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1255`](../../../core/components/com_groups/admin/controllers/manage.php#L1255) with `[$before, $group]`
+- [`core/components/com_groups/site/controllers/groups.php:793`](../../../core/components/com_groups/site/controllers/groups.php#L793) with `[$before, $group]`
 
 Listeners:
 
@@ -68,14 +68,14 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/groupsv1r0.php:362`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L362) with `[]`
-- [`core/components/com_groups/api/controllers/groupsv1r1.php:350`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L350)
-- [`core/components/com_groups/api/controllers/groupsv1r1.php:372`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L372) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r0.php:383`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L383) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:371`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L371)
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:393`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L393) with `[]`
 - [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
-- [`core/components/com_groups/site/controllers/groups.php:492`](../../../core/components/com_groups/site/controllers/groups.php#L492) with `[]`
+- [`core/components/com_groups/site/controllers/groups.php:508`](../../../core/components/com_groups/site/controllers/groups.php#L508) with `[]`
 - [`core/components/com_groups/site/views/emails/tmpl/saved.php:425`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L425) with `[]`
 - [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:124`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L124) with `[]`
-- [`core/libraries/Hubzero/User/Group/Helper.php:278`](../../../core/libraries/Hubzero/User/Group/Helper.php#L278) with `[]`
+- [`core/libraries/Hubzero/User/Group/Helper.php:285`](../../../core/libraries/Hubzero/User/Group/Helper.php#L285) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -91,8 +91,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:1048`](../../../core/components/com_groups/admin/controllers/manage.php#L1048) with `[$group]`
-- [`core/components/com_groups/site/controllers/groups.php:1071`](../../../core/components/com_groups/site/controllers/groups.php#L1071) with `[$group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1154`](../../../core/components/com_groups/admin/controllers/manage.php#L1154) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:1135`](../../../core/components/com_groups/site/controllers/groups.php#L1135) with `[$group]`
 
 Listeners:
 
@@ -107,7 +107,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:975`](../../../core/components/com_groups/site/controllers/groups.php#L975) with `[$this->view->group]`
+- [`core/components/com_groups/site/controllers/groups.php:1036`](../../../core/components/com_groups/site/controllers/groups.php#L1036) with `[$this->view->group]`
 
 Listeners:
 
@@ -139,7 +139,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:768`](../../../core/components/com_groups/site/controllers/groups.php#L768) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:808`](../../../core/components/com_groups/site/controllers/groups.php#L808) with `[$group]`
 
 No plugin in the source tree listens for this event.
 
@@ -156,7 +156,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_groups/models/orm/group.php:432`](../../../core/components/com_groups/models/orm/group.php#L432) with `[$this->get('gidNumber'), $userid]`
-- [`core/libraries/Hubzero/User/Group.php:604`](../../../core/libraries/Hubzero/User/Group.php#L604) with `[$this->gidNumber, $userid]`
+- [`core/libraries/Hubzero/User/Group.php:611`](../../../core/libraries/Hubzero/User/Group.php#L611) with `[$this->gidNumber, $userid]`
 
 Listeners:
 
@@ -174,7 +174,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1r0.php:170`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L170) with `[ $group, $active, ],`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:170`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L170) with `[ $group, $active, ]`
 
 Listeners:
 
@@ -184,7 +184,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1r0.php:436`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L436) with `[ $group, $active, $id, ],`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:436`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L436) with `[ $group, $active, $id, ]`
 
 Listeners:
 
@@ -194,7 +194,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1r0.php:95`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L95) with `[ $group, $active, $filters['start'], $filters['limit'], ],`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:95`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L95) with `[ $group, $active, $filters['start'], $filters['limit'], ]`
 
 Listeners:
 
@@ -204,7 +204,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1r0.php:258`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L258) with `[ $group, $active, $id, ],`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:258`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L258) with `[ $group, $active, $id, ]`
 
 Listeners:
 
@@ -214,7 +214,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/pluginsv1r0.php:347`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L347) with `[ $group, $active, $id, ],`
+- [`core/components/com_groups/api/controllers/pluginsv1r0.php:347`](../../../core/components/com_groups/api/controllers/pluginsv1r0.php#L347) with `[ $group, $active, $id, ]`
 
 Listeners:
 

@@ -33,7 +33,10 @@ Listeners:
 
 ## `courses.onAssetgroupEdit`
 
-No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+Fired from:
+
+- [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:202`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L202)
+- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:41`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L41)
 
 Listeners:
 
@@ -129,7 +132,15 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:560`](../../../core/components/com_courses/site/controllers/course.php#L560) with `[$this->course]`
+- [`core/components/com_courses/site/controllers/course.php:566`](../../../core/components/com_courses/site/controllers/course.php#L566) with `[$this->course]`
+
+No plugin in the source tree listens for this event.
+
+## `courses.onCourseEdit`
+
+Fired from:
+
+- [`core/components/com_courses/admin/views/courses/tmpl/edit.php:240`](../../../core/components/com_courses/admin/views/courses/tmpl/edit.php#L240)
 
 No plugin in the source tree listens for this event.
 
@@ -165,7 +176,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:141`](../../../core/components/com_courses/site/controllers/course.php#L141) with `[ $this->course, $this->view->active, ],`
+- [`core/components/com_courses/site/controllers/course.php:147`](../../../core/components/com_courses/site/controllers/course.php#L147) with `[ $this->course, $this->view->active, ]`
 
 Listeners:
 
@@ -194,7 +205,9 @@ Listeners:
 
 ## `courses.onOfferingEdit`
 
-No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+Fired from:
+
+- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:352`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L352)
 
 Listeners:
 
@@ -220,7 +233,9 @@ Listeners:
 
 ## `courses.onSectionEdit`
 
-No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+Fired from:
+
+- [`core/components/com_courses/admin/views/sections/tmpl/edit.php:657`](../../../core/components/com_courses/admin/views/sections/tmpl/edit.php#L657)
 
 Listeners:
 

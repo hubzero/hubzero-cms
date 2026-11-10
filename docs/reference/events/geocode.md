@@ -11,11 +11,11 @@ Events in the `geocode` group. A plugin in `core/plugins/geocode/` receives an e
 
 Fired from:
 
-- [`core/libraries/Hubzero/Geocode/Geocode.php:49`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L49) with `['geocode.countries', $adapter])) { foreach ($providers as $provider) { if ($provider) { $p[] = $provider; } } } if (!count($p)) { return…`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:101`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L101) with `['geocode.country', $adapter])) { foreach ($providers as $provider) { if ($provider) { $p[] = $provider; } } } if (!count($p)) { return '…`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:142`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L142) with `['geocode.continent', $adapter])) { foreach ($providers as $provider) { if ($provider) { $p[] = $provider; } } } if (!count($p)) { return…`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:188`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L188) with `['geocode.locate', $adapter, $ip])) { foreach ($providers as $provider) { if ($provider) { $p[] = $provider; } } } if (!count($p)) { retu…`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:225`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L225) with `['geocode.address', $adapter])) { foreach ($providers as $provider) { if ($provider) { $p[] = $provider; } } } if (!count($p)) { return '…`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:49`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L49) with `['geocode.countries', $adapter]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:101`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L101) with `['geocode.country', $adapter]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:142`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L142) with `['geocode.continent', $adapter]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:188`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L188) with `['geocode.locate', $adapter, $ip]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:225`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L225) with `['geocode.address', $adapter]`
 
 Listeners:
 

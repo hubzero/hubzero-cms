@@ -14,7 +14,7 @@ Fired from:
 - [`core/components/com_tags/admin/controllers/entries.php:223`](../../../core/components/com_tags/admin/controllers/entries.php#L223) with `[&$row, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:265`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L265) with `[&$record, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:400`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L400) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:779`](../../../core/components/com_tags/site/controllers/tags.php#L779) with `[&$row, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:791`](../../../core/components/com_tags/site/controllers/tags.php#L791) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -22,7 +22,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:420`](../../../core/components/com_tags/site/controllers/tags.php#L420)
+- [`core/components/com_tags/site/controllers/tags.php:432`](../../../core/components/com_tags/site/controllers/tags.php#L432)
 
 No plugin in the source tree listens for this event.
 
@@ -33,7 +33,7 @@ Fired from:
 - [`core/components/com_tags/admin/controllers/entries.php:204`](../../../core/components/com_tags/admin/controllers/entries.php#L204) with `[&$row, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:249`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L249) with `[&$record, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:380`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L380) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:760`](../../../core/components/com_tags/site/controllers/tags.php#L760) with `[&$row, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:772`](../../../core/components/com_tags/site/controllers/tags.php#L772) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -43,7 +43,7 @@ Fired from:
 
 - [`core/components/com_tags/admin/controllers/entries.php:265`](../../../core/components/com_tags/admin/controllers/entries.php#L265) with `[$id]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:438`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L438) with `[$id]`
-- [`core/components/com_tags/site/controllers/tags.php:829`](../../../core/components/com_tags/site/controllers/tags.php#L829) with `[$id]`
+- [`core/components/com_tags/site/controllers/tags.php:841`](../../../core/components/com_tags/site/controllers/tags.php#L841) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -51,9 +51,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:165`](../../../core/components/com_tags/site/controllers/tags.php#L165) with `[ $tags, $this->view->filters['limit'], $this->view->filters['start'], $this->view->filters['sort'], $area, ]`
-- [`core/components/com_tags/site/controllers/tags.php:428`](../../../core/components/com_tags/site/controllers/tags.php#L428) with `[ $tags, $limit, $limitstart, $sort, '', ],`
-- [`core/components/com_tags/site/controllers/tags.php:484`](../../../core/components/com_tags/site/controllers/tags.php#L484) with `[ $tags, $limit, $limitstart, $sort, $area, ],`
+- [`core/components/com_tags/site/controllers/tags.php:171`](../../../core/components/com_tags/site/controllers/tags.php#L171) with `[ $tags, $this->view->filters['limit'], $this->view->filters['start'], $this->view->filters['sort'], $area, ]`
+- [`core/components/com_tags/site/controllers/tags.php:440`](../../../core/components/com_tags/site/controllers/tags.php#L440) with `[ $tags, $limit, $limitstart, $sort, '', ]`
+- [`core/components/com_tags/site/controllers/tags.php:496`](../../../core/components/com_tags/site/controllers/tags.php#L496) with `[ $tags, $limit, $limitstart, $sort, $area, ]`
 
 Listeners:
 

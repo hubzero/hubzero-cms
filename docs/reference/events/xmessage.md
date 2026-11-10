@@ -11,7 +11,7 @@ Events in the `xmessage` group. A plugin in `core/plugins/xmessage/` receives an
 
 Fired from:
 
-- [`core/libraries/Hubzero/Message/Helper.php:161`](../../../core/libraries/Hubzero/Message/Helper.php#L161) with `[$from, $xmessage, $user, $action])) { $this->setError(Lang::txt('Unable to message user %s with method %s', $uid, $action)`
+- [`core/libraries/Hubzero/Message/Helper.php:161`](../../../core/libraries/Hubzero/Message/Helper.php#L161) with `[$from, $xmessage, $user, $action]`
 
 Listeners:
 
@@ -34,23 +34,23 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:213`](../../../core/components/com_answers/site/controllers/questions.php#L213) with `['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option])) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED')`
-- [`core/components/com_answers/site/controllers/questions.php:221`](../../../core/components/com_answers/site/controllers/questions.php#L221) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED')`
-- [`core/components/com_answers/site/controllers/questions.php:850`](../../../core/components/com_answers/site/controllers/questions.php#L850) with `['new_question_admin', $subject, $message, $from, $recipients, $this->option])) { Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED')`
-- [`core/components/com_answers/site/controllers/questions.php:990`](../../../core/components/com_answers/site/controllers/questions.php#L990) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
-- [`core/components/com_answers/site/controllers/questions.php:1166`](../../../core/components/com_answers/site/controllers/questions.php#L1166) with `[$messageType , $subject, $message, $from, [$authorid], $this->option])) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED')`
-- [`core/components/com_answers/site/controllers/questions.php:1173`](../../../core/components/com_answers/site/controllers/questions.php#L1173) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED')`
-- [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:465`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L465) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true],`
-- [`core/components/com_courses/site/controllers/course.php:624`](../../../core/components/com_courses/site/controllers/course.php#L624) with `['courses_deleted', $subject, $message, $from, $managers, $this->option])) { Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAI…`
-- [`core/components/com_groups/site/controllers/membership.php:816`](../../../core/components/com_groups/site/controllers/membership.php#L816) with `['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option])) { $this->setError(Lang::txt('GRO…`
-- [`core/components/com_jobs/admin/controllers/jobs.php:324`](../../../core/components/com_jobs/admin/controllers/jobs.php#L324) with `$messageParams)) { Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS')`
-- [`core/components/com_projects/admin/controllers/projects.php:544`](../../../core/components/com_projects/admin/controllers/projects.php#L544) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
-- [`core/components/com_projects/helpers/html.php:1209`](../../../core/components/com_projects/helpers/html.php#L1209) with `[ $component, $subject, $body, $from, $addressees, $option, ],`
+- [`core/components/com_answers/site/controllers/questions.php:226`](../../../core/components/com_answers/site/controllers/questions.php#L226) with `['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:239`](../../../core/components/com_answers/site/controllers/questions.php#L239) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:893`](../../../core/components/com_answers/site/controllers/questions.php#L893) with `['new_question_admin', $subject, $message, $from, $recipients, $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:1045`](../../../core/components/com_answers/site/controllers/questions.php#L1045) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option]`
+- [`core/components/com_answers/site/controllers/questions.php:1237`](../../../core/components/com_answers/site/controllers/questions.php#L1237) with `[$messageType , $subject, $message, $from, [$authorid], $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:1249`](../../../core/components/com_answers/site/controllers/questions.php#L1249) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
+- [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:465`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L465) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]`
+- [`core/components/com_courses/site/controllers/course.php:631`](../../../core/components/com_courses/site/controllers/course.php#L631) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
+- [`core/components/com_groups/site/controllers/membership.php:877`](../../../core/components/com_groups/site/controllers/membership.php#L877) with `['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option]`
+- [`core/components/com_jobs/admin/controllers/jobs.php:324`](../../../core/components/com_jobs/admin/controllers/jobs.php#L324) with `$messageParams`
+- [`core/components/com_projects/admin/controllers/projects.php:560`](../../../core/components/com_projects/admin/controllers/projects.php#L560) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
+- [`core/components/com_projects/helpers/html.php:1233`](../../../core/components/com_projects/helpers/html.php#L1233) with `[ $component, $subject, $body, $from, $addressees, $option, ]`
 - and 26 more call sites
 
 Listeners:
 
-- `plg_xmessage_handler` — [`onSendMessage($type, $subject, $message, $from = [], $to = [], $component = '', $element = null, $description = '', $group_id = 0, $bypassGroupsCheck = false, $anonymous = 0,)`](../../../core/plugins/xmessage/handler/handler.php)
+- `plg_xmessage_handler` — [`onSendMessage($type, $subject, $message, $from = [], $to = [], $component = '', $element = null, $description = '', $group_id = 0, $bypassGroupsCheck = false, $anonymous = 0)`](../../../core/plugins/xmessage/handler/handler.php)
 
 ## `xmessage.onTakeAction`
 

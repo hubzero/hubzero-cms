@@ -11,7 +11,7 @@ Events in the `handlers` group. A plugin in `core/plugins/handlers/` receives an
 
 Fired from:
 
-- [`core/plugins/projects/files/connections.php:1601`](../../../core/plugins/projects/files/connections.php#L1601) with `[$items]`
+- [`core/plugins/projects/files/connections.php:1630`](../../../core/plugins/projects/files/connections.php#L1630) with `[$items]`
 
 Listeners:
 

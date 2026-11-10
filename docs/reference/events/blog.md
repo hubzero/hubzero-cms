@@ -12,8 +12,8 @@ Events in the `blog` group. A plugin in `core/plugins/blog/` receives an event b
 Fired from:
 
 - [`core/components/com_blog/site/controllers/entries.php:158`](../../../core/components/com_blog/site/controllers/entries.php#L158) with `[$row]`
-- [`core/plugins/groups/blog/blog.php:597`](../../../core/plugins/groups/blog/blog.php#L597) with `[$row]`
-- [`core/plugins/members/blog/blog.php:470`](../../../core/plugins/members/blog/blog.php#L470) with `[$row]`
+- [`core/plugins/groups/blog/blog.php:635`](../../../core/plugins/groups/blog/blog.php#L635) with `[$row]`
+- [`core/plugins/members/blog/blog.php:486`](../../../core/plugins/members/blog/blog.php#L486) with `[$row]`
 
 Listeners:
 

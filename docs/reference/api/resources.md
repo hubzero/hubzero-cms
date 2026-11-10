@@ -21,7 +21,7 @@ Endpoints under `/api/resources`, from the `com_resources` API controllers. Auth
 
 A simple search on title and id for use with autocomplete
 
-API version 1.1, task `autocomplete` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L360).
+API version 1.1, task `autocomplete` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L365).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ API version 1.1, task `list` in [`entriesv1r1.php`](../../../core/components/com
 
 Render LaTeX expression
 
-API version 1.0, task `renderlatex` in [`entriesv1r0.php`](../../../core/components/com_resources/api/controllers/entriesv1r0.php#L272).
+API version 1.0, task `renderlatex` in [`entriesv1r0.php`](../../../core/components/com_resources/api/controllers/entriesv1r0.php#L283).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -71,7 +71,7 @@ API version 1.0, task `renderlatex` in [`entriesv1r0.php`](../../../core/compone
 
 Render LaTeX expression
 
-API version 1.1, task `renderlatex` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L444).
+API version 1.1, task `renderlatex` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L449).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -81,7 +81,7 @@ API version 1.1, task `renderlatex` in [`entriesv1r1.php`](../../../core/compone
 
 Get a list of new content for a given time period
 
-API version 1.0, task `whatsnew` in [`entriesv1r0.php`](../../../core/components/com_resources/api/controllers/entriesv1r0.php#L222).
+API version 1.0, task `whatsnew` in [`entriesv1r0.php`](../../../core/components/com_resources/api/controllers/entriesv1r0.php#L233).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ API version 1.0, task `whatsnew` in [`entriesv1r0.php`](../../../core/components
 
 Get a list of new content for a given time period
 
-API version 1.1, task `whatsnew` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L310).
+API version 1.1, task `whatsnew` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L315).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -223,14 +223,17 @@
 <h2 id="answers-onquestionnotify"><code>answers.onQuestionNotify</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_answers/site/controllers/questions.php#L811"><code>core/components/com_answers/site/controllers/questions.php:811</code></a> with <code>[$row]) as $results) { $recipients = array_merge($recipients, $results</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_answers/site/controllers/questions.php#L851"><code>core/components/com_answers/site/controllers/questions.php:851</code></a> with <code>[$row]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_answers_tools</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/answers/tools/tools.php"><code>onQuestionNotify($row)</code></a></li>
 </ul>
 <h2 id="answers-onquestionsfilters"><code>answers.onQuestionsFilters</code></h2>
-<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_answers/site/views/questions/tmpl/search.php#L154"><code>core/components/com_answers/site/views/questions/tmpl/search.php:154</code></a></li>
+</ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_answers_members</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/answers/members/members.php"><code>onQuestionsFilters()</code></a></li>
@@ -238,7 +241,7 @@
 <h2 id="answers-onquestionspreparefilters"><code>answers.onQuestionsPrepareFilters</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_answers/site/controllers/questions.php#L480"><code>core/components/com_answers/site/controllers/questions.php:480</code></a> with <code>[$filters]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_answers/site/controllers/questions.php#L520"><code>core/components/com_answers/site/controllers/questions.php:520</code></a> with <code>[$filters]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

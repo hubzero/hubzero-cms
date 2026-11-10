@@ -10,8 +10,8 @@ Every event the CMS fires through `Event::trigger()`, grouped by plugin group, w
 | Group | Events | Fired in the CMS | With listeners |
 |---|---|---|---|
 | [activity](activity.md) | 2 | 2 | 0 |
-| [answers](answers.md) | 3 | 2 | 3 |
-| [antispam](antispam.md) | 2 | 1 | 2 |
+| [answers](answers.md) | 3 | 3 | 3 |
+| [antispam](antispam.md) | 2 | 2 | 2 |
 | [authentication](authentication.md) | 3 | 0 | 3 |
 | [authfactors](authfactors.md) | 1 | 1 | 1 |
 | [blog](blog.md) | 1 | 1 | 1 |
@@ -19,7 +19,7 @@ Every event the CMS fires through `Event::trigger()`, grouped by plugin group, w
 | [cart](cart.md) | 5 | 5 | 5 |
 | [citation](citation.md) | 3 | 2 | 3 |
 | [content](content.md) | 10 | 10 | 5 |
-| [courses](courses.md) | 26 | 10 | 25 |
+| [courses](courses.md) | 27 | 14 | 25 |
 | [cron](cron.md) | 3 | 1 | 3 |
 | [editors](editors.md) | 6 | 0 | 6 |
 | [editors-xtd](editors-xtd.md) | 1 | 0 | 1 |
@@ -38,7 +38,7 @@ Every event the CMS fires through `Event::trigger()`, grouped by plugin group, w
 | [projects](projects.md) | 26 | 22 | 15 |
 | [publications](publications.md) | 9 | 7 | 5 |
 | [resources](resources.md) | 9 | 8 | 7 |
-| [search](search.md) | 8 | 6 | 6 |
+| [search](search.md) | 11 | 9 | 6 |
 | [support](support.md) | 11 | 7 | 8 |
 | [system](system.md) | 20 | 12 | 15 |
 | [tags](tags.md) | 5 | 5 | 1 |

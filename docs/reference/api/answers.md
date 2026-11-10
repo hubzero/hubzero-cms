@@ -51,7 +51,7 @@ API version 1.0, task `list` in [`questionsv1r0.php`](../../../core/components/c
 
 Delete a question
 
-API version 1.0, task `delete` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L419).
+API version 1.0, task `delete` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L423).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ API version 1.0, task `delete` in [`questionsv1r0.php`](../../../core/components
 
 Retrieve a question
 
-API version 1.0, task `read` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L258).
+API version 1.0, task `read` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L262).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -71,7 +71,7 @@ API version 1.0, task `read` in [`questionsv1r0.php`](../../../core/components/c
 
 Update a question
 
-API version 1.0, task `update` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L287).
+API version 1.0, task `update` in [`questionsv1r0.php`](../../../core/components/com_answers/api/controllers/questionsv1r0.php#L291).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

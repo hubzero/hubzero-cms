@@ -26,6 +26,14 @@ Fired from:
 
 No plugin in the source tree listens for this event.
 
+## `search.onBeforeSearchRender`
+
+Fired from:
+
+- [`core/components/com_search/site/views/basic/tmpl/default.php:73`](../../../core/components/com_search/site/views/basic/tmpl/default.php#L73)
+
+No plugin in the source tree listens for this event.
+
 ## `search.onBeforeSearchRenderMembers`
 
 No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
@@ -46,7 +54,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_search/site/controllers/solr.php:311`](../../../core/components/com_search/site/controllers/solr.php#L311) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
+- [`core/components/com_search/site/controllers/solr.php:325`](../../../core/components/com_search/site/controllers/solr.php#L325) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
 
 No plugin in the source tree listens for this event.
 
@@ -54,7 +62,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/api/controllers/searchv1r0.php:274`](../../../core/components/com_search/api/controllers/searchv1r0.php#L274)
+- [`core/components/com_search/api/controllers/searchv1r0.php:283`](../../../core/components/com_search/api/controllers/searchv1r0.php#L283)
 
 Listeners:
 
@@ -111,3 +119,19 @@ Fired from:
 Listeners:
 
 - `plg_search_solr` — [`onRemoveIndex($table, $model)`](../../../core/plugins/search/solr/solr.php)
+
+## `search.onSearchAdministrate`
+
+Fired from:
+
+- [`core/components/com_search/admin/views/basic/tmpl/display.php:37`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L37) with `[$context]`
+
+No plugin in the source tree listens for this event.
+
+## `search.onSearchTask`
+
+Fired from:
+
+- [`core/components/com_search/admin/views/basic/tmpl/display.php:26`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L26)
+
+No plugin in the source tree listens for this event.

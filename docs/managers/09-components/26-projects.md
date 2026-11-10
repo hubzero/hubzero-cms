@@ -49,7 +49,7 @@ and a publication with no project behind it cannot be assembled.
 The component is `com_projects`, reached from **Components → Projects**. Its
 sub-navigation has two screens:
 
-<!--include: core/components/com_projects/admin/Projects.php:41-50-->
+<!--include: core/components/com_projects/admin/Projects.php:46-55-->
 
 ## The Projects list
 

@@ -70,7 +70,7 @@ Files must be UTF-8 with no byte order mark.
 You do not need to load the template's own file. The document loads it while
 fetching the template:
 
-<!--include: core/libraries/Hubzero/Document/Type/Html.php:566-574-->
+<!--include: core/libraries/Hubzero/Document/Type/Html.php:568-576-->
 
 Note the pair of calls. The first looks under
 `app/bootstrap/{client}/language/{tag}/`, which is where a hub puts a

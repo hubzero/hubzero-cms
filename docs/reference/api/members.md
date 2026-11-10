@@ -177,7 +177,7 @@ API version 1.1, task `groups` in [`profilesv1r1.php`](../../../core/components/
 
 Get a resource based on tool name
 
-API version 1.0, task `diskusage` in [`toolsv1r0.php`](../../../core/components/com_members/api/controllers/toolsv1r0.php#L260).
+API version 1.0, task `diskusage` in [`toolsv1r0.php`](../../../core/components/com_members/api/controllers/toolsv1r0.php#L265).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -187,7 +187,7 @@ API version 1.0, task `diskusage` in [`toolsv1r0.php`](../../../core/components/
 
 Get recent tools for a user
 
-API version 1.0, task `recenttools` in [`toolsv1r0.php`](../../../core/components/com_members/api/controllers/toolsv1r0.php#L182).
+API version 1.0, task `recenttools` in [`toolsv1r0.php`](../../../core/components/com_members/api/controllers/toolsv1r0.php#L186).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

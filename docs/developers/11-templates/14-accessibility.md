@@ -207,7 +207,7 @@ required, add the attribute yourself.
 `Html::behavior('tooltip')` binds jQuery UI tooltips to `.hasTip` and rewrites
 the `title` attribute on creation:
 
-<!--include: core/libraries/Hubzero/Html/Builder/Behavior.php:261-270-->
+<!--include: core/libraries/Hubzero/Html/Builder/Behavior.php:265-274-->
 
 After that runs, a `Label::Description` title holds only its description.
 `title` is what assistive technology falls back to for an element's
@@ -233,7 +233,7 @@ of the three icon systems for that reason. See
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:
 
-<!--include: core/libraries/Hubzero/Utility/Sanitize.php:492-504-->
+<!--include: core/libraries/Hubzero/Utility/Sanitize.php:512-524-->
 
 So `role`, `aria-label`, `aria-labelledby` and `aria-describedby` survive on
 `a`, `div`, `span`, `img`, `table`, `ul`, `ol`, `li`, `nav`, `section` and

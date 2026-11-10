@@ -11,6 +11,7 @@ Events in the `newsletter` group. A plugin in `core/plugins/newsletter/` receive
 
 Fired from:
 
+- [`core/components/com_newsletter/admin/controllers/stories.php:102`](../../../core/components/com_newsletter/admin/controllers/stories.php#L102)
 - [`core/components/com_newsletter/admin/controllers/stories.php:138`](../../../core/components/com_newsletter/admin/controllers/stories.php#L138)
 - [`core/components/com_newsletter/models/newsletter.php:444`](../../../core/components/com_newsletter/models/newsletter.php#L444)
 
@@ -24,7 +25,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_newsletter/admin/controllers/stories.php:146`](../../../core/components/com_newsletter/admin/controllers/stories.php#L146) with `[$itemCount]`
-- [`core/components/com_newsletter/models/newsletter.php:450`](../../../core/components/com_newsletter/models/newsletter.php#L450) with `[$parts[2]])[$key]; // Apply the view template $view = new \Hubzero\Component\View([]`
+- [`core/components/com_newsletter/models/newsletter.php:450`](../../../core/components/com_newsletter/models/newsletter.php#L450) with `[$parts[2]]`
 
 Listeners:
 

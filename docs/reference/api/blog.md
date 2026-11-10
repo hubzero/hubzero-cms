@@ -19,7 +19,7 @@ Endpoints under `/api/blog`, from the `com_blog` API controllers. Authenticate w
 
 Create an entry
 
-API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L197).
+API version 1.0, task `create` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L203).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -57,7 +57,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L648).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L668).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L379).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L392).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L421).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L434).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

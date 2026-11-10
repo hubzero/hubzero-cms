@@ -70,7 +70,7 @@ A component view resolves its layout through
 [`Hubzero\View\View::setPath()`](../../../core/libraries/Hubzero/View/View.php),
 which builds the search list:
 
-<!--include: core/libraries/Hubzero/View/View.php:548-579-->
+<!--include: core/libraries/Hubzero/View/View.php:561-595-->
 
 Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:
@@ -177,7 +177,7 @@ template.
 [`Hubzero\Plugin\View`](../../../core/libraries/Hubzero/Plugin/View.php) builds
 its own search list:
 
-<!--include: core/libraries/Hubzero/Plugin/View.php:207-227-->
+<!--include: core/libraries/Hubzero/Plugin/View.php:220-240-->
 
 The override directory is named `plg_{folder}_{element}`, and the view name is
 a directory inside it. So
@@ -205,7 +205,7 @@ Every asset pushed with `$this->css()`, `$this->js()` or the
 [`Hubzero\Document\Asset\File`](../../../core/libraries/Hubzero/Document/Asset/File.php),
 which checks the template before the extension:
 
-<!--include: core/libraries/Hubzero/Document/Asset/File.php:334-352-->
+<!--include: core/libraries/Hubzero/Document/Asset/File.php:383-407-->
 
 The override path is the extension's name and the file's name, with no
 `assets`, no `css` and no `js` directory in between, whatever the source file's

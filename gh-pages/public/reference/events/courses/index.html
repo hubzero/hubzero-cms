@@ -181,6 +181,7 @@
 <li class="toc__item toc__item--l2"><a href="#courses-oncoursedashboard">courses.onCourseDashboard</a></li>
 <li class="toc__item toc__item--l2"><a href="#courses-oncoursedelete">courses.onCourseDelete</a></li>
 <li class="toc__item toc__item--l2"><a href="#courses-oncoursedeletecount">courses.onCourseDeleteCount</a></li>
+<li class="toc__item toc__item--l2"><a href="#courses-oncourseedit">courses.onCourseEdit</a></li>
 <li class="toc__item toc__item--l2"><a href="#courses-oncourseenrolllink">courses.onCourseEnrollLink</a></li>
 <li class="toc__item toc__item--l2"><a href="#courses-oncourseenrolled">courses.onCourseEnrolled</a></li>
 <li class="toc__item toc__item--l2"><a href="#courses-oncoursesave">courses.onCourseSave</a></li>
@@ -262,7 +263,11 @@
 <li><code>plg_courses_discussions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/discussions/discussions.php"><code>onAssetgroupDelete($assetgroup)</code></a></li>
 </ul>
 <h2 id="courses-onassetgroupedit"><code>courses.onAssetgroupEdit</code></h2>
-<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L202"><code>core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:202</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L41"><code>core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:41</code></a></li>
+</ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_courses_discussions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/discussions/discussions.php"><code>onAssetgroupEdit()</code></a></li>
@@ -345,7 +350,13 @@
 <h2 id="courses-oncoursedeletecount"><code>courses.onCourseDeleteCount</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/site/controllers/course.php#L560"><code>core/components/com_courses/site/controllers/course.php:560</code></a> with <code>[$this-&gt;course]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/site/controllers/course.php#L566"><code>core/components/com_courses/site/controllers/course.php:566</code></a> with <code>[$this-&gt;course]</code></li>
+</ul>
+<p>No plugin in the source tree listens for this event.</p>
+<h2 id="courses-oncourseedit"><code>courses.onCourseEdit</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/admin/views/courses/tmpl/edit.php#L240"><code>core/components/com_courses/admin/views/courses/tmpl/edit.php:240</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="courses-oncourseenrolllink"><code>courses.onCourseEnrollLink</code></h2>
@@ -375,7 +386,7 @@
 <h2 id="courses-oncourseview"><code>courses.onCourseView</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/site/controllers/course.php#L141"><code>core/components/com_courses/site/controllers/course.php:141</code></a> with <code>[ $this-&gt;course, $this-&gt;view-&gt;active, ],</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/site/controllers/course.php#L147"><code>core/components/com_courses/site/controllers/course.php:147</code></a> with <code>[ $this-&gt;course, $this-&gt;view-&gt;active, ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -400,7 +411,10 @@
 <li><code>plg_courses_store</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/store/store.php"><code>onOfferingDelete($model)</code></a></li>
 </ul>
 <h2 id="courses-onofferingedit"><code>courses.onOfferingEdit</code></h2>
-<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/admin/views/offerings/tmpl/edit.php#L352"><code>core/components/com_courses/admin/views/offerings/tmpl/edit.php:352</code></a></li>
+</ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_courses_pec</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/pec/pec.php"><code>onOfferingEdit()</code></a></li>
@@ -420,7 +434,10 @@
 <li><code>plg_courses_store</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/store/store.php"><code>onSectionDelete($model)</code></a></li>
 </ul>
 <h2 id="courses-onsectionedit"><code>courses.onSectionEdit</code></h2>
-<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/admin/views/sections/tmpl/edit.php#L657"><code>core/components/com_courses/admin/views/sections/tmpl/edit.php:657</code></a></li>
+</ul>
 <p>Listeners:</p>
 <ul>
 <li><code>plg_courses_discussions</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/courses/discussions/discussions.php"><code>onSectionEdit()</code></a></li>

@@ -78,7 +78,7 @@ directory, and `layout` is the file inside `tmpl`.
 `set()` assigns a variable and returns the view, so calls chain, and
 `loadTemplate()` renders the layout and returns the markup as a string:
 
-<!--include: core/plugins/groups/forum/forum.php:529-540-->
+<!--include: core/plugins/groups/forum/forum.php:556-567-->
 
 Return that string from your event handler. Use `loadTemplate()`, not
 `display()`: `display()` echoes, which puts the output wherever the buffer

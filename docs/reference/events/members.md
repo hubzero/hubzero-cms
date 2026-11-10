@@ -37,7 +37,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:200`](../../../core/components/com_members/admin/controllers/plugins.php#L200) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ],`
+- [`core/components/com_members/admin/controllers/plugins.php:200`](../../../core/components/com_members/admin/controllers/plugins.php#L200) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
 
 Listeners:
 
@@ -47,7 +47,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:565`](../../../core/plugins/user/xusers/xusers.php#L565) with `[$user, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:571`](../../../core/plugins/user/xusers/xusers.php#L571) with `[$user, $success, $msg]`
 
 Listeners:
 
@@ -59,7 +59,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:516`](../../../core/plugins/user/xusers/xusers.php#L516) with `[$user, $isnew, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:522`](../../../core/plugins/user/xusers/xusers.php#L522) with `[$user, $isnew, $success, $msg]`
 
 Listeners:
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:800`](../../../core/components/com_members/site/controllers/profiles.php#L800) with `[User::getInstance(), $profile, $this->option, [$tab]]`
+- [`core/components/com_members/site/controllers/profiles.php:898`](../../../core/components/com_members/site/controllers/profiles.php#L898) with `[User::getInstance(), $profile, $this->option, [$tab]]`
 
 Listeners:
 
@@ -105,7 +105,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:782`](../../../core/components/com_members/site/controllers/profiles.php#L782) with `[User::getInstance(), $profile]`
+- [`core/components/com_members/site/controllers/profiles.php:880`](../../../core/components/com_members/site/controllers/profiles.php#L880) with `[User::getInstance(), $profile]`
 
 Listeners:
 

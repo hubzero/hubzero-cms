@@ -11,7 +11,7 @@ Events in the `publications` group. A plugin in `core/plugins/publications/` rec
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:837`](../../../core/plugins/projects/publications/publications.php#L837) with `[$pub]`
+- [`core/plugins/projects/publications/publications.php:847`](../../../core/plugins/projects/publications/publications.php#L847) with `[$pub]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:777`](../../../core/plugins/projects/publications/publications.php#L777) with `[$pub]`
+- [`core/plugins/projects/publications/publications.php:787`](../../../core/plugins/projects/publications/publications.php#L787) with `[$pub]`
 
 No plugin in the source tree listens for this event.
 
@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:613`](../../../core/components/com_publications/site/controllers/publications.php#L613) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended, ]`
+- [`core/components/com_publications/site/controllers/publications.php:622`](../../../core/components/com_publications/site/controllers/publications.php#L622) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended, ]`
 
 Listeners:
 
@@ -40,16 +40,16 @@ Listeners:
 - `plg_publications_questions` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/questions/questions.php)
 - `plg_publications_reviews` — [`onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/reviews/reviews.php)
 - `plg_publications_share` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/share/share.php)
-- `plg_publications_supportingdocs` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = true,)`](../../../core/plugins/publications/supportingdocs/supportingdocs.php)
+- `plg_publications_supportingdocs` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = true)`](../../../core/plugins/publications/supportingdocs/supportingdocs.php)
 - `plg_publications_usage` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/usage/usage.php)
-- `plg_publications_versions` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = false,)`](../../../core/plugins/publications/versions/versions.php)
+- `plg_publications_versions` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = false)`](../../../core/plugins/publications/versions/versions.php)
 - `plg_publications_wishlist` — [`onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)`](../../../core/plugins/publications/wishlist/wishlist.php)
 
 ## `publications.onPublicationAreas`
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:606`](../../../core/components/com_publications/site/controllers/publications.php#L606) with `[ $this->model, $this->model->versionAlias, $extended, ]`
+- [`core/components/com_publications/site/controllers/publications.php:615`](../../../core/components/com_publications/site/controllers/publications.php#L615) with `[ $this->model, $this->model->versionAlias, $extended, ]`
 
 No plugin in the source tree listens for this event.
 
@@ -95,7 +95,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/curation.php:876`](../../../core/components/com_publications/site/controllers/curation.php#L876) with `[$pub]`
+- [`core/components/com_publications/site/controllers/curation.php:923`](../../../core/components/com_publications/site/controllers/curation.php#L923) with `[$pub]`
 
 Listeners:
 

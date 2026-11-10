@@ -432,14 +432,17 @@ job first so re-running the migration does not duplicate it:</p>
         foreach (self::$jobs as $event =&gt; $job) {
             list($title, $recurrence) = $job;
 
-            $query = &quot;SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=&quot; . $this-&gt;db-&gt;quote($event) . &quot;;&quot;;
+            $query = &quot;SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=&quot;
+                . $this-&gt;db-&gt;quote($event)
+                . &quot;;&quot;;
             $this-&gt;db-&gt;setQuery($query);
 
             if ($this-&gt;db-&gt;loadResult()) {
                 continue;
             }
 
-            $query = &quot;INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)&quot;
+            $query = &quot;INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, &quot;
+                . &quot;`recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)&quot;
 </code></pre>
 
         </div>

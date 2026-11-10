@@ -25,16 +25,45 @@ SCAN = ["components", "libraries", "plugins", "modules", "templates", "bootstrap
 HEADER = "<!--\nstatus: generated\nsource: {source}\n-->\n"
 
 TRIGGER_RE = re.compile(
-    r"(?:Event::trigger|->trigger)\(\s*['\"](?P<group>[a-zA-Z0-9_]+)\.(?P<event>on[A-Za-z0-9_]+)['\"]\s*(?:,\s*(?P<args>.*?))?\)\s*;",
-    re.S,
+    r"(?:Event::trigger|->trigger)\(\s*['\"](?P<group>[a-zA-Z0-9_]+)\.(?P<event>on[A-Za-z0-9_]+)['\"]\s*",
 )
 LISTENER_RE = re.compile(r"public\s+function\s+(on[A-Za-z0-9_]+)\s*\(([^)]*)\)")
+
+
+def call_args(source: str, start: int) -> str | None:
+    """The arguments after the event name, up to the call's closing parenthesis.
+
+    ``start`` is just past the event name. Brackets are balanced and quoted
+    strings skipped, so a call inside a condition or one split over lines
+    yields only its own arguments.
+    """
+    if start >= len(source) or source[start] != ",":
+        return None
+    depth, i, quote = 0, start + 1, None
+    while i < len(source):
+        c = source[i]
+        if quote:
+            if c == "\\":
+                i += 2
+                continue
+            if c == quote:
+                quote = None
+        elif c in "'\"":
+            quote = c
+        elif c in "([":
+            depth += 1
+        elif c in ")]":
+            if depth == 0:
+                return source[start + 1:i]
+            depth -= 1
+        i += 1
+    return None
 
 
 def compact(args: str | None) -> str:
     if not args:
         return ""
-    text = re.sub(r"\s+", " ", args).strip()
+    text = re.sub(r"\s+", " ", args).strip().rstrip(",").strip()
     text = re.sub(r"^array\s*\((.*)\)$", r"[\1]", text)
     return text if len(text) <= 140 else text[:137] + "…"
 
@@ -54,7 +83,7 @@ def main() -> int:
             for match in TRIGGER_RE.finditer(source):
                 line = source.count("\n", 0, match.start()) + 1
                 fired[(match.group("group"), match.group("event"))].append(
-                    (path.relative_to(ROOT).as_posix(), line, compact(match.group("args")))
+                    (path.relative_to(ROOT).as_posix(), line, compact(call_args(source, match.end())))
                 )
 
     listeners: dict[str, dict[str, list[tuple[str, str, str]]]] = defaultdict(lambda: defaultdict(list))
@@ -65,7 +94,7 @@ def main() -> int:
                 continue
             source = main_file.read_text(encoding="utf-8", errors="replace")
             for match in LISTENER_RE.finditer(source):
-                signature = re.sub(r"\s+", " ", match.group(2)).strip()
+                signature = re.sub(r"\s+", " ", match.group(2)).strip().rstrip(",").strip()
                 listeners[group_dir.name][match.group(1)].append(
                     (plugin_dir.name, main_file.relative_to(ROOT).as_posix(), signature)
                 )

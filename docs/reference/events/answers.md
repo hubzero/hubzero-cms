@@ -11,7 +11,7 @@ Events in the `answers` group. A plugin in `core/plugins/answers/` receives an e
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:811`](../../../core/components/com_answers/site/controllers/questions.php#L811) with `[$row]) as $results) { $recipients = array_merge($recipients, $results`
+- [`core/components/com_answers/site/controllers/questions.php:851`](../../../core/components/com_answers/site/controllers/questions.php#L851) with `[$row]`
 
 Listeners:
 
@@ -19,7 +19,9 @@ Listeners:
 
 ## `answers.onQuestionsFilters`
 
-No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+Fired from:
+
+- [`core/components/com_answers/site/views/questions/tmpl/search.php:154`](../../../core/components/com_answers/site/views/questions/tmpl/search.php#L154)
 
 Listeners:
 
@@ -29,7 +31,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:480`](../../../core/components/com_answers/site/controllers/questions.php#L480) with `[$filters]`
+- [`core/components/com_answers/site/controllers/questions.php:520`](../../../core/components/com_answers/site/controllers/questions.php#L520) with `[$filters]`
 
 Listeners:
 

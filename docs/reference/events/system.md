@@ -142,6 +142,7 @@ Listeners:
 
 Fired from:
 
+- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:566`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L566)
 - [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:343`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L343) with `[$this->getTableName(), $this]`
 
 No plugin in the source tree listens for this event.
@@ -166,6 +167,7 @@ Listeners:
 
 Fired from:
 
+- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:531`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L531)
 - [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:241`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L241) with `[$this->getTableName(), $this]`
 
 No plugin in the source tree listens for this event.

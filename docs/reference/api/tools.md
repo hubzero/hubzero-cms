@@ -54,7 +54,7 @@ API version 1.0, task `listAll` in [`sessionsv1r0.php`](../../../core/components
 
 Grabs the output from a tool session
 
-API version 1.0, task `output` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1029).
+API version 1.0, task `output` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1073).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -65,7 +65,7 @@ API version 1.0, task `output` in [`sessionsv1r0.php`](../../../core/components/
 
 Runs a rappture job.
 
-API version 1.0, task `run` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L730).
+API version 1.0, task `run` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L762).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `run` in [`sessionsv1r0.php`](../../../core/components/com
 
 Method to take session screenshots for user
 
-API version 1.0, task `screenshots` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L275).
+API version 1.0, task `screenshots` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L280).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -87,7 +87,7 @@ API version 1.0, task `screenshots` in [`sessionsv1r0.php`](../../../core/compon
 
 Gets the status of the session identified
 
-API version 1.0, task `status` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L943).
+API version 1.0, task `status` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L983).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -143,7 +143,7 @@ API version 1.0, task `usage` in [`storagev1r0.php`](../../../core/components/co
 
 Method to setup Windows filesharing connection
 
-API version 1.0, task `fileshare` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1695).
+API version 1.0, task `fileshare` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1751).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -156,7 +156,7 @@ API version 1.0, task `fileshare` in [`sessionsv1r0.php`](../../../core/componen
 
 Method to return session screenshot
 
-API version 1.0, task `screenshot` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L316).
+API version 1.0, task `screenshot` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L326).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -168,19 +168,19 @@ API version 1.0, task `screenshot` in [`sessionsv1r0.php`](../../../core/compone
 
 Method to stop tool session
 
-API version 1.0, task `delete` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1451).
+API version 1.0, task `delete` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1507).
 
 ## GET /tools/{session}
 
 Method to view tool session
 
-API version 1.0, task `read` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1103).
+API version 1.0, task `read` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1147).
 
 ## GET /tools/{session}/state
 
 Report the launch/connection state of a tool session using ONLY the middleware database -- it never calls out to the middleware (maxwell).
 
-API version 1.0, task `state` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1210).
+API version 1.0, task `state` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1259).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -191,7 +191,7 @@ API version 1.0, task `state` in [`sessionsv1r0.php`](../../../core/components/c
 
 Report the timeout window for a tool session (DB-only; no middleware call).
 
-API version 1.0, task `timeout` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1369).
+API version 1.0, task `timeout` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1418).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -201,7 +201,7 @@ API version 1.0, task `timeout` in [`sessionsv1r0.php`](../../../core/components
 
 Method to disconnect from shared tool session
 
-API version 1.0, task `unshare` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1527).
+API version 1.0, task `unshare` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1583).
 
 ## GET /tools/{tool}
 
@@ -218,13 +218,13 @@ API version 1.0, task `info` in [`sessionsv1r0.php`](../../../core/components/co
 
 Method to invoke new tools session
 
-API version 1.0, task `invoke` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L542).
+API version 1.0, task `invoke` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L571).
 
 ## GET /tools/{tool}/rappturexml
 
 Method to get the Rappture definition file for a tool
 
-API version 1.0, task `rapptureXML` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L430).
+API version 1.0, task `rapptureXML` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L459).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -234,10 +234,10 @@ API version 1.0, task `rapptureXML` in [`sessionsv1r0.php`](../../../core/compon
 
 Method to purge users storage
 
-API version 1.0, task `purge` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1622).
+API version 1.0, task `purge` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1678).
 
 ## GET /tools/{user_id}
 
 Method to return users storage results
 
-API version 1.0, task `storage` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1577).
+API version 1.0, task `storage` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1633).

@@ -289,7 +289,10 @@ which builds the search list:</p>
 
             // Lowest priority first: addPath() pushes onto the top of the stack
             foreach (array_reverse($this-&gt;overrideRoot) as $root) {
-                $this-&gt;addPath($type, $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this-&gt;getName());
+                $this-&gt;addPath(
+                    $type,
+                    $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this-&gt;getName(),
+                );
             }
         }
     }
@@ -409,7 +412,13 @@ which checks the template before the extension:</p>
 <pre><code class="language-php">    public function overridePath()
     {
         if (!isset($this-&gt;paths['override'])) {
-            $suffix = DS . 'html' . DS . $this-&gt;extensionName() . DS . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '') . $this-&gt;file();
+            $suffix = DS
+                . 'html'
+                . DS
+                . $this-&gt;extensionName()
+                . DS
+                . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '')
+                . $this-&gt;file();
 
             // The first template root (the supergroup's, then the site's)
             // that carries an override; failing that the site template's
