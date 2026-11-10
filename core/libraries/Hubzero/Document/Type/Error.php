@@ -65,10 +65,10 @@ class Error extends Base
         parent::__construct($options);
 
         // Set mime type
-        $this->_mime = 'text/html';
+        $this->mime = 'text/html';
 
         // Set document type
-        $this->_type = 'error';
+        $this->type = 'error';
     }
 
     /**

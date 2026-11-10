@@ -36,10 +36,10 @@ class Xml extends Base
         parent::__construct($options);
 
         // set mime type
-        $this->_mime = 'application/xml';
+        $this->mime = 'application/xml';
 
         // set document type
-        $this->_type = 'xml';
+        $this->type = 'xml';
     }
 
     /**
@@ -51,7 +51,7 @@ class Xml extends Base
      */
     public function render($cache = false, $params = [])
     {
-        $this->setMimeEncoding($this->_mime);
+        $this->setMimeEncoding($this->mime);
 
         parent::render();
 

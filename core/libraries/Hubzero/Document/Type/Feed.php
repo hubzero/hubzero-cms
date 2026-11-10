@@ -220,7 +220,7 @@ class Feed extends Base
         parent::__construct($options);
 
         // set document type
-        $this->_type = 'feed';
+        $this->type = 'feed';
     }
 
     /**
@@ -246,11 +246,11 @@ class Feed extends Base
 
         // output
         // Generate prolog
-        $data  = '<?xml version="1.0" encoding="' . $this->_charset . '"?>' . "\n";
+        $data  = '<?xml version="1.0" encoding="' . $this->charset . '"?>' . "\n";
         $data .= '<!-- generator="' . $this->getGenerator() . '" -->' . "\n";
 
         // Generate stylesheet links
-        foreach ($this->_styleSheets as $src => $attr) {
+        foreach ($this->styleSheets as $src => $attr) {
             $data .= '<?xml-stylesheet href="' . $src . '" type="' . $attr['mime'] . '"?>' . "\n";
         }
 

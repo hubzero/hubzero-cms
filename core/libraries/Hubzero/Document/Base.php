@@ -22,20 +22,6 @@ use Hubzero\Facades\Lang;
 class Base extends Obj
 {
     /**
-     * Document mime type (non-underscored alias)
-     *
-     * @var  string
-     */
-    public $mime = '';
-
-    /**
-     * Document type identifier (non-underscored alias)
-     *
-     * @var  string
-     */
-    public $type = null;
-
-    /**
      * Document title
      *
      * @var  string
@@ -95,7 +81,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_generator = 'HUBzero - The open source platform for scientific and educational collaboration';
+    public $generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 
     /**
      * Document modified date
@@ -103,7 +89,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_mdate = '';
+    public $mdate = '';
 
     /**
      * Tab string
@@ -111,7 +97,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_tab = "\11";
+    public $tab = "\11";
 
     /**
      * Contains the line end string
@@ -119,7 +105,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_lineEnd = "\12";
+    public $lineEnd = "\12";
 
     /**
      * Contains the character encoding string
@@ -127,7 +113,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_charset = 'utf-8';
+    public $charset = 'utf-8';
 
     /**
      * Document mime type
@@ -135,7 +121,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_mime = '';
+    public $mime = '';
 
     /**
      * Document namespace
@@ -143,7 +129,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_namespace = '';
+    public $namespace = '';
 
     /**
      * Document profile
@@ -151,7 +137,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_profile = '';
+    public $profile = '';
 
     /**
      * Array of linked scripts
@@ -159,7 +145,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_scripts = [];
+    public $scripts = [];
 
     /**
      * Array of scripts placed in the header
@@ -167,7 +153,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_script = [];
+    public $script = [];
 
     /**
      * Array of linked style sheets
@@ -175,7 +161,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_styleSheets = [];
+    public $styleSheets = [];
 
     /**
      * Array of included style declarations
@@ -183,7 +169,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_style = [];
+    public $style = [];
 
     /**
      * Array of meta tags
@@ -191,7 +177,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_metaTags = [];
+    public $metaTags = [];
 
     /**
      * The rendering engine
@@ -199,7 +185,7 @@ class Base extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_engine = null;
+    public $engine = null;
 
     /**
      * The document type
@@ -207,7 +193,7 @@ class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_type = null;
+    public $type = null;
 
     /**
      * Array of buffered output
@@ -215,7 +201,7 @@ class Base extends Obj
      * @var  mixed (depends on the renderer)
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public static $_buffer = null;
+    public static $buffer = null;
 
     /**
      * Class constructor.
@@ -263,7 +249,7 @@ class Base extends Obj
      */
     public function getBuffer()
     {
-        return self::$_buffer;
+        return self::$buffer;
     }
 
     /**
@@ -275,7 +261,7 @@ class Base extends Obj
      */
     public function setBuffer($content, $options = [])
     {
-        self::$_buffer = $content;
+        self::$buffer = $content;
 
         return $this;
     }
@@ -297,12 +283,12 @@ class Base extends Obj
             $result = $this->getDescription();
         } else {
             if ($httpEquiv == true) {
-                if (isset($this->_metaTags['http-equiv'][$name])) {
-                    $result = $this->_metaTags['http-equiv'][$name];
+                if (isset($this->metaTags['http-equiv'][$name])) {
+                    $result = $this->metaTags['http-equiv'][$name];
                 }
             } else {
-                if (isset($this->_metaTags['standard'][$name])) {
-                    $result = $this->_metaTags['standard'][$name];
+                if (isset($this->metaTags['standard'][$name])) {
+                    $result = $this->metaTags['standard'][$name];
                 }
             }
         }
@@ -329,14 +315,14 @@ class Base extends Obj
             $this->setDescription($content);
         } else {
             if ($http_equiv == true) {
-                $this->_metaTags['http-equiv'][$name] = $content;
+                $this->metaTags['http-equiv'][$name] = $content;
 
                 // Syncing with HTTP-header
                 if ($sync && strtolower($name) == 'content-type') {
                     $this->setMimeEncoding($content, false);
                 }
             } else {
-                $this->_metaTags['standard'][] = ['name' => $name, 'content' => $content];
+                $this->metaTags['standard'][] = ['name' => $name, 'content' => $content];
             }
         }
 
@@ -354,9 +340,9 @@ class Base extends Obj
      */
     public function addScript($url, $type = "text/javascript", $defer = false, $async = false)
     {
-        $this->_scripts[$url]['mime'] = $type;
-        $this->_scripts[$url]['defer'] = $defer;
-        $this->_scripts[$url]['async'] = $async;
+        $this->scripts[$url]['mime'] = $type;
+        $this->scripts[$url]['defer'] = $defer;
+        $this->scripts[$url]['async'] = $async;
 
         return $this;
     }
@@ -370,10 +356,10 @@ class Base extends Obj
      */
     public function addScriptDeclaration($content, $type = 'text/javascript')
     {
-        if (!isset($this->_script[strtolower($type)])) {
-            $this->_script[strtolower($type)] = [$content];
+        if (!isset($this->script[strtolower($type)])) {
+            $this->script[strtolower($type)] = [$content];
         } else {
-            $this->_script[strtolower($type)][] = chr(13) . $content;
+            $this->script[strtolower($type)][] = chr(13) . $content;
         }
 
         return $this;
@@ -390,9 +376,9 @@ class Base extends Obj
      */
     public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])
     {
-        $this->_styleSheets[$url]['mime'] = $type;
-        $this->_styleSheets[$url]['media'] = $media;
-        $this->_styleSheets[$url]['attribs'] = $attribs;
+        $this->styleSheets[$url]['mime'] = $type;
+        $this->styleSheets[$url]['media'] = $media;
+        $this->styleSheets[$url]['attribs'] = $attribs;
 
         return $this;
     }
@@ -406,10 +392,10 @@ class Base extends Obj
      */
     public function addStyleDeclaration($content, $type = 'text/css')
     {
-        if (!isset($this->_style[strtolower($type)])) {
-            $this->_style[strtolower($type)] = $content;
+        if (!isset($this->style[strtolower($type)])) {
+            $this->style[strtolower($type)] = $content;
         } else {
-            $this->_style[strtolower($type)] .= chr(13) . $content;
+            $this->style[strtolower($type)] .= chr(13) . $content;
         }
 
         return $this;
@@ -423,7 +409,7 @@ class Base extends Obj
      */
     public function setCharset($type = 'utf-8')
     {
-        $this->_charset = $type;
+        $this->charset = $type;
 
         return $this;
     }
@@ -435,7 +421,7 @@ class Base extends Obj
      */
     public function getCharset()
     {
-        return $this->_charset;
+        return $this->charset;
     }
 
     /**
@@ -649,7 +635,7 @@ class Base extends Obj
      */
     public function setGenerator($generator)
     {
-        $this->_generator = $generator;
+        $this->generator = $generator;
 
         return $this;
     }
@@ -661,7 +647,7 @@ class Base extends Obj
      */
     public function getGenerator()
     {
-        return $this->_generator;
+        return $this->generator;
     }
 
     /**
@@ -672,7 +658,7 @@ class Base extends Obj
      */
     public function setModifiedDate($date)
     {
-        $this->_mdate = $date;
+        $this->mdate = $date;
 
         return $this;
     }
@@ -684,7 +670,7 @@ class Base extends Obj
      */
     public function getModifiedDate()
     {
-        return $this->_mdate;
+        return $this->mdate;
     }
 
     /**
@@ -696,7 +682,7 @@ class Base extends Obj
      */
     public function setMimeEncoding($type = 'text/html', $sync = true)
     {
-        $this->_mime = strtolower($type);
+        $this->mime = strtolower($type);
 
         // Syncing with meta-data
         if ($sync) {
@@ -713,7 +699,7 @@ class Base extends Obj
      */
     public function getMimeEncoding()
     {
-        return $this->_mime;
+        return $this->mime;
     }
 
     /**
@@ -726,19 +712,19 @@ class Base extends Obj
     {
         switch ($style) {
             case 'win':
-                $this->_lineEnd = "\15\12";
+                $this->lineEnd = "\15\12";
                 break;
 
             case 'unix':
-                $this->_lineEnd = "\12";
+                $this->lineEnd = "\12";
                 break;
 
             case 'mac':
-                $this->_lineEnd = "\15";
+                $this->lineEnd = "\15";
                 break;
 
             default:
-                $this->_lineEnd = $style;
+                $this->lineEnd = $style;
         }
 
         return $this;
@@ -750,9 +736,9 @@ class Base extends Obj
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _getLineEnd()
+    public function getLineEnd()
     {
-        return $this->_lineEnd;
+        return $this->lineEnd;
     }
 
     /**
@@ -763,7 +749,7 @@ class Base extends Obj
      */
     public function setTab($string)
     {
-        $this->_tab = $string;
+        $this->tab = $string;
 
         return $this;
     }
@@ -774,9 +760,9 @@ class Base extends Obj
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _getTab()
+    public function getTab()
     {
-        return $this->_tab;
+        return $this->tab;
     }
 
     /**
@@ -787,7 +773,7 @@ class Base extends Obj
      */
     public function loadRenderer($type)
     {
-        $class = __NAMESPACE__ . '\\Type\\' . ucfirst($this->_type) . '\\' . ucfirst($type);
+        $class = __NAMESPACE__ . '\\Type\\' . ucfirst($this->type) . '\\' . ucfirst($type);
 
         if (!class_exists($class)) {
             throw new \InvalidArgumentException(Lang::txt('Unable to load renderer class'), 500);
@@ -821,8 +807,8 @@ class Base extends Obj
                 ' GMT' */);
         }
 
-        App::get('response')->headers->set('Content-Type', $this->_mime
-            . ($this->_charset ? '; charset='
-            . $this->_charset : ''));
+        App::get('response')->headers->set('Content-Type', $this->mime
+            . ($this->charset ? '; charset='
+            . $this->charset : ''));
     }
 }

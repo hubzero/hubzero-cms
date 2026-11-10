@@ -50,8 +50,8 @@ class Head extends Renderer
         Event::trigger('onBeforeCompileHead');
 
         // Get line endings
-        $lnEnd  = $document->_getLineEnd();
-        $tab    = $document->_getTab();
+        $lnEnd  = $document->getLineEnd();
+        $tab    = $document->getTab();
         $tagEnd = ' />';
         $buffer = [];
 
@@ -62,7 +62,7 @@ class Head extends Renderer
         }
 
         // Generate META tags (needs to happen as early as possible in the head)
-        foreach ($document->_metaTags as $type => $tag) {
+        foreach ($document->metaTags as $type => $tag) {
             foreach ($tag as $name => $content) {
                 if ($type == 'http-equiv') {
                     $content .= '; charset=' . $document->getCharset();
@@ -86,7 +86,7 @@ class Head extends Renderer
         $buffer[] = $tab . '<title>' . htmlspecialchars($document->getTitle(), ENT_COMPAT, 'UTF-8') . '</title>';
 
         // Generate link declarations
-        foreach ($document->_links as $link => $linkAtrr) {
+        foreach ($document->links as $link => $linkAtrr) {
             $line = $tab . '<link href="' . $link . '" ' . $linkAtrr['relType'] . '="' . $linkAtrr['relation'] . '"';
             if ($temp = Arr::toString($linkAtrr['attribs'])) {
                 $line .= ' ' . $temp;
@@ -97,7 +97,7 @@ class Head extends Renderer
         }
 
         // Generate stylesheet links
-        foreach ($document->_styleSheets as $strSrc => $strAttr) {
+        foreach ($document->styleSheets as $strSrc => $strAttr) {
             $line = $tab . '<link rel="stylesheet" href="' . $strSrc . '" type="' . $strAttr['mime'] . '"';
             if (!is_null($strAttr['media'])) {
                 $line .= ' media="' . $strAttr['media'] . '" ';
@@ -110,25 +110,25 @@ class Head extends Renderer
         }
 
         // Generate stylesheet declarations
-        foreach ($document->_style as $type => $content) {
+        foreach ($document->style as $type => $content) {
             $buffer[] = $tab . '<style type="' . $type . '">';
 
             // This is for full XHTML support.
-            if ($document->_mime != 'text/html') {
+            if ($document->mime != 'text/html') {
                 $buffer[] = $tab . $tab . '<![CDATA[';
             }
 
             $buffer[] = $content;
 
             // See above note
-            if ($document->_mime != 'text/html') {
+            if ($document->mime != 'text/html') {
                 $buffer[] = $tab . $tab . ']]>';
             }
             $buffer[] = $tab . '</style>';
         }
 
         // Generate script file links
-        foreach ($document->_scripts as $strSrc => $strAttr) {
+        foreach ($document->scripts as $strSrc => $strAttr) {
             $line = $tab . '<script src="' . $strSrc . '"';
             if (!is_null($strAttr['mime'])) {
                 $line .= ' type="' . $strAttr['mime'] . '"';
@@ -145,11 +145,11 @@ class Head extends Renderer
         }
 
         // Generate script declarations
-        foreach ($document->_script as $type => $content) {
+        foreach ($document->script as $type => $content) {
             $buffer[] = $tab . '<script type="' . $type . '">';
 
             // This is for full XHTML support.
-            if ($document->_mime != 'text/html') {
+            if ($document->mime != 'text/html') {
                 $buffer[] = $tab . $tab . '<![CDATA[';
             }
 
@@ -162,7 +162,7 @@ class Head extends Renderer
             }
 
             // See above note
-            if ($document->_mime != 'text/html') {
+            if ($document->mime != 'text/html') {
                 $buffer[] = $tab . $tab . ']]>';
             }
             $buffer[] = $tab . '</script>';
@@ -183,7 +183,7 @@ class Head extends Renderer
             $buffer[] = $tab . '</script>';
         }
 
-        foreach ($document->_custom as $custom) {
+        foreach ($document->custom as $custom) {
             $buffer[] = $tab . $custom;
         }
 

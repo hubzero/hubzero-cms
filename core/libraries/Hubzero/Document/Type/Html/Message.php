@@ -44,8 +44,8 @@ class Message extends Renderer
             }
         }
 
-        $lnEnd = $this->doc->_getLineEnd();
-        $tab   = $this->doc->_getTab();
+        $lnEnd = $this->doc->getLineEnd();
+        $tab   = $this->doc->getTab();
 
         // Build the return string
         $buffer[] = '<div id="system-message-container">';

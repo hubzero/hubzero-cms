@@ -60,13 +60,13 @@ class Template extends Html
             $params['directory'] = PATH_CORE . DS . 'templates';
         }
 
-        $this->_caching = $caching;
+        $this->caching = $caching;
 
-        if (!empty($this->_template)) {
-            $data = $this->_renderTemplate();
+        if (!empty($this->parsedTemplate)) {
+            $data = $this->renderTemplate();
         } else {
             $this->parse($params);
-            $data = $this->_renderTemplate();
+            $data = $this->renderTemplate();
         }
 
         if (class_exists('\Pelago\Emogrifier') && $data) {
@@ -93,14 +93,14 @@ class Template extends Html
      * @return  string  The contents of the template
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _loadTemplate($directory, $filename)
+    protected function loadTemplate($directory, $filename)
     {
         $contents = '';
 
         // Check to see if we have a valid template file
         if (file_exists($directory . DS . $filename)) {
             // Store the file path
-            $this->_file = $directory . DS . $filename;
+            $this->file = $directory . DS . $filename;
 
             // Get the file content
             ob_start();
