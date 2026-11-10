@@ -284,7 +284,8 @@ class Ckeditor5 extends Plugin
         $script .= 'editor.on("destroy",function(){HUB.Editor.unregister(' . $idJson . ');});';
         $script .= '})';
         $script .= '.catch(function(e){console.error(e);});};';
-        $script .= 'if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",f);}else{f();}})();';
+        $script .= 'if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",f);}'
+            . 'else{f();}})();';
         $script .= '</script>';
 
         $params['class'] = implode(' ', $params['class']);

@@ -125,7 +125,8 @@ class Newsletters extends SiteController
             // let long words/URLs wrap, so the content reflows instead of forcing
             // horizontal scrolling.
             $responsive = '<meta name="viewport" content="width=device-width, initial-scale=1">'
-                . '<style>body{margin:0;padding:0}img{max-width:100%;height:auto}table{max-width:100%!important}td,th,p,a,li,div{overflow-wrap:break-word}</style>';
+                . '<style>body{margin:0;padding:0}img{max-width:100%;height:auto}table{max-width:100%!important}'
+                . 'td,th,p,a,li,div{overflow-wrap:break-word}</style>';
             echo '<!DOCTYPE html><html lang="'
                 . htmlspecialchars($lang)
                 . '"><head><meta charset="utf-8">'
@@ -133,7 +134,8 @@ class Newsletters extends SiteController
                 . '<title>'
                 . $title
                 . '</title></head><body><main><h1 '
-                . 'style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">'
+                . 'style="position:absolute;width:1px;height:1px;overflow:hidden;'
+                . 'clip:rect(0,0,0,0);white-space:nowrap">'
                 . $title
                 . '</h1>'
                 . $newsletter

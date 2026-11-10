@@ -617,7 +617,8 @@ class Project extends Table
                         AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0  ";
             $query .= " WHERE p.id=po.projectid AND po.status=1 AND po.groupid=" . (int) $groupid;
             $query .= $active == 1
-                    ? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2))  "
+                    ? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid)
+                        . " AND p.state !=2))  "
                     : " AND p.state !=2 ";
             $query .= " AND p.provisioned=0";*/
 

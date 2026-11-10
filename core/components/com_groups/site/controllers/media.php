@@ -194,7 +194,9 @@ class Media extends Base
         // add base path if super group
         /*if ($this->group->isSuperGroup())
         {
-            $this->view->folderTree = '<ul><li><a class="tree-folder-toggle" href="javascript:void(0);"></a><a data-folder="/" href="javascript:void(0);" class="tree-folder">/ (root)</a>'.$this->view->folderTree.'</li></ul>';
+            $this->view->folderTree = '<ul><li><a class="tree-folder-toggle" href="javascript:void(0);"></a>'
+                . '<a data-folder="/" href="javascript:void(0);" class="tree-folder">/ (root)</a>'
+                . $this->view->folderTree.'</li></ul>';
         }*/
 
         // get view notifications

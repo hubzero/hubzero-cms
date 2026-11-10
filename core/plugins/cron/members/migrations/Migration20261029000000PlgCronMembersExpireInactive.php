@@ -36,7 +36,8 @@ class Migration20261029000000PlgCronMembersExpireInactive extends Base
 					 VALUES
 						('Expire inactive accounts', 0, 'members', 'expireInactiveAccounts', NULL, NULL, '0 3 1 * *', NULL, 1, NULL, 0, "
                         . "0, 0, "
-                        . "'{\"members_expireinactive_months\":\"36\",\"members_expireinactive_exempt_group\":\"Service accounts\"}');",
+                        . "'{\"members_expireinactive_months\":\"36\","
+                        . "\"members_expireinactive_exempt_group\":\"Service accounts\"}');",
                 );
                 $this->db->query();
             }

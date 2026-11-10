@@ -226,7 +226,8 @@ class Member extends Table
     /*public function save()
     {
         $this->_db->setQuery("UPDATE $this->_tbl
-            SET `role_id`=" . $this->_db->quote($this->role_id) . ", `permissions`=" . $this->_db->quote($this->permissions) . "
+            SET `role_id`=" . $this->_db->quote($this->role_id) . ", `permissions`="
+            . $this->_db->quote($this->permissions) . "
             WHERE `offering_id`=" . $this->_db->quote($this->offering_id) . "
             AND `user_id`=" . $this->_db->quote($this->user_id));
         if (!$this->_db->query())
@@ -331,7 +332,9 @@ class Member extends Table
             . "r.permissions AS role_permissions ";
         /*if (isset($filters['offering_id']))
         {
-            $query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->quote(intval($filters['offering_id'])) . ")";
+            $query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co "
+                . "ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id="
+                . $this->_db->quote(intval($filters['offering_id'])) . ")";
         }
         else
         {

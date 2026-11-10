@@ -62,7 +62,8 @@ class Form extends SiteController
         }
 
         // Set the base path
-        $this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->alias()}";
+        $this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}"
+            . "&offering={$this->course->offering()->alias()}";
 
         parent::execute();
     }

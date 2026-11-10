@@ -366,7 +366,8 @@ class Ckeditor extends Plugin
         $config->hubzeroAutogrow_minHeight     = 200;
         $config->hubzeroAutogrow_maxHeight     = 1000;
         $config->toolbarCanCollapse            = true;
-        $config->extraPlugins                  = 'tableresize,iframedialog,hubzeroequation,hubzerogrid,hubzeromacro,hubzerohighlight,wordcount,mentions';
+        $config->extraPlugins                  = 'tableresize,iframedialog,hubzeroequation,hubzerogrid,hubzeromacro,'
+            . 'hubzerohighlight,wordcount,mentions';
         $config->removePlugins                 = '';
         $config->resize_enabled                = true;
         $config->emailProtection               = '';

@@ -8,6 +8,7 @@ use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
+use Components\Publications\Models\Orm\Category;
 
 /**
  * @package   hubzero-cms
@@ -161,8 +162,8 @@ class Publications extends Plugin
         // Get categories
         $categories = $this->cats;
         if (!$categories) {
-            $categories = \Components\Publications\Models\Orm\Category::all()
-                ->whereEquals('state', \Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
+            $categories = Category::all()
+                ->whereEquals('state', Category::STATE_PUBLISHED)
                 ->order('name', 'asc')
                 ->rows();
         }
@@ -221,7 +222,7 @@ class Publications extends Plugin
 
         if (isset($filters['type'])) {
             if (!is_numeric($filters['type'])) {
-                $filters['type'] = \Components\Publications\Models\Orm\Category::oneByAlias($filters['type'])->get('id');
+                $filters['type'] = Category::oneByAlias($filters['type'])->get('id');
             }
             $query->whereEquals($p . '.category', $filters['type']);
         }

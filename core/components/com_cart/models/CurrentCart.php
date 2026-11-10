@@ -1293,7 +1293,8 @@ class CurrentCart extends Cart
 
         // Do the coupon maintenance
         /*
-            At this point $couponMappings has all the coupons that need to be applied to cart -- all other unused coupons have to be released
+            At this point $couponMappings has all the coupons that need to be applied to cart -- all other unused
+            coupons have to be released
         */
 
         // Go through each coupon again and see if it needs to be applied. If not -- release it
