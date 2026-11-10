@@ -111,8 +111,8 @@ class Templates extends AdminController
     {
         // Access checks.
         if (
-            !User::authorise('core.edit', $this->option)
-            || !User::authorise('core.create', $this->option)
+            !User::authorise('core.edit', $this->_option)
+            || !User::authorise('core.create', $this->_option)
         ) {
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }

@@ -1683,7 +1683,7 @@ class Register extends SiteController
             $this->setError('login mismatch');
 
             // Build logout/login/confirm redirect flow
-            $login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+            $login_return  = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
             $logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
             $redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
@@ -1697,7 +1697,7 @@ class Register extends SiteController
                 $this->setError('login mismatch');
 
                 // Build logout/login/confirm redirect flow
-                $login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
+                $login_return  = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
                 $logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
                 $redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);

@@ -681,7 +681,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
+            Route::url('index.php?option=' . $this->_option . '&controller=collections&task=posts'),
         );
     }
 
@@ -833,7 +833,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
+            Route::url('index.php?option=' . $this->_option . '&controller=collections&task=posts'),
         );
     }
 
