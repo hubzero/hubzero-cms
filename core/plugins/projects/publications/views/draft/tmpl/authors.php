@@ -81,7 +81,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
                     <span class="item-title"><?php echo $this->escape($name); ?> <span class="item-subtext"><?php echo $org ? ' - ' . $this->escape($org) : ''; ?></span></span>
                     <span class="item-details"><?php echo $this->escape($details); ?></span>
                 </li>
-                <?php	$i++;
+                <?php $i++;
             } ?>
             </ul>
     <?php  }  ?>

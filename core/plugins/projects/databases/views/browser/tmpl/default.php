@@ -71,7 +71,7 @@ if (count($items) > 0) { ?>
         if (count($missing) > 0) {
             foreach ($missing as $miss) { ?>
                 <li class="c-click databases i-missing" id="data::<?php echo $this->escape($miss['id']); ?>"><?php echo $this->escape($miss['title']); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
-            <?php	}
+            <?php }
         }
 }
 ?>

@@ -32,5 +32,5 @@ if ($isComplete) : ?>
             <?php
             echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ' ' . $todo->due('date') . $overdueNotice; ?>
         </span>
-    <?php	endif; ?>
+    <?php endif; ?>
 <?php endif; ?>

@@ -38,7 +38,7 @@ foreach ($subs as $s) :
                         } ?>>
                 <?php echo $o; ?>
                 </option>
-            <?php	endforeach; ?>
+            <?php endforeach; ?>
         </select>
         <input type="hidden" name="<?php echo "subscriptions[$sKey][foreign_key]"; ?>"
                value="<?php echo $sKey; ?>">

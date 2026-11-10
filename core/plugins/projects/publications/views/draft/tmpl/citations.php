@@ -69,7 +69,7 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                             </span>
                             <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
                         </li>
-                        <?php	$i++;
+                        <?php $i++;
                     } ?>
                     </ul>
             <?php  }  ?>

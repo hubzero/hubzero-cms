@@ -150,7 +150,7 @@ if ($this->name == 'curator') {
         <?php if (is_array($this->attachments) && count($this->attachments) > 0) { ?>
         <div class="list-wrapper">
             <ul class="itemlist">
-            <?php	$i = 1; ?>
+            <?php $i = 1; ?>
                 <?php foreach ($this->attachments as $att) {
                     // Collect data
                     $data = $modelAttach->buildDataObject(

@@ -22,5 +22,5 @@ $options = $this->typeOptions;
         <option <?php echo $selectedText; ?>>
         <?php echo $option; ?>
         </option>
-    <?php	endforeach; ?>
+    <?php endforeach; ?>
 </select>

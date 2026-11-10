@@ -37,7 +37,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
             <li>
                 <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
             </li>
-            <?php	$i++;
+            <?php $i++;
         } ?>
         </ul>
     </div>

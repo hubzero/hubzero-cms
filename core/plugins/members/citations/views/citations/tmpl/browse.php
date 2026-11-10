@@ -168,7 +168,7 @@ if (isset($this->messages)) {
                                 </tr>
                                 <tr>
                                     <td <?php echo ($this->label == "none") ? 'colspan="5"' : 'colspan="6"'; ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : ''; ?>">
-                                        <?php	echo $cite->citationDetails($this->openurl); ?>
+                                        <?php echo $cite->citationDetails($this->openurl); ?>
                                         <?php if ($this->config->get('citations_show_badges', 'yes') == "yes") : ?>
                                             <?php echo $cite->badgeCloud(); ?>
                                         <?php endif; ?>
