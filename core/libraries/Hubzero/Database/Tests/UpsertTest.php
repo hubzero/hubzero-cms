@@ -67,7 +67,7 @@ class UpsertTest extends AbstractDriverTestCase
         Query::purgeCache();
 
         // Clean up existing data
-        (new Query($driver))->delete('upsert_items')->execute();
+        new Query($driver)->delete('upsert_items')->execute();
 
         // Reset autoincrement where possible
         try {
@@ -86,7 +86,7 @@ class UpsertTest extends AbstractDriverTestCase
         string $name,
         int $value = 0,
     ): void {
-        (new Query($driver))->push('upsert_items', [
+        new Query($driver)->push('upsert_items', [
             'code' => $code,
             'name' => $name,
             'value' => $value,
@@ -127,7 +127,7 @@ class UpsertTest extends AbstractDriverTestCase
     ): void {
         $this->setupTestData($driver);
 
-        (new Query($driver))
+        new Query($driver)
             ->upsert('upsert_items', [
                 'code' => 'A001',
                 'name' => 'Alpha',
@@ -162,7 +162,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
 
-        (new Query($driver))
+        new Query($driver)
             ->upsert('upsert_items', [
                 'code' => 'A001',
                 'name' => 'Alpha Updated',
@@ -198,7 +198,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->insertRow($driver, 'A001', 'Alpha', 10);
 
         // Only update 'value', not 'name'
-        (new Query($driver))
+        new Query($driver)
             ->upsert('upsert_items', [
                 'code' => 'A001',
                 'name' => 'Should Not Change',
@@ -235,7 +235,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
         $this->insertRow($driver, 'B001', 'Beta', 5);
 
-        (new Query($driver))
+        new Query($driver)
             ->upsert('upsert_items', [
                 'code' => 'B001',
                 'name' => 'Beta Updated',
@@ -270,7 +270,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->insertRow($driver, 'A001', 'Alpha', 10);
         $this->insertRow($driver, 'B001', 'Beta', 20);
 
-        (new Query($driver))
+        new Query($driver)
             ->upsert('upsert_items', [
                 'code' => 'A001',
                 'name' => 'Alpha Changed',
@@ -307,7 +307,7 @@ class UpsertTest extends AbstractDriverTestCase
     ): void {
         $this->setupTestData($driver);
 
-        $result = (new Query($driver))->pushOrUpdate(
+        $result = new Query($driver)->pushOrUpdate(
             'upsert_items',
             ['code' => 'C001', 'name' => 'Charlie', 'value' => 30],
             ['name', 'value'],
@@ -336,7 +336,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
         $this->insertRow($driver, 'C001', 'Charlie', 30);
 
-        $result = (new Query($driver))->pushOrUpdate(
+        $result = new Query($driver)->pushOrUpdate(
             'upsert_items',
             ['code' => 'C001', 'name' => 'Charlie Updated', 'value' => 60],
             ['name', 'value'],
@@ -377,7 +377,7 @@ class UpsertTest extends AbstractDriverTestCase
             ['code' => 'X03', 'name' => 'X-Three', 'value' => 3],
         ];
 
-        $count = (new Query($driver))->upsertMany(
+        $count = new Query($driver)->upsertMany(
             'upsert_items',
             $rows,
             ['name', 'value'],
@@ -413,7 +413,7 @@ class UpsertTest extends AbstractDriverTestCase
             ['code' => 'X02', 'name' => 'X-Two Updated', 'value' => 200],
         ];
 
-        $count = (new Query($driver))->upsertMany(
+        $count = new Query($driver)->upsertMany(
             'upsert_items',
             $rows,
             ['name', 'value'],
@@ -452,7 +452,7 @@ class UpsertTest extends AbstractDriverTestCase
             ['code' => 'M02', 'name' => 'New Row', 'value' => 50],
         ];
 
-        $count = (new Query($driver))->upsertMany(
+        $count = new Query($driver)->upsertMany(
             'upsert_items',
             $rows,
             ['name', 'value'],
@@ -481,7 +481,7 @@ class UpsertTest extends AbstractDriverTestCase
     ): void {
         $this->setupTestData($driver);
 
-        $count = (new Query($driver))->upsertMany(
+        $count = new Query($driver)->upsertMany(
             'upsert_items',
             [],
             ['name', 'value'],
@@ -504,7 +504,7 @@ class UpsertTest extends AbstractDriverTestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        (new Query($driver))->upsertMany(
+        new Query($driver)->upsertMany(
             'upsert_items',
             [
                 ['code' => 'A', 'name' => 'First', 'value' => 1],

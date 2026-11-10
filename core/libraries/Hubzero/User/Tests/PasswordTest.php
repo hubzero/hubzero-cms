@@ -91,7 +91,7 @@ class PasswordTest extends Basic
      */
     private static function record($shadowExpire)
     {
-        $hzup = (new \ReflectionClass(Password::class))->newInstanceWithoutConstructor();
+        $hzup = new \ReflectionClass(Password::class)->newInstanceWithoutConstructor();
         $hzup->set('shadowExpire', $shadowExpire);
         return $hzup;
     }

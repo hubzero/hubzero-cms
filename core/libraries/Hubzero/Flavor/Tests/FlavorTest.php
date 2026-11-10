@@ -53,7 +53,7 @@ class FlavorTest extends TestCase
      */
     public function testAChildCascadesOntoItsParent()
     {
-        $tooled = (new Finder([$this->files('shipped')]))->find('tooled');
+        $tooled = new Finder([$this->files('shipped')])->find('tooled');
 
         $this->assertNull($tooled->parent(), 'the cascade is done once resolved');
         $this->assertSame('The base, with tools', $tooled->description());
@@ -146,7 +146,7 @@ class FlavorTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('broken.yml does not read as flavors');
 
-        (new Finder([$this->files('broken')]))->all();
+        new Finder([$this->files('broken')])->all();
     }
 
     /**
@@ -159,7 +159,7 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('circle');
 
-        (new Finder([$this->files('looped')]))->all();
+        new Finder([$this->files('looped')])->all();
     }
 
     /**

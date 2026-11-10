@@ -787,7 +787,7 @@ class Schema extends Base implements CommandInterface
 
         if (!$name) {
             // Generate a name based on current date
-            $name = 'snapshot-' . (new Date())->format('Y-m-d-His');
+            $name = 'snapshot-' . new Date()->format('Y-m-d-His');
         }
 
         $description = $this->arguments->getOpt('description');
@@ -2138,7 +2138,7 @@ class Schema extends Base implements CommandInterface
     {
         // If path is a directory, generate filename
         if (is_dir($path)) {
-            $timestamp = (new Date())->format('Y-m-d-His');
+            $timestamp = new Date()->format('Y-m-d-His');
             $path = rtrim($path, '/') . "/migration-{$timestamp}.sql";
         }
 
@@ -2158,7 +2158,7 @@ class Schema extends Base implements CommandInterface
         $content = [];
         $content[] = "-- ============================================================";
         $content[] = "-- HubZero Schema Migration SQL";
-        $content[] = "-- Generated: " . (new Date())->format('Y-m-d H:i:s');
+        $content[] = "-- Generated: " . new Date()->format('Y-m-d H:i:s');
         $content[] = "-- Description: {$description}";
         if ($safeFlags > 0) {
             $content[] = "-- Safe mode: " . $this->describeSafeFlags($safeFlags);

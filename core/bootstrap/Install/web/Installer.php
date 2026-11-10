@@ -505,7 +505,7 @@ class Installer
         // where the installer stops. Not after: an installed hub whose app
         // directory is later made read-only must not reopen its installer.
         $dbConfigPath = PATH_APP . '/config/database.php';
-        if (!file_exists($dbConfigPath) && !(new Requirements($this))->passed()) {
+        if (!file_exists($dbConfigPath) && !new Requirements($this)->passed()) {
             return 'requirements';
         }
 

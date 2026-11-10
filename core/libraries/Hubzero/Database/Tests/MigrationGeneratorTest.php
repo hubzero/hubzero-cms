@@ -142,7 +142,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGenerateBlankStrictModeRejectsTodoStub(string $dbName, Driver $driver): void
     {
-        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+        $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Strict blank migration mode is enabled');
@@ -156,7 +156,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGenerateBlankWithBodiesStrictModeAllowsExplicitCode(string $dbName, Driver $driver): void
     {
-        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+        $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
         $content = $generator->generateBlankWithBodies(
             "\$this->db->setQuery('SELECT 1')->execute();",
@@ -177,7 +177,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGenerateBlankWithBodiesStrictModeRejectsTodoPlaceholders(string $dbName, Driver $driver): void
     {
-        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+        $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('rejects TODO placeholder bodies');

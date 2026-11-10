@@ -56,7 +56,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $addColumnStatement = '';
 
         if (!$this->db->tableHasField($table, $columnName)) {
-            $addColumnStatement = (new QueryAddColumnStatement($columnData))
+            $addColumnStatement = new QueryAddColumnStatement($columnData)
                 ->toString();
         }
 
@@ -80,7 +80,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $dropColumnStatement = '';
 
         if ($this->db->tableHasField($table, $columnName)) {
-            $dropColumnStatement = (new QueryDropColumnStatement($columnData))
+            $dropColumnStatement = new QueryDropColumnStatement($columnData)
                 ->toString();
         }
 

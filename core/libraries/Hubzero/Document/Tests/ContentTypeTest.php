@@ -26,10 +26,10 @@ class ContentTypeTest extends TestCase
      */
     public function testEachDocumentKnowsItsContentType(): void
     {
-        $this->assertSame('application/json', (new Json())->getMimeEncoding());
-        $this->assertSame('text/html', (new Error())->getMimeEncoding());
-        $this->assertSame('text/html', (new Raw())->getMimeEncoding());
-        $this->assertSame('application/xml', (new Xml())->getMimeEncoding());
-        $this->assertSame('text/html', (new Html())->getMimeEncoding());
+        $this->assertSame('application/json', new Json()->getMimeEncoding());
+        $this->assertSame('text/html', new Error()->getMimeEncoding());
+        $this->assertSame('text/html', new Raw()->getMimeEncoding());
+        $this->assertSame('application/xml', new Xml()->getMimeEncoding());
+        $this->assertSame('text/html', new Html()->getMimeEncoding());
     }
 }

@@ -83,7 +83,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
         // Clean up rows via DELETE instead of TRUNCATE.
         // This table uses explicit sequence-assigned IDs (no auto-increment),
         // so a plain delete is the portable reset path.
-        (new Query($driver))->delete('seq_items')->execute();
+        new Query($driver)->delete('seq_items')->execute();
 
         try {
             $driver->dropSequence(self::$defaultSeq);

@@ -297,7 +297,7 @@ class View extends Obj
             return false;
         }
 
-        return !property_exists($this, $name) || (new \ReflectionProperty($this, $name))->isPublic();
+        return !property_exists($this, $name) || new \ReflectionProperty($this, $name)->isPublic();
     }
 
     /**

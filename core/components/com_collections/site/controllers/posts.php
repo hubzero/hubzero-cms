@@ -175,7 +175,7 @@ class Posts extends SiteController
         // saveTask() already refuses the write, so this closes the read.
         if (
             $this->view->entry->exists()
-            && !(new Collection($this->view->entry->get('collection_id')))->isReadableBy()
+            && !new Collection($this->view->entry->get('collection_id'))->isReadableBy()
         ) {
             App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
@@ -370,7 +370,7 @@ class Posts extends SiteController
         // would all be the caller's to state, and the predicate would agree.
         if (
             (int) $p['collection_id']
-            && !(new Collection((int) $p['collection_id']))->canBePostedToBy()
+            && !new Collection((int) $p['collection_id'])->canBePostedToBy()
         ) {
             App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
@@ -429,7 +429,7 @@ class Posts extends SiteController
 
         if (
             !$__post->get('id')
-            || !(new Collection($__post->get('collection_id')))->isReadableBy()
+            || !new Collection($__post->get('collection_id'))->isReadableBy()
         ) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
@@ -644,7 +644,7 @@ class Posts extends SiteController
         // plugins' _vote() was scoped this way; this one was not.
         if (
             !$post->get('id')
-            || !(new Collection($post->get('collection_id')))->isReadableBy()
+            || !new Collection($post->get('collection_id'))->isReadableBy()
         ) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
@@ -877,7 +877,7 @@ class Posts extends SiteController
                 // The ids come from the request and Post resolves any row, so
                 // only reorder posts on a board the caller may moderate --
                 // otherwise this rewrites the ordering of anyone's board.
-                if (!(new Collection($row->get('collection_id')))->canBeModeratedBy()) {
+                if (!new Collection($row->get('collection_id'))->canBeModeratedBy()) {
                     continue;
                 }
 

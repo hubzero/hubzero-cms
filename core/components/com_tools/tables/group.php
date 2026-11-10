@@ -86,7 +86,7 @@ class Group extends Table
 
         if (\Hubzero\User\Group::exists($devgroup)) {
             $group->read($devgroup);
-            $existing_members = \Components\Tools\Helpers\Utils::transform((new Tool($this->db))->getToolDevelopers($toolid), 'uidNumber');
+            $existing_members = \Components\Tools\Helpers\Utils::transform(new Tool($this->db)->getToolDevelopers($toolid), 'uidNumber');
             $group->set('members', $existing_members);
             // The managers the group already has stay as they are. Making
             // every developer a manager would let any of them add members -

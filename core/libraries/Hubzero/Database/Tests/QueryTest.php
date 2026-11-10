@@ -148,7 +148,7 @@ class QueryTest extends AbstractDriverTestCase
                 $driver->truncateTable('users');
 
                 // Re-insert default users
-                (new Query($driver))->insertMany('users', [
+                new Query($driver)->insertMany('users', [
                     ['id' => 1, 'name' => 'Sam Wilson', 'email' => 'sam@example.com'],
                     ['id' => 2, 'name' => 'Sally Smith', 'email' => 'sally@example.com'],
                     ['id' => 3, 'name' => 'Steve Rogers', 'email' => 'steve@example.com'],
@@ -1957,7 +1957,7 @@ class QueryTest extends AbstractDriverTestCase
     public function testInsertUsing(string $dbName, Driver $driver)
     {
         // Insert groups from users (map id -> id, name -> cn/name)
-        $select = (new Query($driver))
+        $select = new Query($driver)
             ->select('id', 'group_id')
             ->select('name', 'cn')
             ->select('name', 'group_name')
@@ -1970,7 +1970,7 @@ class QueryTest extends AbstractDriverTestCase
             ->insertUsing('groups', $select, ['id', 'cn', 'name', 'created_by'])
             ->execute();
 
-        $rows = (new Query($driver))
+        $rows = new Query($driver)
             ->from('groups')
             ->order('id', 'asc')
             ->fetch();
@@ -2168,7 +2168,7 @@ class QueryTest extends AbstractDriverTestCase
         $userSource = $driver->quote('user');
         $groupSource = $driver->quote('group');
 
-        $query = (new Query($driver))
+        $query = new Query($driver)
             ->select('a.id')
             ->select('a.label')
             ->select('a.source')
@@ -2234,7 +2234,7 @@ class QueryTest extends AbstractDriverTestCase
             $userSource = $driver->quote('user');
             $groupSource = $driver->quote('group');
 
-            $query = (new Query($driver))
+            $query = new Query($driver)
                 ->select('a.id')
                 ->select('a.ticket')
                 ->select('a.created')
@@ -2309,7 +2309,7 @@ class QueryTest extends AbstractDriverTestCase
             ['id' => 2, 'cn' => 'g2', 'name' => 'Group 2', 'created_by' => 2],
         ]);
 
-        $rows = (new Query($driver))
+        $rows = new Query($driver)
             ->select('g.id')
             ->select('u.name', 'creator')
             ->from('groups', 'g')
@@ -2331,7 +2331,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGroupByExpressionUsingSqlSubstringIndex(string $dbName, Driver $driver)
     {
-        (new Query($driver))->insert('users')->values([
+        new Query($driver)->insert('users')->values([
             'id'    => 5,
             'name'  => 'Tony Stark',
             'email' => 'tony@starkindustries.com',
@@ -2339,7 +2339,7 @@ class QueryTest extends AbstractDriverTestCase
 
         $domainExpr = $driver->sqlSubstringIndex('email', '@', -1);
 
-        $rows = (new Query($driver))
+        $rows = new Query($driver)
             ->select($domainExpr, 'domain')
             ->select('COUNT(*)', 'email_count')
             ->from('users')
@@ -2377,7 +2377,7 @@ class QueryTest extends AbstractDriverTestCase
         $quotedNow = $driver->quote('2026-02-16 00:00:00');
         $dateSubExpr = $driver->sqlDateSub($quotedNow, 30, 'DAY');
 
-        $rows = (new Query($driver))
+        $rows = new Query($driver)
             ->select('id')
             ->from('users')
             ->whereRaw($dateSubExpr . ' IS NOT NULL')
@@ -2408,7 +2408,7 @@ class QueryTest extends AbstractDriverTestCase
             return;
         }
 
-        $userId = (int) (new Query($driver))
+        $userId = (int) new Query($driver)
             ->select('id')
             ->from('users')
             ->order(Expression::randomOrder(), 'asc')

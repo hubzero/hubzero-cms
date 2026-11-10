@@ -1187,7 +1187,7 @@ class BundleBuilder
             return '';
         }
         try {
-            $s = (new \Hubzero\Config\Registry($params))->get('suffix');
+            $s = new \Hubzero\Config\Registry($params)->get('suffix');
         } catch (\Exception $e) {
             return '';
         }

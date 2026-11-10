@@ -170,7 +170,7 @@ class MigrationFindTest extends TestCase
 
         $migration->find($extension);
 
-        $files = (new \ReflectionProperty(Migration::class, 'files'))->getValue($migration);
+        $files = new \ReflectionProperty(Migration::class, 'files')->getValue($migration);
 
         return array_values(array_map('basename', $files));
     }

@@ -95,7 +95,7 @@ class SshKeyPathTest extends Basic
      */
     private function plugin($username)
     {
-        $plugin = (new ReflectionClass(TestPlugin::class))->newInstanceWithoutConstructor();
+        $plugin = new ReflectionClass(TestPlugin::class)->newInstanceWithoutConstructor();
 
         $plugin->base   = $this->base;
         $plugin->member = new TestMember($username);

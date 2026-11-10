@@ -73,11 +73,11 @@ class AsDateTime implements CastsAttributes
         }
 
         if (is_numeric($value)) {
-            return (new DateTime('@' . $value))->format($this->format);
+            return new DateTime('@' . $value)->format($this->format);
         }
 
         if (is_string($value)) {
-            return (new DateTime($value))->format($this->format);
+            return new DateTime($value)->format($this->format);
         }
 
         return null;

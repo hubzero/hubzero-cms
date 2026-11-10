@@ -132,7 +132,7 @@ class SchemaSnapshot
         $snapshot = [
             'name' => $name,
             'description' => $description,
-            'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+            'created_at' => new \DateTime()->format('Y-m-d H:i:s'),
             'database' => $this->driver->getDatabase(),
             'driver' => $this->getDriverName(),
             'prefix' => $this->prefix,

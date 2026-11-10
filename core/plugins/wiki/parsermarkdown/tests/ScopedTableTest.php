@@ -44,7 +44,7 @@ class ScopedTableTest extends TestCase
     #[DataProvider('parsers')]
     public function testHeaderCellsCarryScope(string $class): void
     {
-        $html = (new $class())->parse($this->table);
+        $html = new $class()->parse($this->table);
 
         $this->assertSame(2, substr_count($html, '<th scope="col"'), $class);
         $this->assertStringNotContainsString('<th>', $html);
@@ -54,7 +54,7 @@ class ScopedTableTest extends TestCase
     #[DataProvider('parsers')]
     public function testDataCellsAndStructureAreUnchanged(string $class): void
     {
-        $html = (new $class())->parse($this->table);
+        $html = new $class()->parse($this->table);
 
         $this->assertStringContainsString("<table>\n<thead>\n", $html);
         $this->assertStringContainsString("</thead>\n<tbody>\n", $html);
@@ -84,18 +84,18 @@ class ScopedTableTest extends TestCase
 
         try {
             foreach (['GithubMarkdown', 'MarkdownExtra'] as $style) {
-                $html = (new MarkdownParser(['style' => $style]))->parse($this->table);
+                $html = new MarkdownParser(['style' => $style])->parse($this->table);
 
                 $this->assertSame(2, substr_count($html, '<th scope="col"'), $style);
                 $this->assertStringContainsString('<td align="left">alpha</td>', $html, $style);
             }
 
-            $html = (new MarkdownParser(['style' => 'Markdown']))->parse($this->table);
+            $html = new MarkdownParser(['style' => 'Markdown'])->parse($this->table);
             $this->assertStringNotContainsString('<table>', $html);
 
             // An unknown style falls back to plain Markdown rather than
             // building a class name from the setting
-            $html = (new MarkdownParser(['style' => '..\\Nope']))->parse($this->table);
+            $html = new MarkdownParser(['style' => '..\\Nope'])->parse($this->table);
             $this->assertStringNotContainsString('<table>', $html);
         } finally {
             $app->forget('html.builder');
@@ -107,7 +107,7 @@ class ScopedTableTest extends TestCase
      */
     public function testPlainMarkdownLeavesPipesAlone(): void
     {
-        $html = (new \cebe\markdown\Markdown())->parse($this->table);
+        $html = new \cebe\markdown\Markdown()->parse($this->table);
 
         $this->assertStringNotContainsString('<table>', $html);
     }

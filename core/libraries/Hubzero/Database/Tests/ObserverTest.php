@@ -55,7 +55,7 @@ class ObserverTest extends AbstractDriverTestCase
     {
         Relational::setDefaultConnection($driver);
         Query::purgeCache();
-        (new Query($driver))->delete('observer_test_items')->execute();
+        new Query($driver)->delete('observer_test_items')->execute();
         TestObserver::reset();
         SecondTestObserver::reset();
         CancelingObserver::reset();

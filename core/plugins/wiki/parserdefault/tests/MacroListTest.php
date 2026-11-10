@@ -24,7 +24,7 @@ class MacroListTest extends TestCase
      */
     public function testEveryMacroFileIsFound(): void
     {
-        $list = (new \ReflectionClass(Macrolist::class))->newInstanceWithoutConstructor();
+        $list = new \ReflectionClass(Macrolist::class)->newInstanceWithoutConstructor();
         $files = new \ReflectionMethod($list, 'files');
         $files->setAccessible(true);
 

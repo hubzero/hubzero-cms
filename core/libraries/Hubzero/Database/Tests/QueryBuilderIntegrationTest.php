@@ -49,8 +49,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
         // Clean all test tables before each test to ensure a fresh start
         foreach (static::getClassDrivers() as $dbName => $driver) {
             try {
-                (new Query($driver))->delete(self::$relatedTable)->execute();
-                (new Query($driver))->delete(self::$testTable)->execute();
+                new Query($driver)->delete(self::$relatedTable)->execute();
+                new Query($driver)->delete(self::$testTable)->execute();
             } catch (\Exception $e) {
                 // Ignore cleanup errors
             }

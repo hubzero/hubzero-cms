@@ -27,7 +27,7 @@ class ConfigHelperMacroTest extends TestCase
     {
         $row = (object) ['alias' => 'my-page', 'scope_id' => 42];
 
-        $path = (new ConfigHelper())->parse('/members/[[Member_id()]]/[[Field(alias)]]', $row);
+        $path = new ConfigHelper()->parse('/members/[[Member_id()]]/[[Field(alias)]]', $row);
 
         $this->assertSame("\n/members/42/my-page", $path);
     }
@@ -39,7 +39,7 @@ class ConfigHelperMacroTest extends TestCase
     {
         $row = (object) ['alias' => 'my-page', 'scope_id' => 42];
 
-        $path = (new ConfigHelper())->parse('/members/[[member_id()]]/[[field(alias)]]', $row);
+        $path = new ConfigHelper()->parse('/members/[[member_id()]]/[[field(alias)]]', $row);
 
         $this->assertSame("\n/members/42/my-page", $path);
     }

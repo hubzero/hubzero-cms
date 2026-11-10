@@ -527,13 +527,13 @@ class HittableTraitTest extends AbstractDriverTestCase
         $id = 1;
 
         // Set initial value in DB
-        (new Query($driver))->update('hittable_articles')->set(['hits' => 50])->where('id', '=', $id)->execute();
+        new Query($driver)->update('hittable_articles')->set(['hits' => 50])->where('id', '=', $id)->execute();
 
         // Load article (has old value in memory)
         $article = HittableArticle::one($id);
 
         // Simulate another process updating hits
-        (new Query($driver))->update('hittable_articles')->set(['hits' => 55])->where('id', '=', $id)->execute();
+        new Query($driver)->update('hittable_articles')->set(['hits' => 55])->where('id', '=', $id)->execute();
 
         // Now do our hit - should increment from 55 (current DB value), not 50
         $article->hit();

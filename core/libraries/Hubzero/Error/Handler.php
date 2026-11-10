@@ -166,7 +166,7 @@ class Handler
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
-        $trace = (new \Exception())->getTraceAsString();
+        $trace = new \Exception()->getTraceAsString();
         $trace = "    " . str_replace("\n", "\n    ", $trace);
 
         $loglevel = $this->loglevel($level);

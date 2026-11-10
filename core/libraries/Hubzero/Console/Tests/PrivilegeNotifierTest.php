@@ -91,7 +91,7 @@ class PrivilegeNotifierTest extends Basic
             $privileges->shouldReceive('initializeSudoEnvironment')->once()->andReturn($dropResult);
         }
 
-        return (new PrivilegeNotifier($privileges))->setStream($this->stream);
+        return new PrivilegeNotifier($privileges)->setStream($this->stream);
     }
 
     /**
@@ -187,7 +187,7 @@ class PrivilegeNotifierTest extends Basic
         $privileges->shouldReceive('switchToOwnerOf')->once()->with(__DIR__)->andReturn('www-data');
         $privileges->shouldNotReceive('initializeSudoEnvironment');
 
-        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+        $notifier = new PrivilegeNotifier($privileges)->setStream($this->stream);
 
         $this->assertTrue($notifier->handleStartup(__DIR__));
 
@@ -214,7 +214,7 @@ class PrivilegeNotifierTest extends Basic
         $privileges->shouldNotReceive('switchToOwnerOf');
         $privileges->shouldReceive('initializeSudoEnvironment')->once()->andReturn(true);
 
-        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+        $notifier = new PrivilegeNotifier($privileges)->setStream($this->stream);
 
         $this->assertTrue($notifier->handleStartup(__DIR__));
         $this->assertStringContainsString("Now running as user '{$me}'", $this->captured());
@@ -232,7 +232,7 @@ class PrivilegeNotifierTest extends Basic
         $privileges->shouldReceive('isRoot')->andReturn(false);
         $privileges->shouldNotReceive('switchToOwnerOf');
 
-        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+        $notifier = new PrivilegeNotifier($privileges)->setStream($this->stream);
 
         $this->assertTrue($notifier->handleStartup(__DIR__));
         $this->assertSame('', $this->captured());

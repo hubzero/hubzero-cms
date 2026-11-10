@@ -222,7 +222,7 @@ class IdPBindingTest extends Basic
         $response = $this->idp->createSAMLResponse($sp, $user, 'request-1', 'session-1');
         $response->setRelayState('state-123');
 
-        $context = (new MessageContext())->setMessage($response);
+        $context = new MessageContext()->setMessage($response);
         $http = $this->idp->bindingFactory()->create(SamlConstants::BINDING_SAML2_HTTP_POST)->send($context);
 
         $this->assertSame(200, $http->getStatusCode());
@@ -253,7 +253,7 @@ class IdPBindingTest extends Basic
         $response = $this->idp->createSAMLLogoutResponse($sp, 'logout-1', SamlConstants::STATUS_SUCCESS);
         $response->setRelayState('state-123');
 
-        $context = (new MessageContext())->setMessage($response);
+        $context = new MessageContext()->setMessage($response);
         $http = $this->idp->bindingFactory()->create(SamlConstants::BINDING_SAML2_HTTP_REDIRECT)->send($context);
 
         $this->assertSame(302, $http->getStatusCode());
@@ -308,7 +308,7 @@ class IdPBindingTest extends Basic
      */
     private function authnRequest()
     {
-        return (new AuthnRequest())
+        return new AuthnRequest()
             ->setID(Helper::generateID())
             ->setIssueInstant(new \DateTime())
             ->setDestination('https://idp.example.org/saml/idp/login')
@@ -330,7 +330,7 @@ class IdPBindingTest extends Basic
             KeyHelper::createPrivateKey($this->dir . '/' . $signer . '.pem', '', true),
         ));
 
-        $context = (new MessageContext())->setMessage($request);
+        $context = new MessageContext()->setMessage($request);
 
         return $this->idp
             ->bindingFactory()

@@ -514,7 +514,7 @@ class Base
         $addColumnStatement = '';
 
         if (!$this->db->tableHasField($table, $columnName)) {
-            $addColumnStatement = (new QueryAddColumnStatement($columnData))
+            $addColumnStatement = new QueryAddColumnStatement($columnData)
                 ->toString();
         }
 

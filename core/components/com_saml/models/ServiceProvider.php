@@ -180,7 +180,7 @@ class ServiceProvider extends Relational
         }
 
         try {
-            return (new \LightSaml\Credential\X509Certificate())->setData($data);
+            return new \LightSaml\Credential\X509Certificate()->setData($data);
         } catch (\Throwable $e) {
             return null;
         }

@@ -25,7 +25,7 @@ class GitlabRequestTest extends TestCase
      */
     public function testRequestsReachTheClient(): void
     {
-        $gitlab = (new \ReflectionClass(Gitlab::class))->newInstanceWithoutConstructor();
+        $gitlab = new \ReflectionClass(Gitlab::class)->newInstanceWithoutConstructor();
         $client = new GitlabClient();
         foreach (['client' => $client, 'url' => 'https://git.example/api/v4', 'options' => []] as $name => $value) {
             $property = new \ReflectionProperty($gitlab, $name);

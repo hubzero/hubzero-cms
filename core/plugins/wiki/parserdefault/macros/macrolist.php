@@ -77,7 +77,7 @@ class Macrolist extends WikiMacro
             $macro = new $cls();
 
             // The class carries the macro's proper capitalisation (TitleIndex, not Titleindex)
-            $label = (new ReflectionClass($macro))->getShortName();
+            $label = new ReflectionClass($macro)->getShortName();
             $label = preg_replace('/Macro$/', '', $label);
             if (count($pieces) > 1) {
                 $label = implode('.', array_map('ucfirst', array_slice($pieces, 0, -1))) . '.' . $label;

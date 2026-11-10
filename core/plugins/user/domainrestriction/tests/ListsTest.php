@@ -26,7 +26,7 @@ class ListsTest extends TestCase
      */
     public function testSettingsBecomeTheLists(): void
     {
-        $plugin = (new \ReflectionClass(Domainrestriction::class))->newInstanceWithoutConstructor();
+        $plugin = new \ReflectionClass(Domainrestriction::class)->newInstanceWithoutConstructor();
         $plugin->params = new Registry([
             'tld'       => 'edu, org.',
             'domain'    => 'example.edu',
@@ -61,7 +61,7 @@ class ListsTest extends TestCase
      */
     public function testEmptyEntriesAreDropped(): void
     {
-        $plugin = (new \ReflectionClass(Domainrestriction::class))->newInstanceWithoutConstructor();
+        $plugin = new \ReflectionClass(Domainrestriction::class)->newInstanceWithoutConstructor();
         $plugin->params = new Registry(['tld' => 'edu,, org', 'domain' => '']);
 
         $sort = new \ReflectionMethod($plugin, 'sortParams');

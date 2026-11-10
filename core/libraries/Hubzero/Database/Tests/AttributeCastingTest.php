@@ -599,7 +599,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
         $this->assertIsInt($expiresAt);
 
         // Verify it's a valid timestamp
-        $dt = (new \DateTime())->setTimestamp($expiresAt);
+        $dt = new \DateTime()->setTimestamp($expiresAt);
         $this->assertEquals('2024', $dt->format('Y'));
     }
 

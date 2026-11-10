@@ -43,7 +43,7 @@ class GroupFieldsTest extends TestCase
      */
     public function testPasswordFieldsCanBeSetAndCleared(): void
     {
-        $password = (new \ReflectionClass(Password::class))->newInstanceWithoutConstructor();
+        $password = new \ReflectionClass(Password::class)->newInstanceWithoutConstructor();
         $password->clear();
         $password->set('user_id', 7);
         $password->set('shadowMax', 90);

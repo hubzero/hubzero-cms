@@ -42,7 +42,7 @@ class Upgrade extends Base implements CommandInterface
 
         $this->output->addLine('');
         $this->output->addLine('Clearing the cache');
-        (new Cache($this->output, $this->arguments))->clear();
+        new Cache($this->output, $this->arguments)->clear();
 
         $this->output->addLine('');
         $this->output->addLine(

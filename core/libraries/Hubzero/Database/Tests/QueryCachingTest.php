@@ -451,7 +451,7 @@ class QueryCachingTest extends AbstractDriverTestCase
             ['name' => 'Alice', 'email' => 'alice@example.com'],
         ]);
 
-        (new Query($driverA))
+        new Query($driverA)
             ->select('*')
             ->from('users')
             ->whereEquals('id', '1')
@@ -480,11 +480,11 @@ class QueryCachingTest extends AbstractDriverTestCase
             ->string('name', 255)
             ->string('email', 255)
             ->execute();
-        (new Query($driverARecreated))->insertMany('users', [
+        new Query($driverARecreated)->insertMany('users', [
             ['name' => 'Alice', 'email' => 'alice@example.com'],
         ]);
 
-        (new Query($driverARecreated))
+        new Query($driverARecreated)
             ->select('*')
             ->from('users')
             ->whereEquals('id', '1')

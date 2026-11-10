@@ -498,7 +498,7 @@ class IdP
                 continue;
             }
 
-            $attribute = (new \LightSaml\Model\Assertion\Attribute())
+            $attribute = new \LightSaml\Model\Assertion\Attribute()
                 ->setName($entry['name'])
                 ->setNameFormat(self::attributeNameFormat($entry['name']));
 
@@ -537,30 +537,30 @@ class IdP
         $lifetime = $this->getAssertionLifetime();
         $skew     = $this->getClockSkew();
 
-        $assertion = (new \LightSaml\Model\Assertion\Assertion())
+        $assertion = new \LightSaml\Model\Assertion\Assertion()
             ->setId(\LightSaml\Helper::generateID())
             ->setIssueInstant(new \DateTime())
-            ->setIssuer((new \LightSaml\Model\Assertion\Issuer())
+            ->setIssuer(new \LightSaml\Model\Assertion\Issuer()
                 ->setValue($this->getEntityID()))
-            ->setSubject((new \LightSaml\Model\Assertion\Subject())
-                ->setNameID((new \LightSaml\Model\Assertion\NameID())
+            ->setSubject(new \LightSaml\Model\Assertion\Subject()
+                ->setNameID(new \LightSaml\Model\Assertion\NameID()
                     ->setValue($this->getNameIdValue($sp, $user))
                     ->setFormat($sp->get('nameid_format', \LightSaml\SamlConstants::NAME_ID_FORMAT_UNSPECIFIED)))
-                ->addSubjectConfirmation((new \LightSaml\Model\Assertion\SubjectConfirmation())
+                ->addSubjectConfirmation(new \LightSaml\Model\Assertion\SubjectConfirmation()
                     ->setMethod(\LightSaml\SamlConstants::CONFIRMATION_METHOD_BEARER)
-                    ->setSubjectConfirmationData((new \LightSaml\Model\Assertion\SubjectConfirmationData())
+                    ->setSubjectConfirmationData(new \LightSaml\Model\Assertion\SubjectConfirmationData()
                         ->setInResponseTo($inResponseTo)
                         ->setNotOnOrAfter(new \DateTime('+' . $lifetime . ' SECONDS'))
                         ->setRecipient($acsUrl))))
-            ->setConditions((new \LightSaml\Model\Assertion\Conditions())
+            ->setConditions(new \LightSaml\Model\Assertion\Conditions()
                 ->setNotBefore(new \DateTime('-' . $skew . ' SECONDS'))
                 ->setNotOnOrAfter(new \DateTime('+' . $lifetime . ' SECONDS'))
-                ->addItem((new \LightSaml\Model\Assertion\AudienceRestriction())
+                ->addItem(new \LightSaml\Model\Assertion\AudienceRestriction()
                     ->addAudience($issuer)))
-            ->addItem((new \LightSaml\Model\Assertion\AuthnStatement())
+            ->addItem(new \LightSaml\Model\Assertion\AuthnStatement()
                 ->setAuthnInstant(new \DateTime())
                 ->setSessionIndex($sessionIndex)
-                ->setAuthnContext((new \LightSaml\Model\Assertion\AuthnContext())
+                ->setAuthnContext(new \LightSaml\Model\Assertion\AuthnContext()
                     ->setAuthnContextClassRef(\LightSaml\SamlConstants::AUTHN_CONTEXT_PASSWORD_PROTECTED_TRANSPORT)));
 
         // Only carried when something actually resolved to a value
@@ -576,7 +576,7 @@ class IdP
             $assertion->setSignature($this->getSignatureWriter());
         }
 
-        $response = (new \LightSaml\Model\Protocol\Response())
+        $response = new \LightSaml\Model\Protocol\Response()
             ->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode(\LightSaml\SamlConstants::STATUS_SUCCESS)))
             ->setID(\LightSaml\Helper::generateID())
             ->setIssueInstant(new \DateTime())
@@ -603,7 +603,7 @@ class IdP
      */
     public function createSAMLLogoutResponse($sp, $inResponseTo, $status)
     {
-        $response = (new \LightSaml\Model\Protocol\LogoutResponse())
+        $response = new \LightSaml\Model\Protocol\LogoutResponse()
             ->setID(\LightSaml\Helper::generateID())
             ->setIssueInstant(new \DateTime())
             ->setDestination($sp->get('slo_url'))
@@ -623,12 +623,12 @@ class IdP
      */
     public function metadataXML()
     {
-        $entityDescriptor = (new \LightSaml\Model\Metadata\EntityDescriptor())
+        $entityDescriptor = new \LightSaml\Model\Metadata\EntityDescriptor()
             ->setEntityID($this->getEntityID())
             ->setValidUntil(new \DateTime('+1 DAY'))
-            ->addItem((new \LightSaml\Model\Metadata\IdpSsoDescriptor())
+            ->addItem(new \LightSaml\Model\Metadata\IdpSsoDescriptor()
                 ->setWantAuthnRequestsSigned(true)
-                ->addKeyDescriptor((new \LightSaml\Model\Metadata\KeyDescriptor())
+                ->addKeyDescriptor(new \LightSaml\Model\Metadata\KeyDescriptor()
                     ->setUse(\LightSaml\Model\Metadata\KeyDescriptor::USE_SIGNING)
                     ->setCertificate($this->getCertificate()))
                 // Advertise every format an SP may actually be issued
@@ -636,10 +636,10 @@ class IdP
                 ->addNameIdFormat(\LightSaml\SamlConstants::NAME_ID_FORMAT_UNSPECIFIED)
                 ->addNameIdFormat(\LightSaml\SamlConstants::NAME_ID_FORMAT_EMAIL)
                 ->addNameIdFormat(\LightSaml\SamlConstants::NAME_ID_FORMAT_PERSISTENT)
-                ->addSingleSignOnService((new \LightSaml\Model\Metadata\SingleSignOnService())
+                ->addSingleSignOnService(new \LightSaml\Model\Metadata\SingleSignOnService()
                     ->setBinding(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
                     ->setLocation($this->getLoginUrl()))
-                ->addSingleLogoutService((new \LightSaml\Model\Metadata\SingleLogoutService())
+                ->addSingleLogoutService(new \LightSaml\Model\Metadata\SingleLogoutService()
                     ->setBinding(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
                     ->setLocation($this->getLogoutUrl())));
 

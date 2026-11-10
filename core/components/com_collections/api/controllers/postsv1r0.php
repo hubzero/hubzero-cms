@@ -39,7 +39,7 @@ class Postsv1r0 extends ApiController
         // also admitted created_by == uid, which the site does not -- so the member
         // who CREATED a group board could still post to it through the API after
         // leaving the group, while the site refused them. One implementation now.
-        return (new Collection((int) $collectionId))->canBePostedToBy((int) App::get('authn')['user_id']);
+        return new Collection((int) $collectionId)->canBePostedToBy((int) App::get('authn')['user_id']);
     }
 
     /**

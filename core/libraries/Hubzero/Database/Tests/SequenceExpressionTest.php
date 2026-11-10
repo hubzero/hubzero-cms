@@ -93,7 +93,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
 
             // Clean test table data
             try {
-                (new Query($driver))->delete(self::$testTable)->execute();
+                new Query($driver)->delete(self::$testTable)->execute();
             } catch (\Exception $e) {
                 // Ignore
             }

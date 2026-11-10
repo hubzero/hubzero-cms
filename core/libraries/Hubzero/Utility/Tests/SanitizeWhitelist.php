@@ -33,6 +33,6 @@ class SanitizeWhitelist extends Sanitize
         static::addElementsToHtmlPurifierWhitelist($definition);
         static::addAttributesToHtmlPurifierWhitelist($definition);
 
-        return trim((new \HTMLPurifier($config))->purify($html));
+        return trim(new \HTMLPurifier($config)->purify($html));
     }
 }

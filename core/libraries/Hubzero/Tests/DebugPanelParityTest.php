@@ -42,8 +42,8 @@ namespace Hubzero\Tests {
                 'GET',
             ));
 
-            $htmx = (new HtmxService())->renderDebugPanel();
-            $inertia = (new InertiaService())->renderDebugPanel();
+            $htmx = new HtmxService()->renderDebugPanel();
+            $inertia = new InertiaService()->renderDebugPanel();
 
             $sharedMarkers = [
                 'x-model="mode"',
@@ -70,8 +70,8 @@ namespace Hubzero\Tests {
                 'GET',
             ));
 
-            $htmx = (new HtmxService())->renderDebugPanel();
-            $inertia = (new InertiaService())->renderDebugPanel();
+            $htmx = new HtmxService()->renderDebugPanel();
+            $inertia = new InertiaService()->renderDebugPanel();
 
             $this->assertStringContainsString("__hzDebugPanel('htmx'", $htmx);
             $this->assertStringContainsString("__hzDebugPanel('inertia'", $inertia);

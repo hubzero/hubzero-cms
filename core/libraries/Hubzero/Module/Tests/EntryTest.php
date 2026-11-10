@@ -137,7 +137,7 @@ class EntryTest extends Basic
             'params' => '{}',
         ];
 
-        $this->assertSame('display', (new Loader($app))->render($module));
+        $this->assertSame('display', new Loader($app)->render($module));
     }
 
     /**

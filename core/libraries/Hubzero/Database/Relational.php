@@ -2576,7 +2576,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         if (is_numeric($value)) {
-            return (new \DateTime())->setTimestamp((int) $value);
+            return new \DateTime()->setTimestamp((int) $value);
         }
 
         if (is_string($value)) {
@@ -2752,12 +2752,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         if (is_numeric($value)) {
-            return (new \DateTime())->setTimestamp((int) $value)->format($format);
+            return new \DateTime()->setTimestamp((int) $value)->format($format);
         }
 
         if (is_string($value) && strlen($value) > 0) {
             try {
-                return (new \DateTime($value))->format($format);
+                return new \DateTime($value)->format($format);
             } catch (\Exception $e) {
                 return $value;
             }
@@ -2779,7 +2779,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         if (is_numeric($value)) {
-            return (new \DateTime())->setTimestamp((int) $value)->format('Y-m-d H:i:s');
+            return new \DateTime()->setTimestamp((int) $value)->format('Y-m-d H:i:s');
         }
 
         return $value;
@@ -7133,7 +7133,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if (!class_exists($skipClass)) {
                 continue;
             }
-            foreach ((new \ReflectionClass($skipClass))->getMethods(\ReflectionMethod::IS_PUBLIC) as $m) {
+            foreach (new \ReflectionClass($skipClass)->getMethods(\ReflectionMethod::IS_PUBLIC) as $m) {
                 $skipNames[$m->name] = true;
             }
         }

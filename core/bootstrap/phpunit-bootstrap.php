@@ -6,4 +6,4 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-(new Hubzero\Base\Application())->boot();
+new Hubzero\Base\Application()->boot();
