@@ -31,7 +31,7 @@ class Resources extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Resource areas

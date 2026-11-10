@@ -23,7 +23,7 @@ class Latex extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Determines if the given collection can be handled by this plugin

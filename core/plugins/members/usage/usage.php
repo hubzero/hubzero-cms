@@ -24,7 +24,7 @@ class Usage extends Plugin
      * @var boolean
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data

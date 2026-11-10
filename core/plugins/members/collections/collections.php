@@ -35,7 +35,7 @@ class Collections extends Plugin
      *
      * @var    boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data

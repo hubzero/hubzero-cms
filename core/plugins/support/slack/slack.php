@@ -27,7 +27,7 @@ class Slack extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Get endpoint configurations

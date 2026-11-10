@@ -48,7 +48,7 @@ class plgBookingsNotify extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  boolean
 	 */
-	protected $_autoloadLanguage = true;
+	protected $autoloadLanguage = true;
 }
 ```
 

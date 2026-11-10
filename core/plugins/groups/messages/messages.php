@@ -36,7 +36,7 @@ class Messages extends Plugin
      * @var    boolean
      * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Loads the plugin language file

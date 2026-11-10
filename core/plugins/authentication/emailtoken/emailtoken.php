@@ -30,7 +30,7 @@ class Emailtoken extends Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * This method returns the HTML for display on the login page

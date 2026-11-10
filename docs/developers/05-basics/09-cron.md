@@ -94,7 +94,7 @@ Each entry has three keys:
 > happens. Check the spelling and the case against the method.
 
 `loadLanguage()` is the first line for a reason. Cron plugins do not set
-`$_autoloadLanguage`, so without it the labels come back as raw keys in the
+`$autoloadLanguage`, so without it the labels come back as raw keys in the
 administrator's job form — see [languages](04-languages.md).
 
 ## Job parameters

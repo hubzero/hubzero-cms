@@ -66,7 +66,7 @@ class Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = false;
+    protected $autoloadLanguage = false;
 
     /**
      * The triggered event
@@ -110,7 +110,7 @@ class Plugin
         $this->option = (isset($config['type']) ? 'com_' . $config['type'] : 'com_' . $this->_type);
 
         // Load the language files if needed.
-        if ($this->_autoloadLanguage) {
+        if ($this->autoloadLanguage) {
             $this->loadLanguage('', PATH_APP);
         }
     }

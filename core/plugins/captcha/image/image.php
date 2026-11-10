@@ -29,7 +29,7 @@ class Image extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Image background color

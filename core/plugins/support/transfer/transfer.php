@@ -29,7 +29,7 @@ class Transfer extends Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Retrieves a row from the database

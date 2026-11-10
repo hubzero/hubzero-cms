@@ -27,7 +27,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Stores the initialized Globus object.

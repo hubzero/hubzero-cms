@@ -35,7 +35,7 @@ class Progress extends Plugin
      * @var  boolean
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return data on a course view (this will be some form of HTML)

@@ -34,7 +34,7 @@ class Reviews extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return data on a resource view (this will be some form of HTML)

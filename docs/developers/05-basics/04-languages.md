@@ -128,7 +128,7 @@ and you do not have to ask:
 - A module's file is loaded by `Hubzero\Module\Loader` before the module
   renders.
 - A plugin's file is **not** loaded automatically unless the plugin sets
-  `protected $_autoloadLanguage = true;`. Otherwise call
+  `protected $autoloadLanguage = true;`. Otherwise call
   `$this->loadLanguage()` — cron plugins do this first thing in
   `onCronEvents()`, because their labels have to be translated before the
   administrator ever sees them.

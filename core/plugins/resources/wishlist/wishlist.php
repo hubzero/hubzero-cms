@@ -29,7 +29,7 @@ class Wishlist extends Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return the alias and name for this category of content

@@ -28,7 +28,7 @@ class Answers extends Plugin
      *
      * @var    boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Is the category one this plugin handles?

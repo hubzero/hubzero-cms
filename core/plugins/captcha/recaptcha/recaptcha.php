@@ -49,7 +49,7 @@ class Recaptcha extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Initialise the captcha

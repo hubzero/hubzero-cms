@@ -22,7 +22,7 @@ class Wiki extends Plugin
      * @var boolean
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return a list of categories

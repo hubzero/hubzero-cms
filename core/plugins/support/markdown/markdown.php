@@ -22,7 +22,7 @@ class Markdown extends Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Holds the parser for re-use

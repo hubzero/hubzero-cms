@@ -179,7 +179,7 @@ You rarely load one yourself:
   case.
 - `Hubzero\Module\Loader` loads a module's file before the module renders.
 - A **plugin's file is not loaded automatically.** Set
-  `protected $_autoloadLanguage = true;` on the plugin class, or call
+  `protected $autoloadLanguage = true;` on the plugin class, or call
   `$this->loadLanguage()` before you translate anything. Forget it and every
   string the plugin shows renders as its key — the same symptom as a missing
   definition, from an entirely different cause.

@@ -27,7 +27,7 @@ class Google extends \Hubzero\Plugin\OauthClient
      * @var boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Perform logout (handled via JS)

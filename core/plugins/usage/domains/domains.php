@@ -24,7 +24,7 @@ class Domains extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return the name of the area this plugin retrieves records for

@@ -26,7 +26,7 @@ class Contributions extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Perform actions when viewing a member profile

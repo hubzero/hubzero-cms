@@ -24,7 +24,7 @@ class Autocompleter extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Flag for if scripts need to be pushed to the document or not

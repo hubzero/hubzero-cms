@@ -32,7 +32,7 @@ class Pucas extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     protected $stream_handler = null;
     protected $logger = null;

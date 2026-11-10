@@ -27,7 +27,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Stores the initialized CILogon object.

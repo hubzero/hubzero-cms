@@ -28,7 +28,7 @@ class Share extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return the alias and name for this category of content

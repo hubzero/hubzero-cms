@@ -23,7 +23,7 @@ class Search extends Plugin
      * @var  boolean
      * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Trigger onAddIndex to update search index.

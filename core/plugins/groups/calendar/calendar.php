@@ -46,7 +46,7 @@ class Calendar extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Loads the plugin language file

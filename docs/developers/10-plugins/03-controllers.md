@@ -81,7 +81,7 @@ See the warning below.
 | `$event` | The `Hubzero\Events\Event` currently being dispatched to this plugin. |
 | `$option` | `com_` plus the group name. Legacy, and wrong for any group that is not a component; do not rely on it. |
 | `$_name`, `$_type` | The plugin's element and group, both `protected`. |
-| `$_autoloadLanguage` | Set `true` to load the language file in the constructor. |
+| `$autoloadLanguage` | Set `true` to load the language file in the constructor. |
 | `loadLanguage($extension = '', $basePath = PATH_APP)` | Loads a language file. See [Languages](04-languages.md). |
 | `view($layout = 'default', $name = '')` | Returns a `Hubzero\Plugin\View`. See [Views](05-views.md). |
 | `css()`, `js()`, `img()` | Asset helpers. See [Assets](06-assets.md). |

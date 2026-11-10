@@ -28,7 +28,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Stores the initialized OAuth2 provider object.

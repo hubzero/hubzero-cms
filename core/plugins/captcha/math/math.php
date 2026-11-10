@@ -22,7 +22,7 @@ class Math extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Displays either a CAPTCHA question

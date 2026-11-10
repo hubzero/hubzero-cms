@@ -28,7 +28,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * @param   object  $subject  Event dispatcher

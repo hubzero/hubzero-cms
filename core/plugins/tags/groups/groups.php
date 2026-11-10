@@ -26,7 +26,7 @@ class Groups extends Plugin
      * @var    boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Retrieve records for items tagged with specific tags

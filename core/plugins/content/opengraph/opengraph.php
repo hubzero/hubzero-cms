@@ -30,7 +30,7 @@ class Opengraph extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Instance tracker

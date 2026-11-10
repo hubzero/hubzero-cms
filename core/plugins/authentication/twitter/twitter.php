@@ -29,7 +29,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * The initialized OAuth2 provider.

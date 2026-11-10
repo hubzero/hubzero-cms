@@ -26,7 +26,7 @@ class Members extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Retrieve records for items tagged with specific tags

@@ -41,7 +41,7 @@ class Comments extends Plugin
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * List of allowed extensions

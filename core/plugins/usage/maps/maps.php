@@ -27,7 +27,7 @@ class Maps extends Plugin
      * @var    boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return the name of the area this plugin retrieves records for

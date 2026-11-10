@@ -26,7 +26,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
      *
      * @var boolean
      */
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Derive a login-safe username hint from an ORCID iD.

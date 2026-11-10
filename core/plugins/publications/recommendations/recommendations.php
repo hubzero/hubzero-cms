@@ -21,7 +21,7 @@ class Recommendations extends Plugin
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_autoloadLanguage = true;
+    protected $autoloadLanguage = true;
 
     /**
      * Return data on a publication sub view (this will be some form of HTML)
