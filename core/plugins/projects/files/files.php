@@ -3366,13 +3366,14 @@ class Files extends Plugin
         $num  = (int) $value;
         switch ($last) {
             case 'g':
-                $num *= 1024;
-                // no break
+                $num *= 1024 * 1024 * 1024;
+                break;
             case 'm':
-                $num *= 1024;
-                // no break
+                $num *= 1024 * 1024;
+                break;
             case 'k':
                 $num *= 1024;
+                break;
         }
         return $num;
     }

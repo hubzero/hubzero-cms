@@ -160,13 +160,14 @@ class Warnings extends AdminController
 
         switch (strtolower(substr($value, -1))) {
             case 'g':
-                $bytes *= 1024;
-                // no break
+                $bytes *= 1024 * 1024 * 1024;
+                break;
             case 'm':
-                $bytes *= 1024;
-                // no break
+                $bytes *= 1024 * 1024;
+                break;
             case 'k':
                 $bytes *= 1024;
+                break;
         }
 
         return $bytes;

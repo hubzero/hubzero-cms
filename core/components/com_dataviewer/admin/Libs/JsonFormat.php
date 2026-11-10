@@ -66,7 +66,8 @@ class JsonFormat
                     if ($c > 0 && $json[$c - 1] != '\\') {
                         $in_string = !$in_string;
                     }
-                    // no break
+                    $new_json .= $char;
+                    break;
                 default:
                     $new_json .= $char;
                     break;

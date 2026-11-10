@@ -189,7 +189,8 @@ class Request
                     } else {
                         $this->set('scheme', 'http');
                     }
-                    // fall through
+                    $this->set('postdata', $_POST);
+                    break;
                 case 'postdata':
                     $this->set('postdata', $_POST);
                     break;

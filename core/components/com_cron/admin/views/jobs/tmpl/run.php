@@ -51,7 +51,8 @@ function prettyPrint($json)
                 case '{':
                 case '[':
                     $level++;
-                    // no break - fall through
+                    $ends_line_level = $level;
+                    break;
 
                 case ',':
                     $ends_line_level = $level;

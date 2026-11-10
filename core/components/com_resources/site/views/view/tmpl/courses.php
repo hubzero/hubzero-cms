@@ -293,13 +293,13 @@ if ($mode != 'preview') {
                                         break;
                                     case 'elink':
                                     case 'youtube':
-                                        if ($grandchild->get('logical_type') == 68) {
+                                    case 'pdf':
+                                    default:
+                                        // An elink or youtube resource that is a YouTube video gets its own link
+                                        if (($alias == 'elink' || $alias == 'youtube') && $grandchild->get('logical_type') == 68) {
                                             $youtube .= (!$youtube) ? '<a class="youtube" href="' . $this->escape($grandchild->path) . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View on YouTube') . '</a>' : '';
                                             break;
                                         }
-                                        // fallthrough to default when elink isn't youtube
-                                    case 'pdf':
-                                    default:
                                         if ($grandchild->get('logical_type') == 14) {
                                             $ext = Filesystem::extension($grandchild->path);
                                             $ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);

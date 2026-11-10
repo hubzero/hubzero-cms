@@ -339,6 +339,8 @@ class Log extends Base implements CommandInterface
                             } else {
                                 $this->output->addLine("{$arg} is not an available field", 'warning');
                             }
+                            $this->output->addString('input mode >>> ');
+                            break;
 
                             // Default - just show new prompt
                         default:

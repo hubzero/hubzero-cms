@@ -44,8 +44,6 @@ foreach ($this->tags as $tag) {
     $class = '';
     switch ($tag->get('admin')) {
         case 1:
-            $class = ' class="admin"';
-            // no break
         case 2:
             $class = ' class=" core"';
             break;
