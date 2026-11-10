@@ -411,11 +411,12 @@ is <code>bookings</code>:</p>
 <code>Bookings</code>, <code>Kb</code>, <code>Blog</code> — and <code>{componentname}</code> for its lowercase form. The
 same pairing applies to <code>{ControllerName}</code>, <code>{ViewName}</code>, and <code>{ModelName}</code>.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Keep the name a single word of letters and digits. The
-migration runner's <code>-e</code> option validates the extension against
-<code>^com_[[:alnum:]]+$</code>, so <code>muse migration -e=com_instrument_bookings</code> is
-refused outright — a component whose name carries a second underscore cannot
-be migrated by name.</p>
+<p><strong>Warning:</strong> Keep the name a single word of letters and digits.
+<code>Hubzero\Component\Loader</code> builds the entry class by capitalising what
+follows <code>com_</code>, so <code>com_instrument_bookings</code> would have to declare
+<code>Components\Instrument_bookings\Site\Instrument_bookings</code> — a class name
+with an underscore in it, which
+<a href="../conventions/php-naming/index.html">PHP Naming Conventions</a> rules out.</p>
 </aside>
 <h2 id="in-this-section">In this section</h2>
 <ul>

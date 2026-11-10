@@ -86,15 +86,13 @@ in all four places is not.
 *permitted*. What is *safe* is narrower: lowercase letters and digits, and
 nothing else.
 
-> **Warning:** An underscore in either name breaks three separate things, none
+> **Warning:** An underscore in either name breaks two separate things, neither
 > of them loudly. `Hubzero\Document\Asset\File` splits `plg_group_element` on
 > underscores and reads the second and third pieces as the group and the
 > element, so [assets](06-assets.md) resolve to a directory that does not
 > exist and silently load nothing. The `getParams` and `saveParams`
 > [migration macros](01-migrations.md#shipping-default-parameters) split the
-> same string the same way and read or write the wrong row. And
-> `muse migration -e=` validates its argument against
-> `^plg_[[:alnum:]]+_[[:alnum:]]+$` and refuses the name outright. No plugin
+> same string the same way and read or write the wrong row. No plugin
 > in `core/plugins` has an underscore in its group or its element. Use a
 > hyphen if you need a separator, as `editors-xtd` does, or run the words
 > together, as `formatwiki` does.

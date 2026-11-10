@@ -91,15 +91,7 @@ class Migration extends Scaffolding
         }
 
         // Create filename varient of extension
-        $ext = '';
-        if (!preg_match('/core/i', $extension)) {
-            $parts = explode('_', $extension);
-            foreach ($parts as $part) {
-                $ext .= ucfirst($part);
-            }
-        } else {
-            $ext = 'Core';
-        }
+        $ext = \Hubzero\Content\Migration::extensionSuffix($extension);
 
         // Craft file/classname
         $classname   = 'Migration' . with(new Date('now'))->format("YmdHis") . $ext;

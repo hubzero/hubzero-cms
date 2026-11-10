@@ -12,7 +12,7 @@ Events in the `blog` group. A plugin in `core/plugins/blog/` receives an event b
 Fired from:
 
 - [`core/components/com_blog/site/controllers/entries.php:158`](../../../core/components/com_blog/site/controllers/entries.php#L158) with `[$row]`
-- [`core/plugins/groups/blog/blog.php:596`](../../../core/plugins/groups/blog/blog.php#L596) with `[$row]`
+- [`core/plugins/groups/blog/blog.php:595`](../../../core/plugins/groups/blog/blog.php#L595) with `[$row]`
 - [`core/plugins/members/blog/blog.php:468`](../../../core/plugins/members/blog/blog.php#L468) with `[$row]`
 
 Listeners:

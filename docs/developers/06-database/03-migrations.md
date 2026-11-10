@@ -349,7 +349,7 @@ php core/bin/muse migration -f -d=down -e=com_bookings   # and reverse it
 |---|---|
 | `-f` | Full run. Without it, everything is a dry run |
 | `-d=up` / `-d=down` | Direction; `up` is the default |
-| `-e=com_example` | Restrict to one extension: `com_*`, `mod_*`, `plg_group_name`, `tpl_*` or `core` |
+| `-e=com_example` | Restrict to one extension: `com_*`, `mod_*`, `plg_group_name`, `tpl_*` or `core`. Takes the migrations whose class names that extension, wherever they are, and every migration in the extension's own `migrations/` directory |
 | `--file=Migration…php` | Run exactly one file |
 | `-a` | List every migration found, not only the pending ones |
 | `-i` | Deprecated; now identical to `-a` |

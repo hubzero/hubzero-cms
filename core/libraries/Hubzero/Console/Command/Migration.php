@@ -121,8 +121,8 @@ class Migration extends Base implements CommandInterface
         // Specific extension
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
-                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]_]+$|^mod_[[:alnum:]_]+$|'
+                . '^plg_[[:alnum:]-]+_[[:alnum:]_]+$|^tpl_[[:alnum:]_]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of '
@@ -363,8 +363,8 @@ class Migration extends Base implements CommandInterface
         // Specific extension filter
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
-                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]_]+$|^mod_[[:alnum:]_]+$|'
+                . '^plg_[[:alnum:]-]+_[[:alnum:]_]+$|^tpl_[[:alnum:]_]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of '
@@ -590,8 +590,8 @@ class Migration extends Base implements CommandInterface
         // Specific extension filter
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|'
-                . '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            $pattern = '/^com_[[:alnum:]_]+$|^mod_[[:alnum:]_]+$|'
+                . '^plg_[[:alnum:]-]+_[[:alnum:]_]+$|^tpl_[[:alnum:]_]+$|^core$/i';
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of '

@@ -202,11 +202,12 @@ Throughout these pages, `{ComponentName}` stands for the studly-cased name —
 `Bookings`, `Kb`, `Blog` — and `{componentname}` for its lowercase form. The
 same pairing applies to `{ControllerName}`, `{ViewName}`, and `{ModelName}`.
 
-> **Warning:** Keep the name a single word of letters and digits. The
-> migration runner's `-e` option validates the extension against
-> `^com_[[:alnum:]]+$`, so `muse migration -e=com_instrument_bookings` is
-> refused outright — a component whose name carries a second underscore cannot
-> be migrated by name.
+> **Warning:** Keep the name a single word of letters and digits.
+> `Hubzero\Component\Loader` builds the entry class by capitalising what
+> follows `com_`, so `com_instrument_bookings` would have to declare
+> `Components\Instrument_bookings\Site\Instrument_bookings` — a class name
+> with an underscore in it, which
+> [PHP Naming Conventions](../19-conventions/02-php-naming.md) rules out.
 
 ## In this section
 

@@ -611,7 +611,7 @@ php core/bin/muse migration -f -d=down -e=com_bookings   # and reverse it
 </tr>
 <tr>
 <td><code>-e=com_example</code></td>
-<td>Restrict to one extension: <code>com_*</code>, <code>mod_*</code>, <code>plg_group_name</code>, <code>tpl_*</code> or <code>core</code></td>
+<td>Restrict to one extension: <code>com_*</code>, <code>mod_*</code>, <code>plg_group_name</code>, <code>tpl_*</code> or <code>core</code>. Takes the migrations whose class names that extension, wherever they are, and every migration in the extension's own <code>migrations/</code> directory</td>
 </tr>
 <tr>
 <td><code>--file=Migration…php</code></td>

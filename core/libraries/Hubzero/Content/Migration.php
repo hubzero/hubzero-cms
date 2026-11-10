@@ -331,24 +331,85 @@ class Migration
             }
         }
 
+        $dir = null;
         if (!is_null($extension)) {
-            $parts = explode('_', $extension);
-            foreach ($parts as $part) {
-                $ext .= ucfirst($part);
-            }
+            $ext = self::extensionSuffix($extension);
+            $dir = self::extensionDirectory($extension);
         }
 
         foreach ($files as $path => $file) {
             // Make sure they have a php extension and proper filename format
-            if (preg_match('/^Migration[0-9]{14}[[:alnum:]]+\.php$/', $file)) {
-                // If an extension was provided...match against it...
-                if (empty($ext) || (!empty($ext) && preg_match('/Migration[0-9]{14}' . $ext . '\.php/', $file))) {
-                    $this->files[] = $path;
-                }
+            if (!preg_match('/^Migration[0-9]{14}[[:alnum:]]+\.php$/', $file)) {
+                continue;
+            }
+
+            // If an extension was provided, take the migrations named for it,
+            // wherever they are, and every migration in its own directory,
+            // whatever it is named
+            if (
+                empty($ext)
+                || preg_match('/^Migration[0-9]{14}' . $ext . '\.php$/i', $file)
+                || ($dir && str_ends_with(dirname($path, 2), DS . $dir))
+            ) {
+                $this->files[] = $path;
             }
         }
 
         return true;
+    }
+
+    /**
+     * The part of a migration's class name that names its extension
+     *
+     * `plg_groups_forum` gives `PlgGroupsForum`, and `mod_articles_latest`
+     * gives `ModArticlesLatest`. A hyphen, as in the `editors-xtd` plugin
+     * group, is dropped and the letter after it capitalised, since a class
+     * name cannot hold one.
+     *
+     * @param   string  $extension  Extension name, such as `com_blog`, or `core`
+     * @return  string
+     **/
+    public static function extensionSuffix($extension)
+    {
+        if (strtolower($extension) == 'core') {
+            return 'Core';
+        }
+
+        $suffix = '';
+        foreach (preg_split('/[_-]/', $extension) as $part) {
+            $suffix .= ucfirst($part);
+        }
+
+        return $suffix;
+    }
+
+    /**
+     * Where an extension keeps its own migrations, relative to core or app
+     *
+     * @param   string  $extension  Extension name, such as `plg_editors-xtd_article`
+     * @return  string|null  Null for `core`, or a name that is not an extension's
+     **/
+    private static function extensionDirectory($extension)
+    {
+        $parts = explode('_', strtolower($extension), 2);
+
+        if (count($parts) < 2 || $parts[1] === '') {
+            return null;
+        }
+
+        switch ($parts[0]) {
+            case 'com':
+                return 'components' . DS . strtolower($extension);
+            case 'mod':
+                return 'modules' . DS . strtolower($extension);
+            case 'tpl':
+                return 'templates' . DS . $parts[1];
+            case 'plg':
+                $plugin = explode('_', $parts[1], 2);
+                return count($plugin) == 2 ? 'plugins' . DS . $plugin[0] . DS . $plugin[1] : null;
+        }
+
+        return null;
     }
 
     /**
