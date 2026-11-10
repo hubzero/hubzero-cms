@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $this->css()
     ->js();
 
-$base = Route::url($this->member->link() . '&active=' . $this->_name);
+$base = Route::url($this->member->link() . '&active=' . $this->viewName);
 ?>
 
 <div id="browsebox" class="frm">

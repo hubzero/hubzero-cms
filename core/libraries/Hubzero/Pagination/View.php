@@ -21,7 +21,7 @@ class View extends AbstractView
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'pagination';
+    protected $viewName = 'pagination';
 
     /**
      * Layout name
@@ -29,7 +29,7 @@ class View extends AbstractView
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_layout = 'paginator';
+    protected $layoutName = 'paginator';
 
     /**
      * Constructor
@@ -46,11 +46,11 @@ class View extends AbstractView
             $config['base_path'] = __DIR__;
         }
 
-        $this->_basePath = $config['base_path'];
+        $this->basePath = $config['base_path'];
 
         // Set the default template search path
         if (!array_key_exists('template_path', $config)) {
-            $config['template_path'] = $this->_basePath . DIRECTORY_SEPARATOR . 'Views';
+            $config['template_path'] = $this->basePath . DIRECTORY_SEPARATOR . 'Views';
         }
 
         $this->setPath('template', $config['template_path']);
@@ -68,15 +68,15 @@ class View extends AbstractView
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = [];
+        $this->searchPaths[$type] = [];
 
         // Actually add the user-specified directories
         $this->addPath($type, $path);
 
         // Always add the fallback directories as last resort
-        if ($type == 'template' && $this->_overridePath) {
+        if ($type == 'template' && $this->overridePath) {
             // Set the alternative template search dir
-            $path = $this->_overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $this->getName();
+            $path = $this->overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $this->getName();
 
             $this->addPath($type, $path);
         }

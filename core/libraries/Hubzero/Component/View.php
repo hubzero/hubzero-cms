@@ -25,7 +25,7 @@ class View extends AbstractView
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_layout = 'display';
+    public $layoutName = 'display';
 
     /**
      * Base URL
@@ -82,7 +82,7 @@ class View extends AbstractView
                 $config['base_path'] = PATH_COMPONENT;
             }
         }
-        $this->_basePath = $config['base_path'];
+        $this->basePath = $config['base_path'];
     }
 
     /**
@@ -130,8 +130,8 @@ class View extends AbstractView
         }
 
         $view = new self([
-            'base_path' => $this->_basePath,
-            'name'      => ($name ? $name : $this->_name),
+            'base_path' => $this->basePath,
+            'name'      => ($name ? $name : $this->viewName),
             'layout'    => $layout,
         ]);
         $view->set('option', $this->option)

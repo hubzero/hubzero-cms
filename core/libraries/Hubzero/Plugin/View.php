@@ -27,14 +27,14 @@ class View extends AbstractView
      *
      * @var  string
      */
-    protected $_folder = null;
+    protected $pluginFolder = null;
 
     /**
      * Folder
      *
      * @var  string
      */
-    protected $_element = null;
+    protected $pluginElement = null;
 
     /**
      * Constructor
@@ -60,7 +60,7 @@ class View extends AbstractView
         } elseif (!array_key_exists('override_root', $config)) {
             $config['override_root'] = $config['override_path'] ? [$config['override_path'] . '/html'] : [];
         }
-        $this->_overridePath = $config['override_path'];
+        $this->overridePath = $config['override_path'];
 
         // Template override roots, highest priority first (this constructor
         // does not go through the base one, which would otherwise set them)
@@ -71,25 +71,25 @@ class View extends AbstractView
                 $config['override_root'][] = $root . '/html';
             }
         }
-        $this->_overrideRoot = array_values(array_filter((array) $config['override_root']));
+        $this->overrideRoot = array_values(array_filter((array) $config['override_root']));
 
         // Set the view name
         if (!array_key_exists('folder', $config)) {
             $config['folder'] = $this->getFolder();
         }
-        $this->_folder = $config['folder'];
+        $this->pluginFolder = $config['folder'];
 
         // Set the view name
         if (!array_key_exists('element', $config)) {
             $config['element'] = $this->getElement();
         }
-        $this->_element = $config['element'];
+        $this->pluginElement = $config['element'];
 
         // Set the view name
         if (!array_key_exists('name', $config)) {
             $config['name'] = $this->getName();
         }
-        $this->_name = $config['name'];
+        $this->viewName = $config['name'];
 
         // Set the charset (used by the variable escaping functions)
         if (array_key_exists('charset', $config)) {
@@ -104,24 +104,24 @@ class View extends AbstractView
         // Set a base path for use by the view
         if (!array_key_exists('base_path', $config)) {
             if (defined('PATH_APP')) {
-                $config['base_path'] = PATH_APP . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->_folder . DIRECTORY_SEPARATOR . $this->_element;
+                $config['base_path'] = PATH_APP . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->pluginFolder . DIRECTORY_SEPARATOR . $this->pluginElement;
 
                 if (!file_exists($config['base_path']) && defined('PATH_CORE')) {
-                    $config['base_path'] = PATH_CORE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->_folder . DIRECTORY_SEPARATOR . $this->_element;
+                    $config['base_path'] = PATH_CORE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->pluginFolder . DIRECTORY_SEPARATOR . $this->pluginElement;
                 }
             }
         }
-        $this->_basePath = $config['base_path'];
+        $this->basePath = $config['base_path'];
 
         // Set the default template search path
         if (!array_key_exists('template_path', $config)) {
-            $config['template_path'] = $this->_basePath . '/views/' . $this->getName() . '/tmpl';
+            $config['template_path'] = $this->basePath . '/views/' . $this->getName() . '/tmpl';
         }
         $this->setPath('template', $config['template_path']);
 
         // Set the default helper search path
         if (!array_key_exists('helper_path', $config)) {
-            $config['helper_path'] = $this->_basePath . '/helpers';
+            $config['helper_path'] = $this->basePath . '/helpers';
         }
         $this->setPath('helper', $config['helper_path']);
 
@@ -145,7 +145,7 @@ class View extends AbstractView
      */
     public function getFolder()
     {
-        $folder = $this->_folder;
+        $folder = $this->pluginFolder;
 
         if (empty($folder)) {
             $r = new ReflectionClass($this);
@@ -174,7 +174,7 @@ class View extends AbstractView
      */
     public function getElement()
     {
-        $element = $this->_element;
+        $element = $this->pluginElement;
 
         if (empty($element)) {
             $r = new ReflectionClass($this);
@@ -209,18 +209,18 @@ class View extends AbstractView
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = [];
+        $this->searchPaths[$type] = [];
 
         // Actually add the user-specified directories
         $this->addPath($type, $path);
 
         // Always add the fallback directories as last resort
-        if ($type == 'template' && $this->_overridePath && $this->_overrideRoot) {
-            $option = 'plg_' . $this->_folder . '_' . $this->_element;
+        if ($type == 'template' && $this->overridePath && $this->overrideRoot) {
+            $option = 'plg_' . $this->pluginFolder . '_' . $this->pluginElement;
             $option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 
             // Lowest priority first: addPath() pushes onto the top of the stack
-            foreach (array_reverse($this->_overrideRoot) as $root) {
+            foreach (array_reverse($this->overrideRoot) as $root) {
                 $this->addPath($type, $root . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . $this->getName());
             }
         }
@@ -241,13 +241,13 @@ class View extends AbstractView
         }
 
         $view = new self([
-            'folder'  => $this->_folder,
-            'element' => $this->_element,
-            'name'    => ($name ? $name : $this->_name),
+            'folder'  => $this->pluginFolder,
+            'element' => $this->pluginElement,
+            'name'    => ($name ? $name : $this->viewName),
             'layout'  => $layout,
         ]);
-        $view->set('folder', $this->_folder)
-             ->set('element', $this->_element);
+        $view->set('folder', $this->pluginFolder)
+             ->set('element', $this->pluginElement);
 
         return $view;
     }
@@ -265,10 +265,10 @@ class View extends AbstractView
     {
         if (!static::hasHelper($method)) {
             // Namespaced
-            $invokable1 = '\\Plugins\\' . ucfirst($this->_folder) . '\\' . ucfirst($this->_element) . '\\Helpers\\' . ucfirst($method);
+            $invokable1 = '\\Plugins\\' . ucfirst($this->pluginFolder) . '\\' . ucfirst($this->pluginElement) . '\\Helpers\\' . ucfirst($method);
 
             // Old naming scheme "PluginFolderElementHelperMethod"
-            $invokable2 = 'Plugin' . ucfirst($this->_folder) . ucfirst($this->_element) . 'Helper' . ucfirst($method);
+            $invokable2 = 'Plugin' . ucfirst($this->pluginFolder) . ucfirst($this->pluginElement) . 'Helper' . ucfirst($method);
 
             $callback = null;
             if (class_exists($invokable1)) {

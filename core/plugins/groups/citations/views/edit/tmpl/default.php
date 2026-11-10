@@ -45,7 +45,7 @@ $badges_list = Event::trigger(
 );
 
 //get the referrer
-$backLink = Route::url('index.php?option=' . $this->_name);
+$backLink = Route::url('index.php?option=' . $this->viewName);
 if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILTER_VALIDATE_URL)) {
     $backLink = $_SERVER['HTTP_REFERER'];
 }

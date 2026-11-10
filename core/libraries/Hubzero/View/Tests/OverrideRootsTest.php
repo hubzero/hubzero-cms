@@ -64,7 +64,7 @@ class OverrideRootsTest extends Basic
      */
     private function templatePaths(View $view): array
     {
-        $paths = new \ReflectionProperty(View::class, '_path');
+        $paths = new \ReflectionProperty(View::class, 'searchPaths');
         $paths->setAccessible(true);
 
         return $paths->getValue($view)['template'];

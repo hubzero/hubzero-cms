@@ -30,56 +30,56 @@ class View extends Obj
      *
      * @var  string
      */
-    protected $_name = null;
+    protected $viewName = null;
 
     /**
      * The base path of the view
      *
      * @var  string
      */
-    protected $_basePath = null;
+    protected $basePath = null;
 
     /**
      * Root directory of the override
      *
      * @var  string
      */
-    protected $_overrideRoot = null;
+    protected $overrideRoot = null;
 
     /**
      * The override path
      *
      * @var  string
      */
-    protected $_overridePath = null;
+    protected $overridePath = null;
 
     /**
      * Layout name
      *
      * @var  string
      */
-    protected $_layout = 'default';
+    protected $layoutName = 'default';
 
     /**
      * Layout extension
      *
      * @var  string
      */
-    protected $_layoutExt = 'php';
+    protected $layoutExtension = 'php';
 
     /**
      * Layout template
      *
      * @var  string
      */
-    protected $_layoutTemplate = '_';
+    protected $layoutTemplate = '_';
 
     /**
      * The set of search directories for resources (templates)
      *
      * @var  array
      */
-    protected $_path = [
+    protected $searchPaths = [
         'template' => [],
         'helper'   => [],
     ];
@@ -89,14 +89,14 @@ class View extends Obj
      *
      * @var  string
      */
-    protected $_template = null;
+    protected $templateFile = null;
 
     /**
      * The output of the template script.
      *
      * @var  string
      */
-    protected $_output = null;
+    protected $renderedOutput = null;
 
     /**
      * The registered helpers.
@@ -136,17 +136,17 @@ class View extends Obj
                 $config['override_root'][] = $root . '/html';
             }
         }
-        $this->_overrideRoot = array_values(array_filter((array) $config['override_root']));
+        $this->overrideRoot = array_values(array_filter((array) $config['override_root']));
 
         if (array_key_exists('override_path', $config)) {
-            $this->_overridePath = $config['override_path'];
+            $this->overridePath = $config['override_path'];
         }
 
         // Set the view name
         if (!array_key_exists('name', $config)) {
             $config['name'] = $this->getName();
         }
-        $this->_name = $config['name'];
+        $this->viewName = $config['name'];
 
         // Set the charset (used by the variable escaping functions)
         if (array_key_exists('charset', $config)) {
@@ -166,23 +166,23 @@ class View extends Obj
                 $config['base_path'] = PATH_COMPONENT;
             }
         }
-        $this->_basePath = $config['base_path'];
+        $this->basePath = $config['base_path'];
 
         // Set the default template search path
         if (!array_key_exists('template_path', $config)) {
-            $config['template_path'] = $this->_basePath . '/views/' . $this->getName() . '/tmpl';
+            $config['template_path'] = $this->basePath . '/views/' . $this->getName() . '/tmpl';
         }
         $this->setPath('template', $config['template_path']);
 
         // Set the default helper search path
         if (!array_key_exists('helper_path', $config)) {
-            $config['helper_path'] = $this->_basePath . '/helpers';
+            $config['helper_path'] = $this->basePath . '/helpers';
         }
         $this->setPath('helper', $config['helper_path']);
 
         // Set the layout
         if (!array_key_exists('layout', $config)) {
-            $config['layout'] = $this->_layout;
+            $config['layout'] = $this->layoutName;
         }
         $this->setLayout($config['layout']);
 
@@ -289,7 +289,7 @@ class View extends Obj
      */
     public function getBasePath()
     {
-        return $this->_basePath;
+        return $this->basePath;
     }
 
     /**
@@ -300,7 +300,7 @@ class View extends Obj
      */
     public function setBasePath($path)
     {
-        $this->_basePath = $path;
+        $this->basePath = $path;
 
         return $this;
     }
@@ -312,7 +312,7 @@ class View extends Obj
      */
     public function getLayout()
     {
-        return $this->_layout;
+        return $this->layoutName;
     }
 
     /**
@@ -322,7 +322,7 @@ class View extends Obj
      */
     public function getLayoutTemplate()
     {
-        return $this->_layoutTemplate;
+        return $this->layoutTemplate;
     }
 
     /**
@@ -332,7 +332,7 @@ class View extends Obj
      */
     public function getOverridePath()
     {
-        return $this->_overridePath;
+        return $this->overridePath;
     }
 
     /**
@@ -345,10 +345,10 @@ class View extends Obj
      */
     public function getName()
     {
-        if (empty($this->_name)) {
-            $this->_name = App::get('request')->getCmd('controller');
+        if (empty($this->viewName)) {
+            $this->viewName = App::get('request')->getCmd('controller');
 
-            if (!$this->_name) {
+            if (!$this->viewName) {
                 $r = null;
 
                 if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r)) {
@@ -359,10 +359,10 @@ class View extends Obj
                     throw new Exception('Classname contains the substring "view" which causes problems when extracting the classname.', 500);
                 }
 
-                $this->_name = strtolower($r[3]);
+                $this->viewName = strtolower($r[3]);
             }
         }
-        return $this->_name;
+        return $this->viewName;
     }
 
     /**
@@ -373,8 +373,8 @@ class View extends Obj
      */
     public function setName($name)
     {
-        $this->_name = $name;
-        $this->setPath('template', $this->_basePath . '/views/' . $this->getName() . '/tmpl');
+        $this->viewName = $name;
+        $this->setPath('template', $this->basePath . '/views/' . $this->getName() . '/tmpl');
 
         return $this;
     }
@@ -388,14 +388,14 @@ class View extends Obj
     public function setLayout($layout)
     {
         if (strpos($layout, ':') === false) {
-            $this->_layout = $layout;
+            $this->layoutName = $layout;
         } else {
             // Convert parameter to array based on :
             $temp = explode(':', $layout);
-            $this->_layout = $temp[1];
+            $this->layoutName = $temp[1];
 
             // Set layout template
-            $this->_layoutTemplate = $temp[0];
+            $this->layoutTemplate = $temp[0];
         }
 
         return $this;
@@ -410,7 +410,7 @@ class View extends Obj
     public function setLayoutExt($value)
     {
         if ($value = preg_replace('/[^A-Za-z0-9]/', '', trim($value))) {
-            $this->_layoutExt = $value;
+            $this->layoutExtension = $value;
         }
 
         return $this;
@@ -424,7 +424,7 @@ class View extends Obj
      */
     public function setOverridePath($path)
     {
-        $this->_overridePath = $path;
+        $this->overridePath = $path;
         return $this;
     }
 
@@ -461,7 +461,7 @@ class View extends Obj
     public function loadTemplate($tpl = null)
     {
         // Clear prior output
-        $this->_output = null;
+        $this->renderedOutput = null;
 
         $template = $this->getOverridePath();
         $layout   = $this->getLayout();
@@ -478,21 +478,21 @@ class View extends Obj
             && $layoutTemplate != '_'
             && $layoutTemplate != $template
         ) {
-            $this->_path['template'] = str_replace($template ?? '', $layoutTemplate, $this->_path['template']);
+            $this->searchPaths['template'] = str_replace($template ?? '', $layoutTemplate, $this->searchPaths['template']);
         }
         // Load the template script
-        $this->_template = $this->find(
-            $this->_path['template'],
+        $this->templateFile = $this->find(
+            $this->searchPaths['template'],
             $this->createFileName('template', ['name' => $file]),
         );
         // If alternate layout can't be found, fall back to default layout
-        if ($this->_template == false) {
-            $this->_template = $this->find(
-                $this->_path['template'],
+        if ($this->templateFile == false) {
+            $this->templateFile = $this->find(
+                $this->searchPaths['template'],
                 $this->createFileName('', ['name' => 'default' . ($tpl ? '_' . $tpl : $tpl)]),
             );
         }
-        if ($this->_template != false) {
+        if ($this->templateFile != false) {
             // Unset so as not to introduce into template scope
             unset($tpl);
             unset($file);
@@ -507,14 +507,14 @@ class View extends Obj
 
             // Include the requested template filename in the local scope
             // (this will execute the view logic).
-            include $this->_template;
+            include $this->templateFile;
 
             // Done with the requested template; get the buffer and
             // clear it.
-            $this->_output = ob_get_contents();
+            $this->renderedOutput = ob_get_contents();
             ob_end_clean();
 
-            return $this->_output;
+            return $this->renderedOutput;
         }
 
         throw new InvalidLayoutException(sprintf('Layout %s not found', $file), 404);
@@ -532,7 +532,7 @@ class View extends Obj
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = [];
+        $this->searchPaths[$type] = [];
 
         // Add view directories without the '/tmpl' legacy directory
         if ($type == 'template' && basename($path) == 'tmpl') {
@@ -544,17 +544,17 @@ class View extends Obj
         $this->addPath($type, $path);
 
         // Always add the fallback directories as last resort
-        if ($type == 'template' && $this->_overrideRoot) {
+        if ($type == 'template' && $this->overrideRoot) {
             // Set the alternative template search dir
-            if (empty($this->_overridePath)) {
+            if (empty($this->overridePath)) {
                 $component = strtolower(App::get('request')->getCmd('option'));
                 $component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
             } else {
-                $component = ltrim($this->_overridePath, DIRECTORY_SEPARATOR);
+                $component = ltrim($this->overridePath, DIRECTORY_SEPARATOR);
             }
 
             // Lowest priority first: addPath() pushes onto the top of the stack
-            foreach (array_reverse($this->_overrideRoot) as $root) {
+            foreach (array_reverse($this->overrideRoot) as $root) {
                 $this->addPath($type, $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName());
             }
         }
@@ -584,7 +584,7 @@ class View extends Obj
             }
 
             // Add to the top of the search dirs
-            array_unshift($this->_path[$type], $dir);
+            array_unshift($this->searchPaths[$type], $dir);
         }
     }
 
@@ -602,7 +602,7 @@ class View extends Obj
         $ext = 'php';
 
         if ($type == 'template') {
-            $ext = $this->_layoutExt;
+            $ext = $this->layoutExtension;
         }
 
         return $filename . '.' . $ext;
